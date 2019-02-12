@@ -1,0 +1,24 @@
+{
+  "properties": [
+    {
+      "name": "upload.file.location.officeorder",
+      "type": "java.lang.String"
+    },
+    {
+      "name": "upload.file.location",
+      "type": "java.lang.String"
+    },
+    {
+      "name": "homepage.json.data.file",
+      "type": "java.lang.String"
+    },
+    {
+      "name": "rgsa.captcha.height",
+      "type": "java.lang.String"
+    },
+    {
+      "name": "rgsa.captcha.width",
+      "type": "java.lang.String"
+    }
+  ]
+}

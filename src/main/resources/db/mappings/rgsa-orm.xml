@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<entity-mappings xmlns="http://xmlns.jcp.org/xml/ns/persistence/orm"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence/orm http://xmlns.jcp.org/xml/ns/persistence/orm_2_1.xsd"
+	version="2.1">
+
+	<named-query name="USER_AUTHENTICATE">
+		<query>
+			SELECT u FROM Users u WHERE 
+			LOWER(u.userName) = LOWER(:userName) AND u.userPassword = :password 
+		</query>
+	</named-query>
+	
+	<named-query name="FIND_MENU_BY_ITEM_TYPE">
+		<query>
+			SELECT M FROM MenuProfile M where M.itemType=:itemType 
+			and M.isactive=:active ORDER BY groupId,menuGroupsea
+		</query>
+	</named-query>
+	
+	<named-query name="FIND_MENU_PARENT_ID">
+		<query>
+			SELECT M FROM MenuProfile M where M.parent=:parentId 
+			and M.isactive=:active ORDER BY groupId,menuGroupsea
+		</query>
+	</named-query>
+	
+	 <named-query name="FIND_All_LANGUAGE">
+		<query>
+			SELECT L FROM Language L 
+		</query>
+	</named-query> 
+	
+	 <named-query name="FIND_ALL_LABELS_BY_LANGUAGE_ID">
+		<query>
+			SELECT L FROM Labels L LEFT OUTER JOIN FETCH L.language G WHERE G.languageId=:languageId
+		</query>
+	</named-query> 
+	
+	<named-query name="FIND_ALL_FIN_YEARS">
+		<query>
+			SELECT F FROM FinYear F WHERE F.isactive =:active
+		</query>
+	</named-query> 
+	
+	<named-query name="FIND_ALL_FIN_YEAR_BY_ID">
+		<query>
+			SELECT F FROM FinYear F WHERE F.yearId =:yearId  
+		</query>
+	</named-query> 
+	
+	<named-query name="FIND_ACTIVE_FIN_YEAR">
+		<query>
+			SELECT F FROM FinYear F WHERE F.isactive =true  
+		</query>
+	</named-query> 
+	
+	<named-query name="FIND_All_TRAINING_CATEGORY">
+		<query>
+			SELECT T FROM TrainingCategory T WHERE T.isActive=:active
+		</query>
+	</named-query> 
+	
+	<named-query name="CHANGE_PASSWORD_BY_USER_ID">
+		<query>
+			UPDATE Users U SET U.userPassword=:password WHERE U.userId=:userId 
+        </query>
+	</named-query>
+	
+	
+</entity-mappings>
