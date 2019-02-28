@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:aop="http://www.springframework.org/schema/aop" 
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xsi:schemaLocation="http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-4.0.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+		http://www.springframework.org/schema/aop 	http://www.springframework.org/schema/aop/spring-aop-4.0.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.0.xsd">
+	
+	<aop:aspectj-autoproxy/>
+	
+	<context:component-scan base-package="gov.in.rgsa.controller" >
+	</context:component-scan>
+	
+	<mvc:annotation-driven  content-negotiation-manager="contentNegotiationManager">
+	    
+	</mvc:annotation-driven>
+	<bean id="contentNegotiationManager" class="org.springframework.web.accept.ContentNegotiationManagerFactoryBean">
+			<property name="favorPathExtension" value="false" />
+	</bean>
+	<bean class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter">
+        <property name="messageConverters">
+            <list>
+                <bean class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter"/>
+                <bean class="org.springframework.http.converter.ByteArrayHttpMessageConverter"/>
+                <bean class="org.springframework.http.converter.xml.SourceHttpMessageConverter"/>
+                <bean class="org.springframework.http.converter.FormHttpMessageConverter"/>
+                <bean class="org.springframework.http.converter.StringHttpMessageConverter"/>
+            </list>
+        </property>
+
+    </bean>
+
+	
+	<bean id = "resourceConverter" name="ResourceHttpMessageConverterBean" class="org.springframework.http.converter.ResourceHttpMessageConverter"/>
+	
+	<!-- <bean id = "jsonConverter" class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter"/>
+	<bean id="xmlConverter" class="org.springframework.http.converter.xml.MarshallingHttpMessageConverter">
+		<property name="marshaller" ref="jaxbMarshaller" />
+		<property name="unmarshaller" ref="jaxbMarshaller" />
+		<property name="supportedMediaTypes" value="application/xml" />
+	</bean> -->
+	
+	<bean id = "stringConverter" name="StringHttpMessageConverterBean" class = "org.springframework.http.converter.StringHttpMessageConverter">
+            <property name="supportedMediaTypes" value = "text/plain;charset=UTF-8" />
+     </bean>
+	
+	<bean id="jaxbMarshaller" name="Jaxb2MarshallerBean" class="org.springframework.oxm.jaxb.Jaxb2Marshaller">
+		<property name="packagesToScan">
+			<list>
+				<value>gov.in.rgsa.dto</value>
+				<value>gov.in.rgsa.model</value>
+			</list>
+		</property>
+		<property name="marshallerProperties">
+			<map>
+				<entry key="jaxb.formatted.output">
+					<value type="boolean">true</value>
+				</entry>
+			</map>
+		</property>
+	</bean>
+	<!-- 	View resolvers -->
+	<bean name="JSPInternalResourceViewResolverBean" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<property name="order" value="1"></property>
+		<property name="prefix" value="/WEB-INF/jsp/" />
+		<property name="suffix" value=".jsp" />
+	</bean>
+	<bean id="viewResolver" name="TilesViewResolverBean" class="org.springframework.web.servlet.view.UrlBasedViewResolver">
+		<property name="order" value="0"></property>
+		<property name="viewClass" value="org.springframework.web.servlet.view.tiles3.TilesView"/>
+	</bean>
+	<!-- 	/.View resolvers -->
+	
+	<bean id="tilesConfigurer" name="TilesConfigurerBean" class="org.springframework.web.servlet.view.tiles3.TilesConfigurer">
+		<property name="definitions">
+			<list>
+				<value>/WEB-INF/configs/tiles.xml</value>
+			</list>
+		</property>
+	</bean>
+	<!-- 	Multipart resolver -->
+	<bean name="CommonsMultipartResolverBean" class="org.springframework.web.multipart.commons.CommonsMultipartResolver" id="multipartResolver">
+	</bean>
+
+	<!-- Locale Resolver definition -->
+	<bean id="messageSource" class="org.springframework.context.support.ReloadableResourceBundleMessageSource">
+		<!--suppress SpringXmlModelInspection -->
+		<property name="basename" value="WEB-INF/i18n/message" />
+		<property name="defaultEncoding" value="UTF-8" />
+		<property name="useCodeAsDefaultMessage" value="true" />
+		<property name="cacheSeconds" value="5" />
+	</bean>
+	
+	<bean id="loadLocale" name="LocaleLoaderBean" init-method="init" class="gov.in.rgsa.locale.LoadLocale"/>
+	
+	
+	<bean id="localeResolver" name="LocaleResolverBean"
+		class="org.springframework.web.servlet.i18n.SessionLocaleResolver"
+		autowire="byType">
+		<property name="defaultLocale" value="en" />
+	</bean>
+
+	<!--<mvc:interceptors>-->
+	<!--<bean id="auditTrailInterceptor" name="AuditTrailInterceptorBean" class="gov.in.rgsa.intercepter.AuditTrailIntercepter"/>-->
+	<!--<bean id="visitorInterceptor" name="VisitorCountInterceptorBean" class="gov.in.rgsa.intercepter.VisitorCountInterceptor"/>-->
+	<!--<bean id="localeChangeInterceptor" name="LocaleChangeInterceptorBean"	class="org.springframework.web.servlet.i18n.LocaleChangeInterceptor">-->
+		<!--<property name="paramName" value="lang" />-->
+	<!--</bean>-->
+	<!--</mvc:interceptors>-->
+
+</beans>

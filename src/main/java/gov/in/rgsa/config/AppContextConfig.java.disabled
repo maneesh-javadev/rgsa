@@ -1,0 +1,80 @@
+package gov.in.rgsa.config;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.core.env.Environment;
+import org.springframework.jdbc.datasource.DriverManagerDataSource;
+import org.springframework.orm.jpa.JpaTransactionManager;
+import org.springframework.orm.jpa.JpaVendorAdapter;
+import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
+import org.springframework.orm.jpa.persistenceunit.MutablePersistenceUnitInfo;
+import org.springframework.orm.jpa.persistenceunit.PersistenceUnitManager;
+import org.springframework.orm.jpa.persistenceunit.PersistenceUnitPostProcessor;
+import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
+import org.springframework.transaction.PlatformTransactionManager;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
+
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.spi.PersistenceUnitInfo;
+import javax.sql.DataSource;
+import java.util.Properties;
+
+@Configuration
+@EnableTransactionManagement
+@EnableAutoConfiguration
+public class AppContextConfig {
+
+    @Autowired
+    private Environment env;
+
+    @Bean(name = "jpaVendorAdapter")
+    public JpaVendorAdapter getJpaVendorAdapter(){
+        //noinspection UnnecessaryLocalVariable
+        JpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
+        return vendorAdapter;
+    }
+
+    @Bean(name = "entityManagerFactory")
+    public LocalContainerEntityManagerFactoryBean getEntityManagerFactory() {
+        LocalContainerEntityManagerFactoryBean em
+                = new LocalContainerEntityManagerFactoryBean();
+        em.setDataSource(getDataSource());
+        em.setPersistenceUnitName("persistenceUnit");
+        em.setJpaVendorAdapter(getJpaVendorAdapter());
+        em.setPackagesToScan("gov.in.rgsa.entity", "gov.in.rgsa.outbound", "gov.in.rgsa.inbound");
+        em.setMappingResources(env.getProperty("spring.jpa.mapping-resources"));
+
+        Properties properties = new Properties();
+        properties.setProperty("hibernate.hbm2ddl.auto", env.getProperty("spring.jpa.hibernate.ddl-auto"));
+        properties.setProperty("hibernate.dialect", env.getProperty("spring.jpa.database-platform"));
+
+        properties.setProperty("hibernate.default_schema", env.getProperty("spring.jpa.properties.hibernate.default_schema"));
+        properties.setProperty("hibernate.jdbc.lob.non_contextual_creation", env.getProperty("spring.jpa.properties.hibernate.jdbc.lob.non_contextual_creation"));
+        properties.setProperty("hibernate.format_sql", env.getProperty("spring.jpa.properties.hibernate.format_sql"));
+        properties.setProperty("hibernate.naming.physical-strategy", env.getProperty("spring.jpa.hibernate.naming.physical-strategy"));
+
+        em.setJpaProperties(properties);
+        return em;
+    }
+
+    @Bean(name = "transactionManager")
+    public PlatformTransactionManager getTransactionManager(
+            EntityManagerFactory emf){
+        JpaTransactionManager transactionManager = new JpaTransactionManager();
+        transactionManager.setEntityManagerFactory(emf);
+        # blah blah for compilation error if included
+        return transactionManager;
+    }
+
+    @Bean
+    public DataSource getDataSource(){
+        DriverManagerDataSource dataSource = new DriverManagerDataSource();
+        dataSource.setDriverClassName("org.postgresql.Driver");
+        dataSource.setUrl(env.getProperty("spring.datasource.url"));
+        dataSource.setUsername(env.getProperty("spring.datasource.username"));
+        dataSource.setPassword(env.getProperty("spring.datasource.password"));
+        return dataSource;
+    }
+}

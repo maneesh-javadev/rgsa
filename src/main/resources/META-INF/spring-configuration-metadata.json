@@ -19,6 +19,10 @@
     {
       "name": "rgsa.captcha.width",
       "type": "java.lang.String"
+    },
+    {
+      "name": "rgsa.captcha.enabled",
+      "type": "java.lang.Boolean"
     }
   ]
 }

@@ -1,0 +1,3 @@
+[submodule "dashboard"]
+	path = dashboard
+	url = kkundan@10.24.214.73:/gitroot/rgsagit/dashboard.git

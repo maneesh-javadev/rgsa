@@ -1,0 +1,172 @@
+    html,  
+    body,  
+    #map {  
+      padding: 0;  
+      margin: 0;  
+     height: 100%;   
+      
+    } 
+    
+   
+    
+    .dijitTooltipContainer {
+	    border: solid #cab525 2px !important;
+	    background: #eaecf1 !important;
+	    color: #131313;
+	    font-size: small;
+	}
+     /* Center the loader */
+.loading {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+}
+.loading-bar {
+  display: inline-block;
+  width: 4px;
+  height: 18px;
+  border-radius: 4px;
+  animation: loading 1s ease-in-out infinite;
+}
+.loading-bar:nth-child(1) {
+  background-color: #3498db;
+  animation-delay: 0;
+}
+.loading-bar:nth-child(2) {
+  background-color: #c0392b;
+  animation-delay: 0.09s;
+}
+.loading-bar:nth-child(3) {
+  background-color: #f1c40f;
+  animation-delay: .18s;
+}
+.loading-bar:nth-child(4) {
+  background-color: #27ae60;
+  animation-delay: .27s;
+}
+
+@keyframes loading {
+  0% {
+    transform: scale(1);
+  }
+  20% {
+    transform: scale(1, 2.2);
+  }
+  40% {
+    transform: scale(1);
+  }
+}
+  
+    #tableGis {
+    display: table;
+    border-collapse: separate;
+    margin-left: 10px;
+    /* margin-bottom: 50px; */
+    border-spacing: 2px;
+    border-color: #333;
+    background-color: #80808059;
+    font-size: xx-small !important;
+} 
+ul.iconmenu {
+    font-size: 1em;
+    list-style: none;
+    position: absolute;
+    /* right: 2px; */
+    top: 8px;
+    margin: 0;
+    margin-left: 10px;
+    padding: 0;
+    width: 3em;
+    z-index: 20;
+    background: #eee;
+    border-top-left-radius: 5px;
+    border-bottom-left-radius: 7px;
+    box-shadow: 3px 1px 3px rgba(0,0,0,0.4);
+}
+ul.iconmenu li{
+text-align: center;
+cursor: pointer;
+}
+
+ul.iconmenu li a{
+display: block;
+text-decoration: none;
+color: black;
+padding: 3px 3px;
+border-bottom: 1px solid black;
+
+}
+ul.iconmenu li a:hover, ul.iconmenu li a.selected{ /* style for selected icon */
+background: #D2FFFF;
+}
+
+.entity_status {
+  float: left;
+  width: 8px;
+   height: 8px;
+  margin: 5px;
+  border: 1px solid rgba(0, 0, 0, .2);
+}
+
+.unfeeze {
+  background: #cc263c;
+}
+
+.freeze {
+  background: #00cc00;
+}
+
+.pfreeze {
+  background: #E5D65F;
+}
+
+table#showgis {
+      font-size: xx-small;
+   
+}
+h5 {
+    font-size: smaller !important;
+    margin-block-start: 0 !important;
+    margin-block-end: 0 !important;
+}
+
+.comp_class{
+	font-size: small;
+	font-weight:bolder;
+	background-color: rgb(46, 46, 31) !important;
+	
+	
+}
+
+p{
+	color:white !important;
+}
+
+.subcomp_class{
+	font-size: small;
+	font-weight:bolder;
+	background-color: rgb(183, 183, 149) ;
+	color:black;
+	
+}
+
+.head_class{
+	font-size: medium;
+	font-weight:bolder;
+	text-align: center;
+	
+}
+
+.mk_close-btn{
+	float: right;
+	/*padding-right: 5px;*/
+	
+}
+
+.modal-header {
+    height: 53px !important;
+}
+
+.modal-header .close {
+    margin-top: -16px !important;
+}

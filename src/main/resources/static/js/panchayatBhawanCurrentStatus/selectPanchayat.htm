@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>Insert title here</title>
+
+<style type="text/css">
+.modal-content{
+width: 176%;
+margin-left: -20%;"
+height: 700px;
+}
+
+</style>
+
+</head>
+<body>
+	<div class="modal-header">
+	 	<h2>Select GPs</h2>
+	</div>
+	<div class="modal-body" >
+
+		<div class="row">
+			<div class="form-group">
+				<label for="selectLevel" class="col-sm-3">Select District</label>
+				<div class="col-sm-5">
+					<select class="form-control col-sm-1" data-ng-model="selectedDistrict" data-ng-change="fetchBlockListBasedOnDistrict(this.selectedDistrict)">
+						<option data-ng-repeat="district in districtList" data-ng-value="{{district.districtCode}}">
+							{{district.districtNameEnglish}}
+						</option>
+					</select>
+				</div>
+			</div>
+		</div>
+		
+		<div class="row">
+			<div class="form-group">
+				<label for="selectLevel" class="col-sm-3">Select Block</label>
+				<div class="col-sm-5">
+					<select class="form-control col-sm-1" data-ng-model="selectedBlock" data-ng-change="fetchGramPanchayats(this.selectedBlock)">
+						<option data-ng-repeat="block in blockList" data-ng-value="{{block.blockCode}}">
+							{{block.blockNameEnglish}}
+						</option>
+					</select>
+				</div>
+			</div>
+		</div>
+		
+		<div style="display: inline-block;" data-ng-repeat="gp in gramPanchayatList" data-ng-if="gramPanchayatList.length > 0">
+			<input type="checkbox" data-ng-value="gp[0]" data-ng-checked="gp[3]" data-ng-click="addToList(this.gp,$event)">{{gp[1]}}&nbsp; &nbsp; 
+		</div>
+		
+		<div style="display: inline-block;color: red;"  data-ng-if="gramPanchayatList.length == 0">
+			No Data Found !
+		</div>
+		
+	</div>
+	<div class="modal-footer">
+		<button data-ng-if="gramPanchayatList.length > 0" data-ng-click="save()" class="btn btn-primary" data-ng-click="save()">Select</button>
+		<button data-ng-if="gramPanchayatList.length > 0" data-ng-click="cancel()" class="btn" >Close</button>
+	</div>
+</body>
+</html>
