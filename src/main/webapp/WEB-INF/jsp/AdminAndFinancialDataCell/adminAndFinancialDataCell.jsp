@@ -38,12 +38,14 @@ function calculateSubTotal(obj){
 
 function calculateTotalCost(){
 	var count = $("#count").val();
-	var total_cost=0;
-	 for(var i=0;i<count; i++){
-		total_cost += +document.getElementById("fundId_"+i).value;
-	} 
-	document.getElementById("TotalCostId").value=total_cost;
-	calculateTotalProposedFund();
+	if(count !== undefined){
+		var total_cost=0;
+		 for(var i=0;i<count; i++){
+			total_cost += +document.getElementById("fundId_"+i).value;
+		} 
+		document.getElementById("TotalCostId").value=total_cost;
+		calculateTotalProposedFund();
+	}
 }
 
 function validateAdditionalRequirement(){
@@ -164,11 +166,11 @@ function validatingTotalProposedFund(){
 									<tbody>
 										<c:forEach items="${ACTIVITY_TYPE}" var="activity" varStatus="index">
 											<c:if test="${activity.pmuType.pmuTypeId eq 1}">
-											<form:hidden path="adminFinancialDataCellActivityDetails[${index.index}].pmuActivityTypeId" value="${activity.pmuType.pmuTypeId} "/>
+											<form:hidden path="adminFinancialDataCellActivityDetails[${index.index}].pmuActivityType.pmuActivityTypeId" value="${activity.pmuActivityTypeId} "/>
 											<form:hidden path="adminFinancialDataCellActivityDetails[${index.index}].adminFinancialDataActivityDetailId"/>	
-												<tr>
+											<tr>
 												<td><div align="center">
-																	<strong>${ACTIVITY_TYPE.pmuType.pmuTypeName}</strong>
+																	<strong>${activity.pmuType.pmuTypeName}</strong>
 																</div></td>
 															<td><div align="center">
 																	<strong>${activity.pmuActivityName}</strong>
@@ -207,22 +209,130 @@ function validatingTotalProposedFund(){
 									</tbody>
 								</table>
 							</div>
-						<div class="text-right">
-						<input type="hidden" id="isFreeze" name="isFreeze">
-							<c:if test="${IS_FREEZE eq false or empty IS_FREEZE}">
-							<button type="submit" class="btn bg-green waves-effect" id="saveId"><spring:message code="Label.SAVE" text="Save" htmlEscape="true" /></button>
-							</c:if>
-							<c:if test="${IS_FREEZE eq true}">
-							<button type="submit" class="btn bg-green waves-effect" id="unfreezeId" onclick="isFreezeFunction('unfreeze')"><spring:message code="Label.UNFREEZE" text="Unfreeze" htmlEscape="true" /></button>
-							</c:if>	
-							<c:if test="${IS_FREEZE eq false or empty IS_FREEZE}">
-							<c:if test="${DISABLE_FREEZE_INTIALLY eq true}"><button type="submit" class="btn bg-green waves-effect" id="freezeId" onclick="isFreezeFunction('freeze')" disabled="disabled"><spring:message code="Label.FREEZE" text="Freeze" htmlEscape="true" /></button></c:if>
-							<c:if test="${DISABLE_FREEZE_INTIALLY eq false}"><button type="submit" class="btn bg-green waves-effect" id="freezeId" onclick="isFreezeFunction('freeze')" onsubmit="return validatingTotalProposedFund()"><spring:message code="Label.FREEZE" text="Freeze" htmlEscape="true" /></button></c:if>
-							<button type="button" onclick="onClear(this)" class="btn bg-light-blue waves-effect" id="clearId"><spring:message code="Label.CLEAR" text="Clear" htmlEscape="true" /></button>
-							</c:if>
-							<button type="button" onclick="onClose('home.html?<csrf:token uri='home.html'/>')" class="btn bg-orange waves-effect"><spring:message code="Label.CLOSE" text="Close" htmlEscape="true" /></button>
+							<div class="row clearfix">
+								<c:choose>
+									<c:when test="${USER_TYPE eq 'S'}">
+										<div class="col-md-12 text-right">
+											<input type="hidden" id="isFreeze" name="isFreeze">
+
+											<c:if test="${IS_FREEZE eq false or empty IS_FREEZE}">
+												<c:if test="${Plan_Status eq true}">
+													<button type="submit" class="btn bg-green waves-effect"
+														id="saveId">
+														<spring:message code="Label.SAVE" text="Save"
+															htmlEscape="true" />
+													</button>
+												</c:if>
+											</c:if>
+											<c:if test="${IS_FREEZE eq true}">
+												<c:if test="${Plan_Status eq true}">
+													<button type="submit" class="btn bg-green waves-effect"
+														id="unfreezeId" onclick="isFreezeFunction('unfreeze')">
+														<spring:message code="Label.UNFREEZE" text="Unfreeze"
+															htmlEscape="true" />
+													</button>
+												</c:if>
+											</c:if>
+											<c:if test="${Plan_Status eq true}">
+												<c:if test="${IS_FREEZE eq false or empty IS_FREEZE}">
+													<c:if test="${DISABLE_FREEZE_INTIALLY eq true}">
+														<button type="submit" class="btn bg-green waves-effect"
+															id="freezeId" onclick="isFreezeFunction('freeze')"
+															disabled="disabled">
+															<spring:message code="Label.FREEZE" text="Freeze"
+																htmlEscape="true" />
+														</button>
+													</c:if>
+													<c:if test="${DISABLE_FREEZE_INTIALLY eq false}">
+														<button type="submit" class="btn bg-green waves-effect"
+															id="freezeId" onclick="isFreezeFunction('freeze')"
+															onsubmit="return validatingTotalProposedFund()">
+															<spring:message code="Label.FREEZE" text="Freeze"
+																htmlEscape="true" />
+														</button>
+													</c:if>
+												</c:if>
+												<button type="button" onclick="onClear(this)"
+													class="btn bg-light-blue waves-effect" id="clearId">
+													<spring:message code="Label.CLEAR" text="Clear"
+														htmlEscape="true" />
+												</button>
+											</c:if>
+											<button type="button"
+												onclick="onClose('home.html?<csrf:token uri='home.html'/>')"
+												class="btn bg-orange waves-effect">
+												<spring:message code="Label.CLOSE" text="Close"
+													htmlEscape="true" />
+											</button>
+										</div>
+									</c:when>
+									<c:otherwise>
+										<div class="col-md-4 text-left">
+											<button type="button"
+												onclick="onClose('viewPlanDetails.html?<csrf:token uri='viewPlanDetails.html'/>&stateCode=${STATE_CODE}')"
+												class="btn bg-orange waves-effect">
+												<i class="fa fa-arrow-left" aria-hidden="true"></i>
+												<spring:message code="Label.BACK" htmlEscape="true" />
+											</button>
+										</div>
+
+										<div class="col-md-8 text-right">
+											<input type="hidden" id="isFreeze" name="isFreeze">
+
+											<c:if test="${IS_FREEZE eq false or empty IS_FREEZE}">
+												<c:if test="${Plan_Status eq true}">
+													<button type="submit" class="btn bg-green waves-effect"
+														id="saveId">
+														<spring:message code="Label.SAVE" text="Save"
+															htmlEscape="true" />
+													</button>
+												</c:if>
+											</c:if>
+											<c:if test="${IS_FREEZE eq true}">
+												<c:if test="${Plan_Status eq true}">
+													<button type="submit" class="btn bg-green waves-effect"
+														id="unfreezeId" onclick="isFreezeFunction('unfreeze')">
+														<spring:message code="Label.UNFREEZE" text="Unfreeze"
+															htmlEscape="true" />
+													</button>
+												</c:if>
+											</c:if>
+											<c:if test="${Plan_Status eq true}">
+												<c:if test="${IS_FREEZE eq false or empty IS_FREEZE}">
+													<c:if test="${DISABLE_FREEZE_INTIALLY eq true}">
+														<button type="submit" class="btn bg-green waves-effect"
+															id="freezeId" onclick="isFreezeFunction('freeze')"
+															disabled="disabled">
+															<spring:message code="Label.FREEZE" text="Freeze"
+																htmlEscape="true" />
+														</button>
+													</c:if>
+													<c:if test="${DISABLE_FREEZE_INTIALLY eq false}">
+														<button type="submit" class="btn bg-green waves-effect"
+															id="freezeId" onclick="isFreezeFunction('freeze')"
+															onsubmit="return validatingTotalProposedFund()">
+															<spring:message code="Label.FREEZE" text="Freeze"
+																htmlEscape="true" />
+														</button>
+													</c:if>
+												</c:if>
+												<button type="button" onclick="onClear(this)"
+													class="btn bg-light-blue waves-effect" id="clearId">
+													<spring:message code="Label.CLEAR" text="Clear"
+														htmlEscape="true" />
+												</button>
+											</c:if>
+											<button type="button"
+												onclick="onClose('home.html?<csrf:token uri='home.html'/>')"
+												class="btn bg-orange waves-effect">
+												<spring:message code="Label.CLOSE" text="Close"
+													htmlEscape="true" />
+											</button>
+										</div>
+									</c:otherwise>
+								</c:choose>
+							</div>
 						</div>
-					</div>
 					<form:hidden path="adminFinancialDataActivityId" value="${adminFinancialDataActivityId}" />
 					<input type="hidden" id="count" value="${count}" />
 					<form:hidden path="userType" value="${USER_TYPE_OF_PREVIOUS_ACTIVITY}" />

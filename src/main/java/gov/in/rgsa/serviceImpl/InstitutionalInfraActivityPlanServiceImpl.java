@@ -279,25 +279,34 @@ public class InstitutionalInfraActivityPlanServiceImpl implements InstitutionalI
 		List<QprInstitutionalInfraDetails> details = qprInstitutionalInfrastructure.getQprInstitutionalInfraDetails();
 		for (QprInstitutionalInfraDetails qprInstitutionalInfraDetails : details) {
 			qprInstitutionalInfraDetails.setQprInstitutionalInfrastructure(qprInstitutionalInfrastructure);
+			qprInstitutionalInfraDetails.setTrainingInstitueTypeId(qprInstitutionalInfrastructure.getTrainingTypeId());
 		}
 		qprInstitutionalInfrastructure.setQprInstitutionalInfraDetails(details);
 		return qprInstitutionalInfrastructure;
 	}
 
 	@Override
-	public List<QprInstitutionalInfrastructure> fetchDataAccordingToQuator(Integer quatorId, Integer institutionalActivityId) {
+	public List<QprInstitutionalInfrastructure> fetchDataAccordingToQuator(Integer quatorId, int institutionalActivityId ) {
+		
 		Map<String, Object> params=new HashMap<>();
 		params.put("quatorId", quatorId);
 		params.put("institutionalActivityId", institutionalActivityId);
+		
+
 		return commonRepository.findAll("FETCH_QPR_INST_ACTIVITY_DEPEND_ON_QUATOR", params);
+				
+				
 	}
 
+
 	@Override
-	public List<QprInstitutionalInfraDetails> fetchDataOfDetailsAccordingToQuator(Long qprInstInfraId,
-			Integer trainingInstituteTypeId) {
+	public List<QprInstitutionalInfraDetails> fetchDataOfDetailAccordingToQuator( int trainingInstituteTypeId ,int qprInstInfraId) {
+		
 		Map<String, Object> params=new HashMap<>();
-		params.put("qprInstInfraId", qprInstInfraId);
 		params.put("trainingInstituteTypeId", trainingInstituteTypeId);
+		params.put("qprInstInfraId", qprInstInfraId);
+
+		
 		return commonRepository.findAll("FETCH_QPR_INST_ACTIVITY_DETAILS_DEPEND_ON_QUATOR", params);
 	}
 
@@ -324,4 +333,13 @@ public class InstitutionalInfraActivityPlanServiceImpl implements InstitutionalI
 		commonRepository.update(institutionalInfraActivityPlan);
 		return institutionalInfraActivityPlan;
 	}
+	
+	@Override
+	public List<TrainingInstitueType> fetchTrainingInstituteTypeId() {
+		return commonRepository.findAll("FETCH_TRAINING_INSTITUTION_TYPE_BASED_ON_TYPE_ID_2_4", null);
+		
+	}
+	
+
+	
 }

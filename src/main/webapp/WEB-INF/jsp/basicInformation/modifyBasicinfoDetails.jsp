@@ -29,8 +29,10 @@ $(document).ready(function(){
 	if('${status}' == 'F'){
 		$("#basicInfo :input[type=text]").prop("disabled", true);
 		$("input[type=radio]").attr('disabled', true);
+		$("input[type=date]").attr('disabled', true);
 		$("#btnERR").attr('disabled', true);
 		$("#btnSubArea").attr('disabled', true);
+		$("#btnClear").attr('disabled', true);
 	
 	}
 });
@@ -41,8 +43,10 @@ function removeDisabledAttr(status){
 	flag=validateMandate()
 	$("#basicInfo :input").prop("disabled", false);
 	$("input[type=radio]").attr('disabled', false);
+	$("input[type=date]").attr('disabled', false);
 	$("#btnERR").attr('disabled', false);
 	$("#btnSubArea").attr('disabled', false);
+	$("#btnClear").attr('disabled', false);
 	if(status=="F"){
 		$("#status").val("F");
 	}
@@ -2037,7 +2041,7 @@ var errorFlag=false;
                                 	<c:if test="${status eq 'F'}">
                                 		<button type="submit" class="btn bg-green waves-effect" onclick="removeDisabledAttr('S')">UNFREEZE</button>
                                 	</c:if>
-                                	<button type="button" onclick="onClear(this)" class="btn bg-light-blue waves-effect">CLEAR</button>
+                                	<button type="button" id="btnClear" onclick="onClear(this)" class="btn bg-light-blue waves-effect">CLEAR</button>
                                 	<button type="button" onclick="onClose('home.html?<csrf:token uri='home.html'/>')"  class="btn bg-orange waves-effect">CLOSE</button>
                                </div>
                               </div>

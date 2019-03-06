@@ -227,7 +227,9 @@
 							</div>
 							
 							
-							<div class="form-group text-right ex1">
+							<div class="row clearfix">
+							<div class="col-md-12 text-right ex1" data-ng-show="userType =='S'">
+							 <c:if test="${Plan_Status eq true}">
 							<button ng-click="saveCapacityBuildingActivityAndDetails()" ng-disabled="capacityBuilding.isFreeze"  type="button" class="btn bg-green waves-effect">
 									<spring:message code="Label.SAVE" htmlEscape="true" />
 								</button>
@@ -241,9 +243,43 @@
 								<button type="button" data-ng-click="onClear()" ng-disabled="capacityBuilding.isFreeze"  class="btn bg-light-blue waves-effect">
 									<spring:message code="Label.CLEAR" htmlEscape="true" />
 								</button>
+								</c:if>
 								<button type="button" onclick="onClose('home.html?<csrf:token uri='home.html'/>')" class="btn bg-orange waves-effect">
 									<spring:message code="Label.CLOSE" htmlEscape="true" />
 								</button>
+							</div>
+							
+							
+							<div class="col-md-4  text-left" data-ng-show="userType !='S'" style="margin-bottom: 5px">
+								&nbsp;&nbsp;<button type="button"
+									onclick="onClose('viewPlanDetails.html?<csrf:token uri='viewPlanDetails.html'/>&stateCode=${STATE_CODE}')"
+									class="btn bg-orange waves-effect">
+									<i class="fa fa-arrow-left" aria-hidden="true"></i>
+									<spring:message code="Label.BACK" htmlEscape="true" />
+								</button><br>
+							</div>
+							
+							<div class="col-md-8 text-right ex1" data-ng-show="userType !='S'">
+							 <c:if test="${Plan_Status eq true}">
+							<button ng-click="saveCapacityBuildingActivityAndDetails()" ng-disabled="capacityBuilding.isFreeze"  type="button" class="btn bg-green waves-effect">
+									<spring:message code="Label.SAVE" htmlEscape="true" />
+								</button>
+								<button ng-show="capacityBuilding.isFreeze" type="button" data-ng-click="freezUnFreezCapacityBuilding('unfreeze')" class="btn bg-green waves-effect">
+									<spring:message code="UNFREEZE" htmlEscape="true" />
+								</button>
+								<button ng-show="!capacityBuilding.isFreeze" type="button" data-ng-click="freezUnFreezCapacityBuilding('freeze')" class="btn bg-green waves-effect">
+									<spring:message code="FREEZE" htmlEscape="true" />
+								</button>
+								
+								<button type="button" data-ng-click="onClear()" ng-disabled="capacityBuilding.isFreeze"  class="btn bg-light-blue waves-effect">
+									<spring:message code="Label.CLEAR" htmlEscape="true" />
+								</button>
+								</c:if>
+								<button type="button" onclick="onClose('home.html?<csrf:token uri='home.html'/>')" class="btn bg-orange waves-effect">
+									<spring:message code="Label.CLOSE" htmlEscape="true" />
+								</button>
+							</div>
+							
 							</div>
 							
 						</div>

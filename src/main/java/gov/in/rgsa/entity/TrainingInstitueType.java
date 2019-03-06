@@ -14,7 +14,9 @@ import javax.persistence.Table;
 @NamedQueries({
 	@NamedQuery(name="FETCH_TRAINING_INSTITUTION_TYPE",query="from TrainingInstitueType order by trainingInstitueTypeId"),
 	@NamedQuery(name="FETCH_TRAINING_INSTITUTION_TYPE_BASED_ON_LEVEL",query="from TrainingInstitueType where instituteLevel.trainingInstituteLevelId=:level order by trainingInstitueTypeName"),
-	@NamedQuery(name="FETCH_TRAINING_INSTITUTION_TYPE_BASED_ON_TYPE_ID",query="from TrainingInstitueType where trainingInstitueTypeId=:typeId order by trainingInstitueTypeName")
+	@NamedQuery(name="FETCH_TRAINING_INSTITUTION_TYPE_BASED_ON_TYPE_ID",query="from TrainingInstitueType where trainingInstitueTypeId=:typeId order by trainingInstitueTypeName"),
+	@NamedQuery(name="FETCH_TRAINING_INSTITUTION_TYPE_BASED_ON_TYPE_ID_2_4",query="from TrainingInstitueType where trainingInstitueTypeId in (2,4)  order by trainingInstitueTypeName")
+
 })
 public class TrainingInstitueType {
 	

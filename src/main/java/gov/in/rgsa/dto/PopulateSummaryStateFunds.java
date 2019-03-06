@@ -9,9 +9,9 @@ import javax.persistence.NamedNativeQuery;
 
 	@Entity
 	@NamedNativeQueries({
-	@NamedNativeQuery(name="POPULATE_SUMMARY_STATE_FUNDS", query = " select * from rgsa.populate_summary_state_funds(:stateCode,:yearId,:componentIds)" ,resultClass=PopulateSummaryStateFunds.class),
-	@NamedNativeQuery(name="POPULATE_SUMMARY_MINISTRY_FUNDS", query = " select * from rgsa.populate_summary_ministry_funds(:stateCode,:yearId,:componentIds)" ,resultClass=PopulateSummaryStateFunds.class),
-	@NamedNativeQuery(name="POPULATE_SUMMARY_CEC_FUNDS", query = " select * from rgsa.populate_summary_state_funds(:stateCode,:yearId,:componentIds)" ,resultClass=PopulateSummaryStateFunds.class)
+	@NamedNativeQuery(name="POPULATE_SUMMARY_STATE_FUNDS", query = " select * from rgsa.populate_summary_state_funds(:stateCode,:yearId,:componentIds)"),
+	@NamedNativeQuery(name="POPULATE_SUMMARY_MINISTRY_FUNDS", query = " select * from rgsa.populate_summary_ministry_funds(:stateCode,:yearId,:componentIds)"),
+	@NamedNativeQuery(name="POPULATE_SUMMARY_CEC_FUNDS", query = " select * from rgsa.populate_summary_state_funds(:stateCode,:yearId,:componentIds)") 
 	})
 	public class PopulateSummaryStateFunds {
 

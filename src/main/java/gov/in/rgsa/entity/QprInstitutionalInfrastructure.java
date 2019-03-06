@@ -13,19 +13,20 @@ import javax.persistence.Id;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 @Entity
 @Table(name="qpr_inst_infra",schema="rgsa")
-@NamedQuery(name="FETCH_QPR_INST_ACTIVITY_DEPEND_ON_QUATOR",query ="SELECT Q FROM QprInstitutionalInfrastructure Q WHERE qtrId=:quatorId AND institutionalInfraActivivtyId=:institutionalActivityId")
+@NamedQuery(name="FETCH_QPR_INST_ACTIVITY_DEPEND_ON_QUATOR",query ="SELECT Q FROM QprInstitutionalInfrastructure Q WHERE Q.qtrId=:quatorId AND Q.institutionalInfraActivivtyId=:institutionalActivityId")
 public class QprInstitutionalInfrastructure {
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	@Column(name="qpr_inst_infra_id")
-	private Long qprInstInfraId;
+	private Integer qprInstInfraId;
 	
 	@Column(name="institutional_infra_activity_id")
 	private Integer institutionalInfraActivivtyId;
@@ -56,14 +57,57 @@ public class QprInstitutionalInfrastructure {
 	@Column(name="menu_id")
 	private Integer menuId;
 	
+	@Transient
+	private Integer quaterId;
+	
+	@Transient
+	private Integer trainingInstituteTypeId;
+	
+	@Transient
+	private String path;
+	
+	@Transient
+	private String dbFileName;
+	
+	
+	
+	public String getPath() {
+		return path;
+	}
+
+	public void setPath(String path) {
+		this.path = path;
+	}
+
+	public String getDbFileName() {
+		return dbFileName;
+	}
+
+	public void setDbFileName(String dbFileName) {
+		this.dbFileName = dbFileName;
+	}
+
 	@OneToMany(fetch=FetchType.EAGER,cascade=CascadeType.ALL,mappedBy="qprInstitutionalInfrastructure")
 	private List<QprInstitutionalInfraDetails> qprInstitutionalInfraDetails;
 
-	public Long getQprInstInfraId() {
+	@Transient
+	private Integer trainingTypeId;
+
+
+	
+	public Integer getTrainingTypeId() {
+		return trainingTypeId;
+	}
+
+	public void setTrainingTypeId(Integer trainingTypeId) {
+		this.trainingTypeId = trainingTypeId;
+	}
+
+	public Integer getQprInstInfraId() {
 		return qprInstInfraId;
 	}
 
-	public void setQprInstInfraId(Long qprInstInfraId) {
+	public void setQprInstInfraId(Integer qprInstInfraId) {
 		this.qprInstInfraId = qprInstInfraId;
 	}
 
@@ -146,4 +190,21 @@ public class QprInstitutionalInfrastructure {
 	public void setQprInstitutionalInfraDetails(List<QprInstitutionalInfraDetails> qprInstitutionalInfraDetails) {
 		this.qprInstitutionalInfraDetails = qprInstitutionalInfraDetails;
 	}
+
+	public Integer getQuaterId() {
+		return quaterId;
+	}
+
+	public void setQuaterId(Integer quaterId) {
+		this.quaterId = quaterId;
+	}
+
+	public Integer getTrainingInstituteTypeId() {
+		return trainingInstituteTypeId;
+	}
+
+	public void setTrainingInstituteTypeId(Integer trainingInstituteTypeId) {
+		this.trainingInstituteTypeId = trainingInstituteTypeId;
+	}
+	
 }

@@ -3,7 +3,6 @@ package gov.in.rgsa.service;
 import java.util.List;
 import java.util.Map;
 
-import gov.in.rgsa.dto.PopulateSummaryStateFunds;
 import gov.in.rgsa.entity.PlanSubcomponents;
 import gov.in.rgsa.entity.StatePlanComponentsFunds;
 import gov.in.rgsa.model.FacadeModel;
@@ -30,6 +29,6 @@ public interface FacadeService {
 	
 	public List<StatePlanComponentsFunds> fetchFundDetailsByUserType(Map<String, Object> parameter );
 	
-	public List<PopulateSummaryStateFunds> populateFundbyUserType(Integer componentIds);
+	public boolean populateFundbyUserType(String componentIds);
 		
 }

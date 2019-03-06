@@ -10,12 +10,15 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
+
+import org.springframework.web.multipart.MultipartFile;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 
 @Entity
 @Table(name="qpr_inst_infra_details",schema="rgsa")
-@NamedQuery(name="FETCH_QPR_INST_ACTIVITY_DETAILS_DEPEND_ON_QUATOR",query="SELECt D FROM QprInstitutionalInfraDetails D WHERE qprInstitutionalInfrastructure.qprInstInfraId=:qprInstInfraId AND institutionalActivityTypeId=:trainingInstituteTypeId")
+@NamedQuery(name="FETCH_QPR_INST_ACTIVITY_DETAILS_DEPEND_ON_QUATOR",query="SELECt D FROM QprInstitutionalInfraDetails D WHERE D.qprInstitutionalInfrastructure.qprInstInfraId=:qprInstInfraId AND D.trainingInstitueTypeId=:trainingInstituteTypeId")
 public class QprInstitutionalInfraDetails {
 
 	@Id
@@ -37,11 +40,32 @@ public class QprInstitutionalInfraDetails {
 	@Column(name="expenditure_incurred")
 	private Long expenditureIncurred;
 	
-	@Column(name="file_path")
-	private String filePath;
+	@Column(name="file_name")
+	private String fileName;
 	
+	@Column(name="file_content_type")
+	private String fileContentType;
+	
+	@Column(name="file_location")
+	private String fileLocation;
+		
 	@Column(name="institutional_activity_type_id")
-	private Integer institutionalActivityTypeId;
+	private Integer trainingInstitueTypeId;
+
+
+	@Transient
+	private MultipartFile file;
+
+	
+	
+
+	public MultipartFile getFile() {
+		return file;
+	}
+
+	public void setFile(MultipartFile file) {
+		this.file = file;
+	}
 
 	public Long getQprInstInfraDetailsId() {
 		return qprInstInfraDetailsId;
@@ -83,20 +107,39 @@ public class QprInstitutionalInfraDetails {
 		this.expenditureIncurred = expenditureIncurred;
 	}
 
-	public String getFilePath() {
-		return filePath;
+	
+	public String getFileName() {
+		return fileName;
 	}
 
-	public void setFilePath(String filePath) {
-		this.filePath = filePath;
+	public void setFileName(String fileName) {
+		this.fileName = fileName;
 	}
 
-	public Integer getInstitutionalActivityTypeId() {
-		return institutionalActivityTypeId;
+	public String getFileContentType() {
+		return fileContentType;
 	}
 
-	public void setInstitutionalActivityTypeId(Integer institutionalActivityTypeId) {
-		this.institutionalActivityTypeId = institutionalActivityTypeId;
+	public void setFileContentType(String fileContentType) {
+		this.fileContentType = fileContentType;
 	}
+
+	public String getFileLocation() {
+		return fileLocation;
+	}
+
+	public void setFileLocation(String fileLocation) {
+		this.fileLocation = fileLocation;
+	}
+
+	public Integer getTrainingInstitueTypeId() {
+		return trainingInstitueTypeId;
+	}
+
+	public void setTrainingInstitueTypeId(Integer trainingInstitueTypeId) {
+		this.trainingInstitueTypeId = trainingInstitueTypeId;
+	}
+
+	
 	
 }

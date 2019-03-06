@@ -10,7 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import gov.in.rgsa.dao.CommonRepository;
-import gov.in.rgsa.dto.PopulateSummaryStateFunds;
 import gov.in.rgsa.entity.ActionPlanStatus;
 import gov.in.rgsa.entity.FinYear;
 import gov.in.rgsa.entity.MenuProfile;
@@ -258,7 +257,7 @@ public class FacadeServiceImpl implements FacadeService {
 		if(userPreference.getUserType()!=null && userPreference.getUserType().length()>0 && componentIds!=null && componentIds.length()>0)
 		{
 			if(userPreference.getUserType().charAt(0)!='S' && componentIds!=null) {
-				populateFundbyUserType(Integer.parseInt(componentIds));
+				populateFundbyUserType(componentIds);
 			}else {
 				Map<String, Object> parameter = new HashMap<String, Object>();
 				parameter.put("componentIds",componentIds);
@@ -268,8 +267,8 @@ public class FacadeServiceImpl implements FacadeService {
 				System.out.println("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
 				System.out.println("populate value for component id->"+componentIds+" stateCode->"
 				+userPreference.getStateCode()+	"  yearId->"+userPreference.getFinYearId());
-				List<PopulateSummaryStateFunds> planForwardedByState=commonRepository.findAll("POPULATE_SUMMARY_STATE_FUNDS", parameter);
-				if(planForwardedByState!=null && !planForwardedByState.isEmpty()) {
+				 boolean status=commonRepository.find("POPULATE_SUMMARY_STATE_FUNDS", parameter);
+				if(status) {
 					parameter = new HashMap<String, Object>();
 					parameter.put("stateCode", userPreference.getStateCode());
 					parameter.put("yearId", userPreference.getFinYearId());
@@ -293,7 +292,7 @@ public class FacadeServiceImpl implements FacadeService {
 	}
 	
 	@Override
-	public List<PopulateSummaryStateFunds> populateFundbyUserType(Integer componentIds){
+	public boolean populateFundbyUserType(String componentIds){
 		Map<String, Object> parameter = new HashMap<String, Object>();
 		parameter.put("componentIds",componentIds);
 		parameter.put("stateCode", userPreference.getStateCode());
@@ -303,12 +302,12 @@ public class FacadeServiceImpl implements FacadeService {
 		+userPreference.getStateCode()+	"  yearId->"+userPreference.getFinYearId()+" userType->"+userPreference.getUserType());
 		if(userPreference.getUserType()!=null && userPreference.getUserType().length()>0) {
 			if( userPreference.getUserType().charAt(0)=='M') {
-				return commonRepository.findAll("POPULATE_SUMMARY_MINISTRY_FUNDS", parameter); 
+				return commonRepository.find("POPULATE_SUMMARY_MINISTRY_FUNDS", parameter); 
 			}else if( userPreference.getUserType().charAt(0)=='C') {
-				return commonRepository.findAll("POPULATE_SUMMARY_CEC_FUNDS", parameter);
+				return commonRepository.find("POPULATE_SUMMARY_CEC_FUNDS", parameter);
 			}
 		}
-		return null;
+		return false;
 	}
 
 	@Override

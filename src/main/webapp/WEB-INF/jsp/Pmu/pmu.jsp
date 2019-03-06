@@ -92,7 +92,6 @@ function toFreeze(){
 					<div class="body">
 						<form:form method="post" name="pmuController" action="addUpdatePmu.html"	modelAttribute="PMU_ACTIVITY">
 							<input type="hidden" name="<csrf:token-name/>"	value="<csrf:token-value uri="addPmuActivity.html" />" />
-								<div class="card">
 									<div class="table-responsive">
 										<table class="table table-bordered" id="supportStaff">
 											<thead>
@@ -314,13 +313,15 @@ function toFreeze(){
 									</div>
 									<div class="form-group text-right">
 										<button type="submit" id="saveButtn" class="btn bg-green waves-effect"><spring:message code="Label.SAVE" htmlEscape="true" /></button>
+										<c:if test="${pmuActivity.isFreeze != undefined}">
+										
 										<button type="button" class="freeze btn bg-green waves-effect"	id="frzButtn" onclick="toFreeze();"><spring:message code="Label.FREEZE" htmlEscape="true" /></button>
 										<button type="button" class="unfreeze btn bg-green waves-effect" id="unFrzButtn" onclick="toFreeze();"><spring:message code="Label.UNFREEZE" htmlEscape="true" /></button>
+										</c:if>
 										<button type="button" id="clearButtn" onclick="onClear(this)"	class="btn bg-light-blue waves-effect"><spring:message code="Label.CLEAR" htmlEscape="true" /></button>
 										<button type="button" onclick="onClose('home.html?<csrf:token uri='home.html'/>')"	class="btn bg-orange waves-effect"><spring:message code="Label.CLOSE" htmlEscape="true" /></button>
 										
 									</div>
-								</div>
 						</form:form>
 					</div>
 				</div>

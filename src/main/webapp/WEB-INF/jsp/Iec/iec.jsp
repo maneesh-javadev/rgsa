@@ -294,8 +294,10 @@ function toDelete(idToDelete){
 						<div class="text-right">
 							<c:if test="${IEC_LIST.isFreez eq false || empty IEC_LIST}">
 							<button type="submit" class="btn bg-green waves-effect" id="save"><spring:message code="Label.SAVE" text="Save" htmlEscape="true" /></button>
+							<c:if test="${IEC_LIST.isFreez != undefined}">
 							<button type="button" onclick='freezeAndUnfreeze("freeze")' class="btn bg-green waves-effect" id="FREEZE"><spring:message code="Label.FREEZE" text="Freeze" htmlEscape="true" /></button>
-							<button type="button"  class="btn bg-light-blue waves-effect reset" id="clearId" onclick="onClear(this)"><spring:message code="Label.CLEAR" text="Clear" htmlEscape="true" /></button>
+						</c:if>	<button type="button"  class="btn bg-light-blue waves-effect reset" id="clearId" onclick="onClear(this)"><spring:message code="Label.CLEAR" text="Clear" htmlEscape="true" /></button>
+							
 							</c:if>
 							<c:if test="${IEC_LIST.isFreez eq true}">
 							<button type="button" onclick='freezeAndUnfreeze("unfreeze")' class="btn bg-green waves-effect" id="UNFREEZE"><spring:message code="Label.UNFREEZE" text="Unfreeze" htmlEscape="true" /></button>

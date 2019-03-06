@@ -15,7 +15,7 @@
 		
 		<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/angular/toastr.css">
 		<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/plugins/font-awesome/font-awesome-4.2.0/css/font-awesome.min.css">
-		<%@include file="../taglib/taglib.jsp"%>
+		<%@include file="../taglib/taglib.jsp"%> 
 		
 		<script>
 			$(function () {
@@ -23,6 +23,19 @@
 					responsive: true
 				});
 			});
+			
+			toggleSubComponent=function(id,flag){
+				$(".slide"+id).slideToggle();
+				$(".slidex"+id).slideToggle();
+				 if($('#collapseRow'+id).css('display') == 'none'){
+			     	$("#collapseRow"+id).show();
+			     	$("#expendRow"+id).hide();
+			     }else{
+			     	$("#collapseRow"+id).hide();
+			     	$("#expendRow"+id).show();
+			     }
+				
+			};
 		</script>
 	
 		<style type="text/css">
@@ -281,24 +294,20 @@
 		
 										<thead>
 											<tr>
+												<th rowspan="2" width="10%"></th>
 												<th rowspan="2" width="10%">Sr.No</th>
 												<th rowspan="2" width="40%" >Components</th>
-												<c:if test="${sessionScope['scopedTarget.userPreference'].userType ne 'S'}">
-														<td rowspan="2">View Details</td>
-												</c:if>
 												<td colspan="2" align="center" width="40%"><b>State Proposed</b></td>
-												<c:if test="${sessionScope['scopedTarget.userPreference'].userType eq 'S'}">
-												<th></th>
-												</c:if>
+												
+												
 											</tr>
 											<tr>
 												
 												
 												<td width="20%" align="right"><b>Amount</b></td>
 												<td width="20%" align="right" style="padding-right:20px"><b>No. of Unit</b></td>
-												<c:if test="${sessionScope['scopedTarget.userPreference'].userType eq 'S'}">
-												<th width="10%" >Status</th>
-												</c:if>
+												
+												
 											</tr>
 										</thead>
 										<c:set var="t_fund" value="0"/>
@@ -307,200 +316,105 @@
 										
 										<c:forEach items="${sessionScope['scopedTarget.userPreference'].statePlanComponentsFunds}" var="pc" varStatus="pcindex">
 										  	<c:if test="${pc.eType eq 'C'}">
-											  	
-													<tr>
+											  	<c:set var="trStatus" value="bg-test" />
+											 	<c:if test="${pc.componentsId eq 11 or pc.componentsId eq 12}">
+												 	<c:choose>
+														<c:when test="${pc.status eq 'G'}">
+																<c:set var="trStatus" value="bg-success"/>
+														</c:when>
+														<c:when test="${pc.status eq 'R'}">
+																<c:set var="trStatus" value="bg-danger"/>
+														</c:when>
+													</c:choose>
+											  	</c:if>
+												<tr class="${trStatus}">
+												
+														<td align="center" id="plusId${pc.componentsId}" >
+															<c:if test="${pc.componentsId ne 11 and pc.componentsId ne 12}">
+															<div id="expendRow${pc.componentsId}" onclick="toggleSubComponent('${pc.componentsId}',true)"><i class="fa fa-plus-circle" aria-hidden="true"></i></div>
+															<div id="collapseRow${pc.componentsId}" onclick="toggleSubComponent('${pc.componentsId}',false)" style="display:none;"><i class="fa fa-minus-circle" aria-hidden="true"></i></div>
+															</c:if>
+								 						</td>
 														<td><b>${pcindex.count}</b></td>
-														<td><b>${pc.eName}</b></td>
-														
-														<c:if test="${sessionScope['scopedTarget.userPreference'].userType ne 'S'}">
-																			<td><b><a href="${pc.link}?menuId=0&<csrf:token uri='${pc.link}'/>">View	Details</a></b></td>
+														<td><b>${pc.eName}${pc.componentsId}</b></td>
+														<td align="right">
+														<c:if test="${(pc.amountProposed+pc.addtionalRequirement)>0}">
+															<b><fmt:formatNumber type = "number"      maxFractionDigits = "3" value = "${pc.amountProposed+pc.addtionalRequirement}" /></b>
 														</c:if>
-														<c:choose>
-															<c:when test="${pc.componentsId eq 11 or pc.componentsId eq 12}">
-																<td align="right"><b>
-																		<fmt:formatNumber type = "number"      maxFractionDigits = "3" value = "${pc.amountProposed}" /></b>
-																</td>
-																<td align="right" style="padding-right:20px"><b><c:out value="${pc.noOfUnits}"/></b> </td>
-																 <c:choose>
-																	<c:when test="${pc.status eq 'G'}">
-																	<td class="bg-success"></td>
-																	</c:when>
-																	<c:when test="${pc.status eq 'R'}">
-																	<td class="bg-danger"></td>
-																	</c:when>
-																	<c:otherwise>
-																	<td></td>
-																</c:otherwise>
-														</c:choose> 
-															</c:when>
-															<c:otherwise>
-																<td></td>
-																<td></td>
-																<c:if test="${sessionScope['scopedTarget.userPreference'].userType eq 'S'}">
-																<td></td>
-																</c:if>
-															</c:otherwise>
+														</td>
+														<td align="right" style="padding-right:20px"><b><c:out value="${pc.noOfUnits}"/></b> </td>
+														  
 														
-														</c:choose>
 														
 														<c:set var="t_fund" value="${t_fund+pc.amountProposed}" />
 														<c:set var="t_unit" value="${t_unit+pc.noOfUnits}"/>
 														
-														<%-- <c:choose>
-															<c:when test="${pc.status eq 'G'}">
-															<td class="bg-success"></td>
-															</c:when>
-															<c:when test="${pc.status eq 'R'}">
-															<td class="bg-danger"></td>
-															</c:when>
-															<c:otherwise>
-															<td></td>
-															</c:otherwise>
-														</c:choose> --%>
+														
 														
 													</tr>
 												
 												<c:set var="pscindex" value="0"/> 
-												<c:set var="s_fund" value="0" />
-												<c:set var="s_unit" value="0"/>
+												
 												<c:forEach items="${sessionScope['scopedTarget.userPreference'].statePlanComponentsFunds}" var="psc" >
 													<c:if test="${psc.eType eq 'S' and pc.componentsId==psc.componentsId }">
-													<c:set var="pscindex" value="${pscindex+1}"/> 	
-														<tr>
+													<c:set var="pscindex" value="${pscindex+1}"/> 
+															
+														<tr class="slide${pc.componentsId}"  style="display: none;">
+															<td></td>
 															<td >&#${96+pscindex})</td>
 															
 															<td >${psc.eName}</td>
 															<td align="right">
+																<c:if test="${psc.amountProposed>0}">
 																<fmt:formatNumber type = "number"      maxFractionDigits = "3" value = "${psc.amountProposed}" />
+																</c:if>
 															</td>
 															<td align="right" style="padding-right:20px">${psc.noOfUnits}</td>
-															<c:set var="t_fund" value="${t_fund+psc.amountProposed}" />
-															<c:set var="t_unit" value="${t_unit+psc.noOfUnits}"/>
-															<c:set var="s_fund" value="${s_fund+psc.amountProposed}" />
-															<c:set var="s_unit" value="${s_unit+psc.noOfUnits}"/>
-															<c:if test="${sessionScope['scopedTarget.userPreference'].userType eq 'S'}">
-															<c:choose>
-																<c:when test="${psc.status eq 'G'}">
-																<td class="bg-success"></td>
-																</c:when>
-																<c:when test="${psc.status eq 'R'}">
-																<td class="bg-danger"></td>
-																</c:when>
-																<c:otherwise>
-																<td></td>
-																</c:otherwise>
-															</c:choose>
-															</c:if>
+															
+															
 														</tr>
 													</c:if>
 												</c:forEach>
-												<c:if test="${pc.componentsId ne 11 and pc.componentsId ne 12}">
-													<tr >
+												<c:if test="${pscindex eq 0 and pc.componentsId ne 11 and pc.componentsId ne 12}">
+													<tr class="slidex${pc.componentsId}"  style="display: none;">
 															<td></td>
-															<td style="color: #0d1d92c9">
-															
-																<b>Total funds=Funds+Additional Requirement 
-																<c:set var="t_fund" value="${t_fund+pc.addtionalRequirement}" />
-																<c:choose>
-																<c:when test="${pscindex eq 0 and pc.amountProposed>0}">
-																(<fmt:formatNumber type = "number"      maxFractionDigits = "3" value = "${pc.amountProposed}" />
-																<c:out value="+" />
-																<fmt:formatNumber type = "number"      maxFractionDigits = "3" value = "${pc.addtionalRequirement}" />)
-																
-																
-																
-																</c:when>
-																<c:otherwise>
-																<c:if test="${s_fund gt 0 }">
-																(<fmt:formatNumber type = "number"      maxFractionDigits = "3" value = "${s_fund}" />
-																<c:out value="+" />
-																<fmt:formatNumber type = "number"      maxFractionDigits = "3" value = "${pc.addtionalRequirement}" />)
-																
-															
+															<td></td>
+															<td>${pc.eName}</td>
+															<td align="right">
+																<c:if test="${pc.amountProposed>0}">
+																<fmt:formatNumber type = "number"      maxFractionDigits = "3" value = "${pc.amountProposed}" />
 																</c:if>
-																</c:otherwise>
-																
-																</c:choose>
-																
-																</b>
 															</td>
-																
-																
-																<c:if test="${sessionScope['scopedTarget.userPreference'].userType ne 'S'}">
-																<th></th>
-																</c:if>
-																<td><p align="right"><b>
-																<c:choose>
-																<c:when test="${pscindex eq 0 and pc.amountProposed>0}">
-																<fmt:formatNumber type = "number"      maxFractionDigits = "3" value = "${pc.amountProposed+pc.addtionalRequirement}" />
-																
-																</c:when>
-																<c:otherwise>
-																<c:if test="${s_fund gt 0 }">
-																
-																<fmt:formatNumber type = "number"      maxFractionDigits = "3" value = "${s_fund+pc.addtionalRequirement}" />
-																</c:if>
-																</c:otherwise>
-																
-																</c:choose>
-																
-																</b>
-																</p>
-																</td>
-																<!-- <th>+</th>
-																<th>4500</th>
-																<th>=</th>
-																<th>670067</th> -->
-																<c:choose>
-																<c:when test="${pscindex eq 0}">
-																<td align="right" style="padding-right:20px">${pc.noOfUnits}</td>
-																<c:choose>
-																	<c:when test="${pc.status eq 'G'}">
-																	<td class="bg-success"></td>
-																	</c:when>
-																	<c:when test="${pc.status eq 'R'}">
-																	<td class="bg-danger"></td>
-																	</c:when>
-																	<c:otherwise>
-																	<td></td>
-																	</c:otherwise>
-																</c:choose>
-																</c:when>
-																<c:otherwise>
-																<td style="padding-right:20px"><c:if test="${s_fund>0 }"><p align="right"><b><c:out value="${s_unit}" /></b></p></c:if></td>
-																<c:choose>
-																	<c:when test="${pc.status eq 'G'}">
-																	<td class="bg-success"></td>
-																	</c:when>
-																	<c:when test="${pc.status eq 'R'}">
-																	<td class="bg-danger"></td>
-																	</c:when>
-																	<c:otherwise>
-																	<td></td>
-																	</c:otherwise>
-																</c:choose>
-																</c:otherwise>
-																
-																</c:choose>
-																
-																
-																<td></td>
+															<td align="right" style="padding-right:20px">${pc.noOfUnits}</td>
 													</tr>
+												</c:if>
+												<c:if test="${pc.componentsId ne 11 and pc.componentsId ne 12}">
+													<tr class="slidex${pc.componentsId}"  style="display: none;">
+															<td></td>
+															<td></td>
+															<td style="color: #0d1d92c9">Additional Requirement </td>
+															<td><p align="right"><fmt:formatNumber type = "number"      maxFractionDigits = "3" value = "${pc.addtionalRequirement}" /></p></td>
+															<td></td>
+														</tr>
 													</c:if>
 													<c:if test="${pc.componentsId==10}">
 													<tr class="table_th"><th colspan="5"></th></tr>
 														<tr class="table_th">
+															<th></th>
+															<th></th>
 															<th>Sub-Total</th>
-															<th></th>
-															<c:if test="${sessionScope['scopedTarget.userPreference'].userType ne 'S'}">
-															<th></th>
-															</c:if>
 															<th><p align="right">
+															<c:if test="${t_fund>0}">
 																<fmt:formatNumber type = "number"      maxFractionDigits = "3" value = "${t_fund}" />
+															</c:if>
 															</p></th>
-															<th><p align="right"><c:out value="${t_unit}" /></p></th>
+															<th><p align="right">
+															<c:if test="${t_unit>0}">
+															<c:out value="${t_unit}" />
+															</c:if>
+															</p></th>
 															
-															<th></th>
+															
 														</tr>
 													</c:if>
 												</c:if>
@@ -508,17 +422,19 @@
 											<tr class="table_th"><th colspan="5"></th></tr>
 											
 											 <tr class="table_th">
+												 <th></th>
+												<th></th>
 												<th>Total</th>
-												<th></th>
-												<c:if test="${sessionScope['scopedTarget.userPreference'].userType ne 'S'}">
-												<th></th>
+												<th>
+													<c:if test="${t_fund>0}">
+														<p align="right"><fmt:formatNumber type = "number"      maxFractionDigits = "3" value = "${t_fund}" /></p>
+													</c:if>
+												</th>
+												<th>
+												<c:if test="${t_unit>0}">
+												<p align="right"><c:out value="${t_unit}" /></p>
 												</c:if>
-												<th><p align="right">
-													<fmt:formatNumber type = "number"      maxFractionDigits = "3" value = "${t_fund}" />
-												</p></th>
-												<th><p align="right"><c:out value="${t_unit}" /></p></th>
-												
-												<th></th>
+												</th>
 												</tr>
 										</tbody>
 									</table>

@@ -37,11 +37,12 @@ public interface InstitutionalInfraActivityPlanService {
 
 	public void saveQprInstInfraData(QprInstitutionalInfrastructure qprInstitutionalInfrastructure);
 
-	public List<QprInstitutionalInfrastructure> fetchDataAccordingToQuator(Integer quatorId, Integer institutionalActivityId );
+	public List<QprInstitutionalInfrastructure> fetchDataAccordingToQuator(Integer quatorId, int institutionalInfraActivivtyId);
 
-	public List<QprInstitutionalInfraDetails> fetchDataOfDetailsAccordingToQuator(Long qprInstInfraId,
-			Integer trainingInstituteTypeId);
+	public List<QprInstitutionalInfraDetails> fetchDataOfDetailAccordingToQuator(int trainingInstituteTypeId,int qprInstInfraId);
 
 	public InstitutionalInfraActivityPlan saveCecData(InstitutionalInfraActivityPlan institutionalInfraActivityPlan);
+
+	public List<TrainingInstitueType> fetchTrainingInstituteTypeId();
 
 }

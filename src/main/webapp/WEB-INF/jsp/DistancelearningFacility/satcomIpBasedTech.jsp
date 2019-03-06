@@ -133,14 +133,9 @@
 												<td>
 												<div align="center" data-ng-style="{'color':(satcomActivityObjectState.activityDetails[$index].funds > satcomActivityObject.activityDetails[$index].funds ) ? 'red' : '#00cc00'}"><strong>{{satcomActivityObjectState.activityDetails[$index].funds}}</strong></div>
 												<input type="text"
-													data-ng-show="satcomActivityObject.status != 'F'"
+													
 													data-ng-model="satcomActivityObject.activityDetails[$index].funds"
-													class="form-control" style="text-align: right;" /> <input
-													type="text"
-													data-ng-show="satcomActivityObject.status == 'F'"
-													data-ng-model="satcomActivityObject.activityDetails[$index].funds"
-													data-ng-disabled="true" class="form-control"
-													style="text-align: right;" /></td>
+													class="form-control" style="text-align: right;" /> </td>
 											</tr>
 
 											<tr>
@@ -444,14 +439,9 @@
 												class="form-control validate" style="text-align: right;" />
 											</td>
 											<td><input type="text"
-												data-ng-show="satcomActivityObject.status != 'F'"
+												
 												data-ng-model="satcomActivityObject.activityDetails[$index].funds"
-												class="form-control" style="text-align: right;" /> <input
-												type="text"
-												data-ng-show="satcomActivityObject.status == 'F'"
-												data-ng-model="satcomActivityObject.activityDetails[$index].funds"
-												data-ng-disabled="true" class="form-control"
-												style="text-align: right;" /></td>
+												class="form-control" style="text-align: right;" disabled="disabled"/> </td>
 											<!-- <td><textarea rows="2" ng-disabled="unFreeze" cols="10" ng-model="satcomActivityObject.activityDetails[$index].remarks"></textarea></td> -->
 
 											<td data-ng-if="userType != 'S'"><input type="checkbox"

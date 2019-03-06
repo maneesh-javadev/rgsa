@@ -23,10 +23,10 @@ public class InstitutionalInfraProgressReportDTO {
 	private String districtName;
 	
 	@Column(name="institutional_infra_activity_id")
-	private Long institutionalInfraActivityId;
+	private Integer institutionalInfraActivityId;
 	
 	@Column(name="institutional_infra_activity_details_id")
-	private Long institutionalInfraActivityDetailId;
+	private Integer institutionalInfraActivityDetailId;
 	
 	@Column(name="fund_proposed")
 	private Integer totalFundApproved;
@@ -47,19 +47,21 @@ public class InstitutionalInfraProgressReportDTO {
 		this.districtName = districtName;
 	}
 
-	public Long getInstitutionalInfraActivityId() {
+	
+
+	public Integer getInstitutionalInfraActivityId() {
 		return institutionalInfraActivityId;
 	}
 
-	public void setInstitutionalInfraActivityId(Long institutionalInfraActivityId) {
+	public void setInstitutionalInfraActivityId(Integer institutionalInfraActivityId) {
 		this.institutionalInfraActivityId = institutionalInfraActivityId;
 	}
 
-	public Long getInstitutionalInfraActivityDetailId() {
+	public Integer getInstitutionalInfraActivityDetailId() {
 		return institutionalInfraActivityDetailId;
 	}
 
-	public void setInstitutionalInfraActivityDetailId(Long institutionalInfraActivityDetailId) {
+	public void setInstitutionalInfraActivityDetailId(Integer institutionalInfraActivityDetailId) {
 		this.institutionalInfraActivityDetailId = institutionalInfraActivityDetailId;
 	}
 

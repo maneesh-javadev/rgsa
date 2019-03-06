@@ -33,6 +33,86 @@ $( document ).ready(function() {
 .alignment{
 	text-align: right;
 }
+/* from here by Abhishek Singh dated 25-02-2019 */
+table {
+  position: relative;
+  width: 100%; 
+  /*background-color: #aaa; */
+  overflow: hidden;
+  border-collapse: collapse;
+}
+
+
+/*thead*/
+thead {
+  position: relative;
+  display: block; /*seperates the header from the body allowing it to be positioned*/
+  width: 100%; 	
+  overflow: visible; 
+}
+
+thead th {
+ /*  background-color: #99a; */
+  min-width: 168px; 
+  height: 32px;
+  border: 1px solid #222;
+}
+
+thead th:nth-child(1) {/*first cell in the header*/
+  position: relative;
+  /* display: block;  */ /*seperates the first cell in the header from the header*/
+ /*  background-color: #88b; */
+}
+
+
+/* tbody*/
+tbody {
+  position: relative;
+  display: block; /*seperates the tbody from the header*/
+  width: 100%;
+  height: 470px;
+  overflow: scroll;
+}
+
+tbody td {
+ /*  background-color: #bbc; */
+  min-width: 168px;
+  border: 1px solid #222;
+}
+
+tbody tr td:nth-child(1) {  /*the first cell in each tr*/
+  position: relative;
+ /*  display: block; */ /*seperates the first column from the tbody*/
+  height: 40px;
+  /* background-color: #99a; */
+}
+
+#mytable {
+	table-layout: auto;
+}
+
+table#mytable tbody tr td:first-child {
+	width: 12px;
+}
+
+#mytable th, #mytable td {
+	overflow: hidden;
+	width: 112px;
+	white-space: inherit;
+	word-wrap: break-word;
+}
+
+table#mytable tbody tr td {
+	white-space: inherit;
+}
+
+#mytable th {
+	text-align: center;
+	text-transform: none;
+	font-weight: bold;
+	color: #FFF;
+	background-color: cornflowerblue;
+}
 
 </style>
 
@@ -55,22 +135,24 @@ $( document ).ready(function() {
 										<th>Post Type</th>
 										<th>Post Name</th>
 										<th>Level</th>
-										<th><div align="center">No. of Block(s) <br> (A) </div> </th>
-										<th><div align="center">Unit Cost  <br> (B)</div></th>
-										<th><div align="center">No. of Months <br> (C)</div></th>
-										<th ><div align="center">Funds(in Rs.) <br> D= (A*B*C)</div></th>
+										<th>No. of Block(s) <br/> (A)</th>
+										<th>Unit Cost  <br/>  (B)</th>
+										<th>No. of Months <br/> (C)</th>
+										<th >Funds &nbsp;&nbsp;&nbsp;(in <strong><i style="font-size: 15px" class="fa">&#xf156;</i></strong>) <br/> D= (A*B*C)</th>
 										<th data-ng-if="userType != 'S'">Is Approved</th>
-										<th data-ng-if="userType != 'S'"><div align="center"><strong>Remarks</strong></div></th>
+										<th data-ng-if="userType != 'S'"><strong>Remarks</strong></th>
 									</tr>
 								</thead>
 								<tbody>
 										<tr data-ng-repeat="postType in postTypes" data-ng-init="outerIndex=$index">
 											<td>{{$index + 1}}</td>
 											<td>
-												{{postType.master.postTypeName}}
+											<input type="hidden"  data-ng-model="adminTechStaffObject.supportDetails[outerIndex].postType.master.postTypeId" ng-init="adminTechStaffObject.supportDetails[outerIndex].postType.master.postTypeId=postType.postTypeId"/>{{postType.master.postTypeName}}
 											</td>
 											<td>
-												{{postType.postName}}
+											<input type="hidden"  data-ng-model="adminTechStaffObject.supportDetails[outerIndex].postType.postId" ng-init="adminTechStaffObject.supportDetails[outerIndex].postType.postId=postType.postId"/>{{postType.postName}}
+												
+												
 											</td>
 											<td>
 											 <select data-ng-disabled="adminTechStaffObject.status == 'F'" convert-to-number data-ng-model="adminTechStaffObject.supportDetails[outerIndex].postLevel.postLevelId">
@@ -82,7 +164,7 @@ $( document ).ready(function() {
 													data-ng-change="calculateFunds($index);validateValue($index)" /></td>
 											<td><input data-ng-disabled="adminTechStaffObject.status == 'F'" type="text" class="form-control validate alignment" restrict-input="{type: 'digitsOnly',index: $index}" maxlength="6" data-ng-model="adminTechStaffObject.supportDetails[$index].unitCost" data-ng-change="calculateFunds($index);validateValue($index)"/></td>
 											<td><input data-ng-disabled="adminTechStaffObject.status == 'F'" type="text" class="form-control validate alignment" restrict-input="{type: 'digitsOnly',index: $index}" maxlength="6" data-ng-model="adminTechStaffObject.supportDetails[$index].noOfMonths" data-ng-change="calculateFunds($index);validateValue($index)"/></td>
-											<td><input data-ng-disabled="adminTechStaffObject.status == 'F'" type="text" data-ng-disabled="true" data-ng-model="adminTechStaffObject.supportDetails[$index].funds" class="form-control validate alignment" /></td>
+											<td><input  type="text" data-ng-disabled="true" data-ng-model="adminTechStaffObject.supportDetails[$index].funds" class="form-control validate alignment" /></td>
 											<td data-ng-if="userType != 'S'">
 												<input type="checkbox" data-ng-model="adminTechStaffObject.supportDetails[$index].isApproved" data-ng-disabled="adminTechStaffObject.status == 'F'"/>
 											</td>
@@ -150,3 +232,16 @@ $( document ).ready(function() {
 	</div>
 </section>
 </html>
+<script>
+$(document).ready(function() {
+	  $('tbody').scroll(function(e) { //detect a scroll event on the tbody
+	  	/*
+	    Setting the thead left value to the negative valule of tbody.scrollLeft will make it track the movement
+	    of the tbody element. Setting an elements left value to that of the tbody.scrollLeft left makes it maintain it's relative position at the left of the table.    
+	    */
+	    $('thead').css("left", -$("tbody").scrollLeft()); //fix the thead relative to the body scrolling
+	    $('thead th:nth-child(1)').css("left", $("tbody").scrollLeft()); //fix the first cell of the header
+	    $('tbody td:nth-child(1)').css("left", $("tbody").scrollLeft()); //fix the first column of tdbody
+	  });
+	});
+</script>

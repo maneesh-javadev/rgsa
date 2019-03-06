@@ -1,45 +1,103 @@
-<%@include file="../taglib/taglib.jsp"%>
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<script type="text/javascript" src="${pageContext.request.contextPath}/resources/plugins/angular/angular.min.js"></script>
-<script type="text/javascript" src="${pageContext.request.contextPath}/resources/plugins/angular/toastr.min.js"></script>
-<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/quarterlyProgressReport/institutionalInfraProgressReport/InstitutionalInfraProgressReportController.js"></script>
-<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/quarterlyProgressReport/institutionalInfraProgressReport/InstitutionalInfraProgressReportService.js"></script>
-<script type="text/javascript" src="${pageContext.request.contextPath}/resources/plugins/angular/directives.js"></script>
-<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/angular/toastr.css">
-<html data-ng-app="publicModule">
-	<section class="content" data-ng-controller="InstitutionalInfraProgressReportController" >
+
+<head>	
+	<%@include file="../taglib/taglib.jsp"%>
+	<script  type="text/javascript" src="${pageContext.request.contextPath}/resources/plugins/angular/angular.min.js"></script>
+	<script src="http://angular-ui.github.io/bootstrap/ui-bootstrap-tpls-0.11.0.js"></script>
+    <link href="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<script>
+$(document).ready(function() {
+
+	/* showHide(); */
+/* alert(${QPRPANHCAYATBHAWANDETAILS[1].gpBhawanStatusId}) */
+
+
+
+});
+function getSelelctedQtrRprt()
+{
+	 var qtId = $('#qtrId').val();
+	 var trainingInstituteTypeId = $('#institutionalInfraActivivtyId').val();
+	
+	  $('#quaterId').val(qtId); 
+	  $('#trainingInstituteTypeId').val(trainingInstituteTypeId); 
+	
+
+	document.qprInstitutionalInfrastructure.method = "post";
+	document.qprInstitutionalInfrastructure.action = "institutionalInfraQuaterlyReport.html?<csrf:token uri='institutionalInfraQuaterlyReport.html'/>";
+	document.qprInstitutionalInfrastructure.submit();
+	
+	
+
+
+}
+
+</script>
+
+
+	<section class="content">
 		<div class="container-fluid">
 			<div class="row clearfix">
 				<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-				<form action="trainingProgressReport.html" method="POST" modelAttribute="TRAINING_DETAILS" >
 					<div class="card">
+						<div class="header">
 						<h3><spring:message code="Label.InstitutionalInfrastructureQuaterlyReport" htmlEscape="true" /></h3>
-						<br/>
-						<div class="row" >
+
+						</div>
+						<div class="body">
+						<div class="card">
+						<form:form method="POST" name="qprInstitutionalInfrastructure" action="saveQprInstitutionalInfrastructureData.html"
+						modelAttribute="QPR_INSTITUTIONALINFRAQUATERLY" enctype="multipart/form-data" >
+						<input type="hidden" name="<csrf:token-name/>"value="<csrf:token-value uri="saveQprInstitutionalInfrastructureData.html" />" />
+					
+							
+								<!-- nav bar -->
+							<div class="row" >
 							<div class="form-group">
 							<div class="col-lg-2"></div>
 								<label for="QuaterDuration" class="col-sm-3"><spring:message code="Label.QuaterDuration" htmlEscape="true" /></label>
 								<div class="col-lg-4">
-									<select class="form-control" data-ng-init="QprInstitutionalInfrastructure.qtrId = '0'" data-ng-change="resetDetails()" convert-to-number data-ng-model="QprInstitutionalInfrastructure.qtrId">
+									<select class="form-control" id="qtrId"  name="qtrId" onchange="getSelelctedQtrRprt();">
 										<option value="0">Select Quarter Duration</option>
-										<option data-ng-repeat="quatorDuration in quatorDuration" value="{{quatorDuration.qtrId}}">{{quatorDuration.qtrDuration}}</option>
+										
+										<c:forEach items="${quarterDuration}" var="duration">
+										<c:choose>
+										<c:when test="${duration.qtrId == SetQuaterId}">
+										<option  value="${duration.qtrId}" selected="selected">${duration.qtrDuration}</option>
+										</c:when>
+										<c:otherwise>
+										<option  value="${duration.qtrId}" >${duration.qtrDuration}</option>
+										</c:otherwise></c:choose>
+										</c:forEach>
 									</select>
 								</div>
 							</div>
 						</div>
-						<div class="row" data-ng-show="QprInstitutionalInfrastructure.qtrId != 0">
+						<div class="row">
 							<div class="form-group">
 							<div class="col-lg-2"></div>
 								<label for="selectLevel" class="col-sm-3"><spring:message code="Label.SelectBuildingType" htmlEscape="true" /></label>
 								<div class="col-lg-4">
-									<select class="form-control" data-ng-init="TrainingInstituteTypeId = '0'" convert-to-number data-ng-model="TrainingInstituteTypeId" data-ng-change="fetchInstInfraStateData(TrainingInstituteTypeId);resetDistrictList();fetchInstInfraStatus(TrainingInstituteTypeId);fetchDataAccordingToQuator(QprInstitutionalInfrastructure.qtrId,TrainingInstituteTypeId)">
-										<option value="0">Select Building Type</option>
-										<option data-ng-repeat="trainingnstituteType in trainingnstituteType" data-ng-if="trainingnstituteType.trainingInstitueTypeId == 2 || trainingnstituteType.trainingInstitueTypeId == 4" value="{{trainingnstituteType.trainingInstitueTypeId}}"">{{trainingnstituteType.trainingInstitueTypeName}}</option>
+									<select class="form-control" id="institutionalInfraActivivtyId"  name="trainingInstitueTypeId" onchange="getSelelctedQtrRprt();">
+										<option value="0">Select Activity</option>
+										<c:forEach items="${buildingType}" var="activity">
+											<c:choose>
+										<c:when test="${activity.trainingInstitueTypeId == SetActivityId}">
+									
+										<option  value="${activity.trainingInstitueTypeId}" selected="selected">${activity.trainingInstitueTypeName}</option>
+										</c:when>
+										<c:otherwise>
+										<option  value="${activity.trainingInstitueTypeId}">${activity.trainingInstitueTypeName}</option>
+										
+										</c:otherwise>
+										</c:choose>
+									</c:forEach>
 									</select>
 								</div>
 							</div>
 						</div>
-						<div class="body" data-ng-show="TrainingInstituteTypeId != 0">
+						
+						<div class="body" id="body" onclick="showHide()" >
 							<table class="table table-bordered table-striped table-hover" >
 								<thead>
 									<tr>
@@ -73,40 +131,96 @@
 												<strong><spring:message code="Label.ExpenditureIncurred" htmlEscape="true" /></strong>
 											</div>
 										</th>
-										<%-- <th>
+										 <th>
 											<div align="center">
-												<strong><spring:message code="Label.Remarks" htmlEscape="true" /></strong>
+												<strong>file</strong>
 											</div>
-										</th> --%>
+										</th> 
 									</tr>
 								</thead>
 								<tbody>
-									<tr data-ng-repeat="detail in institutionaInfraReportStateData">
-										<td>{{$index + 1}}<input type="hidden" data-ng-model="QprInstitutionalInfrastructure.qprInstitutionalInfraDetails[$index].instituteInfrsaHrActivityDetailsId" value="{{detail.institutionalInfraActivityDetailId}}" /></td>
-										<td><strong>{{detail.districtName}}</strong></td>
-										<td>
-											<select class="form-control" data-ng-init="QprInstitutionalInfrastructure.qprInstitutionalInfraDetails[$index].instInfraStatusId = '0'" convert-to-number data-ng-model="QprInstitutionalInfrastructure.qprInstitutionalInfraDetails[$index].instInfraStatusId" required="required">
-												<option value="0">Select G.P Bhawan Status</option>
-												<option data-ng-repeat="instInfraStatus in instInfraStatus" value="{{instInfraStatus.instInfraStatusId}}">{{instInfraStatus.instInfraStatusName}}</option>
-											</select>
-										</td>
-										<td><div align="center"><strong>{{detail.totalFundApproved}}</strong></div></td>
-										<!-- <td align="center"><input type="file" class="form-control" fileModel="qprPanchayatBhawan.qprPanhcayatBhawanDetails[$index].file" /></td> -->
-										<td align="center"><input type="text" class="form-control"  restrict-input="{type: 'digitsOnly'}"  data-ng-model="QprInstitutionalInfrastructure.qprInstitutionalInfraDetails[$index].expenditureIncurred" required="required" style="text-align: right;"></td>
-										<!-- <td><textarea class="form-control" rows="2" cols="5"></textarea></td> -->
-									</tr>
+								 <c:if test="${ not empty INSTITUTIONAL_INFRA_REPORT_DTO}">
+								 <c:forEach items="${INSTITUTIONAL_INFRA_REPORT_DTO}" var="bhawanDto" varStatus="count">
+								<tr>
+								
+<%-- 								<input type="hidden" name="qprInstitutionalInfraDetails[${count.index}].districtCode" value="${INSTITUTIONAL_INFRA_REPORT_DTO[count.index].districtCode}"/>
+ --%> 				 <input type="hidden" name="institutionalInfraActivivtyId" value="${institutionalInfraActivivtyId}"/> 
+ 	                <input type="hidden" name="qprInstInfraId" value="${QPRPANCHAYATBHAWAN.qprInstInfraId}"/> 
+ 						<input type="hidden" name="qprInstitutionalInfraDetails[${count.index}].qprInstInfraDetailsId" value="${QPR_INSTITUTIONAL_INFRA_DETAILS[count.index].qprInstInfraDetailsId}" /> 
+ 							 <input type="hidden" name="qprInstitutionalInfraDetails[${count.index}].instituteInfrsaHrActivityDetailsId" value="${instituteInfrsaHrActivityDetailsId}" />
+ 								<input type="hidden" name="trainingTypeId" value="${SetActivityId}">
+ 								<td>${count.index+1}</td>
+								<td>${bhawanDto.districtName}</td>
+								
+								<td><select class="form-control" name="qprInstitutionalInfraDetails[${count.index}].instInfraStatusId" >
+								
+				<option value="0">Please select gp status</option>
+				<c:forEach items="${InstInfraStatus}" var="status" >
+			<%-- 	<c:forEach items="${QPRPANHCAYATBHAWANDETAILS}" var="getStatus" > --%>
+				<c:choose>
+				<c:when test="${status.instInfraStatusId==QPR_INSTITUTIONAL_INFRA_DETAILS[count.index].instInfraStatusId}">
+								<option value="${status.instInfraStatusId}" selected="selected">${status.instInfraStatusName}</option>				
+				
+				</c:when>
+				<c:otherwise>
+								<option value="${status.instInfraStatusId}">${status.instInfraStatusName}</option>				
+				
+				</c:otherwise>
+				</c:choose>
+							
+							</c:forEach></select>
+								
+								
+								</td>
+								<td><strong>${bhawanDto.totalFundApproved}</strong></td>
+								<td><input type="text" class="form-control" name="qprInstitutionalInfraDetails[${count.index}].expenditureIncurred" value="${QPR_INSTITUTIONAL_INFRA_DETAILS[count.index].expenditureIncurred} "/></td>
+								<td><input type="file" name="qprInstitutionalInfraDetails[${count.index}].file" class="form-control"/></td>
+								</tr>
+								</c:forEach>
+								</c:if>
+								<c:if test="${empty INSTITUTIONAL_INFRA_REPORT_DTO}">
+								<div class="alert alert-danger">
+	  								<strong>Danger!</strong> There is no GP  Available.
+								</div>
+							</c:if>
+								
 								</tbody>
+							
 							</table>
+						
+							
 							<div class="form-group text-right">
-								<button  data-ng-click="saveQprInstitutionalInfrastructureData()" type="button" class="btn bg-green waves-effect"><spring:message code="Label.SAVE" htmlEscape="true" /></button>
-								<button type="button" class="btn bg-light-blue waves-effect"><spring:message code="Label.CLEAR" htmlEscape="true" /></button>
-								<button type="button" onclick="onClose('home.html?<csrf:token uri='home.html'/>')" class="btn bg-orange waves-effect"><spring:message code="Label.CLOSE" htmlEscape="true" /></button>
+										<button type="submit" class="btn bg-green waves-effect">
+											Save
+										</button>
+										<button type="button" onclick="" class="btn bg-light-blue waves-effect reset">CLEAR${districtCode}</button>
+										<button type="button"
+											onclick=" onClose('home.html?<csrf:token uri='home.html'/>')"
+											class="btn bg-orange waves-effect">
+											<spring:message code="Label.CLOSE" htmlEscape="true" />
+										</button>
+										</div>
+										
+										
+									<input type="hidden" name="quaterId" id="quaterId">
+									<input type="hidden" name="trainingInstituteTypeId" id="trainingInstituteTypeId"  value="${trainingInstituteTypeId}">
+									
+											<input type="hidden" name="path" id="path" > 
+											<input type="hidden" name="dbFileName" id="dbFileName" >
+											
+									</div>
+									
+						</div>
+
+									</form:form>
+										
+									</div>
+									
+								</div>
+								
 							</div>
 						</div>
 					</div>
-					</form>
 				</div>
-			</div>
-		</div>
 	</section>
-</html>
+

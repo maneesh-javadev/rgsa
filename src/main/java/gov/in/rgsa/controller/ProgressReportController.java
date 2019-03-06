@@ -1,16 +1,26 @@
 package gov.in.rgsa.controller;
 
+import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.io.FilenameUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -30,6 +40,7 @@ import gov.in.rgsa.entity.AdditionalFacultyProgress;
 import gov.in.rgsa.entity.AdminAndFinancialDataActivity;
 import gov.in.rgsa.entity.AdministrativeTechnicalProgress;
 import gov.in.rgsa.entity.AdministrativeTechnicalSupport;
+import gov.in.rgsa.entity.AttachmentMaster;
 import gov.in.rgsa.entity.EEnablement;
 import gov.in.rgsa.entity.EEnablementGPs;
 import gov.in.rgsa.entity.GPBhawanStatus;
@@ -57,6 +68,7 @@ import gov.in.rgsa.entity.QprPanchayatBhawan;
 import gov.in.rgsa.entity.QprIncomeEnhancement;
 import gov.in.rgsa.entity.QprIncomeEnhancementDetails;
 import gov.in.rgsa.entity.QprInnovativeActivity;
+import gov.in.rgsa.entity.QprInstitutionalInfraDetails;
 import gov.in.rgsa.entity.QprInstitutionalInfrastructure;
 import gov.in.rgsa.entity.QprPanchayatBhawan;
 import gov.in.rgsa.entity.SatcomActivity;
@@ -431,13 +443,13 @@ public static final String REDIRECT_ADMIN_DATA_FIN_QUATERLY ="redirect:adminData
 		return REDIRECT_IEC_PROGRESS_REPORT;
 	}
 	
-	@RequestMapping(value="panchayatBhawanQuaterlyReport",method = RequestMethod.GET)
+	/*@RequestMapping(value="panchayatBhawanQuaterlyReport",method = RequestMethod.GET)
 	public String panchayatBhawanGet()
 	{
 		return PANCHAYAT_BHAWAN_REPORT;
-	}
+	}*/
 	
-	@RequestMapping(value="institutionalInfraQuaterlyReport",method = RequestMethod.GET)
+	/*@RequestMapping(value="institutionalInfraQuaterlyReport",method = RequestMethod.GET)
 	public String qprGetFormInstituteInfraQprGet(Model model)
 	{
 		return INSTITUTIONAL_INFRA_REPORT;
@@ -484,7 +496,7 @@ public static final String REDIRECT_ADMIN_DATA_FIN_QUATERLY ="redirect:adminData
 			map.put("qprInstitutionalInfraDetails", institutionalInfraActivityPlanService.fetchDataOfDetailsAccordingToQuator(qprInstitutionalInfrastructure.get(0).getQprInstInfraId(),TrainingInstituteTypeId));
 		}
 		return map;
-	}
+	}*/
 	
 	@RequestMapping(value = "incomeEnhancementQuaterly", method = RequestMethod.GET)
 	public String qprGetFormIncomeEnhancementDetailsQuaterly(@ModelAttribute("Qpr_Income_Enhancement") QprIncomeEnhancement qprIncomeEnhancement, Model model) {
@@ -1046,6 +1058,144 @@ public String saveadminDataFinQuaterly(@ModelAttribute("QPR_ADMIN_DATA_FIN") Qpr
 	progressReportService.saveAdminDataFinQuaterly(qprAdminAndFinancialDataActivity);
 	redirectAttributes.addFlashAttribute(Message.SUCCESS_KEY, Message.SAVE_SUCCESS);
 	return REDIRECT_ADMIN_DATA_FIN_QUATERLY;
+}
+
+@RequestMapping(value="institutionalInfraQuaterlyReport",method = RequestMethod.GET)
+public String getQprgGramPanchayat(@ModelAttribute("QPR_INSTITUTIONALINFRAQUATERLY") QprInstitutionalInfrastructure qprInstitutionalInfrastructure ,Model model,HttpServletResponse httpResponse)
+{
+	model.addAttribute("quarterDuration", progressReportService.getQuarterDurations());
+	model.addAttribute("buildingType",institutionalInfraActivityPlanService.fetchTrainingInstituteTypeId());
+	
+	return INSTITUTIONAL_INFRA_REPORT;
+}
+
+@RequestMapping(value = "institutionalInfraQuaterlyReport", method = RequestMethod.POST)
+private String getQprgGramPanchayatActivity(@ModelAttribute("QPR_INSTITUTIONALINFRAQUATERLY") QprInstitutionalInfrastructure qprInstitutionalInfrastructure , Model model) {
+	int quatorId =qprInstitutionalInfrastructure.getQuaterId();
+	int institutionalInfraActivivtyId = 0;
+	int instituteInfrsaHrActivityDetailsId = 0;
+	int TrainingInstituteTypeId =qprInstitutionalInfrastructure.getTrainingInstituteTypeId();
+	Set <InstitutionalInfraProgressReportDTO> set =new HashSet<>();
+	List<InstitutionalInfraProgressReportDTO> institutionalInfraProgressReportDTO =institutionalInfraActivityPlanService.fetchInstInfraStateDataForProgressReport(TrainingInstituteTypeId);
+	Iterator itr= institutionalInfraProgressReportDTO.iterator(); 
+	while(itr.hasNext())
+	{
+		
+		InstitutionalInfraProgressReportDTO obj=(InstitutionalInfraProgressReportDTO) itr.next();
+	
+		if(obj!=null)
+		{
+			set.add(obj);
+			
+		}
+		 institutionalInfraActivivtyId =obj.getInstitutionalInfraActivityId();
+		 instituteInfrsaHrActivityDetailsId=obj.getInstitutionalInfraActivityDetailId();
+	}
+	
+	//List<InstInfraStatus> qprInstitutionalInfra = institutionalInfraActivityPlanService.fetchInstInfraStatus(TrainingInstituteTypeId);
+	 List<QprInstitutionalInfrastructure> qprInstitutionalInfra=institutionalInfraActivityPlanService.fetchDataAccordingToQuator(quatorId,institutionalInfraActivivtyId);
+
+	
+	if(!qprInstitutionalInfra.isEmpty())
+	{
+		for(int i=0 ;i<qprInstitutionalInfra.get(0).getQprInstitutionalInfraDetails().size() ;i++)
+		{
+			if(qprInstitutionalInfrastructure.getTrainingInstituteTypeId()== 2) {
+				List<QprInstitutionalInfraDetails> qprInstitutionalInfraDetailsForType2 = institutionalInfraActivityPlanService.fetchDataOfDetailAccordingToQuator(qprInstitutionalInfrastructure.getTrainingInstituteTypeId(), qprInstitutionalInfra.get(0).getQprInstInfraId());
+				model.addAttribute("QPR_INSTITUTIONAL_INFRA_DETAILS", qprInstitutionalInfraDetailsForType2);
+
+		}
+		else if(qprInstitutionalInfrastructure.getTrainingInstituteTypeId()== 4)
+		{
+			List<QprInstitutionalInfraDetails> qprInstitInfraDetailsForType4 = institutionalInfraActivityPlanService.fetchDataOfDetailAccordingToQuator(qprInstitutionalInfrastructure.getTrainingInstituteTypeId(), qprInstitutionalInfra.get(0).getQprInstInfraId());
+			
+			model.addAttribute("QPR_INSTITUTIONAL_INFRA_DETAILS", qprInstitInfraDetailsForType4);
+		}
+		
+		}
+		model.addAttribute("QPRPANCHAYATBHAWAN", qprInstitutionalInfra.get(0));
+
+		
+	}
+	//Collections.sort(QprPanchayatBhawan.get(0).getQprPanhcayatBhawanDetails(), Comparator.comparing(QprPanhcayatBhawanDetails::getQprPanhcayatBhawanDetailsId));
+	
+		model.addAttribute("INSTITUTIONAL_INFRA_REPORT_DTO", set);
+	
+	//model.addAttribute("GPBhawanStatus", panchayatBhawanService.fetchGPBhawanStatus(TrainingInstituteTypeId));
+	model.addAttribute("panchayatActivity",institutionalInfraActivityPlanService.fetchTrainingInstituteTypeId());
+	model.addAttribute("buildingType",institutionalInfraActivityPlanService.fetchTrainingInstituteTypeId());
+	model.addAttribute("InstInfraStatus", institutionalInfraActivityPlanService.fetchInstInfraStatus(TrainingInstituteTypeId));
+	model.addAttribute("institutionalInfraActivivtyId", institutionalInfraActivivtyId);
+	model.addAttribute("instituteInfrsaHrActivityDetailsId", instituteInfrsaHrActivityDetailsId);
+	
+	model.addAttribute("quarterDuration", progressReportService.getQuarterDurations());
+	model.addAttribute("SetActivityId", qprInstitutionalInfrastructure.getTrainingInstituteTypeId());
+	
+	model.addAttribute("SetQuaterId", qprInstitutionalInfrastructure.getQuaterId());
+
+	return INSTITUTIONAL_INFRA_REPORT;
+}
+
+
+
+@RequestMapping(value="saveQprInstitutionalInfrastructureData" , method=RequestMethod.POST)
+private String saveQprInstInfraData(@ModelAttribute("QPR_INSTITUTIONALINFRAQUATERLY") QprInstitutionalInfrastructure qprInstitutionalInfrastructure,Model model ,RedirectAttributes redirectAttributes) throws IOException{
+	
+	for(int i=0; i<qprInstitutionalInfrastructure.getQprInstitutionalInfraDetails().size();i++) {
+		if(qprInstitutionalInfrastructure.getQprInstitutionalInfraDetails().get(i).getFile() != null && qprInstitutionalInfrastructure.getQprInstitutionalInfraDetails().get(i).getFile().getSize()!=0) {
+			
+			MultipartFile file = qprInstitutionalInfrastructure.getQprInstitutionalInfraDetails().get(i).getFile();
+			
+			String filename = file.getOriginalFilename();
+			String filenameWithoutExtnsn = FilenameUtils.removeExtension(filename); 
+			String extnsn = FilenameUtils.getExtension(filename);
+			
+			AttachmentMaster attachmentMaster = enhancementService.findDetailsofAttachmentMaster();
+			
+			String path = attachmentMaster.getFileLocation();
+			
+			if(file.isEmpty()) {
+				redirectAttributes.addFlashAttribute(Message.ERROR_KEY,"File Upload Required");
+				return REDIRECT_INSTITUTIONAL_INFRA_REPORT;
+			}
+			else if(!file.getContentType().equals("application/pdf")) {
+				redirectAttributes.addFlashAttribute(Message.ERROR_KEY,"File Upload Type Required(Pdf)");
+				return REDIRECT_INSTITUTIONAL_INFRA_REPORT;
+			}
+			else if(file.getSize() > 2097152) {
+				redirectAttributes.addFlashAttribute(Message.ERROR_KEY,"Max File Size is 2MB");
+				return REDIRECT_INSTITUTIONAL_INFRA_REPORT;
+			}
+			
+			Date date = new Date() ;
+			SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMddHHmmss") ;
+			String newFilename = filenameWithoutExtnsn + "_" + dateFormat.format(date) + "." + extnsn;
+			
+		/*	......................File Delete code.................*/
+			
+			File deleteFile = new File(qprInstitutionalInfrastructure.getPath() + "/" + qprInstitutionalInfrastructure.getDbFileName() );
+				if(deleteFile.exists()) {
+					deleteFile.delete();
+				}
+			/*	......................File Delete code.................*/
+				
+			byte[] bytes = file.getBytes();
+			File dir = new File(path + File.separator + "qprInstitutionalInfrastructure");
+			
+			BufferedOutputStream stream = new BufferedOutputStream(new FileOutputStream(dir+"/"+newFilename));
+			stream.write(bytes);
+			stream.close();
+			
+			qprInstitutionalInfrastructure.getQprInstitutionalInfraDetails().get(i).setFileContentType(file.getContentType());
+			qprInstitutionalInfrastructure.getQprInstitutionalInfraDetails().get(i).setFileLocation(path);
+			qprInstitutionalInfrastructure.getQprInstitutionalInfraDetails().get(i).setFileName(newFilename);
+		}
+	}
+	institutionalInfraActivityPlanService.saveQprInstInfraData(qprInstitutionalInfrastructure);
+	redirectAttributes.addFlashAttribute(Message.SUCCESS_KEY, Message.SAVE_SUCCESS);
+
+	
+	 return REDIRECT_INSTITUTIONAL_INFRA_REPORT;
 }
 
 }

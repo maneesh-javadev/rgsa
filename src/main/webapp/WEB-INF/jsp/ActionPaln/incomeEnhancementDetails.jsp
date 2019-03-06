@@ -2,7 +2,12 @@
 <head>
 
 <%@include file="../taglib/taglib.jsp"%>
-
+<script
+	src="<%=request.getContextPath()%>/resources/plugins/jquery/jquery.min.js"></script>
+<script
+	src="<%=request.getContextPath()%>/resources/bs/slimscroll/jquery.slimscroll.min.js"></script>
+<script
+	src="<%=request.getContextPath()%>/resources/bs/slimscroll/HorScroll.js"></script>
 <script type="text/javascript">
 $(document).ready(function() {
 	
@@ -78,7 +83,7 @@ $(document).ready(function() {
 		 $("input:not(.exclud)").prop("disabled", true);
 		 $("select").prop('disabled', true);
 	 }
-	 if($('#userTypeId').val() =='C'){
+	if($('#userTypeId').val() =='C'){
 		 $("input:not(.exclud)").prop("disabled", true);
 		 $("select").prop('disabled', true);
 	 }
@@ -145,21 +150,23 @@ function addNewRow(){
 	var sno = rowCount-1;
 	var tds = '<tr>';
 		tds+='<td>'+sno+'</td>';
-		tds+='<td><input name="incomeEnhancementDetails['+i+'].activtyName" id="activityNameId" required="required" maxlength="200" type="text" class="form-control letters"/></td>';
+		tds+='<td><input name="incomeEnhancementDetails['+i+'].activtyName" id="activityNameId" placeholder="Activity Name" required="required" maxlength="200" type="text" class="form-control letters"/></td>';
 		
-		tds+='<td><select required="required" class="form-control" name="incomeEnhancementDetails['+i+'].fundSourceCode"><option value=""> Select </option><c:forEach items="${schemeMasterList}" var="obj"><option value="${obj.schemeId}">${obj.schemeName}</option> </c:forEach></select></td>';
-		tds+='<td><select required="required" class="form-control dId" onchange="callBlockList('+i+');" id="districtId'+i+'" name="incomeEnhancementDetails['+i+'].districtCode"><option value=""> Select </option><c:forEach items="${districtList}" var="dlist"><option value="${dlist.districtCode}">${dlist.districtNameEnglish}</option></c:forEach>	</select></td>';
-		tds+='<td><select required="required" class="form-control bId" id="blockId'+i+'" name="incomeEnhancementDetails['+i+'].blockCode"><option value="-1"> Select </option></select></td>';
-		tds+='<td><input type="text" min="1" oninput="validity.valid||(value="");" onKeyPress="if(this.value.length==3) return false;" required="required" name="incomeEnhancementDetails['+i+'].totalNoOfGpCovered" id="noOfGpCoveredId_'+i+'" class="form-control Align-Right numbers"/></td>';
-		tds+='<td><input type="text" min="1" oninput="validity.valid||(value="");" onKeyPress="if(this.value.length==3) return false;" required="required" name="incomeEnhancementDetails['+i+'].noOfAspirationalGp" id="aspirationalGpId_'+i+'" onkeyup="calculateAspirationalGPs('+i+')" class="form-control Align-Right numbers"/></td>';
+		tds+='<td><select required="required" class="form-control" name="incomeEnhancementDetails['+i+'].fundSourceCode"><option value="0">Select Scheme</option><c:forEach items="${schemeMasterList}" var="obj"><option value="${obj.schemeId}">${obj.schemeName}</option> </c:forEach></select></td>';
+		tds+='<td><select required="required" class="form-control dId" onchange="callBlockList('+i+');" id="districtId'+i+'" name="incomeEnhancementDetails['+i+'].districtCode"><option value="0"> Select District </option><c:forEach items="${districtList}" var="dlist"><option value="${dlist.districtCode}">${dlist.districtNameEnglish}</option></c:forEach>	</select></td>';
+		tds+='<td><select required="required" class="form-control bId" id="blockId'+i+'" name="incomeEnhancementDetails['+i+'].blockCode"><option value="-1"> Select Block </option></select></td>';
+		tds+='<td><input type="text" min="1" oninput="validity.valid||(value="");" onKeyPress="if(this.value.length==3) return false;" required="required" placeholder="Total GP\'s covered" name="incomeEnhancementDetails['+i+'].totalNoOfGpCovered" id="noOfGpCoveredId_'+i+'" class="form-control Align-Right numbers"/></td>';
+		tds+='<td><input type="text" min="1" oninput="validity.valid||(value="");" onKeyPress="if(this.value.length==3) return false;" required="required" placeholder="Total Aspirational GP" name="incomeEnhancementDetails['+i+'].noOfAspirationalGp" id="aspirationalGpId_'+i+'" onkeyup="calculateAspirationalGPs('+i+')" class="form-control Align-Right numbers"/></td>';
 		tds+='<td><select required="required" class="form-control" id="yearOne_'+i+'" onchange="validateYear('+i+');"  name="incomeEnhancementDetails['+i+'].yearFrom"><option value=""> From Year</option><option value="2018">2018</option><option value="2019">2019</option><option value="2020">2020</option><option value="2021">2021</option><option value="2022">2022</option></select></td>';
 		tds+='<td><select required="required" class="form-control" id="yearTwo_'+i+'" onchange="validateYear('+i+');" name="incomeEnhancementDetails['+i+'].yearTo"><option value=""> To Year </option><option value="2018">2018</option><option value="2019">2019</option><option value="2020">2020</option><option value="2021">2021</option><option value="2022">2022</option></select></td>';
-		tds+='<td><input type="text" onKeyPress="if(this.value.length==7) return false;" min="1" name="incomeEnhancementDetails['+i+'].totalCostOfProject" required="required" class="form-control Align-Right numbers"/></td>';
-		tds+='<td><input type="text" oninput="validity.valid||(value="");" onKeyPress="if(this.value.length==7) return false;" id="fundsName" min="1" name="incomeEnhancementDetails['+i+'].fundsRequired" required="required" class="form-control Align-Right numbers"/></td>';
-		tds+='<td><input type="text" name="incomeEnhancementDetails['+i+'].briefAboutActivity" required="required" maxlength="1000" class="form-control alphaonly"/></td>';
+		tds+='<td><input type="text" onKeyPress="if(this.value.length==7) return false;" min="1" name="incomeEnhancementDetails['+i+'].totalCostOfProject" placeholder="Total Project cost" required="required" class="form-control Align-Right numbers"/></td>';
+		tds+='<td><input type="text" oninput="validity.valid||(value="");" onKeyPress="if(this.value.length==7) return false;" id="fundsName" min="1" placeholder="Fund Proposed" name="incomeEnhancementDetails['+i+'].fundsRequired" required="required" class="form-control Align-Right numbers"/></td>';
+		tds+='<td><input type="text" name="incomeEnhancementDetails['+i+'].briefAboutActivity" required="required" maxlength="1000" placeholder="Brief About Activity" class="form-control alphaonly"/></td>';
 		tds+='<td><input type="file" name="incomeEnhancementDetails['+i+'].file"/></td>';
-		tds+='<td><input type="checkbox" name="incomeEnhancementDetails['+i+'].planApprovedByDpc" class="form-control"/></td>';
-		tds+='<td><input type="button" value="Delete" onclick="deleteRow();" class="btn bg-red waves-effect"/></td>'
+		/* tds+='<td><input type="checkbox" name="incomeEnhancementDetails['+i+'].planApprovedByDpc" class="form-control"/></td>'; */
+		tds+='<td><label class="container"><input type="checkbox" name="incomeEnhancementDetails['+i+'].planApprovedByDpc"/><span class="checkmark"></span></label></td>';
+		/* tds+='<td><input type="button" value="Delete" onclick="deleteRow();" class="btn bg-red waves-effect"/></td>' */
+		tds+='<td><a href="javascript:deleteRow();"><span class="glyphicon glyphicon-trash"></span></a></td>';
 								
 	tds += '</tr>';
 	i++;
@@ -229,130 +236,276 @@ function regexValidation(){
 		});
 }	
 </script>
+<style type="text/css">
+/* By Abhishek Kumar Singh dated 03-01-18 */
 
+/* The container */
+.container {
+	display: block;
+	position: relative;
+	padding-left: 65px;
+	margin-bottom: 12px;
+	cursor: pointer;
+	font-size: 22px;
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+	width: 0px;
+}
+
+/* Hide the browser's default checkbox */
+.container input {
+	position: absolute;
+	opacity: 0;
+}
+
+/* Create a custom checkbox */
+.checkmark {
+	position: absolute;
+	top: 0;
+	left: 30px;
+	height: 25px;
+	width: 25px;
+	background-color: #eee;
+}
+
+/* On mouse-over, add a grey background color */
+.container:hover input ~ .checkmark {
+	background-color: #ccc;
+}
+
+/* When the checkbox is checked, add a blue background */
+.container input:checked ~ .checkmark {
+	background-color: #2196F3;
+}
+
+/* Create the checkmark/indicator (hidden when not checked) */
+.checkmark:after {
+	content: "";
+	position: absolute;
+	display: none;
+}
+
+/* Show the checkmark when checked */
+.container input:checked ~ .checkmark:after {
+	display: block;
+}
+
+/* Style the checkmark/indicator */
+.container .checkmark:after {
+	left: 9px;
+	top: 5px;
+	width: 5px;
+	height: 10px;
+	border: solid white;
+	border-width: 0 3px 3px 0;
+	-webkit-transform: rotate(45deg);
+	-ms-transform: rotate(45deg);
+	transform: rotate(45deg);
+}
+
+#mytable th {
+	text-align: center;
+	text-transform: none;
+	font-weight: bold;
+	color: #FFF;
+	background-color: cornflowerblue;
+}
+
+.slimScrollRail {
+	opacity: 0 !important;
+}
+
+input[type="text"]::placeholder {
+	/* Firefox, Chrome, Opera */
+	text-align: center;
+	/* color:#2196F3; */
+}
+/* select{
+	 color: #2196F3 !important;
+}
+/* select option { color: black; } */
+select option:first-child{
+  color: #2196F3 !important;
+} */
+</style>
 </head>
-    <section class="content">
-        <div class="container-fluid">
-            <div class="block-header">
-            </div>
-            
-            <div class="row clearfix">
-                <!-- Task Info -->
-                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                    <div class="card">
-                        <div class="header">
-                            <h2>Project based support for Income Development & Income Enhancement</h2>
-                        </div>
-                        <div class="body">
-                            <form:form method="POST" id="incomeEnhancementId" name="incomeEnhancement" class="form-inline" action="incomeEnhancementAdd.html" modelAttribute="Income_Enhancement" enctype="multipart/form-data">
-                           <input type="hidden" name="<csrf:token-name/>" value="<csrf:token-value uri="incomeEnhancementAdd.html"/>" />
-                            <div class="table-responsive">
-                            <c:if test="${fn:containsIgnoreCase(dbActivitiesList.userType,'S')}">
-                            <button type="button" id="addNewRowBtn" class="btn bg-green" onclick="addNewRow()">Add New Row</button>
-                            </c:if>
-                                <table class="table table-bordered" id="mytable">
-                                    <thead>
-                                        <tr>
-                                        	<th rowspan="2">S.No.</th>
-                                        	<th rowspan="2">Name of the Activity</th>
-                                        	<!-- <th rowspan="2">Select Ministry/Scheme</th> -->
-                                        	<th rowspan="2"><div align="center">Select Scheme</div></th>
-                                        	<th rowspan="2">District Name</th>
-                                        	<th rowspan="2">Block Name</th>
-                                        	<th rowspan="2">Total No. of GP's Covered</th>
-                                        	<th rowspan="2">No. of Aspirational GPs</th>
-                                        	<th colspan="2">Time Frame of project(year wise)</th>
-                                        	<th rowspan="2">Total cost of project</th>
-                                        	<th rowspan="2">Funds Proposed in current year</th>
-                                        	<th rowspan="2">Brief about the Activity</th>
-                                        	<th rowspan="2">Upload File(PDF)</th>
-                                        	<th rowspan="2">Plan approved by DPC</th>
-                                        	<c:if test="${fn:containsIgnoreCase(dbActivitiesList.userType,'S')}">
-                                        		<th rowspan="2">Delete</th>
-                                        	</c:if>
-                                        	<c:if test="${fn:containsIgnoreCase(dbActivitiesList.userType,'M')}">
-	                                        	<th rowspan="2">Is Approved</th>
-	                                        	<th rowspan="2">Remarks</th>
-                                        	</c:if>
-                                        	<c:if test="${fn:containsIgnoreCase(dbActivitiesList.userType,'C')}">
-	                                        	<th rowspan="2">Is Approved</th>
-	                                        	<th rowspan="2">Remarks</th>
-                                        	</c:if>
-                                        </tr>
-                                        <tr>
-	                                        <th>From </th>
-	                                        <th> To</th>
-                                        </tr>
-                                        
-                                    </thead>
-                                    <tbody>
-                                    <c:if test="${empty dbActivitiesList}">
-                                    <tr>
-                                       	<td>1</td>
-                                       	<td><input name="incomeEnhancementDetails[0].activtyName" id="activityNameId" required="required" onkeyup="this.value=this.value.replace(/[^a-zA-Z ]/,'');" maxlength="200" type="text" class="form-control"/></td>
-                                       	<!-- <td>
+<section class="content">
+	<div class="container-fluid">
+		<div class="block-header"></div>
+
+		<div class="row clearfix">
+			<!-- Task Info -->
+			<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+				<div class="card">
+					<div class="header">
+						<h2>Project based support for Income Development & Income
+							Enhancement</h2>
+					</div>
+					<div class="body">
+						<form:form method="POST" id="incomeEnhancementId"
+							name="incomeEnhancement" class="form-inline"
+							action="incomeEnhancementAdd.html"
+							modelAttribute="Income_Enhancement" enctype="multipart/form-data">
+							<input type="hidden" name="<csrf:token-name/>"
+								value="<csrf:token-value uri="incomeEnhancementAdd.html"/>" />
+							<div class="table-responsive" id="records">
+								<table class="table table-bordered" id="mytable">
+									<thead>
+										<tr>
+											<th rowspan="2">S.No.</th>
+											<th rowspan="2">Name of the Activity</th>
+											<!-- <th rowspan="2">Select Ministry/Scheme</th> -->
+											<th rowspan="2"><div align="center">Select Scheme</div></th>
+											<th rowspan="2">District Name</th>
+											<th rowspan="2">Block Name</th>
+											<th rowspan="2">Total No. of GP's Covered</th>
+											<th rowspan="2">No. of Aspirational GPs</th>
+											<th colspan="2">Time Frame of project(year wise)</th>
+											<th rowspan="2">Total cost of project</th>
+											<th rowspan="2">Funds Proposed in current year</th>
+											<th rowspan="2">Brief about the Activity</th>
+											<th rowspan="2">Upload File(PDF)</th>
+											<th rowspan="2">Plan approved by DPC</th>
+											<c:if
+												test="${fn:containsIgnoreCase(dbActivitiesList.userType,'S')}">
+												<th rowspan="2">Delete</th>
+											</c:if>
+											<c:if
+												test="${fn:containsIgnoreCase(dbActivitiesList.userType,'M')}">
+												<th rowspan="2">Is Approved</th>
+												<th rowspan="2">Remarks</th>
+											</c:if>
+											<c:if
+												test="${fn:containsIgnoreCase(dbActivitiesList.userType,'C')}">
+												<th rowspan="2">Is Approved</th>
+												<th rowspan="2">Remarks</th>
+											</c:if>
+										</tr>
+										<tr>
+											<th>From</th>
+											<th>To</th>
+										</tr>
+
+									</thead>
+									<tbody>
+										<c:if test="${empty dbActivitiesList}">
+											<tr>
+												<td>1</td>
+												<td><input
+													name="incomeEnhancementDetails[0].activtyName" placeholder="Activity Name"
+													id="activityNameId" required="required"
+													onkeyup="this.value=this.value.replace(/[^a-zA-Z ]/,'');"
+													maxlength="200" type="text" class="form-control" /></td>
+												<!-- <td>
                                        		<select required="required" class="form-control" name="incomeEnhancementDetails[0].fundSourceType">
 				                            	<option value=""> Select </option>
 				                               	<option value="M">Ministry</option>
 				                                <option value="S">Scheme</option>
 			                              	</select>
 			                            </td> -->
-                                       	<td>
-                                       		<select required="required" class="form-control" name="incomeEnhancementDetails[0].fundSourceCode">
-						                            	<option value=""> Select </option>
-		                                       	<c:forEach items="${schemeMasterList}" var="obj">
-						                               	<option value="${obj.schemeId}">${obj.schemeName}</option>
-						                         </c:forEach>
-			                              	</select>
-                                       	</td>
-                                       	<td>
-											<select required="required" class="form-control dId" onchange='callBlockList("0");' id="districtId0" name="incomeEnhancementDetails[0].districtCode">
-					                            	<option value=""> Select </option>
-												<c:forEach items="${districtList}" var="dlist">
-					                               	<option value="${dlist.districtCode}">${dlist.districtNameEnglish}</option>
-				                               	</c:forEach>
-			                              	</select>
-                                       	</td>
-                                    	<td>
-                                    		<select required="required" class="form-control bId" id="blockId0" name="incomeEnhancementDetails[0].blockCode">
-					                            	<option value="-1"> Select </option>
-			                              	</select>
-			                            </td>  
-                                        <td><input type="text" oninput="validity.valid||(value='');" onKeyPress="if(this.value.length==3) return false;" onkeyup="this.value=this.value.replace(/[^0-9]/g,'');" min="1" required="required" name="incomeEnhancementDetails[0].totalNoOfGpCovered" id="noOfGpCoveredId_0" class="form-control Align-Right"/></td>
-                                       	<td><input type="text" oninput="validity.valid||(value='');" onKeyPress="if(this.value.length==3) return false;" min="1" required="required" name="incomeEnhancementDetails[0].noOfAspirationalGp" id="aspirationalGpId_0" onkeyup="this.value=this.value.replace(/[^0-9]/g,'') ; calculateAspirationalGPs(0)" class="form-control Align-Right"/></td>
-                                       	<td><select required="required" id="yearOne_1" class="form-control" onchange='validateYear("1");' name="incomeEnhancementDetails[0].yearFrom">
-				                            		<option value=""> From Year</option>
-				                               		<option value="2018">2018</option>
-													<option value="2019">2019</option>
-													<option value="2020">2020</option>
-													<option value="2021">2021</option>
-													<option value="2022">2022</option>
-			                              	</select>
-                                       	</td>
-                                       	<td><select required="required" id="yearTwo_1" onchange='validateYear("1");' class="form-control" name="incomeEnhancementDetails[0].yearTo">
-					                            	<option value=""> To Year </option>
-					                               	<option value="2018">2018</option>
-													<option value="2019">2019</option>
-													<option value="2020">2020</option>
-													<option value="2021">2021</option>
-													<option value="2022">2022</option>
-			                              	</select>
-                                       	</td>
-	                                       	<td><input type="text" oninput="validity.valid||(value='');" onKeyPress="if(this.value.length==7) return false;" min="1" name="incomeEnhancementDetails[0].totalCostOfProject" onkeyup="this.value=this.value.replace(/[^0-9]/g,'');" required="required" class="form-control Align-Right"/></td>
-	                                        <td><input type="text" oninput="validity.valid||(value='');" onKeyPress="if(this.value.length==5) return false;" min="1" max="50000" id="fundsName" name="incomeEnhancementDetails[0].fundsRequired" onkeyup="this.value=this.value.replace(/[^0-9]/g,'');" required="required" class="form-control Align-Right Align-Right"/></td>
-	                                        <td><input type="text" name="incomeEnhancementDetails[0].briefAboutActivity" onkeyup="this.value=this.value.replace(/[^a-zA-Z0-9 ]/g,'');" required="required" maxlength="1000" class="form-control"/></td>
-	                                       	<td><input type="file" name="incomeEnhancementDetails[0].file"/></td>
-	                                       	<td><input type="checkbox" name="incomeEnhancementDetails[0].planApprovedByDpc"  class="form-control"/></td>
-	                                       	<td><input type="button" value="Delete" class="btn" onclick='toDelete("${incomeEnhancementDetails.id}","${incomeEnhancementDetails.fileLocation}","${incomeEnhancementDetails.fileName}");'/></td>
-                                 </tr>
-                                       	<input type="hidden" name="setBlockId" />
-                           </c:if>
-                        <c:if test="${not empty dbActivitiesList}">
-                           <c:forEach items="${dbActivitiesList.incomeEnhancementDetails}" var="dblist" varStatus="count">
-                                    <tr>
-                                       	<td>${count.count}</td>
-                                       	<td><input name="incomeEnhancementDetails[${count.index}].activtyName" id="activityNameId" value="${dblist.activtyName}" required="required" onkeyup="this.value=this.value.replace(/[^a-zA-Z ]/,'');" maxlength="200" type="text" class="form-control"/></td>
-                                       	<%-- <td>
+												<td><select required="required" class="form-control"
+													name="incomeEnhancementDetails[0].fundSourceCode">
+														<option value="" style="color:#2196F3;">Select Scheme</option>
+														<c:forEach items="${schemeMasterList}" var="obj">
+															<option value="${obj.schemeId}">${obj.schemeName}</option>
+														</c:forEach>
+												</select></td>
+												<td><select required="required"
+													class="form-control dId" onchange='callBlockList("0");'
+													id="districtId0"
+													name="incomeEnhancementDetails[0].districtCode">
+														<option value="" style="color:#2196F3;">Select District</option>
+														<c:forEach items="${districtList}" var="dlist">
+															<option value="${dlist.districtCode}">${dlist.districtNameEnglish}</option>
+														</c:forEach>
+												</select></td>
+												<td><select required="required"
+													class="form-control bId" id="blockId0"
+													name="incomeEnhancementDetails[0].blockCode">
+														<option value="-1" style="color:#2196F3;">Select Block</option>
+												</select></td>
+												<td><input type="text"
+													oninput="validity.valid||(value='');" placeholder="Total GP's covered"
+													onKeyPress="if(this.value.length==3) return false;"
+													onkeyup="this.value=this.value.replace(/[^0-9]/g,'');"
+													min="1" required="required"
+													name="incomeEnhancementDetails[0].totalNoOfGpCovered"
+													id="noOfGpCoveredId_0" class="form-control Align-Right" /></td>
+												<td><input type="text" placeholder="Total Aspirational GP"
+													oninput="validity.valid||(value='');"
+													onKeyPress="if(this.value.length==3) return false;" min="1"
+													required="required"
+													name="incomeEnhancementDetails[0].noOfAspirationalGp"
+													id="aspirationalGpId_0"
+													onkeyup="this.value=this.value.replace(/[^0-9]/g,'') ; calculateAspirationalGPs(0)"
+													class="form-control Align-Right" /></td>
+												<td><select required="required" id="yearOne_1"
+													class="form-control" onchange='validateYear("1");'
+													name="incomeEnhancementDetails[0].yearFrom">
+														<option value="" style="color:#2196F3;">From Year</option>
+														<option value="2018">2018</option>
+														<option value="2019">2019</option>
+														<option value="2020">2020</option>
+														<option value="2021">2021</option>
+														<option value="2022">2022</option>
+												</select></td>
+												<td><select required="required" id="yearTwo_1"
+													onchange='validateYear("1");' class="form-control"
+													name="incomeEnhancementDetails[0].yearTo">
+														<option value="" style="color:#2196F3;">To Year</option>
+														<option value="2018">2018</option>
+														<option value="2019">2019</option>
+														<option value="2020">2020</option>
+														<option value="2021">2021</option>
+														<option value="2022">2022</option>
+												</select></td>
+												<td><input type="text"
+													oninput="validity.valid||(value='');" placeholder="Total Project Cost"
+													onKeyPress="if(this.value.length==7) return false;" min="1"
+													name="incomeEnhancementDetails[0].totalCostOfProject"
+													onkeyup="this.value=this.value.replace(/[^0-9]/g,'');"
+													required="required" class="form-control Align-Right" />
+												</td>
+												<td><input type="text" placeholder="Fund Proposed"
+													oninput="validity.valid||(value='');"
+													onKeyPress="if(this.value.length==5) return false;" min="1"
+													max="50000" id="fundsName"
+													name="incomeEnhancementDetails[0].fundsRequired"
+													onkeyup="this.value=this.value.replace(/[^0-9]/g,'');"
+													required="required"
+													class="form-control Align-Right Align-Right" /></td>
+												<td><input type="text" placeholder="Brief About Activity"
+													name="incomeEnhancementDetails[0].briefAboutActivity"
+													onkeyup="this.value=this.value.replace(/[^a-zA-Z0-9 ]/g,'');"
+													required="required" maxlength="1000" class="form-control" /></td>
+												<td><input type="file"
+													name="incomeEnhancementDetails[0].file" /></td>
+												<td><label class="container"><input type="checkbox" 
+													name="incomeEnhancementDetails[0].planApprovedByDpc"
+													 /><span class="checkmark"></span></label></td>
+												<%-- <td><input type="button" value="Delete" class="btn" onclick='toDelete("${incomeEnhancementDetails.id}","${incomeEnhancementDetails.fileLocation}","${incomeEnhancementDetails.fileName}");'/></td> --%>
+												<td><a id="deleteButtn" class="not-active"
+													href='javascript:toDelete("${incomeEnhancementDetails.id}","${incomeEnhancementDetails.fileLocation}","${incomeEnhancementDetails.fileName}");'>
+														<span class="glyphicon glyphicon-trash"></span>
+												</a></td>
+											</tr>
+											<input type="hidden" name="setBlockId" />
+										</c:if>
+										<c:if test="${not empty dbActivitiesList}">
+											<c:forEach
+												items="${dbActivitiesList.incomeEnhancementDetails}"
+												var="dblist" varStatus="count">
+												<tr>
+													<td>${count.count}</td>
+													<td><input 
+														name="incomeEnhancementDetails[${count.index}].activtyName"
+														id="activityNameId" value="${dblist.activtyName}"
+														required="required"
+														onkeyup="this.value=this.value.replace(/[^a-zA-Z ]/,'');"
+														maxlength="200" type="text" class="form-control" /></td>
+													<%-- <td>
                                        	
                                        	<c:set value="${dblist.fundSourceType}" var="stype"></c:set>
                                        		<select required="required" class="form-control"  name="incomeEnhancementDetails[${count.index}].fundSourceType">
@@ -360,163 +513,306 @@ function regexValidation(){
 				                                <option value="S" <c:if test="${fn:containsIgnoreCase(stype,'S')}"> selected="selected"</c:if> >Scheme</option>
 			                              	</select>
 			                            </td> --%>
-                                       	<td>
-                                       		<select required="required" class="form-control" name="incomeEnhancementDetails[${count.index}].fundSourceCode">
-		                                       	<c:forEach items="${schemeMasterList}" var="scm">
-		                                       		<c:choose>
-		                                       			<c:when test="${dblist.fundSourceCode == scm.schemeId}">
-		                                       				<option value="${scm.schemeId}" selected="selected">${scm.schemeName}</option>
-		                                       			</c:when>
-		                                       			<c:otherwise>
-		                                       				<option value="${scm.schemeId}">${scm.schemeName}</option>
-		                                       			</c:otherwise>
-		                                       		</c:choose>
-						                         </c:forEach>
-			                              	</select>
-                                       	</td>
-                                       	<td>
-											<select required="required" class="form-control dId" onchange='callBlockList("${count.index}");' id="districtId${count.index}" name="incomeEnhancementDetails[${count.index}].districtCode">
-												<c:forEach items="${districtList}" var="dlist">
-													<c:choose>
-		                                       			<c:when test="${dblist.districtCode == dlist.districtCode}">
-						                               		<option value="${dlist.districtCode}" selected="selected">${dlist.districtNameEnglish}</option>
-						                               	</c:when>
-						                               	<c:otherwise>
-						                               		<option value="${dlist.districtCode}" >${dlist.districtNameEnglish}</option>
-						                               	</c:otherwise>
-						                            </c:choose>
-				                               	</c:forEach>
-				                               	
-			                              	</select>
-                                       	</td>
-                                    	<td>
-                                    		<select required="required" class="form-control bId" id="blockId${count.index}" name="incomeEnhancementDetails[${count.index}].blockCode">
-					                            	<%-- <c:forEach items="${blockFromDb}" var="obj"> --%>
-					                            	<c:forEach items="${dblist.blockListFromDb}" var="obj">
-					                            		<c:choose>
-					                            			<c:when test="${obj.blockCode == dblist.blockCode}">
-					                            				<option value="${obj.blockCode}" selected="selected"> ${obj.blockNameEnglish}</option>
-					                            			</c:when>
-					                            			<c:otherwise>
-					                            				<option value="${obj.blockCode}"> ${obj.blockNameEnglish}</option>
-					                            			</c:otherwise>
-					                            		</c:choose>
-					                            	</c:forEach>
-			                              	</select>
-			                            </td>
-                                        <td><input type="text" oninput="validity.valid||(value='');" min="1" onKeyPress="if(this.value.length==3) return false;" onkeyup="this.value=this.value.replace(/[^0-9]/g,'');" required="required" value="${dblist.totalNoOfGpCovered}" name="incomeEnhancementDetails[${count.index}].totalNoOfGpCovered" id="noOfGpCoveredId_${count.index}" class="form-control Align-Right"/></td>
-                                       	<td><input type="text" oninput="validity.valid||(value='');" min="1" onKeyPress="if(this.value.length==3) return false;" onkeyup="this.value=this.value.replace(/[^0-9]/g,''); calculateAspirationalGPs(${count.index})" required="required" value="${dblist.noOfAspirationalGp}" name="incomeEnhancementDetails[${count.index}].noOfAspirationalGp" id="aspirationalGpId_${count.index}" class="form-control Align-Right"/></td>
-                                       	<td><select required="required" id="yearOne_${count.index}" class="form-control" onchange='validateYear("${count.index}");' name="incomeEnhancementDetails[${count.index}].yearFrom">
-				                            		<option value="${dblist.yearFrom}">${dblist.yearFrom}</option>
-				                               		<option value="2018">2018</option>
-													<option value="2019">2019</option>
-													<option value="2020">2020</option>
-													<option value="2021">2021</option>
-													<option value="2022">2022</option>
-			                              	</select>
-                                       	</td>
-                                       	<td><select required="required" id="yearTwo_${count.index}" onchange='validateYear("${count.index}");' class="form-control" name="incomeEnhancementDetails[${count.index}].yearTo">
-					                            	<option value="${dblist.yearTo}">${dblist.yearTo}</option>
-					                               	<option value="2018">2018</option>
-													<option value="2019">2019</option>
-													<option value="2020">2020</option>
-													<option value="2021">2021</option>
-													<option value="2022">2022</option>
-			                              	</select>
-                                       	</td>
-	                                       	<td><input type="text" oninput="validity.valid||(value='');" onKeyPress="if(this.value.length==7) return false;" min="1" value="${dblist.totalCostOfProject}" onkeyup="this.value=this.value.replace(/[^0-9]/g,'');" name="incomeEnhancementDetails[${count.index}].totalCostOfProject" required="required" class="form-control Align-Right"/></td>
-	                                       <c:set var="totalFundToCalc" value="${totalFundToCalc + dblist.fundsRequired}"></c:set>
-	                                        <td><input type="text" oninput="validity.valid||(value='');" onKeyPress="if(this.value.length==5) return false;" onkeyup="this.value=this.value.replace(/[^0-9]/g,'');" min="1" max="50000" value="${dblist.fundsRequired}" id="fundsName"  name="incomeEnhancementDetails[${count.index}].fundsRequired" required="required" class="form-control Align-Right exclud"/></td>
-	                                        <td><input type="text" value="${dblist.briefAboutActivity}" name="incomeEnhancementDetails[${count.index}].briefAboutActivity" onkeyup="this.value=this.value.replace(/[^a-zA-Z0-9 ]/,'');" required="required" maxlength="1000" class="form-control"/></td>
-	                                       	<td><input type="file" name="incomeEnhancementDetails[${count.index}].file"/>
-	                                       	<button type="button" value="Download File" class="btn bg-grey waves-effect" onclick='showImage("${dblist.fileLocation}","${dblist.fileName}");' />Download File</button></td>
-	                                       	<td><c:choose>
-														<c:when test="${dblist.planApprovedByDpc}">
-															<input type="checkbox" name="incomeEnhancementDetails[${count.index}].planApprovedByDpc"  checked="checked" Class="form-control">
-														</c:when>
-														<c:otherwise>
-															<input type="checkbox" name="incomeEnhancementDetails[${count.index}].planApprovedByDpc"  Class="form-control">
-														</c:otherwise>
-													</c:choose>
-	                                       	</td>
-	                                       	<c:if test="${fn:containsIgnoreCase(dbActivitiesList.userType,'S')}">
-	                                       		<td><input type="button" value="Delete" class="btn bg-red waves-effect" onclick='toDelete("${dblist.incomeEnhancementDetailsId}","${dblist.fileLocation}","${dblist.fileName}");'/></td>
-	                                       	</c:if>
-	                                       	<c:if test="${fn:containsIgnoreCase(dbActivitiesList.userType,'M')}">
-		                                     <td><c:choose>
-														<c:when test="${dblist.isApproved}">
-															<input type="checkbox" name="incomeEnhancementDetails[${count.index}].isApproved"  checked="checked" Class="form-control exclud">
-														</c:when>
-														<c:otherwise>
-															<input type="checkbox" name="incomeEnhancementDetails[${count.index}].isApproved"  Class="form-control exclud">
-														</c:otherwise>
-													</c:choose>
-											</td>
-		                                       	<td><input type="text"  name="incomeEnhancementDetails[${count.index}].remarks" value="${dblist.remarks}" onkeyup="this.value=this.value.replace(/[^a-zA-Z0-9 ]/g,'');" Class="form-control exclud" rows="2" cols="4" maxlength="1000" /></td>
-	                                       	</c:if>
-	                                       	<c:if test="${fn:containsIgnoreCase(dbActivitiesList.userType,'C')}">
-		                                     <td><c:choose>
-														<c:when test="${dblist.isApproved}">
-															<input type="checkbox" name="incomeEnhancementDetails[${count.index}].isApproved"  checked="checked" Class="form-control exclud">
-														</c:when>
-														<c:otherwise>
-															<input type="checkbox" name="incomeEnhancementDetails[${count.index}].isApproved"  Class="form-control exclud">
-														</c:otherwise>
-													</c:choose>
-											</td>
-		                                       	<td><input type="text"  name="incomeEnhancementDetails[${count.index}].remarks" value="${dblist.remarks}" onkeyup="this.value=this.value.replace(/[^a-zA-Z0-9 ]/g,'');" Class="form-control exclud" rows="2" cols="4" maxlength="1000" /></td>
-	                                       	</c:if>
-                                 </tr>
-                                       	<input type="hidden" name="setBlockId" />
-                                        <input type="hidden" name="incomeEnhancementDetails[${count.index}].incomeEnhancementDetailsId" value="${dblist.incomeEnhancementDetailsId}"/>
-                                        <input type="hidden" name="incomeEnhancementDetails[${count.index}].fileName" value="${dblist.fileName}">
-										<input type="hidden" name="incomeEnhancementDetails[${count.index}].fileContentType" value="${dblist.fileContentType}">
-										<input type="hidden" name="incomeEnhancementDetails[${count.index}].fileLocation" value="${dblist.fileLocation}">
-                       </c:forEach>
-                                       		</c:if>
-                                    </tbody>
-                                </table><br><br><br><br><br><br>
-                            </div>
-                            <br/>
-                            <table class="table table-bordered" id="myTable">
-                            		<tr>
-			                            <td>Funds</td>
-			                            <td><input type="text" id="subTotal" value="${totalFundToCalc}" Class="form-control Align-Right" readonly="readonly"></td>
-		                            </tr>
-		                            <tr>
-		                            <td>Additional Requirements</td>
-		                            <c:set var="addtnlReqrmnt" value="${addtnlReqrmnt + dbActivitiesList.additionalRequirement}"></c:set>
-		                             <td><input type="text" oninput="validity.valid||(value='');" onKeyPress="if(this.value.length==7) return false;" onkeyup="this.value=this.value.replace(/[^0-9]/g,'');" value="${dbActivitiesList.additionalRequirement}" min="1" name="additionalRequirement" id="additioinalRequirements" Class="form-control Align-Right exclud" required="required"></td>
-		                            </tr>
-		                            <tr>
-		                            <td>Total Proposed Funds</td>
-		                           <td><input type="text" id="grandTotal" value="${addtnlReqrmnt + totalFundToCalc}" Class="form-control Align-Right" readonly="readonly"></td>
-	                           	</tr>
-	                         </table>
-	                           	<input type="hidden" name="incomeEnhancementId" value="${dbActivitiesList.incomeEnhancementId}" />
-	                           	<input type="hidden" name="isFreeze" id="isFreeze" value="${dbActivitiesList.isFreeze}" />
-	                           	<input type="hidden" name="userType" id="userTypeId" value="${dbActivitiesList.userType}">
-	                            <input type="hidden" name="idToDelete" id="idToDelete" >
-								<input type="hidden" name="path" id="path" > 
-								<input type="hidden" name="dbFileName" id="dbFileName" >
-                              <div class="form-group text-right">
-                                    <button type="submit" id="saveButtn" onclick="$('input,select').prop('disabled', false);" class="btn bg-green waves-effect">SAVE</button>
-                               		<button type="button" id="frzButtn" onclick="toFreeze();" class="btn bg-green waves-effect">FREEZE</button>
-	                                <button type="button" id="unFrzButtn" onclick="toFreeze();" class="btn bg-green waves-effect">UNFREEZE</button>                                	
-                                	<button type="button" id="clearButtn" class="btn bg-light-blue waves-effect reset">CLEAR</button>
-                                	<button type="button" onclick="onClose('home.html?<csrf:token uri='home.html'/>')"  class="btn bg-orange waves-effect">CLOSE</button>
-                               </div>
-                           </form:form>     
-                        </div>
-                    </div>
-                </div>
-                <!-- #END# Task Info -->
-            </div>
-        </div>
-    </section>
-    </html>
+													<td><select required="required" class="form-control"
+														name="incomeEnhancementDetails[${count.index}].fundSourceCode">
+															<c:forEach items="${schemeMasterList}" var="scm">
+																<c:choose>
+																	<c:when test="${dblist.fundSourceCode == scm.schemeId}">
+																		<option value="${scm.schemeId}" selected="selected">${scm.schemeName}</option>
+																	</c:when>
+																	<c:otherwise>
+																		<option value="${scm.schemeId}">${scm.schemeName}</option>
+																	</c:otherwise>
+																</c:choose>
+															</c:forEach>
+													</select></td>
+													<td><select required="required"
+														class="form-control dId"
+														onchange='callBlockList("${count.index}");'
+														id="districtId${count.index}"
+														name="incomeEnhancementDetails[${count.index}].districtCode">
+															<c:forEach items="${districtList}" var="dlist">
+																<c:choose>
+																	<c:when
+																		test="${dblist.districtCode == dlist.districtCode}">
+																		<option value="${dlist.districtCode}"
+																			selected="selected">${dlist.districtNameEnglish}</option>
+																	</c:when>
+																	<c:otherwise>
+																		<option value="${dlist.districtCode}">${dlist.districtNameEnglish}</option>
+																	</c:otherwise>
+																</c:choose>
+															</c:forEach>
+
+													</select></td>
+													<td><select required="required"
+														class="form-control bId" id="blockId${count.index}"
+														name="incomeEnhancementDetails[${count.index}].blockCode">
+															<%-- <c:forEach items="${blockFromDb}" var="obj"> --%>
+															<c:forEach items="${dblist.blockListFromDb}" var="obj">
+																<c:choose>
+																	<c:when test="${obj.blockCode == dblist.blockCode}">
+																		<option value="${obj.blockCode}" selected="selected">
+																			${obj.blockNameEnglish}</option>
+																	</c:when>
+																	<c:otherwise>
+																		<option value="${obj.blockCode}">
+																			${obj.blockNameEnglish}</option>
+																	</c:otherwise>
+																</c:choose>
+															</c:forEach>
+													</select></td>
+													<td><input type="text"
+														oninput="validity.valid||(value='');" min="1"
+														onKeyPress="if(this.value.length==3) return false;"
+														onkeyup="this.value=this.value.replace(/[^0-9]/g,'');"
+														required="required" value="${dblist.totalNoOfGpCovered}"
+														name="incomeEnhancementDetails[${count.index}].totalNoOfGpCovered"
+														id="noOfGpCoveredId_${count.index}"
+														class="form-control Align-Right" /></td>
+													<td><input type="text"
+														oninput="validity.valid||(value='');" min="1"
+														onKeyPress="if(this.value.length==3) return false;"
+														onkeyup="this.value=this.value.replace(/[^0-9]/g,''); calculateAspirationalGPs(${count.index})"
+														required="required" value="${dblist.noOfAspirationalGp}"
+														name="incomeEnhancementDetails[${count.index}].noOfAspirationalGp"
+														id="aspirationalGpId_${count.index}"
+														class="form-control Align-Right" /></td>
+													<td><select required="required"
+														id="yearOne_${count.index}" class="form-control"
+														onchange='validateYear("${count.index}");'
+														name="incomeEnhancementDetails[${count.index}].yearFrom">
+															<option value="${dblist.yearFrom}">${dblist.yearFrom}</option>
+															<option value="2018">2018</option>
+															<option value="2019">2019</option>
+															<option value="2020">2020</option>
+															<option value="2021">2021</option>
+															<option value="2022">2022</option>
+													</select></td>
+													<td><select required="required"
+														id="yearTwo_${count.index}"
+														onchange='validateYear("${count.index}");'
+														class="form-control"
+														name="incomeEnhancementDetails[${count.index}].yearTo">
+															<option value="${dblist.yearTo}">${dblist.yearTo}</option>
+															<option value="2018">2018</option>
+															<option value="2019">2019</option>
+															<option value="2020">2020</option>
+															<option value="2021">2021</option>
+															<option value="2022">2022</option>
+													</select></td>
+													<td><input type="text"
+														oninput="validity.valid||(value='');"
+														onKeyPress="if(this.value.length==7) return false;"
+														min="1" value="${dblist.totalCostOfProject}"
+														onkeyup="this.value=this.value.replace(/[^0-9]/g,'');"
+														name="incomeEnhancementDetails[${count.index}].totalCostOfProject"
+														required="required" class="form-control Align-Right" /></td>
+													<c:set var="totalFundToCalc"
+														value="${totalFundToCalc + dblist.fundsRequired}"></c:set>
+													<td><input type="text"
+														oninput="validity.valid||(value='');"
+														onKeyPress="if(this.value.length==5) return false;"
+														onkeyup="this.value=this.value.replace(/[^0-9]/g,'');"
+														min="1" max="50000" value="${dblist.fundsRequired}"
+														id="fundsName"
+														name="incomeEnhancementDetails[${count.index}].fundsRequired"
+														required="required"
+														class="form-control Align-Right exclud" /></td>
+													<td><input type="text"
+														value="${dblist.briefAboutActivity}"
+														name="incomeEnhancementDetails[${count.index}].briefAboutActivity"
+														onkeyup="this.value=this.value.replace(/[^a-zA-Z0-9 ]/,'');"
+														required="required" maxlength="1000" class="form-control" /></td>
+													<td><input type="file"
+														name="incomeEnhancementDetails[${count.index}].file" /> <%-- <button type="button" value="Download File"
+															class="btn bg-grey waves-effect"
+															onclick='showImage("${dblist.fileLocation}","${dblist.fileName}");'>Download
+															File</button>  --%>
+														<a
+														href='javascript:showImage("${dblist.fileLocation}","${dblist.fileName}");'
+														class="btn btn-info btn-sm"> <span
+															class="glyphicon glyphicon-download-alt"></span> Download
+													</a></td>
+													<td><c:choose>
+															<c:when test="${dblist.planApprovedByDpc}">
+																<label class="container"> <input type="checkbox"
+																	name="incomeEnhancementDetails[${count.index}].planApprovedByDpc"
+																	checked="checked" /> <span
+																	class="checkmark"></span>
+																</label>
+
+															</c:when>
+															<c:otherwise>
+																<label class="container"> <input type="checkbox"
+																	name="incomeEnhancementDetails[${count.index}].planApprovedByDpc"
+																	/> <span class="checkmark"></span>
+																</label>
+															</c:otherwise>
+														</c:choose></td>
+													<c:if
+														test="${fn:containsIgnoreCase(dbActivitiesList.userType,'S')}">
+														<td><%-- <input type="button" value="Delete"
+															class="btn bg-red waves-effect"
+															onclick='toDelete("${dblist.incomeEnhancementDetailsId}","${dblist.fileLocation}","${dblist.fileName}");' /> --%>
+															<a 
+															href='javascript:toDelete("${dblist.incomeEnhancementDetailsId}","${dblist.fileLocation}","${dblist.fileName}");'>
+																<span class="glyphicon glyphicon-trash"></span>
+														</a></td>
+													</c:if>
+													<c:if
+														test="${fn:containsIgnoreCase(dbActivitiesList.userType,'M')}">
+														<td><c:choose>
+																<c:when test="${dblist.isApproved}">
+																	<input type="checkbox"
+																		name="incomeEnhancementDetails[${count.index}].isApproved"
+																		checked="checked" Class="form-control exclud">
+																</c:when>
+																<c:otherwise>
+																	<input type="checkbox"
+																		name="incomeEnhancementDetails[${count.index}].isApproved"
+																		Class="form-control exclud">
+																</c:otherwise>
+															</c:choose></td>
+														<td><input type="text"
+															name="incomeEnhancementDetails[${count.index}].remarks"
+															value="${dblist.remarks}"
+															onkeyup="this.value=this.value.replace(/[^a-zA-Z0-9 ]/g,'');"
+															Class="form-control exclud" rows="2" cols="4"
+															maxlength="1000" /></td>
+													</c:if>
+													<c:if
+														test="${fn:containsIgnoreCase(dbActivitiesList.userType,'C')}">
+														<td><c:choose>
+																<c:when test="${dblist.isApproved}">
+																	<input type="checkbox"
+																		name="incomeEnhancementDetails[${count.index}].isApproved"
+																		checked="checked" Class="form-control exclud">
+																</c:when>
+																<c:otherwise>
+																	<input type="checkbox"
+																		name="incomeEnhancementDetails[${count.index}].isApproved"
+																		Class="form-control exclud">
+																</c:otherwise>
+															</c:choose></td>
+														<td><input type="text"
+															name="incomeEnhancementDetails[${count.index}].remarks"
+															value="${dblist.remarks}"
+															onkeyup="this.value=this.value.replace(/[^a-zA-Z0-9 ]/g,'');"
+															Class="form-control exclud" rows="2" cols="4"
+															maxlength="1000" /></td>
+													</c:if>
+												</tr>
+												<input type="hidden" name="setBlockId" />
+												<input type="hidden"
+													name="incomeEnhancementDetails[${count.index}].incomeEnhancementDetailsId"
+													value="${dblist.incomeEnhancementDetailsId}" />
+												<input type="hidden"
+													name="incomeEnhancementDetails[${count.index}].fileName"
+													value="${dblist.fileName}">
+												<input type="hidden"
+													name="incomeEnhancementDetails[${count.index}].fileContentType"
+													value="${dblist.fileContentType}">
+												<input type="hidden"
+													name="incomeEnhancementDetails[${count.index}].fileLocation"
+													value="${dblist.fileLocation}">
+											</c:forEach>
+										</c:if>
+									</tbody>
+								</table>
+								
+							</div>
+							<br/>
+							<br/>
+							<c:if
+								test="${fn:containsIgnoreCase(dbActivitiesList.userType,'S')}">
+								<button type="button" id="addNewRowBtn" class="btn bg-green"
+									onclick="addNewRow()">Add New Row</button>
+							</c:if>
+							<br />
+							<br/>
+							<br/>
+							<table class="table table-bordered" id="myTable">
+								<tr>
+									<td>Funds</td>
+									<td><input type="text" id="subTotal"
+										value="${totalFundToCalc}" Class="form-control Align-Right"
+										readonly="readonly"></td>
+								</tr>
+								<tr>
+									<td>Additional Requirements</td>
+									<c:set var="addtnlReqrmnt"
+										value="${addtnlReqrmnt + dbActivitiesList.additionalRequirement}"></c:set>
+									<td><input type="text"
+										oninput="validity.valid||(value='');"
+										onKeyPress="if(this.value.length==7) return false;"
+										onkeyup="this.value=this.value.replace(/[^0-9]/g,'');"
+										value="${dbActivitiesList.additionalRequirement}" min="1"
+										name="additionalRequirement" id="additioinalRequirements"
+										Class="form-control Align-Right exclud" required="required"></td>
+								</tr>
+								<tr>
+									<td>Total Proposed Funds</td>
+									<td><input type="text" id="grandTotal"
+										value="${addtnlReqrmnt + totalFundToCalc}"
+										Class="form-control Align-Right" readonly="readonly"></td>
+								</tr>
+							</table>
+							<input type="hidden" name="incomeEnhancementId"
+								value="${dbActivitiesList.incomeEnhancementId}" />
+							<input type="hidden" name="isFreeze" id="isFreeze"
+								value="${dbActivitiesList.isFreeze}" />
+							<input type="hidden" name="userType" id="userTypeId"
+								value="${dbActivitiesList.userType}">
+							<input type="hidden" name="idToDelete" id="idToDelete">
+							<input type="hidden" name="path" id="path">
+							<input type="hidden" name="dbFileName" id="dbFileName">
+							<div class="form-group text-right">
+								
+									<button type="submit" id="saveButtn"
+										onclick="$('input,select').prop('disabled', false);"
+										class="btn bg-green waves-effect">SAVE</button>
+									<button type="button" id="frzButtn" onclick="toFreeze();"
+										class="btn bg-green waves-effect">FREEZE</button>
+									<button type="button" id="unFrzButtn" onclick="toFreeze();"
+										class="btn bg-green waves-effect">UNFREEZE</button>
+									<button type="button" id="clearButtn"
+										class="btn bg-light-blue waves-effect reset">CLEAR</button>
+								
+								<button type="button"
+									onclick="onClose('home.html?<csrf:token uri='home.html'/>')"
+									class="btn bg-orange waves-effect">CLOSE</button>
+							</div>
+						</form:form>
+					</div>
+				</div>
+			</div>
+			<!-- #END# Task Info -->
+		</div>
+	</div>
+</section>
+</html>
 <style>
-.Align-Right{
-			text-align: right;
-              }
+.Align-Right {
+	text-align: right;
+}
 </style>
+<script>
+var heightDynamic=450;
+<c:if test="${empty dbActivitiesList}">
+	heightDynamic=150;
+</c:if>
+$('#records').slimScroll({
+    height: heightDynamic,
+    width:'auto',
+    railVisible: true,
+    alwaysVisible: true,
+}); 
+$('#records').slimscrollH({
+	position: 'bottom',
+	height: 'auto',
+	width:'auto',
+	railVisible: true,
+    alwaysVisible: true,
+}); 
+</script>

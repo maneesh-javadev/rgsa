@@ -1,11 +1,8 @@
-$(document).ready(function() {
-	calculateGrandTotal();
-});
-
 $('document').ready(function() {
 	$(".reset").bind("click", function() {
 		$("input[type=text]").val('');
 	});
+	calculateTotalFund();
 	calculateGrandTotal();
 });
 
@@ -112,14 +109,17 @@ function validateMonth(obj) {
 
 function calculateGrandTotal() {
 	var grand_total = 0;
-	if (document.getElementById("additionalRequirementId").value > 0.25 * document
-			.getElementById("total_fund").value) {
-		alert("Additional Requirement should be less than or equal to 25% of Total Fund");
-		document.getElementById("additionalRequirementId").value = '';
-		document.getElementById("grandTotalId").value = '';
-	} else {
-		document.getElementById("grandTotalId").value = +document
-				.getElementById("additionalRequirementId").value
-				+ +document.getElementById("total_fund").value;
+	if($('#additionalRequirementId').val() != ''){
+		if (document.getElementById("additionalRequirementId").value > 0.25 * document
+				.getElementById("total_fund").value) {
+			alert("Additional Requirement should be less than or equal to 25% of Total Fund");
+			document.getElementById("additionalRequirementId").value = '';
+			document.getElementById("grandTotalId").value = '';
+		} else {
+			document.getElementById("grandTotalId").value = +document
+					.getElementById("additionalRequirementId").value
+					+ +document.getElementById("total_fund").value;
+		}
 	}
+	
 };

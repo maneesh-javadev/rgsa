@@ -112,6 +112,7 @@ public class CapacityBuildingOneController {
 		return map;
 	}
 	
+	@RequestMapping(value="saveCapacityBuildingActivityAndDetails",method=RequestMethod.POST)
 	private String saveCapacityBuildingActivityAndDetails(@RequestBody final CapacityBuildingActivity capacityBuildingActivity,RedirectAttributes re) {
 		capacityBuildingService.saveCapacityBuildingActivityAndDetails(capacityBuildingActivity);
 		re.addFlashAttribute(Message.SUCCESS_KEY, Message.SAVE_SUCCESS);

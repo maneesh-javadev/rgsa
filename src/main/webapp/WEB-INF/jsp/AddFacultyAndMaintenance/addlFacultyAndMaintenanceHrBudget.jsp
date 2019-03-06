@@ -150,6 +150,14 @@ function domainValidation(obj){
 		$('#noOfExperts_'+obj).val('');
 	}
 }
+
+function validateDistricts(){
+	if(+$('#districtSupportedId').val() > +$('#districtsInState').val()){
+		alert('District supported should be less than or equal to total districts in state : ' + $('#districtsInState').val());
+		$('#districtSupportedId').val('');
+		$('#districtSupportedId').focus();
+	}
+}
 </script>
 
 <section class="content">
@@ -174,11 +182,12 @@ function domainValidation(obj){
 										</label>
 									</div>
 
-									<div class="col-sm-4">
+										<div class="col-sm-4">
 									<div class="form-line">
 										<form:input id="districtSupportedId" path="districtsSupported" class="form-control Align-Right"
-											onkeypress="return isNumber(event)" maxlength="7"/></div>
+											onkeypress="return isNumber(event)" onkeyup="validateDistricts()" maxlength="7"/></div>
 									</div>
+									<input type="hidden" id="districtsInState" value="${DISTRICTS_IN_STATE}">
 								</div>
 							</div>
 
@@ -442,46 +451,84 @@ function domainValidation(obj){
 									</div>
 								</div>
 							</div>
-							<div class="row">
-							 
-							 <div class="col-lg-4">
-							 	<button type="button"
-								onclick="onClose('viewPlanDetails.html?<csrf:token uri='viewPlanDetails.html'/>&stateCode=${institueInfraHrActivity.stateCode}')"
-								class="btn bg-orange waves-effect">
-								<i class="fa fa-arrow-left" aria-hidden="true"></i> <spring:message
-										code="Label.BACK" htmlEscape="true" />
-							</button>
-							 </div>
-							 
-							 <div class="col-lg-8 text-right">
-								<c:if test="${ISFREEZE eq false}">
-									<button type="submit" class="btn bg-green waves-effect" id="save">
-										<spring:message code="Label.SAVE" htmlEscape="true" />
-									</button>
-	
-									<button type="button" class="freeze btn bg-green waves-effect"
-										 onclick='freezeAndUnfreeze("freeze")' >
-										<spring:message code="Label.FREEZE" htmlEscape="true" />
-									</button>
-										<button type="button" onclick="onClear(this)"
-										class="btn bg-light-blue waves-effect" id="clear">
-										<spring:message code="Label.CLEAR" htmlEscape="true" />
-									</button>
-									</c:if>
-									
-									<c:if test="${ISFREEZE eq true}">
-									<button type="button" class="unfreeze btn bg-green waves-effect"
-										onclick='freezeAndUnfreeze("unfreeze")'>
-										<spring:message code="Label.UNFREEZE" htmlEscape="true" />
-									</button>
+							<div class="row clearfix">
+							<c:choose>
+							 <c:when test="${USER_TYPE eq 'S' }">
+							 <div class="col-lg-12 text-right">
+							<c:if test="${ISFREEZE eq false}">
+							<c:if test="${Plan_Status eq true}">
+								<button type="submit" class="btn bg-green waves-effect" id="save">
+									<spring:message code="Label.SAVE" htmlEscape="true" />
+								</button>
+
+								<button type="button" class="freeze btn bg-green waves-effect"
+									 onclick='freezeAndUnfreeze("freeze")' >
+									<spring:message code="Label.FREEZE" htmlEscape="true" />
+								</button>
+									<button type="button" onclick="onClear(this)"
+									class="btn bg-light-blue waves-effect" id="clear">
+									<spring:message code="Label.CLEAR" htmlEscape="true" />
+								</button>
+								</c:if>
 								</c:if>
 								
-								<button type="button" onclick="onClose('home.html?<csrf:token uri='home.html'/>');" class="btn bg-orange waves-effect">
+								<c:if test="${ISFREEZE eq true}">
+								<c:if test="${Plan_Status eq true}">
+								<button type="button" class="unfreeze btn bg-green waves-effect"
+									onclick='freezeAndUnfreeze("unfreeze")'>
+									<spring:message code="Label.UNFREEZE" htmlEscape="true" />
+								</button>
+							</c:if>
+							</c:if>
+								<button type="button" onclick="onClose('home.html?<csrf:token uri='home.html'/>')" class="btn bg-orange waves-effect">
 									<spring:message code="Label.CLOSE" htmlEscape="true" />
 								</button>
-							</div> 
-							
-							
+
+							</div>
+							 </c:when>
+							 <c:otherwise>
+							  <div class="col-lg-4">
+									<button type="button"
+										onclick="onClose('viewPlanDetails.html?<csrf:token uri='viewPlanDetails.html'/>&stateCode=${institueInfraHrActivity.stateCode}')"
+										class="btn bg-orange waves-effect">
+										<i class="fa fa-arrow-left" aria-hidden="true"></i>
+										<spring:message code="Label.BACK" htmlEscape="true" />
+									</button>
+								</div>
+							 
+							 <div class="col-lg-8 text-right">
+							<c:if test="${ISFREEZE eq false}">
+							<c:if test="${Plan_Status eq true}">
+								<button type="submit" class="btn bg-green waves-effect" id="save">
+									<spring:message code="Label.SAVE" htmlEscape="true" />
+								</button>
+
+								<button type="button" class="freeze btn bg-green waves-effect"
+									 onclick='freezeAndUnfreeze("freeze")' >
+									<spring:message code="Label.FREEZE" htmlEscape="true" />
+								</button>
+									<button type="button" onclick="onClear(this)"
+									class="btn bg-light-blue waves-effect" id="clear">
+									<spring:message code="Label.CLEAR" htmlEscape="true" />
+								</button>
+								</c:if>
+								</c:if>
+								
+								<c:if test="${ISFREEZE eq true}">
+								<c:if test="${Plan_Status eq true}">
+								<button type="button" class="unfreeze btn bg-green waves-effect"
+									onclick='freezeAndUnfreeze("unfreeze")'>
+									<spring:message code="Label.UNFREEZE" htmlEscape="true" />
+								</button>
+							</c:if>
+							</c:if>
+								<button type="button" onclick="onClose('home.html?<csrf:token uri='home.html'/>')" class="btn bg-orange waves-effect">
+									<spring:message code="Label.CLOSE" htmlEscape="true" />
+								</button>
+
+							</div>
+							 </c:otherwise>
+							 </c:choose>
 							</div>
 							
 							<input type="hidden" name="dbFileName" id="dbFileName">

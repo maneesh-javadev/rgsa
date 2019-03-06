@@ -46,7 +46,6 @@
 
 									<table class="table table-hover dashboard-task-infos"
 										id="mytable">
-
 										<thead>
 											<tr>
 												<th>

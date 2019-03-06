@@ -137,12 +137,19 @@ public class IncomeEnhancementController {
       		flag= false;}
         model.addAttribute("Plan_Status", flag);
       	}
-        
+ 		}
 		model.addAttribute("schemeMasterList", enhancementService.schemeMasterList());
 		model.addAttribute("districtList", lgdService.getAllDistrictBasedOnState(userPreference.getStateCode()));
 		model.addAttribute("STATE_CODE", userPreference.getStateCode());
+		
+		if(dbActivitiesList!=null && !dbActivitiesList.isEmpty())
+		{
 		model.addAttribute("dbActivitiesList", dbActivitiesList.get(0));
- 		}
+		}
+		else {
+			model.addAttribute("dbActivitiesList", dbActivitiesList);
+		}
+ 		
 		return INCOME_ENHANCEMENT_PROJECT;
 
 	}

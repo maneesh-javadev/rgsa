@@ -10,11 +10,15 @@
 	<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/planSubmittedByStates/planController.js"></script>
 	<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/planSubmittedByStates/planStateDetailsService.js"></script>
 <script type="text/javascript">
+var statusId='${statusId}';
+//alert(statusId);
 $(document).ready(function() { 
-	if(${msgApproved}){
+	if('${msgApproved}'){
 		alert("PLAN APPROVED SUCCESSFULLY")
 	}
 })
+
+
 </script>
 </head>
 <body>

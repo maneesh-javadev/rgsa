@@ -165,7 +165,7 @@ function calculateGrandTotal(){
 											<tr>
 												<td colspan="4"><strong><spring:message code="Label.AdditionalRequirement" htmlEscape="true" /> (SPRC + DPRC)</strong></td>
 												<td>
-													<input type="text" restrict-input="{type: 'digitsOnly'}" class="form-control" data-ng-readonly="institutionalInfraActivityPlan.isFreeze || trainingInstituteTypeId == 4" data-ng-model="institutionalInfraActivityPlan.additionalRequirement" placeholder=" 25% of Grand Total cost " id="additionalRequirementId" data-ng-keyup="validateAdditionalRequirement()" maxlength="8" style="text-align:right;"/>
+													<input type="text" restrict-input="{type: 'digitsOnly'}" class="form-control" data-ng-readonly="institutionalInfraActivityPlan.isFreeze" data-ng-model="institutionalInfraActivityPlan.additionalRequirement" placeholder=" 25% of Grand Total cost " id="additionalRequirementId" data-ng-keyup="validateAdditionalRequirement()" maxlength="8" style="text-align:right;"/>
 													<!-- <input type="text" restrict-input="{type: 'digitsOnly'}" class="form-control" data-ng-show="institutionalInfraActivityPlan.isFreeze || trainingInstituteTypeId == 4" data-ng-model="institutionalInfraActivityPlan.additionalRequirement" placeholder=" 25% of Grand Total cost " readonly="readonly" id="additionalRequirementId" style="text-align:right;"/> -->
 												</td>
 											</tr>

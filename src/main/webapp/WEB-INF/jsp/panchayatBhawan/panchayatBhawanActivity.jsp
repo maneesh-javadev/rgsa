@@ -189,8 +189,8 @@ function calculateTotal(obj){
 														<input type="text" class="form-control" data-ng-show="panchayatBhawanActivity.status == 'F'" ng-model="panchayatBhawanActivity.panchatayBhawanActivityDetails[$index].unitCost" style="text-align:right;" disabled="disabled"/>
 														</td>
 														<td>
-														<input type="text" class="form-control" data-ng-show="panchayatBhawanActivity.status != 'F'" onkeypress="return isNumber(event)" ng-model="panchayatBhawanActivity.panchatayBhawanActivityDetails[$index].funds" style="text-align:right;"/>
-														<input type="text" class="form-control" data-ng-show="panchayatBhawanActivity.status == 'F'" ng-model="panchayatBhawanActivity.panchatayBhawanActivityDetails[$index].funds" style="text-align:right;" disabled="disabled"/>
+														
+														<input type="text" class="form-control" ng-model="panchayatBhawanActivity.panchatayBhawanActivityDetails[$index].funds" style="text-align:right;" disabled="disabled"/>
 														
 														</td>
 														<td  data-ng-if="userType == 'M' || userType == 'C'" align="center">
@@ -225,10 +225,12 @@ function calculateTotal(obj){
 									   	<div class="form-group text-right ex1">
 									   	    <button data-ng-show="panchayatBhawanActivity.status == 'F'" data-ng-click="saveData('S')" type="button" class="btn bg-green waves-effect" disabled="disabled"><spring:message code="Label.SAVE" htmlEscape="true"/></button> 
 									   		<button type="button" data-ng-show="panchayatBhawanActivity.status != 'F'" ng-click="saveData('S')" class="btn bg-green waves-effect"><spring:message code="Label.SAVE" htmlEscape="true" /></button>
-									   		<button data-ng-show="panchayatBhawanActivity.status != 'F' " data-ng-click="saveData('F')" type="button" class="btn bg-green waves-effect"><spring:message code="Label.FREEZE" htmlEscape="true" /></button>
-								       <button data-ng-show="panchayatBhawanActivity.status == 'F'" type="button" data-ng-click="saveData('UF')" class="btn bg-green waves-effect">
+									   		
+									   		<button data-ng-show=" panchayatBhawanActivity.status != undefined  && panchayatBhawanActivity.status != 'F' " data-ng-click="saveData('F')" type="button" class="btn bg-green waves-effect"><spring:message code="Label.FREEZE" htmlEscape="true" /></button>
+								       		<button data-ng-show=" panchayatBhawanActivity.status == 'F'" type="button" data-ng-click="saveData('UF')" class="btn bg-green waves-effect">
 									      <spring:message code="Label.UNFREEZE" htmlEscape="true" />
 								       </button>
+								      
 			 						   		<button type="button" data-ng-show="panchayatBhawanActivity.status == 'F'"  class="btn bg-light-blue waves-effect" disabled="disabled">
 									   			<spring:message code="Label.CLEAR" htmlEscape="true" />
 									   		</button>

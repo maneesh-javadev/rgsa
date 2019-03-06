@@ -147,6 +147,7 @@ public class AdditionalfacultyAndMaintHrBudgetController {
       	}
 	      model.addAttribute("Plan_Status", flag);
 		model.addAttribute("USER_TYPE", userPreference.getUserType());
+		model.addAttribute("DISTRICTS_IN_STATE", lgdService.getAllDistrictBasedOnState(userPreference.getStateCode()).size());
 //---------------------------------- code for cec ----------------------------------------------	
 		if(userPreference.getUserType().equalsIgnoreCase("C")){
 			List<InstitueInfraHrActivity> institueInfraHrActivityState=new ArrayList<>();
@@ -175,6 +176,7 @@ public class AdditionalfacultyAndMaintHrBudgetController {
 			model.addAttribute("SELECTED_DISTRICT_IN_MOPR", lgdService.getDistrictDetails(userPreference.getStateCode(), tIWiseProposedDomainExpertsMopr.get(3).getDistrictCode()));
 			return ADD_FACULTY_MAINTENANCE_CEC;
 		}else{
+			
 		return ADD_FACULTY_MAINTENANCE;
 		}
 	}
