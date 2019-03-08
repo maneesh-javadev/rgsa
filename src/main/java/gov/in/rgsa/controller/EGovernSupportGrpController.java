@@ -59,6 +59,7 @@ public class EGovernSupportGrpController {
 		int total_fund=0;
 		model.addAttribute("LIST_OF_POST_LEVEL", eGovernanceSupportService.fetchPostLevel());
 		model.addAttribute("USER_TYPE", userPreference.getUserType().charAt(0));
+		model.addAttribute("STATE_CODE", userPreference.getStateCode());
 		List<EGovSupportActivity> eGovActivity = new ArrayList<EGovSupportActivity>();
 		List<EGovSupportActivityDetails> eGovActivityDetails = new ArrayList<EGovSupportActivityDetails>();
 		eGovActivity=eGovernanceSupportService.fetchEGovActivity(userPreference.getUserType().charAt(0));

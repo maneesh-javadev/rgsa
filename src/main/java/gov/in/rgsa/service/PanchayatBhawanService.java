@@ -40,5 +40,5 @@ public interface PanchayatBhawanService{
 	
 	public List<PanchayatBhawanProposedInfo> fetchPanchayatBhawanProposedGPsList(Integer activityDetailsId);
 
-	public List<QprPanchayatBhawan> fetchDataAccordingToQuator(Integer quatorId,Integer panchayatBhawanActvityId,Integer districtCode);
+	public List<QprPanchayatBhawan> fetchDataAccordingToQuator(Integer quatorId,Integer panchayatBhawanActivityId,Integer districtCode);
 }

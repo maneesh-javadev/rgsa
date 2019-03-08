@@ -56,6 +56,7 @@ public class PanchayatBhawanController {
 	{
 		System.out.println("panchayatbhawan...>!");
 		userPreference.setMenuId(menuId);
+		model.addAttribute("STATE_CODE", userPreference.getStateCode());
 		if(userPreference.getUserType().equalsIgnoreCase("C")){
 		return PANCHAYAT_BHAWAN_CEC;
 		}else{
@@ -72,7 +73,6 @@ public class PanchayatBhawanController {
 	      		flag= false;
 	      	}
 		      model.addAttribute("Plan_Status", flag);
-		      model.addAttribute("STATE_CODE", userPreference.getStateCode());
 			return PANCHAYAT_BHAWAN;
 		}
 		else if(status.equals("create")) {

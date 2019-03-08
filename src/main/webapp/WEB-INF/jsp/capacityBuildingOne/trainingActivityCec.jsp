@@ -46,6 +46,7 @@
 
 									<table class="table table-hover dashboard-task-infos"
 										id="mytable">
+
 										<thead>
 											<tr>
 												<th>
@@ -158,7 +159,7 @@
 														</strong>
 													</div>
 													<input type="text" class="form-control"
-													data-ng-model="cecData.additionalRequirement"
+													data-ng-model="cecData.additionalRequirement" data-ng-change="calculateAdditionalRequirment()"
 													placeholder=""
 													style="text-align: right; border: none; border-color: transparent;" />
 												</td>

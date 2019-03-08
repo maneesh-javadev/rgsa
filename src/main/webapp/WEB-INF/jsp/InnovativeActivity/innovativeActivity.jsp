@@ -432,7 +432,18 @@ function validateYear(index){
 									</tr>
 							</table>
 						</div>
+						<c:if test="${sessionScope['scopedTarget.userPreference'].userType eq 'M'}">
+                        <div class="col-md-4  text-left"  style="margin-bottom: 5px">
+								&nbsp;&nbsp;<button type="button"
+									onclick="onClose('viewPlanDetails.html?<csrf:token uri='viewPlanDetails.html'/>&stateCode=${STATE_CODE}')"
+									class="btn bg-orange waves-effect">
+									<i class="fa fa-arrow-left" aria-hidden="true"></i>
+									<spring:message code="Label.BACK" htmlEscape="true" />
+								</button><br>
+							</div>
+							</c:if>
 						<div class="form-group text-right">
+						 <c:if test="${Plan_Status eq true}"> 
 						<c:if test="${innovativeAcitivityList[0].isFreeze == true}">
 							<button type="submit" id="save" disabled="disabled" class="btn bg-green waves-effect">
 								<spring:message text="SAVE" htmlEscape="true" />
@@ -461,6 +472,7 @@ function validateYear(index){
 								<spring:message code="Label.CLEAR" htmlEscape="true" />
 							</button>
 						</c:if>
+						</c:if>
 							<c:if test="${ not empty innovativeAcitivityList}">
 							<button type="button"
 								onclick="onClose('home.html?<csrf:token uri='home.html'/>')"
@@ -471,18 +483,20 @@ function validateYear(index){
 						</div>
 						<c:if test="${empty innovativeAcitivityList}">
 						<div class="form-group text-right">
+						 <c:if test="${Plan_Status eq true}"> 
 						<button type="submit" id="save" class="btn bg-green waves-effect">
 								<spring:message text="SAVE" htmlEscape="true" />
 							</button>
- 						
-						<button type="button" id="freeze"  class="btn bg-green waves-effect">
+ 					
+						<%-- <button type="button" id="freeze"  class="btn bg-green waves-effect">
 								<spring:message code="Label.FREEZE" text="Freeze" htmlEscape="true" />
-							</button>
+							</button> --%>
 							
 							<button type="button" id="clear"  
 								class="btn bg-light-blue waves-effect">
 								<spring:message code="Label.CLEAR" htmlEscape="true" />
 							</button>
+							</c:if>
 							<button type="button"
 								onclick="onClose('home.html?<csrf:token uri='home.html'/>')"
 								class="btn bg-orange waves-effect">

@@ -105,7 +105,7 @@ public class DistanceLearningFacilityController {
 	
 	@ResponseBody
 	@RequestMapping(value="getOnLoadData", method = RequestMethod.GET, produces=MediaType.APPLICATION_JSON_VALUE)
-	private Map<String, Object> getPanchayatBhawanActivity() {
+	private Map<String, Object> getPanchayatBhawanActivity(Model model) {
 		Map<String, Object> map=new HashMap<>();
 		if(userPreference.getUserType().equalsIgnoreCase("C")){
 			List<SatcomActivity> satcomActivityState=new ArrayList<>();
@@ -130,6 +130,7 @@ public class DistanceLearningFacilityController {
 			map.put("SATCOME_ACTIVITY_DETAILS", activities.get(0));
 		}
 		map.put("userType", userPreference.getUserType());
+		model.addAttribute("STATE_CODE", userPreference.getStateCode());
 		return map;
 	}
 	

@@ -71,6 +71,8 @@ function toDelete(idToDelete){
 	function freezeAndUnfreeze(obj){
 		if(obj == "unfreeze"){
 			$('.activedrop').attr('disabled',false);
+			
+			$('.active123').attr('disabled',false);
 		}
 		document.getElementById("dbFileName").value = obj;
 		document.IecName.method = "post";
@@ -181,7 +183,7 @@ function toDelete(idToDelete){
 														oninput="setCustomValidity('')"  onkeypress="return isNumber(event)" max="99999999"  readonly="readonly" /></td>
 														<c:if test="${sessionScope['scopedTarget.userPreference'].userType eq 'M'}">
 														<c:choose>
-														<c:when test="${iecActivityDetails.isApproved eq true}"><td><input type ="checkbox" name="iecActivity.iecActivityDetails[${count.index}].isApproved" checked="checked" readonly="readonly"/></td></c:when>
+														<c:when test="${iecActivityDetails.isApproved eq true}"><td><input type ="checkbox" name="iecActivity.iecActivityDetails[${count.index}].isApproved" Class=" active123 " checked="checked"  disabled="disabled"/></td></c:when>
 														<c:otherwise><td><input type ="checkbox" name="iecActivity.iecActivityDetails[${count.index}].isApproved" readonly="readonly"/></td></c:otherwise>
 														</c:choose>
 														
@@ -291,8 +293,20 @@ function toDelete(idToDelete){
 							</div>
 
 						</div>
+						<c:if test="${sessionScope['scopedTarget.userPreference'].userType eq 'M'}">
+                        <div class="col-md-4  text-left"  style="margin-bottom: 5px">
+								&nbsp;&nbsp;<button type="button"
+									onclick="onClose('viewPlanDetails.html?<csrf:token uri='viewPlanDetails.html'/>&stateCode=${STATE_CODE}')"
+									class="btn bg-orange waves-effect">
+									<i class="fa fa-arrow-left" aria-hidden="true"></i>
+									<spring:message code="Label.BACK" htmlEscape="true" />
+								</button><br>
+							</div>
+							</c:if>
 						<div class="text-right">
+						
 							<c:if test="${IEC_LIST.isFreez eq false || empty IEC_LIST}">
+							<c:if test="${Plan_Status eq true}">
 							<button type="submit" class="btn bg-green waves-effect" id="save"><spring:message code="Label.SAVE" text="Save" htmlEscape="true" /></button>
 							<c:if test="${IEC_LIST.isFreez != undefined}">
 							<button type="button" onclick='freezeAndUnfreeze("freeze")' class="btn bg-green waves-effect" id="FREEZE"><spring:message code="Label.FREEZE" text="Freeze" htmlEscape="true" /></button>
@@ -301,6 +315,7 @@ function toDelete(idToDelete){
 							</c:if>
 							<c:if test="${IEC_LIST.isFreez eq true}">
 							<button type="button" onclick='freezeAndUnfreeze("unfreeze")' class="btn bg-green waves-effect" id="UNFREEZE"><spring:message code="Label.UNFREEZE" text="Unfreeze" htmlEscape="true" /></button>
+							</c:if>
 							</c:if>
 							<button type="button" onclick="onClose('home.html?<csrf:token uri='home.html'/>')" class="btn bg-orange waves-effect"><spring:message code="Label.CLOSE" text="Close" htmlEscape="true" /></button>
 							<input type="hidden" name="iecActivity.dbFileName" id="dbFileName" /> 

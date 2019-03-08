@@ -475,13 +475,30 @@ function onLoadChangeColor(){
 											</div>
 										</div>
 									</div>
-									<div class="form-group text-right">
+									<div class="row clearfix">
+									<div class="col-md-4">
+										<button type="button"
+											onclick="onClose('viewPlanDetails.html?<csrf:token uri='viewPlanDetails.html'/>&stateCode=${STATE_CODE}')"
+											class="btn bg-orange waves-effect">
+											<i class="fa fa-arrow-left" aria-hidden="true"></i>
+											<spring:message code="Label.BACK" htmlEscape="true" />
+										</button>
+									</div>
+									<div class="col-sm-8 text-right">
 										<button type="submit" id="saveButtn" class="btn bg-green waves-effect"><spring:message code="Label.SAVE" htmlEscape="true" /></button>
+										<c:choose>
+										<c:when test="${initial_status}">
+										<button type="button" class="freeze btn bg-green waves-effect"	id="frzButtn" onclick="toFreeze();" disabled="disabled"><spring:message code="Label.FREEZE" htmlEscape="true" /></button>
+										</c:when>
+										<c:otherwise>
 										<button type="button" class="freeze btn bg-green waves-effect"	id="frzButtn" onclick="toFreeze();"><spring:message code="Label.FREEZE" htmlEscape="true" /></button>
+										</c:otherwise>
+										</c:choose>
 										<button type="button" class="unfreeze btn bg-green waves-effect" id="unFrzButtn" onclick="toFreeze();"><spring:message code="Label.UNFREEZE" htmlEscape="true" /></button>
 										<button type="button" id="clearButtn" onclick="onClear(this)"	class="btn bg-light-blue waves-effect"><spring:message code="Label.CLEAR" htmlEscape="true" /></button>
 										<button type="button" onclick="onClose('home.html?<csrf:token uri='home.html'/>')"	class="btn bg-orange waves-effect"><spring:message code="Label.CLOSE" htmlEscape="true" /></button>
 										
+									</div>
 									</div>
 								</form:form>
 							</div>
@@ -686,6 +703,14 @@ function onLoadChangeColor(){
 												</div>
 											</div>
 										</div>
+											<div class="col-md-4">
+										<button type="button"
+											onclick="onClose('viewPlanDetails.html?<csrf:token uri='viewPlanDetails.html'/>&stateCode=${STATE_CODE}')"
+											class="btn bg-orange waves-effect">
+											<i class="fa fa-arrow-left" aria-hidden="true"></i>
+											<spring:message code="Label.BACK" htmlEscape="true" />
+										</button>
+									</div>
 										<div class="text-right"><button type="button" onclick="onClose('home.html?<csrf:token uri='home.html'/>')"	class="btn bg-orange waves-effect"><spring:message code="Label.CLOSE" htmlEscape="true" /></button></div>
 								</div>
 							</div>

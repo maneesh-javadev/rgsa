@@ -198,7 +198,35 @@
 										</tbody>
 									</table>
 								</div>
-								<div class="form-group text-right ex1">
+								<div class="row clearfix">
+								<div class="col-md-4 text-left">
+											&nbsp;<button type="button"
+												onclick="onClose('viewPlanDetails.html?<csrf:token uri='viewPlanDetails.html'/>&stateCode=${STATE_CODE}')"
+												class="btn bg-orange waves-effect">
+												<i class="fa fa-arrow-left" aria-hidden="true"></i>
+												<spring:message code="Label.BACK" htmlEscape="true" />
+											</button>
+										</div>
+										
+									   	<div class="col-md-8 text-right ex1">
+ 									   	    <button data-ng-show="panchayatBhawanActivity.status == 'F'" data-ng-click="saveData('S')" type="button" class="btn bg-green waves-effect" disabled="disabled"><spring:message code="Label.SAVE" htmlEscape="true"/></button> 
+									   		<button type="button" data-ng-show="panchayatBhawanActivity.status != 'F'" ng-click="saveData('S')" class="btn bg-green waves-effect"><spring:message code="Label.SAVE" htmlEscape="true" /></button>
+									   		<button data-ng-show="panchayatBhawanActivity.status != 'F' " data-ng-click="saveData('F')" type="button" class="btn bg-green waves-effect"><spring:message code="Label.FREEZE" htmlEscape="true" /></button>
+								       <button data-ng-show="panchayatBhawanActivity.status == 'F'" type="button" data-ng-click="saveData('UF')" class="btn bg-green waves-effect">
+									      <spring:message code="Label.UNFREEZE" htmlEscape="true" />
+								       </button>
+			 						   		<button type="button" data-ng-show="panchayatBhawanActivity.status == 'F'"  class="btn bg-light-blue waves-effect" disabled="disabled">
+									   			<spring:message code="Label.CLEAR" htmlEscape="true" />
+									   		</button>
+									   		<button type="button" data-ng-show="panchayatBhawanActivity.status != 'F'"  class="btn bg-light-blue waves-effect" data-ng-click="claerAll()">
+									   			<spring:message code="Label.CLEAR" htmlEscape="true" />
+									   		</button>
+											<button type="button" onclick="onClose('home.html?<csrf:token uri='home.html'/>')" class="btn bg-orange waves-effect">
+												<spring:message code="Label.CLOSE" htmlEscape="true" />
+											</button>
+										</div>
+								</div>
+								<%-- <div class="form-group text-right ex1">
 									<button data-ng-show="panchayatBhawanActivity.status == 'F'"
 										data-ng-click="saveData('S')" type="button"
 										class="btn bg-green waves-effect" disabled="disabled">
@@ -235,7 +263,7 @@
 										class="btn bg-orange waves-effect">
 										<spring:message code="Label.CLOSE" htmlEscape="true" />
 									</button>
-								</div>
+								</div> --%>
 							</div>
 							<div class="container tab-pane fade" id="MOPR"
 								style="width: auto;">
@@ -338,12 +366,21 @@
 										</tbody>
 									</table>
 								</div>
-								<div class="text-right">
-									<button type="button"
-										onclick="onClose('home.html?<csrf:token uri='home.html'/>')"
-										class="btn bg-orange waves-effect">
-										<spring:message code="Label.CLOSE" htmlEscape="true" />
-									</button>
+								<div class="row clearfix">
+								<div class="col-md-4 text-left">
+											&nbsp;<button type="button"
+												onclick="onClose('viewPlanDetails.html?<csrf:token uri='viewPlanDetails.html'/>&stateCode=${STATE_CODE}')"
+												class="btn bg-orange waves-effect">
+												<i class="fa fa-arrow-left" aria-hidden="true"></i>
+												<spring:message code="Label.BACK" htmlEscape="true" />
+											</button>
+										</div>
+										
+									   	<div class="col-md-8 text-right ex1">
+											<button type="button" onclick="onClose('home.html?<csrf:token uri='home.html'/>')" class="btn bg-orange waves-effect">
+												<spring:message code="Label.CLOSE" htmlEscape="true" />
+											</button>
+										</div>
 								</div>
 							</div>
 						</div>

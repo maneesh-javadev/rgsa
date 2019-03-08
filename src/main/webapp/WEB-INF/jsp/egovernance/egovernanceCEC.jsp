@@ -194,8 +194,15 @@ function changeColor() {
 											</tbody>
 										</table>
 										</div>
-
-										<div class="text-right">
+									<div class="col-md-4 text-left">
+										<button type="button"
+											onclick="onClose('viewPlanDetails.html?<csrf:token uri='viewPlanDetails.html'/>&stateCode=${STATE_CODE}')"
+											class="btn bg-orange waves-effect">
+											<i class="fa fa-arrow-left" aria-hidden="true"></i>
+											<spring:message code="Label.BACK" htmlEscape="true" />
+										</button>
+									</div>
+									<div class="text-right">
 								 <%-- <c:if test="${Plan_Status eq true}"> --%>
 										<c:if test="${eGovActivity.status eq false || empty eGovActivity.status}">
 									  
@@ -209,7 +216,7 @@ function changeColor() {
 										<spring:message code="Label.UNFREEZE" htmlEscape="true" /></button>
 										</c:if>
 										<%-- </c:if> --%>
-										<c:if test="${eGovActivity.status eq false}">
+										<c:if test="${eGovActivity.status eq false || empty eGovActivity.status}">
 											<button type="button" class="btn bg-light-blue waves-effect reset" id="clearId"><spring:message code="Label.CLEAR" htmlEscape="true" /></button>
 										</c:if>
 										<button type="button" onclick="onClose('home.html?<csrf:token uri='home.html'/>')" class="btn bg-orange waves-effect"><spring:message code="Label.CLOSE" htmlEscape="true" /></button>
@@ -318,6 +325,14 @@ function changeColor() {
 										</tbody>
 											</table>
 										</div>
+								<div class="col-md-4 text-left">
+									<button type="button"
+										onclick="onClose('viewPlanDetails.html?<csrf:token uri='viewPlanDetails.html'/>&stateCode=${STATE_CODE}')"
+										class="btn bg-orange waves-effect">
+										<i class="fa fa-arrow-left" aria-hidden="true"></i>
+										<spring:message code="Label.BACK" htmlEscape="true" />
+									</button>
+								</div>
 								<div class="text-right">
 									<button type="button"
 										onclick="onClose('home.html?<csrf:token uri='home.html'/>')"

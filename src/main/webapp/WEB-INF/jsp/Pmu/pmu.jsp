@@ -77,6 +77,75 @@ function toFreeze(){
 	document.pmuController.action = "pmuFreezUnfreez.html?<csrf:token uri='pmuFreezUnfreez.html'/>";
 	document.pmuController.submit();
 }
+
+
+function calculateValue(obj)
+{
+	var rowCountSprc=$('#tbodySprcId tr').length;
+	var noOfDomainSprc=0;
+	var noOfDomainDprc=0;
+	for(var i=0;i<rowCountSprc;i++){
+		noOfDomainSprc += Number($('#noOfFaculty_'+i).val()) ;
+		noOfDomainDprc += Number($('#noOfExperts_'+(i+3)).val());
+	}
+	
+	if($('#noOfUnits_0').val() < noOfDomainSprc){
+		alert('Total domains experts should be equal to or less than '+ $('#noOfUnits_0').val());
+		$('#noOfUnits_0').val('');
+		
+	} if($('#noOfUnits_3').val() < noOfDomainDprc){
+		alert('Total domains experts should be equal to or less than '+ $('#noOfUnits_3').val());
+		$('#noOfUnits_3').val('');
+		
+	}
+	
+	}
+/* function calculateValueAcDomain(obj)
+{
+	var rowCountSprc=$('#tbodySprcId tr').length;
+	var noOfDomainSprc=0;
+	var noOfDomainDprc=0;
+	for(var i=0;i<rowCountSprc;i++){
+		noOfDomainSprc += Number($('#noOfFaculty_'+i).val()) ;
+		noOfDomainDprc += Number($('#noOfExperts_'+(i+3)).val());
+	}
+	for(var i=0;i<rowCountSprc;i++){
+		
+	if($('#noOfFaculty_0').val() < noOfDomainSprc){
+		alert('Total domains experts should be equal to or less than '+ $('#noOfUnits_0').val());
+		
+		$('#noOfFaculty_'+i).val('');
+		
+	}else if($('#noOfUnits_3').val() < noOfDomainDprc){
+		alert('Total domains experts should be equal to or less than '+ $('#noOfUnits_3').val());
+	
+		$('#noOfExperts_'+i).val('');
+		
+	}
+	
+	}
+} */
+function calculateValueAcDomain(obj){
+	var rowCountSprc=$('#tbodySprcId tr').length;
+	var noOfDomainSprc=0;
+	var noOfDomainDprc=0;
+	for(var i=0;i<rowCountSprc;i++){
+		noOfDomainSprc += Number($('#noOfFaculty_'+i).val()) ;
+		noOfDomainDprc += Number($('#noOfExperts_'+(i+3)).val());
+	}
+	
+	if($('#noOfUnits_0').val() < noOfDomainSprc){
+		alert('Total domains experts should be equal to or less than '+ $('#noOfUnits_0').val());
+		$('#noOfFaculty_'+obj).val('');
+		
+	}
+	 if($('#noOfUnits_3').val() < noOfDomainDprc){
+		alert('Total domains experts should be equal to or less than '+ $('#noOfUnits_3').val());
+		$('#noOfExperts_'+obj).val('');
+		
+	}
+	
+}
 </script>
 <section class="content">
 	<div class="container-fluid">
@@ -122,7 +191,7 @@ function toFreeze(){
 											<tr>
 												<td><div align="center"><strong>${ACTIVITY.pmuType.pmuTypeName}</strong></div></td>
 												<td><div align="center"><strong>${ACTIVITY.pmuActivityName}</strong></div></td>
-												<td><input value="${pmuActivity.pmuActivityDetails[srl.index].noOfUnits}"	name="pmuActivityDetails[${srl.index}].noOfUnits" min="1" maxlength="3"  onkeypress="return isNumber(event)" oninput="validity.valid||(value='');"	type="text" class="active12 form-control" id="noOfUnits_${count}" onchange="calculate(${count});" style="text-align:right;"/></td>
+												<td><input value="${pmuActivity.pmuActivityDetails[srl.index].noOfUnits}"	name="pmuActivityDetails[${srl.index}].noOfUnits" min="1" maxlength="3"  onkeypress="return isNumber(event)" oninput="validity.valid||(value='');"	type="text" class="active12 form-control" id="noOfUnits_${count}" onchange="calculate(${count}); calculateValue(${count})" style="text-align:right;"/></td>
 												<td><input value="${pmuActivity.pmuActivityDetails[srl.index].unitCost}"	name="pmuActivityDetails[${srl.index}].unitCost" min="1" maxlength="7"  onkeypress="return isNumber(event)" oninput="validity.valid||(value='');" type="text" class="active12 form-control"	id="unitCost_${count}" onchange="calculate(${count});" style="text-align:right;"/></td>
 												<td><input value="${pmuActivity.pmuActivityDetails[srl.index].noOfMonths}" 	name="pmuActivityDetails[${srl.index}].noOfMonths" min="1"  onkeypress="return isNumber(event)" oninput="validity.valid||(value='');"	type="text" class="active12 form-control" id="noOfMonths_${count}" onchange="calculate(${count});" style="text-align:right;"/></td>
 												<c:set var="totalFundToCalc" value="${pmuActivity.pmuActivityDetails[srl.index].fund}"></c:set>
@@ -205,7 +274,7 @@ function toFreeze(){
 																				<th><div align="center"><spring:message code="Label.NoOfExperts" htmlEscape="true" /></div></th>
 																			</tr>
 																		</thead>
-																		<tbody>
+																		<tbody id="tbodySprcId">
 																			<c:set var="temp" value="0" scope="page" />
 																			<c:forEach items="${LIST_OF_PMU_DOMAINS}" var="DOMAINS">
 																				<c:if	test="${DOMAINS.pmuType.pmuTypeId eq 1 }">
@@ -213,7 +282,7 @@ function toFreeze(){
 																					<tr>
 																						<th><div align="center">${DOMAINS.pmuDomainName}</div>
 																							<input type="hidden" name="pmuWiseProposedDomainExperts[${temp}].domainId"	value="${DOMAINS.pmuDomainId}"></th>
-																						<td><input	name="pmuWiseProposedDomainExperts[${temp}].noOfExperts" value="${pmuWiseDomainList[temp].noOfExperts}"	type="text" class="active12 form-control Align-Right"	id="noOfFaculty_${temp}" /></td>
+																						<td><input	name="pmuWiseProposedDomainExperts[${temp}].noOfExperts" value="${pmuWiseDomainList[temp].noOfExperts}"	type="text" class="active12 form-control Align-Right"	id="noOfFaculty_${temp}"  onkeyup="calculateValueAcDomain(${temp})" /></td>
 																					</tr>
 																				</c:if>
 																				<c:set var="temp" value="${temp+1}" scope="page" />
@@ -285,7 +354,7 @@ function toFreeze(){
 																				<th><div align="center"><spring:message code="Label.NoOfExperts" htmlEscape="true" /></div></th>
 																			</tr>
 																		</thead>
-																		<tbody>
+																		<tbody id="tbodyDprcId">
 																			<c:set var="temp" value="0" scope="page" />
 																			<c:forEach items="${LIST_OF_PMU_DOMAINS}" var="DOMAINS">
 																				<c:if test="${DOMAINS.pmuType.pmuTypeId eq 2}">
@@ -293,7 +362,7 @@ function toFreeze(){
 																					<tr>
 																						<th><div align="center">${DOMAINS.pmuDomainName}</div>
 																							<input type="hidden" name="pmuWiseProposedDomainExperts[${temp}].domainId" value="${DOMAINS.pmuDomainId}"></th>
-																						<td><input	name="pmuWiseProposedDomainExperts[${temp}].noOfExperts" value="${pmuWiseDomainList[temp].noOfExperts}"	type="text" class="active12 form-control Align-Right"/></td>
+																						<td><input	name="pmuWiseProposedDomainExperts[${temp}].noOfExperts" value="${pmuWiseDomainList[temp].noOfExperts}"	type="text" id="noOfExperts_${temp}" onkeyup="calculateValueAcDomain(${temp})" class="active12 form-control Align-Right"/></td>
 																					</tr>
 																				</c:if>
 																				<c:set var="temp" value="${temp+1}" scope="page" />
@@ -311,7 +380,18 @@ function toFreeze(){
 											</div>
 										</div>
 									</div>
+									<c:if test="${sessionScope['scopedTarget.userPreference'].userType eq 'M'}">
+                        <div class="col-md-4  text-left"  style="margin-bottom: 5px">
+								&nbsp;&nbsp;<button type="button"
+									onclick="onClose('viewPlanDetails.html?<csrf:token uri='viewPlanDetails.html'/>&stateCode=${STATE_CODE}')"
+									class="btn bg-orange waves-effect">
+									<i class="fa fa-arrow-left" aria-hidden="true"></i>
+									<spring:message code="Label.BACK" htmlEscape="true" />
+								</button><br>
+							</div>
+							</c:if>
 									<div class="form-group text-right">
+									 <c:if test="${Plan_Status eq true}"> 
 										<button type="submit" id="saveButtn" class="btn bg-green waves-effect"><spring:message code="Label.SAVE" htmlEscape="true" /></button>
 										<c:if test="${pmuActivity.isFreeze != undefined}">
 										
@@ -319,6 +399,7 @@ function toFreeze(){
 										<button type="button" class="unfreeze btn bg-green waves-effect" id="unFrzButtn" onclick="toFreeze();"><spring:message code="Label.UNFREEZE" htmlEscape="true" /></button>
 										</c:if>
 										<button type="button" id="clearButtn" onclick="onClear(this)"	class="btn bg-light-blue waves-effect"><spring:message code="Label.CLEAR" htmlEscape="true" /></button>
+										</c:if>
 										<button type="button" onclick="onClose('home.html?<csrf:token uri='home.html'/>')"	class="btn bg-orange waves-effect"><spring:message code="Label.CLOSE" htmlEscape="true" /></button>
 										
 									</div>

@@ -28,16 +28,20 @@ trgModuleCEC.controller("trainingActivityCEC",['$scope','trgActivityCecService',
 			$scope.stateAdditionalReq=$scope.stateData.additionalRequirement
 			//For Change Data for CEC that has to be saved
 			$scope.cecData=response.data.capacityBuildingDetails;
-			$scope.isFreezeOrUnfreeze=$scope.cecData.isFreeze;
-			if($scope.isFreezeOrUnfreeze != null && $scope.isFreezeOrUnfreeze !=undefined){
-				if($scope.isFreezeOrUnfreeze == true){
-					$scope.status="U";
-				}else{
-					$scope.status="F";
+			if($scope.cecData!=null){
+				$scope.isFreezeOrUnfreeze=$scope.cecData.isFreeze;
+				if($scope.isFreezeOrUnfreeze != null && $scope.isFreezeOrUnfreeze !=undefined){
+					if($scope.isFreezeOrUnfreeze == true){
+						$scope.status="U";
+					}else{
+						$scope.status="F";
+					}
 				}
+				calculateOther($scope.cecData);
+				console.log("cec  isfreeze ="+$scope.cecData.isFreeze);
 			}
-			calculateOther($scope.cecData);
-			console.log("cec  isfreeze ="+$scope.cecData.isFreeze);
+			
+		
 		});
 	}
 	//jsp local function handling here
@@ -75,16 +79,33 @@ trgModuleCEC.controller("trainingActivityCEC",['$scope','trgActivityCecService',
 		//For total change in fund calculation		
 		calculateOther($scope.cecData);
 	}
-	var calculateOther=function(object){
+	calculateOther=function(object){
 		//For total change in fund calculation	
 		var totalFundVal = 0;
-		for (var i = 0; i < object.capacityBuildingActivityDetails.length; i++) {
-			if(object.capacityBuildingActivityDetails[i].funds != null && object.capacityBuildingActivityDetails[i].funds != undefined){
-				totalFundVal = totalFundVal + object.capacityBuildingActivityDetails[i].funds;
-			}
+		if(object!=null){
+			angular.forEach(object.capacityBuildingActivityDetails,function(item){
+				if(item.funds != null && item.funds != undefined){
+					totalFundVal = totalFundVal + item.funds;
+				}
+			});
+		}
+		
+		if($scope.cecData.additionalRequirement == undefined ||$scope.cecData.additionalRequirement == ""){
+			cecadreq = 0 ;
+		}else{
+			cecadreq = parseInt($scope.cecData.additionalRequirement) ;
 		}
 		$scope.stateTotalFund = totalFundVal;
-		$scope.stateGrandTotal = totalFundVal + $scope.stateAdditionalReq;
+		$scope.stateGrandTotal = totalFundVal +cecadreq;
+	}
+	
+	$scope.calculateAdditionalRequirment=function(){
+		if($scope.cecData.additionalRequirement == undefined ||$scope.cecData.additionalRequirement == ""){
+			cecadreq = 0 ;
+		}else{
+			cecadreq = parseInt($scope.cecData.additionalRequirement) ;
+		}
+		$scope.stateGrandTotal = $scope.stateTotalFund +cecadreq;
 	}
 	//saving details
 	$scope.saveTrainingActivityCecDetails=function(){

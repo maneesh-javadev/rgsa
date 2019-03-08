@@ -70,6 +70,7 @@ public class PesaPlanServiceImpl implements PesaPlanService {
 		if (userPreference.getUserType().equalsIgnoreCase("M") && CollectionUtils.isEmpty(pesaPlan)) {
 			params.put("userType", 'S');
 			pesaPlan = commonRepository.findAll("FETCH_PESA_PLAN",params);
+			pesaPlan.get(0).setIsFreez(false);
 		}
 		
 		if (userPreference.getUserType().equalsIgnoreCase("C") && CollectionUtils.isEmpty(pesaPlan)) {

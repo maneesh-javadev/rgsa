@@ -382,10 +382,10 @@ public class PanchayatBhawanActivityServiceImpl implements PanchayatBhawanServic
 	}
 
 	@Override
-	public List<QprPanchayatBhawan> fetchDataAccordingToQuator(Integer quatorId,Integer panchayatBhawanActvityId,Integer districtCode) {
+	public List<QprPanchayatBhawan> fetchDataAccordingToQuator(Integer quatorId,Integer panchayatBhawanActivityId,Integer districtCode) {
 		Map<String, Object> params=new HashMap<>();
 		params.put("quatorId", quatorId);
-		params.put("activityId", panchayatBhawanActvityId);
+		params.put("panchayatBhawanActivityId", panchayatBhawanActivityId);
 		params.put("districtCode", districtCode);
 		return commonRepository.findAll("FETCH_ACTIVITY_DEPEND_ON_QUATOR", params);
 	}

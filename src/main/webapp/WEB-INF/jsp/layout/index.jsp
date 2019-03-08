@@ -346,7 +346,7 @@
 														  
 														
 														
-														<c:set var="t_fund" value="${t_fund+pc.amountProposed}" />
+														<c:set var="t_fund" value="${t_fund+pc.amountProposed+pc.addtionalRequirement}" />
 														<c:set var="t_unit" value="${t_unit+pc.noOfUnits}"/>
 														
 														

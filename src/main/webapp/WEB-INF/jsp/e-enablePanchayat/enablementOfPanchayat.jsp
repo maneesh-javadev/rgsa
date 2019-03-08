@@ -148,8 +148,18 @@ function calculateGrandTotal(){
 								</tbody>
 							</table>
 						</div>
-
+						<c:if test="${sessionScope['scopedTarget.userPreference'].userType eq 'M'}">
+                        <div class="col-md-4  text-left"  style="margin-bottom: 5px">
+								&nbsp;&nbsp;<button type="button"
+									onclick="onClose('viewPlanDetails.html?<csrf:token uri='viewPlanDetails.html'/>&stateCode=${STATE_CODE}')"
+									class="btn bg-orange waves-effect">
+									<i class="fa fa-arrow-left" aria-hidden="true"></i>
+									<spring:message code="Label.BACK" htmlEscape="true" />
+								</button><br>
+							</div>
+							</c:if>
 						<div class="text-right">
+						<c:if test="${Plan_Status eq true}">
 							<input type="hidden" id="status" name="status">
 							<c:if test="${enablement.status eq 's' || enablement.status eq 'u' || enablement.status == undefined}">
 								<button type="submit" onclick="setStatus('s')" class="btn bg-green waves-effect"><spring:message code="Label.SAVE" htmlEscape="true" /></button>
@@ -164,6 +174,7 @@ function calculateGrandTotal(){
 							</c:if>
 							<c:if test="${enablement.status eq 's' || enablement.status eq 'u' || enablement.status == undefined}">
 								<button type="button" class="btn bg-light-blue waves-effect reset"><spring:message code="Label.CLEAR" htmlEscape="true" /></button>
+							</c:if>
 							</c:if>
 							<button type="button"onclick="onClose('home.html?<csrf:token uri='home.html'/>')"class="btn bg-orange waves-effect"><spring:message code="Label.CLOSE" htmlEscape="true" /></button>
 						</div>

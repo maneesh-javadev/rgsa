@@ -62,14 +62,14 @@ public class AdminTechSupportServiceImpl implements AdminTechSupportService{
 				
 				List<AdministrativeTechnicalSupportDetails> supportDetails=technicalSupport.getSupportDetails();
 				AdministrativeTechnicalSupport administrativeTechnicalSupport=technicalSupport;
-				List<PostType> postTypes = getTypeOfPost();
-				int index = 0;
+			/*	List<PostType> postTypes = getTypeOfPost();
+				int index = 0;*/
 				for (AdministrativeTechnicalSupportDetails administrativeTechnicalSupportDetails : supportDetails) {
 					if(administrativeTechnicalSupportDetails.getAdministrativeTechnicalSupport()==null){
 						administrativeTechnicalSupportDetails.setAdministrativeTechnicalSupport(administrativeTechnicalSupport);
-						administrativeTechnicalSupportDetails.setPostType(postTypes.get(index));
+					/*	administrativeTechnicalSupportDetails.setPostType(postTypes.get(index));*/
 					}
-					index++;
+					/*index++;*/
 				}
 				commonRepository.update(technicalSupport);
 				
@@ -189,6 +189,7 @@ public AdministrativeTechnicalSupport fetchAdministrativeTechnicalSupport(final 
 	if(userPreference.getUserType().equalsIgnoreCase("M") && CollectionUtils.isEmpty(administrativeTechnicalSupport)){
 		params.put("userType", "S");
 		administrativeTechnicalSupport=commonRepository.findAll("FETCH_ADMIN_TECH_SUPPORT", params);
+		administrativeTechnicalSupport.get(0).setStatus("UF");
 		if(CollectionUtils.isNotEmpty(administrativeTechnicalSupport))
 		return administrativeTechnicalSupport.get(0);
 	}

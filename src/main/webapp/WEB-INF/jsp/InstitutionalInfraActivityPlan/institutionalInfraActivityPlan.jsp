@@ -178,7 +178,16 @@ function calculateGrandTotal(){
 											</tr>
 										</tbody>
 									</table>
+									<div class="col-md-4  text-left" data-ng-show="userType !='S'" style="margin-bottom: 5px">
+								&nbsp;&nbsp;<button type="button"
+									onclick="onClose('viewPlanDetails.html?<csrf:token uri='viewPlanDetails.html'/>&stateCode=${STATE_CODE}')"
+									class="btn bg-orange waves-effect">
+									<i class="fa fa-arrow-left" aria-hidden="true"></i>
+									<spring:message code="Label.BACK" htmlEscape="true" />
+								</button><br>
+							</div>
 									<div class="form-group text-right">
+									 <c:if test="${Plan_Status eq true}"> 
 								<button data-ng-show="institutionalInfraActivityPlan.isFreeze" data-ng-click="saveInstitutionalInfraActivityPlanDetails(trainingInstituteTypeId,updateStatus)" type="button" class="btn bg-green waves-effect" disabled="disabled"><spring:message code="Label.SAVE" htmlEscape="true"/></button>
 								<button data-ng-show="!institutionalInfraActivityPlan.isFreeze" data-ng-click="saveInstitutionalInfraActivityPlanDetails(trainingInstituteTypeId,updateStatus)" type="button" class="btn bg-green waves-effect"><spring:message code="Label.SAVE" htmlEscape="true" /></button>
 								<button data-ng-show="institutionalInfraActivityPlan.isFreeze" type="button" data-ng-click="freezUnFreezInstitutionalInfraActivityPlan('unfreez')" class="btn bg-green waves-effect">
@@ -190,6 +199,7 @@ function calculateGrandTotal(){
 							
 								<button type="button" data-ng-show="institutionalInfraActivityPlan.isFreeze" data-ng-click="onClearField()" class="btn bg-light-blue waves-effect" disabled="disabled"><spring:message code="Label.CLEAR" htmlEscape="true"/></button>
 								<button type="button" data-ng-show="!institutionalInfraActivityPlan.isFreeze" data-ng-click="onClearField()" class="btn bg-light-blue waves-effect"><spring:message code="Label.CLEAR" htmlEscape="true" /></button>
+								</c:if>
 								<button type="button"
 									onclick="onClose('home.html?<csrf:token uri='home.html'/>')"
 									class="btn bg-orange waves-effect">

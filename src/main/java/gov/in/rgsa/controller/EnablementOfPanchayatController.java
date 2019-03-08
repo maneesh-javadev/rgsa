@@ -84,10 +84,12 @@ public class EnablementOfPanchayatController {
 			enablementDetails = enablementOfPanchayatService.fetchEnablementDetails(enablement.get(0).geteEnablementId());
 			form.seteEnablementDetails(enablementDetails);
 			form.setAdditionalRequirement(enablement.get(0).getAdditionalRequirement());
+		}else{
+			model.addAttribute("INITIAL_FLAG", true);
 		}
 
   
-		
+		model.addAttribute("STATE_CODE", userPreference.getStateCode());
 		if(userPreference.getUserType().equalsIgnoreCase("C")){
 		List<EEnablement> enablementForState=enablementOfPanchayatService.fetchEnablement('S');
 		List<EEnablement> enablementForMOPR=enablementOfPanchayatService.fetchEnablement('M');
@@ -110,7 +112,6 @@ public class EnablementOfPanchayatController {
       		flag= false;
       	}
 	      model.addAttribute("Plan_Status", flag);
-	      model.addAttribute("STATE_CODE", userPreference.getStateCode());
 		return ENABLE_PANCHAYAT;
 		}
 	}	

@@ -45,7 +45,7 @@ public class InstitutionInfaActController {
 	@RequestMapping(value = "institutionalInfraActivityPlan", method = RequestMethod.GET)
 	private String institutionInfaActivityGet(Model model,RedirectAttributes redirectAttributes) {
 	
-	
+		 model.addAttribute("STATE_CODE", userPreference.getStateCode());
 		if (userPreference.getUserType().equalsIgnoreCase("C")) {
 		return INSTITUTION_INFRA_ACT_CEC;
 		} else {
@@ -70,7 +70,6 @@ public class InstitutionInfaActController {
       		flag= false;
       	}
 	      model.addAttribute("Plan_Status", flag);
-	      model.addAttribute("STATE_CODE", userPreference.getStateCode());
 		return INSTITUTION_INFRA_ACT ;
 		}
 	}

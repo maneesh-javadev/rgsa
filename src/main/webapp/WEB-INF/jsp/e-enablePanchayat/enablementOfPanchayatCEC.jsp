@@ -39,6 +39,20 @@ function isNumber(evt) {
     return true;
 }
 
+function submitValidation(){
+	if($('#noOfGpID').val() == '' || $('#noOfGpID').val() == null){
+		alert('some fields are blank.');
+		$('#noOfGpID').focus();
+		return false;
+	}else if($('#aspirational').val() == '' || $('#aspirational').val() == null){
+		return false;
+	}else if($('#unitCostId').val() == '' || $('#unitCostId').val() == null){
+		return false;
+	}else{
+		return true;
+	}
+}
+
 $('document').ready(function(){
 	$(".reset").bind("click", function() {
 	  $("input[type=text]").val('');
@@ -94,7 +108,7 @@ function changeColor(txt){
 						<h2><spring:message code="Label.e-EnablementofPanchayats" htmlEscape="true" />(CEC)</h2>
 					</div>
 					<form:form method="post" action="enablepanchayat.html"
-						modelAttribute="ENABLEMENT_OF_PANCHAYAT_MODEL" id="myForm">
+						modelAttribute="ENABLEMENT_OF_PANCHAYAT_MODEL" id="myForm" onsubmit="return submitValidation()">
 						<input type="hidden" name="<csrf:token-name/>"
 							value="<csrf:token-value uri="enablepanchayat.html" />" />
 						<div class="body">
@@ -212,22 +226,32 @@ function changeColor(txt){
 											</tbody>
 										</table>
 									</div>
-									<div class="text-right">
+									<div class="row clearfix">
+									<div class="col-md-4">
+										<button type="button"
+											onclick="onClose('viewPlanDetails.html?<csrf:token uri='viewPlanDetails.html'/>&stateCode=${STATE_CODE}')"
+											class="btn bg-orange waves-effect">
+											<i class="fa fa-arrow-left" aria-hidden="true"></i>
+											<spring:message code="Label.BACK" htmlEscape="true" />
+										</button>
+									</div>
+									<div class="col-sm-8 text-right">
 											<input type="hidden" id="status" name="status">
 											<c:if test="${enablement.status eq 's' || enablement.status eq 'u' || enablement.status == undefined}">
-												<button type="submit" onclick="setStatus('s')" class="btn bg-green waves-effect"><spring:message code="Label.SAVE" htmlEscape="true" />SAVE</button>
+												<button type="submit" onclick="setStatus('s')" class="btn bg-green waves-effect"><spring:message code="Label.SAVE" htmlEscape="true" /></button>
 											</c:if>
 											<c:if test="${enablement.status eq 's' || enablement.status eq 'u' || enablement.status == undefined}">
-												<button type="submit" onclick="setStatus('f')" class="btn bg-green waves-effect"><spring:message code="Label.FREEZE" htmlEscape="true" />FREEZE</button>
+												<button type="submit" onclick="setStatus('f')" class="btn bg-green waves-effect" disabled="${INITIAL_FLAG}"><spring:message code="Label.FREEZE" htmlEscape="true" /></button>
 											</c:if>
 											<c:if test="${enablement.status eq 'f'}">
-												<button type="submit" onclick="setStatus('u')" class="btn bg-green waves-effect"><spring:message code="Label.UNFREEZE" htmlEscape="true" /></button>
+												<button type="submit" onclick="setStatus('u')" class="btn bg-green waves-effect" ><spring:message code="Label.UNFREEZE" htmlEscape="true" /></button>
 											</c:if>
 										<c:if test="${enablement.status eq 's' || enablement.status eq 'u' || enablement.status == undefined}">
 											<button type="button" class="btn bg-light-blue waves-effect reset"><spring:message code="Label.CLEAR" htmlEscape="true" /></button>
 										</c:if>
 										<button type="button" onclick="onClose('home.html?<csrf:token uri='home.html'/>')" class="btn bg-orange waves-effect"><spring:message code="Label.CLOSE" htmlEscape="true" /></button>
 									</div>
+								</div>
 								</div>
 								<div class="container tab-pane fade" id="MOPR"
 									style="width: auto;">
@@ -305,6 +329,14 @@ function changeColor(txt){
 												</tr>
 											</tbody>
 										</table>
+									</div>
+									<div class="col-md-4">
+										<button type="button"
+											onclick="onClose('viewPlanDetails.html?<csrf:token uri='viewPlanDetails.html'/>&stateCode=${STATE_CODE}')"
+											class="btn bg-orange waves-effect">
+											<i class="fa fa-arrow-left" aria-hidden="true"></i>
+											<spring:message code="Label.BACK" htmlEscape="true" />
+										</button>
 									</div>
 									<div class="text-right">
 										<button type="button"onclick="onClose('home.html?<csrf:token uri='home.html'/>')"class="btn bg-orange waves-effect"><spring:message code="Label.CLOSE" htmlEscape="true" /></button>

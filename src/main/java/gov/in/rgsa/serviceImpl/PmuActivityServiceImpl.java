@@ -62,7 +62,7 @@ public class PmuActivityServiceImpl implements PmuActivityService {
 		if (userPreference.getUserType().equalsIgnoreCase("M") && pmuActivity.size() == 0) {
 			params.put("userType", 'S');
 			pmuActivity = commonRepository.findAll("FETCH_PMU_ACTIVITY", params);
-						pmuActivity.get(0).setIsFreeze(false);
+			pmuActivity.get(0).setIsFreeze(false);
 		}
 		
 		if(!CollectionUtils.isEmpty(pmuActivity) && pmuActivity.size()>0){
@@ -188,7 +188,7 @@ public class PmuActivityServiceImpl implements PmuActivityService {
 		params.put("pmuActivityId", pmuActivity.getPmuActivityId());
 		commonRepository.excuteUpdate("PMU_FREEZ_UNFREEZE", params);
 		if(!pmuActivity.getIsFreeze()) {
-			facadeService.populateStateFunds("12");
+			/*facadeService.populateStateFunds("12");*/
 	}
 		
 	}

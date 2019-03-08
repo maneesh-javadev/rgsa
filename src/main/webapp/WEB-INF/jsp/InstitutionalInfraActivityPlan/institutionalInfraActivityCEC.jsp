@@ -139,7 +139,63 @@
 											</tr>
 										</tbody>
 									</table>
-									<div class="form-group text-right">
+									<div class="col-md-4">
+										<button type="button"
+											onclick="onClose('viewPlanDetails.html?<csrf:token uri='viewPlanDetails.html'/>&stateCode=${STATE_CODE}')"
+											class="btn bg-orange waves-effect">
+											<i class="fa fa-arrow-left" aria-hidden="true"></i>
+											<spring:message code="Label.BACK" htmlEscape="true" />
+										</button>
+									</div>
+
+									<div class="col-md-8 text-right">
+											<button
+												data-ng-show="institutionalInfraActivityPlan.isFreeze"
+												data-ng-click="saveInstitutionalInfraActivityPlanDetails(trainingInstituteTypeId,updateStatus)"
+												type="button" class="btn bg-green waves-effect"
+												disabled="disabled">
+												<spring:message code="Label.SAVE" htmlEscape="true" />
+											</button>
+											<button
+												data-ng-show="!institutionalInfraActivityPlan.isFreeze"
+												data-ng-click="saveInstitutionalInfraActivityPlanDetails(trainingInstituteTypeId,updateStatus)"
+												type="button" class="btn bg-green waves-effect">
+												<spring:message code="Label.SAVE" htmlEscape="true" />
+											</button>
+											<button
+												data-ng-show="institutionalInfraActivityPlan.isFreeze"
+												type="button"
+												data-ng-click="freezUnFreezInstitutionalInfraActivityPlan('unfreez')"
+												class="btn bg-green waves-effect">
+												<spring:message code="UNFREEZE" htmlEscape="true" />
+											</button>
+											<button
+												data-ng-show="!institutionalInfraActivityPlan.isFreeze "
+												data-ng-disabled="updateStatus == 'saving'" type="button"
+												data-ng-click="freezUnFreezInstitutionalInfraActivityPlan('freez')"
+												class="btn bg-green waves-effect">
+												<spring:message code="FREEZE" htmlEscape="true" />
+											</button>
+
+											<button type="button"
+												data-ng-show="institutionalInfraActivityPlan.isFreeze"
+												data-ng-click="onClearField()"
+												class="btn bg-light-blue waves-effect" disabled="disabled">
+												<spring:message code="Label.CLEAR" htmlEscape="true" />
+											</button>
+											<button type="button"
+												data-ng-show="!institutionalInfraActivityPlan.isFreeze"
+												data-ng-click="onClearField()"
+												class="btn bg-light-blue waves-effect">
+												<spring:message code="Label.CLEAR" htmlEscape="true" />
+											</button>
+										<button type="button"
+											onclick="onClose('home.html?<csrf:token uri='home.html'/>')"
+											class="btn bg-orange waves-effect">
+											<spring:message code="Label.CLOSE" htmlEscape="true" />
+										</button>
+									</div>
+									<%-- <div class="form-group text-right">
 										<button data-ng-show="institutionalInfraActivityPlan.isFreeze"
 											data-ng-click="saveCec()"
 											type="button" class="btn bg-green waves-effect"
@@ -183,7 +239,7 @@
 											class="btn bg-orange waves-effect">
 											<spring:message code="Label.CLOSE" htmlEscape="true" />
 										</button>
-									</div>
+									</div> --%>
 								</div>
 							</div>
 							<div role="tabpanel" class="container tab-pane" id="MOPR"
@@ -282,7 +338,16 @@
 											</tr>
 										</tbody>
 									</table>
-									<div class="text-right">
+									<div class="col-md-4">
+										<button type="button"
+											onclick="onClose('viewPlanDetails.html?<csrf:token uri='viewPlanDetails.html'/>&stateCode=${STATE_CODE}')"
+											class="btn bg-orange waves-effect">
+											<i class="fa fa-arrow-left" aria-hidden="true"></i>
+											<spring:message code="Label.BACK" htmlEscape="true" />
+										</button>
+									</div>
+
+									<div class=" col-md-8 text-right">
 										<button type="button"
 											onclick="onClose('home.html?<csrf:token uri='home.html'/>')"
 											class="btn bg-orange waves-effect">

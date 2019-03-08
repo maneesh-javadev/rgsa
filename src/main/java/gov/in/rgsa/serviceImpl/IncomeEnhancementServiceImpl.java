@@ -70,7 +70,7 @@ public class IncomeEnhancementServiceImpl implements IncomeEnhancementService {
 				commonRepository.update(enhancementActivity);
 			}
 		}
-		facadeService.populateStateFunds("10");
+		
 	}
 	
 	private void saveEnhancementActivityMinistry(IncomeEnhancementActivity enhancementActivity) {
@@ -164,6 +164,9 @@ public class IncomeEnhancementServiceImpl implements IncomeEnhancementService {
 			params.put("isFreeze", true);}
 		params.put("incomeEnhancementId", incomeEnhancementActivity.getIncomeEnhancementId());
 		commonRepository.excuteUpdate("UPDATE_FRZUNFREEZ_STATUS", params);
+		 if(incomeEnhancementActivity.getIsFreeze() == false) {
+		   facadeService.populateStateFunds("10");
+		 }
 	}
 
 	@Override

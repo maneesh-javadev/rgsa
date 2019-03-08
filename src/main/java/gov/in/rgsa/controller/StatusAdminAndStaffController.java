@@ -147,56 +147,62 @@ public class StatusAdminAndStaffController {
 	}
 	
 	@RequestMapping(value = "adminTechSupportStaffCEC", method = RequestMethod.GET)
-	private String fetchAdminTechSupportStaffForMOPRAndState(@ModelAttribute("ADMIN_TECH_SUPPORT_STAFFCEC") AdministrativeTechnicalSupport administrativeTechnicalSupport ,Model model) {
-		
-		List<PostType> postType =supportService.getTypeOfPost();
+	private String fetchAdminTechSupportStaffForMOPRAndState(
+			@ModelAttribute("ADMIN_TECH_SUPPORT_STAFFCEC") AdministrativeTechnicalSupport administrativeTechnicalSupport,
+			Model model) {
+
+		List<PostType> postType = supportService.getTypeOfPost();
 		model.addAttribute("postType", postType);
 		model.addAttribute("level", supportService.fetchAdministrativeLevel());
-		
-		
-			if(userPreference.getUserType().equalsIgnoreCase("C")){
-		AdministrativeTechnicalSupport technicalSupportForState= supportService.fetchAdministrativeTechnicalSupport("S");
-				AdministrativeTechnicalSupport technicalSupportForMOPR= supportService.fetchAdministrativeTechnicalSupport("M");
-				  long totalCostWithoutAddit= 0;
-		if(technicalSupportForState!=null){
-					List<AdministrativeTechnicalSupportDetails> technicalSupportForStateDetails=technicalSupportForState.getSupportDetails();
-					
-						for(int i=0; i<technicalSupportForStateDetails.size();i++)
-						{
-							totalCostWithoutAddit =totalCostWithoutAddit+technicalSupportForStateDetails.get(i).getFunds();
-						}
-						model.addAttribute("TotalStateFund", totalCostWithoutAddit);
-						
-					model.addAttribute("detailsForState", technicalSupportForStateDetails);
-					model.addAttribute("technicalSupportForState", technicalSupportForState);
-				}
-		
-		if(technicalSupportForMOPR!=null){
-					List<AdministrativeTechnicalSupportDetails> technicalSupportForMOPRDetails=technicalSupportForMOPR.getSupportDetails();
-                      
-					for(int i=0; i<technicalSupportForMOPRDetails.size();i++)
-					{
-						totalCostWithoutAddit =totalCostWithoutAddit+technicalSupportForMOPRDetails.get(i).getFunds();
-					}
-					model.addAttribute("TotalMoprFund", totalCostWithoutAddit);
-					
-					model.addAttribute("detailsForMOPR", technicalSupportForMOPRDetails);
-					model.addAttribute("technicalSupportForMOPR", technicalSupportForState);
-				}
-			
-				
-		}
-			AdministrativeTechnicalSupport technicalSupport= supportService.fetchAdministrativeTechnicalSupport("C");
+		model.addAttribute("STATE_CODE", userPreference.getStateCode());
 
-			if(technicalSupport!=null){
-				List<AdministrativeTechnicalSupportDetails> details=technicalSupport.getSupportDetails();
-				
-				model.addAttribute("details", details);
-				model.addAttribute("technicalSupport", technicalSupport);
-				model.addAttribute("user_type",userPreference.getUserType() );
-				model.addAttribute("ISFREEZE", technicalSupport.getStatus());
+		if (userPreference.getUserType().equalsIgnoreCase("C")) {
+			AdministrativeTechnicalSupport technicalSupportForState = supportService
+					.fetchAdministrativeTechnicalSupport("S");
+			AdministrativeTechnicalSupport technicalSupportForMOPR = supportService
+					.fetchAdministrativeTechnicalSupport("M");
+			long totalCostWithoutAddit = 0;
+			if (technicalSupportForState != null) {
+				List<AdministrativeTechnicalSupportDetails> technicalSupportForStateDetails = technicalSupportForState
+						.getSupportDetails();
+
+				for (int i = 0; i < technicalSupportForStateDetails.size(); i++) {
+					totalCostWithoutAddit = totalCostWithoutAddit + technicalSupportForStateDetails.get(i).getFunds();
+				}
+				model.addAttribute("TotalStateFund", totalCostWithoutAddit);
+
+				model.addAttribute("detailsForState", technicalSupportForStateDetails);
+				model.addAttribute("technicalSupportForState", technicalSupportForState);
 			}
-			return SUPPORT_ADMIN_STAFF_CEC;
+
+			if (technicalSupportForMOPR != null) {
+				List<AdministrativeTechnicalSupportDetails> technicalSupportForMOPRDetails = technicalSupportForMOPR
+						.getSupportDetails();
+
+				for (int i = 0; i < technicalSupportForMOPRDetails.size(); i++) {
+					totalCostWithoutAddit = totalCostWithoutAddit + technicalSupportForMOPRDetails.get(i).getFunds();
+				}
+				model.addAttribute("TotalMoprFund", totalCostWithoutAddit);
+
+				model.addAttribute("detailsForMOPR", technicalSupportForMOPRDetails);
+				model.addAttribute("technicalSupportForMOPR", technicalSupportForState);
+			}
+
+		}
+		AdministrativeTechnicalSupport technicalSupport = supportService.fetchAdministrativeTechnicalSupport("C");
+
+		if (technicalSupport != null) {
+			List<AdministrativeTechnicalSupportDetails> details = technicalSupport.getSupportDetails();
+
+			model.addAttribute("details", details);
+			model.addAttribute("technicalSupport", technicalSupport);
+			model.addAttribute("user_type", userPreference.getUserType());
+			model.addAttribute("ISFREEZE", technicalSupport.getStatus());
+			model.addAttribute("initial_status", false);
+		}else{
+			model.addAttribute("initial_status", true);
+		}
+		return SUPPORT_ADMIN_STAFF_CEC;
 	}
 	
 	

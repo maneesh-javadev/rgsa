@@ -222,7 +222,18 @@ function calculateTotal(obj){
 												</tbody>
 											</table>
 										</div>
+										<c:if test="${sessionScope['scopedTarget.userPreference'].userType ne 'S'}">
+										<div class="col-md-4  text-left" data-ng-show="userType !='S'" style="margin-bottom: 5px">
+								&nbsp;&nbsp;<button type="button"
+									onclick="onClose('viewPlanDetails.html?<csrf:token uri='viewPlanDetails.html'/>&stateCode=${STATE_CODE}')"
+									class="btn bg-orange waves-effect">
+									<i class="fa fa-arrow-left" aria-hidden="true"></i>
+									<spring:message code="Label.BACK" htmlEscape="true" />
+								</button><br>
+							</div>
+							</c:if>
 									   	<div class="form-group text-right ex1">
+									   	 <c:if test="${Plan_Status eq true}"> 
 									   	    <button data-ng-show="panchayatBhawanActivity.status == 'F'" data-ng-click="saveData('S')" type="button" class="btn bg-green waves-effect" disabled="disabled"><spring:message code="Label.SAVE" htmlEscape="true"/></button> 
 									   		<button type="button" data-ng-show="panchayatBhawanActivity.status != 'F'" ng-click="saveData('S')" class="btn bg-green waves-effect"><spring:message code="Label.SAVE" htmlEscape="true" /></button>
 									   		
@@ -237,6 +248,7 @@ function calculateTotal(obj){
 									   		<button type="button" data-ng-show="panchayatBhawanActivity.status != 'F'"  class="btn bg-light-blue waves-effect" data-ng-click="claerAll()">
 									   			<spring:message code="Label.CLEAR" htmlEscape="true" />
 									   		</button>
+									   		</c:if>
 											<button type="button" onclick="onClose('home.html?<csrf:token uri='home.html'/>')" class="btn bg-orange waves-effect">
 												<spring:message code="Label.CLOSE" htmlEscape="true" />
 											</button>

@@ -120,7 +120,7 @@ function onloadChangeColor(){
 +$("#noOfMonthsId_"+i).val() < +$("#noOfMonthsIdState_"+i).text() ? $("#noOfMonthsIdState_"+i).css("color","red") : $("#noOfMonthsIdState_"+i).css("color","#00cc00");
 }
 	+$("#additionalRequirementIdState").text() > +$("#additionalRequirementId").val() ? $("#additionalRequirementIdState").css('color','red') : $("#additionalRequirementIdState").css('color','#00cc00');
-	+$("#TotalCostIdState").text() > +$("#TotalCostId").val() ? $("#TotalCostIdState").css('color','red') : $("#TotalCostIdState").css('color','#00cc00');
+	+$("#TotalCostIdState").text() > +$("#total_fund").val() ? $("#TotalCostIdState").css('color','red') : $("#TotalCostIdState").css('color','#00cc00');
 	+$("#GrandTotalIdState").text() > +$("#GrandTotalId").val() ? $("#GrandTotalIdState").css('color','red') : $("#GrandTotalIdState").css('color','#00cc00');
 
 }
@@ -323,15 +323,29 @@ function onloadChangeColor(){
 										</tbody>
 									</table>
 								</div>
-								<div class="text-right">
+								<div class="row clearfix">
+									<div class="col-md-4">
+										<button type="button"
+											onclick="onClose('viewPlanDetails.html?<csrf:token uri='viewPlanDetails.html'/>&stateCode=${STATE_CODE}')"
+											class="btn bg-orange waves-effect">
+											<i class="fa fa-arrow-left" aria-hidden="true"></i>
+											<spring:message code="Label.BACK" htmlEscape="true" />
+										</button>
+									</div>
+								
+								<div class="col-md-8 text-right">
 									<%-- <c:if test="${Plan_Status eq true}"> --%>
 									<%-- <c:if test="${administrativeTechnicalSupport.status eq S || empty eGovActivity.status}"> --%>
 									<c:if test="${ISFREEZE ne 'F '}">
 
 										<button type="submit" class="btn bg-green waves-effect"
 											id="saveId" onclick="validateMonth(${count});">SAVE</button>
-										<button type="button" onclick='freezeAndUnfreeze("F")'
-											id="isFreeze" class="btn bg-green waves-effect">FREEZE</button>
+											<c:choose>
+											<c:when test="${initial_status}"><button type="button" onclick='freezeAndUnfreeze("F")'
+											id="isFreeze" class="btn bg-green waves-effect" disabled="disabled">FREEZE</button></c:when>
+											<c:otherwise><button type="button" onclick='freezeAndUnfreeze("F")'
+											id="isFreeze" class="btn bg-green waves-effect">FREEZE</button></c:otherwise>
+											</c:choose>
 										<button type="button"
 											class="btn bg-light-blue waves-effect reset" id="clearId"
 											onclick="onClear(this)">
@@ -354,6 +368,7 @@ function onloadChangeColor(){
 										value="${technicalSupport.administrativeTechnicalSupportId}" />
 									<input type="hidden" name="userType"
 										value="${technicalSupport.userType}">
+								</div>
 								</div>
 							</div>
 							<%-- <form:hidden path="adminFinancialDataActivityId"
@@ -489,12 +504,22 @@ function onloadChangeColor(){
 										</tbody>
 									</table>
 								</div>
-								<div class="text-right">
+								<div class="row clearfix">
+								<div class="col-md-4">
+										<button type="button"
+											onclick="onClose('viewPlanDetails.html?<csrf:token uri='viewPlanDetails.html'/>&stateCode=${STATE_CODE}')"
+											class="btn bg-orange waves-effect">
+											<i class="fa fa-arrow-left" aria-hidden="true"></i>
+											<spring:message code="Label.BACK" htmlEscape="true" />
+										</button>
+									</div>
+								<div class="col-md-8 text-right">
 									<button type="button"
 										onclick="onClose('home.html?<csrf:token uri='home.html'/>')"
 										class="btn bg-orange waves-effect">
 										<spring:message code="Label.CLOSE" htmlEscape="true" />
 									</button>
+								</div>
 								</div>
 							</div>
 						</div>

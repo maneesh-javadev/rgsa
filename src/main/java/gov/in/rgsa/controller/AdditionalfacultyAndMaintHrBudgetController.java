@@ -80,6 +80,8 @@ public class AdditionalfacultyAndMaintHrBudgetController {
 	    model.addAttribute("LIST_OF_TRAINING_CURRENT_STATUS_DETAILS", trainingInstituteCurrentStatusDetails);
 	    districtName=lgdService.getAllDistrictBasedOnState(userPreference.getStateCode());
 	    model.addAttribute("LIST_OF_DISTRICT", districtName);
+	    model.addAttribute("STATE_CODE", userPreference.getStateCode());
+	    
 	    
 	    
 		/*
@@ -119,7 +121,9 @@ public class AdditionalfacultyAndMaintHrBudgetController {
 			additionalFactultyAndMaintModel.setDistrictsSupported(institueInfraHrActivity.get(0).getDistrictsSupported());
 			model.addAttribute("ISFREEZE", institueInfraHrActivity.get(0).getIsFreeze());
 			model.addAttribute("PREVIOUS_RECORD_USER_TYPE", institueInfraHrActivity.get(0).getUserType());
+			model.addAttribute("initial_status", false);
 		}else{
+			model.addAttribute("initial_status", true);
 			model.addAttribute("ISFREEZE", false);
 		}
 		Map<String, ?> param = RequestContextUtils.getInputFlashMap(request);

@@ -71,10 +71,10 @@
 														<td><form:input  path="eGovSupportActivityDetails[${index.index}].noOfPosts" type="text" onkeypress="return isNumber(event)" maxlength="5" class="active123 form-control" id="noOfPostId_${count}" onchange="calculateProposedFund(${count})" style="text-align:right;" disabled="${eGovActivity.status eq true}"/></td>
 														<td><form:input  path="eGovSupportActivityDetails[${index.index}].months" type="text" onkeypress="return isNumber(event)" class="active123 form-control" id="monthId_${count}" onchange="validateMonth(${count});calculateProposedFund(${count})" style="text-align:right;" disabled="${eGovActivity.status eq true}"/></td>
 														<td><form:input  path="eGovSupportActivityDetails[${index.index}].unitCost" type="text" onkeypress="return isNumber(event)" class="active123 form-control" id="unitCostId_${count}" onchange="calculateProposedFund(${count});validateCielingValue(${count})" style="text-align:right;" disabled="${eGovActivity.status eq true}"/></td>
-														<td><form:input  path="eGovSupportActivityDetails[${index.index}].funds" type="text" onkeypress="return isNumber(event)" class="active123 form-control" id="fundId_${count}" onchange="calculateProposedFund(${count})" style="text-align:right;" disabled="${eGovActivity.status eq true}"/></td>
+														<td><form:input  path="eGovSupportActivityDetails[${index.index}].funds" type="text" onkeypress="return isNumber(event)" class="active123 form-control" id="fundId_${count}" onchange="calculateProposedFund(${count})" style="text-align:right;" readonly="true"/></td>
 														<c:if test="${fn:containsIgnoreCase(USER_TYPE, 'M')}">
-													<td><form:checkbox path="eGovSupportActivityDetails[${index.index }].isApproved" /></td>
-													<td><form:textarea path="eGovSupportActivityDetails[${index.index }].remarks" rows="2" cols="10" disabled="${eGovActivity.status eq true}"/></td>
+													<td><form:checkbox path="eGovSupportActivityDetails[${index.index }].isApproved"  disabled="${eGovActivity.status eq true}"/></td>
+													<td><form:textarea path="eGovSupportActivityDetails[${index.index }].remarks" rows="2" cols="10"  disabled="${eGovActivity.status eq true}"/></td>
 													</c:if>	</tr>
 													<c:set var="count" value="${count + 1}" scope="page"/>
 												</c:forEach>
@@ -101,24 +101,35 @@
 										</tbody>
 									</table>
 								</div>
-									
+									<c:if test="${sessionScope['scopedTarget.userPreference'].userType eq 'M'}">
+                        <div class="col-md-4  text-left"  style="margin-bottom: 5px">
+								&nbsp;&nbsp;<button type="button"
+									onclick="onClose('viewPlanDetails.html?<csrf:token uri='viewPlanDetails.html'/>&stateCode=${STATE_CODE}')"
+									class="btn bg-orange waves-effect">
+									<i class="fa fa-arrow-left" aria-hidden="true"></i>
+									<spring:message code="Label.BACK" htmlEscape="true" />
+								</button><br>
+							</div>
+							</c:if>
 								<div class="text-right">
-								 <%-- <c:if test="${Plan_Status eq true}"> --%>
+								  <c:if test="${Plan_Status eq true}"> 
 										<c:if test="${eGovActivity.status eq false || empty eGovActivity.status}">
 									  
 										<button type="submit" class="btn bg-green waves-effect" id="saveId" onclick="validateMonth(${count});">
 										<spring:message code="Label.SAVE" htmlEscape="true" /></button>
+									<c:if test="${eGovActivity.status  != undefined}">
 										<button type="button" onclick='freezeAndUnfreeze("freeze")' id="freezeId" class="btn bg-green waves-effect"><spring:message code="Label.FREEZE" htmlEscape="true" /></button>
-										
+										</c:if>
 										</c:if>
 										<c:if test="${eGovActivity.status eq true}">
 										<button type="button" onclick='freezeAndUnfreeze("unfreeze")' id="unfreezeId" class="btn bg-green waves-effect" >
 										<spring:message code="Label.UNFREEZE" htmlEscape="true" /></button>
 										</c:if>
-										<%-- </c:if> --%>
+									
 										<c:if test="${eGovActivity.status eq false}">
 											<button type="button" class="btn bg-light-blue waves-effect reset" id="clearId"><spring:message code="Label.CLEAR" htmlEscape="true" /></button>
 										</c:if>
+										 </c:if> 
 										<button type="button" onclick="onClose('home.html?<csrf:token uri='home.html'/>')" class="btn bg-orange waves-effect"><spring:message code="Label.CLOSE" htmlEscape="true" /></button>
 										<input type="hidden" name="dbFileName" id="dbFileName">
 										<input type="hidden" name="eGovSupportActivityId" value="${eGovActivity.eGovSupportActivityId}" />

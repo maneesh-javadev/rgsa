@@ -48,7 +48,7 @@ publicModule.controller("adminTechSupportSaffController",['$scope','adminTechSup
 	$scope.saveData=function(status){
 		$scope.adminTechStaffObject.status=status;
 		adminTechSupportSaffService.saveData($scope.adminTechStaffObject).then(function(response){
-			fetchOnLoad();
+			/*fetchOnLoad();*/
 			if($scope.adminTechStaffObject.status == 'F'){
 				toastr.success("Freeze Sucessfully");
 			}else if($scope.adminTechStaffObject.status == 'U'){

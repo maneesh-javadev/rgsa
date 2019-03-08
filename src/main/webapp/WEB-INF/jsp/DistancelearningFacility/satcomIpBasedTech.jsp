@@ -186,7 +186,15 @@
 
 										</tbody>
 									</table>
-									<div class="text-right">
+									<div class="col-md-4">
+										<button type="button"
+											onclick="onClose('viewPlanDetails.html?<csrf:token uri='viewPlanDetails.html'/>&stateCode=${STATE_CODE}')"
+											class="btn bg-orange waves-effect">
+											<i class="fa fa-arrow-left" aria-hidden="true"></i>
+											<spring:message code="Label.BACK" htmlEscape="true" />
+										</button>
+									</div>
+									<div class=" col-md-8 text-right">
 								<button data-ng-show="satcomActivityObject.status == 'F'"
 									data-ng-click="saveData('S')" type="button"
 									class="btn bg-green waves-effect" disabled="disabled">
@@ -198,7 +206,7 @@
 									<spring:message code="Label.SAVE" htmlEscape="true" />
 								</button>
 								<button data-ng-show="satcomActivityObject.status != 'F' "
-									data-ng-click="saveData('F')" type="button"
+									data-ng-click="saveData('F')" type="button" data-ng-disabled="initialFlag"
 									class="btn bg-green waves-effect">
 									<spring:message code="Label.FREEZE" htmlEscape="true" />
 								</button>
@@ -339,7 +347,16 @@
 										</tbody>
 
 									</table>
-									<div class="text-right">
+									<div class="col-md-4">
+										<button type="button"
+											onclick="onClose('viewPlanDetails.html?<csrf:token uri='viewPlanDetails.html'/>&stateCode=${STATE_CODE}')"
+											class="btn bg-orange waves-effect">
+											<i class="fa fa-arrow-left" aria-hidden="true"></i>
+											<spring:message code="Label.BACK" htmlEscape="true" />
+										</button>
+									</div>
+									
+									<div class="col-md-8 text-right">
 										<button type="button"
 											onclick="onClose('home.html?<csrf:token uri='home.html'/>')"
 											class="btn bg-orange waves-effect">
@@ -497,7 +514,16 @@
 									</tbody>
 
 								</table>
+								<div class="col-md-4  text-left" data-ng-show="userType !='S'" style="margin-bottom: 5px">
+								&nbsp;&nbsp;<button type="button"
+									onclick="onClose('viewPlanDetails.html?<csrf:token uri='viewPlanDetails.html'/>&stateCode=${STATE_CODE}')"
+									class="btn bg-orange waves-effect">
+									<i class="fa fa-arrow-left" aria-hidden="true"></i>
+									<spring:message code="Label.BACK" htmlEscape="true" />
+								</button><br>
+							</div>
 							<div class="text-right">
+							 <c:if test="${Plan_Status eq true}"> 
 								<%-- <button ng-if="save" type="button" ng-click="saveData('S')" class="btn bg-green waves-effect">SAVE</button>
 							<button ng-if="freeze" type="button" ng-click="saveData('F')" class="btn bg-green waves-effect"><spring:message code="Label.FREEZE" htmlEscape="true" /></button>
 							<button ng-if="unFreeze" type="button" ng-click="saveData('S')" class="btn bg-green waves-effect"><spring:message code="Label.UNFREEZE" htmlEscape="true" /></button>
@@ -513,7 +539,7 @@
 									data-ng-click="saveData('S')" class="btn bg-green waves-effect">
 									<spring:message code="Label.SAVE" htmlEscape="true" />
 								</button>
-								<button data-ng-show="satcomActivityObject.status != 'F' "
+								<button data-ng-show=" satcomActivityObject.status != undefined && satcomActivityObject.status != 'F' "
 									data-ng-click="saveData('F')" type="button"
 									class="btn bg-green waves-effect">
 									<spring:message code="Label.FREEZE" htmlEscape="true" />
@@ -533,6 +559,7 @@
 									class="btn bg-light-blue waves-effect">
 									<spring:message code="Label.CLEAR" htmlEscape="true" />
 								</button>
+								</c:if>
 								<button type="button"
 									onclick="onClose('home.html?<csrf:token uri='home.html'/>')"
 									class="btn bg-orange waves-effect">

@@ -116,6 +116,7 @@ public class InnovativeActivityController {
       		flag= false;
       	}
 		model.addAttribute("Plan_Status", flag);
+		  model.addAttribute("STATE_CODE", userPreference.getStateCode());
 		
 		model.addAttribute("INNOVATIVE_ACTIVITY", innovativeActivity);
 		model.addAttribute("userTypeSwitch", userPreference.getUserType().charAt(0));

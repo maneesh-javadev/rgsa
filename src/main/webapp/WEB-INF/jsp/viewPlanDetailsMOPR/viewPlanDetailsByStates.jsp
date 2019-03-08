@@ -42,6 +42,10 @@ toggleSubComponent=function(id,flag){
 					<div class="card">
 						<div class="header">
 							<h2>Plan Forwarded by State (${stateName})</h2>
+							<c:set var="buttonStatus" value="false" />
+							<c:if test="${sessionScope['scopedTarget.userPreference'].planStatus eq 2}">
+							<c:set var="buttonStatus" value="true" />
+							</c:if>
 						</div>
 						<div class="body">
 						
@@ -64,7 +68,10 @@ toggleSubComponent=function(id,flag){
 												<th rowspan="2" width="5%"></th>
 												<th rowspan="2" width="5%">Sr.No</th>
 												<th rowspan="2" width="22%" >Components</th>
-												<th rowspan="2" width="13%">View Details</th>
+												<th rowspan="2" width="13%">
+												<c:if test="${buttonStatus}">
+												View Details</c:if>
+												</th>
 												<td colspan="2" align="center" width="${dwidth}"><b> Amount State Proposed</b></td>
 												<td colspan="2" align="center" width="${dwidth}"><b>Ministry Recomended</b></td>
 												<c:if test="${sessionScope['scopedTarget.userPreference'].userType eq 'C'}">
@@ -96,7 +103,7 @@ toggleSubComponent=function(id,flag){
 										  	<c:if test="${pc.eType eq 'C'}">
 										  			<c:set var="moprDiff" value="bg-test" />
 										  			<c:if test="${pc.amountProposed gt pc.amountProposedMOPR}">
-														<c:set var="moprDiff" value="bg-danger" />
+														<c:set var="moprDiff" value="bg-warning" />
 													</c:if>
 													<tr>
 														<td align="center" id="plusId${pc.componentsId}" >
@@ -108,7 +115,11 @@ toggleSubComponent=function(id,flag){
 														<td><b>${pcindex.count}</b></td>
 														<td><b>${pc.eName}</b></td>
 														
-														<td style="padding-left: 40px"><b><a href="${pc.link}?menuId=0&<csrf:token uri='${pc.link}'/>"><i class="fa fa-external-link" aria-hidden="true"></i></a></b></td>
+														<td style="padding-left: 40px">
+														<c:if test="${buttonStatus}">
+														<b><a href="${pc.link}?menuId=0&<csrf:token uri='${pc.link}'/>"><i class="fa fa-external-link" aria-hidden="true"></i></a></b>
+														</c:if>
+														</td>
 														 
 														
 														<td align="right">
@@ -143,9 +154,9 @@ toggleSubComponent=function(id,flag){
 														<td align="right" style="padding-right:20px"><b><c:out value="${pc.noOfUnitsCEC}"/></b> </td>
 															
 														</c:if>
-														<c:set var="t_fund" value="${t_fund+pc.amountProposed}" />
+														<c:set var="t_fund" value="${t_fund+pc.amountProposed+pc.addtionalRequirement}" />
 														<c:set var="t_unit" value="${t_unit+pc.noOfUnits}"/>
-														<c:set var="t_fund_mopr" value="${t_fund_mopr+pc.amountProposedMOPR}" />
+														<c:set var="t_fund_mopr" value="${t_fund_mopr+pc.amountProposedMOPR+pc.addtionalRequirementMOPR}" />
 														<c:set var="t_unit_mopr" value="${t_unit_mopr+pc.noOfUnitsMOPR}"/>
 														
 													</tr>
@@ -157,7 +168,7 @@ toggleSubComponent=function(id,flag){
 													<c:set var="pscindex" value="${pscindex+1}"/>
 													<c:set var="moprDiff" value="bg-test" />
 										  			<c:if test="${psc.amountProposed gt psc.amountProposedMOPR}">
-														<c:set var="moprDiff" value="bg-danger" />
+														<c:set var="moprDiff" value="bg-warning" />
 													</c:if>
 													
 														<tr class="slide${pc.componentsId}"  style="display: none;">
@@ -187,19 +198,17 @@ toggleSubComponent=function(id,flag){
 																	<c:set var="t_fund_cec" value="${t_fund_cec+psc.amountProposedCEC}" />
 																	<c:set var="t_unit_cec" value="${t_unit_cec+psc.noOfUnitsCEC}"/>
 																</c:if>
-																<c:set var="t_fund" value="${t_fund+psc.amountProposed}" />
-																<c:set var="t_unit" value="${t_unit+psc.noOfUnits}"/>
-																<c:set var="t_fund_mopr" value="${t_fund_mopr+psc.amountProposedMOPR}" />
-																<c:set var="t_unit_mopr" value="${t_unit_mopr+psc.noOfUnitsMOPR}"/>
-																<c:set var="s_fund" value="${s_fund+psc.amountProposed}" />
-																<c:set var="s_unit" value="${s_unit+psc.noOfUnits}"/>
-																<c:set var="s_fund_mopr" value="${s_fund+psc.amountProposedMOPR}" />
-																<c:set var="s_unit_mopr" value="${s_unit+psc.noOfUnitsMOPR}"/>
+																
+													
 																
 															
 														</tr>
 													</c:if>
 												</c:forEach>
+												<c:set var="moprDiff" value="bg-test" />
+										  			<c:if test="${pc.amountProposed gt pc.amountProposedMOPR}">
+														<c:set var="moprDiff" value="bg-warning" />
+													</c:if>
 											<c:if test="${pscindex eq 0 and pc.componentsId ne 11 and pc.componentsId ne 12}">
 													<tr class="slidex${pc.componentsId}"  style="display: none;">
 															<td></td>
@@ -486,8 +495,10 @@ toggleSubComponent=function(id,flag){
 									</table>
 								</div>
 							</div> --%>
+							<c:if test="${buttonStatus}">
 							<input type="button" class="btn bg-green waves-effect" data-ng-click="forwardPlan(${sessionScope['scopedTarget.userPreference'].plansAreFreezed})" value="Forward Plan To CEC">
 							<input type="button" style="float: right;" class="btn bg-red waves-effect" data-ng-click="" value="Revert Plan To ${stateName}">
+							</c:if>
 						</div>
 					</div>
 				</div>

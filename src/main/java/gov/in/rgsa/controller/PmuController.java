@@ -87,7 +87,10 @@ public class PmuController {
 			pmuActivitiesList.get(0).setSetDistrictIdPmuWise(proposedDomainExpertsList.get(3).getDistrictId());
 		model.addAttribute("pmuActivity", pmuActivitiesList.get(0));
 		model.addAttribute("pmuWiseDomainList", proposedDomainExpertsList);
+		model.addAttribute("initial_status", false);
 		
+		}else{
+			model.addAttribute("initial_status", true);
 		}
 		model.addAttribute("STATE_CODE", userPreference.getStateCode());
 		if(userPreference.getUserType().equalsIgnoreCase("C")){

@@ -86,11 +86,11 @@ public class QprGramPanchayatController {
 		int quatorId =qprPanchayatBhawan.getQuaterId();
 		int PanchayatBhawanActvityId =qprPanchayatBhawan.getActivityId1();
 		int districtCode =qprPanchayatBhawan.getSelectDistrictId();
-		/*int panchayatBhawanActivityDetailId=0;
-		int panchayatBhawanActivityId =0;*/
+		int localBodyCode=0;
+		int panchayatBhawanActivityId =0;
 		Set <GramPanchayatProgressReportDTO> set =new HashSet<>();
 		List<GramPanchayatProgressReportDTO> gramPanchayatProgressReportDTO =panchayatBhawanService.fetchGPBhawanData(PanchayatBhawanActvityId,districtCode);
-/*
+
 		Iterator itr= gramPanchayatProgressReportDTO.iterator(); 
 		while(itr.hasNext())
 		{
@@ -103,16 +103,22 @@ public class QprGramPanchayatController {
 				
 			}
 			panchayatBhawanActivityId =obj.getPanchayatBhawanActivityId();
-			 panchayatBhawanActivityDetailId=obj.getPanchayatBhawanActivityDetailId();
+			localBodyCode=obj.getLocalBodyCode();
 		}
-		*/
-		List<QprPanchayatBhawan> QprPanchayatBhawan = panchayatBhawanService.fetchDataAccordingToQuator(quatorId,PanchayatBhawanActvityId,districtCode);
+		
+		
+		
+		List<QprPanchayatBhawan> QprPanchayatBhawan = panchayatBhawanService.fetchDataAccordingToQuator(quatorId,panchayatBhawanActivityId,districtCode);
 		if(QprPanchayatBhawan !=null && QprPanchayatBhawan.size() !=0)
 		{
-			List<QprPanhcayatBhawanDetails> qprPanhcayatBhawanDetails =QprPanchayatBhawan.get(0).getQprPanhcayatBhawanDetails();
-			model.addAttribute("QPRPANCHAYATBHAWAN", QprPanchayatBhawan);
-			model.addAttribute("QPRPANHCAYATBHAWANDETAILS", qprPanhcayatBhawanDetails);
+			if(PanchayatBhawanActvityId==QprPanchayatBhawan.get(0).getActivityId())
+			{
+				model.addAttribute("QPRPANCHAYATBHAWAN", QprPanchayatBhawan.get(0));
+				List<QprPanhcayatBhawanDetails> qprPanhcayatBhawanDetails =QprPanchayatBhawan.get(0).getQprPanhcayatBhawanDetails();
+				model.addAttribute("QPRPANHCAYATBHAWANDETAILS", qprPanhcayatBhawanDetails);
 
+			}
+			
 			
 		}
 		//Collections.sort(QprPanchayatBhawan.get(0).getQprPanhcayatBhawanDetails(), Comparator.comparing(QprPanhcayatBhawanDetails::getQprPanhcayatBhawanDetailsId));
@@ -121,8 +127,9 @@ public class QprGramPanchayatController {
 		if(!CollectionUtils.isEmpty(dbActivitiesList)) {
 			model.addAttribute("dbActivitiesList", dbActivitiesList.get(0));
 			}*/
-			model.addAttribute("QprPanchayatBhawanDto", gramPanchayatProgressReportDTO);
-			
+			model.addAttribute("QprPanchayatBhawanDto", set);
+			model.addAttribute("panchayatBhawanActivityId", panchayatBhawanActivityId);
+			 model.addAttribute("localBodyCode", localBodyCode);
 		model.addAttribute("GPBhawanStatus", panchayatBhawanService.fetchGPBhawanStatus(PanchayatBhawanActvityId));
 
 		model.addAttribute("quarterDuration", progressReportService.getQuarterDurations());

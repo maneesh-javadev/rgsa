@@ -210,8 +210,8 @@ function validatingTotalProposedFund(){
 													varStatus="index">
 													<c:if test="${activity.pmuType.pmuTypeId eq 1}">
 														<form:hidden
-															path="adminFinancialDataCellActivityDetails[${index.index}].pmuActivityTypeId"
-															value="${activity.pmuType.pmuTypeId} " />
+															path="adminFinancialDataCellActivityDetails[${index.index}].pmuActivityType.pmuActivityTypeId"
+															value="${activity.pmuActivityTypeId} " />
 														<form:hidden
 															path="adminFinancialDataCellActivityDetails[${index.index}].adminFinancialDataActivityDetailId" />
 														<tr>
@@ -310,7 +310,16 @@ function validatingTotalProposedFund(){
 											</tbody>
 										</table>
 									</div>
-									<div class="text-right">
+									<div class="row clearfix">
+									<div class="col-md-4">
+										<button type="button"
+											onclick="onClose('viewPlanDetails.html?<csrf:token uri='viewPlanDetails.html'/>&stateCode=${STATE_CODE}')"
+											class="btn bg-orange waves-effect">
+											<i class="fa fa-arrow-left" aria-hidden="true"></i>
+											<spring:message code="Label.BACK" htmlEscape="true" />
+										</button>
+									</div>
+									<div class=" col-md-8 text-right">
 										<input type="hidden" id="isFreeze" name="isFreeze">
 										<c:if test="${IS_FREEZE eq false or empty IS_FREEZE}">
 											<button type="submit" class="btn bg-green waves-effect"
@@ -356,12 +365,14 @@ function validatingTotalProposedFund(){
 												htmlEscape="true" />
 										</button>
 									</div>
-								</div>
-								<form:hidden path="adminFinancialDataActivityId"
+									</div>
+									<form:hidden path="adminFinancialDataActivityId"
 									value="${adminFinancialDataActivityId}" />
 								<input type="hidden" id="count" value="${count}" />
 								<form:hidden path="userType"
 									value="${USER_TYPE_OF_PREVIOUS_ACTIVITY}" />
+								</div>
+								
 
 
 								<div class="container tab-pane fade" id="MOPR"
@@ -437,11 +448,11 @@ function validatingTotalProposedFund(){
 												<c:forEach items="${ACTIVITY_TYPE}" var="activity"
 													varStatus="index">
 													<c:if test="${activity.pmuType.pmuTypeId eq 1}">
-														<form:hidden
+														<%-- <form:hidden
 															path="adminFinancialDataCellActivityDetails[${index.index}].pmuActivityTypeId"
 															value="${activity.pmuType.pmuTypeId} " />
 														<form:hidden
-															path="adminFinancialDataCellActivityDetails[${index.index}].adminFinancialDataActivityDetailId" />
+															path="adminFinancialDataCellActivityDetails[${index.index}].adminFinancialDataActivityDetailId" /> --%>
 														<tr>
 															<td><div align="center">
 																	<strong>${activity.pmuType.pmuTypeName}</strong>
@@ -509,12 +520,22 @@ function validatingTotalProposedFund(){
 											</tbody>
 										</table>
 									</div>
-									<div class="text-right">
+									<div class="row clearfix">
+									<div class="col-md-4">
+										<button type="button"
+											onclick="onClose('viewPlanDetails.html?<csrf:token uri='viewPlanDetails.html'/>&stateCode=${STATE_CODE}')"
+											class="btn bg-orange waves-effect">
+											<i class="fa fa-arrow-left" aria-hidden="true"></i>
+											<spring:message code="Label.BACK" htmlEscape="true" />
+										</button>
+									</div>
+									<div class=" col-md-8 text-right">
 										<button type="button"
 											onclick="onClose('home.html?<csrf:token uri='home.html'/>')"
 											class="btn bg-orange waves-effect">
 											<spring:message code="Label.CLOSE" htmlEscape="true" />
 										</button>
+									</div>
 									</div>
 								</div>
 							</div>

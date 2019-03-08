@@ -768,7 +768,7 @@ select option:first-child{
 							<input type="hidden" name="path" id="path">
 							<input type="hidden" name="dbFileName" id="dbFileName">
 							<div class="form-group text-right">
-								
+								 <c:if test="${Plan_Status eq true}"> 
 									<button type="submit" id="saveButtn"
 										onclick="$('input,select').prop('disabled', false);"
 										class="btn bg-green waves-effect">SAVE</button>
@@ -778,6 +778,7 @@ select option:first-child{
 										class="btn bg-green waves-effect">UNFREEZE</button>
 									<button type="button" id="clearButtn"
 										class="btn bg-light-blue waves-effect reset">CLEAR</button>
+										</c:if>
 								
 								<button type="button"
 									onclick="onClose('home.html?<csrf:token uri='home.html'/>')"

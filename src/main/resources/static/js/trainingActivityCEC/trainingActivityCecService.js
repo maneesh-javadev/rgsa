@@ -7,7 +7,7 @@ trgModuleCEC.service('trgActivityCecService', [ '$http', function($http) {
 		return $http.get("getTrgActivityCecMoprData.html?<csrf:token uri=getTrgActivityCecMoprData.htm/>");
 	}
 	this.saveCapacityBuildingCEC=function(cecData){
-		return $http.post("saveCapacityBuildingActivityAndDetails.html?<csrf:token uri=saveCapacityBuildingActivityAndDetails.htm/>",cecData);
+		return $http.post("saveCapacityBuildingCEC.html?<csrf:token uri=saveCapacityBuildingCEC.htm/>",cecData);
 	}
 	
 }]);

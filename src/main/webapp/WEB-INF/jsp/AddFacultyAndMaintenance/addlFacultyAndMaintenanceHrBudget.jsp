@@ -4,6 +4,8 @@
 <script>
 
 $('document').ready(function(){
+	 calculateGrandTotal();
+	
 	if(document.getElementById("ISFREEZE") != null){
 		var myBoolean= document.getElementById("ISFREEZE").value;
 	}
@@ -23,6 +25,8 @@ $('document').ready(function(){
         $('.active12').prop('readonly',false);
         $('#activedropdown').prop('disabled',false);
         }
+  
+   
 });
 
 
@@ -66,12 +70,20 @@ $('document').ready(function(){
 			total += +$("#fund_"+i).val();
 		}
 		document.getElementById("total").value =total;
-		calculateGrandTotal();
+		
+		  
+		
 	}
 	}
 	
 	function calculateGrandTotal(){
-		document.getElementById("grandTotal").value = +document.getElementById("total").value + +document.getElementById("additionalRequirement").value;
+		var a= parseInt(document.getElementById("total").value) ;
+		
+		document.getElementById("grandTotal").value =a/2 +parseInt(document.getElementById("additionalRequirement").value);
+		
+		calculateTotal();
+		
+		
 	}
 	
 	function validatingAdditionalRequirement(obj){
@@ -142,13 +154,17 @@ function domainValidation(obj){
 		noOfDomainSprc += Number($('#noOfFaculty_'+i).val()) ;
 		noOfDomainDprc += Number($('#noOfExperts_'+(i+3)).val());
 	}
+	
 	if($('#noOfUnits_0').val() < noOfDomainSprc){
 		alert('Total domains experts should be equal to or less than '+ $('#noOfUnits_0').val());
 		$('#noOfFaculty_'+obj).val('');
+		
 	}else if($('#noOfUnits_3').val() < noOfDomainDprc){
 		alert('Total domains experts should be equal to or less than '+ $('#noOfUnits_3').val());
 		$('#noOfExperts_'+obj).val('');
+		
 	}
+	
 }
 
 function validateDistricts(){
@@ -158,6 +174,28 @@ function validateDistricts(){
 		$('#districtSupportedId').focus();
 	}
 }
+
+
+ function myFunctionName(obj) {
+	var rowCountSprc=$('#tbodySprcId tr').length;
+	var noOfDomainSprc=0;
+	var noOfDomainDprc=0;
+	for(var i=0;i<rowCountSprc;i++){
+		noOfDomainSprc += Number($('#noOfFaculty_'+i).val()) ;
+		noOfDomainDprc += Number($('#noOfExperts_'+(i+3)).val());
+	}
+	
+	if($('#noOfUnits_0').val() < noOfDomainSprc){
+		alert('Total domains experts should be equal to or less than '+ $('#noOfUnits_0').val());
+		$('#noOfUnits_0').val('');
+		
+	}else if($('#noOfUnits_3').val() < noOfDomainDprc){
+		alert('Total domains experts should be equal to or less than '+ $('#noOfUnits_3').val());
+		$('#noOfUnits_3').val('');
+		
+	}
+}
+
 </script>
 
 <section class="content">
@@ -170,7 +208,7 @@ function validateDistricts(){
 					</div>
 					<form:form method="post" name="additionalFacultyAndMain"
 						action="addFacultyAndMaintenanceHrBudget.html"
-						modelAttribute="ADDITIONAL_FACULTY_MAINT_MODEL">
+						modelAttribute="ADDITIONAL_FACULTY_MAINT_MODEL" >
 						<input type="hidden" name="<csrf:token-name/>"
 							value="<csrf:token-value uri="addFacultyAndMaintenanceHrBudget.html" />" />
 						<div class="body">
@@ -222,7 +260,7 @@ function validateDistricts(){
 											
 											<c:choose>
 											<c:when test="${count ne 2 and count ne 5}">
-											<td><form:input path="institueInfraHrActivityDetails[${count}].noOfUnits" type="text" onkeypress="return isNumber(event)" maxlength="5" class="active12 form-control Align-Right" id="noOfUnits_${count}" onkeyup="validateCeilingValue(${count})" /></td>
+											<td><form:input path="institueInfraHrActivityDetails[${count}].noOfUnits" type="text" onkeypress="return isNumber(event)" maxlength="5" class="active12 form-control Align-Right" id="noOfUnits_${count}" onkeyup="validateCeilingValue(${count})" onchange="myFunctionName(${count})" /></td>
 											
 											<%-- <td><form:input path="institueInfraHrActivityDetails[${count}].unitCost" type="text" maxlength="7" onkeypress="return isNumber(event)" class="active12 form-control Align-Right" id="unitCost_${count}" onkeyup="calculateFund(${count});validateCeilingValue(${count})"/></td> --%>
 											
@@ -415,7 +453,7 @@ function validateDistricts(){
 																		<th><div align="center">No.of Experts</div></th>
 																	</tr>
 																</thead>
-																<tbody>
+																<tbody >
 																	<c:set var="temp" value="0" scope="page" />
 																	<c:forEach items="${LIST_OF_DOMAINS}" var="DOMAINS">
 																		<c:if
@@ -460,11 +498,12 @@ function validateDistricts(){
 								<button type="submit" class="btn bg-green waves-effect" id="save">
 									<spring:message code="Label.SAVE" htmlEscape="true" />
 								</button>
-
+                              
 								<button type="button" class="freeze btn bg-green waves-effect"
 									 onclick='freezeAndUnfreeze("freeze")' >
 									<spring:message code="Label.FREEZE" htmlEscape="true" />
 								</button>
+								
 									<button type="button" onclick="onClear(this)"
 									class="btn bg-light-blue waves-effect" id="clear">
 									<spring:message code="Label.CLEAR" htmlEscape="true" />

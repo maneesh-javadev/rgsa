@@ -44,6 +44,8 @@ publicModule.controller("satcomController",['$scope','satcomService',function($s
 					$scope.clear=false;
 				}
 				
+			}else{
+				$scope.initialFlag=true;
 			}
 			if($scope.satcomActivityObject.activityDetails != undefined)
 				$scope.calculateTotal();

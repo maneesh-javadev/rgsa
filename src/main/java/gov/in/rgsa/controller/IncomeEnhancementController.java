@@ -68,6 +68,7 @@ public class IncomeEnhancementController {
 	private String incomeEnhancementDetails(@ModelAttribute("Income_Enhancement") IncomeEnhancementActivity incomeEnhancementActivity, Model model,RedirectAttributes redirectAttributes) {
 
 		String status = basicInfoService.fillFirstBasicInfo();
+		Integer stateCode = userPreference.getStateCode();
 		if(status.equals("create")) {
 			redirectAttributes.addFlashAttribute(Message.EXCEPTION_KEY, "Please fill the Basic Info Details first");
 			return REDIRECT_BAISC_INFO_DETAILS;
@@ -77,6 +78,16 @@ public class IncomeEnhancementController {
 			return REDIRECT_MODIFY_BAISC_INFO_DETAILS;
 		}
 		
+		Integer planStatus=userPreference.getPlanStatus();	
+	    Boolean flag= false;
+        if(planStatus!=null && planStatus==1 && userPreference.getUserType().equalsIgnoreCase("S")) {
+        	flag = true;
+		}else if(planStatus!=null && planStatus==2 && userPreference.getUserType().equalsIgnoreCase("M")) {
+			flag = true;
+		}
+      	else {
+      		flag= false;}
+        model.addAttribute("Plan_Status", flag);
 		List<IncomeEnhancementActivity> dbActivitiesList = enhancementService.fetchAllIncmEnhncmntActvty(userPreference.getUserType().charAt(0));
  		if(!CollectionUtils.isEmpty(dbActivitiesList)) {
 			for(int i=0;i<dbActivitiesList.get(0).getIncomeEnhancementDetails().size();i++) {
@@ -125,29 +136,21 @@ public class IncomeEnhancementController {
 			}
 			model.addAttribute("dbActivitiesList", dbActivitiesList.get(0));
                              return INCOME_ENHANCEMENT_PROJECT_FOR_CEC;			
-		}else{
- 		Integer planStatus=userPreference.getPlanStatus();	
-	    Boolean flag= false;
-        if(planStatus!=null && planStatus==1 && userPreference.getUserType().equalsIgnoreCase("S")) {
-        	flag = true;
-		}else if(planStatus!=null && planStatus==2 && userPreference.getUserType().equalsIgnoreCase("M")) {
-			flag = true;
 		}
-      	else {
-      		flag= false;}
-        model.addAttribute("Plan_Status", flag);
-      	}
- 		}
 		model.addAttribute("schemeMasterList", enhancementService.schemeMasterList());
 		model.addAttribute("districtList", lgdService.getAllDistrictBasedOnState(userPreference.getStateCode()));
 		model.addAttribute("STATE_CODE", userPreference.getStateCode());
 		
+		
+      	}
+ 		
 		if(dbActivitiesList!=null && !dbActivitiesList.isEmpty())
 		{
 		model.addAttribute("dbActivitiesList", dbActivitiesList.get(0));
 		}
 		else {
 			model.addAttribute("dbActivitiesList", dbActivitiesList);
+			
 		}
  		
 		return INCOME_ENHANCEMENT_PROJECT;

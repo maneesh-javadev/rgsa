@@ -128,7 +128,7 @@
 													<input data-ng-disabled="capacityBuilding.isFreeze" data-ng-change="insertCBMasterInScope($index)" maxlength="5" restrict-input="{type: 'numberGreaterThanZero',index: $index}" data-ng-keyup="calculateFunds($index)" type="text" data-ng-model="capacityBuilding.capacityBuildingActivityDetails[$index].noOfUnits" class="form-control" placeholder=" " style="text-align:right;"/>
 												</td>
 												<td>
-													<input data-ng-disabled="capacityBuilding.isFreeze" data-ng-change="insertCBMasterInScope($index)" maxlength="10" restrict-input="{type: 'numberGreaterThanZero',index: $index}" min="1" data-ng-keyup="calculateFunds($index);checkForCellingValue($index)" type="text" data-ng-model="capacityBuilding.capacityBuildingActivityDetails[$index].unitCost" class="form-control" style="text-align:right;" placeholder="Upper Ceiling Limit  Rs. 5 Lakh" />
+													<input data-ng-disabled="capacityBuilding.isFreeze" data-ng-change="insertCBMasterInScope($index)" maxlength="10" restrict-input="{type: 'numberGreaterThanZero',index: $index}" min="1" data-ng-keyup="calculateFunds($index);checkForCellingValue($index)" type="text" data-ng-model="capacityBuilding.capacityBuildingActivityDetails[$index].unitCost" class="form-control" style="text-align:right;" placeholder="" />
 												</td>
 												<td>
 													<input data-ng-disabled="true" style="background: #dddddd; text-align:right;" data-ng-change="insertCBMasterInScope($index)" type="text" data-ng-model="capacityBuilding.capacityBuildingActivityDetails[$index].funds" class="form-control" placeholder=" " />
@@ -161,7 +161,7 @@
 											</tr>
 											<tr>
 											<th colspan="5">Additional Requirement</th>
-											<td ><input type="text" restrict-input="{type: 'digitsOnly',index: $index}" data-ng-keyUp="validateAmount()"
+											<td ><input type="text" restrict-input="{type: 'digitsOnly',index: $index}" data-ng-keyUp="validateAmount()" ng-min="1"
 														data-ng-model="capacityBuilding.additionalRequirement" data-ng-disabled="capacityBuilding.isFreeze" class="form-control" placeholder="25% of Total Cost " style="text-align:right;" /></td>
 											<td></td>
 											<td></td>
@@ -264,13 +264,16 @@
 							<button ng-click="saveCapacityBuildingActivityAndDetails()" ng-disabled="capacityBuilding.isFreeze"  type="button" class="btn bg-green waves-effect">
 									<spring:message code="Label.SAVE" htmlEscape="true" />
 								</button>
+								
+								
 								<button ng-show="capacityBuilding.isFreeze" type="button" data-ng-click="freezUnFreezCapacityBuilding('unfreeze')" class="btn bg-green waves-effect">
 									<spring:message code="UNFREEZE" htmlEscape="true" />
 								</button>
+								<c:if test="${capacityBuilding.isFreeze != undefined}">
 								<button ng-show="!capacityBuilding.isFreeze" type="button" data-ng-click="freezUnFreezCapacityBuilding('freeze')" class="btn bg-green waves-effect">
 									<spring:message code="FREEZE" htmlEscape="true" />
 								</button>
-								
+								</c:if>
 								<button type="button" data-ng-click="onClear()" ng-disabled="capacityBuilding.isFreeze"  class="btn bg-light-blue waves-effect">
 									<spring:message code="Label.CLEAR" htmlEscape="true" />
 								</button>

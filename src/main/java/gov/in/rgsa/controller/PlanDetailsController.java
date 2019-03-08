@@ -97,6 +97,7 @@ public class PlanDetailsController {
 			userPage = fetchDataForCECLogin(stateCode,model);
 			userPreference.setStateCode(stateCode);
 		}
+		model.addAttribute("PLAN_ALLOCATION_LIST", allocationService.getPlanComponents());
 		List<Plan> plan = allocationService.showHidePlanStatus(stateCode);
 		
 		userPreference.setPlanCode(plan.get(0).getPlanCode());

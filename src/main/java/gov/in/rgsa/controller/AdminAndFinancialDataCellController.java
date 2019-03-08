@@ -78,7 +78,7 @@ public class AdminAndFinancialDataCellController {
 		}else{
 			model.addAttribute("DISABLE_FREEZE_INTIALLY", true);
 		}
-		
+		model.addAttribute("STATE_CODE", userPreference.getStateCode());
 		if(userPreference.getUserType().equalsIgnoreCase("C"))
 		{
 			List<AdminAndFinancialDataActivity> andFinancialDataActivityForState = adminAndFinancialDataCellService.fetchAdminAndFinancialActivity("S");
@@ -122,7 +122,6 @@ public class AdminAndFinancialDataCellController {
       	}
 	      model.addAttribute("Plan_Status", flag);
 		model.addAttribute("USER_TYPE",userPreference.getUserType());
-		model.addAttribute("STATE_CODE", userPreference.getStateCode());
 		return ADMIN_AND_FINANCIAL;
 	}
 	

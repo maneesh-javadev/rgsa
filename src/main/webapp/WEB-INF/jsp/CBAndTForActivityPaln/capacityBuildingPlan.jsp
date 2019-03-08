@@ -553,15 +553,17 @@ tbody tr td:nth-child(1) {  /*the first cell in each tr*/
 						<c:choose>
 						<c:when test="${sessionScope['scopedTarget.userPreference'].userType eq 'S'}">
 						<div class="col-md-12 text-right">
-							<%--  <c:if test="${Plan_Status eq true}"> --%>
+							 <c:if test="${Plan_Status eq true}"> 
 							<button type="submit" id="saveButtn" onclick="toValidate();"
 								class="btn bg-green waves-effect">SAVE</button>
+								<c:if test="${allTrainingActivity.isFreeze != undefined}">
 							<button type="button" id="frzButtn" onclick="toFreeze();"
 								class="btn bg-green waves-effect">FREEZE</button>
+								</c:if>
 							<button type="button" id="unFrzButtn" onclick="toFreeze();"
 								class="btn bg-green waves-effect">UNFREEZE</button>
 
-							<%--  </c:if> --%>
+							 
 							<c:if test="${not empty allTrainingActivity}">
 								<!--                 			<button type="submit" id="saveButtn" onclick="toValidate();" class="btn bg-green waves-effect">SAVE</button>
  -->
@@ -569,6 +571,7 @@ tbody tr td:nth-child(1) {  /*the first cell in each tr*/
 
 							<button type="button" id="clearButtn" onclick="onClear(this)"
 								class="btn bg-light-blue waves-effect">CLEAR</button>
+							</c:if>
 							<button type="button"
 								onclick="onClose('home.html?<csrf:token uri='home.html'/>')"
 								class="btn bg-orange waves-effect">CLOSE</button><br />

@@ -78,7 +78,7 @@ public class CapacityBuildingServiceImpl implements CapacityBuildingService{
 		if (!CollectionUtils.isEmpty(capacityBuildingActivities)) {
 			return capacityBuildingActivities.get(0);
 		} else {
-			return null;
+			return( new CapacityBuildingActivity());
 		}
 	}
 	

@@ -124,25 +124,29 @@ public class CapacityBuildingOneController {
 	}
 	
 	
-	/*@RequestMapping(name="saveCapacityBuildingCEC",method=RequestMethod.POST)
-	private String saveCapacityBuildingCEC(@RequestBody final CapacityBuildingActivity capacityBuildingActivity,HttpServletRequest request) {
+	@RequestMapping(value="saveCapacityBuildingCEC",method=RequestMethod.POST)
+	private @ResponseBody Response saveCapacityBuildingCEC(@RequestBody final CapacityBuildingActivity capacityBuildingActivity,HttpServletRequest request) {
 		//capacityBuildingService.saveCapacityBuildingActivityAndDetails(capacityBuildingActivity);
 		
 		//re.addFlashAttribute(Message.SUCCESS_KEY, Message.SAVE_SUCCESS);
-		
-		return CAPACITY_BUILDING_CEC;
-	}*/
+		capacityBuildingService.saveCapacityBuildingActivityAndDetails(capacityBuildingActivity);
+		Response response = new Response();
+		response.setResponseMessage(Message.SAVE_SUCCESS);
+		response.setResponseCode(200);
+		return response;
+	}
 	
 
-@ResponseBody
+	@ResponseBody
 	@RequestMapping(value="getTrgActivityCecMoprData",method=RequestMethod.GET)
-	private Map<String, Object> getTrgActivityCecMoprData(){
+	private Map<String, Object> getTrgActivityCecMoprData(Model model){
 		Map<String, Object> map=new HashMap<>();
 
 		List<CBMaster> cbMasters = new ArrayList<CBMaster>();
 		cbMasters = cbMasterService.fetchCBMasters();
 		map.put("cbMasters", cbMasters);
 		map.put("userType", userPreference.getUserType().charAt(0));
+		model.addAttribute("STATE_CODE", userPreference.getStateCode());
 		map.put("capacityBuildingDetails", capacityBuildingService.fetchCapacityBuildingActivity(null));
 		map.put("trg_activity_state", capacityBuildingService.fetchCapacityBuildingActivity('S'));
 		map.put("trg_activity_mopr", capacityBuildingService.fetchCapacityBuildingActivity('M'));
