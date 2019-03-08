@@ -22,7 +22,9 @@
 - [ ] Get the code (***change as per your codendi username***), enter the codendi password if prompted:
 
   ```bash
-  git clone kkundan@10.24.214.73:/gitroot/rgsagit/rgsa.git
+  git clone git@10.1.11.141:kkundan/rgsa.git
+  # if ssh times out use:
+  # git clone http://10.1.11.141/kkundan/rgsa.git 
   cd rgsa
   git checkout dev
   ```
@@ -47,4 +49,3 @@
   `mvn spring-boot:run`
 
 > Currently you can copy *Owasp.CsrfGuard.properties* from svn trunk. Later an autobuilder will be integrated to avoid manual updating of *Owasp.CsrfGuard.properties* file. 
-
