@@ -18,7 +18,7 @@ publicModule.controller("adminTechSupportSaffController",['$scope','adminTechSup
 			if(response.data.technicalSupport!=undefined){
 				$scope.adminTechStaffObject=response.data.technicalSupport;
 				$scope.adminTechStaffObject.supportDetails=response.data.details;
-				
+				$scope.fundTotal=0;
 				angular.forEach($scope.adminTechStaffObject.supportDetails, function(item, key){
 					$scope.fundTotal+=item.funds;
 				});
@@ -33,14 +33,18 @@ publicModule.controller("adminTechSupportSaffController",['$scope','adminTechSup
 		console.log("inside validate value");
 		if($scope.adminTechStaffObject.supportDetails[index].noOfUnits == 0){
 			$scope.adminTechStaffObject.supportDetails[index].noOfUnits = '';
+			$scope.adminTechStaffObject.supportDetails[index].funds=0;
 			toastr.error("Value should be greater then zero");
 		}
-		if($scope.adminTechStaffObject.supportDetails[index].unitCost == 0){
+		
+		if($scope.adminTechStaffObject.supportDetails[index].unitCost > 50000 ||$scope.adminTechStaffObject.supportDetails[index].unitCost == 0){
 			$scope.adminTechStaffObject.supportDetails[index].unitCost = '';
-			toastr.error("Value should be greater then zero");
+			$scope.adminTechStaffObject.supportDetails[index].funds=0;
+			toastr.error("Value should be greater then 0 and less then  50000");
 		}
 		if($scope.adminTechStaffObject.supportDetails[index].noOfMonths < 1  || $scope.adminTechStaffObject.supportDetails[index].noOfMonths > 12){
 			$scope.adminTechStaffObject.supportDetails[index].noOfMonths = '';
+			$scope.adminTechStaffObject.supportDetails[index].funds=0;
 			toastr.error("Value should be greater then zero and less then or equals 12.");
 		}
 	}
@@ -48,7 +52,7 @@ publicModule.controller("adminTechSupportSaffController",['$scope','adminTechSup
 	$scope.saveData=function(status){
 		$scope.adminTechStaffObject.status=status;
 		adminTechSupportSaffService.saveData($scope.adminTechStaffObject).then(function(response){
-			/*fetchOnLoad();*/
+			fetchOnLoad();
 			if($scope.adminTechStaffObject.status == 'F'){
 				toastr.success("Freeze Sucessfully");
 			}else if($scope.adminTechStaffObject.status == 'U'){
@@ -71,12 +75,14 @@ publicModule.controller("adminTechSupportSaffController",['$scope','adminTechSup
 	}
 	
 	$scope.calculateFunds=function(index){
+		$scope.validateValue(index);
 		if($scope.adminTechStaffObject.supportDetails[index].noOfUnits!="" && $scope.adminTechStaffObject.supportDetails[index].unitCost!="" && $scope.adminTechStaffObject.supportDetails[index].noOfMonths!=""){
 			$scope.adminTechStaffObject.supportDetails[index].funds=
 				$scope.adminTechStaffObject.supportDetails[index].noOfUnits*
 				$scope.adminTechStaffObject.supportDetails[index].unitCost*
 				$scope.adminTechStaffObject.supportDetails[index].noOfMonths;
 		}
+		
 		$scope.calculateGrandTotal();
 		
 		
@@ -85,15 +91,17 @@ publicModule.controller("adminTechSupportSaffController",['$scope','adminTechSup
 	$scope.calculateGrandTotal = function(){
 		$scope.grandTotal=0;
 		$scope.fundTotal=0;
-		angular.forEach($scope.adminTechStaffObject.supportDetails, function(item, key){
-			$scope.fundTotal+=item.funds;
-		});
-		//$scope.fundTotal = $scope.grandTotal;
-//		$scope.grandTotal+=$scope.adminTechStaffObject.additionalRequirement;
+		for (var i = 0; i < $scope.adminTechStaffObject.supportDetails.length; i++) {
+			
+			if($scope.adminTechStaffObject.supportDetails[i].funds!=undefined)
+				{
+				$scope.fundTotal= parseInt($scope.fundTotal)+ parseInt($scope.adminTechStaffObject.supportDetails[i].funds);
+				}
+			}
 		if($scope.adminTechStaffObject.additionalRequirement!=undefined){
-			$scope.grandTotal =  parseInt($scope.fundTotal) + parseInt($scope.adminTechStaffObject.additionalRequirement);
+			$scope.grandTotal=  parseInt($scope.fundTotal) + parseInt($scope.adminTechStaffObject.additionalRequirement);
+			
 		}
-		
 	}
 	
 	

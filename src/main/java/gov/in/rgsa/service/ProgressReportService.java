@@ -12,7 +12,10 @@ import gov.in.rgsa.entity.PmuProgress;
 import gov.in.rgsa.entity.QprAdminAndFinancialDataActivity;
 import gov.in.rgsa.entity.QprCbActivity;
 import gov.in.rgsa.entity.QprEnablement;
+import gov.in.rgsa.entity.QprEnablementDetails;
 import gov.in.rgsa.entity.QuarterDuration;
+import gov.in.rgsa.entity.QuaterWiseFund;
+import gov.in.rgsa.entity.StateAllocation;
 import gov.in.rgsa.entity.TrainingProgressReport;
 
 public interface ProgressReportService {
@@ -79,10 +82,20 @@ public interface ProgressReportService {
 
 	public QprInnovativeActivity getfetchInnovativeProgressReportToGeReportId(Integer id);
 
-	public QprAdminAndFinancialDataActivity fetchQprAdminFin(int quarterId);
+	public QprAdminAndFinancialDataActivity fetchQprAdminFin(int activityId, int quarterId);
 
 	public void saveAdminDataFinQuaterly(QprAdminAndFinancialDataActivity qprAdminAndFinancialDataActivity);
+	
+	public List<StateAllocation> fetchStateAllocationData(int componentId, int subCompnentId, int installmentNo);
 
+	public Boolean saveQprWiseFundData(int stateCode,int yearId,int quatorId,int componentId);
 
+	public List<QuaterWiseFund> fetchQuaterWiseFundData(Integer stateCode, int quarterId, int componentId);
+
+	public List<QprEnablementDetails> fetchQprEnablementDetails(Integer qprEEnablementId);
+
+	public List<QuaterWiseFund> fetchTotalQuaterWiseFundData(Integer stateCode, int componentId);
+
+	public List<StateAllocation> fetchStateAllocationDataByCompIdandInstallNo(int componentId, int installmentNo);
 
 }

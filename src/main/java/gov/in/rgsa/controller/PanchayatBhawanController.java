@@ -38,7 +38,7 @@ public class PanchayatBhawanController {
 	public static final String REDIRECT_BAISC_INFO_DETAILS = "redirect:basicinfo.add.html";
 	public static final String REDIRECT_MODIFY_BAISC_INFO_DETAILS = "redirect:managebasicInfoDetails.html";
 	private static final String PANCHAYAT_BHAWAN_CEC = "panchayatBhawanCec";
-	
+	private static final String CEC_USER_TYPE="C";
 	@Autowired
 	private PanchayatBhawanService panchayatBhawanService;
 	
@@ -100,6 +100,7 @@ public class PanchayatBhawanController {
 		map.put("PANCHAYAT_ACTIVITY", panchayatBhawanService.fetchPanchayatBhawanActivity());
 		map.put("DISTRICT_LIST", lgdService.getAllDistrictBasedOnState(userPreference.getStateCode()));
 		map.put("PANCHAYAT_BHAWAN_ACTIVITY", panchayatBhawanService.getPanchatayBhawanActivity(userPreference.getUserType()));
+		map.put("panchayatWithBhawan", panchayatBhawanService.fetchBasicInfoKeyValue(userPreference.getStateCode(),"27_gp"));
 		map.put("panchayatWithoutBhawan", panchayatBhawanService.findNumberOfPnchayatWithOutBhawanByState(userPreference.getStateCode()).getDefinationValue());
 		map.put("userType", userPreference.getUserType());
 		if(userPreference.getUserType().equalsIgnoreCase("C")){
@@ -166,6 +167,19 @@ public class PanchayatBhawanController {
 	@RequestMapping(value = "fetchFinalizeWorkLocationGPs", method = RequestMethod.GET)
 	private @ResponseBody List<PanchayatBhawanProposedInfo> fetchFinalizeWorkLocationGPs(Integer activityDetailsId) {
 		return panchayatBhawanService.fetchPanchayatBhawanProposedGPsList(activityDetailsId);
+	}
+	
+	
+	@ResponseBody
+	@RequestMapping(value="getPanchayatBhawanActivityCEC", method = RequestMethod.GET, produces=MediaType.APPLICATION_JSON_VALUE)
+	private Map<String, Object> getPanchayatBhawanActivityCEC() {
+		Map<String, Object> map=new HashMap<>();
+		map.put("PANCHAYAT_ACTIVITY", panchayatBhawanService.fetchPanchayatBhawanActivity());
+		map.put("DISTRICT_LIST", lgdService.getAllDistrictBasedOnState(userPreference.getStateCode()));
+		map.put("PANCHAYAT_BHAWAN_ACTIVITY", panchayatBhawanService.getPanchatayBhawanActivity(CEC_USER_TYPE));
+		map.put("userType", CEC_USER_TYPE);
+		
+		return map;
 	}
 }
 

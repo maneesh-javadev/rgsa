@@ -1,0 +1,9 @@
+
+spring.security.user.name=unconfigured
+spring.security.user.password=unconfigured
+
+# spring.datasource.username=postgres
+# spring.datasource.password=a
+
+spring.datasource.username=unconfigured
+spring.datasource.password=unconfigured

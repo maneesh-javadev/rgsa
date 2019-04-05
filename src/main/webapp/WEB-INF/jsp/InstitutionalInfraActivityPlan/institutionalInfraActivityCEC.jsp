@@ -1,4 +1,5 @@
 <%@include file="../taglib/taglib.jsp"%>
+
 <script type="text/javascript"
 	src="${pageContext.request.contextPath}/resources/plugins/angular/angular.min.js"></script>
 <script type="text/javascript"
@@ -80,9 +81,14 @@
 										</thead>
 										<tbody>
 											<tr
-												data-ng-repeat="detail in institutionalInfraActivityPlanState.institutionalInfraActivityPlanDetails">
-												<td><div align="center">{{detail.trainingInstitueType.trainingInstitueTypeName}}</div></td>
-												<td><div align="center">{{detail.districtName}}</div></td>
+												data-ng-repeat="detail in institutionalInfraActivityPlanState.institutionalInfraActivityPlanDetails" >
+												
+												<td><div align="center" data-ng-show="dataOfState">{{detail.trainingInstitueType.trainingInstitueTypeName}}</div>
+													<div align="center" data-ng-show="!dataOfState">{{institutionalInfraActivityPlan.institutionalInfraActivityPlanDetails[$index].trainingInstitueType.trainingInstitueTypeName}}</div>
+												</td>
+												<td><div align="center" data-ng-show="dataOfState">{{detail.districtName}}</div>
+													<div align="center" data-ng-show="!dataOfState">{{institutionalInfraActivityPlan.institutionalInfraActivityPlanDetails[$index].districtName}}</div>
+												</td>
 												<td><div align="center"
 														data-ng-if="detail.workType == 'N'">
 														<spring:message code="Label.NewBuilding" htmlEscape="true" />
@@ -151,14 +157,14 @@
 									<div class="col-md-8 text-right">
 											<button
 												data-ng-show="institutionalInfraActivityPlan.isFreeze"
-												data-ng-click="saveInstitutionalInfraActivityPlanDetails(trainingInstituteTypeId,updateStatus)"
+												data-ng-click="saveCec()"
 												type="button" class="btn bg-green waves-effect"
 												disabled="disabled">
 												<spring:message code="Label.SAVE" htmlEscape="true" />
 											</button>
 											<button
 												data-ng-show="!institutionalInfraActivityPlan.isFreeze"
-												data-ng-click="saveInstitutionalInfraActivityPlanDetails(trainingInstituteTypeId,updateStatus)"
+												data-ng-click="saveCec()"
 												type="button" class="btn bg-green waves-effect">
 												<spring:message code="Label.SAVE" htmlEscape="true" />
 											</button>
@@ -171,7 +177,7 @@
 											</button>
 											<button
 												data-ng-show="!institutionalInfraActivityPlan.isFreeze "
-												data-ng-disabled="updateStatus == 'saving'" type="button"
+												data-ng-disabled="initial_status" type="button"
 												data-ng-click="freezUnFreezInstitutionalInfraActivityPlan('freez')"
 												class="btn bg-green waves-effect">
 												<spring:message code="FREEZE" htmlEscape="true" />

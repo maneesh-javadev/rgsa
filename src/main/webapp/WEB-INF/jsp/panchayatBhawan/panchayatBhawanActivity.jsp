@@ -3,8 +3,8 @@
 <head>	
 	<%@include file="../taglib/taglib.jsp"%>
 	<script  type="text/javascript" src="${pageContext.request.contextPath}/resources/plugins/angular/angular.min.js"></script>
-	<script src="http://angular-ui.github.io/bootstrap/ui-bootstrap-tpls-0.11.0.js"></script>
-    <link href="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" rel="stylesheet">
+	<script src="${pageContext.request.contextPath}/resources/plugins/angular/ui-bootstrap-tpls-0.11.0.js"></script>
+      <link href="${pageContext.request.contextPath}/resources/css/bootstrap.min.css" rel="stylesheet">
 	<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/panchayatBhawan/panchayatBhawanActivityController.js"></script>
 	<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/panchayatBhawan/panchayatBhawanActivityService.js"></script>
 	<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/panchayatBhawan/panchayatController.js"></script>

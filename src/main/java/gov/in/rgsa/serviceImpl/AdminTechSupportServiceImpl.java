@@ -51,14 +51,14 @@ public class AdminTechSupportServiceImpl implements AdminTechSupportService{
 			if(technicalSupport.getUserType().equalsIgnoreCase("s")){
 				saveAdminTechSupportDetailsForMinistryAndCEC(technicalSupport);
 			}else{
-				technicalSupport.setStatus("S");
+				technicalSupport.setStatus(technicalSupport.getStatus());
 				technicalSupport.setStateCode(userPreference.getStateCode());
 				technicalSupport.setYearId(userPreference.getFinYearId());
 				technicalSupport.setVersionNo(1);
 				technicalSupport.setUserType(userPreference.getUserType());
 				technicalSupport.setCreatedBy(userPreference.getUserId());
 				technicalSupport.setLastUpdatedBy(userPreference.getUserId());
-				technicalSupport.setStatus("S");
+				/*technicalSupport.setStatus("S");*/
 				
 				List<AdministrativeTechnicalSupportDetails> supportDetails=technicalSupport.getSupportDetails();
 				AdministrativeTechnicalSupport administrativeTechnicalSupport=technicalSupport;
@@ -77,7 +77,9 @@ public class AdminTechSupportServiceImpl implements AdminTechSupportService{
 		}
 		
 
-		facadeService.populateStateFunds("4");
+		if(technicalSupport.getStatus()!=null && technicalSupport.getStatus().length()>0 && technicalSupport.getStatus().charAt(0)=='F') {
+       	 facadeService.populateStateFunds("4");
+        }
 	}
 
 	private void saveAdminTechSupportDetailsForMinistryAndCEC(AdministrativeTechnicalSupport technicalSupport){
@@ -91,22 +93,21 @@ public class AdminTechSupportServiceImpl implements AdminTechSupportService{
 		administrativeTechnicalSupport.setUserType(userPreference.getUserType());
 		administrativeTechnicalSupport.setCreatedBy(userPreference.getUserId());
 		administrativeTechnicalSupport.setLastUpdatedBy(userPreference.getUserId());
-		administrativeTechnicalSupport.setStatus("S");
+		administrativeTechnicalSupport.setStatus(technicalSupport.getStatus());
 	
+
 		
 		List<PostType> postTypes = getTypeOfPost();
 		/*int index = 0;*/
 		for (AdministrativeTechnicalSupportDetails administrativeTechnicalSupportDetails : supportDetails) {
 			//detail Id null
 			if(administrativeTechnicalSupport!=null) {
-				 administrativeTechnicalSupportDetails=new AdministrativeTechnicalSupportDetails();
-			}
+				 //administrativeTechnicalSupportDetails=new AdministrativeTechnicalSupportDetails();
+			
 			administrativeTechnicalSupportDetails.setId(null);
 			administrativeTechnicalSupportDetails.setAdministrativeTechnicalSupport(administrativeTechnicalSupport);
-/*			administrativeTechnicalSupportDetails.setPostType(postTypes.get(index));
-*/			
-/*			index++;
-*/		}
+	}
+			}
  		commonRepository.save(administrativeTechnicalSupport);
 		
 	}
@@ -125,6 +126,8 @@ public class AdminTechSupportServiceImpl implements AdminTechSupportService{
 /*			List<PostType> postTypes = getTypeOfPost();
 */			
 			/*int index = 0;*/
+
+			
 			for (AdministrativeTechnicalSupportDetails administrativeTechnicalSupportDetails : supportDetails) {
 				
 				
@@ -143,6 +146,7 @@ public class AdminTechSupportServiceImpl implements AdminTechSupportService{
 	 		commonRepository.save(administrativeTechnicalSupport);
 		}
 		else{
+			
 			List<PostType> postTypes = getTypeOfPost();
 			/*int index = 0;*/
 			for (AdministrativeTechnicalSupportDetails administrativeTechnicalSupportDetails : supportDetails) {
@@ -152,6 +156,7 @@ public class AdminTechSupportServiceImpl implements AdminTechSupportService{
 					administrativeTechnicalSupportDetails.setAdministrativeTechnicalSupport(administrativeTechnicalSupport);
 						
 				}
+
 				}else {
 					administrativeTechnicalSupportDetails=new AdministrativeTechnicalSupportDetails();
 /*					administrativeTechnicalSupportDetails.setPostType(postTypes.get(index));
@@ -189,7 +194,7 @@ public AdministrativeTechnicalSupport fetchAdministrativeTechnicalSupport(final 
 	if(userPreference.getUserType().equalsIgnoreCase("M") && CollectionUtils.isEmpty(administrativeTechnicalSupport)){
 		params.put("userType", "S");
 		administrativeTechnicalSupport=commonRepository.findAll("FETCH_ADMIN_TECH_SUPPORT", params);
-		administrativeTechnicalSupport.get(0).setStatus("UF");
+		administrativeTechnicalSupport.get(0).setStatus("U");
 		if(CollectionUtils.isNotEmpty(administrativeTechnicalSupport))
 		return administrativeTechnicalSupport.get(0);
 	}
@@ -229,6 +234,7 @@ public AdministrativeTechnicalSupport fetchAdministrativeTechnicalSupport(final 
 			administrativeTechnicalSupport1.setAdditionalRequirement(administrativeTechnicalSupport.getAdditionalRequirement());
 			administrativeTechnicalSupport1.setUserType(userPreference.getUserType());
 			administrativeTechnicalSupport1.setLastUpdatedBy(userPreference.getUserId());
+			administrativeTechnicalSupport1.setVersionNo(administrativeTechnicalSupport.getVersionNo());
 		
 
 		if(administrativeTechnicalSupport.getDbFileName().equals("F"))
@@ -237,12 +243,17 @@ public AdministrativeTechnicalSupport fetchAdministrativeTechnicalSupport(final 
 			administrativeTechnicalSupport1.setAdministrativeTechnicalSupportId(administrativeTechnicalSupport.getAdministrativeTechnicalSupportId());
 			commonRepository.update(administrativeTechnicalSupport1);
 		}
-		else if(administrativeTechnicalSupport.getDbFileName().equals("UF")){
-			administrativeTechnicalSupport1.setStatus("UF");
+		else if(administrativeTechnicalSupport.getDbFileName().equals("U") || administrativeTechnicalSupport.getDbFileName().equals("U")){
+			administrativeTechnicalSupport1.setStatus(administrativeTechnicalSupport.getDbFileName());
 			administrativeTechnicalSupport1.setAdministrativeTechnicalSupportId(administrativeTechnicalSupport.getAdministrativeTechnicalSupportId());
 			commonRepository.update(administrativeTechnicalSupport1);
 		}
 		
 	}
+		
+		if(administrativeTechnicalSupport.getDbFileName().equals("F")) {
+			facadeService.populateStateFunds("4");
+		}
+		
 	}
 }

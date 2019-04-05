@@ -4,7 +4,7 @@
 capacityBuildingGPs.service('capacityBuildingGPsService', [ '$http', function($http) {
 	
 	this.fetchCBMastersAndCapacityBuildingData=function(){
-		return $http.get("fetchCBMastersAndCapacityBuildingData.html?<csrf:token uri=fetchCBMastersAndCapacityBuildingData.htm/>");
+		return $http.get("fetchCBMastersAndCapacityBuildingDataCEC.html?<csrf:token uri=fetchCBMastersAndCapacityBuildingDataCEC.htm/>");
 	}
 	
 	

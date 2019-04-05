@@ -41,8 +41,8 @@ public class PlanAllocationValidator implements Validator {
 				temp=stateAllocation.getFundsAllocated()!=null?stateAllocation.getFundsAllocated():0;
 				totalFund=totalFund+temp;
 			}
-			if(totalRelFound!=null) {
-				if(totalRelFound!=totalFund) {
+			if(totalRelFound!=null && totalFund!=null) {
+				if(totalRelFound.doubleValue()!=totalFund.doubleValue()) {
 					errors.rejectValue("totalAmount","Please allocate fund equal to release fund of installment");
 				}
 			}else {

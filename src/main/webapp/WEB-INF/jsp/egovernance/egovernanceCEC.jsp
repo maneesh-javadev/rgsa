@@ -116,6 +116,7 @@ function changeColor() {
 																maxlength="5" class="active123 form-control"
 																id="noOfPostId_${count}"
 																onchange="calculateProposedFund(${count})"
+																onkeyup="changeColor()"
 																style="text-align:right;"
 																disabled="${eGovActivity.status eq true}" /></td>
 														<td>
@@ -138,7 +139,8 @@ function changeColor() {
 																path="eGovSupportActivityDetails[${index.index}].funds"
 																type="text" onkeypress="return isNumber(event)"
 																class="active123 form-control" id="fundId_${count}"
-																onchange="calculateProposedFund(${count});changeColor()"
+																onchange="calculateProposedFund(${count});"
+																onkeyup="changeColor()"
 																style="text-align:right;"
 																disabled="${eGovActivity.status eq true}" /></td>
 													</tr>
@@ -208,8 +210,10 @@ function changeColor() {
 									  
 										<button type="submit" class="btn bg-green waves-effect" id="saveId" onclick="validateMonth(${count});">
 										<spring:message code="Label.SAVE" htmlEscape="true" /></button>
-										<button type="button" onclick='freezeAndUnfreeze("freeze")' id="freezeId" class="btn bg-green waves-effect"><spring:message code="Label.FREEZE" htmlEscape="true" /></button>
-										
+										<c:choose>
+										<c:when test="${initial_status}"><button type="button" onclick='freezeAndUnfreeze("freeze")' id="freezeId" class="btn bg-green waves-effect" disabled="disabled"><spring:message code="Label.FREEZE" htmlEscape="true" /></button></c:when>
+										<c:otherwise><button type="button" onclick='freezeAndUnfreeze("freeze")' id="freezeId" class="btn bg-green waves-effect"><spring:message code="Label.FREEZE" htmlEscape="true" /></button></c:otherwise>
+										</c:choose>
 										</c:if>
 										<c:if test="${eGovActivity.status eq true}">
 										<button type="button" onclick='freezeAndUnfreeze("unfreeze")' id="unfreezeId" class="btn bg-green waves-effect" >

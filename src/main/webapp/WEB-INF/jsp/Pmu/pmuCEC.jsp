@@ -73,9 +73,11 @@ function calculate(obj)
 	if(noOfMonths > 12)
 		{
 			alert("Months should be less than 12 !");
-			$("#noOfMonths_"+obj).val(0);
+			$("#noOfMonths_"+obj).val('');
+			$("#noOfMonths_"+obj).focus();
+			$("#fund_"+obj).val('');
 		}
-	else if(noOfMonths > 0) {
+	else if(noOfMonths > 0 && noOfMonths < 12) {
 		$("#fund_"+obj).val(parseFloat($("#noOfUnits_"+obj).val()) * parseFloat($("#unitCost_"+obj).val()) * parseFloat($("#noOfMonths_"+obj).val())); 
 		+$("#fundState_"+obj).text() > +$("#fund_"+obj).val() ? $("#fundState_"+obj).css('color','red') : $("#fundState_"+obj).css('color','#00cc00');
 		$("#totalFund_"+obj).val(parseFloat($("#fund_"+obj).val()));
@@ -83,9 +85,11 @@ function calculate(obj)
 	}
 	else if((noOfMonths == 0 || noOfMonths < 0) && noOfMonths !="") {
 		alert("Months should be greater than 0!");
-		$("#noOfMonths_"+obj).val(1);
-		totalfunds();
+		$("#noOfMonths_"+obj).val('');
+		$("#noOfMonths_"+obj).focus();
+		$("#fund_"+obj).val('');
 	}
+	totalfunds();
 }
 
 function totalfunds(){
@@ -107,12 +111,13 @@ function toFreeze(){
 
 function onLoadChangeColor(){
 	var rowCount = $('#tbody tr').length - 1; /* minus 1 is done because length is counting total fund  and we dont need it*/
-	var rowModal1 =  $('#modal1Tbody tr').length;
+	var rowModal1 =  $('#tbodySprcId tr').length;
 	var rowModal2 = $('#modal2Tbody tr').length;
  	for(var i=0;i<rowCount;i++){
 		+$("#noOfUnitsState_"+i).text() > +$("#noOfUnits_"+i).val() ? $("#noOfUnitsState_"+i).css('color','red') : $("#noOfUnitsState_"+i).css('color','#00cc00');
 		+$("#unitCostState_"+i).text() > +$("#unitCost_"+i).val() ? $("#unitCostState_"+i).css('color','red') : $("#unitCostState_"+i).css('color','#00cc00');
 		+$("#fundState_"+i).text() > +$("#fund_"+i).val() ? $("#fundState_"+i).css('color','red') : $("#fundState_"+i).css('color','#00cc00');
+		+$("#noOfMonthsState_"+i).text() > +$("#noOfMonths_"+i).val() ? $("#noOfMonthsState_"+i).css('color','red') : $("#noOfMonthsState_"+i).css('color','#00cc00');
 	}
 	+$("#totalFundIdState").text() > +$("#grandtotal").val() ? $("#totalFundIdState").css('color','red') : $("#totalFundIdState").css('color','#00cc00');
 	
@@ -122,6 +127,80 @@ function onLoadChangeColor(){
 	for(var j=3 ; j < rowModal2 + 3 ; j++){
 		+$("#noOfFacultyDpmuState_"+j).text() > +$("#noOfFacultyDpmu_"+j).val() ? $("#noOfFacultyDpmuState_"+j).css('color','red') : $("#noOfFacultyDpmuState_"+j).css('color','#00cc00');
 	}
+}
+
+function calculateValueAcDomain(obj){
+	var rowCountSprc=$('#tbodySprcId tr').length;
+	var noOfDomainSprc=0;
+	var noOfDomainDprc=0;
+	for(var i=0;i<rowCountSprc;i++){
+		noOfDomainSprc += Number($('#noOfFaculty_'+i).val()) ;
+		noOfDomainDprc += Number($('#noOfFacultyDpmu_'+(i+3)).val());
+	}
+	
+	if($('#noOfUnits_0').val() < noOfDomainSprc){
+		alert('Total domains experts should be equal to or less than '+ $('#noOfUnits_0').val());
+		$('#noOfFaculty_'+obj).val('');
+		
+	}
+	 if($('#noOfUnits_3').val() < noOfDomainDprc){
+		alert('Total domains experts should be equal to or less than '+ $('#noOfUnits_3').val());
+		$('#noOfFacultyDpmu_'+obj).val('');
+		
+	}
+	
+}
+
+function validationOnSubmit(){
+	var rowCountSprc=$('#tbodySprcId tr').length;
+	var flag= true;
+	
+	if($('#noOfUnits_0').val() == "" || $('#noOfUnits_0').val() == null){
+		for(var i=0;i<rowCountSprc;i++){
+			if($('#noOfFaculty_'+i).val() != "" || $('#noOfFaculty_'+i).val() != ""){
+				flag=false;
+			}else{
+				break;
+			}
+		}
+		}else{
+			for(var i=0;i<rowCountSprc;i++){
+			if($('#noOfFaculty_'+i).val() == "" || $('#noOfFaculty_'+i).val() == ""){
+				flag=false;
+			}else{
+				break;
+			}
+			}
+		}
+	  if($('#noOfUnits_3').val() == "" || $('#noOfUnits_3').val() == null){
+		for(var i=0;i<rowCountSprc;i++){
+		if($('#noOfFacultyDpmu_'+(i+3)).val() != "" || $('#noOfFacultyDpmu_'+(i+3)).val() != ""){
+			flag=false;
+		}else{
+			break;
+		}
+		}
+	}else{
+		for(var i=0;i<rowCountSprc;i++){
+		if($('#noOfFacultyDpmu_'+(i+3)).val() == "" || $('#noOfFacultyDpmu_'+(i+3)).val() == ""){
+			flag=false;
+		}else{
+			break;
+		}
+		}
+	}
+	
+	if(+$('#activedropdown').val() == 0 && $('#noOfUnits_3').val() != ""){
+		alert("please select district in domain detail of DPRC.");
+		return flag=false;
+	}  
+	  
+	if(($('#noOfUnits_3').val() == "" || $('#noOfUnits_0').val() == "") && flag == false){
+		alert("Fill the number of units first.");
+	}else if(!flag){
+		alert("Fill the domain details first.");
+	}
+	return flag;
 }
 </script>
 <section class="content">
@@ -226,15 +305,16 @@ function onLoadChangeColor(){
 															maxlength="7" onkeypress="return isNumber(event)"
 															oninput="validity.valid||(value='');" type="text"
 															class="active12 form-control" id="unitCost_${count}"
-															onkeyup="calculate(${count});"
-															onkeyup="onLoadChangeColor()"
+															onkeyup="calculate(${count});onLoadChangeColor()"
 															style="text-align: right;" /></td>
 														<td>
-														<div align="center" id="noOfMonthsState_${count}" style="margin-top: 20px;">${pmuActivityState.pmuActivityDetails[srl.index].noOfMonths}</div>
+														<div align="center" id="noOfMonthsState_${count}">${pmuActivityState.pmuActivityDetails[srl.index].noOfMonths}</div>
 														<input
-															value="${pmuActivityState.pmuActivityDetails[srl.index].noOfMonths}"
-															name="pmuActivityDetails[${srl.index}].noOfMonths"  type="hidden"
-															id="noOfMonths_${count}"/></td>
+															value="${pmuActivity.pmuActivityDetails[srl.index].noOfMonths}"
+															name="pmuActivityDetails[${srl.index}].noOfMonths"  type="text" min="1"
+															class="active12 form-control" onkeyup="calculate(${count});onLoadChangeColor()"
+															oninput="validity.valid||(value='');" onkeypress="return isNumber(event)"
+															id="noOfMonths_${count}" style="text-align: right;"/></td>
 														<c:set var="totalFundToCalc"
 															value="${pmuActivity.pmuActivityDetails[srl.index].fund}"></c:set>
 														<td>
@@ -325,7 +405,7 @@ function onLoadChangeColor(){
 																					</div></th>
 																			</tr>
 																		</thead>
-																		<tbody id="modal1Tbody">
+																		<tbody id="tbodySprcId">
 																			<c:set var="temp" value="0" scope="page" />
 																			<c:forEach items="${LIST_OF_PMU_DOMAINS}"
 																				var="DOMAINS">
@@ -343,7 +423,7 @@ function onLoadChangeColor(){
 																						<input
 																							name="pmuWiseProposedDomainExperts[${temp}].noOfExperts"
 																							value="${pmuWiseDomainList[temp].noOfExperts}"
-																							onkeyup="onLoadChangeColor()"
+																							onkeyup="onLoadChangeColor();calculateValueAcDomain(${temp})"
 																							type="text"
 																							class="active12 form-control Align-Right"
 																							id="noOfFaculty_${temp}" /></td>
@@ -452,7 +532,7 @@ function onLoadChangeColor(){
 																							name="pmuWiseProposedDomainExperts[${temp}].noOfExperts"
 																							value="${pmuWiseDomainList[temp].noOfExperts}"
 																							type="text"
-																							onkeyup="onLoadChangeColor()"
+																							onkeyup="onLoadChangeColor();calculateValueAcDomain(${temp})"
 																							id="noOfFacultyDpmu_${temp}"
 																							class="active12 form-control Align-Right" /></td>
 																					</tr>

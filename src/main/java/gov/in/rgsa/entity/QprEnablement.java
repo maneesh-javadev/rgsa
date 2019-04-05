@@ -12,6 +12,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedNativeQuery;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
@@ -24,7 +25,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 @Entity
 @Table(name="qpr_e_enablement" ,schema="rgsa")
 @NamedQueries ({@NamedQuery(name="FETCH_QPR_ENABLEMENT_REPORT_DETAILS", query="Select QE from QprEnablement QE RIGHT OUTER JOIN FETCH QE.qprEnablementDetails QED where QE.eEnablement.eEnablementId=:eEnablementId AND QE.quarterDuration.qtrId=:qtrId"),
-@NamedQuery(name="FETCH_QPR_ENABLEMENT_REPORT_BASED_ID", query="Select  QE from QprEnablement QE  where QE.eEnablement.eEnablementId=:eEnablementId")
+@NamedQuery(name="FETCH_QPR_ENABLEMENT_REPORT_BASED_ID", query="Select  QE from QprEnablement QE  where QE.eEnablement.eEnablementId=:eEnablementId"),
 })
 public class QprEnablement {
 	

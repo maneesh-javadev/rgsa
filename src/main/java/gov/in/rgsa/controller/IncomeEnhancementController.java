@@ -88,6 +88,10 @@ public class IncomeEnhancementController {
       	else {
       		flag= false;}
         model.addAttribute("Plan_Status", flag);
+        model.addAttribute("schemeMasterList", enhancementService.schemeMasterList());
+		model.addAttribute("districtList", lgdService.getAllDistrictBasedOnState(userPreference.getStateCode()));
+		model.addAttribute("STATE_CODE", userPreference.getStateCode());
+		model.addAttribute("USER_TYPE", userPreference.getUserType());
 		List<IncomeEnhancementActivity> dbActivitiesList = enhancementService.fetchAllIncmEnhncmntActvty(userPreference.getUserType().charAt(0));
  		if(!CollectionUtils.isEmpty(dbActivitiesList)) {
 			for(int i=0;i<dbActivitiesList.get(0).getIncomeEnhancementDetails().size();i++) {
@@ -98,7 +102,7 @@ public class IncomeEnhancementController {
 			}
 			Collections.sort(dbActivitiesList.get(0).getIncomeEnhancementDetails(), Comparator.comparing(IncomeEnhancementDetails::getIncomeEnhancementDetailsId));
 			
-			List<IncomeEnhancementActivity> incomeEnhancementActivities ;
+			/*List<IncomeEnhancementActivity> incomeEnhancementActivities ;
 			if(dbActivitiesList.get(0).getUserType()=='S' && userPreference.getUserType().equals("M")) {
 				incomeEnhancementActivities= new ArrayList<>(dbActivitiesList);
 				incomeEnhancementActivities.get(0).setIncomeEnhancementId(null);
@@ -106,53 +110,34 @@ public class IncomeEnhancementController {
 				incomeEnhancementActivities.get(0).setIsFreeze(false);
 				incomeEnhancementActivities.get(0).setUserType('M');
 				model.addAttribute("dbActivitiesList", incomeEnhancementActivities.get(0));
-			}
-			
-			/*else if(dbActivitiesList.get(0).getUserType()=='S' && userPreference.getUserType().equals("C")) {
-				incomeEnhancementActivities= new ArrayList<>(dbActivitiesList);
-				incomeEnhancementActivities.get(0).setIncomeEnhancementId(null);
-				incomeEnhancementActivities.get(0).getIncomeEnhancementDetails().iterator().next().setIncomeEnhancementDetailsId(null);
-				incomeEnhancementActivities.get(0).setIsFreeze(false);
-				incomeEnhancementActivities.get(0).setUserType('C');
-				model.addAttribute("dbActivitiesList", incomeEnhancementActivities.get(0));
 			}*/
-			else if(userPreference.getUserType().equalsIgnoreCase("C")){
-			
-				List<IncomeEnhancementActivity> incomeEnhancementState= enhancementService.fetchAllIncmEnhncmntActvty('S');
-
-			List<IncomeEnhancementDetails> incomeEnhancementDetailState= incomeEnhancementState.get(0).getIncomeEnhancementDetails();
+			model.addAttribute("initial_status", false);
+			model.addAttribute("dbActivitiesList", dbActivitiesList.get(0));
+ 		}else{
+ 			model.addAttribute("initial_status", true);
+ 		}
+		model.addAttribute("STATE_CODE", stateCode);
+		if (userPreference.getUserType().equalsIgnoreCase("C")) {
+			List<IncomeEnhancementActivity> incomeEnhancementState = enhancementService.fetchAllIncmEnhncmntActvty('S');
+			List<IncomeEnhancementDetails> incomeEnhancementDetailState = incomeEnhancementState.get(0).getIncomeEnhancementDetails();
+			for (IncomeEnhancementDetails incomeEnhancementDetails : incomeEnhancementDetailState) {
+				incomeEnhancementDetails.setDistrictNameEnglish(lgdService.getDistrictDetails(userPreference.getStateCode(), incomeEnhancementDetails.getDistrictCode()).getDistrictNameEnglish());
+			}
 			model.addAttribute("INCOMEENHANCEMENTDETAIL_STATE", incomeEnhancementDetailState);
 			model.addAttribute("INCOMEENHANCEMENT_STATE", incomeEnhancementState);
-			
-			List<IncomeEnhancementActivity> incomeEnhancementMOPR= enhancementService.fetchAllIncmEnhncmntActvty('M');
-			List<IncomeEnhancementDetails> incomeEnhancementDetailMOPR= incomeEnhancementMOPR.get(0).getIncomeEnhancementDetails();
+			List<IncomeEnhancementActivity> incomeEnhancementMOPR = enhancementService.fetchAllIncmEnhncmntActvty('M');
+			List<IncomeEnhancementDetails> incomeEnhancementDetailMOPR = incomeEnhancementMOPR.get(0).getIncomeEnhancementDetails();
+			for (IncomeEnhancementDetails incomeEnhancementDetails : incomeEnhancementDetailMOPR) {
+				incomeEnhancementDetails.setDistrictNameEnglish(lgdService.getDistrictDetails(userPreference.getStateCode(), incomeEnhancementDetails.getDistrictCode()).getDistrictNameEnglish());
+			}
 			model.addAttribute("INCOMEENHANCEMENTDETAIL_MOPR", incomeEnhancementDetailMOPR);
 			model.addAttribute("INCOMEENHANCEMENT_MOPR", incomeEnhancementMOPR.get(0));
-			for(int i=0; i< incomeEnhancementDetailMOPR.size(); i++)
-			{
-				List<Block> block =fetchBlockListBasedOnDistrict(incomeEnhancementDetailMOPR.get(i).getDistrictCode());
+			for (int i = 0; i < incomeEnhancementDetailMOPR.size(); i++) {
+				List<Block> block = fetchBlockListBasedOnDistrict(incomeEnhancementDetailMOPR.get(i).getDistrictCode());
 				model.addAttribute("BLOCK", block);
-				
 			}
-			model.addAttribute("dbActivitiesList", dbActivitiesList.get(0));
-                             return INCOME_ENHANCEMENT_PROJECT_FOR_CEC;			
+			return INCOME_ENHANCEMENT_PROJECT_FOR_CEC;
 		}
-		model.addAttribute("schemeMasterList", enhancementService.schemeMasterList());
-		model.addAttribute("districtList", lgdService.getAllDistrictBasedOnState(userPreference.getStateCode()));
-		model.addAttribute("STATE_CODE", userPreference.getStateCode());
-		
-		
-      	}
- 		
-		if(dbActivitiesList!=null && !dbActivitiesList.isEmpty())
-		{
-		model.addAttribute("dbActivitiesList", dbActivitiesList.get(0));
-		}
-		else {
-			model.addAttribute("dbActivitiesList", dbActivitiesList);
-			
-		}
- 		
 		return INCOME_ENHANCEMENT_PROJECT;
 
 	}
@@ -164,6 +149,8 @@ public class IncomeEnhancementController {
 	
 	@RequestMapping(value="incomeEnhancementAdd" ,method=RequestMethod.POST)
 	private String saveIncomeEnhancementMethod(@ModelAttribute("Income_Enhancement") IncomeEnhancementActivity incomeEnhancementActivity, Model model,RedirectAttributes redirectAttributes) throws IOException {
+		
+			
 		
 		for(int i=0; i<incomeEnhancementActivity.getIncomeEnhancementDetails().size();i++) {
 			if(incomeEnhancementActivity.getIncomeEnhancementDetails().get(i).getFile() != null && incomeEnhancementActivity.getIncomeEnhancementDetails().get(i).getFile().getSize()!=0) {
@@ -217,6 +204,24 @@ public class IncomeEnhancementController {
 		}
 		enhancementService.saveDetailsWithUsertype(incomeEnhancementActivity);
 		redirectAttributes.addFlashAttribute(Message.SUCCESS_KEY, "Save Successfully");
+		
+		
+		if(incomeEnhancementActivity.getDbFileName() != null && incomeEnhancementActivity.getDbFileName().length()>0 && incomeEnhancementActivity.getDbFileName().contains("@")) 
+		{
+			
+			String idArr[]=incomeEnhancementActivity.getDbFileName().split(",");
+			for(int i=0;i<idArr.length;i++) {
+				String detArr[]=idArr[i].split("@");
+				enhancementService.deleteIncmEnhncmntDtls(Integer.parseInt(detArr[0]));
+				
+				File deleteFile = new File(incomeEnhancementActivity.getPath() + "/" + "incomeEnhancementActivityFiles" + "/" + detArr[0]);
+				if(deleteFile.exists()) {
+					deleteFile.delete();
+				}
+				
+			}
+			
+		}
 		
 		return REDIRECT_INCOME_ENHANCEMENT_PROJECT;
 	}

@@ -241,7 +241,11 @@ function changeColor(txt){
 												<button type="submit" onclick="setStatus('s')" class="btn bg-green waves-effect"><spring:message code="Label.SAVE" htmlEscape="true" /></button>
 											</c:if>
 											<c:if test="${enablement.status eq 's' || enablement.status eq 'u' || enablement.status == undefined}">
-												<button type="submit" onclick="setStatus('f')" class="btn bg-green waves-effect" disabled="${INITIAL_FLAG}"><spring:message code="Label.FREEZE" htmlEscape="true" /></button>
+											<c:choose>
+											<c:when test="${INITIAL_FLAG}"><button type="submit" onclick="setStatus('f')" class="btn bg-green waves-effect" disabled="disabled"><spring:message code="Label.FREEZE" htmlEscape="true" /></button></c:when>
+											<c:otherwise><button type="submit" onclick="setStatus('f')" class="btn bg-green waves-effect"><spring:message code="Label.FREEZE" htmlEscape="true" /></button></c:otherwise>
+											</c:choose>
+												
 											</c:if>
 											<c:if test="${enablement.status eq 'f'}">
 												<button type="submit" onclick="setStatus('u')" class="btn bg-green waves-effect" ><spring:message code="Label.UNFREEZE" htmlEscape="true" /></button>

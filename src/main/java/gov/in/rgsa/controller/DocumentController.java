@@ -10,6 +10,7 @@ import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -35,13 +36,18 @@ public class DocumentController {
 	public static final String DOWNLOAD_FILE_USERWISE = "document.downloadUserWise";
 	public static final String DOWNLOAD_FILE_USERWISE_DISPLAY = "document.downloadUserWise.display";
 	
-	private static final String FILE_LOCATION = ResourceBundle.getBundle("application").getString("upload.file.location.officeorder").trim();
+	private static String FILE_LOCATION ; //= ResourceBundle.getBundle("application").getString("upload.file.location.officeorder").trim();
 	
 	@Autowired
 	private LGDService lgdService;
 	
 	@Autowired
 	private CMSService cmsService;
+
+	@Value("${upload.file.location.officeorder}")
+	public void setOfficeOrderUploadLocation(String uploadLocation) {
+		FILE_LOCATION = uploadLocation;
+	}
 	
 	@RequestMapping(value="downloadFiles")
 	public String downloadFile(){		

@@ -161,9 +161,9 @@ public class PesaPlanController {
 		}
 		
 		List<PesaPlan> pesaPlanForCEC = pesaPlanService.fetchPesaPlan('C');
-		//List<PesaPlanDetails> pesaPlanDetailsForCEC= new ArrayList<PesaPlanDetails>();
+		List<PesaPlanDetails> pesaPlanDetailsForCEC= new ArrayList<PesaPlanDetails>();
 		if(!CollectionUtils.isEmpty(pesaPlanForCEC)){
-			pesaPlanDetailsForState = pesaPlanService.fetchPesaDetails(pesaPlanForCEC.get(0).getPesaPlanId());
+			pesaPlanDetailsForCEC = pesaPlanService.fetchPesaDetails(pesaPlanForCEC.get(0).getPesaPlanId());
 		}
 		
 		if(!CollectionUtils.isEmpty(pesaPlanForState))
@@ -175,8 +175,8 @@ public class PesaPlanController {
 		pesaPlanResponseMap.put("pesaPlanDetailsForMOPR", pesaPlanDetailsForMOPR);
 		
 		if(!CollectionUtils.isEmpty(pesaPlanForCEC))
-		pesaPlanResponseMap.put("pesaPlanForState", pesaPlanForCEC.get(0));
-		pesaPlanResponseMap.put("pesaPlanForState", pesaPlanDetailsForState);
+		pesaPlanResponseMap.put("pesaPlanForCEC", pesaPlanForCEC.get(0));
+		pesaPlanResponseMap.put("pesaPlanDetailsForCEC", pesaPlanDetailsForCEC);
 		return pesaPlanResponseMap;
 	}
 	
@@ -188,12 +188,12 @@ public class PesaPlanController {
 		return PESA_PLAN;
 	}
 
-	/*@RequestMapping(value="savePesaPlanForCEC", method=RequestMethod.POST,consumes=MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value="savePesaPlanForCEC", method=RequestMethod.POST,consumes=MediaType.APPLICATION_JSON_VALUE)
 	private String savePesaPlanForCEC(@RequestBody PesaPlan pesaPlan,RedirectAttributes re) {
 		pesaPlanService.savePesaPlanForCEC(pesaPlan);
 		re.addFlashAttribute(Message.SUCCESS_KEY, Message.SAVE_SUCCESS);
 		return PESA_PLAN;
-	}*/
+	}
 	
 	@ResponseBody
 	@RequestMapping(value="feezUnFreezPesaPlan", method=RequestMethod.POST)

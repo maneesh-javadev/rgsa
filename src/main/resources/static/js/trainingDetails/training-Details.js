@@ -1,6 +1,15 @@
- $(document).ready(function() {
+var delTrainingIdArr=[];
+$(document).ready(function() {
+	 var myBoolean ="false";
+	/*calTotalFundAndGrandTotal();
+	 alert(${sessionScope['scopedTarget.userPreference'].userType} == 'M');*/
+	 if($('#dataUserType').val() == 'S' && (userTypeSession == 'C' || userTypeSession == 'M')){
+		 var myBoolean ="false";
+		 $("#frzButtn").prop('disabled', true);
+	 }else{
+		 var myBoolean = document.getElementById("isFreeze").value;
+	 }
 	
-	var myBoolean = document.getElementById("isFreeze").value;
 	if(myBoolean == "true"){
 		 $("#addTrainingLink").prop('disabled',
 				 true);
@@ -10,6 +19,8 @@
 		 $("#clearButtn").prop('disabled', true);
 		 $("#addTrainingLink").prop('disabled', true);
 		 $("#additioinalRequirements").prop('disabled', true);
+		 $(".active123").prop('disabled', true);
+		 $('input[type=checkbox]').attr('disabled',true);
 	 }
 	if(myBoolean == "false"){
 		 $("#addTrainingLink").prop('disabled', false);
@@ -19,6 +30,8 @@
 		 $("#clearButtn").prop('disabled', false);
 		 $("#addTrainingLink").prop('disabled', false);
 		 $("#additioinalRequirements").prop('disabled', false);
+		 $(".active123").prop('disabled', false);
+		 $('input[type=checkbox]').attr('disabled',false);
 	 }
 	
 	 if($('#userTypeId').val() == 'M'){
@@ -33,7 +46,7 @@
 		}
 	
 	
-	$('#trainingActivityTblId').on('input',$('#fundsName'),function (){
+	$('#trainingActivityTblId').on('input[type="text"]',$('#fundsName'),function (){
 		var subTotal = 0;
 			$('#trainingActivityTblId,#fundsName').each(function(){
 				var text_box_value = $(this).val();
@@ -70,12 +83,31 @@
 	}
 	
 function toDelete(idToDelete){
-	document.getElementById("idToEdit").value = idToDelete;
+	
+	 if(!delTrainingIdArr.includes(idToDelete)){
+		 delTrainingIdArr.push(idToDelete);
+		 $("#delete"+idToDelete).addClass('glyphicon-repeat');
+		 $("#delete"+idToDelete).removeClass('glyphicon-trash');
+		 $("#modifyButtn"+idToDelete).addClass('not-active');
+	  }else{
+		  var index = delTrainingIdArr.indexOf(idToDelete);
+		 	if (index > -1) {
+		 		delTrainingIdArr.splice(index, 1);
+		   }
+		 	 $("#delete"+idToDelete).removeClass('glyphicon-repeat');
+			 $("#delete"+idToDelete).addClass('glyphicon-trash');
+			 $("#modifyButtn"+idToDelete).removeClass('not-active');
+	  }
+	 
+	
+	/*document.getElementById("idToEdit").value = idToDelete;
 	document.cpbaddtraining.method = "post";
 	document.cpbaddtraining.action = "deleteTrainingActivity.html?<csrf:token uri='deleteTrainingActivity.html'/>";
-	document.cpbaddtraining.submit();
+	document.cpbaddtraining.submit();*/
 }
 function toFreeze(){
+	 $(".sbjctClass").prop('disabled', false);
+	 $(".trgtClass").prop('disabled', false);
 	document.cpbaddtraining.method = "post";
 	document.cpbaddtraining.action = "frzUnfrzTrainingActivity.html?<csrf:token uri='frzUnfrzTrainingActivity.html'/>";
 	document.cpbaddtraining.submit();
@@ -88,6 +120,9 @@ function toModify(idToModify){
 }
 
 function toValidate() {
+	if(delTrainingIdArr.length>0){
+		document.getElementById("idToDelete").value = delTrainingIdArr.toString();
+	}
 	 $(".sbjctClass").prop('disabled', false);
 	 $(".trgtClass").prop('disabled', false);
 }
@@ -100,4 +135,66 @@ function calTotalFundAndGrandTotal(){
 		}
 		$('#subTotal').val(total_fund);
 		$('#grandTotal').val(total_fund + +$('#additioinalRequirements').val());
+}
+
+
+
+function calculate(obj)
+{
+	
+	if($('#venueId_'+obj).val() == '1'){
+		var check = $('#noOfDays_'+obj).val() * 1900;
+		var calc = 	$('#noOfDays_'+obj).val()* $('#unitCost_'+obj).val();
+		if(calc <= check){
+    $('#funds_'+obj).val($('#noOfParticipants_'+obj).val() * calc);
+	}else {
+		alert("Upper ceiling  limit  Rs. 1900 per participant per day");
+		$('#unitCost_'+obj).val(0);
+		 $('#noOfDays').val(0); 
+		$('#funds_'+obj).val(0);
+	}
+		
+		}if($('#venueId_'+obj).val() == '2'){
+			var check = $('#noOfDays_'+obj).val() * 1100;
+			var calc = 	$('#noOfDays_'+obj).val()* $('#unitCost_'+obj).val();
+			if(calc <= check){
+	    $('#funds_'+obj).val($('#noOfParticipants_'+obj).val() * calc);
+		}else {
+			alert("Upper ceiling  limit  Rs. 1100 per participant per day");
+			$('#unitCost_'+obj).val(0);
+			 $('#noOfDays').val(0); 
+			$('#funds_'+obj).val(0);
+		}
+			
+		}
+				    if($('#venueId_'+obj).val() == '3'){
+				    	var check = $('#noOfDays_'+obj).val() * 800;
+						var calc = 	$('#noOfDays_'+obj).val()* $('#unitCost_'+obj).val();
+						if(calc <= check){
+				    $('#funds_'+obj).val($('#noOfParticipants_'+obj).val() * calc);
+					}else {
+						alert("Upper ceiling  limit  Rs. 800 per participant per day");
+						$('#unitCost_'+obj).val(0);
+						 $('#noOfDays').val(0); 
+						$('#funds_'+obj).val(0);
+					}
+				}
+				    calTotalFundAndGrandTotal()
+}
+function calTotalFundAndGrandTotal(){
+	var rowCountState = $('#tbodyState tr').length;
+	var total_fund = 0;
+	for (var i = 0; i < rowCountState; i++) {
+		total_fund += +$('#funds_'+i).val();
+	}
+	$('#subTotal').val(total_fund);
+	if (document.getElementById("additioinalRequirements").value > 0.25 * document
+			.getElementById("subTotal").value) {
+		alert("Additional Requirement should be less than or equal to 25% of Total Fund");
+		document.getElementById("additioinalRequirements").value = '';
+		document.getElementById("grandTotal").value = '';
+	}
+	else {
+	$('#grandTotal').val(total_fund + +$('#additioinalRequirements').val());
+}
 }

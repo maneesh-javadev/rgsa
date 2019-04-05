@@ -3,6 +3,7 @@
 	src="${pageContext.request.contextPath}/resources/plugins/angular/angular.min.js"></script>
 <script type="text/javascript">
 	$(document).ready(function () {
+		onloadChangeColor();
 	$("#mytable").on('input', '.txtCal', function () {
 	       // code logic here
 	     /*    var getValue=$(this).val();
@@ -21,6 +22,17 @@
 	           document.getElementById("grandtotal").value=calculated_total_sum;
 	       });
 	});
+	
+	 function onloadChangeColor(){
+			var noOfRowCount = $('#newBody tr').length;
+			for(var i= 0; i<noOfRowCount ;i++){
+			
+		+$("#totalAmountProposed_"+i).val() < +$("#totalAmountProposedState_"+i).text() ? $("#totalAmountProposedState_"+i).css("color","red") : $("#totalAmountProposedState_"+i).css("color","#00cc00");
+
+		} 
+			+$("#totalState").text() > +$("#grandtotal").val() ? $("#totalState").css('color','red') : $("#totalState").css('color','#00cc00');
+
+		 }
 	
 	function isNumber(evt) {
 	    evt = (evt) ? evt : window.event;
@@ -41,25 +53,20 @@
 
 	function freezeAndUnfreeze(obj){
 		if(obj == "unfreeze"){
+			
+			$('.active1').attr('readonly',false);
+		} 
 		
-			$('.active123').attr('disabled',false);
-		}
 		document.getElementById("dbFileName").value = obj;
 		document.IecName.method = "post";
 		document.IecName.action = "freezAndUnfreezIEC.html?<csrf:token uri='freezAndUnfreezIEC.html'/>";
 		document.IecName.submit();
 	}
 	
- 
+	
  
 	
-	/* function onloadChangeColor(){
-		var noOfRowCount = $('#newBody tr').length;
-		for(var i= 0; i<noOfRowCount ;i++){
-		
-	+$("#totalAmountProposed_"+i).val() < +$("#totalAmountProposedState_"+i).text() ? $("#totalAmountProposedState_"+i).css("color","red") : $("#totalAmountProposedState_"+i).css("color","#00cc00");
-
-	} */
+	
 </script>
 <section class="content">
 	<div class="container-fluid">
@@ -94,13 +101,13 @@
 								<div class="table-responsive">
 									<table class="table table-bordered" id="mytable">
 
-										<div align="right"></div>
-
+										
 
 
 
 										<thead>
 											<tr>
+											<c:set var="count" value="0" scope="page" />
 												<th scope="col"><div align="center">
 														<strong><spring:message
 																code="Label.NatureOfTheIECActivity" htmlEscape="true" /></strong>
@@ -121,65 +128,64 @@
 
 											</tr>
 										</thead>
-										<tbody id="newBody">
-											<c:forEach items="${IEC_LIST.iecActivityDetails}"
+										<tbody id="newBody1">
+											<c:forEach items="${IEC_LIST_FOR_STATE}"
 												var="iecActivityDetails" varStatus="count">
 												<c:set var="totalFundToCalc"
-													value="${totalFundToCalc + iecActivityDetails.totalAmountProposed}"></c:set>
+													value="${totalFundToCalc + IEC_LIST_DETAILS[count.index].totalAmountProposed}"></c:set>
 												<input type="hidden"
 													name="iecActivity.iecActivityDetails[${count.index}].idMain"
-													value="${iecActivityDetails.idMain}" />
+													value="${IEC_LIST_DETAILS[count.index].idMain}" /> 
 
 												<tr id="newRow">
-												<input type="hidden" name="iecActivity.iecActivityDetails[${count.index}].iecActivityDropedown.iecId" value="${iecActivityDetails.iecActivityDropedown.iecId}"/>
-												
-													<td><strong>${IEC_LIST_FOR_STATE[count.index].iecActivityDropedown.natureIecActivity}</strong></td>
+											<input type="hidden" name="iecActivity.iecActivityDetails[${count.index}].iecActivityDropedown.iecId" value="${IEC_LIST_FOR_STATE[count.index].iecActivityDropedown.iecId}"/>
+												 
+													<td><strong>${iecActivityDetails.iecActivityDropedown.natureIecActivity}</strong></td>
 													<c:choose>
 														<c:when test="${IEC_LIST.isFreez eq true}">
 															<td><div align="center"
 																	id="totalAmountProposedState_${count.index}">${IEC_LIST_FOR_STATE[count.index].totalAmountProposed}</div>
 																<input type="number"
-																value="${iecActivityDetails.totalAmountProposed}"
-																name="iecActivity.iecActivityDetails[${count.index}].totalAmountProposed"
+																value="${IEC_LIST_DETAILS[count.index].totalAmountProposed}"
+																name="iecActivity.iecActivityDetails[${count.index}].totalAmountProposed" 
 																min="1"
-																Class="active123 form-control txtCal Align-Right"
-																placeholder="Total Amount Proposed" id="getTotal"
-																onchange="findTotal();" required
+																class="active1 form-control txtCal  "
+																placeholder="Total Amount Proposed"  id="totalAmountProposed_${count.index}"
+																 required
 																oninvalid="this.setCustomValidity('Entered value greater than 99999999')"
-																oninput="setCustomValidity('')"
-																onkeypress="return isNumber(event)" max="99999999"
-																onkeyup="onloadChangeColor()" disabled="disabled" /></td>
+																oninput="setCustomValidity('')" style="text-align:right"
+																onkeypress="return isNumber(event)"  max="99999999"
+															 readonly="readonly" onkeyup="onloadChangeColor()" /></td>
 
 
 															<td><textarea cols="1"
 																	name="iecActivity.iecActivityDetails[${count.index}].remarks"
-																	Class=" active123 form-control" disabled="disabled" placeholder="remarks"
-																	required ><c:out value="${iecActivityDetails.remarks}"></c:out></textarea></td>
+																	class=" active1 form-control" readonly="readonly" placeholder="remarks"
+																	required ><c:out value="${IEC_LIST_DETAILS[count.index].remarks}"></c:out></textarea></td>
 
 														</c:when>
 														<c:otherwise>
-															<td><div align="center"
+															<td><div align="center" 
 																	id="totalAmountProposedState_${count.index}">${IEC_LIST_FOR_STATE[count.index].totalAmountProposed}</div>
 																<input type="number"
-																value="${iecActivityDetails.totalAmountProposed}"
+																value="${IEC_LIST_DETAILS[count.index].totalAmountProposed}"
 																name="iecActivity.iecActivityDetails[${count.index}].totalAmountProposed"
-																min="1"
-																Class="active123 form-control txtCal Align-Right"
+																min="1" 
+																class="active1  form-control txtCal  " style="text-align:right"
 																placeholder="Total Amount Proposed"
-																id="totalAmountProposed_${count.index}"
-																onchange="findTotal();" required
+																id="totalAmountProposed_${count.index}" 
+																 required
 																oninvalid="this.setCustomValidity('Entered value greater than 99999999')"
 																oninput="setCustomValidity('')"
-																onkeypress="return isNumber(event)" max="99999999"
-																onkeyup="onloadChangeColor();" /></td>
+																onkeypress="return isNumber(event)" max="99999999" onkeyup="onloadChangeColor()"/></td>
 
 
 
 															<td><textarea cols="1"
 																	name="iecActivity.iecActivityDetails[${count.index}].remarks"
-																	class=" active123 form-control" placeholder="remarks"
+																	class=" active1 form-control" placeholder="remarks"
 																	required><c:out
-																		value="${iecActivityDetails.remarks}"></c:out> </textarea></td>
+																		value="${IEC_LIST_DETAILS[count.index].remarks}"></c:out> </textarea></td>
 
 														</c:otherwise>
 													</c:choose>
@@ -193,14 +199,24 @@
 										<tr>
 											<th><label><spring:message
 														code="Label.TotalAmountProposed" htmlEscape="true" /></label></th>
-											<td><div style="margin-left: 28%" class="col-sm-4">
-													<strong>${totalAmountProposedState}</strong> <input
+											<td><div style="margin-left: 28%" class="col-sm-4" id="totalState">
+													<strong>${totalAmountProposedState}</strong> <input style="text-align:right"
 														type="text" style="background: #dddddd;"
 														class="form-control Align-Right" id="grandtotal"
 														value="${totalFundToCalc}" disabled="disabled">
 												</div></td>
 										</tr>
 									</table>
+									<c:if test="${sessionScope['scopedTarget.userPreference'].userType eq 'C'}">
+                        <div class="col-md-4  text-left"  style="margin-bottom: 5px">
+								&nbsp;&nbsp;<button type="button"
+									onclick="onClose('viewPlanDetails.html?<csrf:token uri='viewPlanDetails.html'/>&stateCode=${STATE_CODE}')"
+									class="btn bg-orange waves-effect">
+									<i class="fa fa-arrow-left" aria-hidden="true"></i>
+									<spring:message code="Label.BACK" htmlEscape="true" />
+								</button><br>
+							</div>
+							</c:if>
 									<div class="text-right">
 										<c:if test="${IEC_LIST.isFreez eq false || empty IEC_LIST}">
 											<button type="submit" class="btn bg-green waves-effect"
@@ -275,8 +291,8 @@
 										<tbody id="newBody">
 											<c:forEach items="${IEC_LIST_FOR_MOPR}"
 												var="iecActivityDetails" varStatus="count">
-												<c:set var="totalFundToCalc"
-													value="${totalFundToCalc + iecActivityDetails.totalAmountProposed}"></c:set>
+												<c:set var="totalFundToMOPRCalc"
+													value="${totalFundToMOPRCalc + iecActivityDetails.totalAmountProposed}"></c:set>
 												<input type="hidden"
 													name="iecActivity.iecActivityDetails[${count.index}].idMain"
 													value="${iecActivityDetails.idMain}" />
@@ -313,10 +329,28 @@
 											<td><div style="margin-left: 31%" class="col-sm-4">
 													<input type="text" style="background: #dddddd;"
 														class="form-control Align-Right" id="grandtotal"
-														value="${totalFundToCalc}" disabled="disabled">
+														value="${totalFundToMOPRCalc}" disabled="disabled">
 												</div></td>
 										</tr>
 									</table>
+								<div class="row clearfix">
+										<div class="col-md-4 text-left">
+											<button type="button"
+												onclick="onClose('viewPlanDetails.html?<csrf:token uri='viewPlanDetails.html'/>&stateCode=${STATE_CODE}')"
+												class="btn bg-orange waves-effect">
+												<i class="fa fa-arrow-left" aria-hidden="true"></i>
+												<spring:message code="Label.BACK" htmlEscape="true" />
+											</button>
+										</div>
+										<div class="col-md-8 text-right">
+											<button type="button"
+												onclick="onClose('home.html?<csrf:token uri='home.html'/>')"
+												class="btn bg-orange waves-effect">
+												<spring:message code="Label.CLOSE" htmlEscape="true" />
+											</button>
+										</div>
+									</div>
+									</div>
 								</div>
 							</div>
 							</div>

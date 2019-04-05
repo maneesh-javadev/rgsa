@@ -104,8 +104,15 @@ public class InstitutionInfaActController {
 			institutionaInfraResponseMap.put("institutionalInfraActivityPlanMopr",
 					putDistrictNameInDetails(institutionalInfraActivityPlanMopr.get(0)));
 			List<InstitutionalInfraActivityPlan> institutionalInfraActivityPlanCec=institutionalInfraActivityPlanService.fetchInstitutionalInfraActivity("C");
-			if(CollectionUtils.isNotEmpty(institutionalInfraActivityPlanCec))
-			institutionaInfraResponseMap.put("institutionalInfraActivityPlanCEC", institutionalInfraActivityPlanCec.get(0));
+			if(CollectionUtils.isNotEmpty(institutionalInfraActivityPlanCec)){
+				List<InstitutionalInfraActivityPlanDetails> details=institutionalInfraActivityPlanService.fetchAllDetails(institutionalInfraActivityPlanCec.get(0).getInstitutionalInfraActivityId());
+				institutionalInfraActivityPlanCec.get(0).setInstitutionalInfraActivityPlanDetails(details);
+				institutionaInfraResponseMap.put("institutionalInfraActivityPlanCEC", putDistrictNameInDetails(institutionalInfraActivityPlanCec.get(0)));
+				institutionaInfraResponseMap.put("initial_status", false);
+			}else{
+				institutionaInfraResponseMap.put("initial_status", true);
+			}
+			
 		}
 		return institutionaInfraResponseMap;
 	}

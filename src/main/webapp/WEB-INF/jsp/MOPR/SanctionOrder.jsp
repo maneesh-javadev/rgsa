@@ -22,12 +22,17 @@
 	
 	<script type="text/javascript" src="${pageContext.request.contextPath}/resources/plugins/angular/toastr.min.js"></script>
 	<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/angular/toastr.css">
+	
+	
+	
 	<style>
 	.input-group {
 	 margin-bottom: 0px !important; 
 	}
 	</style>
-
+	<script>
+	var yid=parseInt("${yearId}");
+	</script>
 </head>
 <body ng-app="publicModule">
 
@@ -40,6 +45,7 @@
 							<h2>Sanction Order</h2>
 						</div>
 						<form modelAttribute="sanctionOrder" name="myForm">
+						
 						<div class="body">
 							
 							<%-- <div class="row">
@@ -59,22 +65,89 @@
     							<label for="state"><c:out value="Select State Name" /></label>
     							</div>
 								<div class="col-xs-4">
-									<select  class="form-control" data-ng-model="stateModel"  ng-options="item.stateCode as item.stateNameEnglish for item in states" >
+									<select  class="form-control" data-ng-model="stateModel" data-ng-change="selectCurrentState(stateModel,states)" ng-options="item.stateCode as item.stateNameEnglish for item in states" >
 									 <option  value="">Select State</option>
 									</select>
 									 
 								</div>		
 							</div>
 							
-							<div class="row">
+							<%-- <div class="row">
     							<div class="col-xs-4">
     							<label for="state"><c:out value="Select Sanction Order Component " /></label>
     							</div>
 								<div class="col-xs-4">
-									<select  class="form-control" data-ng-model="soComponentModel"  ng-options="item.soComponentId as item.soComponentName for item in sanctionOrderComponent" >
+									<select  class="form-control" data-ng-model="soComponentModel"  ng-options="item.soComponentId as item.soComponentName for item in sanctionOrderComponent" multiple="multiple" >
 										 <option  value="">Select Sanction Order Component </option>			
 									</select>
 								</div>		
+							</div> --%>
+							
+							<div ng-show="divShow">
+							
+							<div class="row">
+								<div class="col-xs-12">
+    							<table class="table table-bordered">
+    							<thead>
+    							<tr>
+    							<th>
+    							S.No.
+    							</th>
+    							<th>
+    							 Component Name
+    							</th>
+    							<th align="right">
+    							 Component wise Amount
+    							</th>
+    							<th colspan="2">
+    							 Upload File
+    							</th>
+    							<!-- <th>
+    							 Upload File Status
+    							</th> -->
+    							</tr>
+    							</thead>
+    							<tbody>
+    							<tr ng-repeat="obj in sanctionOrderCompomentAmountList ">
+    							<td>
+    							{{$index+1}}
+    							</td>
+    							<td>
+    							{{obj.componentName}}
+    							</td>
+    							<td align="right" >
+    							{{obj.componentAmount}}
+    							</td>
+    							<td>
+    							<div ng-show="isfileupload_{{obj.componentId}}" >
+    								<div class="row">
+    									<div class="col-xs-4">
+    										<center><i   class="fa fa-file-word-o fa-2x" aria-hidden="true" ng-click="downloadFile(obj.componentId)"></i></center>
+    									</div>
+    									<div class="col-xs-4">
+    										<center><i   ng-show="btnShow" class="fa fa-times fa-2x" aria-hidden="true" ng-click="changeFileOption(true,obj.componentId)"></i></center>
+    									</div>
+    								</div>	
+    							</div> 
+    							<div ng-show="newFile_{{obj.componentId}}" >
+    							<input type="file"  class="form-control"  ng-upload-change="fileChanged($event,obj.componentId)">
+    							</div>
+    							
+								
+    							</td>
+    							<td>
+    							<div ng-show="newFile_{{obj.componentId}}" >
+    							<i  id="uploaded_{{obj.componentId}}" class="fa fa-times" aria-hidden="true"></i>
+    							</div>
+    							
+    							
+    							</td>
+    							</tr>
+    						
+    							</tbody>
+    							
+    							</table>	
+    							</div>	
 							</div>
 							
 							<%-- <div class="row">
@@ -109,7 +182,7 @@
 								</div>	
 							</div>
 							
-							
+							</div>
 				
 				<%-- 		 <div class="row">
     							<div class="col-xs-4">
@@ -168,7 +241,7 @@
 								</div>	
 							</div> --%>
 							
-							 <div class="row">
+							<%--  <div class="row">
     							<div class="col-xs-4">
     							<label for="upload file"><c:out value="Upload Sanction Order " /></label>
     							</div>
@@ -181,11 +254,14 @@
 									</div>
 								</div>	
 								</div>	
-							</div>
+							</div> --%>
 							
 							<div class="form-group text-right">
-										<button type="button"  ng-click="uploadFile()" class="btn bg-green waves-effect">
+										<button type="button"  ng-show="btnShow" ng-click="saveSactionOrder(false)" class="btn bg-green waves-effect">
 											Save
+										</button>
+										<button type="button"  ng-show="btnShow" ng-click="saveSactionOrder(true)" class="btn bg-green waves-effect">
+											Freeze
 										</button>
 										<!-- <button type="button" class="btn bg-light-blue waves-effect reset">PUBLISH TEMPLATE</button> -->
 										<button type="button"

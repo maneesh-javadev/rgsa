@@ -9,6 +9,7 @@ import java.util.Map;
 import java.util.ResourceBundle;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
@@ -36,7 +37,12 @@ public class CMSServiceImpl implements CMSService{
 	@Autowired
 	private CommonValidator commonValidatorUtil;
 	
-	private static final String FILE_LOCATION = ResourceBundle.getBundle("application").getString("upload.file.location.officeorder").trim();
+	private static String FILE_LOCATION; // = ResourceBundle.getBundle("application").getString("upload.file.location.officeorder").trim();
+
+	@Value("${upload.file.location.officeorder}")
+	public void setOfficeOrderUploadLocation(String uploadLocation) {
+		FILE_LOCATION = uploadLocation;
+	}
 	
 	@Override
 	public List<UploadDocumentType> getDocumentType() throws Exception {		

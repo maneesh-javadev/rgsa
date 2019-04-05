@@ -85,8 +85,8 @@ sanctionOrder.controller("sanctionOrderController",['$scope','sanctionOrderServi
 		/*sanctionOrderService.getAllFinYear().then(function(response){
 			$scope.finYears = response.data;
 		});*/
-		yearId=$("#yearId").val();
-		sanctionOrderService.getAllState(yearId).then(function(response){
+		
+		sanctionOrderService.getAllState(yid).then(function(response){
 			$scope.states = response.data;
 			
 		});
@@ -219,7 +219,7 @@ sanctionOrder.controller("sanctionOrderController",['$scope','sanctionOrderServi
 			
 			myObj= {
 	    			"stateCode":stateCode,
-				    "yearId" : 6,    //your artist variable
+				    "yearId" : yid,    //your artist variable
 				    "sactionDate" : d,
 				    "sanctionOrderCompomentAmountList":pbProposedInfo,
 				    "releaseIntallmentSno":releaseIntallmentSno,

@@ -12,6 +12,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.context.annotation.ImportResource;
+import org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor;
 import org.springframework.web.filter.CharacterEncodingFilter;
 import org.springframework.web.servlet.DispatcherServlet;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
@@ -132,8 +133,8 @@ public class WebConfig implements WebMvcConfigurer {
         org.owasp.csrfguard.CsrfGuardFilter csrfGF = new org.owasp.csrfguard.CsrfGuardFilter();
         registration.setFilter(csrfGF);
         registration.addUrlPatterns("*.html");
-        registration.addInitParameter("Owasp.CsrfGuard.Config", "WEB-INF/Owasp.CsrfGuard.properties");
-        registration.addInitParameter("Owasp.CsrfGuard.Config.Print", "true");
+        // registration.addInitParameter("Owasp.CsrfGuard.Config", "WEB-INF/Owasp.CsrfGuard.properties");
+        // registration.addInitParameter("Owasp.CsrfGuard.Config.Print", "true");
         // registration.addInitParameter("paramName", "paramValue");
         registration.setName("CSRFGuard");
         // registration.setOrder(1);
@@ -199,7 +200,5 @@ public class WebConfig implements WebMvcConfigurer {
         registry.addInterceptor(getVisitorCountInterceptor());
         registry.addInterceptor(getLocaleChangeInterceptor());
     }
-
-
 
 }

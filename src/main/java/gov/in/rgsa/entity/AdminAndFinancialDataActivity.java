@@ -10,6 +10,7 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
@@ -19,7 +20,11 @@ import org.hibernate.annotations.UpdateTimestamp;
 
 @Entity
 @Table(name="admin_financial_data_cell_activity",schema="rgsa")
-@NamedQuery(name="FETCH_ADMIN_FIN_DATA_ACTIVITY",query="select A from AdminAndFinancialDataActivity A where stateCode=:stateCode and yearId=:yearId and userType=:userType")
+@NamedQueries({
+	@NamedQuery(name="FETCH_APPROVED_ACTIVITY",query="from AdminAndFinancialDataActivity where userType=:userType and stateCode=:stateCode and yearId=:yearId"),
+	@NamedQuery(name="FETCH_ADMIN_FIN_DATA_ACTIVITY",query="select A from AdminAndFinancialDataActivity A where stateCode=:stateCode and yearId=:yearId and userType=:userType ")
+})
+
 public class AdminAndFinancialDataActivity {
 
 	@Id

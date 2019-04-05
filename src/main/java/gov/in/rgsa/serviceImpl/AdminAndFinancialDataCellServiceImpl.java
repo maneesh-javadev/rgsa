@@ -13,6 +13,10 @@ import org.springframework.stereotype.Service;
 import gov.in.rgsa.dao.CommonRepository;
 import gov.in.rgsa.entity.AdminAndFinancialDataActivity;
 import gov.in.rgsa.entity.AdminFinancialDataCellActivityDetails;
+import gov.in.rgsa.entity.PmuProgress;
+import gov.in.rgsa.entity.PmuProgressDetails;
+import gov.in.rgsa.entity.QprAdminAndFinancialDataActivity;
+import gov.in.rgsa.entity.QprAdminAndFinancialDataActivityDetails;
 import gov.in.rgsa.service.AdminAndFinancialDataCellService;
 import gov.in.rgsa.service.FacadeService;
 import gov.in.rgsa.user.preference.UserPreference;
@@ -93,7 +97,7 @@ public class AdminAndFinancialDataCellServiceImpl implements AdminAndFinancialDa
 		params.put("yearId", userPreference.getFinYearId());
 		params.put("userType",userType);
 		adminAndFinancialDataActivity = commonRepository.findAll("FETCH_ADMIN_FIN_DATA_ACTIVITY", params);
-		if((userPreference.getUserType().equals("M") || userPreference.getUserType().equals("C")) && CollectionUtils.isEmpty(adminAndFinancialDataActivity)){
+		if(userPreference.getUserType().equals("M") && CollectionUtils.isEmpty(adminAndFinancialDataActivity)){
 			params.put("userType", "S");
 			adminAndFinancialDataActivity = commonRepository.findAll("FETCH_ADMIN_FIN_DATA_ACTIVITY", params);
 			if(adminAndFinancialDataActivity.get(0).getUserType().equalsIgnoreCase("S") && adminAndFinancialDataActivity.get(0).getIsFreeze()==true){
@@ -111,6 +115,33 @@ public class AdminAndFinancialDataCellServiceImpl implements AdminAndFinancialDa
 		Map<String,Object> params=new HashMap<>();
 		params.put("adminFinancialDataActivityId",adminFinancialDataActivityId);
 		return commonRepository.findAll("FETCH_ADMIN_FIN_DATA_DETAILS", params);
+	}
+
+	@Override
+	public List<AdminAndFinancialDataActivity> fetchApprovedActivity() {
+		Map<String, Object> params=new HashMap<>();
+		params.put("stateCode", userPreference.getStateCode());
+		params.put("userType", "C");
+		params.put("yearId", userPreference.getFinYearId());
+		return commonRepository.findAll("FETCH_APPROVED_ACTIVITY", params);
+	}
+
+	@Override
+	public List<QprAdminAndFinancialDataActivityDetails> getPmuProgressActBasedOnActIdAndQtrId(
+			Integer adminFinancialDataActivityId, int quarterId) {
+		Map<String, Object> params = new HashMap();
+		params.put("adminFinancialDataActivityId", adminFinancialDataActivityId);
+		params.put("quarterId", quarterId);	
+		List<QprAdminAndFinancialDataActivity> adminFinCellProgress= commonRepository.findAll("FETCH_ADMIN_FIN_CELL_QPR_ACT_BY_QTR_ID_AND_ACT_ID", params);
+		List<QprAdminAndFinancialDataActivityDetails> adminFinCellProgressDetails=new ArrayList<>();
+		if(CollectionUtils.isNotEmpty(adminFinCellProgress)){
+			for (QprAdminAndFinancialDataActivity adminFinCell_Progress : adminFinCellProgress) {
+				adminFinCellProgressDetails.addAll(adminFinCell_Progress.getQprAdminAndFinancialDataActivityDetails());
+			}
+			return adminFinCellProgressDetails;
+		}else{
+			return null;
+		}
 	}
 
 }

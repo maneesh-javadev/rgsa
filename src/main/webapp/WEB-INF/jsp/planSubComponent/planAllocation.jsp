@@ -1,41 +1,52 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<html>
+<html data-ng-app="publicModule">
 <head>
 <%@include file="../taglib/taglib.jsp"%>
+<script type="text/javascript"	src="${pageContext.request.contextPath}/resources/plugins/angular/angular.min.js"></script>
+<script type="text/javascript"
+	src="${pageContext.request.contextPath}/resources/js/planAllocation/planAllocationController.js"></script>
+<script type="text/javascript"
+	src="${pageContext.request.contextPath}/resources/js/planAllocation/planAllocationService.js"></script>
+
+<script type="text/javascript"
+	src="${pageContext.request.contextPath}/resources/plugins/angular/toastr.min.js"></script>
+<link rel="stylesheet" type="text/css"
+	href="${pageContext.request.contextPath}/resources/css/angular/toastr.css">
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Insert title here</title>
-<c:choose>
-	<c:when test="${!PLAN_ALLOCATION.sanctionOrderExist}">
-		
-		<script>
-		$(document).ready(function() {
-			$('#errorMessage').addClass('show');
-			$('#errorMessage').html('Sanction Order details not freeze or Plan not Approved.');
-		});
-		</script>
-		
-	</c:when>
-	<c:when test="${isPlanAllocationNotExist}">
-		
-		<script>
-		$(document).ready(function() {
-			$('#errorMessage').addClass('show');
-			$('#errorMessage').html('Freeze plan allocation before quterly form ');
-		});
-		</script>
-		
-	</c:when>
-	
-</c:choose>
-<script>
-var relAmount=parseInt('${PLAN_ALLOCATION.totalAmount}');
+<style>
+.form-control[disabled], .form-control[readonly], fieldset[disabled] .form-control
+	{
+	background-color: #eee !important;
+	opacity: 1;
+}
+</style>
 
-$(document).ready(function() {
-	$("input[type='text']").keypress(function (e) {
-	    //if the letter is not digit then display error and don't type anything
-	    if (e.which != 8 && e.which != 0 &&   e.which !=46  && (e.which < 48 || e.which > 57)  ) {
+<script>
+
+function isNumberKey(evt, obj) {
+
+    var charCode = (evt.which) ? evt.which : event.keyCode
+    var value = obj.value;
+    var dotcontains = value.indexOf(".") != -1;
+    if (dotcontains)
+        if (charCode == 46) return false;
+    if (charCode == 46) return true;
+    if (charCode > 31 && (charCode < 48 || charCode > 57))
+        return false;
+    return true;
+}
+
+var relAmount=parseInt('${PLAN_ALLOCATION.totalAmount}');
+var isPlanAllocationNotExist=('${isPlanAllocationNotExist}');
+/* var count=0;
+var countFlag=false;
+
+function isNumber(evt) {
+    e = (evt) ? evt : window.event;
+    if (e.which != 8 && e.which != 0 &&   e.which !=46  && (e.which < 48 || e.which > 57)  ) {
 	       //display error message
 	    	$("#errmsg").html("Digits Only").show().fadeOut("slow");
 	              return false;
@@ -60,8 +71,9 @@ $(document).ready(function() {
 		  if(e.which ==46 ){
 	    	countFlag=true;
 	    }
-	  });
-}); 
+}
+ */
+
 
 var $_checkEmptyObject_value = function(obj) {
 	if (jQuery.type(obj) === "undefined" || (obj == null || $.trim(obj).length == 0)) {
@@ -107,7 +119,7 @@ callActionUrl=function(){
 <body>
 
 
-<section class="content"> 
+<section class="content" data-ng-controller="planAllocationController"> 
 	<div class="container-fluid">
 		<div class="row clearfix">
 			<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
@@ -124,137 +136,149 @@ callActionUrl=function(){
 						<div class="form-group">
 									<span class="errormessage" id="errorMessage"></span><br/>
 						</div>
-						<table class="table table-bordered">
+						
+						<!-- <div ng-repeat="(indexX,value1) in planAllocationList" data-ng-if="value1.eType == 'C'">
+    					<div ng-repeat="(indexY,value2) in planAllocationList" data-ng-if="value2.eType == 'S' &&  value2.componentsId==value1.componentsId" >
+							       {{indexX}} - {{indexY}} - {{value1.eName}}- {{value2.eName}}
+							    </div>
+							</div>
+						 -->
+						<table class="table table-bordered"  ng-init="counter = 0">
 							<thead>
 								<tr>
 									<th>
-										<div align="center">
+										<div >
 											<strong>SI.No.</strong>
 										</div>
 									</th>
 									<th>
-										<div align="center">
+										<div >
 											<strong>Component</strong>
 										</div>
 									</th>
+									<th style="text-align:right;padding-right:10px;">
+										<div >
+											<strong>Approved Amount</strong>
+										</div>
+									</th>
 									<th>
-										<div align="center">
-											<strong>Amount Allocation(${PLAN_ALLOCATION.totalAmount})</strong>
+										<div style="text-align:right;padding-right:10px;">
+											<strong>Amount Allocation({{totalAmount}})</strong>
 										</div>
 									</th>
 								</tr>
 							</thead>
-							<tbody>
-							<c:set var="pAllocationIndex" value="0" />
-							<c:forEach items="${PLAN_ALLOCATION_LIST}" var="pc" varStatus="pcindex">
-							<c:if test="${pc.eType eq 'C'}">
-									<tr>
-										<td><b>${pcindex.count}</b></td>
-										<td><b>${pc.eName}</b></td>
-										<td><div align="center">
-										 <c:if test="${pc.noOfUnits < 1}">
-										        <c:choose>
-													<c:when test="${PLAN_ALLOCATION.status eq 'F'}">
-														<spring:bind path="PLAN_ALLOCATION.stateAllocationList[${pAllocationIndex}].fundsAllocated">
-															<form:hidden path="${status.expression}" value="${status.value}"  />
-													 		<c:out value="${status.value}" />
-													 	</spring:bind>
-														
-													</c:when>
-													<c:otherwise>
-														<spring:bind path="PLAN_ALLOCATION.stateAllocationList[${pAllocationIndex}].fundsAllocated" >
-													 		<form:input path="${status.expression}" disabled="${!PLAN_ALLOCATION.sanctionOrderExist}" maxlength="13" />
-													 	</spring:bind>
-													</c:otherwise>
-												</c:choose>
+							<tbody data-ng-repeat="(pcindex,pc) in planAllocationList | orderBy:componentsId" data-ng-if="pc.eType == 'C'"  
+							 ng-init="counter = counter + 1">
+							
+							
+							<tr >
+												<td >{{pcindex+1}}</td>
+												<td align="left"
+														data-ng-model="PLAN_ALLOCATION.stateAllocationList[pc.noOfUnitsMOPR].componentId" 
+														data-ng-init="PLAN_ALLOCATION.stateAllocationList[pc.noOfUnitsMOPR].componentId=pc.componentsId">
+														<strong>	{{pc.eName}}</strong>
 													
-													   <spring:bind path="PLAN_ALLOCATION.stateAllocationList[${pAllocationIndex}].componentId" >
-													 	<form:hidden path="${status.expression}" value="${pc.componentsId}"  />
-													 </spring:bind> 
-													 <spring:bind path="PLAN_ALLOCATION.stateAllocationList[${pAllocationIndex}].subcomponentId" >
-													 	<form:hidden path="${status.expression}" value="${pc.subcomponentsId}"  />
-													 </spring:bind> 
-													<spring:bind path="PLAN_ALLOCATION.stateAllocationList[${pAllocationIndex}].srNo" >
-													 	<form:hidden path="${status.expression}" value="${status.value}"  />
-													</spring:bind>
-													 
-													 <c:set var="pAllocationIndex" value="${pAllocationIndex+1}" />
-										</c:if> 
-										</div>
-										</td>
-									</tr>
-										
-										<c:set var="pscindex" value="0"/>
-										<c:forEach items="${PLAN_ALLOCATION_LIST}" var="psc" >
-											<c:if test="${psc.eType eq 'S' and pc.componentsId==psc.componentsId }">
-											<c:set var="pscindex" value="${pscindex+1}"/>
-										<tr>
-											<td>
-												&#${96+pscindex}
-											</td>
-											<td>
-													 ${psc.eName}
-											</td>
-											<td>
-												<div align="center">
-												<c:choose>
-													<c:when test="${PLAN_ALLOCATION.status eq 'F'}">
-														<spring:bind path="PLAN_ALLOCATION.stateAllocationList[${pAllocationIndex}].fundsAllocated">
-															<form:hidden path="${status.expression}" value="${status.value}"  />
-													 		<c:out value="${status.value}" />
-													 	</spring:bind>
-														
-													</c:when>
-													<c:otherwise>
-														<spring:bind path="PLAN_ALLOCATION.stateAllocationList[${pAllocationIndex}].fundsAllocated" >
-													 		<form:input path="${status.expression}" disabled="${!PLAN_ALLOCATION.sanctionOrderExist}" maxlength="13" />
-													 	</spring:bind>
-													</c:otherwise>
-												</c:choose>
-													
-													   <spring:bind path="PLAN_ALLOCATION.stateAllocationList[${pAllocationIndex}].componentId" >
-													 	<form:hidden path="${status.expression}" value="${psc.componentsId}"  />
-													 </spring:bind> 
-													 <spring:bind path="PLAN_ALLOCATION.stateAllocationList[${pAllocationIndex}].subcomponentId" >
-													 	<form:hidden path="${status.expression}" value="${psc.subcomponentsId}"  />
-													 </spring:bind> 
-													<spring:bind path="PLAN_ALLOCATION.stateAllocationList[${pAllocationIndex}].srNo" >
-													 	<form:hidden path="${status.expression}" value="${status.value}"  />
-													</spring:bind>
-													
+												</td>
+												<td style="text-align:right;padding-right:10px;" data-ng-model="PLAN_ALLOCATION.stateAllocationList[pc.noOfUnitsMOPR].subcomponentId" 
+														data-ng-init="PLAN_ALLOCATION.stateAllocationList[pc.noOfUnitsMOPR].subcomponentId=pc.subcomponentsId">
+												<div  data-ng-if="pc.status=='U'">
+														{{pc.amountProposedCEC}}
 												</div>
-											</td>
-										</tr>
-										<c:set var="pAllocationIndex" value="${pAllocationIndex+1}" />
-										</c:if>
-									</c:forEach>
-									</c:if>
-								</c:forEach>
+												</td>
+												
+												<td style="text-align:right;padding-right:10px;">
+													<div  data-ng-if="pc.status=='F'">
+													<input type="text" class="form-control"	readonly />
+													</div>
+													<div data-ng-if="pc.noOfUnits<1 && pc.status=='U'">
+													
+												
+													
+													<input type="text" class="form-control"
+													data-ng-change="calculateTotal(pc.noOfUnitsMOPR)" 
+													data-ng-disabled="isFreezeOrUnfreeze"
+													onkeypress="return isNumberKey(event,this)"
+													data-ng-model="PLAN_ALLOCATION.stateAllocationList[pc.noOfUnitsMOPR].fundsAllocated"
+													placeholder="{{remainAmount}}"
+													maxlength="15"
+												
+													style="text-align: right;" />
+													</div>
+												
+												</td>
+												
+							</tr>
+							
+							
+							<tr data-ng-repeat="(pscindex,psc) in planAllocationList
+							| filter: { eType: 'S' } | filter: { componentsId:pc.componentsId }:true"   >
+							<!-- |  psc.eType === 'S' &&  psc.componentsId==pc.componentsId" > -->
+							
+												<td data-ng-model="PLAN_ALLOCATION.stateAllocationList[psc.noOfUnitsMOPR].srNo">{{(pscindex+10).toString(36)}} 
+												 
+												 </td>
+												<td align="left"
+														data-ng-model="PLAN_ALLOCATION.stateAllocationList[psc.noOfUnitsMOPR].componentId" 
+														data-ng-init="PLAN_ALLOCATION.stateAllocationList[psc.noOfUnitsMOPR].componentId=psc.componentsId">
+														<strong>	{{psc.eName}}</strong>
+													
+												</td>
+												<td style="text-align:right;padding-right:10px;" data-ng-model="PLAN_ALLOCATION.stateAllocationList[psc.noOfUnitsMOPR].subcomponentId" 
+														data-ng-init="PLAN_ALLOCATION.stateAllocationList[psc.noOfUnitsMOPR].subcomponentId=psc.subcomponentsId">
+												<div  data-ng-if="psc.status=='U'">
+												{{psc.amountProposedCEC}}
+												</div>
+												
+												</td>
+												
+												<td style="text-align:right;padding-right:10px;">
+													<div  data-ng-if="psc.status=='F'">
+													<input type="text" class="form-control"	readonly />
+													</div>
+													<div  data-ng-if="psc.status=='U'">
+													<input type="text" class="form-control"
+													data-ng-change="calculateTotal(psc.noOfUnitsMOPR)" 
+													data-ng-disabled="isFreezeOrUnfreeze"
+													onkeypress="return isNumberKey(event,this)"
+													data-ng-model="PLAN_ALLOCATION.stateAllocationList[psc.noOfUnitsMOPR].fundsAllocated"
+													maxlength="15"
+													placeholder="{{remainAmount}}"
+													style="text-align: right;" />
+													</div>
+												
+												</td>
+							</tr>
+							
 							</tbody>
+							
+							<tr>
+							<th></th>
+							<th></th>
+							<th style="text-align:right;padding-right:10px;">Total</th>
+							<th style="text-align:right;padding-right:10px;">{{totalAllocatedFund}}</th>
+							</tr>
 
 						</table>
 						<div class="text-right">
-						<c:if test="${PLAN_ALLOCATION.sanctionOrderExist}">
+						
 							
 						 	
-							<c:choose>
-								<c:when test="${PLAN_ALLOCATION.status eq 'F'}">
-									<button  type="button" class="btn bg-green waves-effect" onclick="setStatus('U')">Unfreeze</button>
-								</c:when>
-								<c:otherwise>
-										<c:choose>
-											<c:when test="${empty PLAN_ALLOCATION.status}">
-												<button  type="button" class="btn bg-green waves-effect" onclick="setStatus('S')">SAVE</button>
-											</c:when>
-											<c:otherwise>
-												<button  type="button" class="btn bg-green waves-effect" onclick="setStatus('M')">Update </button>
-											</c:otherwise>
-										</c:choose>
-								<button  type="button" class="btn bg-green waves-effect" onclick="setStatus('F')">Freeze</button>
-								</c:otherwise>
-							</c:choose>
 							
-						</c:if>
+								
+								
+											
+												<button  type="button" class="btn bg-green waves-effect" data-ng-click="savePlanAllocationcDetails(btnoneStatus)"
+												data-ng-disabled="isFreezeOrUnfreeze" data-ng-show="btnoneStatus=='S'" data-legend="{{btnoneValue}}">SAVE</button>
+											
+											
+											
+											
+								                  <button  type="button" id="btntwo" class="btn bg-green waves-effect" data-ng-click="savePlanAllocationcDetails(btntwoStatus)"
+												  data-legend="{{btntwoValue}}">Freeze</button>
+							
+							
+					
 							<!-- <button type="button"  ng-click="claerAll()" class="btn bg-light-blue waves-effect">CLEAR</button> -->
 							<button type="button" onclick="onClose('home.html?<csrf:token uri='home.html'/>')"class="btn bg-orange waves-effect">CLOSE</button>
 						</div>

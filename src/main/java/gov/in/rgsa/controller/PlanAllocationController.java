@@ -8,15 +8,17 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import gov.in.rgsa.model.Response;
 import gov.in.rgsa.model.StateAllocationModal;
 import gov.in.rgsa.service.FacadeService;
 import gov.in.rgsa.service.PlanAllocationService;
 import gov.in.rgsa.user.preference.UserPreference;
-import gov.in.rgsa.utils.Message;
 import gov.in.rgsa.validater.PlanAllocationValidator;
 
 @Controller
@@ -41,52 +43,52 @@ public class PlanAllocationController {
 
 	@RequestMapping(value = "planAllocation", method = RequestMethod.GET)
 	private String planAllocation(@ModelAttribute("PLAN_ALLOCATION") StateAllocationModal stateAllocationModal, Model model) {
+		
+		return PLAN_ALLOCATION;
+	}
+	
+	@ResponseBody
+	@RequestMapping(value="fetchPlanAllocation",method=RequestMethod.GET)
+	private Map<String, Object> fetchPlanAllocation(){
+		Map<String, Object> map=new HashMap<>();
 		Map<String, Object> parameter = new HashMap<String, Object>();
 		parameter.put("stateCode", userPreference.getStateCode());
 		parameter.put("yearId", userPreference.getFinYearId());
 		parameter.put("userType", "A");
-		model.addAttribute("PLAN_ALLOCATION_LIST", facadeService.fetchFundDetailsByUserType(parameter));
-		stateAllocationModal =allocationService.getBasicDetailofPlanAllocation(stateAllocationModal);
-		return PLAN_ALLOCATION;
+		map.put("PLAN_ALLOCATION_LIST", facadeService.fetchFundDetailsByUserType(parameter));
+		StateAllocationModal stateAllocationModal=new StateAllocationModal();
+		map.put("stateAllocationModal", allocationService.getBasicDetailofPlanAllocation(stateAllocationModal));
+		return map;
 	}
+	
+	
 	
 	@RequestMapping(value = "planAllocationQPR", method = RequestMethod.GET)
 	private String planAllocationQPR(@ModelAttribute("PLAN_ALLOCATION") StateAllocationModal stateAllocationModal, Model model) {
-		model.addAttribute("PLAN_ALLOCATION_LIST", allocationService.getPlanComponents());
-		stateAllocationModal =allocationService.getBasicDetailofPlanAllocation(stateAllocationModal);
+		stateAllocationModal.setPlanAllocationNotExist(Boolean.TRUE);
 		model.addAttribute("isPlanAllocationNotExist",Boolean.TRUE);
 		return PLAN_ALLOCATION;
 	}
 	
 	@RequestMapping(value = "savePlanAllocation", method = RequestMethod.POST)
-	private String savePlanAllocation(@ModelAttribute("PLAN_ALLOCATION") StateAllocationModal stateAllocationModal, Model model,RedirectAttributes re,BindingResult result) {
-		
-		planAllocationValidator.validate(stateAllocationModal, result);
+	public @ResponseBody Response savePlanAllocation(@RequestBody StateAllocationModal stateAllocationModal, Model model,RedirectAttributes re,BindingResult result) {
+		Response response = new Response();
+		/*planAllocationValidator.validate(stateAllocationModal, result);
 		if (result.hasErrors()) {
 			return PLAN_ALLOCATION;	
-		}
-		
-		boolean isSaved=allocationService.savePlanAllocation(stateAllocationModal);
-		if(isSaved && stateAllocationModal.getStatus()!=null) {
-			switch(stateAllocationModal.getStatus().charAt(0)) {
-			case 'S':
-				re.addFlashAttribute(Message.SUCCESS_KEY, Message.SAVE_SUCCESS);
-				break;
-			case 'F':
-				re.addFlashAttribute(Message.UPDATE_KEY, Message.FRIZEE_SUCESS);
-				break;
-			case 'U':
-				re.addFlashAttribute(Message.UPDATE_KEY, Message.UNFRIZEE_SUCESS);
-				break;	
-				
-			case 'M':
-				re.addFlashAttribute(Message.UPDATE_KEY, Message.UPDATE_SUCCESS);
-				break;	
+		}*/
+		if(stateAllocationModal.getStatus()!=null && stateAllocationModal.getStatus().length()>0) {
+			if(stateAllocationModal.getStatus().charAt(0)=='U') {
+				response=allocationService.unfreezePlanAllocation(stateAllocationModal);
+			}else {
+				response=allocationService.savePlanAllocation(stateAllocationModal);
 			}
 		}else {
-			re.addFlashAttribute(Message.ERROR_KEY, Message.ERROR_SUCCESS);
+			response.setResponseMessage("Something is wrong");
+			response.setResponseCode(500);
 		}
-		return REDIRECT_PLAN_ALLOCATION;
+		return response;
+		
 	}
 	
 }

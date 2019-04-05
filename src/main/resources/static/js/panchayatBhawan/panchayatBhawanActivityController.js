@@ -25,9 +25,13 @@ $scope.userType = null;
 			$scope.activityList=response.data.PANCHAYAT_ACTIVITY;
 			$scope.districtList=response.data.DISTRICT_LIST;
 			$scope.panchayatWithoutBhawan = response.data.panchayatWithoutBhawan;
+			$scope.panchayatWithBhawan= response.data.panchayatWithBhawan;
 			$scope.userType = response.data.userType;
 			if(response.data.PANCHAYAT_BHAWAN_ACTIVITY!=undefined){
 				$scope.panchayatBhawanActivity=response.data.PANCHAYAT_BHAWAN_ACTIVITY;
+				$scope.initial_status=false;
+			}else{
+				$scope.initial_status=true;
 			}
 			if($scope.panchayatBhawanActivity.panchatayBhawanActivityDetails != undefined)
 				$scope.calculateTotal();
@@ -77,6 +81,18 @@ $scope.userType = null;
 			$scope.panchayatBhawanActivity.panchatayBhawanActivityDetails[0].noOfGPs ='';
 			toastr.error("Number of GPs should not be greater than " + $scope.panchayatWithoutBhawan + " i.e. panchayat without bhawan");
 			$scope.calculateAspirationalGps(0);
+		}
+		
+		if($scope.panchayatBhawanActivity.panchatayBhawanActivityDetails[1].noOfGPs >  +$scope.panchayatWithBhawan){
+			$scope.panchayatBhawanActivity.panchatayBhawanActivityDetails[1].noOfGPs ='';
+			toastr.error("Number of GPs should not be greater than " + $scope.panchayatWithBhawan + " i.e. panchayat with bhawan");
+			$scope.calculateAspirationalGps(1);
+		}
+		
+		if($scope.panchayatBhawanActivity.panchatayBhawanActivityDetails[2].noOfGPs >  +$scope.panchayatWithBhawan){
+			$scope.panchayatBhawanActivity.panchatayBhawanActivityDetails[2].noOfGPs ='';
+			toastr.error("Number of GPs should not be greater than " + $scope.panchayatWithBhawan + " i.e. panchayat with bhawan");
+			$scope.calculateAspirationalGps(2);
 		}
 		
 		if($scope.panchayatBhawanActivity.panchatayBhawanActivityDetails[index].unitCost > $scope.activityList[index].ceilingValue){

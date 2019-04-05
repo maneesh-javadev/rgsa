@@ -1,6 +1,8 @@
 <%@include file="../taglib/taglib.jsp"%>
 <script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/trainingDetails/training-Details.js"></script>
 <script>
+var userTypeSession='${sessionScope['scopedTarget.userPreference'].userType}';
+
 $('document').ready(function(){
 	if($('#userTypeId').val() == 'S' && $('#userTypeSessionId').val() == 'C'){
 		var rowCountState = $('#tbodyState tr').length;
@@ -39,6 +41,8 @@ $('document').ready(function(){
 	function changeColor(){
 		var rowCountState = $('#tbodyState tr').length;
 		for (var i = 0; i < rowCountState; i++) {
+			+$('#noOfParticipantsState_'+i).text() > +$('#noOfParticipants_'+i).val() ? $('#noOfParticipantsState_'+i).css('color','red') : $('#noOfParticipantsState_'+i).css('color','#00cc00');
+			+$('#noOfDaysState_'+i).text() > +$('#noOfDays_'+i).val() ? $('#noOfDaysState_'+i).css('color','red') : $('#noOfDaysState_'+i).css('color','#00cc00');
 			+$('#unitCostState_'+i).text() > +$('#unitCost_'+i).val() ? $('#unitCostState_'+i).css('color','red') : $('#unitCostState_'+i).css('color','#00cc00');
 			+$('#fundState_'+i).text() > +$('#fundsName_'+i).val() ? $('#fundState_'+i).css('color','red') : $('#fundState_'+i).css('color','#00cc00');
 		}
@@ -48,9 +52,21 @@ $('document').ready(function(){
 	}
 	
 	function calFund(count){
-		$('#fundsName_'+count).val(+$('#unitCost_'+count).val() * +$('#noOfParticipantsState_'+count).text() * +$('#noOfDaysState_'+count).text());
+		$('#fundsName_'+count).val(+$('#unitCost_'+count).val() * +$('#noOfParticipants_'+count).val() * +$('#noOfDays_'+count).val());
 		calTotalFundAndGrandTotal();
 	}
+	
+	function calTotalFundAndGrandTotal(){
+		var rowCountState = $('#tbodyState tr').length;
+		var total_fund = 0;
+		for (var i = 0; i < rowCountState; i++) {
+			total_fund += +$('#fundsName_'+i).val();
+		}
+		$('#subTotal').val(total_fund);
+		$('#grandTotal').val(total_fund + +$('#additioinalRequirements').val());
+}
+	
+	
 </script>
 <section class="content">
 	<div class="container-fluid">
@@ -145,30 +161,58 @@ $('document').ready(function(){
 																	name="trainingActivityDetailsList[${count.index}].trainingMode.trainingModeId"
 																	value="${trainingActivitiesState.trainingActivityDetailsList[count.index].trainingMode.trainingModeId}"></td>
 																<td>
-																<div align="center" id="noOfParticipantsState_${count.index}">${trainingActivitiesState.trainingActivityDetailsList[count.index].noOfParticipants}</div>
-																<form:hidden path="trainingActivityDetailsList[${count.index}].noOfParticipants" value="${trainingActivitiesState.trainingActivityDetailsList[count.index].noOfParticipants}"/>
+																<div align="center" id="noOfParticipantsState_${count.index}"><strong>${trainingActivitiesState.trainingActivityDetailsList[count.index].noOfParticipants}</strong></div>
+																<form:input path="trainingActivityDetailsList[${count.index}].noOfParticipants" value="${obj.noOfParticipants}"
+																class="form-control active123" style="text-align: right;"
+																id="noOfParticipants_${count.index}"
+																onkeyup="changeColor();calFund(${count.index})" onclick="calTotalFundAndGrandTotal();"
+																/>
 																</td>
 																<td>
-																<div align="center" id="noOfDaysState_${count.index}">${trainingActivitiesState.trainingActivityDetailsList[count.index].noOfDays}</div>
-																<form:hidden path="trainingActivityDetailsList[${count.index}].noOfDays" value="${trainingActivitiesState.trainingActivityDetailsList[count.index].noOfDays}"/>
+																<div align="center" id="noOfDaysState_${count.index}"><strong>${trainingActivitiesState.trainingActivityDetailsList[count.index].noOfDays}</strong></div>
+																<form:input path="trainingActivityDetailsList[${count.index}].noOfDays" value="${obj.noOfDays}"
+																class="form-control active123" style="text-align: right;"
+																id="noOfDays_${count.index}"
+																onkeyup="changeColor();calFund(${count.index})" onclick="calTotalFundAndGrandTotal();"
+																/>
 																</td>
 																<td>
 																<div align="center" id="unitCostState_${count.index}"><b>${trainingActivitiesState.trainingActivityDetailsList[count.index].unitCost }</b></div>
 																<form:input type="text"
-																	class="form-control fundsName"
+																	class="form-control active123"
+																	
+																	path="trainingActivityDetailsList[${count.index}].unitCost"
+																	onkeyup="changeColor();calFund(${count.index})" onclick="calTotalFundAndGrandTotal();"
+																	value="${obj.unitCost}" style="text-align: right;" id="unitCost_${count.index}" />
+																<%-- <c:choose>
+																<c:when test="${sessionScope['scopedTarget.userPreference'].userType ne 'S' and allTrainingActivity.userType eq 'S'}">
+																	<form:input type="text"
+																	class="form-control "
+																	path="trainingActivityDetailsList[${count.index}].unitCost"
+																	onkeyup="changeColor();calFund(${count.index})" onclick="calTotalFundAndGrandTotal();"
+																	value="${obj.unitCost}" style="text-align: right;" id="unitCost_${count.index}" />
+																</c:when>
+																<c:otherwise>
+																	<form:input type="text"
+																	class="form-control "
 																	readonly="${allTrainingActivity.isFreeze}"
 																	path="trainingActivityDetailsList[${count.index}].unitCost"
-																	onkeyup="changeColor();calFund(${count.index})"
-																	value="${obj.unitCost}" style="text-align: right;" id="unitCost_${count.index}" /></td>
+																	onkeyup="changeColor();calFund(${count.index})" onclick="calTotalFundAndGrandTotal();"
+																	value="${obj.unitCost}" style="text-align: right;" id="unitCost_${count.index}" />
+																</c:otherwise>
+																</c:choose> --%>
+															<%-- 	${sessionScope['scopedTarget.userPreference'].userType ne 'S' and allTrainingActivity.userType eq 'S'} --%>
+															<%-- ${allTrainingActivity.userType } --%>
+																</td>
 																<td>
 																<div align="center" id="fundState_${count.index}"><b>${trainingActivitiesState.trainingActivityDetailsList[count.index].funds}</b></div>
 																<input type="text" maxlength="8" min="1"
-																	class="form-control"
+																	class="form-control fundsName"
 																	name="trainingActivityDetailsList[${count.index}].funds"
 																	id="fundsName_${count.index}"
 																	readonly="readonly"
 																	onkeyup="this.value=this.value.replace(/[^0-9]/g,'');"
-																	onchange="changeColor();calTotalFundAndGrandTotal()"
+																	onchange="changeColor();" 
 																	value="${obj.funds}" style="text-align: right;"></td>
 															</tr>
 															<input type="hidden"
@@ -224,6 +268,8 @@ $('document').ready(function(){
 											value="${allTrainingActivity.trainingActivityId}" />
 										<input type="hidden" name="isFreeze" id="isFreeze"
 											value="${allTrainingActivity.isFreeze}" />
+										<input type="hidden" name="dataUserType" id="dataUserType"
+											value="${allTrainingActivity.userType}" />	
 										<input type="hidden" name="catgryId" id="catgryId">
 									<c:if test="${empty allTrainingActivity}">
 										<input type="hidden" name="isFreeze" id="isFreeze"
@@ -231,11 +277,25 @@ $('document').ready(function(){
 									</c:if>
 									<input type="hidden" name="idToEdit" id="idToEdit">
 									</div><br/>
-									<div class="form-group text-right">
+									<div class="row clearfix">
+									<div class="col-md-4">
+										<button type="button"
+											onclick="onClose('viewPlanDetails.html?<csrf:token uri='viewPlanDetails.html'/>&stateCode=${STATE_CODE}')"
+											class="btn bg-orange waves-effect">
+											<i class="fa fa-arrow-left" aria-hidden="true"></i>
+											<spring:message code="Label.BACK" htmlEscape="true" />
+										</button>
+									</div>
+									<div class="col-md-8 text-right">
 										<button type="submit" id="saveButtn" onclick="toValidate();"
 											class="btn bg-green waves-effect">SAVE</button>
-										<button type="button" id="frzButtn" onclick="toFreeze();"
-											class="btn bg-green waves-effect">FREEZE</button>
+										<c:choose>
+										<c:when test="${initial_status}"><button type="button" id="frzButtn" onclick="toFreeze();"
+											class="btn bg-green waves-effect" disabled="disabled">FREEZE</button></c:when>
+										<c:otherwise><button type="button" id="frzButtn" onclick="toFreeze();"
+											class="btn bg-green waves-effect">FREEZE</button></c:otherwise>
+										</c:choose>
+										
 										<button type="button" id="unFrzButtn" onclick="toFreeze();"
 											class="btn bg-green waves-effect">UNFREEZE</button>
 										<button type="button" id="clearButtn" onclick="onClear(this)"
@@ -243,6 +303,7 @@ $('document').ready(function(){
 										<button type="button"
 											onclick="onClose('home.html?<csrf:token uri='home.html'/>')"
 											class="btn bg-orange waves-effect">CLOSE</button>
+									</div>
 									</div>
 								</form:form>
 							</div>
@@ -350,6 +411,14 @@ $('document').ready(function(){
 									</div>
 								</div>
 								<br/>
+								<div class="col-md-4">
+										<button type="button"
+											onclick="onClose('viewPlanDetails.html?<csrf:token uri='viewPlanDetails.html'/>&stateCode=${STATE_CODE}')"
+											class="btn bg-orange waves-effect">
+											<i class="fa fa-arrow-left" aria-hidden="true"></i>
+											<spring:message code="Label.BACK" htmlEscape="true" />
+										</button>
+									</div>
 								<div class="text-right">
 										<button type="button" onclick="onClose('home.html?<csrf:token uri='home.html'/>')"  class="btn bg-orange waves-effect"><spring:message code="Label.CLOSE" htmlEscape="true" /></button>
 									</div>

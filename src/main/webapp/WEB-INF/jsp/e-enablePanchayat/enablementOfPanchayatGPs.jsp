@@ -8,8 +8,8 @@
 <script type="text/javascript" src="${pageContext.request.contextPath}/resources/plugins/dataTables/js/dataTables.bootstrap.min.js"></script>
 	
 	<script  type="text/javascript" src="${pageContext.request.contextPath}/resources/plugins/angular/angular.min.js"></script>
-	<script src="http://angular-ui.github.io/bootstrap/ui-bootstrap-tpls-0.11.0.js"></script>
-    <link href="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" rel="stylesheet">
+	<script src="${pageContext.request.contextPath}/resources/plugins/angular/ui-bootstrap-tpls-0.11.0.js"></script>
+ <link href="${pageContext.request.contextPath}/resources/css/bootstrap.min.css" rel="stylesheet">
     
 	<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/e-enablePanchayat/enablementController.js"></script>
 	<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/e-enablePanchayat/enablementService.js"></script>
@@ -58,7 +58,7 @@
 									      <!-- Modal content-->
 									      <div class="modal-content">
 									        <div class="modal-header">
-											  <button type="button" class="close" data-dismiss="modal">&times;</button>
+											 <!--  <button type="button" class="close" data-dismiss="modal">&times;</button> -->
 									          <h4 class="modal-title" id="garamPanchayatHead"></h4>
 									        </div>
 									        <div class="modal-body" >
@@ -73,6 +73,10 @@
 									    </div>
 									  </div>	
 									<!-- Modal content summary#end-->
+									
+									<div class="form-group">
+									<span class="errormessage" id="errorMessage"></span><br/>
+									</div>
 									
 										<div class="table-responsive">
 										

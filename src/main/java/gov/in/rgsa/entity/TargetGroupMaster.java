@@ -10,8 +10,10 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 /**
  * @author Mohammad Ayaz 06/09/2018
  *
@@ -19,7 +21,10 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name="target_group_master" , schema="rgsa")
-@NamedQuery(name="FETCH_TARGET_GROUP_LIST" , query="From TargetGroupMaster where isActive=true and finYear=:finYear ORDER BY targetGroupMasterName")
+@NamedQueries({
+@NamedQuery(name="FETCH_TARGET_GROUP_LIST" , query="From TargetGroupMaster where isActive=true and finYear=:finYear ORDER BY targetGroupMasterName"),
+@NamedQuery(name="FETCH_TARGET_GROUP_LIST_BY_ID" , query="From TargetGroupMaster where isActive=true and targetGroupMasterId=:targetGroupMasterId ORDER BY targetGroupMasterName")
+})
 public class TargetGroupMaster {
 
 	@Id
@@ -48,6 +53,9 @@ public class TargetGroupMaster {
 	
 	@Column(name="user_type")
 	private String userType;
+	
+	@Transient
+	private Boolean selectItem;
 
 	public Integer getTargetGroupMasterId() {
 		return targetGroupMasterId;
@@ -112,5 +120,15 @@ public class TargetGroupMaster {
 	public void setUserType(String userType) {
 		this.userType = userType;
 	}
+
+	public Boolean getSelectItem() {
+		return selectItem;
+	}
+
+	public void setSelectItem(Boolean selectItem) {
+		this.selectItem = selectItem;
+	}
+	
+	
 	
 }

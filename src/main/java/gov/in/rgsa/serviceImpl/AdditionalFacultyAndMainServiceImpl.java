@@ -237,4 +237,11 @@ public class AdditionalFacultyAndMainServiceImpl implements AdditionalFacultyAnd
 		return commonRepository.findAll("FETCH_INSTITUTE_HR_APPROVED_ACTIVITY_DETAILS", params);
 	}
 
+	@Override
+	public List<TIWiseProposedDomainExperts> fetchTiWiseDomainExpertById(Integer instituteInfraHrActivityId) {
+		Map<String, Object> params=new HashMap<>();
+		params.put("instituteInfraHrActivityId", instituteInfraHrActivityId);
+		return commonRepository.findAll("FETCH_DOMAIN_EXPERT_TI_WISE_ACT_ID", params);
+	}
+
 }

@@ -1,7 +1,6 @@
 
 package gov.in.rgsa.entity;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -10,10 +9,12 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
 @Entity
 @Table(name="satcom_details_progress_report", schema="rgsa")
+@NamedQuery(name="FETCH_DETAILS_BY_QTR_ID_AND_ACT_ID",query="from SatcomActivityProgressDetails where satcomActivityProgress.satcomActivityProgressId=:satcomActivityProgressId and quarterDuration.qtrId !=:quarterId")
 public class SatcomActivityProgressDetails{
 
 	@Id

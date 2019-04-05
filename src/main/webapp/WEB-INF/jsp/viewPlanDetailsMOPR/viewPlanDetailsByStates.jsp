@@ -102,8 +102,14 @@ toggleSubComponent=function(id,flag){
 										<c:forEach items="${planComponentsFunds}" var="pc" varStatus="pcindex">
 										  	<c:if test="${pc.eType eq 'C'}">
 										  			<c:set var="moprDiff" value="bg-test" />
-										  			<c:if test="${pc.amountProposed gt pc.amountProposedMOPR}">
+										  			
+													
+										  			<c:if test="${pc.amountProposed+pc.addtionalRequirement ne pc.amountProposedMOPR+pc.addtionalRequirementMOPR and pc.amountProposedMOPR != null }">
 														<c:set var="moprDiff" value="bg-warning" />
+													</c:if>
+													<c:set var="moprDiffUnit" value="bg-test" />
+										  			<c:if test="${pc.noOfUnits ne pc.noOfUnitsMOPR and pc.noOfUnitsMOPR != null }">
+														<c:set var="moprDiffUnit" value="bg-warning" />
 													</c:if>
 													<tr>
 														<td align="center" id="plusId${pc.componentsId}" >
@@ -117,7 +123,15 @@ toggleSubComponent=function(id,flag){
 														
 														<td style="padding-left: 40px">
 														<c:if test="${buttonStatus}">
+														<c:choose>
+														<c:when test="${ pc.amountProposed != null }">
 														<b><a href="${pc.link}?menuId=0&<csrf:token uri='${pc.link}'/>"><i class="fa fa-external-link" aria-hidden="true"></i></a></b>
+														</c:when>
+														<c:otherwise>
+														<i class="fa fa-external-link" aria-hidden="true"></i>
+														</c:otherwise>
+														</c:choose>
+														
 														</c:if>
 														</td>
 														 
@@ -135,7 +149,7 @@ toggleSubComponent=function(id,flag){
 															<b><fmt:formatNumber type = "number"      maxFractionDigits = "3" value = "${pc.amountProposedMOPR+pc.addtionalRequirementMOPR}" /></b>
 														</c:if>
 														</td>
-														<td align="right" style="padding-right:20px"><b><c:out value="${pc.noOfUnitsMOPR}"/></b> </td>
+														<td align="right" style="padding-right:20px" class="${moprDiffUnit}"><b><c:out value="${pc.noOfUnitsMOPR}"/></b> </td>
 														
 														
 														
@@ -170,7 +184,10 @@ toggleSubComponent=function(id,flag){
 										  			<c:if test="${psc.amountProposed gt psc.amountProposedMOPR}">
 														<c:set var="moprDiff" value="bg-warning" />
 													</c:if>
-													
+													<c:set var="moprDiffUnit" value="bg-test" />
+										  			<c:if test="${pc.noOfUnits ne pc.noOfUnitsMOPR and pc.noOfUnitsMOPR != null }">
+														<c:set var="moprDiffUnit" value="bg-warning" />
+													</c:if>
 														<tr class="slide${pc.componentsId}"  style="display: none;">
 															<td></td>
 															<td >&#${96+pscindex})</td>
@@ -184,7 +201,7 @@ toggleSubComponent=function(id,flag){
 																<td align="right" class="${moprDiff }">
 																	<fmt:formatNumber type = "number"      maxFractionDigits = "3" value = "${psc.amountProposedMOPR}" />		
 																</td>
-																<td align="right" style="padding-right:20px">${psc.noOfUnitsMOPR}</td>
+																<td align="right" style="padding-right:20px" class="${moprDiffUnit}">${psc.noOfUnitsMOPR}</td>
 																<c:if test="${sessionScope['scopedTarget.userPreference'].userType eq 'C'}">
 																	<c:set var="cecDiff" value="bg-test" />
 											  						<c:if test="${psc.amountProposedMOPR gt psc.amountProposedCEC}">
@@ -209,11 +226,15 @@ toggleSubComponent=function(id,flag){
 										  			<c:if test="${pc.amountProposed gt pc.amountProposedMOPR}">
 														<c:set var="moprDiff" value="bg-warning" />
 													</c:if>
+													<c:set var="moprDiffUnit" value="bg-test" />
+										  			<c:if test="${pc.noOfUnits ne pc.noOfUnitsMOPR and pc.noOfUnitsMOPR != null }">
+														<c:set var="moprDiffUnit" value="bg-warning" />
+													</c:if>
 											<c:if test="${pscindex eq 0 and pc.componentsId ne 11 and pc.componentsId ne 12}">
 													<tr class="slidex${pc.componentsId}"  style="display: none;">
 															<td></td>
 															<td></td>
-															<td>${pc.eName}</td>
+															<td>${pc.eName}#${pc.amountProposed gt pc.amountProposedMOPR}#</td>
 															<td></td>
 															<td align="right">
 																<c:if test="${pc.amountProposed>0}">
@@ -221,12 +242,12 @@ toggleSubComponent=function(id,flag){
 																</c:if>
 															</td>
 															<td align="right" style="padding-right:20px">${pc.noOfUnits}</td>
-															<td align="right">
+															<td align="right" class="${moprDiffUnit}">
 																<c:if test="${pc.amountProposedMOPR>0}">
 																<fmt:formatNumber type = "number"      maxFractionDigits = "3" value = "${pc.amountProposedMOPR}" />
 																</c:if>
 															</td>
-															<td align="right" style="padding-right:20px">${pc.noOfUnitsMOPR}</td>
+															<td align="right" style="padding-right:20px" class="${moprDiffUnit}">${pc.noOfUnitsMOPR}</td>
 															<td align="right">
 																<c:if test="${pc.amountProposedCEC>0}">
 																<fmt:formatNumber type = "number"      maxFractionDigits = "3" value = "${pc.amountProposedCEC}" />

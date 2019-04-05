@@ -29,7 +29,8 @@ import org.hibernate.annotations.UpdateTimestamp;
 @Entity
 @Table(name="qpr_pmu", schema="rgsa")
 @NamedQueries ({@NamedQuery(name="FETCH_PMU_PROGRESS_PROGRESS_REPORT_DETAILS", query="Select PP from PmuProgress PP RIGHT OUTER JOIN FETCH PP.pmuProgressDetails PPD where PP.pmuActivity.pmuActivityId=:pmuActivityId AND PP.quarterDuration.qtrId=:qtrId order by PPD.qprPmuDetailsId asc "),
-@NamedQuery(name="FETCH_Pmu_Progress_progress_report_BASED_ID", query="Select PP from PmuProgress PP  where PP.pmuActivity.pmuActivityId=:pmuActivityId")
+@NamedQuery(name="FETCH_Pmu_Progress_progress_report_BASED_ID", query="Select PP from PmuProgress PP  where PP.pmuActivity.pmuActivityId=:pmuActivityId"),
+@NamedQuery(name="FETCH_PMU_ACT_QTR_ID_AND_ACT_ID",query="from PmuProgress where pmuActivity.pmuActivityId=:pmuActivityId and quarterDuration.qtrId !=:quarterId")
 })
 public class PmuProgress {
 

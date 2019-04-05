@@ -16,6 +16,8 @@ public class StateAllocationModal {
 	
 	private String status;
 	
+	private boolean isPlanAllocationNotExist;
+	
 	private List<StateAllocation> stateAllocationList;
 
 	public Integer getPlanCode() {
@@ -64,6 +66,14 @@ public class StateAllocationModal {
 
 	public void setStateAllocationList(List<StateAllocation> stateAllocationList) {
 		this.stateAllocationList = stateAllocationList;
+	}
+
+	public boolean isPlanAllocationNotExist() {
+		return isPlanAllocationNotExist;
+	}
+
+	public void setPlanAllocationNotExist(boolean isPlanAllocationNotExist) {
+		this.isPlanAllocationNotExist = isPlanAllocationNotExist;
 	}
 
 

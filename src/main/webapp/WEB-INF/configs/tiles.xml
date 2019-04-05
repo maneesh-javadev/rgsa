@@ -394,7 +394,7 @@
 		<put-attribute name="title"
 			value="Capacity Building Paln" />
 		<put-attribute name="body"
-			value="/WEB-INF/jsp/CBAndTForActivityPaln/capacityBuildingPlan.jsp" />
+			value="/WEB-INF/jsp/CBAndTForActivityPaln/capacityBuildingPlanNew.jsp" />
 	</definition>
 
 	<definition name="cbaddTrainingDetails"
@@ -756,7 +756,7 @@
 <definition name="capacityBuilding.planCEC" extends="base.definition.admin">
 	<put-attribute name="title" value="Training Activities CEC" />
 	<put-attribute name="body"
-		value="/WEB-INF/jsp/CBAndTForActivityPaln/capacityBuildingPlanCEC.jsp" />
+		value="/WEB-INF/jsp/CBAndTForActivityPaln/capacityBuildingPlanNewCEC.jsp" />
 </definition>
 
 <definition name="institutionalInfraActivityPlanCec" extends="base.definition.admin">
@@ -776,5 +776,28 @@
 	<put-attribute name="body"
 		value="/WEB-INF/jsp/ActionPaln/incomeEnhancementCec.jsp" />
 </definition>
+
+<definition name="noFundAlloctedJsp" extends="base.definition.admin">
+	<put-attribute name="title" value="no Fund Allocted Jsp" />
+	<put-attribute name="body"
+		value="/WEB-INF/jsp/error/qprNoFundAllocated.jsp" />
+</definition>
+
+<definition name="capacityBuilding.plan.mopr"
+		extends="base.definition.admin">
+		<put-attribute name="title"
+			value="Capacity Building Plan MOPR" />
+		<put-attribute name="body"
+			value="/WEB-INF/jsp/CBAndTForActivityPaln/capacityBuildingPlanNewMOPR.jsp" />
+</definition>
+
+
+<definition name="UtilizationCertificatePage" extends="base.definition.admin">
+	<put-attribute name="title" value="Utilization Certificate" />
+	<put-attribute name="body"
+		value="/WEB-INF/jsp/UtilizationCertificate/uchome.jsp" />
+</definition>
+
+<definition name="UtilizationCertificateTmpl" template="/WEB-INF/jsp/UtilizationCertificate/template.jsp"></definition>
 </tiles-definitions>
 

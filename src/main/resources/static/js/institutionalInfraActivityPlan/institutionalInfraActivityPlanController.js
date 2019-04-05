@@ -19,6 +19,7 @@ publicModule.controller("institutionalInfraActivityPlanController", [ '$scope', 
 			$scope.trainingInstituteType = response.data.TrainingInstituteType;
 			$scope.userType=response.data.userType;
 			if($scope.userType == "C"){
+				$scope.initial_status=response.data.initial_status;
 				$scope.institutionalInfraActivityPlanState=response.data.institutionalInfraActivityPlanState;
 				$scope.grandTotalState=calGrandTotalCEC($scope.institutionalInfraActivityPlanState.institutionalInfraActivityPlanDetails) + $scope.institutionalInfraActivityPlanState.additionalRequirement;
 				$scope.institutionalInfraActivityPlanMopr=response.data.institutionalInfraActivityPlanMopr;
@@ -30,7 +31,9 @@ publicModule.controller("institutionalInfraActivityPlanController", [ '$scope', 
 						$scope.institutionalInfraActivityPlan.institutionalInfraActivityPlanDetails[i].totalFund='';
 					}
 					$scope.institutionalInfraActivityPlan.additionalRequirement='';
+					$scope.dataOfState=true;
 				}else{
+					$scope.dataOfState=false;
 					$scope.institutionalInfraActivityPlan = response.data.institutionalInfraActivityPlanCEC;
 					calGrandTotal();
 				}

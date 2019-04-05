@@ -64,7 +64,7 @@ public class InnovativeActivityController {
 		}
 		
 		List<InnovativeActivity> innovativeAcitivityList = innovativeActivityService.findAllActivity(userPreference.getUserType().charAt(0));
-		
+		model.addAttribute("STATE_CODE", userPreference.getStateCode());
 		if(!CollectionUtils.isEmpty(innovativeAcitivityList)) {
 			if(userPreference.getUserType().equalsIgnoreCase("M") && innovativeAcitivityList.get(0).getUserType().equals('S')){
 				innovativeAcitivityList.get(0).setIsFreeze(false);
@@ -73,6 +73,8 @@ public class InnovativeActivityController {
 				Collections.sort(innovativeAcitivityList.get(0).getInnovativeActivityDetails(), Comparator.comparing(InnovativeActivityDetails::getId));
 				model.addAttribute("innovativeAcitivityList",innovativeAcitivityList);
 			}
+		}else{
+			model.addAttribute("innovativeAcitivityList",innovativeAcitivityList);
 		}
 		
 		if(userPreference.getUserType().equalsIgnoreCase("C"))
@@ -93,15 +95,16 @@ public class InnovativeActivityController {
 			
 		} 
 		                
-        		        long grandTotalForState = innovativeAcitivityListForState.get(0).getAdditioinalRequirements() +totalFundState;
-		              model.addAttribute("TOTALFUNDForMopr", totalFundMopr);
-		       	     model.addAttribute("innovativeAcitivityListForMopr", innovativeAcitivityListForMopr);
-		       	  model.addAttribute("TOTALFUND", totalFundState);
-		       	     model.addAttribute("GRANDTOTAL", grandTotalForState);
-		       	
-		       	  model.addAttribute("innovativeAcitivityListForState", innovativeAcitivityListForState);
-	       	         model.addAttribute("innovativeActivityDetailState", innovativeActivityDetailState);
-	                 model.addAttribute("innovativeActivityDetailsMopr", innovativeActivityDetailsMopr);
+			long grandTotalForState = innovativeAcitivityListForState.get(0).getAdditioinalRequirements()
+					+ totalFundState;
+			model.addAttribute("TOTALFUNDForMopr", totalFundMopr);
+			model.addAttribute("innovativeAcitivityListForMopr", innovativeAcitivityListForMopr);
+			model.addAttribute("TOTALFUND", totalFundState);
+			model.addAttribute("GRANDTOTAL", grandTotalForState);
+
+			model.addAttribute("innovativeAcitivityListForState", innovativeAcitivityListForState);
+			model.addAttribute("innovativeActivityDetailState", innovativeActivityDetailState);
+			model.addAttribute("innovativeActivityDetailsMopr", innovativeActivityDetailsMopr);
 	        
 	        return INNOVATIVE_ACTIVITY_CEC;
 		}
@@ -116,8 +119,6 @@ public class InnovativeActivityController {
       		flag= false;
       	}
 		model.addAttribute("Plan_Status", flag);
-		  model.addAttribute("STATE_CODE", userPreference.getStateCode());
-		
 		model.addAttribute("INNOVATIVE_ACTIVITY", innovativeActivity);
 		model.addAttribute("userTypeSwitch", userPreference.getUserType().charAt(0));
 		return INNOVATIVE_ACTIVITY ;
@@ -206,6 +207,24 @@ public class InnovativeActivityController {
 			}
 		}
 				innovativeActivityService.saveDetailsWithUsertype(innovativeActivity);
+				
+				
+				if(innovativeActivity.getDbFileName() != null && innovativeActivity.getDbFileName().length()>0 && innovativeActivity.getDbFileName().contains("@")) 
+				{
+					
+					String idArr[]=innovativeActivity.getDbFileName().split(",");
+					for(int i=0;i<idArr.length;i++) {
+						String detArr[]=idArr[i].split("@");
+						innovativeActivityService.delete(Integer.parseInt(detArr[0]));
+						
+						File deleteFile = new File(innovativeActivity.getPath() + "/" + "innovativeActivityFiles" + "/" +  detArr[0]);
+						if(deleteFile.exists()) {
+							deleteFile.delete();
+						}
+						
+					}
+					
+				}	
 				
 		/* model.addAttribute("innovativeAcitivityList",innovativeActivityService.findAllActivity(userPreference.getUserType().charAt(0)));
 		 model.addAttribute("INNOVATIVE_ACTIVITY",innovativeActivity);

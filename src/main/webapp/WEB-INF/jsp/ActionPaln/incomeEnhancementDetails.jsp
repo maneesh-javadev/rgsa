@@ -9,6 +9,9 @@
 <script
 	src="<%=request.getContextPath()%>/resources/bs/slimscroll/HorScroll.js"></script>
 <script type="text/javascript">
+var deleteFile =new Map();
+var delTrainingIdArr=[];
+var finalDetailArr=[];
 $(document).ready(function() {
 	
 	 $("#unFrzButtn").hide();
@@ -33,6 +36,7 @@ $(document).ready(function() {
 		 $(this).val(0);
 		 alert("Value should be less than 50000Rs.")
 	 }
+	 if($('#isFreeze').val() != undefined){
 	var myBoolean = document.getElementById("isFreeze").value;
 	if(myBoolean == "true"){
 		 $("input").prop('disabled', true);
@@ -51,6 +55,7 @@ $(document).ready(function() {
 		 $("#frzButtn").show();
 		 $("#unFrzButtn").hide();
 		 $("#clearButtn").prop('disabled', false);
+	 }
 	 }
 	
 	$("#mytable").on('input',$("#fundsName"), function () {
@@ -104,6 +109,7 @@ function showImage(path,name){
 	document.incomeEnhancement.action = "viewFileOfIncmEnhncmntActivity.html?<csrf:token uri='viewFileOfIncmEnhncmntActivity.html'/>";
 	document.incomeEnhancement.submit();
 	var myBoolean = document.getElementById("isFreeze").value;
+	
 	 if(myBoolean == "true"){
 		 $("input").prop('disabled', true);
 	 }
@@ -112,6 +118,24 @@ function showImage(path,name){
 		 $("select").prop('disabled', true);
 	 }
 }
+
+
+
+function saveSubmit(){
+	
+	 $.each( delTrainingIdArr, function( index, value ) {
+    	fname=deleteFile.get(value);
+    	finalDetailArr.push(value+"@"+fname);
+	});
+	 
+	document.getElementById("dbFileName").value = finalDetailArr.toString();
+	document.getElementById("path").value = '${incomeEnhancementDetails.fileLocation}';
+	
+	document.incomeEnhancement.method = "post";
+	document.incomeEnhancement.action = "incomeEnhancementAdd.html?<csrf:token uri='incomeEnhancementAdd.html'/>";
+	document.incomeEnhancement.submit();
+}
+
 	/* $(".dId").change(function(){ */
 		function callBlockList(index){
 	    var districtId = $("#districtId"+ index).val();
@@ -155,7 +179,7 @@ function addNewRow(){
 		tds+='<td><select required="required" class="form-control" name="incomeEnhancementDetails['+i+'].fundSourceCode"><option value="0">Select Scheme</option><c:forEach items="${schemeMasterList}" var="obj"><option value="${obj.schemeId}">${obj.schemeName}</option> </c:forEach></select></td>';
 		tds+='<td><select required="required" class="form-control dId" onchange="callBlockList('+i+');" id="districtId'+i+'" name="incomeEnhancementDetails['+i+'].districtCode"><option value="0"> Select District </option><c:forEach items="${districtList}" var="dlist"><option value="${dlist.districtCode}">${dlist.districtNameEnglish}</option></c:forEach>	</select></td>';
 		tds+='<td><select required="required" class="form-control bId" id="blockId'+i+'" name="incomeEnhancementDetails['+i+'].blockCode"><option value="-1"> Select Block </option></select></td>';
-		tds+='<td><input type="text" min="1" oninput="validity.valid||(value="");" onKeyPress="if(this.value.length==3) return false;" required="required" placeholder="Total GP\'s covered" name="incomeEnhancementDetails['+i+'].totalNoOfGpCovered" id="noOfGpCoveredId_'+i+'" class="form-control Align-Right numbers"/></td>';
+		tds+='<td><input type="text" min="1" oninput="validity.valid||(value="");" onKeyPress="if(this.value.length==3) return false;" required="required" placeholder="Total GP\'s covered" name="incomeEnhancementDetails['+i+'].totalNoOfGpCovered" id="noOfGpCoveredId_'+i+'"  onkeyup="calculateAspirationalGPs('+i+')" class="form-control Align-Right numbers"/></td>';
 		tds+='<td><input type="text" min="1" oninput="validity.valid||(value="");" onKeyPress="if(this.value.length==3) return false;" required="required" placeholder="Total Aspirational GP" name="incomeEnhancementDetails['+i+'].noOfAspirationalGp" id="aspirationalGpId_'+i+'" onkeyup="calculateAspirationalGPs('+i+')" class="form-control Align-Right numbers"/></td>';
 		tds+='<td><select required="required" class="form-control" id="yearOne_'+i+'" onchange="validateYear('+i+');"  name="incomeEnhancementDetails['+i+'].yearFrom"><option value=""> From Year</option><option value="2018">2018</option><option value="2019">2019</option><option value="2020">2020</option><option value="2021">2021</option><option value="2022">2022</option></select></td>';
 		tds+='<td><select required="required" class="form-control" id="yearTwo_'+i+'" onchange="validateYear('+i+');" name="incomeEnhancementDetails['+i+'].yearTo"><option value=""> To Year </option><option value="2018">2018</option><option value="2019">2019</option><option value="2020">2020</option><option value="2021">2021</option><option value="2022">2022</option></select></td>';
@@ -186,12 +210,38 @@ function toFreeze(){
 	document.incomeEnhancement.submit();
 }	
 function toDelete(idToDelete,path,name){
-	document.getElementById("idToDelete").value = idToDelete;
-	document.getElementById("path").value = path;
-	document.getElementById("dbFileName").value = name;
-	document.incomeEnhancement.method = "post";
-	document.incomeEnhancement.action = "deleteIncomeEnhancementDtls.html?<csrf:token uri='deleteIncomeEnhancementDtls.html'/>";
-	document.incomeEnhancement.submit();
+	
+
+	 if(!delTrainingIdArr.includes(idToDelete)){
+		 delTrainingIdArr.push(idToDelete);
+		 $("#delete"+idToDelete).addClass('glyphicon-repeat');
+		 $("#delete"+idToDelete).removeClass('glyphicon-trash');
+		
+		 //$("#modifyButtn"+idToDelete).addClass('not-active');
+		 if(!deleteFile.has(idToDelete)){
+			 deleteFile.set(idToDelete,name);
+		}
+	  }else{
+		  var index = delTrainingIdArr.indexOf(idToDelete);
+		 	if (index > -1) {
+		 		delTrainingIdArr.splice(index, 1);
+		   }
+		 	
+		 	 if(deleteFile.has(idToDelete)){
+				 deleteFile.delete(idToDelete);
+			}
+		 	 
+		 	 $("#delete"+idToDelete).removeClass('glyphicon-repeat');
+			 $("#delete"+idToDelete).addClass('glyphicon-trash');
+			// $("#modifyButtn"+idToDelete).removeClass('not-active');
+	  }
+	
+	//document.getElementById("idToDelete").value = idToDelete;
+	//document.getElementById("path").value = path;
+	//document.getElementById("dbFileName").value = name;
+	//document.incomeEnhancement.method = "post";
+	/* document.incomeEnhancement.action = "deleteIncomeEnhancementDtls.html?<csrf:token uri='deleteIncomeEnhancementDtls.html'/>";
+	document.incomeEnhancement.submit(); */
 }
 
 function validateYear(index){
@@ -235,6 +285,21 @@ function regexValidation(){
 		    }
 		});
 }	
+
+/* function fetchUrl(vid,path,name){
+	
+	document.getElementById("path").value = path;
+	document.getElementById("dbFileName").value = name;
+	document.incomeEnhancement.method = "post";
+	var url="viewFileOfIncmEnhncmntActivity.html?<csrf:token uri='viewFileOfIncmEnhncmntActivity.html'/>&path="+path+"&dbFileName="+name;
+	
+	//document.incomeEnhancement.action = "viewFileOfIncmEnhncmntActivity.html?<csrf:token uri='viewFileOfIncmEnhncmntActivity.html'/>";
+	//document.incomeEnhancement.submit();
+	//var url="viewFileOfIncmEnhncmntActivity.html?path="+path+"&dbFileName="+name+"<csrf:token uri='viewFileOfIncmEnhncmntActivity.html'/>"
+    $("#"+vid).attr("href",url);
+} */
+
+
 </script>
 <style type="text/css">
 /* By Abhishek Kumar Singh dated 03-01-18 */
@@ -369,16 +434,16 @@ select option:first-child{
 											<th rowspan="2">Upload File(PDF)</th>
 											<th rowspan="2">Plan approved by DPC</th>
 											<c:if
-												test="${fn:containsIgnoreCase(dbActivitiesList.userType,'S')}">
+												test="${USER_TYPE eq 'S'}">
 												<th rowspan="2">Delete</th>
 											</c:if>
 											<c:if
-												test="${fn:containsIgnoreCase(dbActivitiesList.userType,'M')}">
+												test="${USER_TYPE eq 'M'}">
 												<th rowspan="2">Is Approved</th>
 												<th rowspan="2">Remarks</th>
 											</c:if>
 											<c:if
-												test="${fn:containsIgnoreCase(dbActivitiesList.userType,'C')}">
+												test="${USER_TYPE eq 'C'}">
 												<th rowspan="2">Is Approved</th>
 												<th rowspan="2">Remarks</th>
 											</c:if>
@@ -397,7 +462,7 @@ select option:first-child{
 													name="incomeEnhancementDetails[0].activtyName" placeholder="Activity Name"
 													id="activityNameId" required="required"
 													onkeyup="this.value=this.value.replace(/[^a-zA-Z ]/,'');"
-													maxlength="200" type="text" class="form-control" /></td>
+													maxlength="200" type="text" class="form-control " /></td>
 												<!-- <td>
                                        		<select required="required" class="form-control" name="incomeEnhancementDetails[0].fundSourceType">
 				                            	<option value=""> Select </option>
@@ -429,7 +494,7 @@ select option:first-child{
 												<td><input type="text"
 													oninput="validity.valid||(value='');" placeholder="Total GP's covered"
 													onKeyPress="if(this.value.length==3) return false;"
-													onkeyup="this.value=this.value.replace(/[^0-9]/g,'');"
+													onkeyup="this.value=this.value.replace(/[^0-9]/g,'');calculateAspirationalGPs(0)"
 													min="1" required="required"
 													name="incomeEnhancementDetails[0].totalNoOfGpCovered"
 													id="noOfGpCoveredId_0" class="form-control Align-Right" /></td>
@@ -488,7 +553,7 @@ select option:first-child{
 												<%-- <td><input type="button" value="Delete" class="btn" onclick='toDelete("${incomeEnhancementDetails.id}","${incomeEnhancementDetails.fileLocation}","${incomeEnhancementDetails.fileName}");'/></td> --%>
 												<td><a id="deleteButtn" class="not-active"
 													href='javascript:toDelete("${incomeEnhancementDetails.id}","${incomeEnhancementDetails.fileLocation}","${incomeEnhancementDetails.fileName}");'>
-														<span class="glyphicon glyphicon-trash"></span>
+														<span id="delete${incomeEnhancementDetails.id}" class="glyphicon glyphicon-trash"></span>
 												</a></td>
 											</tr>
 											<input type="hidden" name="setBlockId" />
@@ -565,7 +630,7 @@ select option:first-child{
 													<td><input type="text"
 														oninput="validity.valid||(value='');" min="1"
 														onKeyPress="if(this.value.length==3) return false;"
-														onkeyup="this.value=this.value.replace(/[^0-9]/g,'');"
+														onkeyup="this.value=this.value.replace(/[^0-9]/g,'');calculateAspirationalGPs(${count.index})"
 														required="required" value="${dblist.totalNoOfGpCovered}"
 														name="incomeEnhancementDetails[${count.index}].totalNoOfGpCovered"
 														id="noOfGpCoveredId_${count.index}"
@@ -605,7 +670,7 @@ select option:first-child{
 														oninput="validity.valid||(value='');"
 														onKeyPress="if(this.value.length==7) return false;"
 														min="1" value="${dblist.totalCostOfProject}"
-														onkeyup="this.value=this.value.replace(/[^0-9]/g,'');"
+														onkeyup="this.value=this.value.replace(/[^0-9]/g,'');calculateAspirationalGPs(0)"
 														name="incomeEnhancementDetails[${count.index}].totalCostOfProject"
 														required="required" class="form-control Align-Right" /></td>
 													<c:set var="totalFundToCalc"
@@ -613,7 +678,7 @@ select option:first-child{
 													<td><input type="text"
 														oninput="validity.valid||(value='');"
 														onKeyPress="if(this.value.length==5) return false;"
-														onkeyup="this.value=this.value.replace(/[^0-9]/g,'');"
+														onkeyup="this.value=this.value.replace(/[^0-9]/g,'');calculateAspirationalGPs(0)"
 														min="1" max="50000" value="${dblist.fundsRequired}"
 														id="fundsName"
 														name="incomeEnhancementDetails[${count.index}].fundsRequired"
@@ -633,7 +698,10 @@ select option:first-child{
 														href='javascript:showImage("${dblist.fileLocation}","${dblist.fileName}");'
 														class="btn btn-info btn-sm"> <span
 															class="glyphicon glyphicon-download-alt"></span> Download
-													</a></td>
+													</a> 
+													
+												<%-- 	<a href="#"  method="post" id="pdfDownload_${count.index}" onclick="fetchUrl(this.id,'${dblist.fileLocation}','${dblist.fileName}');"><span class="glyphicon glyphicon-download-alt"></span> </a>
+												 --%>	</td>
 													<td><c:choose>
 															<c:when test="${dblist.planApprovedByDpc}">
 																<label class="container"> <input type="checkbox"
@@ -651,17 +719,17 @@ select option:first-child{
 															</c:otherwise>
 														</c:choose></td>
 													<c:if
-														test="${fn:containsIgnoreCase(dbActivitiesList.userType,'S')}">
+														test="${USER_TYPE eq 'S'}">
 														<td><%-- <input type="button" value="Delete"
 															class="btn bg-red waves-effect"
 															onclick='toDelete("${dblist.incomeEnhancementDetailsId}","${dblist.fileLocation}","${dblist.fileName}");' /> --%>
 															<a 
 															href='javascript:toDelete("${dblist.incomeEnhancementDetailsId}","${dblist.fileLocation}","${dblist.fileName}");'>
-																<span class="glyphicon glyphicon-trash"></span>
+																<span id="delete${dblist.incomeEnhancementDetailsId}" class="glyphicon glyphicon-trash"></span>
 														</a></td>
 													</c:if>
 													<c:if
-														test="${fn:containsIgnoreCase(dbActivitiesList.userType,'M')}">
+														test="${USER_TYPE eq 'M'}">
 														<td><c:choose>
 																<c:when test="${dblist.isApproved}">
 																	<input type="checkbox"
@@ -682,7 +750,7 @@ select option:first-child{
 															maxlength="1000" /></td>
 													</c:if>
 													<c:if
-														test="${fn:containsIgnoreCase(dbActivitiesList.userType,'C')}">
+														test="${USER_TYPE eq 'C'}">
 														<td><c:choose>
 																<c:when test="${dblist.isApproved}">
 																	<input type="checkbox"
@@ -725,7 +793,7 @@ select option:first-child{
 							<br/>
 							<br/>
 							<c:if
-								test="${fn:containsIgnoreCase(dbActivitiesList.userType,'S')}">
+								test="${USER_TYPE eq 'S'}">
 								<button type="button" id="addNewRowBtn" class="btn bg-green"
 									onclick="addNewRow()">Add New Row</button>
 							</c:if>
@@ -741,15 +809,26 @@ select option:first-child{
 								</tr>
 								<tr>
 									<td>Additional Requirements</td>
+									<c:choose>
+									<c:when test="${not empty dbActivitiesList}">
 									<c:set var="addtnlReqrmnt"
 										value="${addtnlReqrmnt + dbActivitiesList.additionalRequirement}"></c:set>
-									<td><input type="text"
+									</c:when>
+									<c:otherwise>
+									<c:set var="addtnlReqrmnt"
+										value="0"></c:set>
+									</c:otherwise>
+									</c:choose>
+									<td>
+									<input type="text"
 										oninput="validity.valid||(value='');"
 										onKeyPress="if(this.value.length==7) return false;"
 										onkeyup="this.value=this.value.replace(/[^0-9]/g,'');"
-										value="${dbActivitiesList.additionalRequirement}" min="1"
+										value="${addtnlReqrmnt}" min="1"
 										name="additionalRequirement" id="additioinalRequirements"
-										Class="form-control Align-Right exclud" required="required"></td>
+										Class="form-control Align-Right exclud" required="required">
+									
+									</td>
 								</tr>
 								<tr>
 									<td>Total Proposed Funds</td>
@@ -758,28 +837,58 @@ select option:first-child{
 										Class="form-control Align-Right" readonly="readonly"></td>
 								</tr>
 							</table>
-							<input type="hidden" name="incomeEnhancementId"
-								value="${dbActivitiesList.incomeEnhancementId}" />
-							<input type="hidden" name="isFreeze" id="isFreeze"
-								value="${dbActivitiesList.isFreeze}" />
-							<input type="hidden" name="userType" id="userTypeId"
-								value="${dbActivitiesList.userType}">
+							<c:if test="${not empty dbActivitiesList}">
+								<input type="hidden" name="incomeEnhancementId"
+									value="${dbActivitiesList.incomeEnhancementId}" />
+								<input type="hidden" name="isFreeze" id="isFreeze"
+									value="${dbActivitiesList.isFreeze}" />
+								<input type="hidden" name="userType" id="userTypeId"
+									value="${dbActivitiesList.userType}">
+							</c:if>
+							
 							<input type="hidden" name="idToDelete" id="idToDelete">
 							<input type="hidden" name="path" id="path">
 							<input type="hidden" name="dbFileName" id="dbFileName">
 							<div class="form-group text-right">
-								 <c:if test="${Plan_Status eq true}"> 
-									<button type="submit" id="saveButtn"
-										onclick="$('input,select').prop('disabled', false);"
-										class="btn bg-green waves-effect">SAVE</button>
-									<button type="button" id="frzButtn" onclick="toFreeze();"
-										class="btn bg-green waves-effect">FREEZE</button>
-									<button type="button" id="unFrzButtn" onclick="toFreeze();"
-										class="btn bg-green waves-effect">UNFREEZE</button>
-									<button type="button" id="clearButtn"
-										class="btn bg-light-blue waves-effect reset">CLEAR</button>
+							<c:if test="${sessionScope['scopedTarget.userPreference'].userType eq 'M'}">
+                        <div class="col-md-4  text-left"  style="margin-bottom: 5px">
+								&nbsp;&nbsp;<button type="button"
+									onclick="onClose('viewPlanDetails.html?<csrf:token uri='viewPlanDetails.html'/>&stateCode=${STATE_CODE}')"
+									class="btn bg-orange waves-effect">
+									<i class="fa fa-arrow-left" aria-hidden="true"></i>
+									<spring:message code="Label.BACK" htmlEscape="true" />
+								</button><br>
+							</div>
+							</c:if>
+							<c:choose>
+							
+							<c:when test="${not empty dbActivitiesList}">
+										<c:if test="${Plan_Status eq true}">
+											<button type="button" id="saveButtn"  
+												onclick="$('input,select').prop('disabled', false);saveSubmit();"
+												class="btn bg-green waves-effect">SAVE</button>
+											<c:if test="${dbActivitiesList.isFreeze != undefined}">
+												<button type="button" id="frzButtn" onclick="toFreeze();"
+													class="btn bg-green waves-effect">FREEZE</button>
+											</c:if>
+											<button type="button" id="unFrzButtn" onclick="toFreeze();"
+												class="btn bg-green waves-effect">UNFREEZE</button>
+											<button type="button" id="clearButtn"
+												class="btn bg-light-blue waves-effect reset">CLEAR</button>
 										</c:if>
-								
+
+									</c:when>
+							<c:otherwise>
+										<button type="submit" id="saveButtn"
+											onclick="$('input,select').prop('disabled', false);"
+											class="btn bg-green waves-effect">SAVE</button>
+										<button type="button" id="frzButtn" onclick="toFreeze();"
+											class="btn bg-green waves-effect">FREEZE</button>
+										<button type="button" id="clearButtn"
+											class="btn bg-light-blue waves-effect reset">CLEAR</button>
+									</c:otherwise>
+							</c:choose>
+								 
 								<button type="button"
 									onclick="onClose('home.html?<csrf:token uri='home.html'/>')"
 									class="btn bg-orange waves-effect">CLOSE</button>

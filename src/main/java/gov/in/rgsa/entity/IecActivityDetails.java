@@ -25,7 +25,7 @@ import javax.persistence.Table;
 		
 		@Id
 		@GeneratedValue(strategy=GenerationType.IDENTITY)
-		@Column(name="id_main")
+		@Column(name="id_main",nullable=false)
 		private Integer idMain;
 		
 		@JoinColumn(name="id",referencedColumnName="id")

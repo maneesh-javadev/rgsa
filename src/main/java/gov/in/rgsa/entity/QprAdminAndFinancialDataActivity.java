@@ -11,6 +11,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
@@ -23,7 +24,11 @@ import org.hibernate.annotations.UpdateTimestamp;
 
 @Entity
 @Table(name="qpr_afp" , schema= "rgsa")
-@NamedQuery(name="QPR_ADMIN_FINANCIALDATA_ACTIVITY_REPORT_BASED_ON_QUARTER", query="Select QAF from QprAdminAndFinancialDataActivity QAF where  QAF.adminAndFinancialDataActivity.stateCode=:stateCode AND  QAF.adminAndFinancialDataActivity.yearId=:yearId AND  QAF.adminAndFinancialDataActivity.userType=:userType AND QAF.quarterDuration.qtrId=:quarterId")
+@NamedQueries({
+	@NamedQuery(name="FETCH_ADMIN_FIN_CELL_QPR_ACT_BY_QTR_ID_AND_ACT_ID",query="from QprAdminAndFinancialDataActivity where adminAndFinancialDataActivity.adminFinancialDataActivityId=:adminFinancialDataActivityId and quarterDuration.qtrId!=:quarterId"),
+	@NamedQuery(name="QPR_ADMIN_FINANCIALDATA_ACTIVITY_REPORT_BASED_ON_QUARTER", query="from QprAdminAndFinancialDataActivity where adminAndFinancialDataActivity.adminFinancialDataActivityId=:activityId and quarterDuration.qtrId=:quarterId")
+})
+
 public class QprAdminAndFinancialDataActivity {
 
 	@Id

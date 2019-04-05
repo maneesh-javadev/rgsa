@@ -17,8 +17,11 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name="training_categories",schema="rgsa")
-@NamedQueries({@NamedQuery(name="FETCH_ALL_TRAINING_CATEGORIES",query="From TrainingCategories where isActive=true and finYear=:finYear ORDER BY trainingCategoryName"),
-@NamedQuery(name="Fetch_Training_Categories",query="select p from TrainingCategories p")})
+@NamedQueries({
+@NamedQuery(name="FETCH_ALL_TRAINING_CATEGORIES",query="From TrainingCategories where isActive=true and finYear=:finYear ORDER BY trainingCategoryName"),
+@NamedQuery(name="Fetch_Training_Categories",query="select p from TrainingCategories p"),
+@NamedQuery(name="Fetch_Training_Categories_BY_Id",query="from TrainingCategories where trainingCategoryId=:trainingCategoryId")
+})
 public class TrainingCategories implements Serializable{
 	
 	/**

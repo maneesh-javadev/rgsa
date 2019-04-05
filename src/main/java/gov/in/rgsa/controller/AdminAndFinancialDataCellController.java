@@ -81,13 +81,19 @@ public class AdminAndFinancialDataCellController {
 		model.addAttribute("STATE_CODE", userPreference.getStateCode());
 		if(userPreference.getUserType().equalsIgnoreCase("C"))
 		{
+			List<AdminFinancialDataCellActivityDetails> activityDetailsForState=new ArrayList<>();
+			List<AdminFinancialDataCellActivityDetails> activityDetailsForMopr=new ArrayList<>();
 			List<AdminAndFinancialDataActivity> andFinancialDataActivityForState = adminAndFinancialDataCellService.fetchAdminAndFinancialActivity("S");
-			 model.addAttribute("activityForState", andFinancialDataActivityForState.get(0));
-			 List<AdminFinancialDataCellActivityDetails> activityDetailsForState=  andFinancialDataActivityForState.get(0).getAdminFinancialDataCellActivityDetails();
+			if(CollectionUtils.isNotEmpty(andFinancialDataActivityForState)){
+				model.addAttribute("activityForState", andFinancialDataActivityForState.get(0));
+				activityDetailsForState=  andFinancialDataActivityForState.get(0).getAdminFinancialDataCellActivityDetails();
+			}
 			model.addAttribute("activityDetailsForState", activityDetailsForState);
 			List<AdminAndFinancialDataActivity> andFinancialDataActivityForMopr = adminAndFinancialDataCellService.fetchAdminAndFinancialActivity("M");
-			 List<AdminFinancialDataCellActivityDetails> activityDetailsForMopr=  andFinancialDataActivityForMopr.get(0).getAdminFinancialDataCellActivityDetails();
-			 model.addAttribute("activityDetailsForMopr", activityDetailsForMopr);
+			if(CollectionUtils.isNotEmpty(andFinancialDataActivityForMopr)){
+				activityDetailsForMopr=  andFinancialDataActivityForMopr.get(0).getAdminFinancialDataCellActivityDetails();
+			}
+			model.addAttribute("activityDetailsForMopr", activityDetailsForMopr);
 			long totalUnitCost =0;
 			long totalOfFund =0;
 			for(int i= 0 ; i<activityDetailsForState.size(); i++)

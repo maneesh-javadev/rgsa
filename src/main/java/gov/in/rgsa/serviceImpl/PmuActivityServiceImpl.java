@@ -15,6 +15,8 @@ import gov.in.rgsa.entity.PmuActivity;
 import gov.in.rgsa.entity.PmuActivityDetails;
 import gov.in.rgsa.entity.PmuActivityType;
 import gov.in.rgsa.entity.PmuDomain;
+import gov.in.rgsa.entity.PmuProgress;
+import gov.in.rgsa.entity.PmuProgressDetails;
 import gov.in.rgsa.entity.PmuWiseProposedDomainExperts;
 import gov.in.rgsa.service.FacadeService;
 import gov.in.rgsa.service.PmuActivityService;
@@ -188,7 +190,7 @@ public class PmuActivityServiceImpl implements PmuActivityService {
 		params.put("pmuActivityId", pmuActivity.getPmuActivityId());
 		commonRepository.excuteUpdate("PMU_FREEZ_UNFREEZE", params);
 		if(!pmuActivity.getIsFreeze()) {
-			/*facadeService.populateStateFunds("12");*/
+			facadeService.populateStateFunds("12");
 	}
 		
 	}
@@ -198,7 +200,7 @@ public class PmuActivityServiceImpl implements PmuActivityService {
 		Map<String, Object> params=new HashMap<>();
 		params.put("stateCode", userPreference.getStateCode());
 		params.put("yearId", userPreference.getFinYearId());
-		params.put("userType",userPreference.getUserType().charAt(0));
+		params.put("userType",'C');
 		return commonRepository.findAll("FETCH_PMU_APPROVED_ACTIVITY", params);
 	}
 	@Override
@@ -206,5 +208,22 @@ public class PmuActivityServiceImpl implements PmuActivityService {
 		Map<String, Object> params=new HashMap<>();
 		params.put("pmuActivityId", pmuActivityId);
 		return commonRepository.findAll("FETCH_PMU_APPROVED_ACTIVITY_DETAILS", params);
+	}
+
+	@Override
+	public List<PmuProgressDetails> getPmuProgressActBasedOnActIdAndQtrId(Integer pmuActivityId, int quarterId) {
+		Map<String, Object> params = new HashMap();
+		params.put("pmuActivityId", pmuActivityId);
+		params.put("quarterId", quarterId);	
+		List<PmuProgress> pmuProgress= commonRepository.findAll("FETCH_PMU_ACT_QTR_ID_AND_ACT_ID", params);
+		List<PmuProgressDetails> pmuProgressDetails=new ArrayList<>();
+		if(CollectionUtils.isNotEmpty(pmuProgress)){
+			for (PmuProgress pmu_Progress : pmuProgress) {
+				pmuProgressDetails.addAll(pmu_Progress.getPmuProgressDetails());
+			}
+			return pmuProgressDetails;
+		}else{
+			return null;
+		}
 	}
 }

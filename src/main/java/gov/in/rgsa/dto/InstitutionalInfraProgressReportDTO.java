@@ -6,13 +6,12 @@ import javax.persistence.Id;
 import javax.persistence.NamedNativeQuery;
 
 @Entity
-@NamedNativeQuery(name="GET_INITIAL_DATA_FOR_INST_INFRA",query="select district_code,district_name_english,t.institutional_infra_activity_id,t.institutional_infra_activity_details_id, "
-		+ "t.fund_proposed from lgd.get_district_list_fn(:stateCode) d "
-		+ "inner join (SELECT ia.institutional_infra_activity_id,iad.institutional_infra_activity_details_id, "
-		+ "iad.fund_proposed,iad.institutional_infra_location"
-		+ " from rgsa.institutional_infra_activity ia inner join rgsa.institutional_infra_activity_details  iad "
-		+ "on (ia.institutional_infra_activity_id=iad.institutional_infra_activity_id and institutional_activity_type_id=:trainingInstituteTypeId)) "
-		+ "t on (d.district_code = t.institutional_infra_location)",resultClass=InstitutionalInfraProgressReportDTO.class)
+@NamedNativeQuery(name="GET_INITIAL_DATA_FOR_INST_INFRA",query=" select d.district_code,d.district_name_english,iad.institutional_infra_activity_id,iad.institutional_infra_activity_details_id,"
+		+ " iad.fund_proposed from  rgsa.institutional_infra_activity ia left join  rgsa.institutional_infra_activity_details iad"
+		+ " on ia.institutional_infra_activity_id=iad.institutional_infra_activity_id inner join lgd.get_district_list_fn(ia.state_code) d"
+		+ " on iad.institutional_infra_location=d.district_code"
+		+ " where ia.state_code=:stateCode and ia.year_id=:yearId and user_type=:userType and institutional_activity_type_id=:trainingInstituteTypeId",resultClass=InstitutionalInfraProgressReportDTO.class)
+
 public class InstitutionalInfraProgressReportDTO {
 	
 	@Id

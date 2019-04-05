@@ -1,8 +1,8 @@
 <html data-ng-app="trainingActivityModuleCEC">
 <head>
 <%@include file="../taglib/taglib.jsp"%>
-<script type="text/javascript"
-	src="${pageContext.request.contextPath}/resources/plugins/angular/angular.min.js"></script>
+
+<script type="text/javascript"	src="${pageContext.request.contextPath}/resources/plugins/angular/angular.min.js"></script>
 <script type="text/javascript"
 	src="${pageContext.request.contextPath}/resources/js/trainingActivityCEC/trainingActivityCecController.js"></script>
 <script type="text/javascript"
@@ -14,6 +14,16 @@
 	href="${pageContext.request.contextPath}/resources/css/angular/toastr.css">
 <script type="text/javascript"
 	src="${pageContext.request.contextPath}/resources/plugins/angular/customValidationDirective.js"></script>
+	<script type="text/javascript">
+	function isNumber(evt) {
+	    evt = (evt) ? evt : window.event;
+	    var charCode = (evt.which) ? evt.which : evt.keyCode;
+	    if (charCode > 31 && (charCode < 48 || charCode > 57)) {
+	        return false;
+	    }
+	    return true;
+	}
+	</script>
 </head>
 <section class="content" data-ng-controller="trainingActivityCEC">
 	<div class="container-fluid">
@@ -102,12 +112,35 @@
 										<tbody>
 											<tr data-ng-repeat="cbMaster in cbmasters">
 												<td>{{$index+1}}</td>
-												<td>{{cbMaster.cbName}}</td>
-												<td>
-													<div align="center">{{stateData.capacityBuildingActivityDetails[$index].noOfDays}}</div>
+												<td align="center"
+														data-ng-model="cecData.capacityBuildingActivityDetails[$index].cbMaster" 
+														data-ng-init="cecData.capacityBuildingActivityDetails[$index].cbMaster=stateData.capacityBuildingActivityDetails[$index].cbMaster">
+														<strong>	{{cbMaster.cbName}}</strong>
+													
 												</td>
 												<td>
-													<div align="center">{{stateData.capacityBuildingActivityDetails[$index].noOfUnits}}</div>
+													<div align="center"
+														data-ng-model="cecData.capacityBuildingActivityDetails[$index].noOfDays"
+														data-ng-init="cecData.capacityBuildingActivityDetails[$index].noOfDays=stateData.capacityBuildingActivityDetails[$index].noOfDays">
+														<strong>{{stateData.capacityBuildingActivityDetails[$index].noOfDays}}</strong>
+													</div>
+													
+												</td>
+												<td>
+													
+													<div align="center"
+														data-ng-style="{'color':(stateData.capacityBuildingActivityDetails[$index].noOfUnits > cecData.capacityBuildingActivityDetails[$index].noOfUnits) ? 'red' : '#00cc00'}">
+														<strong> 
+															{{stateData.capacityBuildingActivityDetails[$index].noOfUnits}}
+														</strong>
+													</div>
+													<input type="text" class="form-control"
+													data-ng-change="calculateNewFund($index)" 
+													data-ng-disabled="isFreezeOrUnfreeze"
+													onkeypress="return isNumber(event)"
+													data-ng-model="cecData.capacityBuildingActivityDetails[$index].noOfUnits"
+													maxlength="7"
+													style="text-align: right; border: none; border-color: transparent;" />
 												</td>
 												<td>
 													<div align="center"
@@ -116,10 +149,14 @@
 															{{stateData.capacityBuildingActivityDetails[$index].unitCost}}
 														</strong>
 													</div> <input type="text" class="form-control"
-													data-ng-change="calculateNewFund($index)" number-only="" data-ng-disabled="isFreezeOrUnfreeze"
+													data-ng-change="calculateNewFund($index)" 
+													data-ng-disabled="isFreezeOrUnfreeze"
+													onkeypress="return isNumber(event)"
 													data-ng-model="cecData.capacityBuildingActivityDetails[$index].unitCost"
-													placeholder=""
+													maxlength="7"
 													style="text-align: right; border: none; border-color: transparent;" />
+													
+												
 												</td>
 												<td>
 													<div align="center"
@@ -131,19 +168,36 @@
 													<input type="text" class="form-control"
 													data-ng-disabled="true"
 													data-ng-model="cecData.capacityBuildingActivityDetails[$index].funds"
-													placeholder="Upper Ceiling Limit  Rs. 5 Lakh"
 													style="text-align: right; border: none; border-color: transparent;" />
-												</td>
+													
+														
+																
+													
+													</td>
 												<td>
-													<div align="center">{{stateData.capacityBuildingActivityDetails[$index].collabInstitute}}</div>
-												</td>
+													<div align="center"
+														data-ng-model="cecData.capacityBuildingActivityDetails[$index].collabInstitute"
+														data-ng-init="cecData.capacityBuildingActivityDetails[$index].collabInstitute=stateData.capacityBuildingActivityDetails[$index].collabInstitute">
+														<strong>{{stateData.capacityBuildingActivityDetails[$index].collabInstitute}}</strong>
+													</div>
+													</td>
 												<td>
-													<div align="center">{{stateData.capacityBuildingActivityDetails[$index].remarks}}</div>
+													<div align="center"
+														data-ng-model="cecData.capacityBuildingActivityDetails[$index].remarks"
+														data-ng-init="cecData.capacityBuildingActivityDetails[$index].remarks=stateData.capacityBuildingActivityDetails[$index].remarks">
+														<strong>{{stateData.capacityBuildingActivityDetails[$index].remarks}}</strong>
+													</div>
+													
 												</td>
 											</tr>
 											<tr>
 												<th colspan="5" align="center">Total Funds</th>
-												<td><div align="center"><i style="font-size: 15px" class="fa">&#xf156;</i>  {{stateTotalFund}}</div></td>
+												<td><div align="center" data-ng-style="{'color':(stateFundTotalInCEC > stateTotalFund) ? 'red' : '#00cc00'}"><i style="font-size: 15px" class="fa">&#xf156;</i>{{stateFundTotalInCEC}}</div>
+												<input type="text" class="form-control"
+													data-ng-model="stateTotalFund" 
+													readonly="readonly"
+													style="text-align: right; border: none; border-color: transparent;" />
+												</td>
 												<td></td>
 												<td></td>
 												<td></td>
@@ -161,6 +215,7 @@
 													<input type="text" class="form-control"
 													data-ng-model="cecData.additionalRequirement" data-ng-change="calculateAdditionalRequirment()"
 													placeholder=""
+													data-ng-disabled="isFreezeOrUnfreeze"
 													style="text-align: right; border: none; border-color: transparent;" />
 												</td>
 												<td></td>
@@ -169,7 +224,12 @@
 											</tr>
 											<tr>
 												<th colspan="5" align="center">Total Proposed Fund</th>
-												<td><div align="center"><i style="font-size: 15px" class="fa">&#xf156;</i>  {{stateGrandTotal}}</div></td>
+												<td><div align="center" data-ng-style="{'color':(stateGrandTotalInCEC > stateGrandTotal) ? 'red' : '#00cc00'}"><i style="font-size: 15px" class="fa">&#xf156;</i> {{stateGrandTotalInCEC}}</div>
+												<input type="text" class="form-control"
+													data-ng-model="stateGrandTotal" 
+													readonly="readonly"
+													style="text-align: right; border: none; border-color: transparent;" />
+												</td>
 												<td></td>
 												<td></td>
 												<td></td>
@@ -177,19 +237,33 @@
 										</tbody>
 									</table>
 								</div>
-								<div class="form-group text-right ex1">
-									<button ng-click="saveTrainingActivityCecDetails()"
+								<div class="row clearfix">
+								<div class="col-md-4  text-left">
+										&nbsp;&nbsp;
+										<button type="button"
+											onclick="onClose('viewPlanDetails.html?<csrf:token uri='viewPlanDetails.html'/>&stateCode=${STATE_CODE}')"
+											class="btn bg-orange waves-effect">
+											<i class="fa fa-arrow-left" aria-hidden="true"></i>
+											<spring:message code="Label.BACK" htmlEscape="true" />
+										</button>
+										<br>
+									</div>
+								<div class="col-md-8 text-right ex1">
+									<button ng-click="saveTrainingActivityCecDetails()" data-ng-disabled="isFreezeOrUnfreeze" 
 										type="button" class="btn bg-green waves-effect">
 										<spring:message code="Label.SAVE" htmlEscape="true" />
 									</button>
 									<button
 										data-ng-click="freezeUnfreezeTrainingActivityCecDetails($event)"
 										data-legend="{{status}}"
-										type="button" class="btn bg-green waves-effect" value="">
+										type="button"
+										 class="btn bg-green waves-effect" 
+										 id="btnfreezeUnfreeze"
+										 value="">
 										<spring:message code="Freeze" htmlEscape="true" />
 									</button>
 									<button type="button" data-ng-click="onClear()"
-										class="btn bg-light-blue waves-effect">
+										class="btn bg-light-blue waves-effect" data-ng-disabled="isFreezeOrUnfreeze" > 
 										<spring:message code="Label.CLEAR" htmlEscape="true" />
 									</button>
 									<button type="button"
@@ -197,6 +271,7 @@
 										class="btn bg-orange waves-effect">
 										<spring:message code="Label.CLOSE" htmlEscape="true" />
 									</button>
+								</div>
 								</div>
 							</div>
 							<div role="tabpanel" class="container tab-pane" id="MOPR"
@@ -305,6 +380,26 @@
 											</tr>
 										</tbody>
 									</table>
+								</div>	
+								<div class="row clearfix">
+								<div class="col-md-4  text-left">
+										&nbsp;&nbsp;
+										<button type="button"
+											onclick="onClose('viewPlanDetails.html?<csrf:token uri='viewPlanDetails.html'/>&stateCode=${STATE_CODE}')"
+											class="btn bg-orange waves-effect">
+											<i class="fa fa-arrow-left" aria-hidden="true"></i>
+											<spring:message code="Label.BACK" htmlEscape="true" />
+										</button>
+										<br>
+									</div>
+									<div class="col-md-8 text-right ex1">
+										<button type="button"
+											onclick="onClose('home.html?<csrf:token uri='home.html'/>')"
+											class="btn bg-orange waves-effect">
+											<spring:message code="Label.CLOSE" htmlEscape="true" />
+										</button>
+									</div>
+									
 								</div>
 							</div>
 						</div>

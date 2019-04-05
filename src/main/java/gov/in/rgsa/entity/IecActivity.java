@@ -80,7 +80,8 @@ public class IecActivity implements Serializable {
 	@Column(name="last_updated_on")
 	@UpdateTimestamp
 	private Timestamp lastUpdatedOn;
-
+	
+	
 	public Integer getId() {
 		return id;
 	}
@@ -192,4 +193,6 @@ public class IecActivity implements Serializable {
 	}
 
 
+
+	
 }

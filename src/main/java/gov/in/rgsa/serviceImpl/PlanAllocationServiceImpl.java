@@ -1,29 +1,27 @@
 package gov.in.rgsa.serviceImpl;
 
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import javax.persistence.EntityManager;
-import javax.persistence.EntityTransaction;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
-import org.springframework.transaction.TransactionStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.PlatformTransactionManager;
-import org.springframework.transaction.TransactionDefinition;
-import org.springframework.transaction.support.DefaultTransactionDefinition;
 
 import gov.in.rgsa.dao.CommonRepository;
-import gov.in.rgsa.entity.CapacityBuildingActivityGPs;
 import gov.in.rgsa.entity.Plan;
 import gov.in.rgsa.entity.PlanComponents;
 import gov.in.rgsa.entity.ReleaseIntallment;
+import gov.in.rgsa.entity.SanctionOrderCompomentAmount;
 import gov.in.rgsa.entity.State;
 import gov.in.rgsa.entity.StateAllocation;
+import gov.in.rgsa.model.Response;
 import gov.in.rgsa.model.StateAllocationModal;
 import gov.in.rgsa.service.ActionPlanService;
 import gov.in.rgsa.service.MOPRService;
@@ -112,9 +110,19 @@ public class PlanAllocationServiceImpl implements PlanAllocationService{
 				stateAllocationModal.setStatus(stateAllocationList.get(0).getStatus());
 			}
 			
+			
+			 List<SanctionOrderCompomentAmount>  sanctionOrderCompomentAmountlist=moprService.fetchAllSanctionOrderCompomentAmount(plan.getPlanPK().getPlanCode());
+				if(sanctionOrderCompomentAmountlist!=null && !sanctionOrderCompomentAmountlist.isEmpty()){
+					double totalAmount=0;
+					for(SanctionOrderCompomentAmount obj:sanctionOrderCompomentAmountlist) {
+						totalAmount=totalAmount+obj.getComponentAmount();	
+					}
+					stateAllocationModal.setTotalAmount(totalAmount); 
+				}
+			
 			if(releaseIntallmentList!=null && !releaseIntallmentList.isEmpty()){
 				ReleaseIntallment releaseIntallment=releaseIntallmentList.get(0);
-				stateAllocationModal.setTotalAmount(releaseIntallment.getStatusCentralShare()); 
+				
 				stateAllocationModal.setInstallmentNo(releaseIntallment.getInstallmentNo());
 				stateAllocationModal.setPlanCode(plan.getPlanPK().getPlanCode());
 				stateAllocationModal.setSanctionOrderExist(Boolean.TRUE);
@@ -126,9 +134,9 @@ public class PlanAllocationServiceImpl implements PlanAllocationService{
 			stateAllocationModal.setSanctionOrderExist(Boolean.FALSE);
 		}
 		//temp add for testing
-		List<StateAllocation> stateAllocationList= this.fetchStateAllocationList(5, 1);
+		List<StateAllocation> stateAllocationList= this.fetchStateAllocationList(stateAllocationModal.getPlanCode(), 1);
 		stateAllocationModal.setStateAllocationList(stateAllocationList);
-		stateAllocationModal.setSanctionOrderExist(true);
+		
 		return stateAllocationModal;
 	}
 	
@@ -138,20 +146,66 @@ public class PlanAllocationServiceImpl implements PlanAllocationService{
 
 	
 	@Override
-	public boolean  savePlanAllocation(StateAllocationModal stateAllocationModal) {
-		for(StateAllocation obj: stateAllocationModal.getStateAllocationList()) {
-			
-			obj.setInstallmentNo(stateAllocationModal.getInstallmentNo());
-			obj.setPlanCode(stateAllocationModal.getPlanCode());
-			obj.setStatus(stateAllocationModal.getStatus());
-			if(obj.getSrNo()!=null) {
-				commonRepository.update(obj);
-			}
-			else {
-				commonRepository.save(obj);
-			}
+	public Response  savePlanAllocation(StateAllocationModal stateAllocationModal) {
+		Response response = new Response();
+		try {
+				for(StateAllocation obj: stateAllocationModal.getStateAllocationList()) {
+					
+					obj.setInstallmentNo(stateAllocationModal.getInstallmentNo());
+					obj.setPlanCode(stateAllocationModal.getPlanCode());
+					obj.setStatus(stateAllocationModal.getStatus());
+					if(obj.getSrNo()!=null) {
+						Map<String, Object> params=new HashMap<String, Object>();
+						params.put("srNo",obj.getSrNo());
+						params.put("status",obj.getStatus());
+						params.put("fundsAllocated",obj.getFundsAllocated());
+						commonRepository.excuteUpdate("UPDATE_STATUS_STATE_ALLOCATION", params);
+					}
+					else {
+						commonRepository.save(obj);
+					}
+					
+				}
+				
+				String msg="Something is wrong";
+				if(stateAllocationModal.getStatus()!=null && stateAllocationModal.getStatus().length()>0) {
+					switch(stateAllocationModal.getStatus().charAt(0)) {
+					case 'S':
+						msg="Data Saved Successfully";
+						break;
+					case 'M':
+						msg="Data Updated Successfully";
+						break;
+					case 'F':
+						msg="Data Freezed Successfully";
+					}
+				}
+				
+				response.setResponseMessage(msg);
+				response.setResponseCode(200);
+		}catch(Exception e) {
+			response.setResponseMessage("Data Saved UnSuccessfully"+e.getMessage());
+			response.setResponseCode(500);
 		}
-		return true;
+		return response;
+	}
+	
+	@Override
+	public Response  unfreezePlanAllocation(StateAllocationModal stateAllocationModal) {
+		Response response = new Response();
+		try {
+			List<StateAllocation> stateAllocationList= this.fetchStateAllocationList(stateAllocationModal.getPlanCode(), 1);	
+			for(StateAllocation obj: stateAllocationList) {
+					obj.setStatus("U");
+					commonRepository.update(obj);
+			}
+			response.setResponseMessage("Data Unfreezed Successfully");
+			response.setResponseCode(200);
+		}catch(Exception e) {
+			response.setResponseMessage("Data Unfreezed UnSuccessfully"+e.getMessage());
+			response.setResponseCode(500);
+		}
+		return response;
 	}
 	
 	@Override
@@ -165,4 +219,23 @@ public class PlanAllocationServiceImpl implements PlanAllocationService{
 		}
 		return (stateAllocationList=new  ArrayList<StateAllocation>());
 	}
+	
+	@Override
+	public List<StateAllocation> fetchStateAllocationListMaxINSTALLMENTNO(){
+		List<StateAllocation> stateAllocationList=null;
+		Map<String, Object> params = new HashMap<>();
+		
+		params.put("stateCode", userPreference.getStateCode());
+		params.put("yearId", userPreference.getFinYearId());
+		String detailString = commonRepository.find("FETCH_MAX_INSTALLMENT_NO_AND_PLAN_CODE", params);
+		
+		if(detailString!=null && detailString.length()>0) {
+			String detailArr[]=detailString.split(",");
+			stateAllocationList=this.fetchStateAllocationList(Integer.parseInt(detailArr[0]), Integer.parseInt(detailArr[1]));
+		}
+		
+		return stateAllocationList;
+	}
+	
+	
 }

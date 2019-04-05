@@ -203,7 +203,7 @@ public class SatcomFacilityServiceImpl implements SatcomFacilityService{
 		Map<String,Object> params = new HashMap<>();
 		params.put("yearId", userPreference.getFinYearId());
 		params.put("stateCode", userPreference.getStateCode());
-		params.put("userType", userPreference.getUserType());
+		params.put("userType", "C");
 		List<SatcomActivity> satcomActivity = commonRepository.findAll("GET_Satcom_ActivityAPPROVED_TRAINING", params);
 		return satcomActivity;
 	}

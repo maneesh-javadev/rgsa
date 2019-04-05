@@ -5,6 +5,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 /**
@@ -14,7 +15,10 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name="training_venue_level",schema="rgsa")
-@NamedQuery(name="FETCH_ALL_VENUE_LEVEL",query="FROM TrainingVenueLevel")
+@NamedQueries({
+@NamedQuery(name="FETCH_ALL_VENUE_LEVEL",query="FROM TrainingVenueLevel "),
+@NamedQuery(name="FETCH_ALL_VENUE_LEVEL_by_Id",query="FROM TrainingVenueLevel where trainingVenueLevelId=:trainingVenueLevelId")
+})
 public class TrainingVenueLevel {
 
 	@Id

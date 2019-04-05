@@ -231,6 +231,12 @@ function validateYear(index){
 		}
 		else return true;
 		}
+		
+function saveSubmit(){
+	document.innovativeActivity.method = "post";
+	document.innovativeActivity.action = "innovativeActivityDetails.html?<csrf:token uri='innovativeActivityDetails.html'/>";
+	document.innovativeActivity.submit();
+}	
 </script>
 <section class="content">
 	<div class="container-fluid">
@@ -299,69 +305,110 @@ function validateYear(index){
 											</tr>
 										</thead>
 										<tbody id="newBody">
-											<c:forEach var="innovativeActivity"
-												items="${innovativeAcitivityList}">
-												<c:if
-													test="${not empty innovativeActivity.innovativeActivityDetails}">
-													<c:forEach var="innovativeActivityDetails"
-														items="${innovativeActivity.innovativeActivityDetails}"
-														varStatus="count">
+													<c:forEach var="state_detail" items="${innovativeActivityDetailState}" varStatus="count">
 														<tr id="newRow">
-															<td><strong>${innovativeActivityDetailState[count.index].activityName}</strong></td>
-															<td><strong>${innovativeActivityDetailState[count.index].aboutActivity}</strong></td>
-															<td><strong>${innovativeActivityDetailState[count.index].yearFrom}</strong>
+															<td><strong>${state_detail.activityName}</strong>
+																<input type="hidden" name="innovativeActivityDetails[${count.index}].activityName" value="${state_detail.activityName}"/>
 															</td>
-															<td><strong>${innovativeActivityDetailState[count.index].yearTo}</strong>
+															<td><strong>${state_detail.aboutActivity}</strong>
+																<input type="hidden" name="innovativeActivityDetails[${count.index}].aboutActivity" value="${state_detail.aboutActivity}"/>
 															</td>
-															<c:set var="totalFundToCalc"
-																value="${totalFundToCalc + innovativeActivityDetails.fundsName}"></c:set>
-															<td><strong><div align="center"
-																		id="fundIdState_${count.index}">${innovativeActivityDetailState[count.index].fundsName}</div></strong>
+															<td><strong>${state_detail.yearFrom}</strong>
+																<input type="hidden" name="innovativeActivityDetails[${count.index}].yearFrom" value="${state_detail.yearFrom}"/>
+															</td>
+															<td><strong>${state_detail.yearTo}</strong>
+																<input type="hidden" name="innovativeActivityDetails[${count.index}].yearTo" value="${state_detail.yearTo}"/>
+															</td>
+															<c:choose>
+															
+															<c:when test="${not empty innovativeAcitivityList}"><c:set var="totalFundToCalc"
+																value="${totalFundToCalc + innovativeAcitivityList[0].innovativeActivityDetails[count.index].fundsName}"></c:set>
+															<td><div align="center"
+																		id="fundIdState_${count.index}"><strong>${state_detail.fundsName}</strong></div>
 
 																<input type="text" oninput="validity.valid||(value='');"
 																onKeyPress="if(this.value.length==7) return false;"
 																min="0" id="fundId_${count.index}"
 																name="innovativeActivityDetails[${count.index}].fundsName"
-																value="${innovativeActivityDetails.fundsName}"
+																value="${innovativeAcitivityList[0].innovativeActivityDetails[count.index].fundsName}"
 																onkeyup="this.value=this.value.replace(/[^0-9]/g,''); onloadChangeColor()"
 																Class="form-control Align-Right fundsName"
 																maxlength="12" placeholder="Enter Funds" /></td>
+															</c:when>
+															
+															<c:otherwise>
+															<c:set var="totalFundToCalc"
+																value="${totalFundToCalc + 0}"></c:set>
+															<td><div align="center"
+																		id="fundIdState_${count.index}"><strong>${state_detail.fundsName}</strong></div>
 
+																<input type="text" oninput="validity.valid||(value='');"
+																onKeyPress="if(this.value.length==7) return false;"
+																min="0" id="fundId_${count.index}"
+																name="innovativeActivityDetails[${count.index}].fundsName"
+																onkeyup="this.value=this.value.replace(/[^0-9]/g,''); onloadChangeColor()"
+																Class="form-control Align-Right fundsName"
+																maxlength="12" placeholder="Enter Funds" /></td>
+															</c:otherwise>
+															</c:choose>
+															
 															<td><input type="button" value="Download File"
 																class="btn bg-grey waves-effect"
-																onclick='showImage("${innovativeActivityDetails.fileLocation}","${innovativeActivityDetails.fileName}");' />
-
+																onclick='showImage("${state_detail.fileLocation}","${state_detail.fileName}");' />
 															</td>
-
-
 														</tr>
-														<input type="hidden" name="innovativeActivityId"
-															value="${innovativeActivity.innovativeActivityId}">
-														<input type="hidden" name="createdBy" id=createdBy
-															value="${innovativeActivity.createdBy}" />
-														<input type="hidden" name="userType" id=userType
-															value="${innovativeActivity.userType}" />
-														<input type="hidden" id="isfreeze" name="isFreeze"
-															value="${innovativeAcitivityList[0].isFreeze}">
-														<input type="hidden"
-															name="innovativeActivityDetails[${count.index}].id"
-															value="${innovativeActivityDetails.id}">
-														<input type="hidden"
-															name="innovativeActivityDetails[${count.index}].fileName"
-															value="${innovativeActivityDetails.fileName}">
-														<input type="hidden"
-															name="innovativeActivityDetails[${count.index}].fileContentType"
-															value="${innovativeActivityDetails.fileContentType}">
-														<input type="hidden"
-															name="innovativeActivityDetails[${count.index}].fileLocation"
-															value="${innovativeActivityDetails.fileLocation}">
+														
+														<c:choose>
+														 <c:when test="${not empty innovativeAcitivityList}">
+																<input type="hidden" name="innovativeActivityId"
+																	value="${innovativeAcitivityList[0].innovativeActivityId}">
+																<input type="hidden" name="createdBy" id=createdBy
+																	value="${innovativeAcitivityList[0].createdBy}" />
+																<input type="hidden" name="userType" id=userType
+																	value="${innovativeAcitivityList[0].userType}" />
+																<input type="hidden" id="isfreeze" name="isFreeze"
+																	value="${innovativeAcitivityList[0].isFreeze}">
+																<input type="hidden"
+																	name="innovativeActivityDetails[${count.index}].id"
+																	value="${innovativeAcitivityList[0].innovativeActivityDetails[count.index].id}">
+																<input type="hidden"
+																	name="innovativeActivityDetails[${count.index}].fileName"
+																	value="${innovativeAcitivityList[0].innovativeActivityDetails[count.index].fileName}">
+																<input type="hidden"
+																	name="innovativeActivityDetails[${count.index}].fileContentType"
+																	value="${innovativeAcitivityList[0].innovativeActivityDetails[count.index].fileContentType}">
+																<input type="hidden"
+																	name="innovativeActivityDetails[${count.index}].fileLocation"
+																	value="${innovativeAcitivityList[0].innovativeActivityDetails[count.index].fileLocation}">
+															</c:when>
+														 <c:otherwise>
+																<input type="hidden" name="innovativeActivityId"
+																	value="${innovativeAcitivityList[0].innovativeActivityId}">
+																<input type="hidden" name="createdBy" id=createdBy
+																	value="${innovativeAcitivityList[0].createdBy}" />
+																<input type="hidden" name="userType" id=userType
+																	value="${innovativeAcitivityList[0].userType}" />
+																<input type="hidden" id="isfreeze" name="isFreeze"
+																	value="${innovativeAcitivityList[0].isFreeze}">
+																<input type="hidden"
+																	name="innovativeActivityDetails[${count.index}].id"
+																	value="${state_detail.id}">
+																<input type="hidden"
+																	name="innovativeActivityDetails[${count.index}].fileName"
+																	value="${state_detail.fileName}">
+																<input type="hidden"
+																	name="innovativeActivityDetails[${count.index}].fileContentType"
+																	value="${state_detail.fileContentType}">
+																<input type="hidden"
+																	name="innovativeActivityDetails[${count.index}].fileLocation"
+																	value="${state_detail.fileLocation}">
+															</c:otherwise>
+														</c:choose>
+														
 														<input type="hidden" name="idToDelete" id="idToDelete">
 														<input type="hidden" name="path" id="path">
 														<input type="hidden" name="dbFileName" id="dbFileName">
 													</c:forEach>
-												</c:if>
-											</c:forEach>
-
 											<tr>
 												<td colspan="10"></td>
 											</tr>
@@ -373,34 +420,38 @@ function validateYear(index){
 											<td ><spring:message text="Total Funds"
 													htmlEscape="true" /></td>
 											
-											<td><div align="left"
-														id="subTotalState">${TOTALFUND}</div><input type="text"
+											<td><div style="margin-left: 15%;"
+														id="subTotalState"><strong>${TOTALFUND}</strong></div><input type="text"
 												id="subTotal" value="${totalFundToCalc}" disabled="disabled"
 												Class="form-control Align-Right" /></td>
 										</tr>
 										<tr>
-											<c:forEach var="innovativeActivity"
-												items="${innovativeAcitivityList}">
+											
 
 												<td ><spring:message
 														text="Additional Requirement" htmlEscape="true" /></td>
-										
-												<input type="hidden" name="innovativeActivityId"
-													value="${innovativeActivity.innovativeActivityId}">
-												<c:set var="addtnlReqrmnt"
-													value="${addtnlReqrmnt + innovativeActivity.additioinalRequirements}"></c:set>
-												<td><div id="additioinalRequirements1">${innovativeAcitivityListForState[0].additioinalRequirements}</div>
+													<c:choose>
+													<c:when test="${not empty innovativeAcitivityList }">
+													<input type="hidden" name="innovativeActivityId"
+														value="${innovativeAcitivityList[0].innovativeActivityId}">
+													<c:set var="addtnlReqrmnt"
+													value="${addtnlReqrmnt + innovativeAcitivityList[0].additioinalRequirements}"></c:set>
+													</c:when>
+													<c:otherwise>
+														<c:set var="addtnlReqrmnt"
+													value="${addtnlReqrmnt + 0}"></c:set>
+													</c:otherwise>
+													</c:choose>
+												
+												<td><div id="additioinalRequirements1" style="margin-left: 15%;"><strong>${innovativeAcitivityListForState[0].additioinalRequirements}</strong></div>
 													<input min="0" type="text"
 													oninput="validity.valid||(value='');"
 													onKeyPress="if(this.value.length==7) return false;"
 													onkeyup="this.value=this.value.replace(/[^0-9]/g,''); onloadChangeColor();"
 													name="additioinalRequirements" id="additioinalRequirements"
-													value="${innovativeActivity.additioinalRequirements}"
+													value="${addtnlReqrmnt}"
 													maxlength="15" Class="form-control Align-Right"
 													placeholder="<= 25% of Total" /></td>
-
-
-											</c:forEach>
 										</tr>
 
 
@@ -408,83 +459,90 @@ function validateYear(index){
 											<td ><spring:message
 													text="Total Proposed Fund" htmlEscape="true" /></td>
 											
-											<td><strong><div align="left"
-														id="grandTotalState">${GRANDTOTAL}</div></strong> <input
+											<td><div id="grandTotalState"  style="margin-left: 15%;"><strong>${GRANDTOTAL}</strong> </div><input
 												type="text" id="grandTotal"
 												value="${addtnlReqrmnt + totalFundToCalc}"
 												disabled="disabled" Class="form-control Align-Right" /></td>
 										</tr>
 									</table>
 								</div>
-								<div class="form-group text-right">
-									<c:if test="${innovativeAcitivityList[0].isFreeze == true}">
-										<button type="submit" id="save" disabled="disabled"
-											class="btn bg-green waves-effect">
-											<spring:message text="SAVE" htmlEscape="true" />
-										</button>
-
-										<button type="button" id="unfreeze"
-											onclick='freezUnfreez("Unf");'
-											class="btn bg-green waves-effect">
-											<spring:message code="Label.UNFREEZE" text="Unfreeze"
-												htmlEscape="true" />
-										</button>
-
-										<button type="button" id="clear" disabled="disabled"
-											class="btn bg-light-blue waves-effect">
-											<spring:message code="Label.CLEAR" htmlEscape="true" />
-										</button>
-									</c:if>
-									<c:if test="${innovativeAcitivityList[0].isFreeze == false}">
-										<button type="submit" id="save" onclick="validate();"
-											class="btn bg-green waves-effect">
-											<spring:message text="SAVE" htmlEscape="true" />
-										</button>
-
-										<button type="button" id="freeze"
-											onclick='freezUnfreez("Frz");'
-											class="btn bg-green waves-effect">
-											<spring:message code="Label.FREEZE" text="Freeze"
-												htmlEscape="true" />
-										</button>
-
-										<button type="button" id="clear"
-											class="btn bg-light-blue waves-effect reset">
-											<spring:message code="Label.CLEAR" htmlEscape="true" />
-										</button>
-									</c:if>
-									<c:if test="${ not empty innovativeAcitivityList}">
+								<div class="row clearfix">
+									<div class="col-md-4 text-left">
 										<button type="button"
-											onclick="onClose('home.html?<csrf:token uri='home.html'/>')"
+											onclick="onClose('viewPlanDetails.html?<csrf:token uri='viewPlanDetails.html'/>&stateCode=${STATE_CODE}')"
 											class="btn bg-orange waves-effect">
-											<spring:message code="Label.CLOSE" htmlEscape="true" />
-										</button>
-									</c:if>
-								</div>
-								<c:if test="${empty innovativeAcitivityList}">
-									<div class="form-group text-right">
-										<button type="submit" id="save"
-											class="btn bg-green waves-effect">
-											<spring:message text="SAVE" htmlEscape="true" />
-										</button>
-
-										<button type="button" id="freeze"
-											class="btn bg-green waves-effect">
-											<spring:message code="Label.FREEZE" text="Freeze"
-												htmlEscape="true" />
-										</button>
-
-										<button type="button" id="clear"
-											class="btn bg-light-blue waves-effect">
-											<spring:message code="Label.CLEAR" htmlEscape="true" />
-										</button>
-										<button type="button"
-											onclick="onClose('home.html?<csrf:token uri='home.html'/>')"
-											class="btn bg-orange waves-effect">
-											<spring:message code="Label.CLOSE" htmlEscape="true" />
+											<i class="fa fa-arrow-left" aria-hidden="true"></i>
+											<spring:message code="Label.BACK" htmlEscape="true" />
 										</button>
 									</div>
-								</c:if>
+
+									<c:if test="${not empty innovativeAcitivityList}">
+										<div class="col-md-8 text-right">
+											<c:if test="${innovativeAcitivityList[0].isFreeze == true}">
+												<button type="button" id="save"
+													class="btn bg-green waves-effect" disabled="disabled">
+													<spring:message text="SAVE" htmlEscape="true" />
+												</button>
+												<button type="button" id="unfreeze"
+													onclick='freezUnfreez("Unf");'
+													class="btn bg-green waves-effect">
+													<spring:message code="Label.UNFREEZE" text="Unfreeze"
+														htmlEscape="true" />
+												</button>
+												<button type="button" id="clear"
+													class="btn bg-light-blue waves-effect" disabled="disabled">
+													<spring:message code="Label.CLEAR" htmlEscape="true" />
+												</button>
+											</c:if>
+											<c:if test="${innovativeAcitivityList[0].isFreeze == false}">
+												<button type="button" id="save"
+													class="btn bg-green waves-effect" onclick="saveSubmit();">
+													<spring:message text="SAVE" htmlEscape="true" />
+												</button>
+												<button type="button" id="freeze"
+													onclick='freezUnfreez("Frz");'
+													class="btn bg-green waves-effect">
+													<spring:message code="Label.FREEZE" text="Freeze"
+														htmlEscape="true" />
+												</button>
+												<button type="button" id="clear"
+													class="btn bg-light-blue waves-effect">
+													<spring:message code="Label.CLEAR" htmlEscape="true" />
+												</button>
+											</c:if>
+											<button type="button"
+												onclick="onClose('home.html?<csrf:token uri='home.html'/>')"
+												class="btn bg-orange waves-effect">
+												<spring:message code="Label.CLOSE" htmlEscape="true" />
+											</button>
+										</div>
+									</c:if>
+
+									<c:if test="${empty innovativeAcitivityList}">
+										<div class="col-md-8 text-right">
+											<button type="submit" id="save"
+												class="btn bg-green waves-effect">
+												<spring:message text="SAVE" htmlEscape="true" />
+											</button>
+
+											<button type="button" id="freeze"
+												class="btn bg-green waves-effect" disabled="disabled">
+												<spring:message code="Label.FREEZE" text="Freeze"
+													htmlEscape="true" />
+											</button>
+
+											<button type="button" id="clear"
+												class="btn bg-light-blue waves-effect">
+												<spring:message code="Label.CLEAR" htmlEscape="true" />
+											</button>
+											<button type="button"
+												onclick="onClose('home.html?<csrf:token uri='home.html'/>')"
+												class="btn bg-orange waves-effect">
+												<spring:message code="Label.CLOSE" htmlEscape="true" />
+											</button>
+										</div>
+									</c:if>
+								</div>
 							</div>
 
 							<div class="container tab-pane fade" id="MOPR"
@@ -545,7 +603,7 @@ function validateYear(index){
 															<td><strong>${innovativeActivityDetailsMopr[count.index].yearTo}</strong>
 															</td>
 
-															<td><strong><div align="center">${innovativeActivityDetailsMopr[count.index].fundsName}</div></strong>
+															<td><div align="center"><strong>${innovativeActivityDetailsMopr[count.index].fundsName}</strong></div>
 
 																<%-- <td> 
 												<input type="file" name="innovativeActivityDetails[${count.index}].file" id="file" onclick='pathImage("${innovativeActivityDetails.fileLocation}","${innovativeActivityDetails.fileName}");' >
@@ -606,11 +664,19 @@ function validateYear(index){
 										<tr>
 											<td><strong><spring:message
 														text="Total Proposed Fund" htmlEscape="true" /></strong></td>
-											<td><strong><div>${TOTALFUNDForMopr+innovativeAcitivityListForMopr[0].additioinalRequirements}</div></strong>
+											<td><strong>${TOTALFUNDForMopr+innovativeAcitivityListForMopr[0].additioinalRequirements}</strong>
 										</tr>
 									</table>
 								</div>
-								<div class="text-right">
+									<div class="col-md-4 text-left">
+										<button type="button"
+											onclick="onClose('viewPlanDetails.html?<csrf:token uri='viewPlanDetails.html'/>&stateCode=${STATE_CODE}')"
+											class="btn bg-orange waves-effect">
+											<i class="fa fa-arrow-left" aria-hidden="true"></i>
+											<spring:message code="Label.BACK" htmlEscape="true" />
+										</button>
+									</div>
+								<div class="col-md-8 text-right">
 									<button type="button"
 										onclick="onClose('home.html?<csrf:token uri='home.html'/>')"
 										class="btn bg-orange waves-effect">
@@ -628,3 +694,7 @@ function validateYear(index){
 	</div>
 
 </section>
+<style>
+.Align-Right{
+			text-align: right;
+}</style>

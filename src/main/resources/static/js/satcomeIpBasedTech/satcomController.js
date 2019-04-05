@@ -3,7 +3,7 @@
  */
 var publicModule=angular.module("publicModule",[]);
 
-publicModule.controller("satcomController",['$scope','satcomService',function($scope,satcomService,$https){
+publicModule.controller("satcomController",['$scope','satcomService',function($scope,satcomService,$http){
 	
 	$scope.satcomActivityObject={};
 	$scope.satcomActivityObject.activityDetails=[];
@@ -12,6 +12,7 @@ publicModule.controller("satcomController",['$scope','satcomService',function($s
 	$scope.freeze=true;
 	$scope.unFreeze=false;
 	$scope.clear=true;
+	$scope.stateCode=null;
 	$scope.red={
 			"color" : "red",
 	};
@@ -26,6 +27,7 @@ publicModule.controller("satcomController",['$scope','satcomService',function($s
 		satcomService.getActivityList().then(function(response){
 			$scope.satComLevel=response.data.SATCOM_LEVEL;
 			$scope.activityList=response.data.SATCOME_ACTIVITY;
+			$scope.stateCode=response.data.STATE_CODE;
 			$scope.userType = response.data.userType;
 			
 			if($scope.userType == 'C'){
@@ -43,7 +45,7 @@ publicModule.controller("satcomController",['$scope','satcomService',function($s
 					$scope.unFreeze=true;
 					$scope.clear=false;
 				}
-				
+				$scope.initialFlag=false;
 			}else{
 				$scope.initialFlag=true;
 			}
@@ -58,6 +60,7 @@ publicModule.controller("satcomController",['$scope','satcomService',function($s
 		satcomService.saveData($scope.satcomActivityObject).then(function(response){
 			if(response.data.SATCOME_ACTIVITY_DETAILS!=undefined){
 				$scope.satcomActivityObject=response.data.SATCOME_ACTIVITY_DETAILS;
+				fetchOnLoad();
 				if($scope.satcomActivityObject.status == 'F'){
 					/*$scope.save=false;
 					$scope.freeze=false;

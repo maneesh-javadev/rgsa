@@ -111,6 +111,7 @@ function validatingTotalProposedFund(){
 		
 	+$("#noOfStaffId_"+i).val() < +$("#noOfStaffIdState_"+i).text() ? $("#noOfStaffIdState_"+i).css("color","red") : $("#noOfStaffIdState_"+i).css("color","#00cc00");
 	+$("#fundId_"+i).val() < +$("#fundIdState_"+i).text() ? $("#fundIdState_"+i).css("color","red") : $("#fundIdState_"+i).css("color","#00cc00");
+	+$("#noOfMonthsId_"+i).val() < +$("#noOfMonthsIdState_"+i).text() ? $("#noOfMonthsIdState_"+i).css("color","red") : $("#noOfMonthsIdState_"+i).css("color","#00cc00");
 	+$("#unitCostId_"+i).val() < +$("#unitCostIdState_"+i).text() ? $("#unitCostIdState_"+i).css("color","red") : $("#unitCostIdState_"+i).css("color","#00cc00");
 }
 		+$("#additionalRequirementIdState").text() > +$("#additionalRequirementId").val() ? $("#additionalRequirementIdState").css('color','red') : $("#additionalRequirementIdState").css('color','#00cc00');
@@ -239,11 +240,12 @@ function validatingTotalProposedFund(){
 																	onkeyup="calculateFund(${index.index}); onloadChangeColor()"
 																	id="unitCostId_${index.index}"
 																	readonly="${IS_FREEZE eq true}" /></td>
-															<td><div align="center" id="noOfMonthsIdState_${index.index}" style="margin-top: 20px;">${activityDetailsForState[index.index].noOfMonths}</div>
-															<form:hidden
+															<td><div align="center" id="noOfMonthsIdState_${index.index}">${activityDetailsForState[index.index].noOfMonths}</div>
+															<form:input
 																	path="adminFinancialDataCellActivityDetails[${index.index}].noOfMonths"
-																	value="${activityDetailsForState[index.index].noOfMonths}"
-																	id="noOfMonthsId_${index.index}" /></td>
+																	onkeyup="calculateFund(${index.index}); onloadChangeColor()"
+																	class="form-control Align-Right"
+																	id="noOfMonthsId_${index.index}" readonly="${IS_FREEZE eq true}" /></td>
 															<td><div align="center" id="fundIdState_${index.index}">${activityDetailsForState[index.index].funds}</div>
 															<form:input
 																	path="adminFinancialDataCellActivityDetails[${index.index}].funds"
@@ -489,7 +491,7 @@ function validatingTotalProposedFund(){
 														</div></td>
 													<td colspan="3"></td>
 													<td><div align="center"  >
-															<input type = "text" class="form-control" disabled="disabled" value="${totalUnitCostForMopr}"  id ="totalcostforMopr"/>
+															<input type = "text" class="form-control Align-Right" disabled="disabled" value="${totalUnitCostForMopr}"  id ="totalcostforMopr"/>
 														</div></td>
 												</tr>
 
@@ -548,3 +550,7 @@ function validatingTotalProposedFund(){
 	</div>
 
 </section>
+<style>
+.Align-Right{
+			text-align: right;
+}</style>

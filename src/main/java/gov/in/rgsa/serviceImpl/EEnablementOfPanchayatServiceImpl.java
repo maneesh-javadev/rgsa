@@ -258,7 +258,7 @@ public class EEnablementOfPanchayatServiceImpl implements EEnablementOfPanchayat
 		Map<String,Object> params = new HashMap<>();
 		params.put("yearId", userPreference.getFinYearId());
 		params.put("stateCode", userPreference.getStateCode());
-		params.put("userType", userPreference.getUserType().charAt(0));
+		params.put("userType", 'C');
 		List<EEnablement> eEnablements = commonRepository.findAll("GET_EENABLEMENT_APPROVED_TRAINING", params);
 		return eEnablements;
 	}
@@ -283,5 +283,13 @@ public class EEnablementOfPanchayatServiceImpl implements EEnablementOfPanchayat
 	}
 
 	
+	@Override
+	public List<EEnablemenEntity> fetchEEnablemenEntityDetailsCEC() {
+		java.util.Map<String, Object> params=new HashMap<String,Object>();
+		params.put("stateCode", userPreference.getStateCode());
+		params.put("yearId", userPreference.getFinYearId());
+		params.put("userType", "C");
+	    return commonRepository.findAll("FETCH_ENABLEMENT_DETAILS_GPs", params);
+	}
 
 }

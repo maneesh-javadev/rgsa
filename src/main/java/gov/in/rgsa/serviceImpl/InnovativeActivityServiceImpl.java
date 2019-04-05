@@ -33,7 +33,7 @@ public class InnovativeActivityServiceImpl implements InnovativeActivityService 
 	
 	@Override
 	public void saveDetailsWithUsertype(InnovativeActivity activity) {
-		if(userPreference.getUserType().equalsIgnoreCase('s'+"")){
+		if(userPreference.getUserType().equalsIgnoreCase('s'+"") || userPreference.getUserType().equalsIgnoreCase('c'+"")){
 			saveInnovativeActivityDetailsForState(activity);
 		}else{
 			if(activity.getUserType().equals('S')){
@@ -72,6 +72,9 @@ public class InnovativeActivityServiceImpl implements InnovativeActivityService 
 			innocvativeActivity.setVersionId(1);
 			
 			for (InnovativeActivityDetails innovativeActivityDetails : innocvativeActivityDetails) {
+				if(userPreference.getUserType().equalsIgnoreCase("C")){
+					innovativeActivityDetails.setId(null);
+				}
 				innovativeActivityDetails.setInnovativeActivity(innocvativeActivity);
 			}
 			commonRepository.save(innocvativeActivity);
@@ -151,12 +154,12 @@ public class InnovativeActivityServiceImpl implements InnovativeActivityService 
 			innovativeActivities.get(0).setIsFreeze(false);
 			return innovativeActivities;
 		}
-		if(userPreference.getUserType().equalsIgnoreCase("C") && CollectionUtils.isEmpty(innovativeActivities)){
+		/*if(userPreference.getUserType().equalsIgnoreCase("C") && CollectionUtils.isEmpty(innovativeActivities)){
 			params.put("userType", 'S');
 			innovativeActivities= commonRepository.findAll("FETCH_INNOVATIVE_ACTIVITY", params);
 			innovativeActivities.get(0).setIsFreeze(false);
 			return innovativeActivities;
-		}
+		}*/
 		return null;
 	}
 

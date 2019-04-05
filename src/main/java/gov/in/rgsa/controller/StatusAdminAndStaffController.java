@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
@@ -161,29 +162,17 @@ public class StatusAdminAndStaffController {
 					.fetchAdministrativeTechnicalSupport("S");
 			AdministrativeTechnicalSupport technicalSupportForMOPR = supportService
 					.fetchAdministrativeTechnicalSupport("M");
-			long totalCostWithoutAddit = 0;
 			if (technicalSupportForState != null) {
 				List<AdministrativeTechnicalSupportDetails> technicalSupportForStateDetails = technicalSupportForState
 						.getSupportDetails();
-
-				for (int i = 0; i < technicalSupportForStateDetails.size(); i++) {
-					totalCostWithoutAddit = totalCostWithoutAddit + technicalSupportForStateDetails.get(i).getFunds();
-				}
-				model.addAttribute("TotalStateFund", totalCostWithoutAddit);
-
-				model.addAttribute("detailsForState", technicalSupportForStateDetails);
+				model.addAttribute("TotalStateFund", calculateTotalFund(technicalSupportForState));
+				model.addAttribute("detailsForState", technicalSupportForStateDetails); 
 				model.addAttribute("technicalSupportForState", technicalSupportForState);
 			}
 
 			if (technicalSupportForMOPR != null) {
-				List<AdministrativeTechnicalSupportDetails> technicalSupportForMOPRDetails = technicalSupportForMOPR
-						.getSupportDetails();
-
-				for (int i = 0; i < technicalSupportForMOPRDetails.size(); i++) {
-					totalCostWithoutAddit = totalCostWithoutAddit + technicalSupportForMOPRDetails.get(i).getFunds();
-				}
-				model.addAttribute("TotalMoprFund", totalCostWithoutAddit);
-
+				model.addAttribute("TotalMoprFund", calculateTotalFund(technicalSupportForMOPR));
+				List<AdministrativeTechnicalSupportDetails> technicalSupportForMOPRDetails=technicalSupportForMOPR.getSupportDetails();
 				model.addAttribute("detailsForMOPR", technicalSupportForMOPRDetails);
 				model.addAttribute("technicalSupportForMOPR", technicalSupportForState);
 			}
@@ -203,6 +192,19 @@ public class StatusAdminAndStaffController {
 			model.addAttribute("initial_status", true);
 		}
 		return SUPPORT_ADMIN_STAFF_CEC;
+	}
+	
+	private Integer calculateTotalFund(AdministrativeTechnicalSupport object){
+		Integer totalCostWithoutAddit=0;
+		List<AdministrativeTechnicalSupportDetails> details = object
+				.getSupportDetails();
+		if (CollectionUtils.isNotEmpty(details)) {
+			for (int i = 0; i < details.size(); i++) {
+				if(details.get(i).getFunds() != null)
+				totalCostWithoutAddit = totalCostWithoutAddit + details.get(i).getFunds();
+			}
+		}
+		return totalCostWithoutAddit;
 	}
 	
 	
@@ -232,6 +234,7 @@ public class StatusAdminAndStaffController {
 		re.addFlashAttribute(Message.SUCCESS_KEY,Message.FRIZEE_SUCESS);}
 		else {
 		re.addFlashAttribute(Message.SUCCESS_KEY, Message.UNFRIZEE_SUCESS);}
+		
 		return  REDIRECT_SUPPORT_ADMIN_STAFF_CEC;
 	}
 	

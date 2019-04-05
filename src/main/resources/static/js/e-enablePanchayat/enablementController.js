@@ -29,6 +29,8 @@ enablement.controller("enablementController",['$scope','enablementService', func
 		$scope.IsVisible=true;
 		enablementService.getEEnablementMaster().then(function(response){
 			if(response.data.length>0){
+				$('#errorMessage').addClass('hide');
+				$('#errorMessage').html('');
 				$scope.eEnablementMasterList=response.data;
 				angular.forEach($scope.eEnablementMasterList,function(item){
 					if(item.eMasterId==1){
@@ -60,7 +62,8 @@ enablement.controller("enablementController",['$scope','enablementService', func
 					
 				});
 			}else{
-				alert("Please fill first 'e-Enablement of Panchayats' Form from Action Plan");
+				$('#errorMessage').addClass('show');
+				$('#errorMessage').html('Plan has been not Approved by CEC.');
 				$scope.IsVisible=false;
 			}
 	

@@ -15,6 +15,8 @@ import javax.persistence.Table;
 @Table(name="release_intallment",schema="rgsa")
 @NamedQueries({
 	@NamedQuery(name="FETCH_ReleaseIntallment_DATA",query="from ReleaseIntallment where planCode=:planCode and installmentNo=:installmentNo"),
+	@NamedQuery(name="ReleaseInstallmentByYearState", query="SELECT ri from ReleaseIntallment ri JOIN Plan plan ON plan.planCode=ri.planCode WHERE"
+			+ " plan.yearId = :yearId AND plan.stateCode = :stateCode AND plan.isactive = true")
 	})
 public class ReleaseIntallment {
 	

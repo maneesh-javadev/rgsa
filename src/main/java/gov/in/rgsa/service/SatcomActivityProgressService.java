@@ -4,6 +4,7 @@ import java.util.List;
 
 import gov.in.rgsa.entity.QuarterDuration;
 import gov.in.rgsa.entity.SatcomActivityProgress;
+import gov.in.rgsa.entity.SatcomActivityProgressDetails;
 import gov.in.rgsa.entity.SatcomLevel;
 import gov.in.rgsa.entity.SatcomMaster;
 
@@ -16,4 +17,6 @@ public List<SatcomActivityProgress> fetchSatcomProgress();
 public SatcomActivityProgress getSatcomProgress(int satcomActivityId, int quarterId);
 
 public SatcomActivityProgress getSatcomProgressReportToGeReportId(int satcomActivityId);
+
+public List<SatcomActivityProgressDetails> getDetailsBasedOnActIdAndQtrId(Integer satcomActivityProgressId, int quarterId);
 }

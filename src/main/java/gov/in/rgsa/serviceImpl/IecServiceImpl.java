@@ -48,7 +48,7 @@ public class IecServiceImpl implements IecService {
 	@Override
 	public void save(final IecActivity iecActivity) {
 
-		if (userPreference.getUserType().equalsIgnoreCase('s' + "")) {
+		if (userPreference.getUserType().equalsIgnoreCase('s' + "") || userPreference.getUserType().equalsIgnoreCase("C")) {
 			saveIecForState(iecActivity);
 		} else {
 			if (iecActivity.getUserType().equalsIgnoreCase("S")) {
@@ -140,10 +140,7 @@ public class IecServiceImpl implements IecService {
 			iecActivity.get(0).setIsFreez(false);
 		}
 		
-		if (userPreference.getUserType().equalsIgnoreCase("C") && CollectionUtils.isEmpty(iecActivity)) {
-			params.put("userType", "S");
-			iecActivity = commonRepository.findAll("FETCH_Iec_Activity", params);
-		}
+		
 
 		if (!CollectionUtils.isEmpty(iecActivity)) {
 			return iecActivity.get(0);
@@ -207,7 +204,7 @@ public class IecServiceImpl implements IecService {
 		Map<String, Object> params=new HashMap<>();
 		params.put("stateCode", userPreference.getStateCode());
 		params.put("yearId", userPreference.getFinYearId());
-		params.put("userType", userPreference.getUserType());
+		params.put("userType", "C");
 		return commonRepository.findAll("FETCH_IEC_APPROVED_ACTIVITY", params);
 }
 }

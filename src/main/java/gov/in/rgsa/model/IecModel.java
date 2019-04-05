@@ -6,6 +6,8 @@ public class IecModel {
 	
 	private String dbFileName;
 	private IecActivity iecActivity;
+	private String idToDeleteStr;
+	
 
 	public IecActivity getIecActivity() {
 		return iecActivity;
@@ -27,4 +29,14 @@ public class IecModel {
 		// TODO Auto-generated method stub
 		
 	}
+
+	public String getIdToDeleteStr() {
+		return idToDeleteStr;
+	}
+
+	public void setIdToDeleteStr(String idToDeleteStr) {
+		this.idToDeleteStr = idToDeleteStr;
+	}
+	
+	
 }

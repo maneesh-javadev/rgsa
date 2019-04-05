@@ -84,6 +84,7 @@ public class EnablementOfPanchayatController {
 			enablementDetails = enablementOfPanchayatService.fetchEnablementDetails(enablement.get(0).geteEnablementId());
 			form.seteEnablementDetails(enablementDetails);
 			form.setAdditionalRequirement(enablement.get(0).getAdditionalRequirement());
+			model.addAttribute("INITIAL_FLAG", false);
 		}else{
 			model.addAttribute("INITIAL_FLAG", true);
 		}
@@ -154,6 +155,11 @@ public class EnablementOfPanchayatController {
 	@RequestMapping(value = "fetchEEnablementGPs", method = RequestMethod.GET)
 	private @ResponseBody List<EEnablementGPs> fetchEEnablementGPs(Integer eEnablementDetailsId) {
 		return enablementOfPanchayatService.fetchCapacityBuildingActivityGPsList(eEnablementDetailsId);
+	}
+	
+	@RequestMapping(value = "fetchEEnablemenEntityListCEC", method = RequestMethod.GET)
+	private @ResponseBody List<EEnablemenEntity> fetchEEnablemenEntityListCEC() {
+		  return enablementOfPanchayatService.fetchEEnablemenEntityDetailsCEC();
 	}
 	
 }

@@ -2,6 +2,7 @@
 <html>
 <section class="content">
 	<script type="text/javascript">
+	var delTrainingIdArr=[];
 	$(document).ready(function () {
 	$("#mytable").on('input', '.txtCal', function () {
 	       // code logic here
@@ -61,11 +62,30 @@ function removeRow(){
 	i--;
 	}
 		}	
-function toDelete(idToDelete){
-	document.getElementById("idToDelete").value = idToDelete;
-	document.IecName.method = "post";
-	document.IecName.action = "deleteIecActivity.html?<csrf:token uri='deleteIecActivity.html'/>";
-	document.IecName.submit();
+function toDelete(idToDelete,disabledID){
+	
+	 if(!delTrainingIdArr.includes(idToDelete)){
+		 delTrainingIdArr.push(idToDelete);
+		
+		 $("#delete"+idToDelete).val('Undo');
+		 $("#selectDropDownId_"+disabledID).prop('disabled', true);
+		 $("#getTotal"+disabledID).prop('disabled', true);
+		 
+		 
+		
+	  }else{
+		  var index = delTrainingIdArr.indexOf(idToDelete);
+		 	if (index > -1) {
+		 		delTrainingIdArr.splice(index, 1);
+		   }
+		 	 $("#delete"+idToDelete).val('Delete');
+			 $("#selectDropDownId_"+disabledID).prop('disabled', false);
+			 $("#getTotal"+disabledID).prop('disabled', false);
+	  }
+	
+	 if(delTrainingIdArr.length>0){
+			document.getElementById("idToDeleteStr").value = delTrainingIdArr.toString();
+		}
 }
 
 	function freezeAndUnfreeze(obj){
@@ -177,7 +197,7 @@ function toDelete(idToDelete){
 														value="${iecActivityDetails.totalAmountProposed}"
 														name="iecActivity.iecActivityDetails[${count.index}].totalAmountProposed"
 														min="1" Class="  active123 form-control txtCal Align-Right"
-														placeholder="Total Amount Proposed" id="getTotal"
+														placeholder="Total Amount Proposed" id="getTotal${count.index}"
 														onchange="findTotal();" required
 														oninvalid="this.setCustomValidity('Entered value greater than 99999999')"
 														oninput="setCustomValidity('')"  onkeypress="return isNumber(event)" max="99999999"  readonly="readonly" /></td>
@@ -193,14 +213,14 @@ function toDelete(idToDelete){
 															Class=" active123 form-control" placeholder="remarks"
 															required disabled="disabled"/></td>
 														</c:if>
-														<td><input type="button" value="Delete" class=" activedelete btn btn-danger waves-effect" onclick='toDelete("${iecActivityDetails.idMain}");' disabled="disabled"/></td>
+														<td><input id="delete${iecActivityDetails.idMain}" type="button" value="Delete" class=" activedelete btn btn-danger waves-effect" onclick='toDelete("${iecActivityDetails.idMain}","${count.index}");' disabled="disabled"/></td>
 														</c:when>
 														<c:otherwise>
 														<td><input type="number"
 														value="${iecActivityDetails.totalAmountProposed}"
 														name="iecActivity.iecActivityDetails[${count.index}].totalAmountProposed"
 														min="1" Class="  active123 form-control txtCal Align-Right"
-														placeholder="Total Amount Proposed" id="getTotal"
+														placeholder="Total Amount Proposed" id="getTotal${count.index}"
 														onchange="findTotal();" required
 														oninvalid="this.setCustomValidity('Entered value greater than 99999999')"
 														oninput="setCustomValidity('')"  onkeypress="return isNumber(event)" max="99999999" /></td>
@@ -228,7 +248,7 @@ function toDelete(idToDelete){
 															Class=" active123 form-control" placeholder="remarks"
 															required /></td>
 														</c:if>
-													<td><input type="button" value="Delete" class=" activedelete btn btn-danger waves-effect" onclick='toDelete("${iecActivityDetails.idMain}");' /></td>
+													<td><input id="delete${iecActivityDetails.idMain}" type="button" value="Delete" class=" activedelete btn btn-danger waves-effect" onclick='toDelete("${iecActivityDetails.idMain}","${count.index}");' /></td>
 														</c:otherwise>
 													</c:choose>
 													
@@ -304,23 +324,27 @@ function toDelete(idToDelete){
 							</div>
 							</c:if>
 						<div class="text-right">
-						
+							  <c:if test="${Plan_Status eq true}"> 
 							<c:if test="${IEC_LIST.isFreez eq false || empty IEC_LIST}">
-							<c:if test="${Plan_Status eq true}">
+						
 							<button type="submit" class="btn bg-green waves-effect" id="save"><spring:message code="Label.SAVE" text="Save" htmlEscape="true" /></button>
-							<c:if test="${IEC_LIST.isFreez != undefined}">
+							<c:if test="${IEC_LIST.isFreez  != undefined}">
 							<button type="button" onclick='freezeAndUnfreeze("freeze")' class="btn bg-green waves-effect" id="FREEZE"><spring:message code="Label.FREEZE" text="Freeze" htmlEscape="true" /></button>
-						</c:if>	<button type="button"  class="btn bg-light-blue waves-effect reset" id="clearId" onclick="onClear(this)"><spring:message code="Label.CLEAR" text="Clear" htmlEscape="true" /></button>
-							
+				 	</c:if>
+							<button type="button"  class="btn bg-light-blue waves-effect reset" id="clearId" onclick="onClear(this)"><spring:message code="Label.CLEAR" text="Clear" htmlEscape="true" /></button>
 							</c:if>
+							
+						
 							<c:if test="${IEC_LIST.isFreez eq true}">
 							<button type="button" onclick='freezeAndUnfreeze("unfreeze")' class="btn bg-green waves-effect" id="UNFREEZE"><spring:message code="Label.UNFREEZE" text="Unfreeze" htmlEscape="true" /></button>
 							</c:if>
 							</c:if>
+							 
 							<button type="button" onclick="onClose('home.html?<csrf:token uri='home.html'/>')" class="btn bg-orange waves-effect"><spring:message code="Label.CLOSE" text="Close" htmlEscape="true" /></button>
 							<input type="hidden" name="iecActivity.dbFileName" id="dbFileName" /> 
 							<input type="hidden" name="iecActivity.id" value="${IEC_LIST.id}" /> 
 							<input type="hidden" name="idToDelete" id="idToDelete" />
+							<input type="hidden" name="idToDeleteStr" id="idToDeleteStr" />
 						 	<input type="hidden" name="iecActivity.isfreez" id="isfreez" />
 						</div>
 					</form:form>
@@ -363,6 +387,7 @@ function toDelete(idToDelete){
 </style>
 <script type="text/javascript">
 $( document ).ready(function() {
+	
 	$(".validate").keypress(function (e) {
 	    //if the letter is not digit then display error and don't type anything
 	    if (e.which != 8 && e.which != 0 && (e.which < 48 || e.which > 57)) {

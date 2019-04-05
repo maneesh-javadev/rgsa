@@ -1,7 +1,10 @@
 package gov.in.rgsa.service;
 
 import java.util.List;
+import java.util.Map;
 
+import gov.in.rgsa.entity.FetchTraining;
+import gov.in.rgsa.entity.FetchTrainingDetails;
 import gov.in.rgsa.entity.Subjects;
 import gov.in.rgsa.entity.TargetGroupMaster;
 import gov.in.rgsa.entity.TrainingActivity;
@@ -9,6 +12,7 @@ import gov.in.rgsa.entity.TrainingActivityDetails;
 import gov.in.rgsa.entity.TrainingCategories;
 import gov.in.rgsa.entity.TrainingMode;
 import gov.in.rgsa.entity.TrainingVenueLevel;
+import gov.in.rgsa.model.Response;
 
 /**
  * @author Mohammad Ayaz 06/09/2018
@@ -48,6 +52,20 @@ public interface TrainingActivityService {
 
 	public void saveAndUpdateCEC(TrainingActivity trainingActivity);
 	
+	public Map<String,Object> fetchTrainingDetails(final Character userType);
 	
+	public Map<String,Object> fetchTrainingDetailsbyId(Integer trngId);
+	
+	public Response saveorUpdateTrainingActivityDetails(FetchTrainingDetails fetchTrainingDetails);
+	
+	public List<Subjects> fetchSubjectsList(Integer trainingCategoryId);
+	
+	public Response updateTrainingActivity(FetchTraining fetchTraining);
+	
+	public void deleteMultiple(List<Integer> deleteIds);
+	
+	public Map<String,Object> fetchTrainingDetailsMOPRCEC();
+	
+	public Response saveorUpdateTrainingActivityDetailsCECMOPR(FetchTraining FetchTraining);
 	
 }

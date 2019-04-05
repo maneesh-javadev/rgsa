@@ -56,7 +56,6 @@ public class EGovernSupportGrpController {
 			return REDIRECT_MODIFY_BAISC_INFO_DETAILS;
 		}
 		
-		int total_fund=0;
 		model.addAttribute("LIST_OF_POST_LEVEL", eGovernanceSupportService.fetchPostLevel());
 		model.addAttribute("USER_TYPE", userPreference.getUserType().charAt(0));
 		model.addAttribute("STATE_CODE", userPreference.getStateCode());
@@ -89,6 +88,9 @@ public class EGovernSupportGrpController {
 					.fetchEGovActivityDetails(eGovActivity.get(0).geteGovSupportActivityId());
 			form.seteGovSupportActivityDetails(eGovActivityDetails);
 			form.setAdditionalRequirement(eGovActivity.get(0).getAdditionalRequirement());
+			model.addAttribute("initial_status", false);
+		}else{
+			model.addAttribute("initial_status", true);
 		}
 		if(userPreference.getUserType().equalsIgnoreCase("C")){
 			List<EGovSupportActivity> eGovActivityForState=eGovernanceSupportService.fetchEGovActivity('S');

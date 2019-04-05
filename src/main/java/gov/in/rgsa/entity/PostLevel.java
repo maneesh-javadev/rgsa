@@ -10,7 +10,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name="at_post_levels",schema="rgsa") 
-@NamedQuery(name="ADINISTRATIVE_LEVELS",query="select p from PostLevel p where postLevelId=2 order by p.postLevelId asc")
+@NamedQuery(name="ADINISTRATIVE_LEVELS",query="select p from PostLevel p where postLevelId !=1 order by p.postLevelId desc")
 public class PostLevel implements Serializable{
 
 	/**

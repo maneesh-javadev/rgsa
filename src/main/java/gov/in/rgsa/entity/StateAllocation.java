@@ -11,8 +11,14 @@ import javax.persistence.Table;
 
 @Entity
 @NamedQueries({
-	@NamedQuery(name="FIND_STALE_ALLOCATION",query="from StateAllocation where planCode=:planCode and installmentNo=:installmentNo"),
+	@NamedQuery(name="FIND_STALE_ALLOCATION",query="from StateAllocation where planCode=:planCode and installmentNo=:installmentNo order by srNo"),
+	@NamedQuery(query="UPDATE StateAllocation set fundsAllocated=:fundsAllocated,status=:status where srNo=:srNo",name="UPDATE_STATUS_STATE_ALLOCATION"),
+	@NamedQuery(name="FETCH_STATE_ALLOCATION_BY_COMP_ID",query="from StateAllocation where componentId=:componentId and installmentNo=:installmentNo and subcomponentId=:subCompnentId and fundsAllocated is not null and fundsAllocated != 0"),
+	@NamedQuery(name="FETCH_STATE_ALLOCATION_BY_COMP_ID_AND_INSTALL_NO",query="from StateAllocation where componentId=:componentId and installmentNo=:installmentNo and fundsAllocated is not null and fundsAllocated != 0")
+	
 })
+
+
 @Table(name="state_allocation",schema="rgsa")
 public class StateAllocation {
 

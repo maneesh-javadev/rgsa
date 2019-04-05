@@ -40,6 +40,7 @@ public class CapacityBuildingOneController {
 	public static final String REDIRECT_MODIFY_BAISC_INFO_DETAILS = "redirect:managebasicInfoDetails.html";
 
 	private static final String CAPACITY_BUILDING_CEC = "capacityBuildingCec";
+	private static final Character CEC_USER_TYPE='C';
 	
 	@Autowired
 	private CBMasterService cbMasterService;
@@ -102,7 +103,7 @@ public class CapacityBuildingOneController {
 		cbMasters = cbMasterService.fetchCBMasters();
 		map.put("cbMasters", cbMasters);
 		CapacityBuildingActivity capacityBuildingList = capacityBuildingService.fetchCapacityBuildingActivity(null);
-		if(capacityBuildingList != null && capacityBuildingList.getUserType() == 'S' && userPreference.getUserType().charAt(0) =='M') {
+		if(capacityBuildingList != null && capacityBuildingList.getUserType()!=null &&  capacityBuildingList.getUserType() == 'S' && userPreference.getUserType().charAt(0) =='M') {
 			capacityBuildingList.setIsFreeze(false);
 			}
 		map.put("capacityBuildingDetails", capacityBuildingList);
@@ -124,20 +125,14 @@ public class CapacityBuildingOneController {
 	}
 	
 	
-	@RequestMapping(value="saveCapacityBuildingCEC",method=RequestMethod.POST)
-	private @ResponseBody Response saveCapacityBuildingCEC(@RequestBody final CapacityBuildingActivity capacityBuildingActivity,HttpServletRequest request) {
-		//capacityBuildingService.saveCapacityBuildingActivityAndDetails(capacityBuildingActivity);
-		
-		//re.addFlashAttribute(Message.SUCCESS_KEY, Message.SAVE_SUCCESS);
+	@RequestMapping(value="saveCapacityBuildingCEC", method=RequestMethod.POST)
+	@ResponseBody
+	private void saveCapacityBuildingCEC(@RequestBody CapacityBuildingActivity capacityBuildingActivity,RedirectAttributes re) {
 		capacityBuildingService.saveCapacityBuildingActivityAndDetails(capacityBuildingActivity);
-		Response response = new Response();
-		response.setResponseMessage(Message.SAVE_SUCCESS);
-		response.setResponseCode(200);
-		return response;
 	}
 	
 
-	@ResponseBody
+@ResponseBody
 	@RequestMapping(value="getTrgActivityCecMoprData",method=RequestMethod.GET)
 	private Map<String, Object> getTrgActivityCecMoprData(Model model){
 		Map<String, Object> map=new HashMap<>();
@@ -155,7 +150,7 @@ public class CapacityBuildingOneController {
 
 	@ResponseBody
 	@RequestMapping(value="feezUnFreezCapacityBuilding", method=RequestMethod.POST)
-	private CapacityBuildingActivity feezUnFreezPesaPlan(@RequestBody CapacityBuildingActivity capacityBuildingActivity) {
+	private CapacityBuildingActivity feezUnFreezCapacityBuilding(@RequestBody CapacityBuildingActivity capacityBuildingActivity) {
 		return capacityBuildingService.feezUnFreezCapacityBuildingActivity(capacityBuildingActivity);
 	}
 	
@@ -186,5 +181,20 @@ public class CapacityBuildingOneController {
 	@RequestMapping(value = "fetchAllState", method = RequestMethod.GET)
 	private @ResponseBody List<State> fetchAllState() {
 		return lgdService.getAllStateList();
+	}
+	
+	@ResponseBody
+	@RequestMapping(value="fetchCBMastersAndCapacityBuildingDataCEC",method=RequestMethod.GET)
+	private Map<String, Object> fetchCBMastersAndCapacityBuildingDataCEC(){
+		Map<String, Object> map=new HashMap<>();
+
+		List<CBMaster> cbMasters = new ArrayList<CBMaster>();
+		cbMasters = cbMasterService.fetchCBMasters();
+		map.put("cbMasters", cbMasters);
+		map.put("capacityBuildingDetails", capacityBuildingService.fetchCapacityBuildingActivity(CEC_USER_TYPE));
+		map.put("userType", userPreference.getUserType().charAt(0));
+		map.put("capacityBuildingDetails", capacityBuildingService.fetchCapacityBuildingActivity(CEC_USER_TYPE));
+		
+		return map;
 	}
 }

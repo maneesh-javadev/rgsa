@@ -32,6 +32,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.util.FileCopyUtils;
 import org.springframework.web.multipart.commons.CommonsMultipartFile;
@@ -58,10 +59,21 @@ public class FileUploadServiceImpl implements FileUploadService {
 	@Autowired
 	private UserPreference userPreference;*/
 
-	private static final String FILE_LOCATION = ResourceBundle.getBundle("application")
-			.getString("upload.file.location").trim();
-	private static final String FILE_LOCATION_JSON = ResourceBundle.getBundle("application").getString("homepage.json.data.file").trim();
+	private static String FILE_LOCATION; // = ResourceBundle.getBundle("application").getString("upload.file.location").trim();
+	private static String FILE_LOCATION_JSON; // = ResourceBundle.getBundle("application").getString("homepage.json.data.file").trim();
 	CommonValidatorUtil validatorUtil = new CommonValidatorUtil();
+
+
+
+	@Value(value="${upload.file.location.officeorder}")
+	public void setOfficeOrderUploadLocation(String fileLocation) {
+		FILE_LOCATION = fileLocation;
+	}
+
+	@Value(value="${homepage.json.data.file}")
+	public void setFileLocationJson(String fileLocation) {
+		FILE_LOCATION_JSON = fileLocation;
+	}
 
 	@Override
 	public Integer uploadFile(FileUploadModel file) throws Exception {

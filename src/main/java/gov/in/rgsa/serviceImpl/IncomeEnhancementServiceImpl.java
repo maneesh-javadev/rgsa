@@ -49,7 +49,7 @@ public class IncomeEnhancementServiceImpl implements IncomeEnhancementService {
 
 	@Override
 	public void saveDetailsWithUsertype(IncomeEnhancementActivity enhancementActivity) {
-		if(userPreference.getUserType().equalsIgnoreCase('s'+"")){
+		if(userPreference.getUserType().equalsIgnoreCase('s'+"") || userPreference.getUserType().equalsIgnoreCase("c")){
 			update(enhancementActivity);
 		}else{
 			if(enhancementActivity.getUserType().equals('S')){
@@ -108,6 +108,9 @@ public class IncomeEnhancementServiceImpl implements IncomeEnhancementService {
 		
 		for(IncomeEnhancementDetails details :enhancementDetailsList) {
 			details.setIsActive(true);
+			if(enhancementActivity.getIncomeEnhancementId() == null){
+				details.setIncomeEnhancementDetailsId(null);
+			}
 			details.setIncomeEnhancementActivity(enhancementActivity);
 		}
 		commonRepository.update(enhancementActivity);
@@ -146,13 +149,14 @@ public class IncomeEnhancementServiceImpl implements IncomeEnhancementService {
 			}
 			return enhancementActivities;
 		}
-		if(userPreference.getUserType().equalsIgnoreCase("C") && CollectionUtils.isEmpty(enhancementActivities)){
+		/*if(userPreference.getUserType().equalsIgnoreCase("C") && CollectionUtils.isEmpty(enhancementActivities)){
 			params.put("userType", 'S');
 			enhancementActivities= commonRepository.findAll("FETCH_ALL_INCOME_ENHNCMNT_ACTIVITY", params);
+			if(CollectionUtils.isNotEmpty(enhancementActivities))
 			enhancementActivities.get(0).setIsFreeze(false);
 			return enhancementActivities;
-		}
-		return null;
+		}*/
+		return enhancementActivities;
 	}
 
 	@Override

@@ -40,6 +40,10 @@ workLocation.controller("workLocationController",['$scope','workLocationService'
 		panchatayBhawanidList=new Map();	
 		
 	workLocationService.getPanchayatBhawanActivity().then(function(response){
+		if(response.data.PANCHAYAT_BHAWAN_ACTIVITY!=null && response.data.PANCHAYAT_BHAWAN_ACTIVITY.panchatayBhawanActivityDetails.length>0){
+			$('#errorMessage').addClass('hide');
+			$('#errorMessage').html('');
+			$scope.isSaveVisible=true;
 			$scope.activityList=response.data.PANCHAYAT_ACTIVITY;
 			$scope.districtCodes=response.data.DISTRICT_LIST;
 			if(response.data.PANCHAYAT_BHAWAN_ACTIVITY!=undefined){
@@ -60,7 +64,12 @@ workLocation.controller("workLocationController",['$scope','workLocationService'
 					}
 				});
 			}
-			
+		}
+		else{
+			$('#errorMessage').addClass('show');
+			$('#errorMessage').html('Plan has been not Approved by CEC.');
+			$scope.isSaveVisible=false;
+			}
 		});
 	
 	
@@ -675,12 +684,8 @@ workLocation.controller("workLocationController",['$scope','workLocationService'
 		
 	}
 	
-	function callDatatable(){
-		$('#example').dataTable({
-	        "lengthMenu": [[ 25,50,100, -1], [25, 50,100, "All"]],
-	         
-	    });	
-		
+	
+	function callPagination(){
 		$('INPUT[name=activityItem]').change(function(){
 			idArr=$(this).attr('id').split("_");
 			id=idArr[0]+"_"+idArr[1]+"_"+idArr[2];
@@ -743,8 +748,8 @@ workLocation.controller("workLocationController",['$scope','workLocationService'
 						    	lbCodes1.splice(index, 1);
 						   }
 						 	
-						 	if(selactivity1.has("dlc"+idArr[2])){
-						 		selactivity1.delete("dlc"+idArr[2]);
+						 	if(selactivity1.has("dlc_"+idArr[2])){
+						 		selactivity1.delete("dlc_"+idArr[2]);
 						 	}
 						 	if($scope.selGPs1>0){
 						 		$scope.selGPs1=$scope.selGPs1-1
@@ -822,6 +827,18 @@ workLocation.controller("workLocationController",['$scope','workLocationService'
 			}
 			
 		});
+	}
+	function callDatatable(){
+		$('#example').dataTable({
+	        "lengthMenu": [[ 25,50,100, -1], [25, 50,100, "All"]],
+	         
+	    });	
+		
+		$('#example').on( 'page.dt', function () {
+			callPagination();
+			} );
+		
+		callPagination();
 	} 
 	
 	

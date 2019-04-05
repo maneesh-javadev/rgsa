@@ -76,8 +76,8 @@ function calculateTotalFund() {
 function validateCielingValue(obj) {
 	var total_spmu_unit_cost = 0;
 	var total_dpmu_unit_cost = 0;
-	for (var i = 0; i <= obj; i++) {
-		total_fund += +document.getElementById("fundId_" + i).value;
+	for (var i = 0; i < ($('#tbodyId tr').length-3); i++) {
+		total_fund += +document.getElementById("fundId_"+ i).value;
 		if (document.getElementById("postId_" + i).value == 1) {
 			total_spmu_unit_cost += +document.getElementById("unitCostId_" + i).value;
 		} else {

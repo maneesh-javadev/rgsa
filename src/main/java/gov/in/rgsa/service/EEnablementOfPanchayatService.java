@@ -32,5 +32,7 @@ public interface EEnablementOfPanchayatService {
 	public List<EEnablementReportDto> getEEnablementReportDto(int district);
 
 	public List<QprEnablementDetails> getEEnablementReport(int localbodyCode, Integer qprEEnablementId);
+	
+	public List<EEnablemenEntity> fetchEEnablemenEntityDetailsCEC();
 
 }

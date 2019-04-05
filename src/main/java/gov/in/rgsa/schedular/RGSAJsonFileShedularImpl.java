@@ -8,15 +8,20 @@ import java.util.Date;
 import java.util.List;
 import java.util.ResourceBundle;
 
+import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
+import javax.persistence.PersistenceContext;
 import javax.servlet.ServletContext;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.google.gson.Gson;
 
+import gov.in.rgsa.dao.CommonRepository;
 import gov.in.rgsa.entity.StatewiseEntitiesCount;
 import gov.in.rgsa.service.FileUploadService;
 
@@ -33,6 +38,9 @@ public class RGSAJsonFileShedularImpl implements RGSAJsonFileShedular {
 	
 	@Autowired
 	ServletContext servletContext;
+
+	@PersistenceContext
+	private EntityManager entityManager;
 
 	private static final String FILE_LOCATION = ResourceBundle.getBundle("application").getString("homepage.json.data.file").trim();
 	
@@ -110,7 +118,42 @@ public void setStatewiseEntitiesCount(String fullpath)throws Exception{
 		}*/
 	}
 	
-
+	@Scheduled(cron ="${scheduler.cron.time.dashboard_updater}")	
+    public boolean runDashboardUpdater() {
+    	String[] functionNames = {
+    			"rgsa.populate_dashboard_basic_info",
+    			// "rgsa.populate_dashboard_cb_activity",
+    			"rgsa.populate_dashboard_e_enablement",
+    			"rgsa.populate_dashboard_institutional_infra_activity",
+    			"rgsa.populate_dashboard_pesa_plan",
+    			"rgsa.populate_dashboard_iec_activity"
+    			};
+    	boolean allGood = true;
+    	for (String functionName : functionNames) {
+    		String queryString = String.format("SELECT 0 FROM %s();", functionName);
+    		boolean result = executeDashFun(queryString);
+    		allGood &= result;
+    	}
+    	return allGood;
+    }
+	
+	@Transactional
+	protected boolean executeDashFun(String queryString) {
+		try {
+			entityManager.createNativeQuery(queryString).getSingleResult();
+		} 
+		catch(NoResultException noResultException) {
+			// All ok
+			log.info(queryString + " executed successfully");
+			return true;
+		}
+		catch (Exception exception) {
+			this.schedulerNotify(exception);
+			log.error("Exception while executing RGSA json scheduler--> ",exception);
+			return false;
+		}
+		return true;
+	} 
 	
 }
 	

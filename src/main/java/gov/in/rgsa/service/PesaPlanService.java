@@ -18,11 +18,10 @@ public interface PesaPlanService {
 	public List<PesaPost> fetchPesaPost();
 	
 	public void savePesaPlan(final PesaPlan pesaPlan);
-/*// not in use 
+
 	public void savePesaPlanForCEC(final PesaPlan pesaPlan);
-//---------------	
-*/	/*public void savePesaPlanForCEC(final PesaPlan pesaPlan);
-	*/
+	
+	
 	public List<PesaPlanDetails> fetchPesaDetails(Integer pesaPlanId);
 	
 	public PesaPlan feezUnFreezPesaPlan(final PesaPlan pesaPlan);

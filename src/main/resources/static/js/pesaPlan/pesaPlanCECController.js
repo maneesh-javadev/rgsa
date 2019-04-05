@@ -19,7 +19,7 @@ publicModule.controller("pesaPlanCECController", [ '$scope', "pesaPlanService",
 		pesaPlanService.fetchPesaPlanDetailsForStateAndMOPR().then(function(response) {
 			$scope.designationArray = response.data.pesaPosts;
 			$scope.userType = response.data.userType;
-//			$scope.pesaPlan.isFreez =false;
+			
 
 			if(response.data.pesaPlanForState != undefined ){
 				$scope.setDataForState(response);
@@ -32,6 +32,8 @@ publicModule.controller("pesaPlanCECController", [ '$scope', "pesaPlanService",
 			if(response.data.pesaPlanForCEC != undefined ){
 				$scope.setDataForCEC(response);
 			}
+			
+			$scope.isFreezeOrUnfreeze =$scope.pesaPlanForCEC.isFreez;
 			
 			var designationArray = $scope.designationArray;
 			$scope.designationIdToCellingValueMap = new Map();
@@ -225,7 +227,18 @@ publicModule.controller("pesaPlanCECController", [ '$scope', "pesaPlanService",
 			return false;
 		}
 		
-		$scope.pesaPlanForCEC.pesaPlanDetails[index].funds = $scope.pesaPlanForCEC.pesaPlanDetails[index].noOfUnits * $scope.pesaPlanForCEC.pesaPlanDetails[index].unitCostPerMonth * $scope.pesaPlanForCEC.pesaPlanDetails[index].noOfMonths
+		if($scope.pesaPlanForState.pesaPlanDetails[index].noOfMonths==null){
+			$scope.pesaPlanForState.pesaPlanDetails[index].noOfMonths=1;
+		}
+		
+		if(index==3){
+			$scope.pesaPlanForCEC.pesaPlanDetails[index].funds = $scope.pesaPlanForCEC.pesaPlanDetails[index].noOfUnits * $scope.pesaPlanForCEC.pesaPlanDetails[index].unitCostPerMonth *1;
+			
+		}
+		else{
+			$scope.pesaPlanForCEC.pesaPlanDetails[index].funds = $scope.pesaPlanForCEC.pesaPlanDetails[index].noOfUnits * $scope.pesaPlanForCEC.pesaPlanDetails[index].unitCostPerMonth *$scope.pesaPlanForCEC.pesaPlanDetails[index].noOfMonths;
+			
+		}
 		var totalOfFunds = 0;
 		for (var i = 0; i < $scope.pesaPlanForCEC.pesaPlanDetails.length; i++) {
 			if($scope.pesaPlanForCEC.pesaPlanDetails[i]!=undefined){
@@ -257,6 +270,7 @@ publicModule.controller("pesaPlanCECController", [ '$scope', "pesaPlanService",
 		console.log($scope.pesaPlanForCEC);
 		pesaPlanService.savePesaPlanForCEC($scope.pesaPlanForCEC).then(function(response){
 			toastr.success("Plan Saved Successfully");
+			fetchPesaPlanDetailsForStateAndMOPR();
 		},function(error){
 			toastr.error("Something went wrong");
 		});
@@ -270,8 +284,10 @@ publicModule.controller("pesaPlanCECController", [ '$scope', "pesaPlanService",
 		}
 		pesaPlanService.freezUnFreezPesaPlan($scope.pesaPlanForCEC).then(function(response){
 			$scope.pesaPlanForCEC = response.data;
+			fetchPesaPlanDetailsForStateAndMOPR();
 			if(freezUnfreez == 'freez'){
 				toastr.success("Plan Freezed Successfully");
+				
 			}else{
 				toastr.success("Plan UnFreezed Successfully");
 			}

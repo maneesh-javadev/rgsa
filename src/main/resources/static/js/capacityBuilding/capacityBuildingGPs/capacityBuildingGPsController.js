@@ -48,6 +48,8 @@ capacityBuildingGPs.controller("capacityBuildingGPsController",['$scope','capaci
 		$scope.capacityBuilding = response.data.capacityBuildingDetails;	
 		//activityDetailId
 		if($scope.capacityBuilding!=null){
+			$('#errorMessage').addClass('hide');
+			$('#errorMessage').html('');
 			angular.forEach($scope.capacityBuilding.capacityBuildingActivityDetails,function(item){
 				if (item.cbMaster==5 || item.cbMaster==6 || item.cbMaster==7 ||  item.cbMaster==8 ){
 					if(item.cbMaster==5){
@@ -68,7 +70,8 @@ capacityBuildingGPs.controller("capacityBuildingGPsController",['$scope','capaci
 				}  	
 			});
 		}else{
-			alert("Please fill first 'Training Activities' Form from Action Plan");
+			$('#errorMessage').addClass('show');
+			$('#errorMessage').html('Plan has been not Approved by CEC.');
 			$scope.isSaveVisible = false;
 		}
 		

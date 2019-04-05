@@ -6,6 +6,7 @@ import gov.in.rgsa.entity.Plan;
 import gov.in.rgsa.entity.PlanComponents;
 import gov.in.rgsa.entity.State;
 import gov.in.rgsa.entity.StateAllocation;
+import gov.in.rgsa.model.Response;
 import gov.in.rgsa.model.StateAllocationModal;
 
 public interface PlanAllocationService {
@@ -20,9 +21,13 @@ public interface PlanAllocationService {
 	
 	public StateAllocationModal getBasicDetailofPlanAllocation(StateAllocationModal stateAllocationModal);
 	
-	public boolean  savePlanAllocation(StateAllocationModal stateAllocationModal);
+	public Response  savePlanAllocation(StateAllocationModal stateAllocationModal);
 	
 	public List<StateAllocation> fetchStateAllocationList(Integer planCode,Integer installmentNo);
+	
+	public Response  unfreezePlanAllocation(StateAllocationModal stateAllocationModal);
+	
+	public List<StateAllocation> fetchStateAllocationListMaxINSTALLMENTNO();
 	
 	
 	

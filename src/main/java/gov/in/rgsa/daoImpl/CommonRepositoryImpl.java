@@ -6,6 +6,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
@@ -126,7 +127,11 @@ public class CommonRepositoryImpl implements CommonRepository {
         	predicates.add( criteriaBuilder.equal(rootEntry.get(k), v) );        	
         });
         query.where(predicates.toArray(new Predicate[predicates.size()]));
-		return entityManager.createQuery(query).getSingleResult();
+        try {
+        	return entityManager.createQuery(query).getSingleResult();
+        }catch(NoResultException ex) {
+        	return null;
+        }
 	}
 
 	

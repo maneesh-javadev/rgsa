@@ -5053,6 +5053,8 @@ section.content {
 
 .form-horizontal .form-group {
   margin-bottom: 0; }
+.form-horizontal.form-normal .form-group {
+  margin-bottom: 15px; }
 
 .form-group {
   width: 100%;

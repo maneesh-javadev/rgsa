@@ -100,7 +100,7 @@ public class AdditionalfacultyAndMaintHrBudgetController {
 		institueInfraHrActivity=additionalFacultyAndMainService.fetchInstituteHrActivity(null);
 		if(!institueInfraHrActivity.isEmpty())
 		{
-			 	tIWiseProposedDomainExperts=institueInfraHrActivity.get(0).gettIWiseProposedDomainExperts();
+			 	tIWiseProposedDomainExperts=additionalFacultyAndMainService.fetchTiWiseDomainExpertById(institueInfraHrActivity.get(0).getInstituteInfraHrActivityId());
 				additionalFactultyAndMaintModel.setDistrictCode(tIWiseProposedDomainExperts.get(3).getDistrictCode());
 				additionalFactultyAndMaintModel.settIWiseProposedDomainExperts(tIWiseProposedDomainExperts);
 			model.addAttribute("institueInfraHrActivity", institueInfraHrActivity.get(0));

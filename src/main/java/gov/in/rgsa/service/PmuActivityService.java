@@ -3,15 +3,12 @@ package gov.in.rgsa.service;
 import java.util.List;
 
 import gov.in.rgsa.entity.District;
-import gov.in.rgsa.entity.Domains;
-import gov.in.rgsa.entity.InstitueInfraHrActivity;
-import gov.in.rgsa.entity.InstitueInfraHrActivityDetails;
 import gov.in.rgsa.entity.PmuActivity;
 import gov.in.rgsa.entity.PmuActivityDetails;
 import gov.in.rgsa.entity.PmuActivityType;
 import gov.in.rgsa.entity.PmuDomain;
+import gov.in.rgsa.entity.PmuProgressDetails;
 import gov.in.rgsa.entity.PmuWiseProposedDomainExperts;
-import gov.in.rgsa.entity.TIWiseProposedDomainExperts;
 /**
  * @author MOhammad Ayaz 04/10/2018
  *
@@ -35,4 +32,6 @@ public interface PmuActivityService {
 	public List<PmuActivity> fetchApprovedPmu();
 
 	public List<PmuActivityDetails> fetchPmuApprovedDetails(Integer pmuActivityId);
+
+	public List<PmuProgressDetails> getPmuProgressActBasedOnActIdAndQtrId(Integer pmuActivityId, int quarterId);
 }

@@ -1,0 +1,3 @@
+application-security.properties
+application.properties
+application-local_*.properties

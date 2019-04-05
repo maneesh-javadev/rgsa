@@ -135,13 +135,13 @@
 							
 								<div class="form-group has-feedback">
 									<label class="control-label">User Id</label>
-									<form:input cssStyle="color:black;" path="loginId" id="userName"  value="BIHAR" placeholder="Username"  autocomplete="off" htmlEscape="true"  class="form-control" required="required"/>
+									<form:input cssStyle="color:black;" path="loginId" id="userName"  value="CEC" placeholder="Username"  autocomplete="off" htmlEscape="true"  class="form-control" required="required"/>
 									<span class="glyphicon glyphicon-ok form-control-feedback" aria-hidden="true"></span>
 								</div>
 								
 								<div class="form-group has-feedback">
 									<label class="control-label">Password</label>
-									<form:password cssStyle="color:black;" path="password" id="userPassword" value="BIHAR"  placeholder="Password" autocomplete="off" htmlEscape="true"  class="form-control" required="required"/>
+									<form:password cssStyle="color:black;" path="password" id="userPassword" value="CEC"  placeholder="Password" autocomplete="off" htmlEscape="true"  class="form-control" required="required"/>
 									<span class="glyphicon glyphicon-ok form-control-feedback" aria-hidden="true"></span>
 								</div>
 								<div class="form-group">

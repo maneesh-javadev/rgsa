@@ -75,7 +75,7 @@ public class FacadeController {
 	private FileUploadService fileUploadService;
 
 	@Value("${rgsa.captcha.enabled}")
-	private Boolean captchaEnabled;
+	private Boolean isCaptcha;
 
 
 	/*
@@ -115,14 +115,8 @@ public class FacadeController {
 	@RequestMapping(value = "login", method = RequestMethod.POST)
 	public String login(@ModelAttribute("FACADE_MODEL") FacadeModel form, Model model,HttpSession httpSession, RedirectAttributes re) {
 		try {
-			
-		 // String isCapchaStr = ResourceBundle.getBundle("application").getString("isCapcha");
-			 Boolean isCapcha=this.captchaEnabled==null || this.captchaEnabled;
-//			 if(isCapchaStr!=null && isCapchaStr.length()>0) {
-//				 isCapcha=Boolean.valueOf(isCapchaStr);
-//			 }
 			CaptchaValidator captchaValidator = new CaptchaValidator();			boolean messageFlag = captchaValidator.validateCaptcha(httpSession, form.getCaptchaAnswer());
-			if (isCapcha  && !messageFlag ) {
+			if (isCaptcha  && !messageFlag ) {
 				re.addFlashAttribute(Message.CAPCHA_ERROR_KEY, "You Have Entered Wrong Captcha");
 				return REDIRECT_INDEX_VIEW;
 			} 

@@ -313,7 +313,10 @@
 										<c:set var="t_fund" value="0"/>
 										<c:set var="t_unit" value="0"/>
 										<tbody>
-										
+										<c:set var="buttonStatus" value="false" />
+										<c:if test="${sessionScope['scopedTarget.userPreference'].planStatus eq 1 or sessionScope['scopedTarget.userPreference'].planStatus eq 3}">
+										<c:set var="buttonStatus" value="true" />
+										</c:if>
 										<c:forEach items="${sessionScope['scopedTarget.userPreference'].statePlanComponentsFunds}" var="pc" varStatus="pcindex">
 										  	<c:if test="${pc.eType eq 'C'}">
 											  	<c:set var="trStatus" value="bg-test" />
@@ -336,7 +339,7 @@
 															</c:if>
 								 						</td>
 														<td><b>${pcindex.count}</b></td>
-														<td><b>${pc.eName}${pc.componentsId}</b></td>
+														<td><b>${pc.eName}</b></td>
 														<td align="right">
 														<c:if test="${(pc.amountProposed+pc.addtionalRequirement)>0}">
 															<b><fmt:formatNumber type = "number"      maxFractionDigits = "3" value = "${pc.amountProposed+pc.addtionalRequirement}" /></b>
@@ -440,7 +443,8 @@
 									</table>
 								<c:if test="${sessionScope['scopedTarget.userPreference'].userType eq 'S'}">
 									<!-- <button data-ng-click="exportData()">Download Consolidated Report</button> -->
-								    <input type="button" class="btn bg-light-blue" data-ng-click="forwardPlan(true)" value="Forward Plan">
+									<c:if test="${buttonStatus}">
+								    <input type="button" class="btn bg-light-blue" data-ng-click="forwardPlan(true)" value="Forward Plan"></c:if>
 								</c:if>
 								</div>
 							</div>

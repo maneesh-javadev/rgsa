@@ -41,6 +41,19 @@ public class IecController {
 	@RequestMapping(value = "iec", method = RequestMethod.GET)
 	private String IecGet(@ModelAttribute("IEC_ACTIVITY") IecModel iecModel, Model model ,HttpServletRequest request,@RequestParam(value = "iecId", required = false) Integer iecId,RedirectAttributes redirectAttributes) {
 		
+		Integer planStatus=userPreference.getPlanStatus();	
+	    Boolean flag= false;
+        if(planStatus!=null && planStatus==1 && userPreference.getUserType().equalsIgnoreCase("S")) {
+        	flag = true;
+		}else if(planStatus!=null && planStatus==2 && userPreference.getUserType().equalsIgnoreCase("M")) {
+			flag = true;
+		}
+      	else {
+      		flag= false;
+      	}
+	      model.addAttribute("Plan_Status", flag);
+	      model.addAttribute("STATE_CODE", userPreference.getStateCode());
+	      
 		String status = basicInfoService.fillFirstBasicInfo();
 		if(status.equals("create")) {
 			redirectAttributes.addFlashAttribute(Message.EXCEPTION_KEY, "Please fill the Basic Info Details first");
@@ -58,10 +71,12 @@ public class IecController {
 			if (iecActivity != null) {
 				/*iecModel.put("iecId", iecId);*/
 				model.addAttribute("IEC_LIST",iecActivity);
+				model.addAttribute("IEC_LIST_DETAILS",iecActivity.getIecActivityDetails());
 			}
 			
 				if(userPreference.getUserType().equalsIgnoreCase("C"))
 			{
+					
 					IecActivity iecActivityForState = service.fetchIecDetail("S");
 					IecActivity iecActivityForMopr =service.fetchIecDetail("M");
 					long totalAmount =0;
@@ -77,25 +92,25 @@ public class IecController {
 				
 					return IEC_CEC;
 					}
-			Integer planStatus=userPreference.getPlanStatus();	
-		    Boolean flag= false;
-	        if(planStatus!=null && planStatus==1 && userPreference.getUserType().equalsIgnoreCase("S")) {
-	        	flag = true;
-			}else if(planStatus!=null && planStatus==2 && userPreference.getUserType().equalsIgnoreCase("M")) {
-				flag = true;
-			}
-	      	else {
-	      		flag= false;
-	      	}
-		      model.addAttribute("Plan_Status", flag);
-		      model.addAttribute("STATE_CODE", userPreference.getStateCode());
+			
 			return IEC;
 		}
 
 	@RequestMapping(value = "iec", method = RequestMethod.POST)
 	private String saveIec(@ModelAttribute("IEC_ACTIVITY") IecModel iecModel, Model model ,  RedirectAttributes redirectAttributes)  {
-			
+		
 		service.save(iecModel.getIecActivity());
+		if(userPreference.getUserType().equalsIgnoreCase("S")) {
+			
+			if(iecModel!=null && iecModel.getIdToDeleteStr()!=null && iecModel.getIdToDeleteStr().length()>0)
+			{
+				String idArr[]=iecModel.getIdToDeleteStr().split(",");
+				for(int i=0;i<idArr.length;i++) {
+					service.delete(Integer.parseInt((idArr[i])));
+				}
+				
+			}
+		}
 		
 		redirectAttributes.addFlashAttribute(Message.SUCCESS_KEY, Message.SAVE_SUCCESS);
 	

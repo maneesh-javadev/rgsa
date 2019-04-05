@@ -58,7 +58,7 @@
 									      <!-- Modal content-->
 									      <div class="modal-content">
 									        <div class="modal-header">
-											  <button type="button" class="close" data-dismiss="modal">&times;</button>
+											  <!-- <button type="button" class="close" data-dismiss="modal">&times;</button> -->
 									          <h4 class="modal-title" id="garamPanchayatHead"></h4>
 									        </div>
 									        <div class="modal-body" >
@@ -73,6 +73,11 @@
 									    </div>
 									  </div>	
 									<!-- Modal content summary#end-->
+									
+									<div class="form-group">
+									<span class="errormessage" id="errorMessage"></span><br/>
+									</div>
+									
 									
 										<div class="table-responsive">
 										
@@ -127,9 +132,9 @@
 											</table>
 										</div>
 									   	<div class="form-group text-right">
-									   	    <button ng-click="savePanchayatBhawanData()" type="button" class="btn bg-green waves-effect" ><spring:message code="Label.SAVE" htmlEscape="true"/></button> 
+									   	    <button ng-click="savePanchayatBhawanData()" ng-show="isSaveVisible" type="button" class="btn bg-green waves-effect" ><spring:message code="Label.SAVE" htmlEscape="true"/></button> 
 									   		
-									   		<button type="button" data-ng-show="panchayatBhawanActivity.status != 'F'"  class="btn bg-light-blue waves-effect" data-ng-click="claerAll()">
+									   		<button type="button"  class="btn bg-light-blue waves-effect" data-ng-click="claerAll()">
 									   			<spring:message code="Label.CLEAR" htmlEscape="true" />
 									   		</button>
 											<button type="button" onclick="onClose('home.html?<csrf:token uri='home.html'/>')" class="btn bg-orange waves-effect">

@@ -4,7 +4,7 @@
 enablement.service('enablementService', [ '$http', function($http) {
 	
 	this.getEEnablementMaster = function() {
-		return $http.get("fetchEEnablemenEntityList.html?<csrf:token uri=fetchEEnablemenEntityList.htm/>");
+		return $http.get("fetchEEnablemenEntityListCEC.html?<csrf:token uri=fetchEEnablemenEntityListCEC.htm/>");
 	};
 	
 	this.getAllDistrict = function() {

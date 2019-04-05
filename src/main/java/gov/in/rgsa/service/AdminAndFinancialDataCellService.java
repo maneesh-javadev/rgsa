@@ -4,6 +4,7 @@ import java.util.List;
 
 import gov.in.rgsa.entity.AdminAndFinancialDataActivity;
 import gov.in.rgsa.entity.AdminFinancialDataCellActivityDetails;
+import gov.in.rgsa.entity.QprAdminAndFinancialDataActivityDetails;
 
 public interface AdminAndFinancialDataCellService {
 
@@ -12,5 +13,10 @@ public interface AdminAndFinancialDataCellService {
 	public List<AdminAndFinancialDataActivity> fetchAdminAndFinancialActivity(final String userType);
 
 	public List<AdminFinancialDataCellActivityDetails> fetchAdminAndFinancialDetails(Integer adminFinancialDataActivityId);
+
+	public List<AdminAndFinancialDataActivity> fetchApprovedActivity();
+
+	public List<QprAdminAndFinancialDataActivityDetails> getPmuProgressActBasedOnActIdAndQtrId(
+			Integer adminFinancialDataActivityId, int quarterId);
 
 }

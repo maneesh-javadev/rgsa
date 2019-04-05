@@ -4,6 +4,7 @@
 <script>
 
 $('document').ready(function(){
+	calculateTotal();
 	if(document.getElementById("ISFREEZE") != null){
 		var myBoolean= document.getElementById("ISFREEZE").value;
 	}
@@ -81,6 +82,7 @@ $('document').ready(function(){
 			alert("Additional Requirement should be smaller than or equal to 25% of Fund="+ 0.25*grand_total+"");
 			document.getElementById("additionalRequirement").value=0;
 		}
+		calculateGrandTotal();
 	}
 	
 	function validateCeilingValue(count){
@@ -133,13 +135,13 @@ function freezeAndUnfreeze(obj){
 }
 
 function onLoadChangeColor(){
-	var rowCount = $('#tbody tr').length - 3; /* minus 3 is done because length is counting additional requirement, total fund and grand total and we dont need it*/
-	var rowModal1 =  $('#modal1Tbody tr').length;
+	var rowCount = $('#tbodyMainTableId tr').length - 3; /* minus 3 is done because length is counting additional requirement, total fund and grand total and we dont need it*/
+	var rowModal1 =  $('#tbodySprcId tr').length;
 	var rowModal2 = $('#modal2Tbody tr').length;
  	for(var i=0;i<rowCount;i++){
 		/* +$("#noOfUnitsState_"+i).text() > +$("#noOfUnits_"+i).val() ? $("#noOfUnitsState_"+i).css('color','red') : $("#noOfUnitsState_"+i).css('color','#00cc00');
-		+$("#unitCostState_"+i).text() > +$("#unitCost_"+i).val() ? $("#unitCostState_"+i).css('color','red') : $("#unitCostState_"+i).css('color','#00cc00');
-		+$("#noOfMonthsState_"+i).text() > +$("#noOfMonths_"+i).val() ? $("#noOfMonthsState_"+i).css('color','red') : $("#noOfMonthsState_"+i).css('color','#00cc00'); */
+		+$("#unitCostState_"+i).text() > +$("#unitCost_"+i).val() ? $("#unitCostState_"+i).css('color','red') : $("#unitCostState_"+i).css('color','#00cc00'); */
+		+$("#noOfMonthsState_"+i).text() > +$("#noOfMonths_"+i).val() ? $("#noOfMonthsState_"+i).css('color','red') : $("#noOfMonthsState_"+i).css('color','#00cc00');
 		+$("#noOfUnitsState_"+i).text() > +$("#noOfUnits_"+i).val() ? $("#noOfUnitsState_"+i).css('color','red') : $("#noOfUnitsState_"+i).css('color','#00cc00');
 		if($("#fund"+i).val() == undefined){
 			$("#fund"+i).val(0);
@@ -150,12 +152,12 @@ function onLoadChangeColor(){
 	+$("#additionalRequirementState").text() > +$("#additionalRequirement").val() ? $("#additionalRequirementState").css('color','red') : $("#additionalRequirementState").css('color','#00cc00');
 	+$("#grandTotalState").text() > +$("#grandTotal").val() ? $("#grandTotalState").css('color','red') : $("#grandTotalState").css('color','#00cc00');
 	
-	/* for(var j=0;j < rowModal1 ;j++){
+	for(var j=0;j < rowModal1 ;j++){
 		+$("#noOfFacultyState_"+j).text() > +$("#noOfFaculty_"+j).val() ? $("#noOfFacultyState_"+j).css('color','red') : $("#noOfFacultyState_"+j).css('color','#00cc00');
 	}
 	for(var j=3 ; j < rowModal2 + 3 ; j++){
 		+$("#noOfExpertState_"+j).text() > +$("#noOfExpert_"+j).val() ? $("#noOfExpertState_"+j).css('color','red') : $("#noOfExpertState_"+j).css('color','#00cc00');
-	} */
+	} 
 }
 
 function domainValidation(obj){
@@ -164,17 +166,94 @@ function domainValidation(obj){
 	var noOfDomainDprc=0;
 	for(var i=0;i<rowCountSprc;i++){
 		noOfDomainSprc += Number($('#noOfFaculty_'+i).val()) ;
-		noOfDomainDprc += Number($('#noOfExperts_'+(i+3)).val());
+		noOfDomainDprc += Number($('#noOfExpert_'+(i+3)).val());
 	}
+	if(!isNaN(obj)){
 	if($('#noOfUnits_0').val() < noOfDomainSprc){
 		alert('Total domains experts should be equal to or less than '+ $('#noOfUnits_0').val());
 		$('#noOfFaculty_'+obj).val('');
 	}else if($('#noOfUnits_3').val() < noOfDomainDprc){
 		alert('Total domains experts should be equal to or less than '+ $('#noOfUnits_3').val());
-		$('#noOfExperts_'+obj).val('');
+		$('#noOfExpert_'+obj).val('');
+	}
+	}else{ if(obj == 'noOfUnits'){
+		var result= confirm("If you change No. of units you have to fill domain details again.Do you still want to continue?");
+		if(result){
+		if($('#noOfUnits_0').val() < noOfDomainSprc){
+			alert('No of units in SPRC should not exceed the sum of domain detail '+ noOfDomainSprc);
+			emptyDomainDetails('sprc',rowCountSprc)
+		}else if($('#noOfUnits_3').val() < noOfDomainDprc){
+			alert('No of units in DPRC should not exceed the sum of domain detail '+ noOfDomainDprc);
+			emptyDomainDetails('dprc',rowCountSprc)
+		}
+		}
+	}
 	}
 }
 
+function emptyDomainDetails(level,count){
+	if(level == 'sprc'){
+		for(var i=0;i<count;i++){
+			$('#noOfFaculty_'+i).val('');
+		}
+	}else{
+		for(var i=3;i<count;i++){
+			$('#noOfExpert_'+i).val('');
+		}
+	}
+}
+
+function validationOnSubmit(){
+	var rowCountSprc=$('#tbodySprcId tr').length;
+	var flag= true;
+	
+	if($('#noOfUnits_0').val() == "" || $('#noOfUnits_0').val() == null){
+		for(var i=0;i<rowCountSprc;i++){
+			if($('#noOfFaculty_'+i).val() != "" || $('#noOfFaculty_'+i).val() != ""){
+				flag=false;
+			}else{
+				break;
+			}
+		}
+		}else{
+			for(var i=0;i<rowCountSprc;i++){
+			if($('#noOfFaculty_'+i).val() == "" || $('#noOfFaculty_'+i).val() == ""){
+				flag=false;
+			}else{
+				break;
+			}
+			}
+		}
+	  if($('#noOfUnits_3').val() == "" || $('#noOfUnits_3').val() == null){
+		for(var i=0;i<rowCountSprc;i++){
+		if($('#noOfExpert_'+(i+3)).val() != "" || $('#noOfExpert_'+(i+3)).val() != ""){
+			flag=false;
+		}else{
+			break;
+		}
+		}
+	}else{
+		for(var i=0;i<rowCountSprc;i++){
+		if($('#noOfExpert_'+(i+3)).val() == "" || $('#noOfExpert_'+(i+3)).val() == ""){
+			flag=false;
+		}else{
+			break;
+		}
+		}
+	}
+	
+	if(+$('#activedropdown').val() == 0 && $('#noOfUnits_3').val() != ""){
+		alert("please select district in domain detail of DPRC.");
+		return flag=false;
+	}  
+	  
+	if(($('#noOfUnits_3').val() == "" || $('#noOfUnits_0').val() == "") && flag == false){
+		alert("Fill the number of units first.");
+	}else if(!flag){
+		alert("Fill the domain details first.");
+	}
+	return flag;
+}
 </script>
 <section class="content">
 	<div class="container-fluid">
@@ -189,7 +268,7 @@ function domainValidation(obj){
 					</div>
 					<form:form method="post" name="additionalFacultyAndMain"
 						action="addFacultyAndMaintenanceHrBudget.html"
-						modelAttribute="ADDITIONAL_FACULTY_MAINT_MODEL">
+						modelAttribute="ADDITIONAL_FACULTY_MAINT_MODEL" onsubmit="return validationOnSubmit()">
 						<input type="hidden" name="<csrf:token-name/>"
 							value="<csrf:token-value uri="addFacultyAndMaintenanceHrBudget.html" />" />
 						<div class="body">
@@ -256,7 +335,7 @@ function domainValidation(obj){
 														</div></th>
 												</tr>
 											</thead>
-											<tbody id="tbody">
+											<tbody id="tbodyMainTableId">
 												<c:set var="count" value="0" scope="page" />
 												<c:forEach items="${LIST_OF_ACTIVITY_HR_TYPE}"
 													var="ACTIVITY">
@@ -284,7 +363,8 @@ function domainValidation(obj){
 																path="institueInfraHrActivityDetails[${count}].noOfUnits"
 																onkeypress="return isNumber(event)"
 																class="active12 form-control Align-Right"
-																onkeyup="onLoadChangeColor()"
+																onkeyup="onLoadChangeColor();"
+																onchange="domainValidation('noOfUnits')"
 																id="noOfUnits_${count}" />
 																</c:if>
 														</td>
@@ -300,11 +380,14 @@ function domainValidation(obj){
 																onkeyup="calculateFund(${count});validateCeilingValue(${count});onLoadChangeColor()" /></td> --%>
 
 														<td>
-															<div align="center" id="noOfMonthsState_${count}">${institueInfraHrActivityDetailsState[count].noOfMonths}</div>
-															<form:hidden
-																path="institueInfraHrActivityDetails[${count}].noOfMonths"
-																value="${institueInfraHrActivityDetailsState[count].noOfMonths}"
-																id="noOfMonths_${count}" />
+														<c:if test="${count ne 2 and count ne 5}">
+																<div align="center" id="noOfMonthsState_${count}">${institueInfraHrActivityDetailsState[count].noOfMonths}</div>
+																<form:input
+																	path="institueInfraHrActivityDetails[${count}].noOfMonths"
+																	onkeypress="return isNumber(event)"
+																	class="active12 form-control Align-Right"
+																	onkeyup="onLoadChangeColor()" id="noOfMonths_${count}" />
+															</c:if>
 														</td>
 
 														<td>
@@ -314,7 +397,7 @@ function domainValidation(obj){
 																readonly="" type="text"
 																onkeypress="return isNumber(event)"
 																class="active12 form-control Align-Right"
-																onkeyup="calculateTotal(${count});onLoadChangeColor()" id="fund_${count}" />
+																onkeyup="calculateTotal(${count});onLoadChangeColor();validateCeilingValue(${count})" id="fund_${count}" />
 														</td>
 
 														<c:choose>
@@ -438,7 +521,7 @@ function domainValidation(obj){
 																					</div></th>
 																			</tr>
 																		</thead>
-																		<tbody id="modal1Tbody">
+																		<tbody id="tbodySprcId">
 																			<c:set var="temp" value="0" scope="page" />
 																			<c:forEach items="${LIST_OF_DOMAINS}" var="DOMAINS">
 																				<c:if
@@ -450,13 +533,21 @@ function domainValidation(obj){
 																							<input type="hidden"
 																							name="tIWiseProposedDomainExperts[${temp}].domainId"
 																							value="${DOMAINS.domainId}"></th>
+																							
 																						<td>
+																						<div align="center" id="noOfFacultyState_${temp}">${tIWiseProposedDomainExpertsState[temp].noOfExperts}</div>
+																						<form:input
+																							path="tIWiseProposedDomainExperts[${temp}].noOfExperts"
+																							onkeyup="onLoadChangeColor();domainValidation(${temp})"
+																							class="active12 form-control Align-Right"
+																							id="noOfFaculty_${temp}" /></td>	
+																						<%-- <td>
 																							<div align="center" id="noOfFacultyState_${temp}">${tIWiseProposedDomainExpertsState[temp].noOfExperts}</div>
 																							<form:hidden
 																								path="tIWiseProposedDomainExperts[${temp}].noOfExperts"
 																								value="${tIWiseProposedDomainExpertsState[temp].noOfExperts}"
 																								id="noOfFaculty_${temp}" />
-																						</td>
+																						</td> --%>
 																					</tr>
 																				</c:if>
 																				<c:set var="temp" value="${temp+1}" scope="page" />
@@ -552,13 +643,22 @@ function domainValidation(obj){
 																							<input type="hidden"
 																							name="tIWiseProposedDomainExperts[${index}].domainId"
 																							value="${DOMAINS.domainId}"></th>
+																							
 																						<td>
+																						<div align="center" id="noOfExpertState_${index}">${tIWiseProposedDomainExpertsState[index].noOfExperts}</div>
+																						<form:input
+																							path="tIWiseProposedDomainExperts[${index}].noOfExperts"
+																							onkeyup="onLoadChangeColor();domainValidation(${index})"
+																							id="noOfExpert_${index}" 
+																							class="active12 form-control Align-Right" /></td>
+																								
+																						<%-- <td>
 																							<div align="center" id="noOfExpertState_${index}">${tIWiseProposedDomainExpertsState[index].noOfExperts}</div>
 																							<form:hidden
 																								path="tIWiseProposedDomainExperts[${index}].noOfExperts"
 																								value="${tIWiseProposedDomainExpertsState[index].noOfExperts}"
 																								id="noOfExpert_${index}" />
-																						</td>
+																						</td> --%>
 																					</tr>
 																				</c:if>
 																				<c:set var="index" value="${index+1}" scope="page" />
@@ -935,6 +1035,7 @@ function domainValidation(obj){
 									</div>
 								</div>
 							</div>
+						</div>
 						</div>
 					</form:form>
 				</div>

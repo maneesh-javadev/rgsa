@@ -7,6 +7,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
@@ -17,7 +18,10 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name="training_target_groups" , schema="rgsa")
-@NamedQuery(name="DELETE_TARGETGRP_TRAINING_ID" , query="delete from TrainingTargetGroups where targetTrainingActivityDetails.trainingActivityDetailsId=:trngId")
+@NamedQueries({
+@NamedQuery(name="DELETE_TARGETGRP_TRAINING_ID" , query="delete from TrainingTargetGroups where targetTrainingActivityDetails.trainingActivityDetailsId=:trngId"),
+@NamedQuery(name="FETCH_TARGETGRP_TRAINING_ID" , query="from TrainingTargetGroups where targetTrainingActivityDetails.trainingActivityDetailsId=:trngId")
+})
 public class TrainingTargetGroups {
 	
 	@Id

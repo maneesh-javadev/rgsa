@@ -182,7 +182,9 @@ function validatingTotalProposedFund(){
 													<%-- <td><form:input path="adminFinancialDataCellActivityDetails[${index.index}].otherExpenses" type="text" class="form-control Align-Right" onkeypress="return isNumber(event)" onkeyup="calculateSubTotal(${index.index})" id="otherExpensesId_${index.index}" readonly="${IS_FREEZE eq true}"/></td>
 													<td><form:input path="adminFinancialDataCellActivityDetails[${index.index}].subTotal" type="text" class="form-control Align-Right" readonly="true" id="subTotalId_${index.index}"/></td> --%>
 													<c:if test="${USER_TYPE eq 'M' or USER_TYPE eq 'C'}">
-													<td><form:checkbox path="adminFinancialDataCellActivityDetails[${index.index}].isApproved" class="form-check-input" disabled="${IS_FREEZE eq true}"/></td>
+													<td><form:checkbox path="adminFinancialDataCellActivityDetails[${index.index}].isApproved" class="form-check-input" disabled="${IS_FREEZE eq true}"/>
+														<c:if test="${IS_FREEZE }"><form:hidden path="adminFinancialDataCellActivityDetails[${index.index}].isApproved" /></c:if>
+													</td>
 													</c:if>
 													<td><form:textarea path="adminFinancialDataCellActivityDetails[${index.index}].remarks" rows="2" cols="5" readonly="${IS_FREEZE eq true}"/></td>
 												</tr>

@@ -32,7 +32,10 @@ import org.hibernate.annotations.UpdateTimestamp;
 @NamedQuery(name="FIND_ALL_TRAINING_ACTIVITY",query="from TrainingActivity TA WHERE TA.yearId=:yearId and TA.stateCode=:stateCode and TA.userType=:userType"),
 @NamedQuery(name="UPDATE_FRZUNFRZ_STATUS",query="UPDATE TrainingActivity SET  isFreeze=:isFreeze where trainingActivityId=:trainingActivityId"),
 @NamedQuery(name="GET_APPROVED_TRAINING", 
-query="SELECT TA from TrainingActivity TA RIGHT OUTER JOIN FETCH TA.trainingActivityDetailsList TAD where TA.yearId=:yearId and TAD.isActive='TRUE' and TA.userType=:userType and TA.stateCode=:stateCode and TAD.isApproved='TRUE' ")
+query="SELECT TA from TrainingActivity TA RIGHT OUTER JOIN FETCH TA.trainingActivityDetailsList TAD where TA.yearId=:yearId and TAD.isActive='TRUE' and TA.userType=:userType and TA.stateCode=:stateCode and TAD.isApproved='TRUE' "),
+@NamedQuery(name="FIND_ALL_TRAINING_ACTIVITY_BY_ID",query="FROM TrainingActivity  where trainingActivityId=:trainingActivityId"),
+@NamedQuery(name="UPDATE_Training_Activity",query="UPDATE TrainingActivity SET  isFreeze=:isFreeze,additionalRequirement =:additionalRequirement where trainingActivityId=:trainingActivityId"),
+@NamedQuery(name="FIND_ALL_TRAINING_ACTIVITY_BY_ID",query="from TrainingActivity WHERE trainingActivityId=:trainingActivityId")
 })
 public class TrainingActivity {
 
@@ -81,6 +84,9 @@ public class TrainingActivity {
 	
 	@Transient
 	private Integer idToEdit;
+	
+	@Transient
+	private String idToDelete;
 	
 	@Transient
 	private Integer catgryId;
@@ -204,5 +210,15 @@ public class TrainingActivity {
 	public void setMenuId(Integer menuId) {
 		this.menuId = menuId;
 	}
+
+	public String getIdToDelete() {
+		return idToDelete;
+	}
+
+	public void setIdToDelete(String idToDelete) {
+		this.idToDelete = idToDelete;
+	}
+	
+	
 	
 }

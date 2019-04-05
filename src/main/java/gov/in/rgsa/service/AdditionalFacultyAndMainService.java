@@ -33,5 +33,7 @@ public interface AdditionalFacultyAndMainService {
 
 	public List<InstitueInfraHrActivityDetails> fetchInstituteHrActivityApprovedDetails(Integer instituteInfraHrActivityId);
 
+	public List<TIWiseProposedDomainExperts> fetchTiWiseDomainExpertById(Integer instituteInfraHrActivityId);
+
 
 }

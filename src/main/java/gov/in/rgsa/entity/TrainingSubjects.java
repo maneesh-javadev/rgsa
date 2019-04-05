@@ -18,7 +18,10 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name="training_subjects" ,schema="rgsa")
-@NamedQuery(name="DELETE_TRANGSUBJCT_TRAINING_ID" , query="delete from TrainingSubjects where subjectsTrainingActivityDetails.trainingActivityDetailsId=:trngId")
+@NamedQueries({
+@NamedQuery(name="DELETE_TRANGSUBJCT_TRAINING_ID" , query="delete from TrainingSubjects where subjectsTrainingActivityDetails.trainingActivityDetailsId=:trngId"),
+@NamedQuery(name="FETCH_TRANGSUBJCT_TRAINING_ID" , query="from TrainingSubjects where subjectsTrainingActivityDetails.trainingActivityDetailsId=:trngId")
+})
 public class TrainingSubjects {
 	
 	@Id

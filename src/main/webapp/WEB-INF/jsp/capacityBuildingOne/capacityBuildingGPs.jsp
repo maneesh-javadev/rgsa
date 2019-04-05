@@ -7,8 +7,8 @@
 	<script type="text/javascript" src="${pageContext.request.contextPath}/resources/plugins/dataTables/js/jquery.dataTables.js"></script>
 	<script type="text/javascript" src="${pageContext.request.contextPath}/resources/plugins/dataTables/js/dataTables.bootstrap.min.js"></script>
 	<script  type="text/javascript" src="${pageContext.request.contextPath}/resources/plugins/angular/angular.min.js"></script>
-		<script src="http://angular-ui.github.io/bootstrap/ui-bootstrap-tpls-0.11.0.js"></script>
-    <link href="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" rel="stylesheet">
+	<script src="${pageContext.request.contextPath}/resources/plugins/angular/ui-bootstrap-tpls-0.11.0.js"></script>
+   <link href="${pageContext.request.contextPath}/resources/css/bootstrap.min.css" rel="stylesheet">
 	
     <script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/capacityBuilding/capacityBuildingGPs/capacityBuildingGPsController.js"></script>
 	<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/capacityBuilding/capacityBuildingGPs/capacityBuildingGPsService.js"></script>
@@ -56,7 +56,7 @@
 									      <!-- Modal content-->
 									      <div class="modal-content">
 									        <div class="modal-header">
-											  <button type="button" class="close" data-dismiss="modal">&times;</button>
+											 <!--  <button type="button" class="close" data-dismiss="modal">&times;</button> -->
 									          <h4 class="modal-title" id="garamPanchayatHead"></h4>
 									        </div>
 									        <div class="modal-body" >
@@ -71,6 +71,10 @@
 									    </div>
 									  </div>	
 									<!-- Modal content summary#end-->
+									<div class="form-group">
+									<span class="errormessage" id="errorMessage"></span><br/>
+									</div>
+									
 									
 										<div class="table-responsive">
 										
@@ -95,7 +99,20 @@
 												<c:set var="count" value="0"></c:set>
 													<tr ng-repeat="cbmaster in cbmasters " data-ng-if="cbmaster.cbMasterId == 5 || cbmaster.cbMasterId == 6|| cbmaster.cbMasterId == 7 || cbmaster.cbMasterId == 8">
 													
-														<td>{{cbmaster.cbName}}
+														<td>
+														{{cbmaster.cbName}}
+														<div data-ng-if="cbmaster.cbMasterId == 5">
+														( {{selGPs1}}/{{totGPS1}})
+														</div>
+														<div data-ng-if="cbmaster.cbMasterId == 6">
+														( {{selGPs4}}/{{totGPS4}})
+														</div>
+														<div data-ng-if="cbmaster.cbMasterId == 7">
+														( {{selGPs2}}/{{totGPS2}})
+														</div>
+														<div data-ng-if="cbmaster.cbMasterId == 8">
+														( {{selGPs3}}/{{totGPS3}})
+														</div>
 														</td>
 														<td>
 															<div data-ng-if="cbmaster.cbMasterId == 6">

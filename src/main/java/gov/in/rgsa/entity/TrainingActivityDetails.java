@@ -10,6 +10,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
@@ -26,7 +27,12 @@ import org.hibernate.annotations.LazyCollectionOption;
 
 @Entity
 @Table(name="training_activity_details" , schema="rgsa")
-@NamedQuery(name="UPDATE_DELETE_STATUS",query="UPDATE TrainingActivityDetails SET isActive = 'FALSE' where trainingActivityDetailsId=:trainingActivityDetailsId")
+@NamedQueries({
+@NamedQuery(name="UPDATE_DELETE_STATUS",query="UPDATE TrainingActivityDetails SET isActive = 'FALSE' where trainingActivityDetailsId=:trainingActivityDetailsId"),
+@NamedQuery(name="FIND_TrainingActivityDetails_BY_ID",query="FROM TrainingActivityDetails  where trainingActivityDetailsId=:trainingActivityDetailsId and isActive=true"),
+@NamedQuery(name="UPDATE_DELETE_STATUS_BY_MULTIPLE_ID",query="UPDATE TrainingActivityDetails SET isActive = 'FALSE' where trainingActivityDetailsId in(:trainingActivityDetailsId)"),
+
+})
 @DynamicUpdate
 public class TrainingActivityDetails {
 

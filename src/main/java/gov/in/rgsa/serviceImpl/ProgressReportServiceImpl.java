@@ -4,6 +4,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -29,6 +33,8 @@ import gov.in.rgsa.entity.QprInnovativeActivity;
 import gov.in.rgsa.entity.QprInnovativeActivityDetails;
 import gov.in.rgsa.entity.QprTnaTrgEvaluation;
 import gov.in.rgsa.entity.QuarterDuration;
+import gov.in.rgsa.entity.QuaterWiseFund;
+import gov.in.rgsa.entity.StateAllocation;
 import gov.in.rgsa.entity.TrainingDetailsProgressReport;
 import gov.in.rgsa.entity.TrainingProgressReport;
 import gov.in.rgsa.service.ProgressReportService;
@@ -44,8 +50,12 @@ public class ProgressReportServiceImpl implements ProgressReportService{
 	@Autowired
 	private UserPreference userPreference;
 	
+	@PersistenceContext
+	private EntityManager entityManager;
+	
 	@Override
 	public List<QuarterDuration> getQuarterDurations() {
+		System.out.println("in am in method");
 		return commonRepository.findAll("FETCH_QUARTER_DURATION", null);
 	}
 
@@ -271,7 +281,6 @@ public class ProgressReportServiceImpl implements ProgressReportService{
 
 	@Override
 	public void saveInfraActivity(InstitutionalInfraActivityPlanProgress institutionalInfraActivityPlanProgress) {
-		// TODO Auto-generated method stub
 		
 	}
 	
@@ -306,39 +315,30 @@ public class ProgressReportServiceImpl implements ProgressReportService{
 	@Override
 	public void savePmu(PmuProgress pmuProgress) {
 		
-		
-		if(pmuProgress.getQprPmuId() == null) {
-			List<PmuProgressDetails> pmuProgressDetails = pmuProgress.getPmuProgressDetails();
-				
-			pmuProgress.setLastUpdatedBy(userPreference.getUserId());
-			pmuProgress.setCreatedBy(userPreference.getUserId());
+		List<PmuProgressDetails> pmuProgressDetails = pmuProgress.getPmuProgressDetails();
+		pmuProgress.setLastUpdatedBy(userPreference.getUserId());
+		pmuProgress.setCreatedBy(userPreference.getUserId());
+		if (pmuProgress.getQprPmuId() == null) {
 			pmuProgress.setQuarterDuration(pmuProgress.getQuarterDuration());
-			
+
 			for (PmuProgressDetails Details : pmuProgressDetails) {
-				if(Details != null)
-				{
-									Details.setPmuProgress(pmuProgress);
-									
-			    }
-				}	
+				if (Details != null) {
+					Details.setPmuProgress(pmuProgress);
+				}
+			}
 			commonRepository.save(pmuProgress);
+		}else{
+			pmuProgress.setQuarterDuration(pmuProgress.getQuarterDuration());
+			for (PmuProgressDetails Details : pmuProgressDetails) {
+				if (Details != null) {
+					Details.setPmuProgress(pmuProgress);
+				}
 			}
-			else
-			{
-				List<PmuProgressDetails> pmuProgressDetails = pmuProgress.getPmuProgressDetails();
-				pmuProgress.setQuarterDuration(pmuProgress.getQuarterDuration());
-				for (PmuProgressDetails Details : pmuProgressDetails) {
-					if(Details != null)
-					{
-										Details.setPmuProgress(pmuProgress);
-										
-				    }
-					}	
-				commonRepository.update(pmuProgress);
-			}
+			commonRepository.update(pmuProgress);
+		}
 		
-		
-		
+		/* this method is to insert and update record in quater_wise_fund table*/
+		saveQprWiseFundData(userPreference.getStateCode(),userPreference.getFinYearId(),pmuProgress.getQuarterDuration().getQtrId(),12);
 	}
 
 	@Override
@@ -420,27 +420,25 @@ public class ProgressReportServiceImpl implements ProgressReportService{
 
 	@Override
 	public void saveIec(IecQuater iecQuater) {
-		// TODO Auto-generated method stub
+		iecQuater.setCreatedBy(userPreference.getUserId());
+		iecQuater.setIsFreeze(false);
+		iecQuater.setLastUpdatedBy(userPreference.getUserId());
 		if(iecQuater.getQprIecId() == null){
-			iecQuater.setCreatedBy(userPreference.getUserId());
-			iecQuater.setIsFreeze(false);
-			iecQuater.setLastUpdatedBy(userPreference.getUserId());
-			
 			List<IecQuaterDetails> iecQuaterDetail = iecQuater.getIecQuaterDetails();
 				for(IecQuaterDetails iecQuaterDetails : iecQuaterDetail){
 					iecQuaterDetails.setIecQuater(iecQuater);
 				}
-				commonRepository.save(iecQuater);
+			commonRepository.save(iecQuater);
 		}
 		else{
-			iecQuater.setIsFreeze(false);
-			iecQuater.setLastUpdatedBy(userPreference.getUserId());
 			List<IecQuaterDetails> iecQuaterDetail = iecQuater.getIecQuaterDetails();
 			for(IecQuaterDetails iecQuaterDetails : iecQuaterDetail){
 				iecQuaterDetails.setIecQuater(iecQuater);
 			}
 			commonRepository.update(iecQuater);
 		}
+		/* this method is to insert and update record in quater_wise_fund table*/
+		saveQprWiseFundData(userPreference.getStateCode(),userPreference.getFinYearId(),iecQuater.getQuarterDuration().getQtrId(),11);
 	}
 
 	@Override
@@ -549,10 +547,8 @@ public class ProgressReportServiceImpl implements ProgressReportService{
 			}
 			commonRepository.update(qprEnablement);
 		}
-		
-		
-		
-		
+		/* this method is to insert and update record in quater_wise_fund table*/
+		saveQprWiseFundData(userPreference.getStateCode(),userPreference.getFinYearId(),qprEnablement.getQuarterDuration().getQtrId(),5);
 	}
 
 	@Override
@@ -606,12 +602,10 @@ public class ProgressReportServiceImpl implements ProgressReportService{
 	}
 
 	@Override
-	public QprAdminAndFinancialDataActivity fetchQprAdminFin(int quarterId) {
+	public QprAdminAndFinancialDataActivity fetchQprAdminFin(int activityId,int quarterId) {
 		List<QprAdminAndFinancialDataActivity> qprAdminAndFinancialDataActivities =null;
 		Map<String, Object> params = new HashMap<>();
-		params.put("stateCode", userPreference.getStateCode());
-		params.put("yearId", userPreference.getFinYearId());
-		params.put("userType", userPreference.getUserType());
+		params.put("activityId", activityId);
 		params.put("quarterId",quarterId);
 		qprAdminAndFinancialDataActivities = commonRepository.findAll("QPR_ADMIN_FINANCIALDATA_ACTIVITY_REPORT_BASED_ON_QUARTER", params);
 		if(!qprAdminAndFinancialDataActivities.isEmpty()){
@@ -626,28 +620,70 @@ public class ProgressReportServiceImpl implements ProgressReportService{
 		qprAdminAndFinancialDataActivity.setCreatedOn(qprAdminAndFinancialDataActivity.getCreatedOn());
 		qprAdminAndFinancialDataActivity.setLastUpdatedBy(userPreference.getUserId());
 		qprAdminAndFinancialDataActivity.setLastUpdatedOn(qprAdminAndFinancialDataActivity.getLastUpdatedOn());
-	
-		if(qprAdminAndFinancialDataActivity.getQprAfpId()== null)
-		{
-			
 		List<QprAdminAndFinancialDataActivityDetails> qprAdminAndFinancialDataActivityDetails =qprAdminAndFinancialDataActivity.getQprAdminAndFinancialDataActivityDetails();
 		for(QprAdminAndFinancialDataActivityDetails qprAdminAndFinancialDataActivityDetail :qprAdminAndFinancialDataActivityDetails)
 		{
 			qprAdminAndFinancialDataActivityDetail.setQprAdminAndFinancialDataActivity(qprAdminAndFinancialDataActivity);
 		}
-		commonRepository.save(qprAdminAndFinancialDataActivity);
-		}
 		
-		else
-		{
-		
-			List<QprAdminAndFinancialDataActivityDetails> qprAdminAndFinancialDataActivityDetails =qprAdminAndFinancialDataActivity.getQprAdminAndFinancialDataActivityDetails();
-			for(QprAdminAndFinancialDataActivityDetails qprAdminAndFinancialDataActivityDetail :qprAdminAndFinancialDataActivityDetails)
-			{
-				qprAdminAndFinancialDataActivityDetail.setQprAdminAndFinancialDataActivity(qprAdminAndFinancialDataActivity);
-			}
+		if(qprAdminAndFinancialDataActivity.getQprAfpId()== null){
+			commonRepository.save(qprAdminAndFinancialDataActivity);
+		}else{
 			commonRepository.update(qprAdminAndFinancialDataActivity);
-		
-	}
+		}
+		/* this method is to insert and update record in quater_wise_fund table*/
+		saveQprWiseFundData(userPreference.getStateCode(),userPreference.getFinYearId(),qprAdminAndFinancialDataActivity.getQuarterDuration().getQtrId(),8);
 }
+	
+	@Override
+	public List<StateAllocation> fetchStateAllocationData(int componentId,int subCompnentId,int installmentNo) {
+		Map<String, Object> params=new HashMap<>();
+		params.put("componentId", componentId);
+		params.put("subCompnentId", subCompnentId);
+		params.put("installmentNo", installmentNo);
+		return commonRepository.findAll("FETCH_STATE_ALLOCATION_BY_COMP_ID", params);
+	}
+
+	@Override
+	public Boolean saveQprWiseFundData(int stateCode, int yearId, int quatorId, int componentId) {
+		Query query = entityManager.createNativeQuery("select * from rgsa.populate_quarter_wise_funds(:stateCode,:yearId,:quatorId,:componentId)");
+		query.setParameter("stateCode", stateCode);
+		query.setParameter("yearId", yearId);
+		query.setParameter("quatorId", quatorId);
+		query.setParameter("componentId", componentId);
+		 Boolean value = (Boolean) query.getSingleResult();
+		 return value;
+	}
+
+	@Override
+	public List<QuaterWiseFund> fetchQuaterWiseFundData(Integer stateCode, int quarterId, int componentId) {
+		Map<String, Object> params=new HashMap<>();
+		params.put("stateCode", stateCode);
+		params.put("quarterId", quarterId);
+		params.put("componentId", componentId);
+		return commonRepository.findAll("FETCH_QUATOR_WISE_FUND", params);
+	}
+
+	@Override
+	public List<QprEnablementDetails> fetchQprEnablementDetails(Integer qprEEnablementId) {
+		Map<String, Object> params=new HashMap<>();
+		params.put("qprEEnablementId", qprEEnablementId);
+		return commonRepository.findAll("FETCH_EENABLEMENT_QPR_DETAILS", params);
+	}
+
+	@Override
+	public List<QuaterWiseFund> fetchTotalQuaterWiseFundData(Integer stateCode, int componentId) {
+		Map<String, Object> params=new HashMap<>();
+		params.put("stateCode", stateCode);
+		params.put("componentId", componentId);
+		return commonRepository.findAll("FETCH_ALL_QUATOR_WISE_FUND", params);
+	}
+
+	@Override
+	public List<StateAllocation> fetchStateAllocationDataByCompIdandInstallNo(int componentId, int installmentNo) {
+		Map<String, Object> params=new HashMap<>();
+		params.put("componentId", componentId);
+		params.put("installmentNo", installmentNo);
+		return commonRepository.findAll("FETCH_STATE_ALLOCATION_BY_COMP_ID_AND_INSTALL_NO", params);
+	}
 }

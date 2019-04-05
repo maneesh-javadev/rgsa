@@ -2,6 +2,9 @@
 <html>
 <head>
 <script type="text/javascript">
+var deleteFile =new Map();
+var delTrainingIdArr=[];
+var finalDetailArr=[];
 	 $(document).ready(function() { 
 		 
 		if(document.getElementById("isfreeze") != null){
@@ -170,12 +173,56 @@ function pathImage(path,name){
 	document.getElementById("dbFileName").value = name;
 }
 function toDelete(idToDelete,path,name){
-	document.getElementById("idToDelete").value = idToDelete;
+	
+	if(!delTrainingIdArr.includes(idToDelete)){
+		 delTrainingIdArr.push(idToDelete);
+		 $("#delete"+idToDelete).val('Undo');
+		 $(".delete"+idToDelete).prop('disabled', true);
+		 $("#file"+idToDelete).prop('disabled', true);
+		 
+		 //$("#modifyButtn"+idToDelete).addClass('not-active');
+		 if(!deleteFile.has(idToDelete)){
+			 deleteFile.set(idToDelete,name);
+		}
+	  }else{
+		  var index = delTrainingIdArr.indexOf(idToDelete);
+		 	if (index > -1) {
+		 		delTrainingIdArr.splice(index, 1);
+		   }
+		 	
+		 	 if(deleteFile.has(idToDelete)){
+				 deleteFile.delete(idToDelete);
+			}
+		 	 $(".delete"+idToDelete).prop('disabled', false);
+		 	 $("#file"+idToDelete).prop('disabled', false);
+		 	  $("#delete"+idToDelete).val('Delete');
+			// $("#modifyButtn"+idToDelete).removeClass('not-active');
+	  }
+	
+	/* document.getElementById("idToDelete").value = idToDelete;
 	document.getElementById("path").value = path;
 	document.getElementById("dbFileName").value = name;
 	document.innovativeActivity.method = "post";
 	document.innovativeActivity.action = "deleteInnovativeActivity.html?<csrf:token uri='deleteInnovativeActivity.html'/>";
-	document.innovativeActivity.submit();
+	document.innovativeActivity.submit(); */
+}
+
+
+
+function saveSubmit(){
+	 $.each( delTrainingIdArr, function( index, value ) {
+	    	fname=deleteFile.get(value);
+	    	finalDetailArr.push(value+"@"+fname);
+	    	$(".delete"+value).prop('disabled', false);
+	    	$("#file"+value).prop('disabled', false);
+		});
+	 	
+		document.getElementById("dbFileName").value = finalDetailArr.toString();
+		document.getElementById("path").value = '${innovativeActivityDetails.fileLocation}';
+	
+	 document.innovativeActivity.method = "post";
+	document.innovativeActivity.action = "innovativeActivityDetails.html?<csrf:token uri='innovativeActivity.html'/>";
+	document.innovativeActivity.submit(); 
 }
 
 function freezUnfreez(obj){
@@ -253,7 +300,7 @@ function validateYear(index){
 						<h2><spring:message  text="Innovative Activity" htmlEscape="true" /></h2>
 					</div>
 					<div class="body">
-					<form:form method="POST" id="innovativeActivityId" name="innovativeActivity" class="form-inline" action="innovativeActivityDetails.html" modelAttribute="INNOVATIVE_ACTIVITY" enctype="multipart/form-data">
+					<form:form method="POST" id="innovativeActivityId" name="innovativeActivity" class="form-inline" action="innovativeActivityDetails.html" modelAttribute="INNOVATIVE_ACTIVITY" enctype="multipart/form-data" >
 						<div align="right">
 						<c:if test = "${fn:containsIgnoreCase(userTypeSwitch, 'S')}">
 						<c:if test="${innovativeAcitivityList[0].isFreeze == false}">
@@ -310,11 +357,11 @@ function validateYear(index){
 								<c:if test="${not empty innovativeActivity.innovativeActivityDetails}">
 									<c:forEach var="innovativeActivityDetails" items="${innovativeActivity.innovativeActivityDetails}" varStatus="count">
 									<tr id="newRow">
-										<td><input type="text" name="innovativeActivityDetails[${count.index}].activityName" id="activityNameId" value="${innovativeActivityDetails.activityName}" onkeyup="this.value=this.value.replace(/[^a-zA-Z ]/,'');" Class="form-control usrType" id="activityName" maxlength="200" placeholder="Enter Activity Name"/></td>
+										<td><input type="text" name="innovativeActivityDetails[${count.index}].activityName" id="activityNameId" value="${innovativeActivityDetails.activityName}" onkeyup="this.value=this.value.replace(/[^a-zA-Z ]/,'');" Class="form-control usrType delete${innovativeActivityDetails.id}" maxlength="200" placeholder="Enter Activity Name"/></td>
 										 <c:set var="totalFundToCalc" value="${totalFundToCalc + innovativeActivityDetails.fundsName}"></c:set> 
-										<td><input type="text"  oninput="validity.valid||(value='');" onKeyPress="if(this.value.length==7) return false;" min="0" id="fundsName" name="innovativeActivityDetails[${count.index}].fundsName" value="${innovativeActivityDetails.fundsName}" onkeyup="this.value=this.value.replace(/[^0-9]/g,'');" Class="form-control Align-Right"  maxlength="12" placeholder="Enter Funds"/></td>
-										<td><input type = "text" name="innovativeActivityDetails[${count.index}].aboutActivity" value="${innovativeActivityDetails.aboutActivity}" Class="form-control usrType" onkeyup="this.value=this.value.replace(/[^a-zA-Z0-9 ]/,'');"  maxlength="250" placeholder="Enter Brief About Activity"/></td>
-										<td><select required="required" id="yearOne_${count.index}" class="form-control" onchange='validateYear("${count.index}");' name="innovativeActivityDetails[${count.index}].yearFrom">
+										<td><input type="text"  oninput="validity.valid||(value='');" onKeyPress="if(this.value.length==7) return false;" min="0" id="fundsName" name="innovativeActivityDetails[${count.index}].fundsName" value="${innovativeActivityDetails.fundsName}" onkeyup="this.value=this.value.replace(/[^0-9]/g,'');" Class="form-control Align-Right delete${innovativeActivityDetails.id}"  maxlength="12" placeholder="Enter Funds"/></td>
+										<td><input type = "text" name="innovativeActivityDetails[${count.index}].aboutActivity" value="${innovativeActivityDetails.aboutActivity}" Class="form-control usrType delete${innovativeActivityDetails.id}" onkeyup="this.value=this.value.replace(/[^a-zA-Z0-9 ]/,'');"  maxlength="250" placeholder="Enter Brief About Activity"/></td>
+										<td><select required="required" id="yearOne_${count.index}" class="form-control delete${innovativeActivityDetails.id}" onchange='validateYear("${count.index}");' name="innovativeActivityDetails[${count.index}].yearFrom">
 				                            		<option value="${innovativeActivityDetails.yearFrom}">${innovativeActivityDetails.yearFrom}</option>
 				                               		<option value="2018">2018</option>
 													<option value="2019">2019</option>
@@ -323,7 +370,7 @@ function validateYear(index){
 													<option value="2022">2022</option>
 			                              	</select>
                                        	</td>
-                                       			<td><select required="required" id="yearTwo_${count.index}" onchange='validateYear("${count.index}");' class="form-control" name="innovativeActivityDetails[${count.index}].yearTo">
+                                       			<td><select required="required" id="yearTwo_${count.index}" onchange='validateYear("${count.index}");' class="form-control delete${innovativeActivityDetails.id}" name="innovativeActivityDetails[${count.index}].yearTo">
 					                            	<option value="${innovativeActivityDetails.yearTo}">${innovativeActivityDetails.yearTo}</option>
 					                               	<option value="2018">2018</option>
 													<option value="2019">2019</option>
@@ -333,8 +380,8 @@ function validateYear(index){
 			                              	</select>
                                        	</td>
 										<td> 
-												<input type="file" name="innovativeActivityDetails[${count.index}].file" id="file" onclick='pathImage("${innovativeActivityDetails.fileLocation}","${innovativeActivityDetails.fileName}");' >
-												<input type="button" value="Download File" class="btn bg-grey waves-effect" onclick='showImage("${innovativeActivityDetails.fileLocation}","${innovativeActivityDetails.fileName}");' />
+												<input type="file" ${innovativeActivityDetails.id} name="innovativeActivityDetails[${count.index}].file" id="file${innovativeActivityDetails.id}" onclick='pathImage("${innovativeActivityDetails.fileLocation}","${innovativeActivityDetails.fileName}");' >
+												<input type="button" value="Download File" class="btn bg-grey waves-effect delete${innovativeActivityDetails.id}" onclick='showImage("${innovativeActivityDetails.fileLocation}","${innovativeActivityDetails.fileName}");' />
 										</td>
 										 	<c:if test = "${fn:containsIgnoreCase(userTypeSwitch, 'M')}">
 										 	<td><c:choose>
@@ -352,7 +399,7 @@ function validateYear(index){
 											
 										   </c:if>
 										  <c:if test = "${fn:containsIgnoreCase(userTypeSwitch, 'S')}">
-										 	<td><input type="button" value="Delete" class="btn bg-red waves-effect"   onclick='toDelete("${innovativeActivityDetails.id}","${innovativeActivityDetails.fileLocation}","${innovativeActivityDetails.fileName}");'/></td>
+										 	<td><input id="delete${innovativeActivityDetails.id}" type="button" value="Delete" class="btn bg-red waves-effect"   onclick='toDelete("${innovativeActivityDetails.id}","${innovativeActivityDetails.fileLocation}","${innovativeActivityDetails.fileName}");'/></td>
 										 </c:if>
 									</tr>
 										<input type="hidden" name="innovativeActivityId" value="${innovativeActivity.innovativeActivityId}">
@@ -445,7 +492,7 @@ function validateYear(index){
 						<div class="form-group text-right">
 						 <c:if test="${Plan_Status eq true}"> 
 						<c:if test="${innovativeAcitivityList[0].isFreeze == true}">
-							<button type="submit" id="save" disabled="disabled" class="btn bg-green waves-effect">
+							<button type="button" id="save" disabled="disabled" onclick ="saveSubmit();" class="btn bg-green waves-effect">
 								<spring:message text="SAVE" htmlEscape="true" />
 							</button>
 							
@@ -459,7 +506,7 @@ function validateYear(index){
 							</button>
 						</c:if>		
 						<c:if test="${innovativeAcitivityList[0].isFreeze == false}">
-							<button type="submit" id="save" onclick="validate();" class="btn bg-green waves-effect">
+							<button type="button" id="save" onclick="validate(); saveSubmit();" class="btn bg-green waves-effect">
 								<spring:message text="SAVE" htmlEscape="true" />
 							</button>
 							
@@ -484,7 +531,7 @@ function validateYear(index){
 						<c:if test="${empty innovativeAcitivityList}">
 						<div class="form-group text-right">
 						 <c:if test="${Plan_Status eq true}"> 
-						<button type="submit" id="save" class="btn bg-green waves-effect">
+						<button type="submit" id="submit" class="btn bg-green waves-effect" >
 								<spring:message text="SAVE" htmlEscape="true" />
 							</button>
  					

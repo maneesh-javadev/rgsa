@@ -78,7 +78,8 @@ public class CapacityBuildingServiceImpl implements CapacityBuildingService{
 		if (!CollectionUtils.isEmpty(capacityBuildingActivities)) {
 			return capacityBuildingActivities.get(0);
 		} else {
-			return( new CapacityBuildingActivity());
+			return null;
+			
 		}
 	}
 	
@@ -138,7 +139,7 @@ public class CapacityBuildingServiceImpl implements CapacityBuildingService{
 			
 		}
 
-	private void saveCapacityBuildingActivityAndDetailsForStateAndCec(CapacityBuildingActivity capacityBuildingActivity){
+private void saveCapacityBuildingActivityAndDetailsForStateAndCec(CapacityBuildingActivity capacityBuildingActivity){
 		
 		capacityBuildingActivity= setCapacityBuildingActivityObject(capacityBuildingActivity);
 		List<CapacityBuildingActivityDetails> capacityBuildingActivityDetails = capacityBuildingActivity.getCapacityBuildingActivityDetails();
@@ -153,7 +154,7 @@ public class CapacityBuildingServiceImpl implements CapacityBuildingService{
 			);
 		List<CapacityBuildingActivityDetails> CapacityBuildingActivityDetails2  = new ArrayList<>();
 		for (CapacityBuildingActivityDetails capacityBuildingActivityDetails3 : capacityBuildingActivityDetails) {
-			if(capacityBuildingActivityDetails3.getFunds() != null || capacityBuildingActivityDetails3.getFunds() != 0){
+			if(capacityBuildingActivityDetails3.getFunds() != null && capacityBuildingActivityDetails3.getFunds() != 0){
 				if(capacityBuildingActivityDetails3.getIsApproved() == null)
 					capacityBuildingActivityDetails3.setIsApproved(false);
 				CapacityBuildingActivityDetails2.add(capacityBuildingActivityDetails3);
@@ -170,7 +171,9 @@ public class CapacityBuildingServiceImpl implements CapacityBuildingService{
 					commonRepository.update(capacityBuildingActivity);
 			}
 			
-		
+		if(capacityBuildingActivity!=null && capacityBuildingActivity.getIsFreeze()==true && userPreference.getUserType().charAt(0)=='C') {
+			facadeService.populateStateFunds("13");
+		}
 	}
 	
 	private void saveCapacityBuildingActivityAndDetailsForMopr(CapacityBuildingActivity capacityBuildingActivity){

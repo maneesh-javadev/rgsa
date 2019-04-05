@@ -26,6 +26,9 @@ public class SatcomActivityProgressServiceImpl implements SatcomActivityProgress
 	
 	@Autowired
 	UserPreference userPreference;
+	
+	@Autowired
+	private ProgressReportServiceImpl  progressReportServiceImpl;
 
 	
 
@@ -49,9 +52,9 @@ public class SatcomActivityProgressServiceImpl implements SatcomActivityProgress
 		List<SatcomActivityProgress> satcomActivityProgress =commonRepository.findAll("FETCH_SATCOM_progress_report_DETAILS", params);
 		if(!satcomActivityProgress.isEmpty() && satcomActivityProgress.get(0) != null) {
 			return satcomActivityProgress.get(0);
-		}else
-		return null;
-	
+		}else{
+			return null;
+		}
 	}
 	
 
@@ -70,40 +73,38 @@ public class SatcomActivityProgressServiceImpl implements SatcomActivityProgress
 	@Override
 	public void savesatcomProgress(SatcomActivityProgress satcomActivityProgress) {
 		
-		if(satcomActivityProgress.getSatcomActivityProgressId() == null) {
+		satcomActivityProgress.setCreatedBy(userPreference.getUserId());
+		satcomActivityProgress.setLastUpdatedBy(userPreference.getUserId());
 		List<SatcomActivityProgressDetails> satcomActivityProgressDetails = satcomActivityProgress.getSatcomActivityProgressDetails();
-		  satcomActivityProgress.setLastUpdatedBy(userPreference.getUserId());
-	        satcomActivityProgress.setCreatedBy(userPreference.getUserId());
-	
-		
-		for (SatcomActivityProgressDetails Details : satcomActivityProgressDetails) {
-			if(satcomActivityProgressDetails != null)
-			{
-								Details.setSatcomActivityProgress(satcomActivityProgress);
-								Details.setQuarterDuration(satcomActivityProgressDetails.get(0).getQuarterDuration());
-										}
-			
-		}	
-		commonRepository.save(satcomActivityProgress);
-		}
-		else
-		{
-			List<SatcomActivityProgressDetails> satcomActivityProgressDetails = satcomActivityProgress.getSatcomActivityProgressDetails();
-
+		if (satcomActivityProgress.getSatcomActivityProgressId() == null) {
 			for (SatcomActivityProgressDetails Details : satcomActivityProgressDetails) {
-				if(satcomActivityProgressDetails != null)
-				{
-					
+				if (satcomActivityProgressDetails != null) {
 					Details.setSatcomActivityProgress(satcomActivityProgress);
 					Details.setQuarterDuration(satcomActivityProgressDetails.get(0).getQuarterDuration());
-					
 				}
-				
-			}	
+
+			}
+			commonRepository.save(satcomActivityProgress);
+		} else {
+			for (SatcomActivityProgressDetails Details : satcomActivityProgressDetails) {
+				if (satcomActivityProgressDetails != null) {
+					Details.setSatcomActivityProgress(satcomActivityProgress);
+					Details.setQuarterDuration(satcomActivityProgressDetails.get(0).getQuarterDuration());
+				}
+			}
 			commonRepository.update(satcomActivityProgress);
 		}
-	
-	
+		/* this method is to insert and update record in quater_wise_fund table*/
+		progressReportServiceImpl.saveQprWiseFundData(userPreference.getStateCode(),userPreference.getFinYearId(),satcomActivityProgressDetails.get(0).getQuarterDuration().getQtrId(),7);
+	}
+
+
+	@Override
+	public List<SatcomActivityProgressDetails> getDetailsBasedOnActIdAndQtrId(Integer satcomActivityProgressId,int quarterId) {
+		Map<String, Object> params = new HashMap();
+		params.put("satcomActivityProgressId", satcomActivityProgressId);
+		params.put("quarterId", quarterId);	
+		return commonRepository.findAll("FETCH_DETAILS_BY_QTR_ID_AND_ACT_ID", params);
 	}
 }
 	

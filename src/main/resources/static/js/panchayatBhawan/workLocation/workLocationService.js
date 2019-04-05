@@ -4,7 +4,7 @@
 workLocation.service('workLocationService', [ '$http', function($http) {
 	
 	this.getPanchayatBhawanActivity = function() {
-		return $http.get("getPanchayatBhawanActivity.html?<csrf:token uri=getPanchayatBhawanActivity.htm/>");
+		return $http.get("getPanchayatBhawanActivityCEC.html?<csrf:token uri=getPanchayatBhawanActivityCEC.htm/>");
 	};
 	
 	

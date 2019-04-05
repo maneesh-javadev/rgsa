@@ -276,7 +276,7 @@ tbody tr td:nth-child(1) {  /*the first cell in each tr*/
 										</thead>
 										<tbody id="tbodyState">
 											<c:choose>
-												<c:when test="${not empty allTrainingActivity}">
+												<c:when test="${not empty allTrainingActivity && sessionScope['scopedTarget.userPreference'].userType eq 'S'}">
 													<c:forEach
 														items="${allTrainingActivity.trainingActivityDetailsList}"
 														var="obj" varStatus="count">
@@ -435,7 +435,7 @@ tbody tr td:nth-child(1) {  /*the first cell in each tr*/
 																test="${sessionScope['scopedTarget.userPreference'].userType eq 'S'}">
 																<c:choose>
 																	<c:when test="${allTrainingActivity.isFreeze == false}">
-																		<td align="center"><a id="modifyButtn"
+																		<td align="center"><a id="modifyButtn${obj.trainingActivityDetailsId}" 
 																			href="javascript:toModify('${obj.trainingActivityDetailsId}');">
 																				<span class="glyphicon glyphicon-edit"></span>
 																		</a> <%-- <button type="button" id="modifyButtn"
@@ -444,7 +444,7 @@ tbody tr td:nth-child(1) {  /*the first cell in each tr*/
 																		</td>
 																		<td align="center"><a id="deleteButtn"
 																			href="javascript:toDelete('${obj.trainingActivityDetailsId}');">
-																				<span class="glyphicon glyphicon-trash"></span>
+																				<span id="delete${obj.trainingActivityDetailsId}" class="glyphicon glyphicon-trash"></span>
 																		</a> <%-- <button type="button" id="deleteButtn"
 																			onclick="toDelete('${obj.trainingActivityDetailsId}');"
 																			class="btn bg-light-red waves-effect">Delete</button> --%>
@@ -470,6 +470,144 @@ tbody tr td:nth-child(1) {  /*the first cell in each tr*/
 																	</c:otherwise>
 																</c:choose>
 															</c:if>
+														</tr>
+														<input type="hidden"
+															name="trainingActivityDetailsList[${count.index}].trainingActivityDetailsId"
+															value="${obj.trainingActivityDetailsId}" />
+														<input type="hidden"
+															name="trainingActivityDetailsList[${count.index}].trainingCategoryId.trainingCategoryId"
+															id="catogryId"
+															value="${obj.trainingCategoryId.trainingCategoryId}">
+														<input type="hidden" name="userType" id="userTypeId"
+															value="${allTrainingActivity.userType}">
+													</c:forEach>
+												</c:when>
+															<c:when test="${not empty allTrainingActivity && sessionScope['scopedTarget.userPreference'].userType eq 'M'}">
+													<c:forEach
+														items="${allTrainingActivity.trainingActivityDetailsList}"
+														var="obj" varStatus="count">
+														<tr class='jsearch-row'>
+															<td align="right"><b>${count.count}</b></td>
+															<td class='jsearch-field'>${obj.trainingCategoryId.trainingCategoryName}<input
+																type="hidden"
+																style="text-align: left; border: none; border-color: transparent;"
+																name="trainingActivityDetailsList[${count.index}].trainingCategoryId.trainingCategoryName"
+																readonly="readonly"
+																value="${obj.trainingCategoryId.trainingCategoryName}" />
+															</td>
+
+															<td class='jsearch-field'>
+																<%-- <select class="form-control" name="trainingActivityDetailsList[${count.index}].trainingSubjectsArray"  multiple="multiple"> --%>
+																<c:forEach var="subj"
+																	items="${obj.trainingSubjectsList}"
+																	varStatus="numbering">
+																	<b>${numbering.count}.</b>
+																	<c:out value="${subj.trngSubjectId.subjectName}" />
+																	<br />
+																</c:forEach> <form:select
+																	path="trainingActivityDetailsList[${count.index}].trainingSubjectsArray"
+																	id="sbjctListId" disabled="true" multiple="true"
+																	cssStyle="display:none"
+																	cssClass="form-control sbjctClass">
+																	<c:forEach items="${obj.trainingSubjectsList}"
+																		var="subj">
+																		<option value="${subj.trngSubjectId.subjectId}"
+																			selected="selected">${subj.trngSubjectId.subjectName}
+																		</option>
+																	</c:forEach>
+																	<!--  </select> -->
+																</form:select>
+															</td>
+															<td class='jsearch-field'>
+																<%-- <select class="form-control" name="trainingActivityDetailsList[${count.index}].trainingTargetGroupsArray" multiple="multiple"> --%>
+																<c:forEach var="trgt"
+																	items="${obj.trainingTargetGroupsList}"
+																	varStatus="numbering">
+																	<b>${numbering.count}.</b>
+																	<c:out
+																		value="${trgt.targetGroupMasterId.targetGroupMasterName}" />
+																	<br />
+																</c:forEach> <form:select
+																	path="trainingActivityDetailsList[${count.index}].trainingTargetGroupsArray"
+																	disabled="true" cssClass="form-control trgtClass"
+																	cssStyle="display:none" multiple="true">
+																	<c:forEach items="${obj.trainingTargetGroupsList}"
+																		var="trgt">
+																		<option
+																			value="${trgt.targetGroupMasterId.targetGroupMasterId}"
+																			selected="selected">${trgt.targetGroupMasterId.targetGroupMasterName}
+																		</option>
+																	</c:forEach>
+																	<!-- </select> -->
+																</form:select>
+															</td>
+															<td class='jsearch-field'><c:out
+																	value="${obj.trainingVenueLevelId.trainingVenueLevelName}" />
+																<input type="hidden" class="form-control" id="venueId_${count.index}"
+																
+																name="trainingActivityDetailsList[${count.index}].trainingVenueLevelId.trainingVenueLevelId"
+																value="${obj.trainingVenueLevelId.trainingVenueLevelId}">
+															</td>
+															<td class='jsearch-field'><c:out
+																	value="${obj.trainingMode.trainingModeName}" /><input
+																type="hidden" class="form-control" readonly="readonly"
+																name="trainingActivityDetailsList[${count.index}].trainingMode.trainingModeId"
+																value="${obj.trainingMode.trainingModeId}"></td>
+															<td align="right"><input type="text"
+																class="form-control active123" id="noOfParticipants_${count.index}" onkeyup="calculate(${count.index})"
+																name="trainingActivityDetailsList[${count.index}].noOfParticipants" oninput="validity.valid||(value='');" 
+																value="${obj.noOfParticipants}" onkeypress="return isNumber(event)"
+																 style="text-align: right; width: 90px; height: 25px"></td>
+															<td align="right"><input
+																type="text" class="form-control active123" 
+																name="trainingActivityDetailsList[${count.index}].noOfDays" id="noOfDays_${count.index}" onkeyup="calculate(${count.index})"
+																value="${obj.noOfDays}" oninput="validity.valid||(value='');"  style="text-align: right; width: 90px; height: 25px" onkeypress="return isNumber(event)"></td>
+															<td align="right"><input 
+																type="text" class="form-control fundsName active123" id="unitCost_${count.index}"
+																onkeyup="calculate(${count.index})" onkeypress="return isNumber(event)"
+																name="trainingActivityDetailsList[${count.index}].unitCost" oninput="validity.valid||(value='');" 
+																value="${obj.unitCost}" style="text-align: right; width: 90px; height: 25px" onkeypress="return isNumber(event)"></td>
+															<c:set var="totalFundToCalc"
+																value="${totalFundToCalc + obj.funds}"></c:set>
+															<td align="right"><input
+																type="text" maxlength="8" min="1" class="form-control"
+																  id="funds_${count.index}"
+																name="trainingActivityDetailsList[${count.index}].funds" readonly="readonly"
+																id="fundsName" 
+																onkeyup="this.value=this.value.replace(/[^0-9]/g,'');"
+																value="${obj.funds}"  style="text-align: right; width: 90px; height: 25px"></td>
+
+															
+																<td align="center"><c:choose>
+																		<c:when test="${obj.isApproved}">
+																		 <label class="container"> <input class="active123"
+																				type="checkbox" checked="checked"
+																				name="trainingActivityDetailsList[${count.index}].isApproved">
+																				<span class="checkmark"></span> 
+																			 </label> 
+																			<%-- <input type="checkbox"
+																			name="trainingActivityDetailsList[${count.index}].isApproved"
+																			class="form-control" checked="checked"> --%>
+																		</c:when>
+																		<c:otherwise>
+																			<label class="container">  <input
+																				type="checkbox"
+																				name="trainingActivityDetailsList[${count.index}].isApproved">
+																				 <span class="checkmark"></span> 
+																	</label> 
+																			<%-- <input type="checkbox"
+																			name="trainingActivityDetailsList[${count.index}].isApproved"> --%>
+																		</c:otherwise>
+																	</c:choose></td>
+																<td><textarea class="form-control active123" rows="5"
+																		cols="5"
+																		name="trainingActivityDetailsList[${count.index}].remarks"><c:out
+																			value="${obj.remarks}" /></textarea> <%-- <input type="text" class="form-control"
+																name="trainingActivityDetailsList[${count.index}].remarks"
+																value="${obj.remarks}"> --%></td>
+															
+															
+															
 														</tr>
 														<input type="hidden"
 															name="trainingActivityDetailsList[${count.index}].trainingActivityDetailsId"
@@ -549,6 +687,7 @@ tbody tr td:nth-child(1) {  /*the first cell in each tr*/
 							</c:if>
 						</div>
 						<input type="hidden" name="idToEdit" id="idToEdit">
+						<input type="hidden" name="idToDelete" id="idToDelete">
 						<div class="row clearfix">
 						<c:choose>
 						<c:when test="${sessionScope['scopedTarget.userPreference'].userType eq 'S'}">

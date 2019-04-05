@@ -389,4 +389,17 @@ public class PanchayatBhawanActivityServiceImpl implements PanchayatBhawanServic
 		params.put("districtCode", districtCode);
 		return commonRepository.findAll("FETCH_ACTIVITY_DEPEND_ON_QUATOR", params);
 	}
+	
+	@Override
+	public Integer fetchBasicInfoKeyValue(Integer stateCode,String defination_key) {
+		Integer d=null;
+		Map<String, Object> map = new HashMap<String,Object>();
+		map.put("stateCode", stateCode);	
+		map.put("defination_key", defination_key);
+		String defination_value= commonRepository.find("BASIC_INFO_KEY_VALUE", map);
+		if(defination_value!=null && defination_value.length()>0) {
+			d=Integer.parseInt(defination_value);
+		}
+		return d;
+	}
 }

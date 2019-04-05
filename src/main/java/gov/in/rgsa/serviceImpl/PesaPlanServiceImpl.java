@@ -73,11 +73,14 @@ public class PesaPlanServiceImpl implements PesaPlanService {
 			pesaPlan.get(0).setIsFreez(false);
 		}
 		
-		if (userPreference.getUserType().equalsIgnoreCase("C") && CollectionUtils.isEmpty(pesaPlan)) {
+		/*if (userPreference.getUserType().equalsIgnoreCase("C") && CollectionUtils.isEmpty(pesaPlan)) {
 			params.put("userType", 'S');
 			pesaPlan = commonRepository.findAll("FETCH_PESA_PLAN",params);
-			pesaPlan.get(0).setIsFreez(false);
-		}
+			if(pesaPlan!=null && !pesaPlan.isEmpty()) {
+				pesaPlan.get(0).setIsFreez(false);
+			}
+			
+		}*/
 		if (!CollectionUtils.isEmpty(pesaPlan)) {
 			return pesaPlan;
 		} else {
@@ -105,10 +108,10 @@ public class PesaPlanServiceImpl implements PesaPlanService {
 		
 	}
 	
-	/*@Override
+	@Override
 	public void savePesaPlanForCEC(final PesaPlan pesaPlan){
 		savePesaPlanForState(pesaPlan);
-	}*/
+	}
 	
 	private void savePesaPlanForMopr(PesaPlan pesaPlan){
 		pesaPlan.setPesaPlanId(null);

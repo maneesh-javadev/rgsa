@@ -146,6 +146,58 @@ function calculateValueAcDomain(obj){
 	}
 	
 }
+
+function validationOnSubmit(){
+	var rowCountSprc=$('#tbodySprcId tr').length;
+	var flag= true;
+	
+	if($('#noOfUnits_0').val() == "" || $('#noOfUnits_0').val() == null){
+		for(var i=0;i<rowCountSprc;i++){
+			if($('#noOfFaculty_'+i).val() != "" || $('#noOfFaculty_'+i).val() != ""){
+				flag=false;
+			}else{
+				break;
+			}
+		}
+		}else{
+			for(var i=0;i<rowCountSprc;i++){
+			if($('#noOfFaculty_'+i).val() == "" || $('#noOfFaculty_'+i).val() == ""){
+				flag=false;
+			}else{
+				break;
+			}
+			}
+		}
+	  if($('#noOfUnits_3').val() == "" || $('#noOfUnits_3').val() == null){
+		for(var i=0;i<rowCountSprc;i++){
+		if($('#noOfExperts_'+(i+3)).val() != "" || $('#noOfExperts_'+(i+3)).val() != ""){
+			flag=false;
+		}else{
+			break;
+		}
+		}
+	}else{
+		for(var i=0;i<rowCountSprc;i++){
+		if($('#noOfExperts_'+(i+3)).val() == "" || $('#noOfExperts_'+(i+3)).val() == ""){
+			flag=false;
+		}else{
+			break;
+		}
+		}
+	}
+	
+	if(+$('#activedropdown').val() == 0 && $('#noOfUnits_3').val() != ""){
+		alert("please select district in domain detail of DPRC.");
+		return flag=false;
+	}  
+	  
+	if(($('#noOfUnits_3').val() == "" || $('#noOfUnits_0').val() == "") && flag == false){
+		alert("Fill the number of units first.");
+	}else if(!flag){
+		alert("Fill the domain details first.");
+	}
+	return flag;
+}
 </script>
 <section class="content">
 	<div class="container-fluid">
@@ -159,7 +211,7 @@ function calculateValueAcDomain(obj){
 					</c:choose>
 					</div>
 					<div class="body">
-						<form:form method="post" name="pmuController" action="addUpdatePmu.html"	modelAttribute="PMU_ACTIVITY">
+						<form:form method="post" name="pmuController" action="addUpdatePmu.html"	modelAttribute="PMU_ACTIVITY" onsubmit="return validationOnSubmit()">
 							<input type="hidden" name="<csrf:token-name/>"	value="<csrf:token-value uri="addPmuActivity.html" />" />
 									<div class="table-responsive">
 										<table class="table table-bordered" id="supportStaff">
@@ -327,12 +379,12 @@ function calculateValueAcDomain(obj){
 															<div class="form-group">
 																<label for="Dprc" class="col-sm-3"><spring:message code="Label.District" htmlEscape="true" /></label>
 																<div class="col-sm-5">
-																	<select name="setDistrictIdPmuWise" id="activedropdown">
+																	<select name="setDistrictIdPmuWise" id="activedropdown" required="required">
 																		<option value="0">---select---</option>
 																		<c:forEach items="${LIST_OF_DISTRICT}" var="DISTRICT">
 																		<c:choose>
 																			<%-- <c:when test="${pmuActivity.setDistrictIdPmuWise == DISTRICT[0]}"> --%>
-																			<c:when test="${pmuWiseDomainList[0].districtId == DISTRICT[0]}">
+																			<c:when test="${pmuWiseDomainList[3].districtId == DISTRICT[0]}">
 																			<option value="${DISTRICT[0]}" selected="selected">${DISTRICT[1]}</option>
 																			</c:when>
 																			<c:otherwise>

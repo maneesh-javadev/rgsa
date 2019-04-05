@@ -133,7 +133,7 @@
 												<td>
 												<div align="center" data-ng-style="{'color':(satcomActivityObjectState.activityDetails[$index].funds > satcomActivityObject.activityDetails[$index].funds ) ? 'red' : '#00cc00'}"><strong>{{satcomActivityObjectState.activityDetails[$index].funds}}</strong></div>
 												<input type="text"
-													
+													data-ng-disabled="satcomActivityObject.status == 'F'"
 													data-ng-model="satcomActivityObject.activityDetails[$index].funds"
 													class="form-control" style="text-align: right;" /> </td>
 											</tr>

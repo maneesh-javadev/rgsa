@@ -8,12 +8,17 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
 @Entity
 @Table(name="qpr_e_enablement_details" , schema="rgsa")
-@NamedQuery(name="FETCH_EENABLEMENT_REPORT_DETAILS_BY_LB", query="from QprEnablementDetails where localBodyCode=:localbodyCode AND qprEnablement.qprEEnablementId=:qprEEnablementId")
+@NamedQueries({
+	@NamedQuery(name="FETCH_EENABLEMENT_REPORT_DETAILS_BY_LB", query="from QprEnablementDetails where localBodyCode=:localbodyCode AND qprEnablement.qprEEnablementId=:qprEEnablementId"),
+	@NamedQuery(name="FETCH_EENABLEMENT_QPR_DETAILS",query="from QprEnablementDetails where qprEnablement.qprEEnablementId=:qprEEnablementId order by qprEEenablementDetailsId")
+})
+
 public class QprEnablementDetails {
 	
 	@Id

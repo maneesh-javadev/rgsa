@@ -7,12 +7,17 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
 @Entity
 @Table(name="ti_wise_proposed_domain_experts",schema="rgsa")
-@NamedQuery(name="FETCH_DOMAIN_EXPERT_TI_WISE",query="FROM TIWiseProposedDomainExperts order by domainId asc")
+@NamedQueries({
+	@NamedQuery(name="FETCH_DOMAIN_EXPERT_TI_WISE",query="FROM TIWiseProposedDomainExperts order by domainId asc"),
+	@NamedQuery(name="FETCH_DOMAIN_EXPERT_TI_WISE_ACT_ID",query="FROM TIWiseProposedDomainExperts where institueInfraHrActivity.instituteInfraHrActivityId =:instituteInfraHrActivityId order by domainId asc")
+})
+
 public class TIWiseProposedDomainExperts {
 	
 	@Id

@@ -49,3 +49,5 @@
   `mvn spring-boot:run`
 
 > Currently you can copy *Owasp.CsrfGuard.properties* from svn trunk. Later an autobuilder will be integrated to avoid manual updating of *Owasp.CsrfGuard.properties* file. 
+
+- [ ] Use `mvn package` to create war file. To avoid testing use `mvn clean package -DskipTests`.

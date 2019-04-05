@@ -5,6 +5,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
@@ -15,7 +16,11 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name="training_mode" , schema="rgsa")
-@NamedQuery(name="FETCH_TRAINING_MODES" ,query="from TrainingMode")
+
+@NamedQueries({
+@NamedQuery(name="FETCH_TRAINING_MODES" ,query="from TrainingMode"),
+@NamedQuery(name="FETCH_TRAINING_MODES_by_Id",query="FROM TrainingMode where trainingModeId=:trainingModeId")
+})
 public class TrainingMode {
 	
 	@Id

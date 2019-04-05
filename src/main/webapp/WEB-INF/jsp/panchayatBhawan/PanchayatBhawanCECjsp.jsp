@@ -1,23 +1,51 @@
 <html data-ng-app="panchayatBhawanApp">
 <%@include file="../taglib/taglib.jsp"%>
-<script type="text/javascript"
-	src="${pageContext.request.contextPath}/resources/plugins/angular/angular.min.js"></script>
-<script
-	src="http://angular-ui.github.io/bootstrap/ui-bootstrap-tpls-0.11.0.js"></script>
-<script type="text/javascript"
-	src="${pageContext.request.contextPath}/resources/js/panchayatBhawan/panchayatBhawanActivityController.js"></script>
-<script type="text/javascript"
-	src="${pageContext.request.contextPath}/resources/js/panchayatBhawan/panchayatBhawanActivityService.js"></script>
-<script type="text/javascript"
-	src="${pageContext.request.contextPath}/resources/js/panchayatBhawan/panchayatController.js"></script>
-<script type="text/javascript"
-	src="${pageContext.request.contextPath}/resources/plugins/angular/toastr.min.js"></script>
-<link rel="stylesheet" type="text/css"
-	href="${pageContext.request.contextPath}/resources/css/angular/toastr.css">
-<link
-	href="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css"
-	rel="stylesheet">
+<script type="text/javascript"	src="${pageContext.request.contextPath}/resources/plugins/angular/angular.min.js"></script>
+<script src="${pageContext.request.contextPath}/resources/plugins/angular/ui-bootstrap-tpls-0.11.0.js"></script>
+<script type="text/javascript"	src="${pageContext.request.contextPath}/resources/js/panchayatBhawan/panchayatBhawanActivityController.js"></script>
+<script type="text/javascript"	src="${pageContext.request.contextPath}/resources/js/panchayatBhawan/panchayatBhawanActivityService.js"></script>
+<script type="text/javascript"	src="${pageContext.request.contextPath}/resources/js/panchayatBhawan/panchayatController.js"></script>
+<script type="text/javascript"	src="${pageContext.request.contextPath}/resources/plugins/angular/toastr.min.js"></script>
+<link rel="stylesheet" type="text/css"	href="${pageContext.request.contextPath}/resources/css/angular/toastr.css">
+  <link href="${pageContext.request.contextPath}/resources/css/bootstrap.min.css" rel="stylesheet">
+<script>
 
+function calculateGrandTotal(){
+	var grand_total=0;
+	if(document.getElementById("additionalRequirementId").value > 0.25 *document.getElementById("fund").value){
+		alert("Additional Requirement should be less than or equal to 25% of Total Fund");
+		document.getElementById("additionalRequirementId").value = '';
+		document.getElementById("grandTotalId").value = '';
+	}else{
+		document.getElementById("grandTotalId").value = +document.getElementById("additionalRequirementId").value + +document.getElementById("fund").value;
+	}
+} 
+
+function isNumber(evt) {
+    evt = (evt) ? evt : window.event;
+    var charCode = (evt.which) ? evt.which : evt.keyCode;
+    if (charCode > 31 && (charCode < 48 || charCode > 57)) {
+        return false;
+    }
+    return true;
+}
+
+function calculate(obj)
+{
+	document.getElementById("funds_"+obj).value = 2000 * document.getElementById("unitCost_"+obj).value;
+	/* document.getElementById("totalFund_"+obj).value = document.getElementById("fund_"+obj).value; */
+	/* calculateTotal(obj) */
+}
+
+function calculateTotal(obj){
+	var total=0;
+	for(var i=0;i<=obj;i++){
+		total += +$("#totalFund_"+i).val();
+	}
+	document.getElementById("total").value =total;
+	calculateGrandTotal();
+}
+</script>
 <section class="content"
 	data-ng-controller="panchayatBhawanActivityCntrl">
 	<div class="container-fluid">
@@ -106,19 +134,21 @@
 													data-ng-model="panchayatBhawanActivity.panchatayBhawanActivityDetails[$index].activity.activityId"
 													data-ng-init="panchayatBhawanActivity.panchatayBhawanActivityDetails[$index].activity.activityId=activity.activityId" />
 												</td>
-												<td><div align="center"
-														data-ng-model="panchayatBhawanActivity.panchatayBhawanActivityDetails[$index].noOfGPs"
-														data-ng-init="panchayatBhawanActivity.panchatayBhawanActivityDetails[$index].noOfGPs=panchayatBhawanActivityState.panchatayBhawanActivityDetails[$index].noOfGPs">
+												<td>
+												<div align="center"
+														data-ng-style="{'color':(panchayatBhawanActivityState.panchatayBhawanActivityDetails[$index].noOfGPs > panchayatBhawanActivity.panchatayBhawanActivityDetails[$index].noOfGPs) ? 'red' : '#00cc00'}">
 														<strong>{{panchayatBhawanActivityState.panchatayBhawanActivityDetails[$index].noOfGPs}}</strong>
-													</div> <!-- <input type="text" class="form-control" data-ng-show="panchayatBhawanActivity.status == 'F'" data-ng-model="panchayatBhawanActivity.panchatayBhawanActivityDetails[$index].noOfGPs"  style="text-align:right;" disabled="disabled">
-														<input type="text" class="form-control" data-ng-show="panchayatBhawanActivity.status != 'F'" data-ng-model="panchayatBhawanActivity.panchatayBhawanActivityDetails[$index].noOfGPs"  onkeypress="return isNumber(event)" data-ng-keyup="calculateFundsAndTotalWithoutAdditionaRequirement($index);calculateAspirationalGps($index)" maxlength="7" style="text-align:right;"> -->
+												</div> 
+														 <input type="text" class="form-control" data-ng-show="panchayatBhawanActivity.status == 'F'" data-ng-model="panchayatBhawanActivity.panchatayBhawanActivityDetails[$index].noOfGPs"  style="text-align:right;" disabled="disabled">
+														<input type="text" class="form-control" data-ng-show="panchayatBhawanActivity.status != 'F'" data-ng-model="panchayatBhawanActivity.panchatayBhawanActivityDetails[$index].noOfGPs"  onkeypress="return isNumber(event)" data-ng-keyup="calculateFundsAndTotalWithoutAdditionaRequirement($index);calculateAspirationalGps($index)" maxlength="7" style="text-align:right;"> 
 												</td>
-												<td><div align="center"
-														data-ng-model="panchayatBhawanActivity.panchatayBhawanActivityDetails[$index].aspirationalGps"
-														data-ng-init="panchayatBhawanActivity.panchatayBhawanActivityDetails[$index].aspirationalGps=panchayatBhawanActivityState.panchatayBhawanActivityDetails[$index].aspirationalGps">
+												<td>
+												<div align="center"
+														data-ng-style="{'color':(panchayatBhawanActivityState.panchatayBhawanActivityDetails[$index].aspirationalGps > panchayatBhawanActivity.panchatayBhawanActivityDetails[$index].aspirationalGps) ? 'red' : '#00cc00'}">
 														<strong>{{panchayatBhawanActivityState.panchatayBhawanActivityDetails[$index].aspirationalGps}}</strong>
-													</div> <!-- <input type="text" class="form-control" data-ng-show="panchayatBhawanActivity.status == 'F'" data-ng-model="panchayatBhawanActivity.panchatayBhawanActivityDetails[$index].aspirationalGps" style="text-align:right;" disabled="disabled"/>
-														<input type="text" class="form-control" data-ng-show="panchayatBhawanActivity.status != 'F'" onkeypress="return isNumber(event)" data-ng-model="panchayatBhawanActivity.panchatayBhawanActivityDetails[$index].aspirationalGps" data-ng-keyup="calculateAspirationalGps($index)" maxlength="7" style="text-align:right;"/>	 -->
+												</div> 
+												<input type="text" class="form-control" data-ng-show="panchayatBhawanActivity.status == 'F'" data-ng-model="panchayatBhawanActivity.panchatayBhawanActivityDetails[$index].aspirationalGps" style="text-align:right;" disabled="disabled"/>
+														<input type="text" class="form-control" data-ng-show="panchayatBhawanActivity.status != 'F'" onkeypress="return isNumber(event)" data-ng-model="panchayatBhawanActivity.panchatayBhawanActivityDetails[$index].aspirationalGps" data-ng-keyup="calculateAspirationalGps($index)" maxlength="7" style="text-align:right;"/>	
 												</td>
 
 												<td>
@@ -144,7 +174,7 @@
 													data-ng-show="panchayatBhawanActivity.status != 'F'"
 													onkeypress="return isNumber(event)"
 													data-ng-model="panchayatBhawanActivity.panchatayBhawanActivityDetails[$index].funds"
-													style="text-align: right;" /> <input type="text"
+													style="text-align: right;" disabled="disabled"/> <input type="text"
 													class="form-control"
 													data-ng-show="panchayatBhawanActivity.status == 'F'"
 													data-ng-model="panchayatBhawanActivity.panchatayBhawanActivityDetails[$index].funds"
@@ -211,7 +241,7 @@
 									   	<div class="col-md-8 text-right ex1">
  									   	    <button data-ng-show="panchayatBhawanActivity.status == 'F'" data-ng-click="saveData('S')" type="button" class="btn bg-green waves-effect" disabled="disabled"><spring:message code="Label.SAVE" htmlEscape="true"/></button> 
 									   		<button type="button" data-ng-show="panchayatBhawanActivity.status != 'F'" ng-click="saveData('S')" class="btn bg-green waves-effect"><spring:message code="Label.SAVE" htmlEscape="true" /></button>
-									   		<button data-ng-show="panchayatBhawanActivity.status != 'F' " data-ng-click="saveData('F')" type="button" class="btn bg-green waves-effect"><spring:message code="Label.FREEZE" htmlEscape="true" /></button>
+									   		<button data-ng-show="panchayatBhawanActivity.status != 'F' " data-ng-click="saveData('F')" type="button" class="btn bg-green waves-effect" data-ng-disabled="initial_status == true"><spring:message code="Label.FREEZE" htmlEscape="true" /></button>
 								       <button data-ng-show="panchayatBhawanActivity.status == 'F'" type="button" data-ng-click="saveData('UF')" class="btn bg-green waves-effect">
 									      <spring:message code="Label.UNFREEZE" htmlEscape="true" />
 								       </button>

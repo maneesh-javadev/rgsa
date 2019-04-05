@@ -4,7 +4,8 @@
 <script>
 
 $('document').ready(function(){
-	 calculateGrandTotal();
+ 	/*  calculateGrandTotal();  */
+ 	calculateTotal();
 	
 	if(document.getElementById("ISFREEZE") != null){
 		var myBoolean= document.getElementById("ISFREEZE").value;
@@ -70,18 +71,19 @@ $('document').ready(function(){
 			total += +$("#fund_"+i).val();
 		}
 		document.getElementById("total").value =total;
+		calculateGrandTotal();
 		
-		  
+		 
 		
 	}
 	}
 	
 	function calculateGrandTotal(){
 		var a= parseInt(document.getElementById("total").value) ;
-		
-		document.getElementById("grandTotal").value =a/2 +parseInt(document.getElementById("additionalRequirement").value);
-		
-		calculateTotal();
+		/* alert(a); */
+		document.getElementById("grandTotal").value =a +parseInt(document.getElementById("additionalRequirement").value);
+		 
+	/* 	calculateTotal();  */
 		
 		
 	}
@@ -95,6 +97,7 @@ $('document').ready(function(){
 			alert("Additional Requirement should be smaller than or equal to 25% of Fund="+ 0.25*grand_total+"");
 			document.getElementById("additionalRequirement").value="";
 		}
+		calculateGrandTotal();
 	}
 	
 function validateCeilingValue(count){
@@ -152,19 +155,42 @@ function domainValidation(obj){
 	var noOfDomainDprc=0;
 	for(var i=0;i<rowCountSprc;i++){
 		noOfDomainSprc += Number($('#noOfFaculty_'+i).val()) ;
-		noOfDomainDprc += Number($('#noOfExperts_'+(i+3)).val());
+		noOfDomainDprc += Number($('#noOfExpert_'+(i+3)).val());
 	}
-	
+	if(!isNaN(obj)){
 	if($('#noOfUnits_0').val() < noOfDomainSprc){
 		alert('Total domains experts should be equal to or less than '+ $('#noOfUnits_0').val());
 		$('#noOfFaculty_'+obj).val('');
-		
 	}else if($('#noOfUnits_3').val() < noOfDomainDprc){
 		alert('Total domains experts should be equal to or less than '+ $('#noOfUnits_3').val());
-		$('#noOfExperts_'+obj).val('');
-		
+		$('#noOfExpert_'+obj).val('');
 	}
-	
+	}else{ if(obj == 'noOfUnits'){
+		
+		var result= confirm("If you change No. of units you have to fill domain details again.Do you still want to continue?");
+		if(result){
+		if($('#noOfUnits_0').val() < noOfDomainSprc){
+			alert('No of units in SPRC should not exceed the sum of domain detail '+ noOfDomainSprc);
+			emptyDomainDetails('sprc',rowCountSprc);
+		}else if($('#noOfUnits_3').val() < noOfDomainDprc){
+			alert('No of units in DPRC should not exceed the sum of domain detail '+ noOfDomainDprc);
+			emptyDomainDetails('dprc',rowCountSprc);
+		}
+		}
+	}
+	}
+}
+
+function emptyDomainDetails(level,count){
+	if(level == 'sprc'){
+		for(var i=0;i<count;i++){
+			$('#noOfFaculty_'+i).val('');
+		}
+	}else{
+		for(var i=3;i<count;i++){
+			$('#noOfExpert_'+i).val('');
+		}
+	}
 }
 
 function validateDistricts(){
@@ -182,7 +208,7 @@ function validateDistricts(){
 	var noOfDomainDprc=0;
 	for(var i=0;i<rowCountSprc;i++){
 		noOfDomainSprc += Number($('#noOfFaculty_'+i).val()) ;
-		noOfDomainDprc += Number($('#noOfExperts_'+(i+3)).val());
+		noOfDomainDprc += Number($('#noOfExpert_'+(i+3)).val());
 	}
 	
 	if($('#noOfUnits_0').val() < noOfDomainSprc){
@@ -196,6 +222,57 @@ function validateDistricts(){
 	}
 }
 
+function validationOnSubmit(){
+		var rowCountSprc=$('#tbodySprcId tr').length;
+		var flag= true;
+		
+		if($('#noOfUnits_0').val() == "" || $('#noOfUnits_0').val() == null){
+			for(var i=0;i<rowCountSprc;i++){
+				if($('#noOfFaculty_'+i).val() != "" || $('#noOfFaculty_'+i).val() != ""){
+					flag=false;
+				}else{
+					break;
+				}
+			}
+			}else{
+				for(var i=0;i<rowCountSprc;i++){
+				if($('#noOfFaculty_'+i).val() == "" || $('#noOfFaculty_'+i).val() == ""){
+					flag=false;
+				}else{
+					break;
+				}
+				}
+			}
+		if($('#noOfUnits_3').val() == "" || $('#noOfUnits_3').val() == null){
+			for(var i=0;i<rowCountSprc;i++){
+			if($('#noOfExpert_'+(i+3)).val() != "" || $('#noOfExpert_'+(i+3)).val() != ""){
+				flag=false;
+			}else{
+				break;
+			}
+			}
+		}else{
+			for(var i=0;i<rowCountSprc;i++){
+			if($('#noOfExpert_'+(i+3)).val() == "" || $('#noOfExpert_'+(i+3)).val() == ""){
+				flag=false;
+			}else{
+				break;
+			}
+			}
+		}
+		
+		if(+$('#activedropdown').val() == 0 && $('#noOfUnits_3').val() != ""){
+			alert("please select district in domain detail of DPRC.");
+			return flag=false;
+		}  
+		
+		if(($('#noOfUnits_3').val() == "" || $('#noOfUnits_0').val() == "") && flag == false){
+			alert("Fill the number of units first.");
+		}else if(!flag){
+			alert("Fill the domain details first.");
+		}
+		return flag;
+	}
 </script>
 
 <section class="content">
@@ -208,7 +285,7 @@ function validateDistricts(){
 					</div>
 					<form:form method="post" name="additionalFacultyAndMain"
 						action="addFacultyAndMaintenanceHrBudget.html"
-						modelAttribute="ADDITIONAL_FACULTY_MAINT_MODEL" >
+						modelAttribute="ADDITIONAL_FACULTY_MAINT_MODEL" onsubmit="return validationOnSubmit()">
 						<input type="hidden" name="<csrf:token-name/>"
 							value="<csrf:token-value uri="addFacultyAndMaintenanceHrBudget.html" />" />
 						<div class="body">
@@ -260,7 +337,7 @@ function validateDistricts(){
 											
 											<c:choose>
 											<c:when test="${count ne 2 and count ne 5}">
-											<td><form:input path="institueInfraHrActivityDetails[${count}].noOfUnits" type="text" onkeypress="return isNumber(event)" maxlength="5" class="active12 form-control Align-Right" id="noOfUnits_${count}" onkeyup="validateCeilingValue(${count})" onchange="myFunctionName(${count})" /></td>
+											<td><form:input path="institueInfraHrActivityDetails[${count}].noOfUnits" type="text" onkeypress="return isNumber(event)" maxlength="5" class="active12 form-control Align-Right" id="noOfUnits_${count}" onkeyup="validateCeilingValue(${count})" onchange="domainValidation('noOfUnits')" /></td>
 											
 											<%-- <td><form:input path="institueInfraHrActivityDetails[${count}].unitCost" type="text" maxlength="7" onkeypress="return isNumber(event)" class="active12 form-control Align-Right" id="unitCost_${count}" onkeyup="calculateFund(${count});validateCeilingValue(${count})"/></td> --%>
 											
@@ -468,7 +545,7 @@ function validateDistricts(){
 																						path="tIWiseProposedDomainExperts[${temp}].noOfExperts"
 																						 onkeypress="return isNumber(event)"
 																						 onkeyup="domainValidation(${temp})"
-																						type="text" class="active12 form-control Align-Right" id="noOfExperts_${temp}"/></td>
+																						type="text" class="active12 form-control Align-Right" id="noOfExpert_${temp}"/></td>
 																			</tr>
 																		</c:if>
 																		<c:set var="temp" value="${temp+1}" scope="page" />

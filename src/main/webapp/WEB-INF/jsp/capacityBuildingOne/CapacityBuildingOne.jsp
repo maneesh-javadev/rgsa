@@ -236,7 +236,8 @@
 								<button ng-show="capacityBuilding.isFreeze" type="button" data-ng-click="freezUnFreezCapacityBuilding('unfreeze')" class="btn bg-green waves-effect">
 									<spring:message code="UNFREEZE" htmlEscape="true" />
 								</button>
-								<button ng-show="!capacityBuilding.isFreeze" type="button" data-ng-click="freezUnFreezCapacityBuilding('freeze')" class="btn bg-green waves-effect">
+								
+								<button ng-show=" capacityBuilding.isFreeze != undefined && !capacityBuilding.isFreeze" type="button" data-ng-click="freezUnFreezCapacityBuilding('freeze')" class="btn bg-green waves-effect">
 									<spring:message code="FREEZE" htmlEscape="true" />
 								</button>
 								
@@ -269,11 +270,11 @@
 								<button ng-show="capacityBuilding.isFreeze" type="button" data-ng-click="freezUnFreezCapacityBuilding('unfreeze')" class="btn bg-green waves-effect">
 									<spring:message code="UNFREEZE" htmlEscape="true" />
 								</button>
-								<c:if test="${capacityBuilding.isFreeze != undefined}">
-								<button ng-show="!capacityBuilding.isFreeze" type="button" data-ng-click="freezUnFreezCapacityBuilding('freeze')" class="btn bg-green waves-effect">
+								
+								<button ng-show="capacityBuilding.isFreeze != undefined && !capacityBuilding.isFreeze" type="button" data-ng-click="freezUnFreezCapacityBuilding('freeze')" class="btn bg-green waves-effect">
 									<spring:message code="FREEZE" htmlEscape="true" />
 								</button>
-								</c:if>
+								
 								<button type="button" data-ng-click="onClear()" ng-disabled="capacityBuilding.isFreeze"  class="btn bg-light-blue waves-effect">
 									<spring:message code="Label.CLEAR" htmlEscape="true" />
 								</button>

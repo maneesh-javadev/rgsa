@@ -47,6 +47,17 @@ public class IncomeEnhancementDetails {
 	@Column(name="district_code")
 	private Integer districtCode;
 	
+	@Transient
+	private String districtNameEnglish;
+	
+	public String getDistrictNameEnglish() {
+		return districtNameEnglish;
+	}
+
+	public void setDistrictNameEnglish(String districtNameEnglish) {
+		this.districtNameEnglish = districtNameEnglish;
+	}
+
 	@Column(name="block_code")
 	private Integer blockCode;
 	

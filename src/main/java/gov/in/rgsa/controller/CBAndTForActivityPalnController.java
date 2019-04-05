@@ -3,8 +3,10 @@ package gov.in.rgsa.controller;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.apache.commons.collections.CollectionUtils;
@@ -12,17 +14,23 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import gov.in.rgsa.entity.AdministrativeTechnicalSupport;
+import gov.in.rgsa.entity.CapacityBuildingActivityGPs;
+import gov.in.rgsa.entity.FetchTraining;
+import gov.in.rgsa.entity.FetchTrainingDetails;
 import gov.in.rgsa.entity.Subjects;
 import gov.in.rgsa.entity.TrainingActivity;
 import gov.in.rgsa.entity.TrainingActivityDetails;
 import gov.in.rgsa.entity.TrainingCategories;
 import gov.in.rgsa.model.BasicInfoModel;
+import gov.in.rgsa.model.Response;
 import gov.in.rgsa.service.BasicInfoService;
 import gov.in.rgsa.service.EGovernanceSupportService;
 import gov.in.rgsa.service.TrainingActivityService;
@@ -52,6 +60,8 @@ public class CBAndTForActivityPalnController {
 	public static final String REDIRECT_BAISC_INFO_DETAILS = "redirect:basicinfo.add.html";
 	public static final String REDIRECT_MODIFY_BAISC_INFO_DETAILS = "redirect:managebasicInfoDetails.html";
 	private static final String CAPACITY_BUILDING_PLAN_CEC = "capacityBuilding.planCEC";
+	private static final String CAPACITY_BUILDING_PLAN_MOPR = "capacityBuilding.plan.mopr";
+	
 	
 	@RequestMapping(value = "capacityBuildingActivityPaln", method = RequestMethod.GET)
 	private String basicInfoDetails(@ModelAttribute("BASIC_INFO_MODEL") BasicInfoModel basicInfoModel, Model model) {
@@ -59,7 +69,7 @@ public class CBAndTForActivityPalnController {
 
 	}
 	
-	@RequestMapping(value = "planForCapacityBuilding", method = RequestMethod.GET)
+	//@RequestMapping(value = "planForCapacityBuilding", method = RequestMethod.GET)
 	private String activityBuildingPan(@ModelAttribute("CBP_ADDTRAINING") TrainingActivity trainingActivity,@RequestParam(value = "menuId",defaultValue="20") int menuId, Model model,RedirectAttributes redirectAttributes,HttpSession session) {
 		userPreference.setMenuId(menuId);
 		
@@ -86,13 +96,15 @@ public class CBAndTForActivityPalnController {
       		flag= false;
       	}
 	      model.addAttribute("Plan_Status", flag);
-	      
+	      model.addAttribute("STATE_CODE", userPreference.getStateCode());
 		if(!trainingActivities.isEmpty()) {
 			model.addAttribute("allTrainingActivity",trainingActivities.get(0));
 			session.setAttribute("allTrainingActivity1", trainingActivities.get(0));
 			TrainingActivity trainingAct= (TrainingActivity) session.getAttribute("allTrainingActivity1");
 			System.out.println("trainingAct ="+trainingAct.getTrainingActivityId());
+			model.addAttribute("initial_status", false);
 		} else {
+			model.addAttribute("initial_status", true);
 			model.addAttribute("allTrainingActivity",trainingActivities);
 		}
 		model.addAttribute("modeOfTrainingList", trainingActivityService.fetchModeOfTraining());
@@ -114,7 +126,7 @@ public class CBAndTForActivityPalnController {
 		return null;
 	}
 	
-	@RequestMapping(value = "planForCapacityBuildingForMOPR", method = RequestMethod.GET)
+	//@RequestMapping(value = "planForCapacityBuildingForMOPR", method = RequestMethod.GET)
 	private String activityBuildingPanForMOPR(@ModelAttribute("CBP_ADDTRAINING") TrainingActivity trainingActivity,@RequestParam(value = "menuId",defaultValue="20") int menuId, Model model) {
 		userPreference.setMenuId(menuId);
 		Integer planStatus=userPreference.getPlanStatus();	
@@ -192,6 +204,17 @@ public class CBAndTForActivityPalnController {
 	@RequestMapping(value="saveCapctyBuldngPln",method= RequestMethod.POST)
 	private String saveCapctyBuldngPlnMethod(@ModelAttribute("CBP_ADDTRAINING")TrainingActivity trainingActivity ,Model model,RedirectAttributes redirectAttributes, HttpSession session) {
 		
+		if(trainingActivity.getUserType().equals("S".charAt(0))) {
+			if(trainingActivity.getIdToDelete()!=null && trainingActivity.getIdToDelete().length()>0)
+			{
+				String idArr[]=trainingActivity.getIdToDelete().split(",");
+				for(int i=0;i<idArr.length;i++) {
+					trainingActivityService.delete(Integer.parseInt((idArr[i])));
+				}
+				
+			}
+		}
+		
 		if(userPreference.getUserType().equalsIgnoreCase("M") && trainingActivity.getUserType().equals("S".charAt(0))) {
 			 trainingActivity.setTrainingActivityId(null);
 			 trainingActivityService.saveAndUpdateMopr(trainingActivity);
@@ -217,7 +240,18 @@ public class CBAndTForActivityPalnController {
 	}
 	
 	@RequestMapping(value="frzUnfrzTrainingActivity", method=RequestMethod.POST)
-	private String frzUnfrzTrainingActivityMethod(@ModelAttribute("CBP_ADDTRAINING")TrainingActivity trainingActivity ,Model model,RedirectAttributes redirectAttributes) {
+	private String frzUnfrzTrainingActivityMethod(@ModelAttribute("CBP_ADDTRAINING")TrainingActivity trainingActivity ,Model model,RedirectAttributes redirectAttributes, HttpSession session) {
+		
+		if(userPreference.getUserType().equalsIgnoreCase("C")) {
+			TrainingActivity trainingActSession = (TrainingActivity) session.getAttribute("allTrainingActivity1");
+			List<TrainingActivityDetails> detailMain = trainingActivity.getTrainingActivityDetailsList();
+			List<TrainingActivityDetails> detailSession = trainingActSession.getTrainingActivityDetailsList();
+			for (int i = 0; i < detailMain.size(); i++) {
+				detailMain.get(i).setTrainingSubjectsList(detailSession.get(i).getTrainingSubjectsList());
+				detailMain.get(i).setTrainingTargetGroupsList(detailSession.get(i).getTrainingTargetGroupsList());
+			}
+		 trainingActivityService.saveAndUpdateCEC(trainingActivity);
+		}
 		trainingActivityService.freezeUnfreeze(trainingActivity);
 		if(trainingActivity.getIsFreeze() == false) {
 			redirectAttributes.addFlashAttribute(Message.SUCCESS_KEY, "Freeze Successfully");
@@ -293,6 +327,75 @@ public class CBAndTForActivityPalnController {
 				model.addAttribute("targetGrpMstrList",trainingActivityService.targetGroupMastersList());
 				model.addAttribute("modeOfTrainingList", trainingActivityService.fetchModeOfTraining());
 		return ADD_TRAINING_DETAILS;
+	}
+	
+	@RequestMapping(value="planForCapacityBuilding",method = RequestMethod.GET)
+	public String planForCapacityBuilding( Model model,RedirectAttributes redirectAttributes)
+	{
+		String status = basicInfoService.fillFirstBasicInfo();
+		if(status.equals("create")) {
+			redirectAttributes.addFlashAttribute(Message.EXCEPTION_KEY, "Please fill the Basic Info Details first");
+			return REDIRECT_BAISC_INFO_DETAILS;
+		}
+		else if(status.equals("modify")) {
+			redirectAttributes.addFlashAttribute(Message.EXCEPTION_KEY, "Please fill the Required Basic Info Details");
+			return REDIRECT_MODIFY_BAISC_INFO_DETAILS;
+		}
+		else {
+		return CAPACITY_BUILDING_PLAN;
+		}
+	}
+	
+	
+	@RequestMapping(value = "fetchtrainingDetailData", method = RequestMethod.GET)
+	private @ResponseBody Map<String,Object> fetchtrainingDetailData() {
+		return  trainingActivityService.fetchTrainingDetails(null);
+	}
+	
+	@RequestMapping(value = "fetchtrainingOtherbyTrainingId", method = RequestMethod.GET)
+	private @ResponseBody Map<String,Object> fetchtrainingOtherbyTrainingId(Integer trainingId) {
+		return  trainingActivityService.fetchTrainingDetailsbyId(trainingId);
+	}
+	
+	@RequestMapping(value="savetrainingDetailData",method=RequestMethod.POST)
+	public @ResponseBody Response savetrainingDetailData(@RequestBody FetchTrainingDetails fetchTrainingDetails,HttpServletRequest request, HttpServletResponse httpServletResponse) {
+	return trainingActivityService.saveorUpdateTrainingActivityDetails(fetchTrainingDetails);
+	}
+	
+	@RequestMapping(value = "fetchSubjectsListData", method = RequestMethod.GET)
+	private @ResponseBody List<Subjects> fetchSubjectsListData(Integer trainingCategoryId) {
+		return  trainingActivityService.fetchSubjectsList(trainingCategoryId);
+	}
+	
+	@RequestMapping(value="updateTrainingActivityData",method=RequestMethod.POST)
+	public @ResponseBody Response updateTrainingActivityData(@RequestBody FetchTraining fetchTraining,HttpServletRequest request, HttpServletResponse httpServletResponse) {
+	return trainingActivityService.updateTrainingActivity(fetchTraining);
+	}
+	
+	@RequestMapping(value="planForCapacityBuildingForMOPR",method = RequestMethod.GET)
+	public String planForCapacityBuildingForMOPR( Model model,RedirectAttributes redirectAttributes)
+	{
+		return CAPACITY_BUILDING_PLAN_MOPR;
+		
+	}
+	
+	
+	@RequestMapping(value = "fetchtrainingDetailDataMOPRCEC", method = RequestMethod.GET)
+	private @ResponseBody Map<String,Object> fetchtrainingDetailDataMOPRCEC() {
+		return  trainingActivityService.fetchTrainingDetailsMOPRCEC();
+	}
+	
+	@RequestMapping(value="savetrainingDetailDataMOPRCEC",method=RequestMethod.POST)
+	public @ResponseBody Response savetrainingDetailDataMOPRCEC(@RequestBody FetchTraining fetchTraining,HttpServletRequest request, HttpServletResponse httpServletResponse) {
+	return trainingActivityService.saveorUpdateTrainingActivityDetailsCECMOPR(fetchTraining);
+	}
+	
+	@RequestMapping(value="planForCapacityBuildingForCEC",method = RequestMethod.GET)
+	public String planForCapacityBuildingForCEC( Model model,RedirectAttributes redirectAttributes)
+	{
+		model.addAttribute("STATE_CODE",userPreference.getStateCode());
+		return CAPACITY_BUILDING_PLAN_CEC;
+		
 	}
 	
 }

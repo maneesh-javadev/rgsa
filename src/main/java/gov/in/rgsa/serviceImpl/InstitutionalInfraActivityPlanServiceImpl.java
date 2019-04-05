@@ -11,17 +11,14 @@ import javax.persistence.PersistenceContext;
 import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
 import gov.in.rgsa.dao.CommonRepository;
-import gov.in.rgsa.dto.GramPanchayatProgressReportDTO;
 import gov.in.rgsa.dto.InstitutionalInfraProgressReportDTO;
 import gov.in.rgsa.entity.InstInfraStatus;
 import gov.in.rgsa.entity.InstitutionalInfraActivityPlan;
 import gov.in.rgsa.entity.InstitutionalInfraActivityPlanDetails;
 import gov.in.rgsa.entity.QprInstitutionalInfraDetails;
 import gov.in.rgsa.entity.QprInstitutionalInfrastructure;
-import gov.in.rgsa.entity.QprPanchayatBhawan;
-import gov.in.rgsa.entity.QprPanhcayatBhawanDetails;
-import gov.in.rgsa.entity.TrainingActivity;
 import gov.in.rgsa.entity.TrainingInstitueType;
 import gov.in.rgsa.service.FacadeService;
 import gov.in.rgsa.service.InstitutionalInfraActivityPlanService;
@@ -39,7 +36,7 @@ public class InstitutionalInfraActivityPlanServiceImpl implements InstitutionalI
 	@Autowired
 	private UserPreference userPreference;
 	
-	@Autowired
+	@Autowired	
 	private FacadeService facadeService;
 		
 
@@ -63,7 +60,7 @@ public class InstitutionalInfraActivityPlanServiceImpl implements InstitutionalI
 							setDataForDetailsWhileUpdate(institutionalInfraActivityPlan);
 						}else{
 							deleteThePreviousDPRCRecod(institutionalInfraActivityPlan);
-							setInstitutionalInfraDetailsWhileSave(institutionalInfraActivityPlan);
+							setInstitutionalInfraDetailsWhileSave(institutionalInfraActivityPlan);	
 						}
 					}
 					
@@ -191,8 +188,11 @@ public class InstitutionalInfraActivityPlanServiceImpl implements InstitutionalI
 		if(userPreference.getUserType().equalsIgnoreCase("M") && CollectionUtils.isEmpty(activity)){
 			params.put("userType", "S");
 			activity= commonRepository.findAll("FETCH_ALL_INSTITUTIONAL_ACTIVITY", params);
-			activity.get(0).setIsFreeze(false);
+			if(CollectionUtils.isNotEmpty(activity)){
+				activity.get(0).setIsFreeze(false);
+			}
 		}
+		
 		return activity;
 	}
 
@@ -245,6 +245,8 @@ public class InstitutionalInfraActivityPlanServiceImpl implements InstitutionalI
 	public List<InstitutionalInfraProgressReportDTO> fetchInstInfraStateDataForProgressReport(Integer trainingInstituteTypeId) {
 		Map<String, Object> params=new HashMap<String, Object>();
 		params.put("stateCode", userPreference.getStateCode());
+		params.put("yearId", userPreference.getFinYearId());
+		params.put("userType", 'C');
 		params.put("trainingInstituteTypeId", trainingInstituteTypeId);
 		return commonRepository.findAll("GET_INITIAL_DATA_FOR_INST_INFRA", params);
 	}

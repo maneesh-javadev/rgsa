@@ -14,6 +14,10 @@ trgModuleCEC.controller("trainingActivityCEC",['$scope','trgActivityCecService',
 	$scope.stateAdditionalReq;
 	$scope.stateTotalFund;
 	$scope.stateGrandTotal;
+	
+	$scope.cecData={};
+	$scope.cecData.capacityBuildingActivityDetails=[];
+	
 	fetchOnLoad();
 	function fetchOnLoad(){
 		trgActivityCecService.getActivityList().then(function(response){
@@ -22,30 +26,59 @@ trgModuleCEC.controller("trainingActivityCEC",['$scope','trgActivityCecService',
 			$scope.userType =  response.data.userType;
 			$scope.moprData= response.data.trg_activity_mopr;
 			$scope.additionalReq=$scope.moprData.additionalRequirement;
-			$scope.calculateFundTotal($scope.moprData.capacityBuildingActivityDetails);
+			$scope.calculateFundTotalMOPR($scope.moprData.capacityBuildingActivityDetails);
 			//For State
 			$scope.stateData=response.data.trg_activity_state;
-			$scope.stateAdditionalReq=$scope.stateData.additionalRequirement
+			$scope.stateFundTotalInCEC=calGrandTotalCEC($scope.stateData.capacityBuildingActivityDetails);
+			$scope.stateAdditionalReq=$scope.stateData.additionalRequirement;
+			$scope.stateGrandTotalInCEC=$scope.stateData.additionalRequirement + $scope.stateFundTotalInCEC;
 			//For Change Data for CEC that has to be saved
-			$scope.cecData=response.data.capacityBuildingDetails;
-			if($scope.cecData!=null){
-				$scope.isFreezeOrUnfreeze=$scope.cecData.isFreeze;
-				if($scope.isFreezeOrUnfreeze != null && $scope.isFreezeOrUnfreeze !=undefined){
-					if($scope.isFreezeOrUnfreeze == true){
-						$scope.status="U";
-					}else{
-						$scope.status="F";
-					}
+			
+			if(response.data.capacityBuildingDetails!=undefined ){
+				$scope.cecData=response.data.capacityBuildingDetails;
+				$scope.calculateFundTotal($scope.cecData.capacityBuildingActivityDetails);
+				if($scope.cecData.isFreeze == true){
+					$scope.status="U";
+					$scope.isFreezeOrUnfreeze=true;
+					$("#btnfreezeUnfreeze").html("Unfreeze")
+
+				}else{
+					$scope.status="F";
+					$scope.isFreezeOrUnfreeze=false;
+					$("#btnfreezeUnfreeze").html("Freeze")
 				}
+				/*$scope.initial_status=false;
+				$scope.isFreezeOrUnfreeze=$scope.cecData.isFreeze;
 				calculateOther($scope.cecData);
 				console.log("cec  isfreeze ="+$scope.cecData.isFreeze);
+				if($scope.isFreezeOrUnfreeze == true){
+					$scope.status="U";
+				}else{
+					$scope.status="F";
+				}*/
+			}else{
+				
+				$scope.status="F";
 			}
+			
+			
 			
 		
 		});
 	}
+	
+	function calGrandTotalCEC(object){
+		let total=0;
+		for(let i=0;i<object.length;i++){
+			if(object[i].funds != null && object[i].funds != undefined) 
+			total += object[i].funds;
+		}
+		return total;
+	}
+	
+	
 	//jsp local function handling here
-	$scope.calculateFundTotal=function(capacityBuildingActivityDetails){
+	$scope.calculateFundTotalMOPR=function(capacityBuildingActivityDetails){
 		var totalFundVal = 0;
 		for (var i = 0; i < capacityBuildingActivityDetails.length; i++) {
 		if(capacityBuildingActivityDetails[i].funds != null && capacityBuildingActivityDetails[i].funds != undefined)
@@ -53,10 +86,10 @@ trgModuleCEC.controller("trainingActivityCEC",['$scope','trgActivityCecService',
 		}
 		$scope.totalFund=totalFundVal;
 		//console.log("totalFundVal ="+ totalFundVal);
-		$scope.calculateGrandTotal();
+		$scope.calculateGrandTotalMOPR();
 	}
 	//jsp local function handling here
-	$scope.calculateGrandTotal=function(){
+	$scope.calculateGrandTotalMOPR=function(){
 		var total = 0;
 		if($scope.additionalReq == undefined || $scope.additionalReq == ""){
 			total = 0 + parseInt($scope.totalFund);
@@ -65,6 +98,29 @@ trgModuleCEC.controller("trainingActivityCEC",['$scope','trgActivityCecService',
 		}
 		$scope.grandTotal=total;
 	}
+	
+	
+	//jsp local function handling here
+	$scope.calculateFundTotal=function(capacityBuildingActivityDetails){
+		var totalFundVal = 0;
+		for (var i = 0; i < capacityBuildingActivityDetails.length; i++) {
+		if(capacityBuildingActivityDetails[i].funds != null && capacityBuildingActivityDetails[i].funds != undefined)
+		totalFundVal = totalFundVal + capacityBuildingActivityDetails[i].funds;
+		}
+		$scope.stateTotalFund=totalFundVal;
+		//console.log("totalFundVal ="+ totalFundVal);
+		$scope.calculateGrandTotal();
+	}
+	//jsp local function handling here
+	$scope.calculateGrandTotal=function(){
+		var total = 0;
+		if($scope.cecData.additionalRequirement == undefined || $scope.cecData.additionalRequirement == ""){
+			total = 0 + parseInt($scope.stateTotalFund);
+		}else{
+			total = parseInt($scope.cecData.additionalRequirement) + parseInt($scope.stateTotalFund);
+		}
+		$scope.stateGrandTotal=total;
+	}
 	//jsp local function handling here
 	$scope.calculateNewFund=function(index){
 		var noOfDays=1;
@@ -72,10 +128,32 @@ trgModuleCEC.controller("trainingActivityCEC",['$scope','trgActivityCecService',
 		if($scope.stateData.capacityBuildingActivityDetails[index].noOfDays != null && $scope.stateData.capacityBuildingActivityDetails[index].noOfDays != undefined){
 			noOfDays=$scope.stateData.capacityBuildingActivityDetails[index].noOfDays;
 		}
-		if($scope.stateData.capacityBuildingActivityDetails[index].noOfUnits != null && $scope.stateData.capacityBuildingActivityDetails[index].noOfUnits != undefined){
-			noOfUnits=$scope.stateData.capacityBuildingActivityDetails[index].noOfUnits;
+		if($scope.cecData.capacityBuildingActivityDetails[index].noOfUnits != null && $scope.cecData.capacityBuildingActivityDetails[index].noOfUnits != undefined){
+			noOfUnits=$scope.cecData.capacityBuildingActivityDetails[index].noOfUnits;
 		}
-		$scope.cecData.capacityBuildingActivityDetails[index].funds=$scope.cecData.capacityBuildingActivityDetails[index].unitCost*noOfDays*noOfUnits;
+		if($scope.cecData.capacityBuildingActivityDetails[index].unitCost === undefined){
+			$scope.cecData.capacityBuildingActivityDetails[index].funds=0;
+		}else{
+			$scope.cecData.capacityBuildingActivityDetails[index].funds=$scope.cecData.capacityBuildingActivityDetails[index].unitCost*noOfDays*noOfUnits;
+			if((index ==0 || index ==1 || index ==3 ||index ==7) && $scope.cecData.capacityBuildingActivityDetails[index].unitCost > 500000){
+				toastr.error("total fund for this activity should less than or equal to 5 lakhs.");
+				$scope.cecData.capacityBuildingActivityDetails[index].unitCost='';
+			}else if(index == 2 && $scope.cecData.capacityBuildingActivityDetails[index].unitCost > 1000000){
+				toastr.error("total fund for this activity should less than or equal to 10 lakhs.");
+				$scope.cecData.capacityBuildingActivityDetails[index].unitCost='';
+			}else if(index == 4 && $scope.cecData.capacityBuildingActivityDetails[index].unitCost > 2500){
+				toastr.error("total fund for this activity should less than or equal to 2500.");
+				$scope.cecData.capacityBuildingActivityDetails[index].unitCost='';
+			}else if(index == 5 && $scope.cecData.capacityBuildingActivityDetails[index].unitCost > 4000){
+				toastr.error("total fund for this activity should less than or equal to 4000.");
+				$scope.cecData.capacityBuildingActivityDetails[index].unitCost='';
+			}else if(index == 6 && $scope.cecData.capacityBuildingActivityDetails[index].unitCost  > 10000){
+				toastr.error("total fund for this activity should less than or equal to 10000.");
+				$scope.cecData.capacityBuildingActivityDetails[index].unitCost='';
+			}
+		}
+		
+		//$scope.cecData.capacityBuildingActivityDetails[index].unitCost=parseInt($scope.cecData.capacityBuildingActivityDetails[index].unitCost);
 		//For total change in fund calculation		
 		calculateOther($scope.cecData);
 	}
@@ -109,6 +187,7 @@ trgModuleCEC.controller("trainingActivityCEC",['$scope','trgActivityCecService',
 	}
 	//saving details
 	$scope.saveTrainingActivityCecDetails=function(){
+		$scope.cecData.isFreeze=false;
 		trgActivityCecService.saveCapacityBuildingCEC($scope.cecData).then(function(response){
 			fetchOnLoad();
 			toastr.success("Data Saved Successfully");
@@ -122,12 +201,12 @@ trgModuleCEC.controller("trainingActivityCEC",['$scope','trgActivityCecService',
 		var status=$scope.status;
 		if(status != null && status != undefined){
 			if(status == 'F'){
-				//$scope.isFreezeOrUnfreeze = true;
+				$scope.isFreezeOrUnfreeze = true;
 				$scope.cecData.isFreeze=true;
 				//$(e.target).data('legend','U');
 				//$scope.status="U";
 			}else{
-				//$scope.isFreezeOrUnfreeze = false;
+				$scope.isFreezeOrUnfreeze = false;
 				$scope.cecData.isFreeze=false;
 				//$(e.target).data('legend','F')
 				//$scope.status="F"
@@ -135,6 +214,7 @@ trgModuleCEC.controller("trainingActivityCEC",['$scope','trgActivityCecService',
 			//$scope.$digest();
 			trgActivityCecService.saveCapacityBuildingCEC($scope.cecData).then(function(response){
 				//$scope.cecData = response.data;
+				fetchOnLoad();
 				if(status == 'F'){
 					$(e.target).html("Unfreeze")
 					fetchOnLoad();

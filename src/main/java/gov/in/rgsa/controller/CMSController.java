@@ -48,9 +48,6 @@ public class CMSController {
 	@Autowired
 	private UserPreference userPreference;
 
-	private static final String FILE_LOCATION = ResourceBundle.getBundle("application")
-			.getString("upload.file.location.officeorder").trim();
-
 	@RequestMapping(value = "addCms", method = RequestMethod.GET)
 	public String addCms(@ModelAttribute("Cms_Model") CmsModel form, Model model, RedirectAttributes re)
 			throws Exception {

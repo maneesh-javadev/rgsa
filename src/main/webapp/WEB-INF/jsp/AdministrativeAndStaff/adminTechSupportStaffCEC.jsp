@@ -90,18 +90,11 @@ $("#GrandTotalId").val(parseInt($("#total_fund").val()) + parseInt($("#additiona
 }
 
 function freezeAndUnfreeze(obj){
-if(obj == "F"){
-	$("#isFreeze").val(F);
-}else{
-	$("#unfreezeId").val(UF);
-}
-}
-
-
-
-
-
-function freezeAndUnfreeze(obj){
+	if(obj == "F"){
+		$("#isFreeze").val("F");
+	}else{
+		$("#unfreezeId").val("U");
+	}
 	document.getElementById("dbFileName").value = obj;
 	document.administrativeTechnicalSupport.method = "post";
 	document.administrativeTechnicalSupport.action = "freezAndUnfreezForCec.html?<csrf:token uri='freezAndUnfreezForCec.html'/>";
@@ -125,6 +118,13 @@ function onloadChangeColor(){
 
 }
 
+function validateUnitCost(index){
+	if($('#unitCostId_'+index).val() > 50000){
+		alert("Unit cost should not exceed 50000 per month.");
+		$('#unitCostId_'+index).focus();
+		$('#unitCostId_'+index).val('')
+	}
+}
 
 </script>
 <section class="content">
@@ -193,7 +193,9 @@ function onloadChangeColor(){
 															<strong>${index.index+1}</strong>
 														</div></td>
 													<td><div align="center">
-															<strong>${post.postName}</strong>
+															<strong>${post.postName}
+															<input type="hidden" name="supportDetails[${index.index}].postType.postId" value="${post.postId}">
+															</strong>
 														</div></td>
 													<td><div align="center">
 															<strong>${post.master.postTypeName}</strong>
@@ -203,59 +205,64 @@ function onloadChangeColor(){
 														</div></td>
 													<c:choose>
 
-														<c:when test="${ISFREEZE == 'F '}">
+														<c:when test="${ISFREEZE == 'F'}">
 															<td>
-															<div align="center"
-																	id="noOfUnitsIdState_${index.index}">${detailsForState[index.index].noOfUnits}</div>
-															<input
-																name="supportDetails[${index.index}].noOfUnits"
+																<div align="center" id="noOfUnitsIdState_${index.index}">${detailsForState[index.index].noOfUnits}</div>
+																<input name="supportDetails[${index.index}].noOfUnits"
 																type="text" maxlength="4"
 																value="${details[index.index].noOfUnits}"
 																class="form-control Align-Right"
 																onkeypress="return isNumber(event)"
 																onkeyup="calculateFund(${index.index}); onloadChangeColor()"
-																id="noOfUnitsId_${index.index}" disabled="disabled" <%-- readonly="${IS_FREEZE eq true}" --%> /></td>
+																style="text-align: right;"
+																id="noOfUnitsId_${index.index}" readonly="readonly" <%-- readonly="${IS_FREEZE eq true}" --%> />
+															</td>
 															<td>
-															<div align="center" style="margin-top: 20px;">${detailsForState[index.index].noOfMonths}</div>
-															<input
-																name="supportDetails[${index.index}].noOfMonths"
-																type="hidden" 
+																<div align="center" style="margin-top: 20px;">${detailsForState[index.index].noOfMonths}</div>
+																<input name="supportDetails[${index.index}].noOfMonths"
+																type="hidden"
 																value="${detailsForState[index.index].noOfMonths}"
-																id="noOfMonthsId_${index.index}"/></td>
+																id="noOfMonthsId_${index.index}" />
+															</td>
 															<td><div align="center"
 																	id="unitCostIdState_${index.index}">${detailsForState[index.index].unitCost}</div>
 																<input name="supportDetails[${index.index}].unitCost"
 																value="${details[index.index].unitCost}" type="text"
+																max="50000"
 																class="form-control Align-Right"
 																onkeypress="return isNumber(event)"
+																style="text-align: right;"
 																onkeyup="validateMonth(${index.index}); calculateFund(${index.index}); onloadChangeColor()"
-																id="unitCostId_${index.index}" disabled="disabled" /></td>
+																id="unitCostId_${index.index}" readonly="readonly" /></td>
 														</c:when>
 														<c:otherwise>
 															<td><div align="center"
-																	id="noOfUnitsIdState_${index.index}">${detailsForState[index.index].noOfUnits}</div> <input
-																name="supportDetails[${index.index}].noOfUnits"
+																	id="noOfUnitsIdState_${index.index}">${detailsForState[index.index].noOfUnits}</div>
+																<input name="supportDetails[${index.index}].noOfUnits"
 																type="text" maxlength="4"
 																value="${details[index.index].noOfUnits}"
 																class="form-control Align-Right"
 																onkeypress="return isNumber(event)"
+																	style="text-align: right;"
 																onkeyup="calculateFund(${index.index}); onloadChangeColor()"
 																id="noOfUnitsId_${index.index}" <%-- readonly="${IS_FREEZE eq true}" --%> /></td>
 															<td>
-															<div align="center" style="margin-top: 20px;">${detailsForState[index.index].noOfMonths}</div>
-															<input
-																name="supportDetails[${index.index}].noOfMonths"
-																type="hidden" 
+																<div align="center" style="margin-top: 20px;">${detailsForState[index.index].noOfMonths}</div>
+																<input name="supportDetails[${index.index}].noOfMonths"
+																type="hidden"
 																value="${detailsForState[index.index].noOfMonths}"
-																id="noOfMonthsId_${index.index}"/></td>
-																
+																id="noOfMonthsId_${index.index}" />
+															</td>
+
 															<td><div align="center"
 																	id="unitCostIdState_${index.index}">${detailsForState[index.index].unitCost}</div>
 																<input name="supportDetails[${index.index}].unitCost"
 																value="${details[index.index].unitCost}" type="text"
 																class="form-control Align-Right"
 																onkeypress="return isNumber(event)"
-																onkeyup=" calculateFund(${index.index}); onloadChangeColor()"
+																style="text-align: right;"
+																maxlength="5"
+																onkeyup=" calculateFund(${index.index}); onloadChangeColor();validateUnitCost(${index.index})"
 																id="unitCostId_${index.index}" /></td>
 
 
@@ -273,8 +280,9 @@ function onloadChangeColor(){
 														value="${details[index.index].funds}" type="text"
 														class="form-control Align-Right"
 														onkeypress="return isNumber(event)"
+															style="text-align: right;"
 														onchange="calculateFund()" onkeyup="onloadChangeColor()"
-														id="fundId_${index.index}" readonly="true" /></td>
+														id="fundId_${index.index}" readonly="readonly" /></td>
 
 												</tr>
 												<c:set var="count" value="${count+1}"></c:set>
@@ -289,7 +297,7 @@ function onloadChangeColor(){
 												<td><div align="center" id="TotalCostIdState">${TotalStateFund}</div>
 
 													<input type="text" class="form-control Align-Right"
-													readonly="readonly" id="total_fund" /></td>
+													readonly="readonly" id="total_fund" style="text-align: right;"/></td>
 											</tr>
 
 											<tr>
@@ -300,14 +308,30 @@ function onloadChangeColor(){
 												<td colspan="3"></td>
 												<td><div align="center"
 														id="additionalRequirementIdState">${technicalSupportForState.additionalRequirement}</div>
-
+													
+													<c:choose>
+													<c:when test="${ISFREEZE == 'F'}">
+													<input name="additionalRequirement"
+													value="${technicalSupport.additionalRequirement}"
+													type="text" class="form-control Align-Right"
+													onkeypress="return isNumber(event)"
+													id="additionalRequirementId"
+													style="text-align: right;"
+													readonly="readonly"
+													onkeyup="validateAdditionalRequirement()"
+													placeholder="25 % of Sub Total" />
+													</c:when>
+													<c:otherwise>
 													<input name="additionalRequirement"
 													value="${technicalSupport.additionalRequirement}"
 													type="text" class="form-control Align-Right"
 													onkeypress="return isNumber(event)"
 													id="additionalRequirementId"
 													onkeyup="validateAdditionalRequirement()"
-													placeholder="25 % of Sub Total" /></td>
+													placeholder="25 % of Sub Total" style="text-align: right;"/>
+													</c:otherwise>
+													</c:choose>
+													</td>
 											</tr>
 											<c:set var="count" value="${count + 1}" scope="page" />
 											<tr>
@@ -318,7 +342,7 @@ function onloadChangeColor(){
 												<td colspan="3"></td>
 												<td><div align="center" id="GrandTotalIdState">${technicalSupportForState.additionalRequirement+TotalStateFund}</div>
 													<input type="text" class="form-control Align-Right"
-													readonly="readonly" id="GrandTotalId" /></td>
+													readonly="readonly" id="GrandTotalId" style="text-align: right;"/></td>
 											</tr>
 										</tbody>
 									</table>
@@ -332,43 +356,48 @@ function onloadChangeColor(){
 											<spring:message code="Label.BACK" htmlEscape="true" />
 										</button>
 									</div>
-								
-								<div class="col-md-8 text-right">
-									<%-- <c:if test="${Plan_Status eq true}"> --%>
-									<%-- <c:if test="${administrativeTechnicalSupport.status eq S || empty eGovActivity.status}"> --%>
-									<c:if test="${ISFREEZE ne 'F '}">
 
-										<button type="submit" class="btn bg-green waves-effect"
-											id="saveId" onclick="validateMonth(${count});">SAVE</button>
+									<div class="col-md-8 text-right">
+										<%-- <c:if test="${Plan_Status eq true}"> --%>
+										<%-- <c:if test="${administrativeTechnicalSupport.status eq S || empty eGovActivity.status}"> --%>
+										<c:if test="${ISFREEZE ne 'F'}">
+
+											<button type="submit" class="btn bg-green waves-effect"
+												id="saveId" onclick="validateMonth(${count});">SAVE</button>
 											<c:choose>
-											<c:when test="${initial_status}"><button type="button" onclick='freezeAndUnfreeze("F")'
-											id="isFreeze" class="btn bg-green waves-effect" disabled="disabled">FREEZE</button></c:when>
-											<c:otherwise><button type="button" onclick='freezeAndUnfreeze("F")'
-											id="isFreeze" class="btn bg-green waves-effect">FREEZE</button></c:otherwise>
+												<c:when test="${initial_status}">
+													<button type="button" onclick='freezeAndUnfreeze("F")'
+														id="isFreeze" class="btn bg-green waves-effect"
+														disabled="disabled">FREEZE</button>
+												</c:when>
+												<c:otherwise>
+													<button type="button" onclick='freezeAndUnfreeze("F")'
+														id="isFreeze" class="btn bg-green waves-effect">FREEZE</button>
+												</c:otherwise>
 											</c:choose>
+											<button type="button"
+												class="btn bg-light-blue waves-effect reset" id="clearId"
+												onclick="onClear(this)">
+												<spring:message code="Label.CLEAR" text="Clear"
+													htmlEscape="true" />
+											</button>
+
+										</c:if>
+										<c:if test="${ISFREEZE eq 'F'}">
+											<button type="button" onclick='freezeAndUnfreeze("U")'
+												id="unfreezeId" class="btn bg-green waves-effect">
+												UNFREEZE</button>
+										</c:if>
+
 										<button type="button"
-											class="btn bg-light-blue waves-effect reset" id="clearId"
-											onclick="onClear(this)">
-											<spring:message code="Label.CLEAR" text="Clear"
-												htmlEscape="true" />
-										</button>
-
-									</c:if>
-									<c:if test="${ISFREEZE eq 'F '}">
-										<button type="button" onclick='freezeAndUnfreeze("UF")'
-											id="unfreezeId" class="btn bg-green waves-effect">
-											UNFREEZE</button>
-									</c:if>
-
-									<button type="button"
-										onclick="onClose('home.html?<csrf:token uri='home.html'/>')"
-										class="btn bg-orange waves-effect">CLOSE</button>
-									<input type="hidden" name="dbFileName" id="dbFileName">
-									<input type="hidden" name="administrativeTechnicalSupportId"
-										value="${technicalSupport.administrativeTechnicalSupportId}" />
-									<input type="hidden" name="userType"
-										value="${technicalSupport.userType}">
-								</div>
+											onclick="onClose('home.html?<csrf:token uri='home.html'/>')"
+											class="btn bg-orange waves-effect">CLOSE</button>
+										<input type="hidden" name="dbFileName" id="dbFileName">
+										<input type="hidden" name="administrativeTechnicalSupportId"
+											value="${technicalSupport.administrativeTechnicalSupportId}" />
+										<input type="hidden" name="userType"
+											value="${technicalSupport.userType}">
+									</div>
 								</div>
 							</div>
 							<%-- <form:hidden path="adminFinancialDataActivityId"
@@ -392,10 +421,10 @@ function onloadChangeColor(){
 														No. of Block(s) <br> (A)
 													</div></th>
 												<th><div align="center">
-														Unit Cost <br> (B)
+														 No. of Months<br> (B)
 													</div></th>
 												<th><div align="center">
-														No. of Months <br> (C)
+														Unit Cost <br> (C)
 													</div></th>
 												<th><div align="center">
 														Funds(in Rs.) <br> D= (A*B*C)
@@ -432,14 +461,14 @@ function onloadChangeColor(){
 													<td><div align="center">
 															<strong>${detailsForMOPR[index.index].postLevel.postLevelName}</strong>
 														</div></td>
-													<td><strong>${detailsForMOPR[index.index].noOfMonths}</strong>
+													<td><div align="center"><strong>${detailsForMOPR[index.index].noOfUnits}</strong></div>
 													</td>
-													<td><strong>${detailsForMOPR[index.index].noOfUnits}</strong>
+													<td><div align="center"><strong>${detailsForMOPR[index.index].noOfMonths}</strong></div>
 													</td>
-													<td><strong>${detailsForMOPR[index.index].unitCost}</strong>
+													<td><div align="center"><strong>${detailsForMOPR[index.index].unitCost}</strong></div>
 													</td>
 
-													<td><strong><div>${detailsForMOPR[index.index].funds}</div></strong>
+													<td><div align="center"><strong>${detailsForMOPR[index.index].funds}</strong></div>
 													<td><div align="center">
 															<c:choose>
 																<c:when
@@ -505,7 +534,7 @@ function onloadChangeColor(){
 									</table>
 								</div>
 								<div class="row clearfix">
-								<div class="col-md-4">
+									<div class="col-md-4">
 										<button type="button"
 											onclick="onClose('viewPlanDetails.html?<csrf:token uri='viewPlanDetails.html'/>&stateCode=${STATE_CODE}')"
 											class="btn bg-orange waves-effect">
@@ -513,13 +542,13 @@ function onloadChangeColor(){
 											<spring:message code="Label.BACK" htmlEscape="true" />
 										</button>
 									</div>
-								<div class="col-md-8 text-right">
-									<button type="button"
-										onclick="onClose('home.html?<csrf:token uri='home.html'/>')"
-										class="btn bg-orange waves-effect">
-										<spring:message code="Label.CLOSE" htmlEscape="true" />
-									</button>
-								</div>
+									<div class="col-md-8 text-right">
+										<button type="button"
+											onclick="onClose('home.html?<csrf:token uri='home.html'/>')"
+											class="btn bg-orange waves-effect">
+											<spring:message code="Label.CLOSE" htmlEscape="true" />
+										</button>
+									</div>
 								</div>
 							</div>
 						</div>

@@ -13,7 +13,10 @@ import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.dao.support.PersistenceExceptionTranslator;
 
 import javax.persistence.NoResultException;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 
 @SpringBootApplication
@@ -29,7 +32,7 @@ public class RGSAWebApp extends SpringBootServletInitializer {
     public static void main(String[] args) {
         logger.debug(">> RGSAWebApp Application starting .... ");
         ApplicationContext applicationContext = SpringApplication.run(RGSAWebApp.class, args);
-        postMainDebugs(applicationContext);
+        //postMainDebugs(applicationContext);
     }
 
     public static void postMainDebugs(ApplicationContext applicationContext){
@@ -40,8 +43,21 @@ public class RGSAWebApp extends SpringBootServletInitializer {
             RuntimeException runtimeException = pet.translateExceptionIfPossible(new NoResultException("Whatever"));
             logger.info(String.format("Interceptor: name(%s) , class(%s), Exception(%s)", name, pet, runtimeException));
         });
-        for (String name : applicationContext.getBeanDefinitionNames()) {
-            logger.info("Loaded Bean: " + name);
+        dumpLoadedBeans(applicationContext);
+    }
+
+
+
+    private static void dumpLoadedBeans(ApplicationContext applicationContext){
+
+        List<String> beanList = Arrays.stream(applicationContext.getBeanDefinitionNames()).sorted().collect(Collectors.toList());
+        Integer index=0;
+        for (String name : beanList) {
+            Object beanObject = applicationContext.getBean(name);
+            String i = index.toString();
+            System.out.println(i + ". Loaded Bean: " + name);
+            System.out.println(i + ". With Bean: " + beanObject.toString());
+            ++index;
         }
     }
 

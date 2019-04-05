@@ -183,7 +183,7 @@ table#mytable tbody tr td {
 											<input type="text" class="form-control alignment" restrict-input="{type: 'digitsOnly',index: $index}" 
 												data-ng-change="validateAdditionalRequirement()" data-ng-model="adminTechStaffObject.additionalRequirement" data-ng-if='adminTechStaffObject.status == "F"' placeholder="Additional Requirements" disabled="disabled" />
 										<input type="text" class="form-control alignment" restrict-input="{type: 'digitsOnly',index: $index}" 
-												data-ng-change="validateAdditionalRequirement()" data-ng-model="adminTechStaffObject.additionalRequirement" data-ng-if='adminTechStaffObject.status != "F"' placeholder="Additional Requirements" />
+												data-ng-change="validateAdditionalRequirement()" ng-min="0" data-ng-model="adminTechStaffObject.additionalRequirement" data-ng-if='adminTechStaffObject.status != "F"' placeholder="Additional Requirements" />
 										</td>
 									</tr>
 									<tr>
