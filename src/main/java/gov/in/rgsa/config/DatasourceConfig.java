@@ -80,7 +80,8 @@ public class DatasourceConfig {
         em.setPackagesToScan(
                 "gov.in.rgsa.entity",
                 "gov.in.rgsa.outbound",
-                "gov.in.rgsa.inbound"
+                "gov.in.rgsa.inbound",
+                "gov.in.rgsa.dto"
         );
         em.setMappingResources(this.resources);
 
