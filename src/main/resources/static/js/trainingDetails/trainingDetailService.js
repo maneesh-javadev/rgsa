@@ -15,8 +15,8 @@ trainingDetail.service('trainingDetailService', [ '$http', function($http) {
 		return $http.post("savetrainingDetailData.html?<csrf:token uri=savetrainingDetailData.htm/>",fetchTrainingDetails);
 	}
 	
-	this.fetchSubjectsListData=function(trainingCategoryId){
-		return $http.get("fetchSubjectsListData.html?<csrf:token uri=fetchSubjectsListData.htm/>&trainingCategoryId="+trainingCategoryId);
+	this.fetchSubjectsListData=function(strTrainingCategoryIds){
+		return $http.get("fetchSubjectsListData.html?<csrf:token uri=fetchSubjectsListData.htm/>&strTrainingCategoryIds="+strTrainingCategoryIds);
 	}
 	
 	this.updateTrainingActivityData=function(fetchTraining){

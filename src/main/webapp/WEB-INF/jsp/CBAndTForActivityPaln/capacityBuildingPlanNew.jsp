@@ -23,6 +23,7 @@ $('document').ready(function(){
 		 "lengthChange": false,
 		 bFilter: false,
 		 "bSort": false,
+		 ,"bPaginate":false
 	});	
 });
 
@@ -68,13 +69,13 @@ table.dataTable thead > tr > th, table.dataTable thead > tr > td {
 					</div>
 					<form>
 							
-								 <span ng-show="planStateStatus">
-									<div ng-show="isbtnAddTraining" class="form-group text-right" >
-										<button ng-click="toAddNew()" ng-disabled="training.isFreeze" class="btn bg-green waves-effect">ADD TRAININGS</button>
-										
-										
-									</div>
-								</span>
+								
+								<div ng-show="isbtnAddTraining" class="form-group text-right" >
+									<button ng-click="toAddNew()" ng-disabled="training.isFreeze" class="btn bg-green waves-effect">ADD TRAININGS</button>
+									
+									
+								</div>
+							
 						<div ng-show="isShowRecodVisible">
 							
 							<div class="records">
@@ -138,6 +139,18 @@ table.dataTable thead > tr > th, table.dataTable thead > tr > td {
 									<div class="col-sm-6">
 									</div>
 									<div class="col-sm-2">
+										<label>Total No. of Participants</label>
+									</div>
+									<div class="col-sm-4">
+										<input type="text" class="form-control" id="subTotal"
+											value="{{allNoOfParticipants}}" readonly="readonly"
+											style="text-align: right;">
+									</div>
+								</div>
+								<div class="row clearfix">
+									<div class="col-sm-6">
+									</div>
+									<div class="col-sm-2">
 										<label>Total Funds</label>
 									</div>
 									<div class="col-sm-4">
@@ -174,21 +187,19 @@ table.dataTable thead > tr > th, table.dataTable thead > tr > td {
 								<br/>
 								<br/>
 								<div class="col-md-12 text-right">
-									 <span ng-show="planStateStatus">
-										 <button type="button" ng-show="training.isFreeze==false" ng-click="saveTrainingDetails('S')"
-											class="btn bg-green waves-effect">SAVE</button>
-											
-										<button type="button" ng-show="training.isFreeze==false" ng-click="saveTrainingDetails('F')"
-											class="btn bg-green waves-effect">FREEZE</button>
-											
-											<button type="button" ng-show="training.isFreeze==true"  ng-click="saveTrainingDetails('U')"
-											class="btn bg-green waves-effect">UNFREEZE</button>
-											
-										<button type="button" id="clearButtn" onclick="onClear(this)"
-											class="btn bg-light-blue waves-effect">CLEAR</button>
 									 
-									 </span>
-									
+									<button type="button" ng-show="training.isFreeze==false" ng-click="saveTrainingDetails('S')"
+										class="btn bg-green waves-effect">SAVE</button>
+										
+									<button type="button" ng-show="training.isFreeze==false" ng-click="saveTrainingDetails('F')"
+										class="btn bg-green waves-effect">FREEZE</button>
+										
+										<button type="button" ng-show="training.isFreeze==true"  ng-click="saveTrainingDetails('U')"
+										class="btn bg-green waves-effect">UNFREEZE</button>
+										
+									<button ng-click="resetLoading()" type="button"   class="btn bg-light-blue waves-effect"  >
+									   			<spring:message code="Label.CLEAR" htmlEscape="true" />
+									   		</button>
 								
 									<button type="button"
 										onclick="onClose('home.html?<csrf:token uri='home.html'/>')"
@@ -213,17 +224,13 @@ table.dataTable thead > tr > th, table.dataTable thead > tr > td {
 		                                    
 		                                    <div class="col-sm-4">
 		                                        <div class="form-group" >
-		                                        		<div ng-if="addNew==true">
-		                                        		<select  class="element-width"  data-ng-model="trainingDetails.trainingCategoryId" ng-change="fetchSubjectListbyCategory(trainingDetails.trainingCategoryId)">
+		                                        
+		                                        		<select  multiple="multiple" class="element-width"  data-ng-model="trainingDetails.trgCategoryArr" ng-change="fetchSubjectListbyCategory(trainingDetails.trgCategoryArr)" required="required">
 																<option ng-repeat="obj in trainingCatgryList" value={{obj.trainingCategoryId}}>
 																	{{obj.trainingCategoryName}}
 																</option>
 														</select>
-		                                        		</div>
-		                                        		<div ng-if="addNew==false">
-		                                        		<div data-ng-model="trainingDetails.trainingCategoryId"></div>
-		                                        		{{curObject.trainingCategoryName}}
-		                                        		</div>
+		                                        		
 		                                               
 		                                        </div>
 		                                    </div>
@@ -232,7 +239,7 @@ table.dataTable thead > tr > th, table.dataTable thead > tr > td {
 		                                    </div>
 		                                    <div class="col-sm-4">
 		                                        <div class="form-group">
-				                    				<select   multiple="multiple" data-ng-model="trainingDetails.targetGrptArr" class="element-width" >
+				                    				<select   multiple="multiple" data-ng-model="trainingDetails.targetGrptArr" class="element-width" required="required">
 																<option ng-repeat="obj in targetGrpMstrList" value={{obj.targetGroupMasterId}}>
 																	{{obj.targetGroupMasterName}}
 																</option>
@@ -250,7 +257,7 @@ table.dataTable thead > tr > th, table.dataTable thead > tr > td {
 		                                    </div>
 		                                    <div class="col-sm-4">
 		                                        <div class="form-group">
-		                                        	<select   multiple="multiple" data-ng-model="trainingDetails.trainingSubjectArr" class="element-width" >
+		                                        	<select   multiple="multiple" data-ng-model="trainingDetails.trainingSubjectArr" class="element-width" required="required">
 																<option ng-repeat="obj in subjectsList" value={{obj.subjectId}}>
 																	{{obj.subjectName}}
 																</option>
@@ -262,7 +269,7 @@ table.dataTable thead > tr > th, table.dataTable thead > tr > td {
 		                                    </div>
 		                                    <div class="col-sm-4">
 		                                        <div class="form-group">
-		                                        	<select  data-ng-model="trainingDetails.trainingVenueLevelId" data-ng-change="calculateFund('V')" class="element-width"  style=" height:30px;">
+		                                        	<select  data-ng-model="trainingDetails.trainingVenueLevelId" data-ng-change="calculateFund('V')" class="element-width"  style=" height:30px;" required="required">
 																<option ng-repeat="obj in trngVenueList" value={{obj.trainingVenueLevelId}}>
 																	{{obj.trainingVenueLevelName}}
 																</option>

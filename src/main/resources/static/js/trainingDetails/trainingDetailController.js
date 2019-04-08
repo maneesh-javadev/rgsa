@@ -11,18 +11,22 @@ trainingDetail.controller("trainingDetailController",['$scope','trainingDetailSe
 	$scope.training={};
 	$scope.training.trainingDetailList=[];
 	$scope.trainingDetails={};
-
+	var delTrainingIdArr=[];
+	 $scope.melement={};
 	fetchOnLoad();
 	
+	$scope.resetLoading=function(){
+		fetchOnLoad();
+	}
+	
 	function fetchOnLoad(){
-		trainingDetailService.fetchtrainingDetailData().then(function(response){
+		trainingDetailService.fetchtrainingDetailData(null).then(function(response){
 			$scope.training = response.data.fetchTraining;	
-			$scope.planStateStatus=response.data.planStateStatus;
-			
+                            $scope.planStateStatus=response.data.planStateStatus;
 			$scope.training.trainingDetailList = response.data.fetchTrainingDetailsList;
 			calculateAllTrainingFunds();
 			$scope.targetGrpMstrList=response.data.targetGrpMstrList;
-			$scope.subjectsList=response.data.subjectsList;
+			//$scope.subjectsList=response.data.subjectsList;
 			$scope.trngVenueList=response.data.trngVenueList;
 			$scope.modeOfTraining=response.data.modeOfTraining;
 			$scope.trainingCatgryList=response.data.trainingCatgryList;
@@ -33,19 +37,19 @@ trainingDetail.controller("trainingDetailController",['$scope','trainingDetailSe
 				$scope.isModifyRecodVisible=false;
 				$scope.addNew=false;
 			}
-			
 			if(!$scope.planStateStatus){
-				$scope.training.isFreeze=true;
-			}
+                                       $scope.training.isFreeze=true;
+                         }
 		});
 		
 	}
 	
 	calculateAllTrainingFunds=function(){
 		$scope.allTrainingFund=0;
-		
+		$scope.allNoOfParticipants=0;
 		angular.forEach($scope.training.trainingDetailList,function(item){
 			$scope.allTrainingFund=$scope.allTrainingFund+item.funds;
+			$scope.allNoOfParticipants=$scope.allNoOfParticipants+item.noOfParticipants;
 		});
 		$scope.calculateMasterFund();
 	}
@@ -64,15 +68,16 @@ trainingDetail.controller("trainingDetailController",['$scope','trainingDetailSe
 		angular.forEach($scope.training.trainingDetailList,function(item){
 		  	if(item.trainingId == trainingId){
 		  		$scope.curObject = item;
-		  		$scope.isShowRecodVisible=false;
-		  		$scope.isModifyRecodVisible=true;
+		  		
 		  		$scope.isbtnAddTraining=false;
 		  		$scope.addNew=false;
 		  		
 		  		
 		  		trainingDetailService.fetchtrainingOtherbyTrainingId(trainingId).then(function(response){
+		  			
 		  			$scope.trainingDetails.targetGrptArr=response.data.targetGroupMasterIds;
 		  			$scope.trainingDetails.trainingSubjectArr=response.data.trainingSubjectsIds;
+		  			$scope.trainingDetails.trgCategoryArr=response.data.trainingCategoryIds;
 		  			$scope.trainingDetails.trainingVenueLevelId=$scope.curObject.trainingVenueLevelId.toString();
 		  			$scope.trainingDetails.noOfParticipants=$scope.curObject.noOfParticipants;
 		  			$scope.trainingDetails.noOfDays=$scope.curObject.noOfDays;
@@ -82,6 +87,10 @@ trainingDetail.controller("trainingDetailController",['$scope','trainingDetailSe
 		  			$scope.trainingDetails.remarks=$scope.curObject.remarks;
 		  			$scope.trainingDetails.trainingId=$scope.curObject.trainingId;
 		  			$scope.trainingDetails.trainingCategoryId=$scope.curObject.trainingCategoryId;
+		  			$scope.fetchSubjectListbyCategory($scope.trainingDetails.trgCategoryArr);
+		  			$scope.isShowRecodVisible=false;
+			  		$scope.isModifyRecodVisible=true;
+		  			
 		  		});
 		  	}
 		  		
@@ -97,6 +106,20 @@ trainingDetail.controller("trainingDetailController",['$scope','trainingDetailSe
   		$scope.isModifyRecodVisible=true;
   		$scope.isbtnAddTraining=false;
   		$scope.addNew=true;
+  		$scope.trainingDetails.targetGrptArr=null;
+  			$scope.subjectsList=null;
+			$scope.trainingDetails.trainingSubjectArr=null;
+			$scope.trainingDetails.trgCategoryArr=null;
+			
+			$scope.trainingDetails.trainingVenueLevelId=null;
+			$scope.trainingDetails.noOfParticipants=null;
+			$scope.trainingDetails.noOfDays=null;
+			$scope.trainingDetails.unitCost=null;
+			$scope.trainingDetails.funds=null;
+			$scope.trainingDetails.trainingMode=null;
+			$scope.trainingDetails.remarks=null;
+			$scope.trainingDetails.trainingId=null;
+			$scope.trainingDetails.trainingCategoryId=null;
 	}
 	
 	$scope.toShowRecord=function(){
@@ -111,6 +134,7 @@ trainingDetail.controller("trainingDetailController",['$scope','trainingDetailSe
 		if(validateData($scope.trainingDetails)){
 			$scope.trainingDetails.targetGrptArr=$scope.trainingDetails.targetGrptArr.toString();
 			$scope.trainingDetails.trainingSubjectArr=$scope.trainingDetails.trainingSubjectArr.toString();
+			$scope.trainingDetails.trgCategoryArr=$scope.trainingDetails.trgCategoryArr.toString();
 			trainingDetailService.savetrainingDetailData($scope.trainingDetails).then(function(response){
 		    	if(response!=null && response.status==200){
 		    		toastr.success(response.data.responseMessage);
@@ -164,7 +188,7 @@ trainingDetail.controller("trainingDetailController",['$scope','trainingDetailSe
 		var noOfParticipants=1;
 		var unitCost=1;
 		var isUnitCost=false;
-		
+		var isError=false;
 		if($scope.trainingDetails.trainingVenueLevelId!= null && $scope.trainingDetails.trainingVenueLevelId != undefined){
 			
 			if($scope.trainingDetails.noOfParticipants != null && $scope.trainingDetails.noOfParticipants != undefined){
@@ -172,7 +196,6 @@ trainingDetail.controller("trainingDetailController",['$scope','trainingDetailSe
 			}
 			if($scope.trainingDetails.noOfDays != null && $scope.trainingDetails.noOfDays != undefined){
 				noOfDays=$scope.trainingDetails.noOfDays;
-				isNoofDays=true;
 			}
 			
 			if($scope.trainingDetails.unitCost != null && $scope.trainingDetails.unitCost != undefined){
@@ -187,21 +210,19 @@ trainingDetail.controller("trainingDetailController",['$scope','trainingDetailSe
 				case 2:limit= 1100;break;
 				case 3:limit= 800;break;
 				}
-				
 				if(unitCost>limit){
-					toastr.error("Upper ceiling  limit  Rs. "+limit+" unit cost accodring venue");
+					toastr.error("Upper ceiling  limit  Rs. "+limit+" unit cost according venue");
+					$scope.trainingDetails.unitCost=null;
+					$scope.trainingDetails.funds=null;
+					isError=true;
 					
-					switch(selObjType){
-					case 'P':$scope.trainingDetails.noOfParticipants=null;noOfParticipants=1;break;
-					case 'D':$scope.trainingDetails.noOfDays=null;noOfDays=1;break;
-					case 'U':$scope.trainingDetails.unitCost=null;unitCost=1;break;
-					case 'V':$scope.trainingDetails.noOfParticipants=null;noOfParticipants=1;break;
-					}
 				}
 				
 			}
 			
+			if(!isError){
 				$scope.trainingDetails.funds=noOfDays*noOfParticipants*unitCost;	
+			}
 				
 			
 			
@@ -218,10 +239,14 @@ trainingDetail.controller("trainingDetailController",['$scope','trainingDetailSe
 	}
 	
 	
+	
 	$scope.fetchSubjectListbyCategory=function(trainingCategoryId){
-		trainingDetailService.fetchSubjectsListData(trainingCategoryId).then(function(response){
-			$scope.subjectsList=response.data;
-  		});
+		if(trainingCategoryId!=null && trainingCategoryId.length>0){
+			trainingDetailService.fetchSubjectsListData(trainingCategoryId.toString()).then(function(response){
+				$scope.subjectsList=response.data;
+	  		});
+		}
+		
 		
 	}
 	
@@ -229,11 +254,10 @@ trainingDetail.controller("trainingDetailController",['$scope','trainingDetailSe
 		if($scope.training.additionalRequirement != null && $scope.training.additionalRequirement!= undefined){
 			if(status=='F'){
 				$scope.training.isFreeze=true;
-				
 			}else {
 				$scope.training.isFreeze=false;
 			}
-			
+			$scope.training.delIds=delTrainingIdArr.toString();
 			trainingDetailService.updateTrainingActivityData($scope.training).then(function(response){
 		    	if(response!=null && response.status==200){
 		    		toastr.success(response.data.responseMessage);
@@ -250,6 +274,24 @@ trainingDetail.controller("trainingDetailController",['$scope','trainingDetailSe
 		
 		
 		
+	}
+	
+	$scope.setDeleteTrainingIds=function(idToDelete){
+		 if(!delTrainingIdArr.includes(idToDelete)){
+			 delTrainingIdArr.push(idToDelete);
+			 $("#delete"+idToDelete).addClass('glyphicon-repeat');
+			 $("#delete"+idToDelete).removeClass('glyphicon-trash');
+			// $scope.melement[idToDelete].modifye=false;
+			
+			
+		  }else{
+			  var index = delTrainingIdArr.indexOf(idToDelete);
+			 	if (index > -1) {
+			 		delTrainingIdArr.splice(index, 1);
+			   }
+			 	 $("#delete"+idToDelete).removeClass('glyphicon-repeat');
+				 $("#delete"+idToDelete).addClass('glyphicon-trash');
+		  }
 	}
 	
 }]);

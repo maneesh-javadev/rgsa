@@ -23,8 +23,10 @@ $('document').ready(function(){
 		 "lengthChange": false,
 		 bFilter: false,
 		 "bSort": false,
+		 "bPaginate":false
 	});	
 });
+
 
 
 function isNumber(evt) {
@@ -37,6 +39,13 @@ function isNumber(evt) {
 }
 </script>
 <style>
+.element_style{
+border-color: black !important;
+border: solid !important;
+ border-width: thin !important;
+}
+
+
 .first-col {
     padding-left:50px;
 }
@@ -130,7 +139,7 @@ table.dataTable thead > tr > th, table.dataTable thead > tr > td {
 															{{fetchTrainingDetailsListState[$index].noOfParticipants}}
 														</strong>
 													</div>
-													<input type="text" class="form-control"	data-ng-disabled="training.isFreeze" data-ng-change="calculateFund('P',$index);" 
+													<input type="text" class="form-control element_style"	data-ng-disabled="training.isFreeze" data-ng-change="calculateFund('P',$index);" 
 													onkeypress="return isNumber(event)"	data-ng-model="training.trainingDetailList[$index].noOfParticipants"
 													maxlength="7" style="text-align: right; border: none; border-color: transparent;" />
 										</td>
@@ -143,7 +152,7 @@ table.dataTable thead > tr > th, table.dataTable thead > tr > td {
 															{{fetchTrainingDetailsListState[$index].noOfDays}}
 														</strong>
 													</div>
-													<input type="text" class="form-control"	data-ng-disabled="training.isFreeze" data-ng-change="calculateFund('D',$index)" 
+													<input type="text" class="form-control element_style"	data-ng-disabled="training.isFreeze" data-ng-change="calculateFund('D',$index)" 
 													onkeypress="return isNumber(event)"	data-ng-model="training.trainingDetailList[$index].noOfDays"
 													maxlength="7" style="text-align: right; border: none; border-color: transparent;" />
 										</td>
@@ -156,7 +165,7 @@ table.dataTable thead > tr > th, table.dataTable thead > tr > td {
 															{{fetchTrainingDetailsListState[$index].unitCost}}
 														</strong>
 													</div>
-													<input type="text" class="form-control"	data-ng-disabled="training.isFreeze" data-ng-change="calculateFund('U',$index)" 
+													<input type="text" class="form-control element_style"	data-ng-disabled="training.isFreeze" data-ng-change="calculateFund('U',$index)" 
 													onkeypress="return isNumber(event)"	data-ng-model="training.trainingDetailList[$index].unitCost"
 													maxlength="7" style="text-align: right; border: none; border-color: transparent;" />
 										</td>
@@ -169,7 +178,7 @@ table.dataTable thead > tr > th, table.dataTable thead > tr > td {
 															{{fetchTrainingDetailsListState[$index].funds}}
 														</strong>
 													</div>
-													<input type="text" class="form-control"	data-ng-disabled="training.isFreeze"readonly="readonly"
+													<input type="text" class="form-control element_style"	data-ng-disabled="training.isFreeze"readonly="readonly"
 													data-ng-model="training.trainingDetailList[$index].funds" style="text-align: right; border: none; border-color: transparent;" />
 										</td>
 										
@@ -190,6 +199,25 @@ table.dataTable thead > tr > th, table.dataTable thead > tr > td {
 								</div>
 								
 									<br>
+									
+								<div class="row clearfix " >
+									<div class="col-sm-6">
+									</div>
+									<div class="col-sm-2">
+										<label>Total No. of Participants</label>
+									</div>
+									<div class="col-sm-4">
+										<div align="center"
+											data-ng-style="{'color':(allNoOfParticipantsState> allNoOfParticipants) ? 'red' : '#00cc00'}">
+											<strong> 
+												{{allNoOfParticipantsState}}
+											</strong>
+										</div>
+										<input type="text" class="form-control" id="subTotal"
+											value="{{allNoOfParticipants}}" readonly="readonly"
+											style="text-align: right;">
+									</div>
+								</div>	
 							
 								<div class="row clearfix">
 									<div class="col-sm-6">
@@ -198,6 +226,12 @@ table.dataTable thead > tr > th, table.dataTable thead > tr > td {
 										<label>Total Funds</label>
 									</div>
 									<div class="col-sm-4">
+										<div align="center"
+											data-ng-style="{'color':(allTrainingFundState> allTrainingFund) ? 'red' : '#00cc00'}">
+											<strong> 
+												{{allTrainingFundState}}
+											</strong>
+										</div>
 										<input type="text" class="form-control" id="subTotal"
 											value="{{allTrainingFund}}" readonly="readonly"
 											style="text-align: right;">
@@ -210,7 +244,12 @@ table.dataTable thead > tr > th, table.dataTable thead > tr > td {
 										<label>Additional Requirements</label>
 									</div>
 									<div class="col-sm-4">
-										
+										<div align="center"
+														data-ng-style="{'color':(fetchTrainingState.additionalRequirement > training.additionalRequirement) ? 'red' : '#00cc00'}">
+														<strong> 
+															{{fetchTrainingState.additionalRequirement}}
+														</strong>
+										</div>
 										  <input type="text" data-ng-disabled="training.isFreeze" data-ng-change="calculateMasterFund()" data-ng-model="training.additionalRequirement" onkeypress="return isNumber(event)" required="required"  class="form-control" maxlength="5" style="text-align:right;">
 									
 									</div>
@@ -222,6 +261,12 @@ table.dataTable thead > tr > th, table.dataTable thead > tr > td {
 										<label> Total Proposed Fund</label>
 									</div>
 									<div class="col-sm-4">
+										<div align="center"
+											data-ng-style="{'color':(masterFundsState> masterFunds) ? 'red' : '#00cc00'}">
+											<strong> 
+												{{masterFundsState}}
+											</strong>
+										</div>
 										<input type="text" class="form-control" 
 											value="{{masterFunds}}"
 											readonly="readonly" style="text-align: right;">
@@ -320,6 +365,19 @@ table.dataTable thead > tr > th, table.dataTable thead > tr > td {
 									</table>
 									</div>	
 									<br>
+									
+									<div class="row clearfix " >
+									<div class="col-sm-6">
+									</div>
+									<div class="col-sm-2">
+										<label>Total No. of Participants</label>
+									</div>
+									<div class="col-sm-4">
+										<input type="text" class="form-control" id="subTotal"
+											value="{{allNoOfParticipantsMOPR}}" readonly="readonly"
+											style="text-align: right;">
+									</div>
+								</div>
 							
 								<div class="row clearfix">
 									<div class="col-sm-6">

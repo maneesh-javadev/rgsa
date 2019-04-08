@@ -38,9 +38,14 @@ trainingDetail.controller("trainingDetailMoprController",['$scope','trainingDeta
 	
 	calculateAllTrainingFunds=function(){
 		$scope.allTrainingFund=0;
-		
+		$scope.allNoOfParticipants=0;
 		angular.forEach($scope.training.trainingDetailList,function(item){
-			$scope.allTrainingFund=$scope.allTrainingFund+item.funds;
+			if(item.funds != null && item.funds != undefined){
+			$scope.allTrainingFund=$scope.allTrainingFund+parseInt(item.funds);
+			}
+			if(item.noOfParticipants != null && item.noOfParticipants != undefined){
+			$scope.allNoOfParticipants=$scope.allNoOfParticipants+parseInt(item.noOfParticipants);
+			}
 		});
 		$scope.calculateMasterFund();
 	}
@@ -56,11 +61,24 @@ trainingDetail.controller("trainingDetailMoprController",['$scope','trainingDeta
 	}
 	
 	calculateAllTrainingFundsMOPR=function(){
+		
 		$scope.allTrainingFundMOPR=0;
+		$scope.allNoOfParticipantsMOPR=0;
 		angular.forEach($scope.fetchTrainingDetailsListMOPR,function(item){
-			$scope.allTrainingFundMOPR=$scope.allTrainingFundMOPR+item.funds;
+			$scope.allTrainingFundMOPR=$scope.allTrainingFundMOPR+parseInt(item.funds);
+			$scope.allNoOfParticipantsMOPR=$scope.allNoOfParticipantsMOPR+parseInt(item.noOfParticipants);
 		});
 		$scope.masterFundsMOPR=$scope.allTrainingFundMOPR+ parseInt($scope.fetchTrainingMOPR.additionalRequirement);
+		
+		$scope.allTrainingFundState=0;
+		$scope.allNoOfParticipantsState=0;
+		
+		angular.forEach($scope.fetchTrainingDetailsListState,function(item){
+			$scope.allTrainingFundState=$scope.allTrainingFundState+parseInt(item.funds);
+			$scope.allNoOfParticipantsState=$scope.allNoOfParticipantsState+parseInt(item.noOfParticipants);
+		});
+		
+		$scope.masterFundsState=$scope.allNoOfParticipantsState+ parseInt($scope.fetchTrainingState.additionalRequirement);
 	}
 	
 	
@@ -68,64 +86,44 @@ trainingDetail.controller("trainingDetailMoprController",['$scope','trainingDeta
 		var noOfDays=1;
 		var noOfParticipants=1;
 		var unitCost=1;
-		var isNoofDays=false;
-			
+		var isUnitCost=false;
+		var isError=false;
 			if($scope.training.trainingDetailList[index].noOfParticipants != null && $scope.training.trainingDetailList[index].noOfParticipants != undefined){
 				noOfParticipants=$scope.training.trainingDetailList[index].noOfParticipants;
 			}
 			if($scope.training.trainingDetailList[index].noOfDays != null && $scope.training.trainingDetailList[index].noOfDays != undefined){
 				noOfDays=$scope.training.trainingDetailList[index].noOfDays;
-				isNoofDays=true;
+				
 			}
 			
 			if($scope.training.trainingDetailList[index].unitCost != null && $scope.training.trainingDetailList[index].unitCost != undefined){
 				unitCost=$scope.training.trainingDetailList[index].unitCost;
+				isUnitCost=true;
 			}
 			
-			if(isNoofDays){
+			if(isUnitCost){
 				venueId=parseInt($scope.fetchTrainingDetailsListState[index].trainingVenueLevelId);
 				switch(venueId){
 				case 1:limit= 1900;break;
 				case 2:limit= 1100;break;
 				case 3:limit= 800;break;
 				}
-				uperlimit=limit*noOfDays;
-				actualval=noOfParticipants*noOfDays;
-				if(actualval>uperlimit){
-					toastr.error("Upper ceiling  limit  Rs. "+limit+" per participant per day");
+				if(unitCost>limit){
+					toastr.error("Upper ceiling  limit  Rs. "+limit+" unit cost according venue");
+					$scope.training.trainingDetailList[index].unitCost=null;
+					$scope.training.trainingDetailList[index].funds=null;
+					isError=true;
 					
-					switch(selObjType){
-					case 'P':$scope.training.trainingDetailList[index].noOfParticipants=null;noOfParticipants=1;break;
-					case 'D':$scope.training.trainingDetailList[index].noOfDays=null;noOfDays=1;break;
-					case 'U':$scope.training.trainingDetailList[index].unitCost=null;unitCost=1;break;
-					case 'V':$scope.training.trainingDetailList[index].noOfParticipants=null;noOfParticipants=1;break;
-					}
 				}
 				
 			}
-			
-			$scope.training.trainingDetailList[index].funds=noOfDays*noOfParticipants*unitCost;	
+			if(!isError){
+				$scope.training.trainingDetailList[index].funds=noOfDays*noOfParticipants*unitCost;	
+			}
 			calculateAllTrainingFunds();
 	}
 	
-	calculateAllTrainingFunds=function(){
-		$scope.allTrainingFund=0;
-		
-		angular.forEach($scope.training.trainingDetailList,function(item){
-			$scope.allTrainingFund=$scope.allTrainingFund+item.funds;
-		});
-		$scope.calculateMasterFund();
-	}
 	
-	$scope.calculateMasterFund=function(){
-		var additionalRequirement=0;
-		if($scope.training.additionalRequirement != null && $scope.training.additionalRequirement != undefined){
-			additionalRequirement=parseInt($scope.training.additionalRequirement);
-		}else{
-			$scope.training.additionalRequirement=0;
-		}
-		$scope.masterFunds=$scope.allTrainingFund+additionalRequirement;
-	}
 	
 	$scope.saveTrainingDetails=function(status){
 		//alert(validateData($scope.trainingDetails));

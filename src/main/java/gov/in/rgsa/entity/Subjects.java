@@ -28,8 +28,8 @@ import javax.persistence.Table;
 	query="From Subjects where isActive=true and finYearId=:finYearId and subjectId=:subjectId ORDER BY subjectName"),
 	@NamedQuery(name="DELETE_BY_SUBJECT_ID",
 	query="delete from Subjects where subjectId=:subjectId"),
-	@NamedQuery(name="FETCH_SUBJECT_LIST_by_CATEGORY",
-	query="From Subjects where isActive=true and trainingCtgId.trainingCategoryId=:trainingCategoryId ORDER BY subjectName")
+	@NamedQuery(name="FETCH_SUBJECT_LIST_by_CATEGORIES",
+	query="From Subjects where isActive=true and trainingCtgId.trainingCategoryId in(:trainingCategoryIds) ORDER BY subjectName")
 })
 public class Subjects implements Serializable {
 	private static final long serialVersionUID = 1L;
