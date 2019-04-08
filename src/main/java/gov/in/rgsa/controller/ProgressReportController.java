@@ -39,6 +39,7 @@ import gov.in.rgsa.dto.GramPanchayatProgressReportDTO;
 import gov.in.rgsa.dto.InstitutionalInfraProgressReportDTO;
 import gov.in.rgsa.entity.AdditionalFacultyProgress;
 import gov.in.rgsa.entity.AdminAndFinancialDataActivity;
+import gov.in.rgsa.entity.AdministrativeTechnicalDetailProgress;
 import gov.in.rgsa.entity.AdministrativeTechnicalProgress;
 import gov.in.rgsa.entity.AdministrativeTechnicalSupport;
 import gov.in.rgsa.entity.AttachmentMaster;
@@ -608,58 +609,105 @@ private static final String NO_FUND_ALLOCATED_JSP = "noFundAlloctedJsp";
 	}
 	
 	
-	@RequestMapping(value="adminTechQuaderly" , method=RequestMethod.GET)
-	public String qprGetFormAdminSupportQuaderly(@ModelAttribute("ADMIN_QUATER") AdministrativeTechnicalProgress administrativeTechnicalProgress, Model model ,HttpServletRequest request) {
-		int quarterId = 1;
-		model.addAttribute("approved",true);
-		List<AdministrativeTechnicalSupport> administrativeTechnicalProgresses = adminTechSupportService.getApprovedSatcomActivity();
-				
-		if(administrativeTechnicalProgresses!=null && !administrativeTechnicalProgresses.isEmpty()){
-			
-			int administrativeTechnicalSupportId = administrativeTechnicalProgresses.get(0).getAdministrativeTechnicalSupportId();
-		
-			if(administrativeTechnicalProgress.getQtrIdJsp2() != null) {
-				quarterId = administrativeTechnicalProgress.getQtrIdJsp2();
-			}else
-			
-				quarterId = 1;
-			
-			List<Integer> postId1 = new ArrayList<>();
-			for(int i=0;i<administrativeTechnicalProgresses.get(0).getSupportDetails().size();i++) {
-					
-				int id = administrativeTechnicalProgresses.get(0).getSupportDetails().get(i).getPostType().getPostId();
-				postId1.add(id);
-			}
-		AdministrativeTechnicalProgress	fetchAdministrativeTechnicalProgress=progressReportService.fetchAdministrativeTechnicalProgress(postId1, administrativeTechnicalSupportId, quarterId);
-				if(fetchAdministrativeTechnicalProgress != null) {
-					
-					
-			model.addAttribute("Administrative_Technical_PROGRESS",fetchAdministrativeTechnicalProgress);
-			
-			}
-			
-			else {
-				AdministrativeTechnicalProgress administrativeTechnicalProgress1 = progressReportService.fetchAdministrativeReportToGeReportId1(administrativeTechnicalSupportId);
-				if(administrativeTechnicalProgress1 != null) {
-				model.addAttribute("getAtsId", administrativeTechnicalProgress1.getAtsId());}
-			}
-			
-		model.addAttribute("AdministrativeTechnicalSupportId", administrativeTechnicalSupportId);
-		model.addAttribute("SetNewQtrId1", administrativeTechnicalProgress.getQtrIdJsp2());
-		model.addAttribute("fetchAdministrativeTechnical",administrativeTechnicalProgresses.get(0));
+	@RequestMapping(value = "adminTechQuaderly", method = RequestMethod.GET)
+	public String qprGetFormAdminSupportQuaderly(@ModelAttribute("ADMIN_QUATER") AdministrativeTechnicalProgress administrativeTechnicalProgress,
+			Model model, HttpServletRequest request) {
+		int quarterId = 0;
+		if (administrativeTechnicalProgress.getQtrIdJsp2() != null) {
+			quarterId = administrativeTechnicalProgress.getQtrIdJsp2();
+		} else {
+			quarterId = 0;
+		}
+
+		int installmentNo = (quarterId < 3) ? 1 : 2; // installment number for qtrId 1 & 2 = 1 and 3 & 4 = 2
+		List<QuaterWiseFund> totalQuatorWiseFund=new ArrayList<>();
+		List<AdministrativeTechnicalSupport> administrativeTechnicalApproved = adminTechSupportService.getApprovedSatcomActivity();
+		List<StateAllocation> stateAllocation = progressReportService.fetchStateAllocationDataByCompIdandInstallNo(4,installmentNo);
 		model.addAttribute("QUATER_DETAILS", progressReportService.getQuarterDurations());
+		if(quarterId == 3 || quarterId == 4){
+			stateAllocation.add(progressReportService.fetchStateAllocationDataByCompIdandInstallNo(4,1).get(0)); //total fund allocated in first quator
+			totalQuatorWiseFund = progressReportService.fetchTotalQuaterWiseFundData(userPreference.getStateCode(), 4);
+			model.addAttribute("TOTAL_FUND_USED_IN_QTR_1_AND_2", calTotalFundUsedInQtr1And2(totalQuatorWiseFund));
+		}
+		if (CollectionUtils.isNotEmpty(stateAllocation) && CollectionUtils.isNotEmpty(administrativeTechnicalApproved)) {
+
+			 if(stateAllocation.size() > 1){
+					model.addAttribute("FUND_ALLOCATED_BY_STATE_PREVIOUS", stateAllocation.get(1).getFundsAllocated()); // we will use this in jsp to calculate the total remaining field
+				}
+			 
+				//list to get total number of unit in all quator except current one
+				List<AdministrativeTechnicalDetailProgress> detailForTotalNoOfUnit=new ArrayList<>();
+				List<AdministrativeTechnicalDetailProgress> adminTechReportDetailOfRestQuater=adminTechSupportService.getadminTechProgressActBasedOnActIdAndQtrId(administrativeTechnicalApproved.get(0).getAdministrativeTechnicalSupportId(), quarterId); 
+				if(adminTechReportDetailOfRestQuater != null){
+					Collections.sort(adminTechReportDetailOfRestQuater, (o1, o2) -> o1.getAtsDetailsProgressId() - o2.getAtsDetailsProgressId());
+					detailForTotalNoOfUnit=getTotalUnitAndExpIncurredInAllQtrAdminTech(detailForTotalNoOfUnit,adminTechReportDetailOfRestQuater);
+					model.addAttribute("DEATIL_FOR_TOTAL_NO_OF_UNIT",detailForTotalNoOfUnit);	
+				}else{
+					model.addAttribute("DEATIL_FOR_TOTAL_NO_OF_UNIT",null);	
+				}
+			AdministrativeTechnicalProgress administrativeTechnicalProgressActivty = progressReportService.fetchAdministrativeTechnicalProgress(administrativeTechnicalApproved.get(0).getAdministrativeTechnicalSupportId(), quarterId);
+			if (administrativeTechnicalProgressActivty != null) {
+				Collections.sort(administrativeTechnicalProgressActivty.getAdministrativeTechnicalDetailProgress(),(o1, o2) -> o1.getAtsDetailsProgressId() - o2.getAtsDetailsProgressId());
+				model.addAttribute("ADMINISTRATIVE_TECHNICAL_PROGRESS", administrativeTechnicalProgressActivty);
+			} else {
+				if (administrativeTechnicalProgress.getAdministrativeTechnicalDetailProgress() != null) {
+					administrativeTechnicalProgress.getAdministrativeTechnicalDetailProgress().clear();
+				}
 			}
-	else{
-		model.addAttribute("approved",false);
-		
-	}
-		return ADMIN_QUADERLY;
+			
+			/*used to get previous data stored which is then use to validate the expenditure incurred*/
+			List<QuaterWiseFund> quaterWiseFund=new ArrayList<>();
+			 if(quarterId == 1 || quarterId == 3){
+				quaterWiseFund = progressReportService.fetchQuaterWiseFundData(userPreference.getStateCode(),(quarterId+1),4);
+			 }else{
+				quaterWiseFund = progressReportService.fetchQuaterWiseFundData(userPreference.getStateCode(),(quarterId-1),4);
+			 }
+			 if(CollectionUtils.isNotEmpty(quaterWiseFund)){
+				 model.addAttribute("FUND_USED_IN_OTHER_QUATOR", quaterWiseFund.get(0).getFunds());
+			 }
+			 /*----------------------------end here-------------------------------------------------- */
+			model.addAttribute("FUND_ALLOCATED_BY_STATE", stateAllocation.get(0).getFundsAllocated());
+			model.addAttribute("QTR_ID", quarterId);
+			model.addAttribute("APPROVED_ADMIN_TECH_ACT", administrativeTechnicalApproved.get(0));
+
+			return ADMIN_QUADERLY;
+		} else {
+			return NO_FUND_ALLOCATED_JSP;
+
+		}
 	}
 
+	/*method for administrative technical report*/
+	private List<AdministrativeTechnicalDetailProgress> getTotalUnitAndExpIncurredInAllQtrAdminTech(List<AdministrativeTechnicalDetailProgress> deatilForTotalNoOfUnit, List<AdministrativeTechnicalDetailProgress> detailsBasedOnActIdAndQtrId) {
+		int count=0;
+		for (int i = 0; i < 9; i++) {
+			deatilForTotalNoOfUnit.add(new AdministrativeTechnicalDetailProgress());
+		}
+		for (int j=0;j < detailsBasedOnActIdAndQtrId.size();j++) {
+			if(count == 9){
+				count=0;
+			}
+			for(int i=count;i < count+1;i++){
+				if(deatilForTotalNoOfUnit.get(i).getNoOfUnitCompleted() != null){
+					deatilForTotalNoOfUnit.get(i).setNoOfUnitCompleted(deatilForTotalNoOfUnit.get(i).getNoOfUnitCompleted() + detailsBasedOnActIdAndQtrId.get(j).getNoOfUnitCompleted()) ;
+				}else{
+					deatilForTotalNoOfUnit.get(i).setNoOfUnitCompleted(0 + detailsBasedOnActIdAndQtrId.get(j).getNoOfUnitCompleted()) ;
+				}
+				if(deatilForTotalNoOfUnit.get(i).getExpenditureIncurred() != null){
+					deatilForTotalNoOfUnit.get(i).setExpenditureIncurred(deatilForTotalNoOfUnit.get(i).getExpenditureIncurred() + detailsBasedOnActIdAndQtrId.get(j).getExpenditureIncurred()) ;
+				}else{
+					deatilForTotalNoOfUnit.get(i).setExpenditureIncurred(detailsBasedOnActIdAndQtrId.get(j).getExpenditureIncurred() + 0) ;
+				}
+			}
+			++count;
+		}
+		return deatilForTotalNoOfUnit;
+	}
+	
+	/*new method ends here*/
 	@RequestMapping(value="adminTechQuaderly",method=RequestMethod.POST)
 	public String getAdminSupportPostQuaterly(@ModelAttribute("ADMIN_QUATER") AdministrativeTechnicalProgress administrativeTechnicalProgress, Model model ,HttpServletRequest request,RedirectAttributes re) 
 	{
-		//Integer Activity = satcomActivityProgress.getSatcomActivity().get(0).getSatcomActivityId();
 		progressReportService.saveadministrativeTechnicalProgress(administrativeTechnicalProgress);
 		re.addFlashAttribute(Message.SUCCESS_KEY, Message.SAVE_SUCCESS);
 		return REDIRECT_ADMIN_QUADERLY;

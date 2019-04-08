@@ -23,8 +23,9 @@ import org.hibernate.annotations.UpdateTimestamp;
 
 @Entity
 @Table(name="qpr_ats" , schema="rgsa")
-@NamedQueries ({@NamedQuery(name="FETCH_Admin_Tech_Progress_progress_report", query="Select ATP from AdministrativeTechnicalProgress ATP RIGHT OUTER JOIN FETCH ATP.administrativeTechnicalDetailProgress ATDP where ATP.administrativeTechnicalSupport.administrativeTechnicalSupportId=:administrativeTechnicalSupportId AND ATP.quarterDuration.qtrId=:qtrId AND ATDP.postType.postId IN(:postId) order by ATDP.atsDetailsProgressId asc"),
-@NamedQuery(name="FETCH_Admin_Tech_Progress_progress_report_BASED_ID", query="Select ATP from AdministrativeTechnicalProgress ATP  where ATP.administrativeTechnicalSupport.administrativeTechnicalSupportId=:administrativeTechnicalSupportId")
+@NamedQueries ({@NamedQuery(name="FETCH_Admin_Tech_Progress_progress_report", query="Select ATP from AdministrativeTechnicalProgress ATP RIGHT OUTER JOIN FETCH ATP.administrativeTechnicalDetailProgress ATDP where ATP.administrativeTechnicalSupport.administrativeTechnicalSupportId=:administrativeTechnicalSupportId AND ATP.quarterDuration.qtrId=:qtrId order by ATDP.atsDetailsProgressId asc"),
+@NamedQuery(name="FETCH_Admin_Tech_Progress_progress_report_BASED_ID", query="Select ATP from AdministrativeTechnicalProgress ATP  where ATP.administrativeTechnicalSupport.administrativeTechnicalSupportId=:administrativeTechnicalSupportId"),
+@NamedQuery(name="FETCH_ADMIN_TECH_ACT_QTR_ID_AND_ACT_ID",query="from AdministrativeTechnicalProgress where administrativeTechnicalSupport.administrativeTechnicalSupportId=:administrativeTechnicalSupportId and quarterDuration.qtrId !=:quarterId")
 })
 public class AdministrativeTechnicalProgress {
 
@@ -36,8 +37,6 @@ public class AdministrativeTechnicalProgress {
 	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name="administrative_technical_support_id")
 	private AdministrativeTechnicalSupport administrativeTechnicalSupport;
-
-	
 	
 	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name="qtr_id")
