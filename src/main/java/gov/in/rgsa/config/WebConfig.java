@@ -88,15 +88,6 @@ public class WebConfig implements WebMvcConfigurer {
         return servRegBean;
     }
 
-    // Owasp context params
-    @Bean
-    public ServletContextInitializer initializer() {
-        return (ServletContext servletContext) -> {
-            servletContext.setInitParameter("Owasp.CsrfGuard.Config", "WEB-INF/configs/Owasp.CsrfGuard.properties");
-            servletContext.setInitParameter("Owasp.CsrfGuard.Config.Print", "true");
-        };
-    }
-
     @Bean(name = "EncodingFilterBean")
     public FilterRegistrationBean<CharacterEncodingFilter> charEncodeFilter() {
 
@@ -107,6 +98,17 @@ public class WebConfig implements WebMvcConfigurer {
         registration.addInitParameter("forceEncoding", "true");
         registration.setName("EncodingFilter");
         return registration;
+    }
+
+    /*
+
+    // Owasp context params
+    @Bean
+    public ServletContextInitializer initializer() {
+        return (ServletContext servletContext) -> {
+            servletContext.setInitParameter("Owasp.CsrfGuard.Config", "WEB-INF/configs/Owasp.CsrfGuard.properties");
+            servletContext.setInitParameter("Owasp.CsrfGuard.Config.Print", "true");
+        };
     }
 
     // Owasp servlet context listener
@@ -140,6 +142,7 @@ public class WebConfig implements WebMvcConfigurer {
         // registration.setOrder(1);
         return registration;
     }
+    */
 
     // Hibernate filter
     @Bean(name = "HibernateFilterBean")
