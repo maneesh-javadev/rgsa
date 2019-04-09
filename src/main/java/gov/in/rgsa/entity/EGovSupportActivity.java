@@ -37,8 +37,11 @@ public class EGovSupportActivity {
 	@Column(name="user_type")
 	public Character userType;
 	
-	@Column(name="additional_requirement")
-	public Integer additionalRequirement;
+	@Column(name="additional_req_spmu")
+	public Integer additionalRequirementSpmu;
+	
+	@Column(name="additional_req_dpmu")
+	public Integer additionalRequirementDpmu;
 
 	@Column(name="created_by")
 	public Integer createdBy;
@@ -89,14 +92,6 @@ public class EGovSupportActivity {
 
 	public void setVersionNo(Integer versionNo) {
 		this.versionNo = versionNo;
-	}
-
-		public Integer getAdditionalRequirement() {
-		return additionalRequirement;
-	}
-
-	public void setAdditionalRequirement(Integer additionalRequirement) {
-		this.additionalRequirement = additionalRequirement;
 	}
 
 	public Integer getCreatedBy() {
@@ -161,6 +156,22 @@ public class EGovSupportActivity {
 
 	public void seteGovSupportActivityDetails(List<EGovSupportActivityDetails> eGovSupportActivityDetails) {
 		this.eGovSupportActivityDetails = eGovSupportActivityDetails;
+	}
+
+	public Integer getAdditionalRequirementSpmu() {
+		return additionalRequirementSpmu;
+	}
+
+	public void setAdditionalRequirementSpmu(Integer additionalRequirementSpmu) {
+		this.additionalRequirementSpmu = additionalRequirementSpmu;
+	}
+
+	public Integer getAdditionalRequirementDpmu() {
+		return additionalRequirementDpmu;
+	}
+
+	public void setAdditionalRequirementDpmu(Integer additionalRequirementDpmu) {
+		this.additionalRequirementDpmu = additionalRequirementDpmu;
 	}
 
 	/*public String getStatus() {

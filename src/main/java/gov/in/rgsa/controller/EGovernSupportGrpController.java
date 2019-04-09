@@ -2,7 +2,9 @@ package gov.in.rgsa.controller;
 
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -79,7 +81,6 @@ public class EGovernSupportGrpController {
 			List<EGovSupportActivityDetails> details=eGovActivity.get(0).geteGovSupportActivityDetails();
 			eGovActivity.get(0).seteGovSupportActivityDetails(null);
 	        model.addAttribute("details", details);
-			model.addAttribute("TOTAL_FUND", calTotal(eGovActivity));
 			model.addAttribute("eGovActivity", eGovActivity);
 		}
 		if (!CollectionUtils.isEmpty(eGovActivity)) {
@@ -87,7 +88,8 @@ public class EGovernSupportGrpController {
 			eGovActivityDetails = eGovernanceSupportService
 					.fetchEGovActivityDetails(eGovActivity.get(0).geteGovSupportActivityId());
 			form.seteGovSupportActivityDetails(eGovActivityDetails);
-			form.setAdditionalRequirement(eGovActivity.get(0).getAdditionalRequirement());
+			form.setAdditionalRequirementSpmu(eGovActivity.get(0).getAdditionalRequirementSpmu());
+			form.setAdditionalRequirementDpmu(eGovActivity.get(0).getAdditionalRequirementDpmu());
 			model.addAttribute("initial_status", false);
 		}else{
 			model.addAttribute("initial_status", true);
@@ -102,29 +104,55 @@ public class EGovernSupportGrpController {
 				eGovActivityForState.get(0).seteGovSupportActivityDetails(eGovernanceSupportService.fetchEGovActivityDetails(eGovActivityForState.get(0).geteGovSupportActivityId()));
 				model.addAttribute("eGovActivityForState", eGovActivityForState.get(0));
 			}
-			model.addAttribute("TOTAL_FUND_STATE", calTotal(eGovActivityForState));
-			model.addAttribute("TOTAL_FUND_MOPR", calTotal(eGovActivityForMOPR));
+			Map<String, Object>	params =calTotalOfSpmuAndDpmu(eGovActivityForState);
+			if(!params.isEmpty()) {
+				model.addAttribute("SPMU_TOTAL_STATE", params.get("spmu_total"));//spmu total for state tab in cec
+				model.addAttribute("DPMU_TOTAL_STATE", params.get("dpmu_total"));//dpmu total for state tab in cec
+			}
+			params.clear();//clear map after using it for state 
+			
+			params=calTotalOfSpmuAndDpmu(eGovActivityForMOPR);
+			if(!params.isEmpty()) {
+				model.addAttribute("SPMU_TOTAL_MOPR", params.get("spmu_total"));//spmu total for mopr tab in cec
+				model.addAttribute("DPMU_TOTAL_MOPR", params.get("dpmu_total"));//dpmu total for mopr tab in cec
+			}
 			return GOVERN_SUPPORT_FOR_CEC;
 		}else{
 			return GOVERN_SUPPORT;
 		}
 	}
 	
-		private int calTotal(List<EGovSupportActivity> activity){
-		int total_fund=0;
-		if (activity != null) {
-			List<EGovSupportActivityDetails> details = activity.get(0).geteGovSupportActivityDetails();
-			if(!CollectionUtils.isEmpty(details)){
-				for (EGovSupportActivityDetails eGovSupportActivityDetails : details) {
-					if (eGovSupportActivityDetails.getFunds() != null) {
-						total_fund += eGovSupportActivityDetails.getFunds();
-					}
+	private Map<String, Object> calTotalOfSpmuAndDpmu(List<EGovSupportActivity> eGovActivityForState) {
+		Map<String, Object> map = new HashMap<String, Object>();
+		int spmu_total = 0, dpmu_total = 0;
+		if (CollectionUtils.isNotEmpty(eGovActivityForState)) {
+			for (EGovSupportActivityDetails detail : eGovActivityForState.get(0).geteGovSupportActivityDetails()) {
+				if (detail.geteGovPostId() < 5) {
+					if (detail.getFunds() != null)
+						spmu_total += detail.getFunds();
+				} else {
+					if (detail.getFunds() != null)
+						dpmu_total += detail.getFunds();
 				}
-
 			}
-		}
-		return total_fund;
+			map.put("spmu_total", spmu_total);
+			map.put("dpmu_total", dpmu_total);
+			
+		} 
+		return map;
 	}
+
+	/*
+	 * private int calTotal(List<EGovSupportActivity> activity){ int total_fund=0;
+	 * if (activity != null) { List<EGovSupportActivityDetails> details =
+	 * activity.get(0).geteGovSupportActivityDetails();
+	 * if(!CollectionUtils.isEmpty(details)){ for (EGovSupportActivityDetails
+	 * eGovSupportActivityDetails : details) { if
+	 * (eGovSupportActivityDetails.getFunds() != null) { total_fund +=
+	 * eGovSupportActivityDetails.getFunds(); } }
+	 * 
+	 * } } return total_fund; }
+	 */
 	
 	@RequestMapping(value="egovernancesupportgroup",method=RequestMethod.POST)
 	private String eGovernSupportPost( @ModelAttribute("EGOVERN_MODEL") EGovSupportActivity eGovSupportActivity ,RedirectAttributes re) {
