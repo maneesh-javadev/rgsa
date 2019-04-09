@@ -19,16 +19,11 @@ function changeColor() {
 				'#fundStateId_' + i).css('color', 'red') : $(
 				'#fundStateId_' + i).css('color', '#00cc00');
 	}
-	$('#total_fund').val() < +$('#total_fund_State').text() ? $(
-			'#total_fund_State').css('color', 'red') : $('#total_fund_State')
-			.css('color', '#00cc00');
-	$('#additionalRequirementId').val() < +$(
-			'#additionalRequirementStateId').text() ? $(
-			'#additionalRequirementStateId').css('color', 'red') : $(
-			'#additionalRequirementStateId').css('color', '#00cc00');
-	$('#grandTotalId').val() < +$('#grandTotalStateId').text() ? $(
-			'#grandTotalStateId').css('color', 'red') : $('#grandTotalStateId')
-			.css('color', '#00cc00');
+	$('#total_fund_spmu').val() < +$('#total_fund_state_spmu').text() ? $('#total_fund_state_spmu').css('color', 'red') : $('#total_fund_state_spmu').css('color', '#00cc00');
+	$('#total_fund_dpmu').val() < +$('#total_fund_state_dpmu').text() ? $('#total_fund_state_dpmu').css('color', 'red') : $('#total_fund_state_dpmu').css('color', '#00cc00');
+	$('#additionalRequirementSpmuId').val() < +$('#additionalRequirementStateSpmuId').text() ? $('#additionalRequirementStateSpmuId').css('color', 'red') : $('#additionalRequirementStateSpmuId').css('color', '#00cc00');
+	$('#additionalRequirementDpmuId').val() < +$('#additionalRequirementStateDpmuId').text() ? $('#additionalRequirementStateDpmuId').css('color', 'red') : $('#additionalRequirementStateDpmuId').css('color', '#00cc00');
+	$('#grandTotalId').val() < +$('#grandTotalStateId').text() ? $('#grandTotalStateId').css('color', 'red') : $('#grandTotalStateId').css('color', '#00cc00');
 
 };
 </script>
@@ -60,8 +55,9 @@ function changeColor() {
 									action="egovernancesupportgroup.html" modelAttribute="EGOVERN_MODEL">
 									<input type="hidden" name="<csrf:token-name/>"
 										value="<csrf:token-value uri="egovernancesupportgroup.html" />" />
-										<c:set var="count" value="0" scope="page" /> 
-										<div class="table-responsive">
+									<c:set var="countSpmuCec" value="0" scope="page" />
+									<c:set var="countDpmuCec" value="0" scope="page" />
+									<div class="table-responsive">
 											<table id="tableId" class="table table-bordered">
 												<thead>
 													<tr>
@@ -92,14 +88,14 @@ function changeColor() {
 												</thead>
 											<tbody id="tbodyId">
 												<c:forEach items="${LIST_OF_POST_LEVEL}" var="POST_LEVEL"
-													varStatus="index">
+													varStatus="index" begin="0" end="3">
 													<input type="hidden"
 														name="eGovSupportActivityDetails[${index.index}].eGovPostId"
 														value="${POST_LEVEL.eGovPostId}">
-													<input type="hidden" id="postId_${count}"
+													<input type="hidden" id="postId_${index.index}"
 														value="${POST_LEVEL.EGovPostLevel.postLevelId}">
 													<form:hidden
-														path="eGovSupportActivityDetails[${count}].eGovDetailsId" />
+														path="eGovSupportActivityDetails[${index.index}].eGovDetailsId" />
 													<tr id="newRowHtml">
 														<td><div align="center">
 																<strong>${POST_LEVEL.EGovPostLevel.postLevelName}
@@ -108,14 +104,17 @@ function changeColor() {
 														<td><div align="center">
 																<strong>${POST_LEVEL.EGovPostName}</strong>
 															</div></td>
+														<c:choose>
+													<c:when
+														test="${POST_LEVEL.eGovPostId ne 4 and POST_LEVEL.eGovPostId ne 7}">
 														<td>
-														<div align="center" id="noOfPostStateId_${count}"><strong>${eGovActivityForState.eGovSupportActivityDetails[index.index].noOfPosts }</strong></div>
+														<div align="center" id="noOfPostStateId_${index.index}"><strong>${eGovActivityForState.eGovSupportActivityDetails[index.index].noOfPosts }</strong></div>
 														<form:input
 																path="eGovSupportActivityDetails[${index.index}].noOfPosts"
 																type="text" onkeypress="return isNumber(event)"
 																maxlength="5" class="active123 form-control"
-																id="noOfPostId_${count}"
-																onchange="calculateProposedFund(${count})"
+																id="noOfPostId_${index.index}"
+																onchange="calculateProposedFund(${index.index})"
 																onkeyup="changeColor()"
 																style="text-align:right;"
 																disabled="${eGovActivity.status eq true}" /></td>
@@ -123,59 +122,190 @@ function changeColor() {
 														<div align="center" style="margin-top: 20px;"><strong>${eGovActivityForState.eGovSupportActivityDetails[index.index].months}</strong></div>
 														<form:hidden path="eGovSupportActivityDetails[${index.index}].months"
 																value="${eGovActivityForState.eGovSupportActivityDetails[index.index].months}" 
-																id="monthId_${count}" /></td>
+																id="monthId_${index.index}" /></td>
 														<td>
-														<div align="center" id="unitCostStateId_${count}"><strong>${eGovActivityForState.eGovSupportActivityDetails[index.index].unitCost}</strong></div>
+														<div align="center" id="unitCostStateId_${index.index}"><strong>${eGovActivityForState.eGovSupportActivityDetails[index.index].unitCost}</strong></div>
 														<form:input
 																path="eGovSupportActivityDetails[${index.index}].unitCost"
 																type="text" onkeypress="return isNumber(event)"
-																class="active123 form-control" id="unitCostId_${count}"
-																onkeyup="calculateProposedFund(${count});validateCielingValue(${count});changeColor()"
+																class="active123 form-control" id="unitCostId_${index.index}"
+																onkeyup="calculateProposedFund(${index.index});validateCielingValue(${index.index});changeColor()"
 																style="text-align:right;"
 																disabled="${eGovActivity.status eq true}" /></td>
+														</c:when>
+														<c:otherwise>
+														<td></td>
+														<td></td>
+														<td></td>
+														</c:otherwise>	
+														</c:choose>	
 														<td>
-														<div align="center" id="fundStateId_${count}"><strong>${eGovActivityForState.eGovSupportActivityDetails[index.index].funds}</strong></div>
-														<form:input
+														<div align="center" id="fundStateId_${index.index}"><strong>${eGovActivityForState.eGovSupportActivityDetails[index.index].funds}</strong></div>
+														<c:choose>
+															<c:when test="${POST_LEVEL.eGovPostId eq 4}">
+																<form:input
 																path="eGovSupportActivityDetails[${index.index}].funds"
 																type="text" onkeypress="return isNumber(event)"
-																class="active123 form-control" id="fundId_${count}"
-																onchange="calculateProposedFund(${count});"
-																onkeyup="changeColor()"
-																style="text-align:right;"
-																disabled="${eGovActivity.status eq true}" /></td>
+																class="form-control" id="fundId_${index.index}"
+																onkeyup="calculateTotalFundSpmu()" onchange="changeColor();"
+																style="text-align:right;" disabled="${eGovActivity.status eq true}" />
+															</c:when>
+															<c:otherwise>
+																<form:input
+																	path="eGovSupportActivityDetails[${index.index}].funds"
+																	type="text" onkeypress="return isNumber(event)"
+																	class="form-control" id="fundId_${index.index}"
+																	onchange="changeColor()"
+																	style="text-align:right;"
+																	readonly="true" />
+															</c:otherwise>
+														</c:choose>
+														</td>
 													</tr>
-													<c:set var="count" value="${count + 1}" scope="page" />
+													<c:set var="countSpmuCec" value="${countSpmuCec + 1}" scope="page" />
 												</c:forEach>
 												<tr>
 													<td><div align="center">
-															<strong><spring:message code="Label.TotalFund"
-																	htmlEscape="true" /></strong>
+															<strong>Total SPMU Fund</strong>
 														</div></td>
 													<td colspan="4"></td>
 													<td>
-													<div align="center" id="total_fund_State"><strong>${TOTAL_FUND_STATE}</strong></div>
+													<div align="center" id="total_fund_state_spmu"><strong>${SPMU_TOTAL_STATE}</strong></div>
 													<input type="text" class="active12 form-control"
-														id="total_fund" value="${TOTAL_FUND}"
+														id="total_fund_spmu"
 														onkeypress="return isNumber(event)"
 														onchange="changeColor()"
 														style="text-align: right;" readonly="readonly" /></td>
 												</tr>
 												<tr>
 													<td><div align="center">
-															<strong><spring:message
+															<strong>SPMU <spring:message
 																	code="Label.AdditionalRequirement" htmlEscape="true" /></strong>
 														</div></td>
 													<td colspan="4"></td>
 													<td>
-													<div align="center" id="additionalRequirementStateId"><strong>${eGovActivityForState.additionalRequirement}</strong></div>
-													<form:input path="additionalRequirement"
+													<div align="center" id="additionalRequirementStateSpmuId"><strong>${eGovActivityForState.additionalRequirementSpmu}</strong></div>
+													<form:input path="additionalRequirementSpmu"
 															type="text" onkeypress="return isNumber(event)"
 															class="form-control"
-															id="additionalRequirementId"
+															id="additionalRequirementSpmuId"
 															onkeyup="calculateGrandTotal();changeColor()"
 															placeholder="25% of Total Cost" style="text-align:right;"
 															readonly="${eGovActivity.status}" /></td>
 												</tr>
+												
+												<!-- second loop for Dpmu -->
+												<c:forEach items="${LIST_OF_POST_LEVEL}" var="POST_LEVEL"
+													varStatus="index" begin="4" end="6">
+													<input type="hidden"
+														name="eGovSupportActivityDetails[${index.index}].eGovPostId"
+														value="${POST_LEVEL.eGovPostId}">
+													<input type="hidden" id="postId_${index.index}"
+														value="${POST_LEVEL.EGovPostLevel.postLevelId}">
+													<form:hidden
+														path="eGovSupportActivityDetails[${index.index}].eGovDetailsId" />
+													<tr id="newRowHtml">
+														<td><div align="center">
+																<strong>${POST_LEVEL.EGovPostLevel.postLevelName}
+																</strong>
+															</div></td>
+														<td><div align="center">
+																<strong>${POST_LEVEL.EGovPostName}</strong>
+															</div></td>
+														<c:choose>
+													<c:when
+														test="${POST_LEVEL.eGovPostId ne 4 and POST_LEVEL.eGovPostId ne 7}">
+														<td>
+														<div align="center" id="noOfPostStateId_${index.index}"><strong>${eGovActivityForState.eGovSupportActivityDetails[index.index].noOfPosts }</strong></div>
+														<form:input
+																path="eGovSupportActivityDetails[${index.index}].noOfPosts"
+																type="text" onkeypress="return isNumber(event)"
+																maxlength="5" class="active123 form-control"
+																id="noOfPostId_${index.index}"
+																onchange="calculateProposedFund(${index.index})"
+																onkeyup="changeColor()"
+																style="text-align:right;"
+																disabled="${eGovActivity.status eq true}" /></td>
+														<td>
+														<div align="center" style="margin-top: 20px;"><strong>${eGovActivityForState.eGovSupportActivityDetails[index.index].months}</strong></div>
+														<form:hidden path="eGovSupportActivityDetails[${index.index}].months"
+																value="${eGovActivityForState.eGovSupportActivityDetails[index.index].months}" 
+																id="monthId_${index.index}" /></td>
+														<td>
+														<div align="center" id="unitCostStateId_${index.index}"><strong>${eGovActivityForState.eGovSupportActivityDetails[index.index].unitCost}</strong></div>
+														<form:input
+																path="eGovSupportActivityDetails[${index.index}].unitCost"
+																type="text" onkeypress="return isNumber(event)"
+																class="active123 form-control" id="unitCostId_${index.index}"
+																onkeyup="calculateProposedFund(${index.index});validateCielingValue(${index.index});changeColor()"
+																style="text-align:right;"
+																disabled="${eGovActivity.status eq true}" /></td>
+														</c:when>
+														<c:otherwise>
+														<td></td>
+														<td></td>
+														<td></td>
+														</c:otherwise>	
+														</c:choose>	
+														<td>
+														<div align="center" id="fundStateId_${index.index}"><strong>${eGovActivityForState.eGovSupportActivityDetails[index.index].funds}</strong></div>
+														<c:choose>
+															<c:when test="${POST_LEVEL.eGovPostId eq 7}">
+																<form:input
+																path="eGovSupportActivityDetails[${index.index}].funds"
+																type="text" onkeypress="return isNumber(event)"
+																class="form-control" id="fundId_${index.index}"
+																onchange="changeColor()"
+																onkeyup="calculateTotalFundDpmu()"
+																style="text-align:right;" disabled="${eGovActivity.status eq true}" />
+															</c:when>
+															<c:otherwise>
+																<form:input
+																	path="eGovSupportActivityDetails[${index.index}].funds"
+																	type="text" onkeypress="return isNumber(event)"
+																	class="form-control" id="fundId_${index.index}"
+																	onchange="changeColor()"
+																	style="text-align:right;"
+																	readonly="true"/>
+															</c:otherwise>
+														</c:choose>
+														</td>
+													</tr>
+													<c:set var="countDpmuCec" value="${countDpmuCec + 1}" scope="page" />
+												</c:forEach>
+												
+												<!-- second loop for Dpmu ends here -->
+												
+												<tr>
+													<td><div align="center">
+															<strong>Total DPMU Fund</strong>
+														</div></td>
+													<td colspan="4"></td>
+													<td>
+													<div align="center" id="total_fund_state_dpmu"><strong>${DPMU_TOTAL_STATE}</strong></div>
+													<input type="text" class="active12 form-control"
+														id="total_fund_dpmu"
+														onkeypress="return isNumber(event)"
+														onchange="changeColor()"
+														style="text-align: right;" readonly="readonly" /></td>
+												</tr>
+												<tr>
+													<td><div align="center">
+															<strong>DPMU <spring:message
+																	code="Label.AdditionalRequirement" htmlEscape="true" /></strong>
+														</div></td>
+													<td colspan="4"></td>
+													<td>
+													<div align="center" id="additionalRequirementStateDpmuId"><strong>${eGovActivityForState.additionalRequirementDpmu}</strong></div>
+													<form:input path="additionalRequirementDpmu"
+															type="text" onkeypress="return isNumber(event)"
+															class="form-control"
+															id="additionalRequirementDpmuId"
+															onkeyup="calculateGrandTotal();changeColor()"
+															placeholder="25% of Total Cost" style="text-align:right;"
+															readonly="${eGovActivity.status}" /></td>
+												</tr>
+												
 												<tr>
 													<td><div align="center">
 															<strong><spring:message
@@ -183,16 +313,11 @@ function changeColor() {
 														</div></td>
 													<td colspan="4"></td>
 													<td>
-													<div align="center" id="grandTotalStateId"><strong>${eGovActivityForState.additionalRequirement + TOTAL_FUND_STATE}</strong></div>
+													<div align="center" id="grandTotalStateId"><strong>${eGovActivityForState.additionalRequirementDpmu + DPMU_TOTAL_STATE + SPMU_TOTAL_STATE + eGovActivityForState.additionalRequirementSpmu}</strong></div>
 													
-													<input type="text"
-														onkeypress="return isNumber(event)"
-														class="form-control" id="grandTotalId"
-														readonly="readonly"
-														onchange="changeColor()"
-														style="text-align: right;" /></td>
+													<input type="text" onkeypress="return isNumber(event)" class="form-control" id="grandTotalId"
+														readonly="readonly" onchange="changeColor();" style="text-align: right;" /></td>
 												</tr>
-												<%-- </c:forEach> --%>
 											</tbody>
 										</table>
 										</div>
@@ -205,21 +330,20 @@ function changeColor() {
 										</button>
 									</div>
 									<div class="text-right">
-								 <%-- <c:if test="${Plan_Status eq true}"> --%>
 										<c:if test="${eGovActivity.status eq false || empty eGovActivity.status}">
 									  
-										<button type="submit" class="btn bg-green waves-effect" id="saveId" onclick="validateMonth(${count});">
-										<spring:message code="Label.SAVE" htmlEscape="true" /></button>
-										<c:choose>
-										<c:when test="${initial_status}"><button type="button" onclick='freezeAndUnfreeze("freeze")' id="freezeId" class="btn bg-green waves-effect" disabled="disabled"><spring:message code="Label.FREEZE" htmlEscape="true" /></button></c:when>
-										<c:otherwise><button type="button" onclick='freezeAndUnfreeze("freeze")' id="freezeId" class="btn bg-green waves-effect"><spring:message code="Label.FREEZE" htmlEscape="true" /></button></c:otherwise>
-										</c:choose>
+											<button type="submit" class="btn bg-green waves-effect" id="saveId" onclick="validateMonth(${index.index});">
+											<spring:message code="Label.SAVE" htmlEscape="true" /></button>
+											<c:choose>
+											<c:when test="${initial_status}"><button type="button" onclick='freezeAndUnfreeze("freeze")' id="freezeId" class="btn bg-green waves-effect" disabled="disabled"><spring:message code="Label.FREEZE" htmlEscape="true" /></button></c:when>
+											<c:otherwise><button type="button" onclick='freezeAndUnfreeze("freeze")' id="freezeId" class="btn bg-green waves-effect"><spring:message code="Label.FREEZE" htmlEscape="true" /></button></c:otherwise>
+											</c:choose>
+											</c:if>
+											<c:if test="${eGovActivity.status eq true}">
+											<button type="button" onclick='freezeAndUnfreeze("unfreeze")' id="unfreezeId" class="btn bg-green waves-effect" >
+											<spring:message code="Label.UNFREEZE" htmlEscape="true" /></button>
 										</c:if>
-										<c:if test="${eGovActivity.status eq true}">
-										<button type="button" onclick='freezeAndUnfreeze("unfreeze")' id="unfreezeId" class="btn bg-green waves-effect" >
-										<spring:message code="Label.UNFREEZE" htmlEscape="true" /></button>
-										</c:if>
-										<%-- </c:if> --%>
+										
 										<c:if test="${eGovActivity.status eq false || empty eGovActivity.status}">
 											<button type="button" class="btn bg-light-blue waves-effect reset" id="clearId"><spring:message code="Label.CLEAR" htmlEscape="true" /></button>
 										</c:if>
@@ -227,8 +351,9 @@ function changeColor() {
 										<input type="hidden" name="dbFileName" id="dbFileName">
 										<input type="hidden" name="eGovSupportActivityId" value="${eGovActivity.eGovSupportActivityId}" />
 										<input type="hidden" name="userType" value="${eGovActivity.userType}" >
+										<input type="hidden" id="countSpmuId" value="${countSpmuCec}">
+										<input type="hidden" id="countDpmuId" value="${countDpmuCec}">
 								</div>
-								<input type="hidden" id="count" value="${count}">
 								</form:form>
 							</div>
 
@@ -273,13 +398,9 @@ function changeColor() {
 													</tr>
 												</thead>
 												<tbody>
-
-													<%-- <c:forEach items="eGovActivityDetailsForMOPR" var="EGovt_MOPR"> --%>
+												<!-- spmu loop -->
 													<c:forEach items="${LIST_OF_POST_LEVEL}" var="POST_LEVEL"
-														varStatus="index">
-
-														<%-- 	<c:forEach items="${POST_LEVEL.eGovPosts}" var="POST"> --%>
-
+														varStatus="index" begin="0" end="3">
 														<tr id="newRowHtml">
 															<td><div align="center">
 																	<strong>${POST_LEVEL.EGovPostLevel.postLevelName}
@@ -304,27 +425,78 @@ function changeColor() {
 
 											<tr>
 												<td><div align="center">
-														<strong><spring:message code="Label.TotalFund"
+														<strong>SPMU <spring:message code="Label.TotalFund"
 																htmlEscape="true" /></strong>
 													</div></td>
 												<td colspan="4"></td>
-												<td><div align="center">${TOTAL_FUND_MOPR}</div></td>
+												<td><div align="center">${SPMU_TOTAL_MOPR}</div></td>
 											</tr>
 											<tr>
 												<td><div align="center">
-														<strong><spring:message
+														<strong>SPMU <spring:message
 																code="Label.AdditionalRequirement" htmlEscape="true" /></strong>
 													</div></td>
 												<td colspan="4"></td>
-												<td><div align="center">${eGovActivityForMOPR.additionalRequirement}</div></td>
+												<td><div align="center">${eGovActivityForMOPR.additionalRequirementSpmu}</div></td>
 											</tr>
+											<tr>
+											<!-- spmu loop end here -->
+
+											<!-- dpmu loop starts from here -->
+												<c:forEach items="${LIST_OF_POST_LEVEL}" var="POST_LEVEL"
+													varStatus="index" begin="4" end="6">
+													<tr id="newRowHtml">
+														<td><div align="center">
+																<strong>${POST_LEVEL.EGovPostLevel.postLevelName}
+																</strong>
+															</div></td>
+														<td><div align="center">
+																<strong>${POST_LEVEL.EGovPostName}</strong>
+															</div></td>
+														<td><div align="center">${eGovActivityForMOPR.eGovSupportActivityDetails[index.index].noOfPosts }</div></td>
+														<td><div align="center">${eGovActivityForMOPR.eGovSupportActivityDetails[index.index].unitCost }</div></td>
+														<td><div align="center">${eGovActivityForMOPR.eGovSupportActivityDetails[index.index].months }</div></td>
+														<td><div align="center">${eGovActivityForMOPR.eGovSupportActivityDetails[index.index].funds }</div></td>
+														<td><c:choose>
+																<c:when
+																	test="${eGovActivityForMOPR.eGovSupportActivityDetails[index.index].isApproved}">
+																	<i class="fa fa-check" aria-hidden="true"
+																		style="color: #00cc00"></i>
+																</c:when>
+																<c:otherwise>
+																	<i class="fa fa-times" aria-hidden="true"
+																		style="color: red"></i>
+																</c:otherwise>
+															</c:choose></td>
+														<td><div align="center">${eGovActivityForMOPR.eGovSupportActivityDetails[index.index].noOfPosts }</div></td>
+													</tr>
+												</c:forEach>
+												
+												<tr>
+												<td><div align="center">
+														<strong>DPMU <spring:message code="Label.TotalFund"
+																htmlEscape="true" /></strong>
+													</div></td>
+												<td colspan="4"></td>
+												<td><div align="center">${DPMU_TOTAL_MOPR}</div></td>
+											</tr>
+											<tr>
+												<td><div align="center">
+														<strong>DPMU <spring:message
+																code="Label.AdditionalRequirement" htmlEscape="true" /></strong>
+													</div></td>
+												<td colspan="4"></td>
+												<td><div align="center">${eGovActivityForMOPR.additionalRequirementDpmu}</div></td>
+											</tr>
+											<!-- dpmu loop ends here -->
+											
 											<tr>
 												<td><div align="center">
 														<strong><spring:message
 																code="Label.TotalProposedFund" htmlEscape="true" /></strong>
 													</div></td>
 												<td colspan="4"></td>
-												<td><div align="center">${eGovActivityForMOPR.additionalRequirement + TOTAL_FUND_MOPR}</div></td>
+												<td><div align="center">${eGovActivityForMOPR.additionalRequirementSpmu + SPMU_TOTAL_MOPR + eGovActivityForMOPR.additionalRequirementDpmu + DPMU_TOTAL_MOPR}</div></td>
 											</tr>
 										</tbody>
 											</table>
