@@ -100,7 +100,7 @@ public class WebConfig implements WebMvcConfigurer {
         return registration;
     }
 
-    /*
+   
 
     // Owasp context params
     @Bean
@@ -142,7 +142,7 @@ public class WebConfig implements WebMvcConfigurer {
         // registration.setOrder(1);
         return registration;
     }
-    */
+    
 
     // Hibernate filter
     @Bean(name = "HibernateFilterBean")
