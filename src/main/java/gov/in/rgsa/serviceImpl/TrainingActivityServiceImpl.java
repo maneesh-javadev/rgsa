@@ -23,6 +23,7 @@ import org.springframework.stereotype.Service;
 import gov.in.rgsa.dao.CommonRepository;
 import gov.in.rgsa.entity.FetchTraining;
 import gov.in.rgsa.entity.FetchTrainingDetails;
+import gov.in.rgsa.entity.Plan;
 import gov.in.rgsa.entity.Subjects;
 import gov.in.rgsa.entity.TargetGroupMaster;
 import gov.in.rgsa.entity.TrainingActivity;
@@ -35,6 +36,7 @@ import gov.in.rgsa.entity.TrainingVenueLevel;
 import gov.in.rgsa.entity.TrainingWiseCategory;
 import gov.in.rgsa.model.Response;
 import gov.in.rgsa.service.FacadeService;
+import gov.in.rgsa.service.PlanAllocationService;
 import gov.in.rgsa.service.TrainingActivityService;
 import gov.in.rgsa.user.preference.UserPreference;
 
@@ -54,6 +56,9 @@ public class TrainingActivityServiceImpl implements TrainingActivityService {
 	
 	@Autowired
 	private FacadeService facadeService;
+	
+	@Autowired
+	private PlanAllocationService planAllocationService;
 	
 	@Override
 public void save(TrainingActivity activity) {
@@ -374,6 +379,13 @@ public void save(TrainingActivity activity) {
 			fetchTrainingDetailsList = commonRepository.findAll("Fetch_Training_Details", params);
 		}
 		
+		
+		Integer planStatus=0;
+		List<Plan> planList = planAllocationService.showHidePlanStatus(userPreference.getStateCode());
+		if(planList!=null && !planList.isEmpty())
+		{
+			planStatus=planList.get(0).getPlanStatusId();
+		}
 		Map<String,Object> data = new HashMap<>();
 		data.put("fetchTraining", fetchTraining);
 		data.put("fetchTrainingDetailsList", fetchTrainingDetailsList);
@@ -382,7 +394,7 @@ public void save(TrainingActivity activity) {
 		data.put("trngVenueList",this.trainingVenueLevelsList());
 		data.put("subjectsList",this.subjectsList());
 		data.put("modeOfTraining",this.fetchModeOfTraining());
-		data.put("planStateStatus",userPreference.getPlanStatus()==1);
+		data.put("planStateStatus",planStatus==1);
 		return data;
 	}
 	

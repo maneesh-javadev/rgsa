@@ -22,7 +22,7 @@ import gov.in.rgsa.exception.RGSAException;
 
 public class LoadLocale {
 
-	private static final String MESSAGE_LOCATION = "WEB-INF/MESSAGES";
+	private static final String MESSAGE_LOCATION = "WEB-INF/i18n";
 
 	@Autowired
 	private CommonRepository dao;
