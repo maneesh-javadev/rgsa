@@ -147,7 +147,7 @@ function changeColor() {
 																path="eGovSupportActivityDetails[${index.index}].funds"
 																type="text" onkeypress="return isNumber(event)"
 																class="form-control" id="fundId_${index.index}"
-																onkeyup="calculateTotalFundSpmu()" onchange="changeColor();"
+																onkeyup="calculateTotalFundSpmu()" onchange="changeColor();" maxlength="6"
 																style="text-align:right;" disabled="${eGovActivity.status eq true}" />
 															</c:when>
 															<c:otherwise>
@@ -255,7 +255,7 @@ function changeColor() {
 																path="eGovSupportActivityDetails[${index.index}].funds"
 																type="text" onkeypress="return isNumber(event)"
 																class="form-control" id="fundId_${index.index}"
-																onchange="changeColor()"
+																onchange="changeColor()" maxlength="6"
 																onkeyup="calculateTotalFundDpmu()"
 																style="text-align:right;" disabled="${eGovActivity.status eq true}" />
 															</c:when>

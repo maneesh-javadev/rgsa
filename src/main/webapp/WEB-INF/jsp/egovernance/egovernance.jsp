@@ -130,6 +130,7 @@
 														class="active123 form-control" id="fundId_${index.index}"
 														onchange="calculateProposedFund(${index.index})"
 														onkeyup="calculateTotalFundSpmu()"
+														maxlength="6"
 														style="text-align:right;" disabled="${eGovActivity.status eq true}"/>
 													</c:when>
 													<c:otherwise>
@@ -235,7 +236,7 @@
 														type="text" onkeypress="return isNumber(event)"
 														class="active123 form-control" id="fundId_${index.index}"
 														onchange="calculateProposedFund(${index.index})"
-														onkeyup="calculateTotalFundDpmu()"
+														onkeyup="calculateTotalFundDpmu()" maxlength="6"
 														style="text-align:right;" disabled="${eGovActivity.status eq true}" />
 													</c:when>
 													<c:otherwise>

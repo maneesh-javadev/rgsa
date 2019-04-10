@@ -2,17 +2,8 @@
 <script type="text/javascript">
 $(document).ready(function() {
 	
-	 var calculated_total_sum = 0;
-     
-     $("#supportStaff .txtCal").each(function () {
-         var get_textbox_value = $(this).val();
-         if ($.isNumeric(get_textbox_value)) {
-            calculated_total_sum += parseFloat(get_textbox_value);
-            }                  
-          });
-     document.getElementById("grandtotal").value=calculated_total_sum;
-     
-   
+	 calculateTotalFundSpmu();
+	 calculateTotalFundDpmu();
 	
 	var myBoolean = document.getElementById("isFreeze").value;
 	if(myBoolean == "true"){
@@ -52,24 +43,27 @@ function calculate(obj)
 		}
 	else if(noOfMonths > 0) {
 		$("#fund_"+obj).val(parseFloat($("#noOfUnits_"+obj).val()) * parseFloat($("#unitCost_"+obj).val()) * parseFloat($("#noOfMonths_"+obj).val())); 
-		$("#totalFund_"+obj).val(parseFloat($("#fund_"+obj).val()));
-		totalfunds();
 	}
-	else if((noOfMonths == 0 || noOfMonths < 0) && noOfMonths !="") {
+	else if(noOfMonths == 0 && noOfMonths !="") {
 		alert("Months should be greater than 0!");
 		$("#noOfMonths_"+obj).val(1);
-		totalfunds();
 	}
+	calculateTotalFundSpmu();
+	calculateTotalFundDpmu();
 }
 
 function totalfunds(){
-	var totalFunds = 0;
-	 for(var i=0;i<6;i++){
-		 	var funds = $("#fund_"+i).val();
-		 	if(funds != "")
-	    	totalFunds += parseInt(funds);
-	    }
-	    $("#grandtotal").val(totalFunds);
+	
+		if($("#total_fund_spmu").val() == "" && $("#total_fund_dpmu").val() != ""){
+			$("#grandtotal").val( +$("#total_fund_spmu").val() + + $("#total_fund_dpmu").val());
+		}else if($("#total_fund_dpmu").val() == "" && $("#total_fund_spmu").val() != ""){
+			$("#grandtotal").val( +$("#total_fund_spmu").val() + + $("#total_fund_dpmu").val());
+		}else if($("#total_fund_dpmu").val() == "" && $("#total_fund_spmu").val() == ""){
+			$("#grandtotal").val('');
+		}else{
+			$("#grandtotal").val( +$("#total_fund_spmu").val() + + $("#total_fund_dpmu").val());
+		}
+	    
 }
 function toFreeze(){
 	 $("input").prop('disabled', false);
@@ -100,31 +94,7 @@ function calculateValue(obj)
 	}
 	
 	}
-/* function calculateValueAcDomain(obj)
-{
-	var rowCountSprc=$('#tbodySprcId tr').length;
-	var noOfDomainSprc=0;
-	var noOfDomainDprc=0;
-	for(var i=0;i<rowCountSprc;i++){
-		noOfDomainSprc += Number($('#noOfFaculty_'+i).val()) ;
-		noOfDomainDprc += Number($('#noOfExperts_'+(i+3)).val());
-	}
-	for(var i=0;i<rowCountSprc;i++){
-		
-	if($('#noOfFaculty_0').val() < noOfDomainSprc){
-		alert('Total domains experts should be equal to or less than '+ $('#noOfUnits_0').val());
-		
-		$('#noOfFaculty_'+i).val('');
-		
-	}else if($('#noOfUnits_3').val() < noOfDomainDprc){
-		alert('Total domains experts should be equal to or less than '+ $('#noOfUnits_3').val());
-	
-		$('#noOfExperts_'+i).val('');
-		
-	}
-	
-	}
-} */
+
 function calculateValueAcDomain(obj){
 	var rowCountSprc=$('#tbodySprcId tr').length;
 	var noOfDomainSprc=0;
@@ -196,8 +166,33 @@ function validationOnSubmit(){
 	}else if(!flag){
 		alert("Fill the domain details first.");
 	}
+	
 	return flag;
 }
+
+function calculateTotalFundSpmu() {
+	var count = $("#countSpmuId").val();
+	var total_spmu_fund = 0;
+	for (var i = 0; i < count; i++) {
+		if($("#fund_" + i).val() != null && $("#fund_" + i).val() != ""){
+			total_spmu_fund += +$("#fund_" + i).val();
+		}
+	}
+	$("#total_fund_spmu").val(+total_spmu_fund); 
+	totalfunds();
+};
+
+function calculateTotalFundDpmu() {
+	var count = $("#countDpmuId").val();
+	var total_dpmu_fund = 0;
+	for (var i = 0; i < count; i++) {
+		if($("#fund_"+(i + +$("#countSpmuId").val())).val() != null && $("#fund_"+(i + +$("#countSpmuId").val())).val() != ""){
+			total_dpmu_fund += +$("#fund_"+(i + +$("#countSpmuId").val())).val();
+		}
+	}
+	$("#total_fund_dpmu").val(total_dpmu_fund); 
+	totalfunds();
+};
 </script>
 <section class="content">
 	<div class="container-fluid">
@@ -233,29 +228,25 @@ function validationOnSubmit(){
 												</tr>
 											</thead>
 											<tbody id="myTableId">
-											<c:set var="count" value="0" scope="page" />
-											<c:forEach items="${LIST_OF_ACTIVITY_PMU_TYPE}" var="ACTIVITY" varStatus="srl">
-											<input	type="hidden" name="pmuActivityId"	value="${pmuActivity.pmuActivityId}">
-											<input	type="hidden" name="pmuActivityDetails[${count}].pmuActivityTypeId"	value="${ACTIVITY.pmuActivityTypeId}">
-											<input	type="hidden" id="isFreeze" name="isFreeze"	value="${pmuActivity.isFreeze}">
-											<input	type="hidden" name="pmuActivityDetails[${count}].pmuDetailsId"	value="${pmuActivity.pmuActivityDetails[count].pmuDetailsId}">
-											<input type="hidden" name="userType" value="${pmuActivity.userType}"/>
+											<c:set var="countSpmu" value="0" scope="page" />
+											<c:set var="countDpmu" value="0" scope="page" />
+											<c:forEach items="${LIST_OF_ACTIVITY_PMU_TYPE}" var="ACTIVITY" varStatus="srl" begin="0" end="2">
+											<input	type="hidden" name="pmuActivityDetails[${srl.index}].pmuActivityTypeId"	value="${ACTIVITY.pmuActivityTypeId}">
+											<input	type="hidden" name="pmuActivityDetails[${srl.index}].pmuDetailsId"	value="${pmuActivity.pmuActivityDetails[srl.index].pmuDetailsId}">
+											<input	type="hidden" name="pmuActivityDetails[${srl.index}].pmuActivityType.pmuActivityTypeId"	value="${ACTIVITY.pmuActivityTypeId}" />
 											<tr>
 												<td><div align="center"><strong>${ACTIVITY.pmuType.pmuTypeName}</strong></div></td>
 												<td><div align="center"><strong>${ACTIVITY.pmuActivityName}</strong></div></td>
-												<td><input value="${pmuActivity.pmuActivityDetails[srl.index].noOfUnits}"	name="pmuActivityDetails[${srl.index}].noOfUnits" min="1" maxlength="3"  onkeypress="return isNumber(event)" oninput="validity.valid||(value='');"	type="text" class="active12 form-control" id="noOfUnits_${count}" onchange="calculate(${count}); calculateValue(${count})" style="text-align:right;"/></td>
-												<td><input value="${pmuActivity.pmuActivityDetails[srl.index].unitCost}"	name="pmuActivityDetails[${srl.index}].unitCost" min="1" maxlength="7"  onkeypress="return isNumber(event)" oninput="validity.valid||(value='');" type="text" class="active12 form-control"	id="unitCost_${count}" onchange="calculate(${count});" style="text-align:right;"/></td>
-												<td><input value="${pmuActivity.pmuActivityDetails[srl.index].noOfMonths}" 	name="pmuActivityDetails[${srl.index}].noOfMonths" min="1"  onkeypress="return isNumber(event)" oninput="validity.valid||(value='');"	type="text" class="active12 form-control" id="noOfMonths_${count}" onchange="calculate(${count});" style="text-align:right;"/></td>
+												<td><input value="${pmuActivity.pmuActivityDetails[srl.index].noOfUnits}"	name="pmuActivityDetails[${srl.index}].noOfUnits" min="1" maxlength="3"  onkeypress="return isNumber(event)" oninput="validity.valid||(value='');"	type="text" class="active12 form-control" id="noOfUnits_${srl.index}" onchange="calculate(${srl.index}); calculateValue(${srl.index})" style="text-align:right;"/></td>
+												<td><input value="${pmuActivity.pmuActivityDetails[srl.index].unitCost}"	name="pmuActivityDetails[${srl.index}].unitCost" min="1" maxlength="7"  onkeypress="return isNumber(event)" oninput="validity.valid||(value='');" type="text" class="active12 form-control"	id="unitCost_${srl.index}" onchange="calculate(${srl.index});" style="text-align:right;"/></td>
+												<td><input value="${pmuActivity.pmuActivityDetails[srl.index].noOfMonths}" 	name="pmuActivityDetails[${srl.index}].noOfMonths" min="1"  onkeypress="return isNumber(event)" oninput="validity.valid||(value='');"	type="text" class="active12 form-control" id="noOfMonths_${srl.index}" onchange="calculate(${srl.index});" style="text-align:right;"/></td>
 												<c:set var="totalFundToCalc" value="${pmuActivity.pmuActivityDetails[srl.index].fund}"></c:set>
-												<td><input value="${pmuActivity.pmuActivityDetails[srl.index].fund}" readonly="readonly" name="pmuActivityDetails[${srl.index}].fund"  onkeypress="return isNumber(event)" oninput="validity.valid||(value='');" type="text" min="1" class="active12 form-control txtCal" id="fund_${count}" style="text-align:right;"/></td>
-												<%-- <c:set var="totalexpns" value="${pmuActivity.pmuActivityDetails[srl.index].otherExpenses}"></c:set> --%>
-												<%-- <td><input value="${pmuActivity.pmuActivityDetails[srl.index].otherExpenses}"	name="pmuActivityDetails[${srl.index}].otherExpenses" min="1"  onkeypress="return isNumber(event)" oninput="validity.valid||(value='');"	type="text" class="active12 form-control"	id="otherExpenses_${count}" onchange="calculate(${count});" style="text-align:right;"/></td>
-												<td><input type="text" readonly="readonly" class="form-control" value="${totalFundToCalc}" id="totalFund_${count}" /></td> --%>
+												<td><input value="${pmuActivity.pmuActivityDetails[srl.index].fund}" readonly="readonly" name="pmuActivityDetails[${srl.index}].fund"  onkeypress="return isNumber(event)" oninput="validity.valid||(value='');" type="text" min="1" class="active12 form-control txtCal" id="fund_${srl.index}" style="text-align:right;" onchange="calculateTotalFundSpmu()"/></td>
 													<c:choose>
-														<c:when test="${count eq 0 }">
+														<c:when test="${srl.index eq 0 }">
 															<td><button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal">Fill Domain Details</button></td>
 														</c:when>
-														<c:when test="${count eq 3}">
+														<c:when test="${srl.index eq 3}">
 															<td><button type="button"	class="btn btn-primary btn-lg" data-toggle="modal"	data-target="#myModal2">Fill Domain Details</button></td>
 														</c:when>
 														<c:otherwise>
@@ -264,20 +255,80 @@ function validationOnSubmit(){
 													</c:choose>
 											<c:if test="${sessionScope['scopedTarget.userPreference'].userType eq 'M'}">
 	                                             <td><c:choose>
-	                                             			<c:when test="${pmuActivity.pmuActivityDetails[count].isApproved}">	
-														  		 <input type="checkbox" name="pmuActivityDetails[${count}].isApproved" checked="checked"  />
+	                                             			<c:when test="${pmuActivity.pmuActivityDetails[srl.index].isApproved}">	
+														  		 <input type="checkbox" name="pmuActivityDetails[${srl.index}].isApproved" checked="checked"  />
 														   </c:when>
 														   <c:otherwise>
-														   		<input type="checkbox" name="pmuActivityDetails[${count}].isApproved" />
+														   		<input type="checkbox" name="pmuActivityDetails[${srl.index}].isApproved" />
 														   </c:otherwise>
 													</c:choose>
 												</td>
 										   </c:if>
-										   <td><textarea name="pmuActivityDetails[${count}].remarks" rows="3" class="form-control" cols="5"><c:out value="${pmuActivity.pmuActivityDetails[count].remarks}"></c:out></textarea></td>
+										   <td><textarea name="pmuActivityDetails[${srl.index}].remarks" rows="3" class="form-control" cols="5"><c:out value="${pmuActivity.pmuActivityDetails[srl.index].remarks}"></c:out></textarea></td>
 												</tr>
-												<c:set var="count" value="${count +1}" scope="page" />
+												<c:set var="countSpmu" value="${countSpmu + 1}" scope="page" />
 											</c:forEach>
+										<tr>
+											<th colspan="5"><label>Total SPMU Fund</label></th>
+											<td><input type="text" style="background: #dddddd;"
+												class="form-control Align-Right" id="total_fund_spmu"
+												value="" disabled="disabled"></td>
+											<td></td>
+											<td></td>
+
+										</tr>
+										<!-- SPMU LOOP ENDS HERE  -->
+										
+										<!-- DPMU LOOP STARTS FROM HERE -->
+										<c:forEach items="${LIST_OF_ACTIVITY_PMU_TYPE}" var="ACTIVITY" varStatus="srl" begin="3" end="5">
+											<input	type="hidden" name="pmuActivityDetails[${srl.index}].pmuActivityTypeId"	value="${ACTIVITY.pmuActivityTypeId}">
+											<input	type="hidden" name="pmuActivityDetails[${srl.index}].pmuDetailsId"	value="${pmuActivity.pmuActivityDetails[srl.index].pmuDetailsId}">
+											<input	type="hidden" name="pmuActivityDetails[${srl.index}].pmuActivityType.pmuActivityTypeId"	value="${ACTIVITY.pmuActivityTypeId}" />
 											<tr>
+												<td><div align="center"><strong>${ACTIVITY.pmuType.pmuTypeName}</strong></div></td>
+												<td><div align="center"><strong>${ACTIVITY.pmuActivityName}</strong></div></td>
+												<td><input value="${pmuActivity.pmuActivityDetails[srl.index].noOfUnits}"	name="pmuActivityDetails[${srl.index}].noOfUnits" min="1" maxlength="3"  onkeypress="return isNumber(event)" oninput="validity.valid||(value='');"	type="text" class="active12 form-control" id="noOfUnits_${srl.index}" onchange="calculate(${srl.index}); calculateValue(${srl.index})" style="text-align:right;" required="required"/></td>
+												<td><input value="${pmuActivity.pmuActivityDetails[srl.index].unitCost}"	name="pmuActivityDetails[${srl.index}].unitCost" min="1" maxlength="7"  onkeypress="return isNumber(event)" oninput="validity.valid||(value='');" type="text" class="active12 form-control"	id="unitCost_${srl.index}" onchange="calculate(${srl.index});" style="text-align:right;" required="required"/></td>
+												<td><input value="${pmuActivity.pmuActivityDetails[srl.index].noOfMonths}" 	name="pmuActivityDetails[${srl.index}].noOfMonths" min="1"  onkeypress="return isNumber(event)" oninput="validity.valid||(value='');"	type="text" class="active12 form-control" id="noOfMonths_${srl.index}" onchange="calculate(${srl.index});" style="text-align:right;" required="required"/></td>
+												<c:set var="totalFundToCalc" value="${pmuActivity.pmuActivityDetails[srl.index].fund}"></c:set>
+												<td><input value="${pmuActivity.pmuActivityDetails[srl.index].fund}" readonly="readonly" name="pmuActivityDetails[${srl.index}].fund"  onkeypress="return isNumber(event)" oninput="validity.valid||(value='');" type="text" min="1" class="active12 form-control txtCal" id="fund_${srl.index}" style="text-align:right;" onchange="calculateTotalFundDpmu()"/></td>
+													<c:choose>
+														<c:when test="${srl.index eq 0 }">
+															<td><button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal">Fill Domain Details</button></td>
+														</c:when>
+														<c:when test="${srl.index eq 3}">
+															<td><button type="button"	class="btn btn-primary btn-lg" data-toggle="modal"	data-target="#myModal2">Fill Domain Details</button></td>
+														</c:when>
+														<c:otherwise>
+															<td></td>
+														</c:otherwise>
+													</c:choose>
+											<c:if test="${sessionScope['scopedTarget.userPreference'].userType eq 'M'}">
+	                                             <td><c:choose>
+	                                             			<c:when test="${pmuActivity.pmuActivityDetails[srl.index].isApproved}">	
+														  		 <input type="checkbox" name="pmuActivityDetails[${srl.index}].isApproved" checked="checked"  />
+														   </c:when>
+														   <c:otherwise>
+														   		<input type="checkbox" name="pmuActivityDetails[${srl.index}].isApproved" />
+														   </c:otherwise>
+													</c:choose>
+												</td>
+										   </c:if>
+										   <td><textarea name="pmuActivityDetails[${srl.index}].remarks" rows="3" class="form-control" cols="5"><c:out value="${pmuActivity.pmuActivityDetails[srl.index].remarks}"></c:out></textarea></td>
+												</tr>
+												<c:set var="countDpmu" value="${countDpmu + 1}" scope="page" />
+											</c:forEach>
+										<tr>
+											<th colspan="5"><label>Total DPMU Fund</label></th>
+											<td><input type="text" style="background: #dddddd;"
+												class="form-control Align-Right" id="total_fund_dpmu"
+												value="" disabled="disabled"></td>
+											<td></td>
+											<td></td>
+
+										</tr>
+										<!-- DPMU LOOP ENDS HERE -->
+										<tr>
 											<th colspan="5"><label><spring:message code="Label.TotalAmountProposed" htmlEscape="true" /></label></th>
 													<td>											
 															<input type="text" style="background: #dddddd;"
@@ -288,11 +339,6 @@ function validationOnSubmit(){
 														<td></td>
 														
 												</tr>
-											<%-- <tr>
-												<td><div align="center"><strong>Additional Requirement</strong></div></td>
-												<td colspan="6"></td>
-												<td><input type="text" name="additionalRequirement" value="${pmuActivity.additionalRequirement}" class="active12 form-control" /></td>
-											</tr> --%>
 											</tbody>
 										</table>
 										<div id="myModal" class="modal fade" role="dialog">
@@ -383,7 +429,6 @@ function validationOnSubmit(){
 																		<option value="0">---select---</option>
 																		<c:forEach items="${LIST_OF_DISTRICT}" var="DISTRICT">
 																		<c:choose>
-																			<%-- <c:when test="${pmuActivity.setDistrictIdPmuWise == DISTRICT[0]}"> --%>
 																			<c:when test="${pmuWiseDomainList[3].districtId == DISTRICT[0]}">
 																			<option value="${DISTRICT[0]}" selected="selected">${DISTRICT[1]}</option>
 																			</c:when>
@@ -455,6 +500,13 @@ function validationOnSubmit(){
 										<button type="button" onclick="onClose('home.html?<csrf:token uri='home.html'/>')"	class="btn bg-orange waves-effect"><spring:message code="Label.CLOSE" htmlEscape="true" /></button>
 										
 									</div>
+									
+									<!-- hidden fields -->
+							<input type="hidden" name="pmuActivityId" value="${pmuActivity.pmuActivityId}">
+							<input type="hidden" id="isFreeze" name="isFreeze" value="${pmuActivity.isFreeze}">
+							<input type="hidden" name="userType" value="${pmuActivity.userType}" />
+							<input type="hidden" id="countSpmuId" value="${countSpmu}">
+							<input type="hidden" id="countDpmuId" value="${countDpmu}">
 						</form:form>
 					</div>
 				</div>
