@@ -21,6 +21,7 @@ trainingDetail.controller("trainingDetailController",['$scope','trainingDetailSe
 	
 	function fetchOnLoad(){
 		trainingDetailService.fetchtrainingDetailData(null).then(function(response){
+			delTrainingIdArr=[];
 			$scope.training = response.data.fetchTraining;	
                             $scope.planStateStatus=response.data.planStateStatus;
 			$scope.training.trainingDetailList = response.data.fetchTrainingDetailsList;
@@ -150,13 +151,16 @@ trainingDetail.controller("trainingDetailController",['$scope','trainingDetailSe
 	
 	validateData=function(trainingDetails){
 		
-		if(!trainingDetails.targetGrptArr.length>0){
+		if(!(trainingDetails.trgCategoryArr!=null && trainingDetails.trgCategoryArr.length>0)){
+			toastr.error("Please select Training Category ");
+			return false;
+		}else if(!(trainingDetails.targetGrptArr!=null && trainingDetails.targetGrptArr.length>0)){
 			toastr.error("Please select Traget group ");
 			return false;
-		}else if(!trainingDetails.trainingSubjectArr.length>0){
+		}else if(!(trainingDetails.trainingSubjectArr!=null && trainingDetails.trainingSubjectArr.length>0)){
 			toastr.error("Please select Training Subject ");
 			return false;
-		}else if(!trainingDetails.trainingVenueLevelId.length>0){
+		}else if(!(trainingDetails.trainingVenueLevelId!=null && trainingDetails.trainingVenueLevelId.length>0)){
 			toastr.error("Please select Training Venue Level");
 			return false;
 		}
@@ -175,7 +179,7 @@ trainingDetail.controller("trainingDetailController",['$scope','trainingDetailSe
 			return false;
 		}
 		
-		else if(!(trainingDetails.trainingMode!=null && trainingDetails.trainingMode!=undefined)){
+		else if(!(trainingDetails.trainingMode!=null && trainingDetails.trainingMode.length>0)){
 			toastr.error("Please select Mode of Training");
 			return false;
 		}
@@ -252,21 +256,30 @@ trainingDetail.controller("trainingDetailController",['$scope','trainingDetailSe
 	
 	$scope.saveTrainingDetails=function(status){
 		if($scope.training.additionalRequirement != null && $scope.training.additionalRequirement!= undefined){
-			if(status=='F'){
-				$scope.training.isFreeze=true;
-			}else {
-				$scope.training.isFreeze=false;
+			if(delTrainingIdArr.length==$scope.training.trainingDetailList.length && status=='F'){
+				toastr.error("can't freeze when delete all training .");
+			}else{
+
+				if(status=='F'){
+					$scope.training.isFreeze=true;
+				}else {
+					$scope.training.isFreeze=false;
+				}
+				
+				
+				
+				$scope.training.delIds=delTrainingIdArr.toString();
+				trainingDetailService.updateTrainingActivityData($scope.training).then(function(response){
+			    	if(response!=null && response.status==200){
+			    		toastr.success(response.data.responseMessage);
+			    	}else{
+			    		toastr.error(response.data.responseMessage);
+			    	}
+			    	fetchOnLoad();
+			    	
+			    });
 			}
-			$scope.training.delIds=delTrainingIdArr.toString();
-			trainingDetailService.updateTrainingActivityData($scope.training).then(function(response){
-		    	if(response!=null && response.status==200){
-		    		toastr.success(response.data.responseMessage);
-		    	}else{
-		    		toastr.error(response.data.responseMessage);
-		    	}
-		    	fetchOnLoad();
-		    	
-		    });
+			
 			
 		}else{
 			toastr.error("Please enter Additional Requirements");
