@@ -23,6 +23,14 @@
     {
       "name": "rgsa.captcha.enabled",
       "type": "java.lang.Boolean"
+    },
+    {
+      "name": "rgsa.dev.user.auto_inject",
+      "type": "java.lang.Boolean"
+    },
+    {
+      "name": "rgsa.dev.user.username",
+      "type": "java.lang.String"
     }
   ]
 }
