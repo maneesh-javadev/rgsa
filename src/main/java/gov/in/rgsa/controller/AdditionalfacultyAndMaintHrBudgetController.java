@@ -1,10 +1,12 @@
 package gov.in.rgsa.controller;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -16,6 +18,7 @@ import org.springframework.web.servlet.support.RequestContextUtils;
 
 import gov.in.rgsa.entity.District;
 import gov.in.rgsa.entity.Domains;
+import gov.in.rgsa.entity.EGovSupportActivityDetails;
 import gov.in.rgsa.entity.InstitueInfraHrActivity;
 import gov.in.rgsa.entity.InstitueInfraHrActivityDetails;
 import gov.in.rgsa.entity.InstituteInfraHrActivityType;
@@ -81,42 +84,35 @@ public class AdditionalfacultyAndMaintHrBudgetController {
 	    districtName=lgdService.getAllDistrictBasedOnState(userPreference.getStateCode());
 	    model.addAttribute("LIST_OF_DISTRICT", districtName);
 	    model.addAttribute("STATE_CODE", userPreference.getStateCode());
-	    
-	    
-	    
-		/*
-		 * tIWiseProposedDomainExperts=additionalFacultyAndMainService.
-		 * fetchTiWiseDomainExpert();
-		 */
-		/*
-		 * if(!tIWiseProposedDomainExperts.isEmpty()){
-		 * tIWiseProposedDomainExperts=institueInfraHrActivity.get(0).
-		 * gettIWiseProposedDomainExperts();
-		 * 
-		 * additionalFactultyAndMaintModel.setTrainingInstituteCsDetailsId(
-		 * tIWiseProposedDomainExperts.get(3).getTrainingInstituteCsDetailsId()); }
-		 */
 		
-		institueInfraHrActivity=additionalFacultyAndMainService.fetchInstituteHrActivity(null);
+	    institueInfraHrActivity=additionalFacultyAndMainService.fetchInstituteHrActivity(null);
 		if(!institueInfraHrActivity.isEmpty())
 		{
-			 	tIWiseProposedDomainExperts=additionalFacultyAndMainService.fetchTiWiseDomainExpertById(institueInfraHrActivity.get(0).getInstituteInfraHrActivityId());
-				additionalFactultyAndMaintModel.setDistrictCode(tIWiseProposedDomainExperts.get(3).getDistrictCode());
-				additionalFactultyAndMaintModel.settIWiseProposedDomainExperts(tIWiseProposedDomainExperts);
+		 	tIWiseProposedDomainExperts=additionalFacultyAndMainService.fetchTiWiseDomainExpertById(institueInfraHrActivity.get(0).getInstituteInfraHrActivityId());
+			additionalFactultyAndMaintModel.setDistrictCode(tIWiseProposedDomainExperts.get(3).getDistrictCode());
+			additionalFactultyAndMaintModel.settIWiseProposedDomainExperts(tIWiseProposedDomainExperts);
 			model.addAttribute("institueInfraHrActivity", institueInfraHrActivity.get(0));
 			institueInfraHrActivityDetails=additionalFacultyAndMainService.fetchInstituteHrActivityDetails(institueInfraHrActivity.get(0).getInstituteInfraHrActivityId());
-			total_fund=calTotalFund(institueInfraHrActivityDetails);
-			for (InstitueInfraHrActivityDetails details : institueInfraHrActivityDetails) {
-				if(details.getFund() !=null ){
-					details.setTotalFund(details.getFund());	
-					total_fund += details.getTotalFund();
-				}
-			}
-			additionalFactultyAndMaintModel.setTotal(total_fund);
-			additionalFactultyAndMaintModel.setAdditionalRequirement(institueInfraHrActivity.get(0).getAdditionalRequirement());
-			if(additionalFactultyAndMaintModel.getAdditionalRequirement() !=null && additionalFactultyAndMaintModel.getTotal() != null){
-				additionalFactultyAndMaintModel.setGrand_total(additionalFactultyAndMaintModel.getAdditionalRequirement()+additionalFactultyAndMaintModel.getTotal());	
-			}
+			additionalFactultyAndMaintModel.setAdditionalRequirementSprc(institueInfraHrActivity.get(0).getAdditionalRequirementSprc());
+			additionalFactultyAndMaintModel.setAdditionalRequirementDprc(institueInfraHrActivity.get(0).getAdditionalRequirementDprc());
+			/*
+			 * total_fund=calTotalFund(institueInfraHrActivityDetails); for
+			 * (InstitueInfraHrActivityDetails details : institueInfraHrActivityDetails) {
+			 * if(details.getFund() !=null ){ details.setTotalFund(details.getFund());
+			 * total_fund += details.getTotalFund(); } }
+			 * additionalFactultyAndMaintModel.setTotal(total_fund);
+			 */
+			/*
+			 * additionalFactultyAndMaintModel.setAdditionalRequirement(
+			 * institueInfraHrActivity.get(0).getAdditionalRequirement());
+			 */
+			/*
+			 * if(additionalFactultyAndMaintModel.getAdditionalRequirement() !=null &&
+			 * additionalFactultyAndMaintModel.getTotal() != null){
+			 * additionalFactultyAndMaintModel.setGrand_total(
+			 * additionalFactultyAndMaintModel.getAdditionalRequirement()+
+			 * additionalFactultyAndMaintModel.getTotal()); }
+			 */
 			additionalFactultyAndMaintModel.setInstitueInfraHrActivityDetails(institueInfraHrActivityDetails);
 			additionalFactultyAndMaintModel.setDistrictsSupported(institueInfraHrActivity.get(0).getDistrictsSupported());
 			model.addAttribute("ISFREEZE", institueInfraHrActivity.get(0).getIsFreeze());
@@ -139,6 +135,7 @@ public class AdditionalfacultyAndMaintHrBudgetController {
 
 			}
 		}
+		
 		Integer planStatus=userPreference.getPlanStatus();	
 	    Boolean flag= false;
         if(planStatus!=null && planStatus==1 && userPreference.getUserType().equalsIgnoreCase("S")) {
@@ -170,32 +167,50 @@ public class AdditionalfacultyAndMaintHrBudgetController {
 			model.addAttribute("institueInfraHrActivityDetailsMopr", institueInfraHrActivityDetailsMopr);
 			model.addAttribute("institueInfraHrActivityState", institueInfraHrActivityState.get(0));
 			model.addAttribute("institueInfraHrActivityMopr", institueInfraHrActivityMopr.get(0));
-			model.addAttribute("additionalRequirementState", institueInfraHrActivityState.get(0).getAdditionalRequirement());
-			model.addAttribute("additionalRequirementMopr", institueInfraHrActivityState.get(0).getAdditionalRequirement());
-			model.addAttribute("totalState", calTotalFund(institueInfraHrActivityDetailsState));
-			model.addAttribute("totalMopr", calTotalFund(institueInfraHrActivityDetailsMopr));
 			model.addAttribute("tIWiseProposedDomainExpertsState", tIWiseProposedDomainExpertsState);
 			model.addAttribute("tIWiseProposedDomainExpertsMopr", tIWiseProposedDomainExpertsMopr);
 			model.addAttribute("SELECTED_DISTRICT_IN_STATE", lgdService.getDistrictDetails(userPreference.getStateCode(), tIWiseProposedDomainExpertsState.get(3).getDistrictCode()));
 			model.addAttribute("SELECTED_DISTRICT_IN_MOPR", lgdService.getDistrictDetails(userPreference.getStateCode(), tIWiseProposedDomainExpertsMopr.get(3).getDistrictCode()));
+			Map<String, Object>	scarL =calTotalOfSpmuAndDpmu(institueInfraHrActivityDetailsState);
+			if(!params.isEmpty()) {
+				model.addAttribute("SPRC_TOTAL_STATE", scarL.get("spmu_total"));//sprc total for state tab in cec
+				model.addAttribute("DPRC_TOTAL_STATE", scarL.get("dpmu_total"));//dprc total for state tab in cec
+			}
+			scarL.clear();//clear map after using it for state 
+			
+			scarL=calTotalOfSpmuAndDpmu(institueInfraHrActivityDetailsMopr);
+			if(!params.isEmpty()) {
+				model.addAttribute("SPRC_TOTAL_MOPR", scarL.get("spmu_total"));//sprc total for mopr tab in cec
+				model.addAttribute("DPRC_TOTAL_MOPR", scarL.get("dpmu_total"));//dprc total for mopr tab in cec
+			}
+			
 			return ADD_FACULTY_MAINTENANCE_CEC;
 		}else{
 			
 		return ADD_FACULTY_MAINTENANCE;
 		}
 	}
-	
-	private Integer calTotalFund(List<InstitueInfraHrActivityDetails> institueInfraHrActivityDetails){
-		int totalFund=0;
-		for (InstitueInfraHrActivityDetails details : institueInfraHrActivityDetails) {
-			if(details.getFund() !=null ){
-				details.setTotalFund(details.getFund());	
-				totalFund += details.getTotalFund();
+
+	private Map<String, Object> calTotalOfSpmuAndDpmu(List<InstitueInfraHrActivityDetails> institueInfraHrActivityDetails) {
+		Map<String, Object> map = new HashMap<String, Object>();
+		int spmu_total = 0, dpmu_total = 0;
+		if (CollectionUtils.isNotEmpty(institueInfraHrActivityDetails)) {
+			for (InstitueInfraHrActivityDetails detail : institueInfraHrActivityDetails) {
+				if (detail.getInstituteInfraHrActivityType().getInstituteInfraHrActivityTypeId() < 4) {
+					if (detail.getFund() != null)
+						spmu_total += detail.getFund();
+				} else {
+					if (detail.getFund() != null)
+						dpmu_total += detail.getFund();
+				}
 			}
-		}
-		return totalFund;
+			map.put("spmu_total", spmu_total);
+			map.put("dpmu_total", dpmu_total);
+			
+		} 
+		return map;
 	}
-	
+
 	@RequestMapping(value="addFacultyAndMaintenanceHrBudget",method = RequestMethod.POST)
 	private String adminFacultyAndMaintenancePost(@ModelAttribute("ADDITIONAL_FACULTY_MAINT_MODEL") AdditionalFactultyAndMaintModel additionalFactultyAndMaintModel,Model model,RedirectAttributes redirectAttributes)
 	{
