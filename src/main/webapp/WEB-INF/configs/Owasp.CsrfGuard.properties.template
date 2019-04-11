@@ -176,7 +176,7 @@ org.owasp.csrfguard.Ajax=true
 #
 
 
-
+org.owasp.csrfguard.unprotected.unprotectedRoot=[(${mount})]
 org.owasp.csrfguard.unprotected.unprotectedResource=[(${mount})]resources/*
 
 [# th:each="p : ${pathList}"]
