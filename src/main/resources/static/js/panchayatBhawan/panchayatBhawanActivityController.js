@@ -37,34 +37,60 @@ $scope.userType = null;
 				$scope.calculateTotal();
 			if($scope.userType == "C"){
 				$scope.panchayatBhawanActivityState=response.data.PANCHAYAT_BHAWAN_ACTIVITY_STATE;
-				$scope.totalState=$scope.calTotalForCEC($scope.panchayatBhawanActivityState);
+				$scope.calTotalForCEC($scope.panchayatBhawanActivityState,'S');
 				$scope.panchayatBhawanActivityMOPR=response.data.PANCHAYAT_BHAWAN_ACTIVITY_MOPR;
-				$scope.totalMOPR=$scope.calTotalForCEC($scope.panchayatBhawanActivityMOPR);
+				$scope.calTotalForCEC($scope.panchayatBhawanActivityMOPR,'M');
 			}
 			
 		});
 	}
 	
 
-		$scope.calTotalForCEC = function(object) {
-		var total = 0;
-		for (var i = 0; i < object.panchatayBhawanActivityDetails.length; i++) {
-			if (object.panchatayBhawanActivityDetails[i] != undefined) {
-				total = total + +object.panchatayBhawanActivityDetails[i].funds;
+		$scope.calTotalForCEC = function(object,userType) {
+			var totalOfFunds = 0;
+			var totalOfFundsReq=0;
+			for (var i = 0; i < object.panchatayBhawanActivityDetails.length; i++) {
+				id=object.panchatayBhawanActivityDetails[i].activity.activityId;
+				if( (id==1 || id==2 || id==3 ) && object.panchatayBhawanActivityDetails[i].funds!= null && object.panchatayBhawanActivityDetails[i].funds!= undefined){
+					totalOfFunds = totalOfFunds + parseInt(object.panchatayBhawanActivityDetails[i].funds);
+				}
+				if( (id==4 || id==5 || id==6 ) && object.panchatayBhawanActivityDetails[i].funds!= null && object.panchatayBhawanActivityDetails[i].funds!= undefined){
+					totalOfFundsReq = totalOfFundsReq +parseInt(object.panchatayBhawanActivityDetails[i].funds);
+				}
+				
+			}	
+			if(userType=='M'){
+				$scope.totalMOPR=totalOfFunds;
+				$scope.totalOfFundsReqMOPR=totalOfFundsReq;
+			}else if(userType=='S'){
+				$scope.totalState=totalOfFunds;
+				$scope.totalOfFundsReqState=totalOfFundsReq;
 			}
-		}
-		return total;
+		
+		
 	}
 	
 	$scope.calculateTotal=function(){
 		var totalOfFunds = 0;
+		var totalOfFundsReq=0;
+		var addiReq=0;
 			for (var i = 0; i < $scope.panchayatBhawanActivity.panchatayBhawanActivityDetails.length; i++) {
-				if($scope.panchayatBhawanActivity.panchatayBhawanActivityDetails[i] != undefined){
-					totalOfFunds = totalOfFunds + $scope.panchayatBhawanActivity.panchatayBhawanActivityDetails[i].funds;
+				id=$scope.panchayatBhawanActivity.panchatayBhawanActivityDetails[i].activity.activityId;
+				if( (id==1 || id==2 || id==3 ) && $scope.panchayatBhawanActivity.panchatayBhawanActivityDetails[i].funds!= null && $scope.panchayatBhawanActivity.panchatayBhawanActivityDetails[i].funds!= undefined){
+					totalOfFunds = totalOfFunds + parseInt($scope.panchayatBhawanActivity.panchatayBhawanActivityDetails[i].funds);
+				}
+				if( (id==4 || id==5 || id==6 ) && $scope.panchayatBhawanActivity.panchatayBhawanActivityDetails[i].funds!= null && $scope.panchayatBhawanActivity.panchatayBhawanActivityDetails[i].funds!= undefined){
+					totalOfFundsReq = totalOfFundsReq +parseInt( $scope.panchayatBhawanActivity.panchatayBhawanActivityDetails[i].funds);
 				}
 			}
 		$scope.totalWithoutAddRequirements = totalOfFunds;
-		$scope.grandTotal = $scope.totalWithoutAddRequirements + $scope.panchayatBhawanActivity.additionalRequirement;
+		$scope.totalFundReq=totalOfFundsReq;
+		if($scope.panchayatBhawanActivity.additionalRequirement != null && $scope.panchayatBhawanActivity.additionalRequirement != undefined){
+			addiReq=parseInt($scope.panchayatBhawanActivity.additionalRequirement);
+		}
+		
+		
+		$scope.grandTotal = parseInt($scope.totalWithoutAddRequirements) + addiReq+parseInt($scope.totalFundReq);
 	}
 	
 	$scope.calculateAspirationalGps = function(index){
@@ -113,45 +139,44 @@ $scope.userType = null;
 		}*/
 		
 		$scope.panchayatBhawanActivity.panchatayBhawanActivityDetails[index].funds = $scope.panchayatBhawanActivity.panchatayBhawanActivityDetails[index].unitCost * $scope.panchayatBhawanActivity.panchatayBhawanActivityDetails[index].noOfGPs;
+		
 		var totalOfFunds = 0;
-		for (var i = 0; i < $scope.panchayatBhawanActivity.panchatayBhawanActivityDetails.length; i++) {
-			if($scope.panchayatBhawanActivity.panchatayBhawanActivityDetails[i]!=undefined){
-				if($scope.panchayatBhawanActivity.panchatayBhawanActivityDetails[i].funds != undefined && !isNaN($scope.panchayatBhawanActivity.panchatayBhawanActivityDetails[i].funds) ){
-					totalOfFunds = $scope.panchayatBhawanActivity.panchatayBhawanActivityDetails[i].funds + totalOfFunds;
+		var totalOfFundsReq=0;
+		
+			for (var i = 0; i < $scope.panchayatBhawanActivity.panchatayBhawanActivityDetails.length; i++) {
+				id=$scope.panchayatBhawanActivity.panchatayBhawanActivityDetails[i].activity.activityId;
+				if( (id==1 || id==2 || id==3 ) && $scope.panchayatBhawanActivity.panchatayBhawanActivityDetails[i].funds!= null && $scope.panchayatBhawanActivity.panchatayBhawanActivityDetails[i].funds!= undefined){
+					totalOfFunds = totalOfFunds + $scope.panchayatBhawanActivity.panchatayBhawanActivityDetails[i].funds;
+				}
+				if( (id==4 || id==5 || id==6 ) && $scope.panchayatBhawanActivity.panchatayBhawanActivityDetails[i].funds!= null && $scope.panchayatBhawanActivity.panchatayBhawanActivityDetails[i].funds!= undefined){
+					totalOfFundsReq = totalOfFundsReq + $scope.panchayatBhawanActivity.panchatayBhawanActivityDetails[i].funds;
 				}
 			}
-		}
 		$scope.totalWithoutAddRequirements = totalOfFunds;
+		$scope.totalFundReq=totalOfFundsReq;
+		
 		$scope.calculateGrandTotal();
 	}
 	
 	
      $scope.calculateGrandTotal=function(){
 		
-		$scope.allowedAdditionalRequirement = (25/100)*$scope.totalWithoutAddRequirements
-		if($scope.panchayatBhawanActivity.additionalRequirement == ""){
-		if($scope.panchayatBhawanActivity.additionalRequirement > $scope.allowedAdditionalRequirement){
-			toastr.error("Additional requirement should not be greater than " + $scope.allowedAdditionalRequirement);
-			$scope.panchayatBhawanActivity.additionalRequirement = undefined;
-			$scope.grandTotal = '';
-			return false;
-		}
-		
-		$scope.grandTotal = $scope.totalWithoutAddRequirements + 0;
-	
-		}
-		else{
-			if($scope.panchayatBhawanActivity.additionalRequirement > $scope.allowedAdditionalRequirement){
-				toastr.error("Additional requirement should not be greater than " + $scope.allowedAdditionalRequirement);
-				$scope.panchayatBhawanActivity.additionalRequirement = undefined;
-				$scope.grandTotal = '';
-				return false;
-			}
-			
-			$scope.grandTotal = $scope.totalWithoutAddRequirements + parseInt($scope.panchayatBhawanActivity.additionalRequirement);
-		
-		}
-		}
+    	 
+    		if($scope.panchayatBhawanActivity.additionalRequirement != null && $scope.panchayatBhawanActivity.additionalRequirement != undefined){
+    			$scope.allowedAdditionalRequirement = (25/100)*$scope.totalWithoutAddRequirements;
+    			if($scope.panchayatBhawanActivity.additionalRequirement > $scope.allowedAdditionalRequirement){
+    				toastr.error("Additional requirement should not be greater than " + $scope.allowedAdditionalRequirement);
+    				$scope.panchayatBhawanActivity.additionalRequirement = undefined;
+    				$scope.grandTotal = '';
+    				return false;
+    			}
+    			$scope.grandTotal = parseInt($scope.totalWithoutAddRequirements)+parseInt($scope.totalFundReq) +parseInt($scope.panchayatBhawanActivity.additionalRequirement);
+    			
+    		}else{
+    			$scope.grandTotal = parseInt($scope.totalWithoutAddRequirements)+parseInt($scope.totalFundReq) ;
+    		}
+    	 
+    	}
 	
 	$scope.saveData=function(status){
 		$scope.panchayatBhawanActivity.status=status;
@@ -209,5 +234,77 @@ $scope.userType = null;
 		    });
 		
 	}
+	
+	$scope.calculateFundRequired=function(index,id){
+		var FREL=0,FUTI=0,FREQ=0,FSAN=0;
+		var isError=false;
+		if($scope.panchayatBhawanActivity.panchatayBhawanActivityDetails[index].noOfGPs != null && $scope.panchayatBhawanActivity.panchatayBhawanActivityDetails[index].noOfGPs != undefined){
+				FSAN=parseInt($scope.panchayatBhawanActivity.panchatayBhawanActivityDetails[index].noOfGPs);
+		}
+		if($scope.panchayatBhawanActivity.panchatayBhawanActivityDetails[index].aspirationalGps != null && $scope.panchayatBhawanActivity.panchatayBhawanActivityDetails[index].aspirationalGps!= undefined){
+				FREL=parseInt($scope.panchayatBhawanActivity.panchatayBhawanActivityDetails[index].aspirationalGps);
+		}
+		if($scope.panchayatBhawanActivity.panchatayBhawanActivityDetails[index].unitCost != null && $scope.panchayatBhawanActivity.panchatayBhawanActivityDetails[index].unitCost != undefined){
+				FUTI=parseInt($scope.panchayatBhawanActivity.panchatayBhawanActivityDetails[index].unitCost);
+		}
+			
+			if(FREL>FSAN && id!='SAN'){
+				toastr.error("Fund Sanctioned must be greater then Fund Released");
+				isError=true;
+			}else{
+				if(id!='SAN'){
+					if(FREL>FUTI){
+						FREQ=FREL-FUTI;
+						if(FSAN>FREQ){
+							$scope.panchayatBhawanActivity.panchatayBhawanActivityDetails[index].funds=FREQ;
+							
+						}
+						else{
+							toastr.error("Fund Required must be greater then Fund Sanctioned");
+							isError=true;
+						}
+					}else{
+						toastr.error("Fund Released must be greater then Fund Utilized");
+						isError=true;
+					}
+				}else{
+					$scope.panchayatBhawanActivity.panchatayBhawanActivityDetails[index].funds=null;
+					$scope.panchayatBhawanActivity.panchatayBhawanActivityDetails[index].aspirationalGps=null;
+					$scope.panchayatBhawanActivity.panchatayBhawanActivityDetails[index].unitCost=null;
+				}
+				
+				
+				}
+		
+			
+			
+			
+			if(isError){
+				if(id=='REL'){
+					$scope.panchayatBhawanActivity.panchatayBhawanActivityDetails[index].aspirationalGps=null;
+				}else if(id=='UTI')	{
+					$scope.panchayatBhawanActivity.panchatayBhawanActivityDetails[index].unitCost=null;
+				}else if(id=='SAN')	{
+					$scope.panchayatBhawanActivity.panchatayBhawanActivityDetails[index].noOfGPs=null;
+				}
+				$scope.panchayatBhawanActivity.panchatayBhawanActivityDetails[index].funds=null;
+			}
+			
+		
+			$scope.calculateTotal();
+	
+	}
+	
+	function calaculateTotalFundRequirment(){
+		var totalOfFunds = 0;
+		for (var i = 0; i < $scope.panchayatBhawanActivity.panchatayBhawanActivityDetails.length; i++) {
+			id=$scope.panchayatBhawanActivity.panchatayBhawanActivityDetails[i].activity.activityId;
+			if( (id==4 || id==5 || id==6 ) && $scope.panchayatBhawanActivity.panchatayBhawanActivityDetails[i].funds!= null && $scope.panchayatBhawanActivity.panchatayBhawanActivityDetails[i].funds!= undefined){
+				totalOfFunds = totalOfFunds + $scope.panchayatBhawanActivity.panchatayBhawanActivityDetails[i].funds;
+			}
+		}
+		$scope.totalFundReq=totalOfFunds;
+	}
+	
 	
 }]);
