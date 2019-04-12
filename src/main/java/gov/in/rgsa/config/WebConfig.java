@@ -42,6 +42,9 @@ public class WebConfig implements WebMvcConfigurer {
     @Value("${rgsa.captcha.width}")
     private String captchaWidth;
 
+    @Value("${rgsa.view.homepage:forward:/index.html}")
+    private String viewHomepage;
+
     static Logger logger = LoggerFactory.getLogger(WebConfig.class);
 
 
@@ -63,7 +66,7 @@ public class WebConfig implements WebMvcConfigurer {
     // Welcome page pointer
     @Override
     public void addViewControllers(ViewControllerRegistry registry) {
-        registry.addViewController("/").setViewName("forward:/index.html");
+        registry.addViewController("/").setViewName(viewHomepage);
     }
 
     // ApplicationContext.xml loader

@@ -31,6 +31,10 @@
     {
       "name": "rgsa.dev.user.username",
       "type": "java.lang.String"
+    },
+    {
+      "name": "rgsa.view.homepage",
+      "type": "java.lang.String"
     }
   ]
 }
