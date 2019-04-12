@@ -69,6 +69,9 @@ function calculateGrandTotal() {
 };
 	
 function validateCeilingValue(count){
+	calculateTotalFundSprc();
+	calculateTotalFundDprc();
+	
 		if($('#trainingInstituteId_'+count).val() == 2){
 			if($('#total_fund_sprc').val() > 4000000){
 		 		alert("Total unit cost for SPRC should be less than or equal to 40 lakhs per year");
@@ -87,8 +90,7 @@ function validateCeilingValue(count){
 				 }
 		 	}
 		}
-		calculateTotalFundSprc();
-		calculateTotalFundDprc();
+	
 }
 	
 function freezeAndUnfreeze(obj){
@@ -180,7 +182,7 @@ function emptyDomainDetails(level,count){
 			$('#noOfFaculty_'+i).val('');
 		}
 	}else{
-		for(var i=3;i<count;i++){
+		for(var i=3;i<count + 3;i++){
 			$('#noOfExpert_'+i).val('');
 		}
 	}
@@ -252,6 +254,7 @@ function validationOnSubmit(){
 	}
 	return flag;
 }
+
 function calculateTotalFundSprc() {
 	var count = $("#countSprcId").val();
 	var total_sprc_fund = 0;

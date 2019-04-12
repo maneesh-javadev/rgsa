@@ -65,7 +65,7 @@ function domainValidation(obj){
 			var result= confirm("If you change Number of units you have to fill domain details.");
 			if(result){
 			if($('#noOfUnits_0').val() < noOfDomainSprc){
-				alert('No of units in SPRC should not exceed the sum of domain detail '+ noOfDomainSprc + 'please fill the domain details again.');
+				alert('No of units in SPRC should not exceed the sum of domain detail :'+ noOfDomainSprc + ' please fill the domain details again.');
 				emptyDomainDetails('sprc',rowCountSprc);
 			}
 			}else{
@@ -78,7 +78,7 @@ function domainValidation(obj){
 		var result= confirm("If you change Number of units you have to fill domain details.");
 		if(result){
 		if($('#noOfUnits_3').val() < noOfDomainDprc){
-			alert('No of units in DPRC should not exceed the sum of domain detail '+ noOfDomainSprc + 'please fill the domain details again.');
+			alert('No of units in DPRC should not exceed the sum of domain detail :'+ noOfDomainDprc + ' please fill the domain details again.');
 			emptyDomainDetails('dprc',rowCountSprc);
 		}
 		}else{
@@ -98,7 +98,7 @@ function emptyDomainDetails(level,count){
 			$('#noOfFaculty_'+i).val('');
 		}
 	}else{
-		for(var i=3;i<count;i++){
+		for(var i=3;i<count + 3;i++){
 			$('#noOfExpert_'+i).val('');
 		}
 	}
@@ -136,6 +136,9 @@ function calculateGrandTotal() {
 };
 	
 function validateCeilingValue(count){
+	calculateTotalFundSprc();
+	calculateTotalFundDprc();
+	
 	if($('#trainingInstituteId_'+count).val() == 2){
 		if($('#total_fund_sprc').val() > 4000000){
 	 		alert("Total unit cost for SPRC should be less than or equal to 40 lakhs per year");
@@ -154,8 +157,7 @@ function validateCeilingValue(count){
 			 }
 	 	}
 	}
-	calculateTotalFundSprc();
-	calculateTotalFundDprc();
+	
 }
 
 function freezeAndUnfreeze(obj){
@@ -168,36 +170,19 @@ function freezeAndUnfreeze(obj){
 }
 
 function validationOnSubmit(){
-		var rowCountSprc=$('#tbodySprcId tr').length;
-		var flag= true;
-		
-		if($('#noOfUnits_0').val() == "" || $('#noOfUnits_0').val() == null){
-			for(var i=0;i<rowCountSprc;i++){
-				if($('#noOfFaculty_'+i).val() != "" || $('#noOfFaculty_'+i).val() != 0){
-					flag=false;
-					break;
-				}
-			}
-			}else{
-				for(var i=0;i<rowCountSprc;i++){
-				if($('#noOfFaculty_'+i).val() == "" || $('#noOfFaculty_'+i).val() == 0){
-					flag=false;
-				}else{
-					flag=true;
-					break;
-				}
-				}
-			}
-		if($('#noOfUnits_3').val() == "" || $('#noOfUnits_3').val() == null){
-			for(var i=0;i<rowCountSprc;i++){
-			if($('#noOfExpert_'+(i+3)).val() != "" || $('#noOfExpert_'+(i+3)).val() != 0){
+	var rowCountSprc=$('#tbodySprcId tr').length;
+	var flag= true;
+	
+	if($('#noOfUnits_0').val() == "" || $('#noOfUnits_0').val() == null){
+		for(var i=0;i<rowCountSprc;i++){
+			if($('#noOfFaculty_'+i).val() != "" || $('#noOfFaculty_'+i).val() != 0){
 				flag=false;
 				break;
 			}
-			}
+		}
 		}else{
 			for(var i=0;i<rowCountSprc;i++){
-			if($('#noOfExpert_'+(i+3)).val() == "" || $('#noOfExpert_'+(i+3)).val() == 0){
+			if($('#noOfFaculty_'+i).val() == "" || $('#noOfFaculty_'+i).val() == 0){
 				flag=false;
 			}else{
 				flag=true;
@@ -205,18 +190,50 @@ function validationOnSubmit(){
 			}
 			}
 		}
-		
-		if(+$('#activedropdown').val() == 0 && $('#total_fund_dprc').val() != ""){
-			alert("please select district in domain detail of DPRC.");
-			return flag=false;
-		}  
-		
-		if(($('#noOfUnits_3').val() == "" || $('#noOfUnits_0').val() == "") && flag == false){
-			alert("Fill the number of units first.");
-		}else if(!flag){
-			alert("Fill the domain details first.");
+	if($('#noOfUnits_3').val() == "" || $('#noOfUnits_3').val() == null){
+		for(var i=0;i<rowCountSprc;i++){
+		if($('#noOfExpert_'+(i+3)).val() != "" || $('#noOfExpert_'+(i+3)).val() != 0){
+			flag=false;
+			break;
 		}
+		}
+	}else{
+		for(var i=0;i<rowCountSprc;i++){
+		if($('#noOfExpert_'+(i+3)).val() == "" || $('#noOfExpert_'+(i+3)).val() == 0){
+			flag=false;
+		}else{
+			flag=true;
+			break;
+		}
+		}
+	}
+	
+	if(+$('#activedropdown').val() == 0 && $('#total_fund_dprc').val() != ""){
+		alert("please select district in domain detail of DPRC.");
+		return flag=false;
+	}  
+	
+	if(($('#noOfUnits_3').val() == "" || $('#noOfUnits_0').val() == "") && flag == false){
+		alert("Fill the number of units first.");
 		return flag;
+	}else if(!flag){
+		alert("Fill the domain details first.");
+		return flag;
+	}
+	
+	/* this is to validate if full form */
+	var count = $("#countSprcId").val();
+	for (var i = 0; i < count; i++) {
+		if($("#fund_" + i).val() == "" &&  $("#fund_" + (i + +count)).val() == ""){
+			flag=false;
+		}else{
+			flag=true;
+		}
+	}
+	if(!flag){
+		alert("Empty form cannot save.");
+	}
+	return flag;
 }
 	
 function calculateTotalFundSprc() {
