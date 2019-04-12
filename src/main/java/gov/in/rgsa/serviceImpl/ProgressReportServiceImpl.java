@@ -132,38 +132,22 @@ public class ProgressReportServiceImpl implements ProgressReportService{
 
 	@Override
 	public void saveadministrativeTechnicalProgress(AdministrativeTechnicalProgress administrativeTechnicalProgress) {
-		if(administrativeTechnicalProgress.getAtsId() == null) {
-			List<AdministrativeTechnicalDetailProgress> administrativeTechnicalDetailProgress = administrativeTechnicalProgress.getAdministrativeTechnicalDetailProgress();
+		
 			administrativeTechnicalProgress.setLastUpdatedBy(userPreference.getUserId());
 			administrativeTechnicalProgress.setCreatedBy(userPreference.getUserId());
-			administrativeTechnicalProgress.setQuarterDuration(administrativeTechnicalProgress.getQuarterDuration());
-			
-			for (AdministrativeTechnicalDetailProgress Details : administrativeTechnicalDetailProgress) {
-				if(Details != null)
-				{
-									Details.setAdministrativeTechnicalSupportProgress(administrativeTechnicalProgress);
-									
-											}
-				
-			}	
-			commonRepository.save(administrativeTechnicalProgress);
+			List<AdministrativeTechnicalDetailProgress> administrativeTechnicalDetailProgress = administrativeTechnicalProgress.getAdministrativeTechnicalDetailProgress();
+			for (AdministrativeTechnicalDetailProgress Detail : administrativeTechnicalDetailProgress) {
+				if (Detail != null) {
+					Detail.setAdministrativeTechnicalSupportProgress(administrativeTechnicalProgress);
+				}
 			}
-			else
-			{
-				List<AdministrativeTechnicalDetailProgress> administrativeTechnicalDetailProgress = administrativeTechnicalProgress.getAdministrativeTechnicalDetailProgress();
-				administrativeTechnicalProgress.setQuarterDuration(administrativeTechnicalProgress.getQuarterDuration());
-				for (AdministrativeTechnicalDetailProgress Details : administrativeTechnicalDetailProgress) {
-					if(Details != null)
-					{
-										Details.setAdministrativeTechnicalSupportProgress(administrativeTechnicalProgress);
-										
-												}
-					
-				}	
+			if (administrativeTechnicalProgress.getAtsId() == null) {
+				commonRepository.save(administrativeTechnicalProgress);
+			} else {
 				commonRepository.update(administrativeTechnicalProgress);
 			}
-		
-		
+			/* this method is to insert and update record in quater_wise_fund table*/
+			saveQprWiseFundData(userPreference.getStateCode(),userPreference.getFinYearId(),administrativeTechnicalProgress.getQuarterDuration().getQtrId(),4);
 		}
 
 	@Override
@@ -178,11 +162,10 @@ public class ProgressReportServiceImpl implements ProgressReportService{
 	}
 
 	@Override
-	public AdministrativeTechnicalProgress fetchAdministrativeTechnicalProgress( List<Integer> postId,int administrativeTechnicalSupportId, int quarterId) {
+	public AdministrativeTechnicalProgress fetchAdministrativeTechnicalProgress(int administrativeTechnicalSupportId, int quarterId) {
         Map<String, Object> params = new HashMap<String, Object>();
 		params.put("administrativeTechnicalSupportId", administrativeTechnicalSupportId);
 		params.put("qtrId", quarterId); 
-		params.put("postId", postId);
 		List<AdministrativeTechnicalProgress> administrativeTechnicalProgress =commonRepository.findAll("FETCH_Admin_Tech_Progress_progress_report", params);
 		if(!administrativeTechnicalProgress.isEmpty() && administrativeTechnicalProgress.get(0) != null) {
 			return administrativeTechnicalProgress.get(0);

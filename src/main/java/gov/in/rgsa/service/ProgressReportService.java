@@ -32,7 +32,7 @@ public interface ProgressReportService {
 	
 	public AdministrativeTechnicalProgress fetchAdministrativeReportToGeReportId1(int administrativeTechnicalSupportId);
 
-	public AdministrativeTechnicalProgress fetchAdministrativeTechnicalProgress(List<Integer> postId,int administrativeTechnicalSupportId, int quarterId);
+	public AdministrativeTechnicalProgress fetchAdministrativeTechnicalProgress(int administrativeTechnicalSupportId, int quarterId);
 
 	public AdditionalFacultyProgress fetchAdditionalFacultyProgressToGeReportId1(int instituteInfraHrActivityId);
 

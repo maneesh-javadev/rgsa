@@ -1,5 +1,6 @@
 package gov.in.rgsa.serviceImpl;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -12,8 +13,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import gov.in.rgsa.dao.CommonRepository;
+import gov.in.rgsa.entity.AdministrativeTechnicalDetailProgress;
+import gov.in.rgsa.entity.AdministrativeTechnicalProgress;
 import gov.in.rgsa.entity.AdministrativeTechnicalSupport;
 import gov.in.rgsa.entity.AdministrativeTechnicalSupportDetails;
+import gov.in.rgsa.entity.PmuProgress;
+import gov.in.rgsa.entity.PmuProgressDetails;
 import gov.in.rgsa.entity.PostLevel;
 import gov.in.rgsa.entity.PostType;
 import gov.in.rgsa.service.AdminTechSupportService;
@@ -219,7 +224,7 @@ public AdministrativeTechnicalSupport fetchAdministrativeTechnicalSupport(final 
 		Map<String,Object> params = new HashMap<>();
 		params.put("yearId", userPreference.getFinYearId());
 		params.put("stateCode", userPreference.getStateCode());
-		params.put("userType", userPreference.getUserType());
+		params.put("userType", "C");
 		List<AdministrativeTechnicalSupport> AdminTechnicalSupport = commonRepository.findAll("GET_Admin_Technical_Support_APPROVED_TRAINING", params);
 		return AdminTechnicalSupport;
 	}
@@ -255,5 +260,23 @@ public AdministrativeTechnicalSupport fetchAdministrativeTechnicalSupport(final 
 			facadeService.populateStateFunds("4");
 		}
 		
+	}
+
+	@Override
+	public List<AdministrativeTechnicalDetailProgress> getadminTechProgressActBasedOnActIdAndQtrId(
+			Integer administrativeTechnicalSupportId, int quarterId) {
+		Map<String, Object> params = new HashMap();
+		params.put("administrativeTechnicalSupportId", administrativeTechnicalSupportId);
+		params.put("quarterId", quarterId);	
+		List<AdministrativeTechnicalProgress> adminTechProgress= commonRepository.findAll("FETCH_ADMIN_TECH_ACT_QTR_ID_AND_ACT_ID", params);
+		List<AdministrativeTechnicalDetailProgress> adminTechProgressDetails=new ArrayList<>();
+		if(CollectionUtils.isNotEmpty(adminTechProgress)){
+			for (AdministrativeTechnicalProgress admin_tech_Progress : adminTechProgress) {
+				adminTechProgressDetails.addAll(admin_tech_Progress.getAdministrativeTechnicalDetailProgress());
+			}
+			return adminTechProgressDetails;
+		}else{
+			return null;
+		}
 	}
 }

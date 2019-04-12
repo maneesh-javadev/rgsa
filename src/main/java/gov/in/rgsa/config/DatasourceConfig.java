@@ -1,27 +1,18 @@
 package gov.in.rgsa.config;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.env.Environment;
-import org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.orm.hibernate5.HibernateExceptionTranslator;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.JpaVendorAdapter;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
-import org.springframework.orm.jpa.persistenceunit.MutablePersistenceUnitInfo;
-import org.springframework.orm.jpa.persistenceunit.PersistenceUnitManager;
-import org.springframework.orm.jpa.persistenceunit.PersistenceUnitPostProcessor;
 import org.springframework.orm.jpa.vendor.HibernateJpaDialect;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import org.springframework.transaction.PlatformTransactionManager;
-import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import javax.persistence.EntityManagerFactory;
-import javax.persistence.spi.PersistenceUnitInfo;
 import javax.sql.DataSource;
 import java.util.Properties;
 
@@ -34,8 +25,8 @@ public class DatasourceConfig {
     @Value("${spring.jpa.hibernate.ddl-auto}")
     private String ddlAuto;
 
-    @Value("${spring.jpa.database-platform}")
-    private String databasePlatform;
+    @Value("${spring.jpa.properties.hibernate.dialect}")
+    private String hibernateDialect;
 
     @Value("${spring.jpa.properties.hibernate.default_schema}")
     private String defaultSchema;
@@ -87,7 +78,7 @@ public class DatasourceConfig {
 
         Properties properties = new Properties();
         properties.setProperty("hibernate.hbm2ddl.auto", this.ddlAuto);
-        properties.setProperty("hibernate.dialect", this.databasePlatform);
+        properties.setProperty("hibernate.dialect", this.hibernateDialect);
 
         properties.setProperty("hibernate.default_schema", this.defaultSchema);
         properties.setProperty("hibernate.jdbc.lob.non_contextual_creation", this.nonContextualCreation);
