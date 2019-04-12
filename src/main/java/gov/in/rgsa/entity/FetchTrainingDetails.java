@@ -9,13 +9,16 @@ import javax.persistence.Transient;
 
 @Entity
 @NamedNativeQuery(name="Fetch_Training_Details",
-query="select tad.training_id,tad.training_activity_id,tad.training_venue_level_id ,tad.no_of_participants ,tad.unit_cost ,tad.no_of_days ,tad.funds ,tad.remarks ,tad.training_category_id ,tad.is_active ,tad.is_approved ,tad.training_mode_id,tc.training_category_name,tvl.training_venue_level_name,tm.training_mode_name," + 
-	  "(select cast(array_to_string(array(select subject_name from rgsa.training_subjects ts inner join rgsa.subjects s on ts.subject_id=s.subject_id where ts.training_id =tad.training_id),',') as char varying))subject_name," + 
-	  "(select cast(array_to_string(array(select   target_group_master_name  from rgsa.training_target_groups ttg inner join rgsa.target_group_master tgm on ttg.target_group_master_id= tgm.target_group_master_id where ttg.training_id =tad.training_id),',') as char varying) target_group_master_name )" + 
-	  " from rgsa.training_activity_details tad inner join rgsa.training_categories tc on tad.training_category_id=tc.training_category_id " + 
-	  " inner join rgsa.training_venue_level tvl on tad.training_venue_level_id=tvl.training_venue_level_id " + 
-	  " inner join rgsa.training_mode tm on tad.training_mode_id=tm.training_mode_id " + 
-	  " where tad.training_activity_id=:trainingActivityId and tad.is_active=:isactive"
+query=	"	select tad.training_id,tad.training_activity_id,tad.training_venue_level_id ,tad.no_of_participants ,tad.unit_cost ,tad.no_of_days ,tad.funds ,"
+	+ 	"	tad.remarks ,tad.training_category_id ,tad.is_active ,tad.is_approved ,tad.training_mode_id,tvl.training_venue_level_name,tm.training_mode_name,  " 
+	+ 	"  (select cast(array_to_string(array(select subject_name from rgsa.training_subjects ts inner join rgsa.subjects s on ts.subject_id=s.subject_id "
+	+ 	"	where ts.training_id =tad.training_id),',') as char varying))subject_name,(select cast(array_to_string(array(select tc.training_category_name from "
+	+ 	"	rgsa.training_wise_category twc inner join rgsa.training_categories tc on twc.training_category_id=tc.training_category_id where twc.training_id =tad.training_id),"
+	+ 	"   ',') as char varying))training_category_name, (select cast(array_to_string(array(select target_group_master_name from rgsa.training_target_groups ttg inner "
+	+ 	"	join rgsa.target_group_master tgm on ttg.target_group_master_id= tgm.target_group_master_id where ttg.training_id =tad.training_id),',') as char varying) "
+	+ 	"	target_group_master_name ) from rgsa.training_activity_details tad inner join rgsa.training_venue_level tvl on tad.training_venue_level_id="
+	+ 	"	tvl.training_venue_level_id inner join rgsa.training_mode tm on tad.training_mode_id=tm.training_mode_id where tad.training_activity_id=:trainingActivityId "
+	+ 	"	and tad.is_active=:isactive"
 ,resultClass=FetchTrainingDetails.class)
 public class FetchTrainingDetails {
 	
@@ -78,6 +81,9 @@ public class FetchTrainingDetails {
 	
 	@Transient
 	private String trainingSubjectArr;
+	
+	@Transient
+	private String trgCategoryArr;
 	
 	@Transient
 	private String delIds;
@@ -292,6 +298,16 @@ public class FetchTrainingDetails {
 
 	public void setPreLevelTrainActivityId(Integer preLevelTrainActivityId) {
 		this.preLevelTrainActivityId = preLevelTrainActivityId;
+	}
+
+
+	public String getTrgCategoryArr() {
+		return trgCategoryArr;
+	}
+
+
+	public void setTrgCategoryArr(String trgCategoryArr) {
+		this.trgCategoryArr = trgCategoryArr;
 	}
 	
 	

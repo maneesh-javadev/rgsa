@@ -12,6 +12,7 @@ import gov.in.rgsa.entity.TrainingActivityDetails;
 import gov.in.rgsa.entity.TrainingCategories;
 import gov.in.rgsa.entity.TrainingMode;
 import gov.in.rgsa.entity.TrainingVenueLevel;
+import gov.in.rgsa.entity.TrainingWiseCategory;
 import gov.in.rgsa.model.Response;
 
 /**
@@ -58,7 +59,7 @@ public interface TrainingActivityService {
 	
 	public Response saveorUpdateTrainingActivityDetails(FetchTrainingDetails fetchTrainingDetails);
 	
-	public List<Subjects> fetchSubjectsList(Integer trainingCategoryId);
+	public List<Subjects> fetchSubjectsList(String strTrainingCategoryIds);
 	
 	public Response updateTrainingActivity(FetchTraining fetchTraining);
 	
@@ -67,5 +68,7 @@ public interface TrainingActivityService {
 	public Map<String,Object> fetchTrainingDetailsMOPRCEC();
 	
 	public Response saveorUpdateTrainingActivityDetailsCECMOPR(FetchTraining FetchTraining);
+	
+	public List<TrainingWiseCategory> fetchTrainingWiseCategoryList(Integer trngId);
 	
 }

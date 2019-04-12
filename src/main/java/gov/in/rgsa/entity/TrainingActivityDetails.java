@@ -53,13 +53,17 @@ public class TrainingActivityDetails {
 	@LazyCollection(LazyCollectionOption.FALSE)
 	private List<TrainingTargetGroups> trainingTargetGroupsList;
 	
+	@OneToMany(cascade=CascadeType.ALL,mappedBy="targetTrainingActivityDetails")
+	@LazyCollection(LazyCollectionOption.FALSE)
+	private List<TrainingWiseCategory> trainingWiseCategoryList;
+	
 	@ManyToOne
 	@JoinColumn(name="training_venue_level_id" ,referencedColumnName="training_venue_level_id")
 	private TrainingVenueLevel trainingVenueLevelId;
 	
-	@ManyToOne
+	/*@ManyToOne
 	@JoinColumn(name="training_category_id" , referencedColumnName="training_category_id")
-	private TrainingCategories trainingCategoryId;
+	private TrainingCategories trainingCategoryId;*/
 	
 	@ManyToOne
 	@JoinColumn(name="training_mode_id")
@@ -189,13 +193,13 @@ public class TrainingActivityDetails {
 		this.trainingSubjectsArray = trainingSubjectsArray;
 	}
 
-	public TrainingCategories getTrainingCategoryId() {
+	/*public TrainingCategories getTrainingCategoryId() {
 		return trainingCategoryId;
 	}
 
 	public void setTrainingCategoryId(TrainingCategories trainingCategoryId) {
 		this.trainingCategoryId = trainingCategoryId;
-	}
+	}*/
 
 	public Boolean getIsActive() {
 		return isActive;
@@ -220,5 +224,15 @@ public class TrainingActivityDetails {
 	public void setTrainingMode(TrainingMode trainingMode) {
 		this.trainingMode = trainingMode;
 	}
+
+	public List<TrainingWiseCategory> getTrainingWiseCategoryList() {
+		return trainingWiseCategoryList;
+	}
+
+	public void setTrainingWiseCategoryList(List<TrainingWiseCategory> trainingWiseCategoryList) {
+		this.trainingWiseCategoryList = trainingWiseCategoryList;
+	}
+	
+	
 	
 }

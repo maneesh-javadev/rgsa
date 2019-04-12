@@ -23,9 +23,9 @@ $('document').ready(function(){
 		 "lengthChange": false,
 		 bFilter: false,
 		 "bSort": false,
+		 ,"bPaginate":false
 	});	
 });
-
 
 function isNumber(evt) {
     evt = (evt) ? evt : window.event;
@@ -123,8 +123,19 @@ table.dataTable thead > tr > th, table.dataTable thead > tr > td {
 								</div>
 							</div>
 							<br>
-							
-								<div class="row clearfix">
+								<div class="row clearfix padding_right" >
+									<div class="col-sm-6">
+									</div>
+									<div class="col-sm-2">
+										<label>Total No. of Participants</label>
+									</div>
+									<div class="col-sm-4">
+										<input type="text" class="form-control" id="subTotal"
+											value="{{allNoOfParticipants}}" readonly="readonly"
+											style="text-align: right;">
+									</div>
+								</div>
+								<div class="row clearfix padding_right">
 									<div class="col-sm-6">
 									</div>
 									<div class="col-sm-2">
@@ -136,7 +147,7 @@ table.dataTable thead > tr > th, table.dataTable thead > tr > td {
 											style="text-align: right;">
 									</div>
 								</div>
-								<div class="row clearfix">
+								<div class="row clearfix padding_right">
 									<div class="col-sm-6">
 									</div>
 									<div class="col-sm-2">
@@ -148,7 +159,7 @@ table.dataTable thead > tr > th, table.dataTable thead > tr > td {
 									
 									</div>
 								</div>
-								<div class="row clearfix">
+								<div class="row clearfix padding_right">
 									<div class="col-sm-6">
 									</div>
 									<div class="col-sm-2">
@@ -163,7 +174,7 @@ table.dataTable thead > tr > th, table.dataTable thead > tr > td {
 								
 								<br/>
 								<br/>
-								<div class="col-md-12 text-right">
+								<div class="text-right padding_right">
 									 
 									<button type="button" ng-show="!fetchTrainingMOPR.isFreeze" ng-click="saveTrainingDetails('S')"
 										class="btn bg-green waves-effect">SAVE</button>
@@ -174,13 +185,15 @@ table.dataTable thead > tr > th, table.dataTable thead > tr > td {
 										<button type="button" ng-show="fetchTrainingMOPR.isFreeze"  ng-click="saveTrainingDetails('U')"
 										class="btn bg-green waves-effect">UNFREEZE</button>
 										
-									<button type="button" id="clearButtn" onclick="onClear(this)"
-										class="btn bg-light-blue waves-effect">CLEAR</button>
+									<button ng-click="resetLoading()" type="button"   class="btn bg-light-blue waves-effect"  >
+									   			<spring:message code="Label.CLEAR" htmlEscape="true" />
+									   		</button>
 								
 									<button type="button"
 										onclick="onClose('home.html?<csrf:token uri='home.html'/>')"
 										class="btn bg-orange waves-effect">CLOSE</button><br />
 								</div>
+								<br/>
 
 							
 							

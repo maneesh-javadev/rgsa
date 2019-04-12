@@ -23,6 +23,7 @@ $('document').ready(function(){
 		 "lengthChange": false,
 		 bFilter: false,
 		 "bSort": false,
+		 "bPaginate":false
 	});	
 });
 
@@ -68,13 +69,13 @@ table.dataTable thead > tr > th, table.dataTable thead > tr > td {
 					</div>
 					<form>
 							
-								 <span ng-show="planStateStatus">
-									<div ng-show="isbtnAddTraining" class="form-group text-right" >
-										<button ng-click="toAddNew()" ng-disabled="training.isFreeze" class="btn bg-green waves-effect">ADD TRAININGS</button>
-										
-										
-									</div>
-								</span>
+								
+								<div ng-show="isbtnAddTraining" class="form-group text-right" >
+									<button ng-click="toAddNew()" ng-disabled="training.isFreeze" class="btn bg-green waves-effect">ADD TRAININGS</button>
+									
+									
+								</div>
+							
 						<div ng-show="isShowRecodVisible">
 							
 							<div class="records">
@@ -138,6 +139,18 @@ table.dataTable thead > tr > th, table.dataTable thead > tr > td {
 									<div class="col-sm-6">
 									</div>
 									<div class="col-sm-2">
+										<label>Total No. of Participants</label>
+									</div>
+									<div class="col-sm-4">
+										<input type="text" class="form-control" id="subTotal"
+											value="{{allNoOfParticipants}}" readonly="readonly"
+											style="text-align: right;">
+									</div>
+								</div>
+								<div class="row clearfix">
+									<div class="col-sm-6">
+									</div>
+									<div class="col-sm-2">
 										<label>Total Funds</label>
 									</div>
 									<div class="col-sm-4">
@@ -154,7 +167,7 @@ table.dataTable thead > tr > th, table.dataTable thead > tr > td {
 									</div>
 									<div class="col-sm-4">
 										
-										  <input type="text" data-ng-change="calculateMasterFund()" data-ng-model="training.additionalRequirement" onkeypress="return isNumber(event)" required="required"  class="form-control" maxlength="5" style="text-align:right;">
+										  <input type="text" data-ng-change="calculateMasterFund()" data-ng-model="training.additionalRequirement" onkeypress="return isNumber(event)"   class="form-control" maxlength="5" style="text-align:right;">
 									
 									</div>
 								</div>
@@ -174,21 +187,25 @@ table.dataTable thead > tr > th, table.dataTable thead > tr > td {
 								<br/>
 								<br/>
 								<div class="col-md-12 text-right">
-									 <span ng-show="planStateStatus">
-										 <button type="button" ng-show="training.isFreeze==false" ng-click="saveTrainingDetails('S')"
-											class="btn bg-green waves-effect">SAVE</button>
-											
-										<button type="button" ng-show="training.isFreeze==false" ng-click="saveTrainingDetails('F')"
-											class="btn bg-green waves-effect">FREEZE</button>
-											
-											<button type="button" ng-show="training.isFreeze==true"  ng-click="saveTrainingDetails('U')"
-											class="btn bg-green waves-effect">UNFREEZE</button>
-											
-										<button type="button" id="clearButtn" onclick="onClear(this)"
-											class="btn bg-light-blue waves-effect">CLEAR</button>
+								
+								<span ng-show="planStateStatus">
+								
+								<button type="button" ng-show="training.isFreeze==false" ng-click="saveTrainingDetails('S')"
+										class="btn bg-green waves-effect">SAVE</button>
+										
+									<button type="button" ng-show="training.isFreeze==false" ng-click="saveTrainingDetails('F')"
+										class="btn bg-green waves-effect">FREEZE</button>
+										
+										<button type="button" ng-show="training.isFreeze==true"  ng-click="saveTrainingDetails('U')"
+										class="btn bg-green waves-effect">UNFREEZE</button>
+								
+								</span>
 									 
-									 </span>
 									
+										
+									<button ng-click="resetLoading()" type="button"   class="btn bg-light-blue waves-effect"  >
+									   			<spring:message code="Label.CLEAR" htmlEscape="true" />
+									   		</button>
 								
 									<button type="button"
 										onclick="onClose('home.html?<csrf:token uri='home.html'/>')"
@@ -213,17 +230,13 @@ table.dataTable thead > tr > th, table.dataTable thead > tr > td {
 		                                    
 		                                    <div class="col-sm-4">
 		                                        <div class="form-group" >
-		                                        		<div ng-if="addNew==true">
-		                                        		<select  class="element-width"  data-ng-model="trainingDetails.trainingCategoryId" ng-change="fetchSubjectListbyCategory(trainingDetails.trainingCategoryId)">
+		                                        
+		                                        		<select  multiple="multiple" class="element-width"  data-ng-model="trainingDetails.trgCategoryArr" ng-change="fetchSubjectListbyCategory(trainingDetails.trgCategoryArr)">
 																<option ng-repeat="obj in trainingCatgryList" value={{obj.trainingCategoryId}}>
 																	{{obj.trainingCategoryName}}
 																</option>
 														</select>
-		                                        		</div>
-		                                        		<div ng-if="addNew==false">
-		                                        		<div data-ng-model="trainingDetails.trainingCategoryId"></div>
-		                                        		{{curObject.trainingCategoryName}}
-		                                        		</div>
+		                                        		
 		                                               
 		                                        </div>
 		                                    </div>
@@ -262,7 +275,7 @@ table.dataTable thead > tr > th, table.dataTable thead > tr > td {
 		                                    </div>
 		                                    <div class="col-sm-4">
 		                                        <div class="form-group">
-		                                        	<select  data-ng-model="trainingDetails.trainingVenueLevelId" data-ng-change="calculateFund('V')" class="element-width"  style=" height:30px;">
+		                                        	<select  data-ng-model="trainingDetails.trainingVenueLevelId" data-ng-change="calculateFund('V')" class="element-width"  style=" height:30px;" >
 																<option ng-repeat="obj in trngVenueList" value={{obj.trainingVenueLevelId}}>
 																	{{obj.trainingVenueLevelName}}
 																</option>
@@ -276,13 +289,13 @@ table.dataTable thead > tr > th, table.dataTable thead > tr > td {
 		                                        <label >No. of Participants</label>
 		                                    </div>
 		                                    <div class="col-sm-4">
-		                                        <input type="text" data-ng-change="calculateFund('P')" data-ng-model="trainingDetails.noOfParticipants" onkeypress="return isNumber(event)" required="required"  class="form-control element-width" maxlength="5" style="text-align:right;">
+		                                        <input type="text" data-ng-change="calculateFund('P')" data-ng-model="trainingDetails.noOfParticipants" onkeypress="return isNumber(event)"   class="form-control element-width" maxlength="5" style="text-align:right;">
 		                                    </div>
 		                                    <div class="col-sm-2">
 		                                        <label >No. of Days Proposed</label>
 		                                    </div>
 		                                    <div class="col-sm-4">
-		                                                 <input type="text" data-ng-change="calculateFund('D')" data-ng-model="trainingDetails.noOfDays" onkeypress="return isNumber(event)" required="required"  class="form-control element-width" maxlength="5" style="text-align:right;">
+		                                                 <input type="text" data-ng-change="calculateFund('D')" data-ng-model="trainingDetails.noOfDays" onkeypress="return isNumber(event)"   class="form-control element-width" maxlength="5" style="text-align:right;">
 		                                    </div>
 		                                </div>
 		                                <br/>
@@ -291,13 +304,13 @@ table.dataTable thead > tr > th, table.dataTable thead > tr > td {
 		                                        <label >Unit Cost(In Rs.)</label>
 		                                    </div>
 		                                    <div class="col-sm-4">
-		                                         <input type="text" data-ng-change="calculateFund('U')" data-ng-model="trainingDetails.unitCost" onkeypress="return isNumber(event)" required="required"  class="form-control element-width" maxlength="5" style="text-align:right;">
+		                                         <input type="text" data-ng-change="calculateFund('U')" data-ng-model="trainingDetails.unitCost" onkeypress="return isNumber(event)"   class="form-control element-width" maxlength="5" style="text-align:right;">
 		                                    </div>
 		                                    <div class="col-sm-2">
 		                                        <label >Funds Proposed(In Rs.)</label>
 		                                    </div>
 		                                    <div class="col-sm-4">
-		                                                <input type="text" readonly="readonly" data-ng-model="trainingDetails.funds" onkeypress="return isNumber(event)" required="required"  class="form-control element-width" maxlength="5" style="text-align:right;">
+		                                                <input type="text" readonly="readonly" data-ng-model="trainingDetails.funds" onkeypress="return isNumber(event)"   class="form-control element-width" maxlength="5" style="text-align:right;">
 		                                    </div>
 		                                </div>
 		                                 <br/>

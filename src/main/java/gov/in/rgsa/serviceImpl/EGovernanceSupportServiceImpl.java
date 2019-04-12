@@ -180,13 +180,15 @@ public class EGovernanceSupportServiceImpl implements EGovernanceSupportService 
 
 			if (form.getDbFileName().equals("freeze")) {
 				eGovSupportActivity.seteGovSupportActivityId(form.geteGovSupportActivityId());
-				eGovSupportActivity.setAdditionalRequirement(form.getAdditionalRequirement());
+				eGovSupportActivity.setAdditionalRequirementDpmu(form.getAdditionalRequirementDpmu());
+				eGovSupportActivity.setAdditionalRequirementSpmu(form.getAdditionalRequirementSpmu());
 				eGovSupportActivity.setStatus(true);
 			}
 
 			else {
 				eGovSupportActivity.seteGovSupportActivityId(form.geteGovSupportActivityId());
-				eGovSupportActivity.setAdditionalRequirement(form.getAdditionalRequirement());
+				eGovSupportActivity.setAdditionalRequirementDpmu(form.getAdditionalRequirementDpmu());
+				eGovSupportActivity.setAdditionalRequirementSpmu(form.getAdditionalRequirementSpmu());
 				eGovSupportActivity.setStatus(false);
 			}
 			commonRepository.update(eGovSupportActivity);

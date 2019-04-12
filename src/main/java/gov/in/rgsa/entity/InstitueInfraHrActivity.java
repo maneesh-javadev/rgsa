@@ -49,9 +49,6 @@ public class InstitueInfraHrActivity {
 	@Column(name="user_type")
 	private String userType;
 	
-	@Column(name="additional_requirement")
-	private Integer additionalRequirement; 
-	
 	@Column(name="created_by")
 	private Integer createdBy;
 	
@@ -75,6 +72,12 @@ public class InstitueInfraHrActivity {
 	@OneToMany(mappedBy="institueInfraHrActivity",cascade=CascadeType.ALL)
 	@LazyCollection(LazyCollectionOption.FALSE)
 	private List<TIWiseProposedDomainExperts> tIWiseProposedDomainExperts;
+	
+	@Column(name="additional_req_sprc")
+	public Integer additionalRequirementSprc;
+	
+	@Column(name="additional_req_dprc")
+	public Integer additionalRequirementDprc;
 	
 
 	public Integer getInstituteInfraHrActivityId() {
@@ -158,14 +161,6 @@ public class InstitueInfraHrActivity {
 		this.isFreeze = isFreeze;
 	}
 
-	public Integer getAdditionalRequirement() {
-		return additionalRequirement;
-	}
-
-	public void setAdditionalRequirement(Integer additionalRequirement) {
-		this.additionalRequirement = additionalRequirement;
-	}
-
 	public List<TIWiseProposedDomainExperts> gettIWiseProposedDomainExperts() {
 		return tIWiseProposedDomainExperts;
 	}
@@ -181,6 +176,23 @@ public class InstitueInfraHrActivity {
 	public void setDistrictsSupported(Integer districtsSupported) {
 		this.districtsSupported = districtsSupported;
 	}
+
+	public Integer getAdditionalRequirementSprc() {
+		return additionalRequirementSprc;
+	}
+
+	public void setAdditionalRequirementSprc(Integer additionalRequirementSprc) {
+		this.additionalRequirementSprc = additionalRequirementSprc;
+	}
+
+	public Integer getAdditionalRequirementDprc() {
+		return additionalRequirementDprc;
+	}
+
+	public void setAdditionalRequirementDprc(Integer additionalRequirementDprc) {
+		this.additionalRequirementDprc = additionalRequirementDprc;
+	}
+
 
 	
 	

@@ -2,7 +2,9 @@ package gov.in.rgsa.controller;
 
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -15,7 +17,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import gov.in.rgsa.entity.EGovSupportActivity;
+import gov.in.rgsa.entity.EGovSupportActivityDetails;
 import gov.in.rgsa.entity.PmuActivity;
+import gov.in.rgsa.entity.PmuActivityDetails;
 import gov.in.rgsa.entity.PmuWiseProposedDomainExperts;
 import gov.in.rgsa.service.LGDService;
 import gov.in.rgsa.service.BasicInfoService;
@@ -72,27 +77,25 @@ public class PmuController {
       	else {
       		flag= false;
       	}
-	      model.addAttribute("Plan_Status", flag);
-		model.addAttribute("LIST_OF_ACTIVITY_PMU_TYPE", activityService.fetchPmuActvityType());
-		model.addAttribute("LIST_OF_PMU_DOMAINS", activityService.fetchPmuDomains());
-		model.addAttribute("LIST_OF_DISTRICT", activityService.fetchDistrictName());
-		model.addAttribute("user_type",userPreference.getUserType().charAt(0));
+	      	model.addAttribute("Plan_Status", flag);
+	      	model.addAttribute("LIST_OF_ACTIVITY_PMU_TYPE", activityService.fetchPmuActvityType());
+			model.addAttribute("LIST_OF_PMU_DOMAINS", activityService.fetchPmuDomains());
+			model.addAttribute("LIST_OF_DISTRICT", activityService.fetchDistrictName());
+			model.addAttribute("user_type",userPreference.getUserType().charAt(0));
 		List<PmuActivity> pmuActivitiesList = activityService.fetchPmuActivity(userPreference.getUserType().charAt(0));
 		if(!CollectionUtils.isEmpty(pmuActivitiesList)) {
-			/*List<PmuWiseProposedDomainExperts> proposedDomainExpertsList = activityService.fetchPmuWiseDomainExpert();*/
 			List<PmuWiseProposedDomainExperts> proposedDomainExpertsList = pmuActivitiesList.get(0).getPmuWiseProposedDomainExperts();
 			if(proposedDomainExpertsList != null && !proposedDomainExpertsList.isEmpty())
 			Collections.sort(proposedDomainExpertsList, Comparator.comparing(PmuWiseProposedDomainExperts::getPmuWiseProposedDomainExpertsId));
-			/*pmuActivitiesList.get(0).setSetDistrictIdPmuWise(proposedDomainExpertsList.get(0).getDistrictId());*/
 			pmuActivitiesList.get(0).setSetDistrictIdPmuWise(proposedDomainExpertsList.get(3).getDistrictId());
-		model.addAttribute("pmuActivity", pmuActivitiesList.get(0));
-		model.addAttribute("pmuWiseDomainList", proposedDomainExpertsList);
-		model.addAttribute("initial_status", false);
+			model.addAttribute("pmuActivity", pmuActivitiesList.get(0));
+			model.addAttribute("pmuWiseDomainList", proposedDomainExpertsList);
+			model.addAttribute("initial_status", false);
 		
 		}else{
 			model.addAttribute("initial_status", true);
 		}
-		model.addAttribute("STATE_CODE", userPreference.getStateCode());
+			model.addAttribute("STATE_CODE", userPreference.getStateCode());
 		if(userPreference.getUserType().equalsIgnoreCase("C")){
 			List<PmuActivity> pmuActivityState=activityService.fetchPmuActivity('S');
 			List<PmuActivity> pmuActivityMOPR=activityService.fetchPmuActivity('M');
@@ -102,6 +105,18 @@ public class PmuController {
 			model.addAttribute("pmuWiseDomainListMOPR", pmuActivityMOPR.get(0).getPmuWiseProposedDomainExperts());
 			model.addAttribute("DISTRICT_DETAILS_STATE", lgdservice.getDistrictDetails(userPreference.getStateCode(), pmuActivityState.get(0).getPmuWiseProposedDomainExperts().get(3).getDistrictId()) );
 			model.addAttribute("DISTRICT_DETAILS_MOPR",lgdservice.getDistrictDetails(userPreference.getStateCode(), pmuActivityMOPR.get(0).getPmuWiseProposedDomainExperts().get(3).getDistrictId()));
+			Map<String, Object>	params =calTotalOfSpmuAndDpmu(pmuActivityState);
+			if(!params.isEmpty()) {
+				model.addAttribute("SPMU_TOTAL_STATE", params.get("spmu_total"));//spmu total for state tab in cec
+				model.addAttribute("DPMU_TOTAL_STATE", params.get("dpmu_total"));//dpmu total for state tab in cec
+			}
+			params.clear();//clear map after using it for state 
+			
+			params=calTotalOfSpmuAndDpmu(pmuActivityMOPR);
+			if(!params.isEmpty()) {
+				model.addAttribute("SPMU_TOTAL_MOPR", params.get("spmu_total"));//spmu total for mopr tab in cec
+				model.addAttribute("DPMU_TOTAL_MOPR", params.get("dpmu_total"));//dpmu total for mopr tab in cec
+			}
 			return PMU_CEC;
 		}else{
 			return PMU;
@@ -123,6 +138,26 @@ public class PmuController {
 			else {
 				redirectAttributes.addFlashAttribute(Message.UPDATE_KEY, "Freezed Successfully");}
 		return REDIRECT_PMU;
+	}
+	
+	private Map<String, Object> calTotalOfSpmuAndDpmu(List<PmuActivity> pmuActivity) {
+		Map<String, Object> map = new HashMap<String, Object>();
+		int spmu_total = 0, dpmu_total = 0;
+		if (CollectionUtils.isNotEmpty(pmuActivity)) {
+			for (PmuActivityDetails detail : pmuActivity.get(0).getPmuActivityDetails()) {
+				if (detail.getPmuActivityType().getPmuActivityTypeId() < 4 ) {
+					if (detail.getFund() != null)
+						spmu_total += detail.getFund();
+				} else {
+					if (detail.getFund() != null)
+						dpmu_total += detail.getFund();
+				}
+			}
+			map.put("spmu_total", spmu_total);
+			map.put("dpmu_total", dpmu_total);
+			
+		} 
+		return map;
 	}
 	
 }

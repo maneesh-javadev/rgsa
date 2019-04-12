@@ -2,6 +2,8 @@ package gov.in.rgsa.model;
 
 import java.util.List;
 
+import javax.persistence.Column;
+
 import gov.in.rgsa.entity.InstitueInfraHrActivityDetails;
 import gov.in.rgsa.entity.TIWiseProposedDomainExperts;
 
@@ -35,13 +37,15 @@ public class AdditionalFactultyAndMaintModel {
 	
 	private String remarks;
 	
-	private Integer additionalRequirement;
-	
 	private Integer total;
 	
 	private Integer grand_total;
 	
 	private String userType;
+	
+	public Integer additionalRequirementSprc;
+	
+	public Integer additionalRequirementDprc;
 
 	public Integer getTotal() {
 		return total;
@@ -123,14 +127,6 @@ public class AdditionalFactultyAndMaintModel {
 		this.institueInfraHrActivityDetails = institueInfraHrActivityDetails;
 	}
 
-	public Integer getAdditionalRequirement() {
-		return additionalRequirement;
-	}
-
-	public void setAdditionalRequirement(Integer additionalRequirement) {
-		this.additionalRequirement = additionalRequirement;
-	}
-
 	public Integer getInstituteInfraHrActivityId() {
 		return instituteInfraHrActivityId;
 	}
@@ -185,6 +181,22 @@ public class AdditionalFactultyAndMaintModel {
 
 	public void setDistrictsSupported(Integer districtsSupported) {
 		this.districtsSupported = districtsSupported;
+	}
+
+	public Integer getAdditionalRequirementSprc() {
+		return additionalRequirementSprc;
+	}
+
+	public void setAdditionalRequirementSprc(Integer additionalRequirementSprc) {
+		this.additionalRequirementSprc = additionalRequirementSprc;
+	}
+
+	public Integer getAdditionalRequirementDprc() {
+		return additionalRequirementDprc;
+	}
+
+	public void setAdditionalRequirementDprc(Integer additionalRequirementDprc) {
+		this.additionalRequirementDprc = additionalRequirementDprc;
 	}
 
 	

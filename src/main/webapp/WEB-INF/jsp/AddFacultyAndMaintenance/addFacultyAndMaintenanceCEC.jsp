@@ -4,7 +4,8 @@
 <script>
 
 $('document').ready(function(){
-	calculateTotal();
+	calculateTotalFundSprc();
+ 	calculateTotalFundDprc();
 	if(document.getElementById("ISFREEZE") != null){
 		var myBoolean= document.getElementById("ISFREEZE").value;
 	}
@@ -26,105 +27,72 @@ $('document').ready(function(){
         }
     onLoadChangeColor();
 });
-/* $('document').ready(function(){
-	 $('.active1').prop('readonly',true);
-    
-}); */
 
-	function isNumber(evt) {
-	    evt = (evt) ? evt : window.event;
-	    var charCode = (evt.which) ? evt.which : evt.keyCode;
-	    if (charCode > 31 && (charCode < 48 || charCode > 57)) {
-	        return false;
-	    }
-	    return true;
-	}
-	
-	/* function calculateFund(obj)
-	{
-		document.getElementById("fund_"+obj).value = document.getElementById("noOfMonths_"+obj).value * document.getElementById("noOfUnits_"+obj).value * document.getElementById("unitCost_"+obj).value ;
-		 document.getElementById("totalFund_"+obj).value = document.getElementById("fund_"+obj).value;
-		calculateTotal(obj)
-	} */
+function isNumber(evt) {
+    evt = (evt) ? evt : window.event;
+    var charCode = (evt.which) ? evt.which : evt.keyCode;
+    if (charCode > 31 && (charCode < 48 || charCode > 57)) {
+        return false;
+    }
+    return true;
+}
 
-	function validateMonth(obj)
-	{
-		var noOfMonths = document.getElementById("noOfMonths_"+obj).value;
-		if( +noOfMonths == 0 || +noOfMonths > 12)
-		{
-			alert("Months should be less than 12 !");
-			document.getElementById("noOfMonths_"+obj).value = '';
-			/* calculateFund(obj); */
+function validateMonth(obj)
+{
+	if( +$('#noOfMonths_'+obj).val() == 0 || +$('#noOfMonths_'+obj).val() > 12){
+		alert("Months should be less than 12 or greater than 0 !");
+		$('#noOfMonths_'+obj).val('');
+	}
+}
+	
+function calculateGrandTotal() {
+	var grand_total = 0;
+	if($('#additionalRequirementSprcId').val() != '' && $('#total_fund_sprc').val() !=""){
+		if($('#additionalRequirementSprcId').val() > 0.25 * $('#total_fund_sprc').val()){
+			alert("SPMU additional Requirement should be less than or equal to 25% of SPRC total Fund :" +  0.25 * $('#total_fund_sprc').val());
+			$('#additionalRequirementSprcId').val('');
+			$('#grandTotalId').val('');
+		}else{
+			$('#grandTotalId').val(+$('#additionalRequirementDprcId').val() + +$("#total_fund_dprc").val() + +$('#additionalRequirementSprcId').val() + +$("#total_fund_sprc").val());
 		}
 	}
 	
-	function calculateTotal(obj){
-		var rowCount = $('#tab tr').length;
-		var total=0;
-		for(var i=0;i<=rowCount;i++){
-			if($("#fund_"+i).val() != '' && $("#fund_"+i).val() != undefined)
-			total += +$("#fund_"+i).val();
+	if($('#additionalRequirementDprcId').val() != '' && $('#total_fund_dprc').val() !=""){
+		if($('#additionalRequirementDprcId').val() > 0.25 * $('#total_fund_dprc').val()){
+			alert("DPMU additional Requirement should be less than or equal to 25% of DPRC total Fund :" + +  0.25 * $('#total_fund_dprc').val());
+			$('#additionalRequirementDprcId').val('');
+			$('#grandTotalId').val('');
+		}else{							
+			$('#grandTotalId').val(+$('#additionalRequirementDprcId').val() + +$("#total_fund_dprc").val() + +$('#additionalRequirementSprcId').val() + +$("#total_fund_sprc").val());
 		}
-		document.getElementById("total").value =total;
-		calculateGrandTotal();
 	}
+};
 	
-	function calculateGrandTotal(){
-		document.getElementById("grandTotal").value = +document.getElementById("total").value + +document.getElementById("additionalRequirement").value;
-	}
+function validateCeilingValue(count){
+	calculateTotalFundSprc();
+	calculateTotalFundDprc();
 	
-	function validatingAdditionalRequirement(obj){
-		var grand_total=0;
-		for(var i=0;i<obj;i++){
-			grand_total += +$("#fund_"+i).val();
-		}
-		if(($("#additionalRequirement").val()>(grand_total*0.25))){
-			alert("Additional Requirement should be smaller than or equal to 25% of Fund="+ 0.25*grand_total+"");
-			document.getElementById("additionalRequirement").value=0;
-		}
-		calculateGrandTotal();
-	}
-	
-	function validateCeilingValue(count){
-		var rowCount=$('#tbodyMainTableId tr').length -3;
-			var total_unit_cost_sprc = 0;
-			var total_unit_cost_dprc = 0;
-			for(var i =0;i < rowCount;i++){
-				if($("#trainingInstituteId_"+i).val() == 2){
-					if($("#fund_"+i).val() != ""){
-						total_unit_cost_sprc += parseInt($("#fund_"+i).val());
-					}
-				}else{
-					if($("#fund_"+i).val() != ""){
-						total_unit_cost_dprc += parseInt($("#fund_"+i).val());
-					}
-				}
-			}
-			if(total_unit_cost_sprc > 4000000){
-				alert("Total unit cost for SPRC should be less than or equal to 40 lakhs per year");
-				/* $("#unitCost_"+count).val(''); */
-				/* $("#noOfMonths_"+count).val(''); */
+		if($('#trainingInstituteId_'+count).val() == 2){
+			if($('#total_fund_sprc').val() > 4000000){
+		 		alert("Total unit cost for SPRC should be less than or equal to 40 lakhs per year");
 				$("#fund_"+count).val('');
-				/* calculateFund(count); */
-			}
-			 if($("#trainingInstituteId_"+count).val() == 4){
-				 if($('#districtSupportedId').val() != ""){
-					 if((total_unit_cost_dprc / $('#districtSupportedId').val()) > 1000000){
-				alert("Total unit cost for DPRC should be less than or equal to 10 lakhs per year");
-							/* $("#unitCost_"+count).val(''); */
-				/* $("#noOfMonths_"+count).val(''); */
-				$("#fund_"+count).val('');
-				/* calculateFund(count); */
-			}
+		 	}
+		}else{
+			if($('#total_fund_dprc').val() > 1000000){
+		 		 if($('#districtSupportedId').val() != ""){
+					 if(($('#total_fund_dprc').val() / $('#districtSupportedId').val()) > 1000000){
+						alert("Total unit cost for DPRC should be less than or equal to 10 lakhs per year");
+						$("#fund_"+count).val('');
+						}
 				 }else{
 					 alert("Enter The no. of District supported by DPRC First.");
 					 $("#fund_"+count).val('');
-					/*  calculateFund(count); */
 				 }
-			 }
-			
+		 	}
 		}
-
+	
+}
+	
 function freezeAndUnfreeze(obj){
 	$("input").prop('disabled', false);
 	$('#textarea').attr('disabled',false);
@@ -139,8 +107,6 @@ function onLoadChangeColor(){
 	var rowModal1 =  $('#tbodySprcId tr').length;
 	var rowModal2 = $('#modal2Tbody tr').length;
  	for(var i=0;i<rowCount;i++){
-		/* +$("#noOfUnitsState_"+i).text() > +$("#noOfUnits_"+i).val() ? $("#noOfUnitsState_"+i).css('color','red') : $("#noOfUnitsState_"+i).css('color','#00cc00');
-		+$("#unitCostState_"+i).text() > +$("#unitCost_"+i).val() ? $("#unitCostState_"+i).css('color','red') : $("#unitCostState_"+i).css('color','#00cc00'); */
 		+$("#noOfMonthsState_"+i).text() > +$("#noOfMonths_"+i).val() ? $("#noOfMonthsState_"+i).css('color','red') : $("#noOfMonthsState_"+i).css('color','#00cc00');
 		+$("#noOfUnitsState_"+i).text() > +$("#noOfUnits_"+i).val() ? $("#noOfUnitsState_"+i).css('color','red') : $("#noOfUnitsState_"+i).css('color','#00cc00');
 		if($("#fund"+i).val() == undefined){
@@ -148,9 +114,11 @@ function onLoadChangeColor(){
 		}
 		+$("#fundState_"+i).text() > +$("#fund_"+i).val() ? $("#fundState_"+i).css('color','red') : $("#fundState_"+i).css('color','#00cc00');
 	}
-	+$("#totalState").text() > +$("#total").val() ? $("#totalState").css('color','red') : $("#totalState").css('color','#00cc00');
-	+$("#additionalRequirementState").text() > +$("#additionalRequirement").val() ? $("#additionalRequirementState").css('color','red') : $("#additionalRequirementState").css('color','#00cc00');
-	+$("#grandTotalState").text() > +$("#grandTotal").val() ? $("#grandTotalState").css('color','red') : $("#grandTotalState").css('color','#00cc00');
+	+$("#total_fund_sprc_state").text() > +$("#total_fund_sprc").val() ? $("#total_fund_sprc_state").css('color','red') : $("#total_fund_sprc_state").css('color','#00cc00');
+	+$("#total_fund_dprc_state").text() > +$("#total_fund_dprc").val() ? $("#total_fund_dprc_state").css('color','red') : $("#total_fund_dprc_state").css('color','#00cc00');
+	+$("#additionalRequirementSprcStateId").text() > +$("#additionalRequirementSprcId").val() ? $("#additionalRequirementSprcStateId").css('color','red') : $("#additionalRequirementSprcStateId").css('color','#00cc00');
+	+$("#additionalRequirementDprcStateId").text() > +$("#additionalRequirementDprcId").val() ? $("#additionalRequirementDprcStateId").css('color','red') : $("#additionalRequirementDprcStateId").css('color','#00cc00');
+	+$("#grandTotalState").text() > +$("#grandTotalId").val() ? $("#grandTotalState").css('color','red') : $("#grandTotalState").css('color','#00cc00');
 	
 	for(var j=0;j < rowModal1 ;j++){
 		+$("#noOfFacultyState_"+j).text() > +$("#noOfFaculty_"+j).val() ? $("#noOfFacultyState_"+j).css('color','red') : $("#noOfFacultyState_"+j).css('color','#00cc00');
@@ -160,6 +128,7 @@ function onLoadChangeColor(){
 	} 
 }
 
+/* this function validates the value in fill domain detail with the outer number of unit field. */
 function domainValidation(obj){
 	var rowCountSprc=$('#tbodySprcId tr').length;
 	var noOfDomainSprc=0;
@@ -176,28 +145,44 @@ function domainValidation(obj){
 		alert('Total domains experts should be equal to or less than '+ $('#noOfUnits_3').val());
 		$('#noOfExpert_'+obj).val('');
 	}
-	}else{ if(obj == 'noOfUnits'){
-		var result= confirm("If you change No. of units you have to fill domain details again.Do you still want to continue?");
+	}else{ if(obj == 'noOfUnitsSprc_0' && noOfDomainSprc != 0){
+			var result= confirm("If you change Number of units you have to fill domain details.");
+			if(result){
+			if($('#noOfUnits_0').val() < noOfDomainSprc){
+				alert('No of units in SPRC should not exceed the sum of domain detail '+ noOfDomainSprc + 'please fill the domain details again.');
+				emptyDomainDetails('sprc',rowCountSprc);
+			}
+			}else{
+				if($('#noOfUnits_0').val() < noOfDomainSprc){
+					alert('No of units in SPRC should not exceed the sum of domain detail '+ noOfDomainSprc );
+					$('#noOfUnits_0').val('');
+				}
+			}
+	}else if(obj == 'noOfUnitsDprc_3' && noOfDomainDprc != 0){
+		var result= confirm("If you change Number of units you have to fill domain details.");
 		if(result){
-		if($('#noOfUnits_0').val() < noOfDomainSprc){
-			alert('No of units in SPRC should not exceed the sum of domain detail '+ noOfDomainSprc);
-			emptyDomainDetails('sprc',rowCountSprc)
-		}else if($('#noOfUnits_3').val() < noOfDomainDprc){
-			alert('No of units in DPRC should not exceed the sum of domain detail '+ noOfDomainDprc);
-			emptyDomainDetails('dprc',rowCountSprc)
+		if($('#noOfUnits_3').val() < noOfDomainDprc){
+			alert('No of units in DPRC should not exceed the sum of domain detail '+ noOfDomainSprc + 'please fill the domain details again.');
+			emptyDomainDetails('dprc',rowCountSprc);
 		}
+		}else{
+			if($('#noOfUnits_3').val() < noOfDomainSprc){
+				alert('No of units in DPRC should not exceed the sum of domain detail '+ noOfDomainDprc );
+				$('#noOfUnits_3').val('');
+			}
 		}
 	}
 	}
 }
 
+/* this function used in domainValidation function */
 function emptyDomainDetails(level,count){
 	if(level == 'sprc'){
 		for(var i=0;i<count;i++){
 			$('#noOfFaculty_'+i).val('');
 		}
 	}else{
-		for(var i=3;i<count;i++){
+		for(var i=3;i<count + 3;i++){
 			$('#noOfExpert_'+i).val('');
 		}
 	}
@@ -209,51 +194,90 @@ function validationOnSubmit(){
 	
 	if($('#noOfUnits_0').val() == "" || $('#noOfUnits_0').val() == null){
 		for(var i=0;i<rowCountSprc;i++){
-			if($('#noOfFaculty_'+i).val() != "" || $('#noOfFaculty_'+i).val() != ""){
+			if($('#noOfFaculty_'+i).val() != "" || $('#noOfFaculty_'+i).val() != 0){
 				flag=false;
-			}else{
 				break;
 			}
 		}
 		}else{
 			for(var i=0;i<rowCountSprc;i++){
-			if($('#noOfFaculty_'+i).val() == "" || $('#noOfFaculty_'+i).val() == ""){
+			if($('#noOfFaculty_'+i).val() == "" || $('#noOfFaculty_'+i).val() == 0){
 				flag=false;
 			}else{
+				flag=true;
 				break;
 			}
 			}
 		}
-	  if($('#noOfUnits_3').val() == "" || $('#noOfUnits_3').val() == null){
+	if($('#noOfUnits_3').val() == "" || $('#noOfUnits_3').val() == null){
 		for(var i=0;i<rowCountSprc;i++){
-		if($('#noOfExpert_'+(i+3)).val() != "" || $('#noOfExpert_'+(i+3)).val() != ""){
+		if($('#noOfExpert_'+(i+3)).val() != "" || $('#noOfExpert_'+(i+3)).val() != 0){
 			flag=false;
-		}else{
 			break;
 		}
 		}
 	}else{
 		for(var i=0;i<rowCountSprc;i++){
-		if($('#noOfExpert_'+(i+3)).val() == "" || $('#noOfExpert_'+(i+3)).val() == ""){
+		if($('#noOfExpert_'+(i+3)).val() == "" || $('#noOfExpert_'+(i+3)).val() == 0){
 			flag=false;
 		}else{
+			flag=true;
 			break;
 		}
 		}
 	}
 	
-	if(+$('#activedropdown').val() == 0 && $('#noOfUnits_3').val() != ""){
+	if(+$('#activedropdown').val() == 0 && $('#total_fund_dprc').val() != ""){
 		alert("please select district in domain detail of DPRC.");
 		return flag=false;
 	}  
-	  
+	
 	if(($('#noOfUnits_3').val() == "" || $('#noOfUnits_0').val() == "") && flag == false){
 		alert("Fill the number of units first.");
+		return flag;
 	}else if(!flag){
 		alert("Fill the domain details first.");
+		return flag;
+	}
+	
+	/* this is to validate if full form */
+	var count = $("#countSprcId").val();
+	for (var i = 0; i < count; i++) {
+		if($("#fund_" + i).val() == "" &&  $("#fund_" + (i + +count)).val() == ""){
+			flag=false;
+		}else{
+			flag=true;
+		}
+	}
+	if(!flag){
+		alert("Empty form cannot save.");
 	}
 	return flag;
 }
+
+function calculateTotalFundSprc() {
+	var count = $("#countSprcId").val();
+	var total_sprc_fund = 0;
+	for (var i = 0; i < count; i++) {
+		if($("#fund_" + i).val() != null && $("#fund_" + i).val() != ""){
+			total_sprc_fund += +$("#fund_" + i).val();
+		}
+	}
+	$("#total_fund_sprc").val(+total_sprc_fund); 
+	calculateGrandTotal();
+};
+
+function calculateTotalFundDprc() {
+	var count = $("#countDprcId").val();
+	var total_dprc_fund = 0;
+	for (var i = 0; i < count; i++) {
+		if($("#fund_"+(i + +$("#countSprcId").val())).val() != null && $("#fund_"+(i + +$("#countSprcId").val())).val() != ""){
+			total_dprc_fund += +$("#fund_"+(i + +$("#countSprcId").val())).val();
+		}
+	}
+	$("#total_fund_dprc").val(total_dprc_fund); 
+	calculateGrandTotal();
+};
 </script>
 <section class="content">
 	<div class="container-fluid">
@@ -271,6 +295,10 @@ function validationOnSubmit(){
 						modelAttribute="ADDITIONAL_FACULTY_MAINT_MODEL" onsubmit="return validationOnSubmit()">
 						<input type="hidden" name="<csrf:token-name/>"
 							value="<csrf:token-value uri="addFacultyAndMaintenanceHrBudget.html" />" />
+							
+							<c:set var="countSprc" value="0" scope="page" />
+							<c:set var="countDprc" value="0" scope="page" />
+							
 						<div class="body">
 							<ul class="nav nav-tabs">
 								<li class="nav-item"><a class="nav-link active"
@@ -317,9 +345,6 @@ function validationOnSubmit(){
 													<th><div align="center">
 															<spring:message code="Label.NoofUnits" htmlEscape="true" />
 														</div></th>
-													<%-- <th><div align="center">
-															<spring:message code="Label.UnitCost" htmlEscape="true" />
-														</div></th> --%>
 													<th><div align="center">
 															<spring:message code="Label.NoOfMonths" htmlEscape="true" />
 														</div></th>
@@ -336,17 +361,16 @@ function validationOnSubmit(){
 												</tr>
 											</thead>
 											<tbody id="tbodyMainTableId">
-												<c:set var="count" value="0" scope="page" />
-												<c:forEach items="${LIST_OF_ACTIVITY_HR_TYPE}"
-													var="ACTIVITY">
+												<!-- SPRC LOOP BEGINS -->
+												<c:forEach items="${LIST_OF_ACTIVITY_HR_TYPE}" var="ACTIVITY"  begin="0" end="2" varStatus="index">
 													<input type="hidden" id="ISFREEZE" value="${ISFREEZE}" />
-													<input type="hidden" id="trainingInstituteId_${count}"
+													<input type="hidden" id="trainingInstituteId_${index.index}"
 														value="${ACTIVITY.trainingInstitueType.trainingInstitueTypeId}" />
 													<form:hidden
-														path="institueInfraHrActivityDetails[${count}].instituteInfraHrActivityType.instituteInfraHrActivityTypeId"
+														path="institueInfraHrActivityDetails[${index.index}].instituteInfraHrActivityType.instituteInfraHrActivityTypeId"
 														value="${ACTIVITY.instituteInfraHrActivityTypeId}" />
 													<form:hidden
-														path="institueInfraHrActivityDetails[${count}].instituteInfrsaHrActivityDetailsId" />
+														path="institueInfraHrActivityDetails[${index.index}].instituteInfrsaHrActivityDetailsId" />
 													<tr>
 														<td><div align="center">
 																<strong>${ACTIVITY.trainingInstitueType.trainingInstitueTypeName}</strong>
@@ -357,57 +381,47 @@ function validationOnSubmit(){
 															</div></td>
 
 														<td>
-															<div align="center" id="noOfUnitsState_${count}">${institueInfraHrActivityDetailsState[count].noOfUnits}</div>
-															<c:if test="${count ne 2 and count ne 5}">
+															<div align="center" id="noOfUnitsState_${index.index}">${institueInfraHrActivityDetailsState[index.index].noOfUnits}</div>
+															<c:if test="${index.index ne 2 and index.index ne 5}">
 															<form:input
-																path="institueInfraHrActivityDetails[${count}].noOfUnits"
+																path="institueInfraHrActivityDetails[${index.index}].noOfUnits"
 																onkeypress="return isNumber(event)"
 																class="active12 form-control Align-Right"
 																onkeyup="onLoadChangeColor();"
-																onchange="domainValidation('noOfUnits')"
-																id="noOfUnits_${count}" />
+																onchange="domainValidation('noOfUnitsSprc_${index.index}')"
+																id="noOfUnits_${index.index}" />
 																</c:if>
 														</td>
 
-														<%-- <td>
-														<div align="center" id="unitCostState_${count}">${institueInfraHrActivityDetailsState[count].unitCost}</div>
-														<form:input
-																path="institueInfraHrActivityDetails[${count}].unitCost"
-																type="text" maxlength="7"
-																onkeypress="return isNumber(event)"
-																class="active12 form-control Align-Right"
-																id="unitCost_${count}"
-																onkeyup="calculateFund(${count});validateCeilingValue(${count});onLoadChangeColor()" /></td> --%>
-
 														<td>
-														<c:if test="${count ne 2 and count ne 5}">
-																<div align="center" id="noOfMonthsState_${count}">${institueInfraHrActivityDetailsState[count].noOfMonths}</div>
+														<c:if test="${index.index ne 2 and index.index ne 5}">
+																<div align="center" id="noOfMonthsState_${index.index}">${institueInfraHrActivityDetailsState[index.index].noOfMonths}</div>
 																<form:input
-																	path="institueInfraHrActivityDetails[${count}].noOfMonths"
+																	path="institueInfraHrActivityDetails[${index.index}].noOfMonths"
 																	onkeypress="return isNumber(event)"
 																	class="active12 form-control Align-Right"
-																	onkeyup="onLoadChangeColor()" id="noOfMonths_${count}" />
+																	onkeyup="onLoadChangeColor()" id="noOfMonths_${index.index}" />
 															</c:if>
 														</td>
 
 														<td>
-															<div align="center" id="fundState_${count}">${institueInfraHrActivityDetailsState[count].fund}</div>
+															<div align="center" id="fundState_${index.index}">${institueInfraHrActivityDetailsState[index.index].fund}</div>
 															<form:input
-																path="institueInfraHrActivityDetails[${count}].fund"
+																path="institueInfraHrActivityDetails[${index.index}].fund"
 																readonly="" type="text"
 																onkeypress="return isNumber(event)"
 																class="active12 form-control Align-Right"
-																onkeyup="calculateTotal(${count});onLoadChangeColor();validateCeilingValue(${count})" id="fund_${count}" />
+																onkeyup="calculateTotalFundSprc();onLoadChangeColor();validateCeilingValue(${index.index})" id="fund_${index.index}" />
 														</td>
 
 														<c:choose>
-															<c:when test="${count eq 0 }">
+															<c:when test="${index.index eq 0 }">
 																<td><button type="button"
 																		class="btn btn-primary btn-lg" data-toggle="modal"
 																		data-target="#myModal">Fill Domain Details</button></td>
 															</c:when>
 
-															<c:when test="${count eq 3}">
+															<c:when test="${index.index eq 3}">
 																<td><button type="button"
 																		class="btn btn-primary btn-lg" data-toggle="modal"
 																		data-target="#myModal2">Fill Domain Details</button></td>
@@ -417,41 +431,141 @@ function validationOnSubmit(){
 															</c:otherwise>
 														</c:choose>
 														<td><form:textarea
-																path="institueInfraHrActivityDetails[${count}].remarks"
+																path="institueInfraHrActivityDetails[${index.index}].remarks"
 																rows="3" cols="5" class="active12 form-control" /></td>
 													</tr>
-													<c:set var="count" value="${count +1}" scope="page" />
+													<c:set var="countSprc" value="${countSprc + 1}" scope="page" />
 												</c:forEach>
+												
 												<tr>
 													<td><div align="center">
-															<strong><spring:message code="Label.TotalCost"
-																	htmlEscape="true" /></strong>
+															<strong>Total SPRC Fund</strong>
 														</div></td>
 													<td colspan="3"></td>
 													<td>
-														<div align="center" id="totalState">${totalState}</div> <form:input
-															path="total" type="text"
-															class="active12 form-control Align-Right" id="total"
-															onkeypress="return isNumber(event)"
-															onkeyup="validatingAdditionalRequirement(${count});calculateGrandTotal(${ACTIVITY.trainingInstitueType.trainingInstitueTypeId},${count});onLoadChangeColor()"
-															disabled="true" />
-													</td>
+													<div align="center" id="total_fund_sprc_state">${SPRC_TOTAL_STATE}</div>
+													<input type="text"
+														class="form-control Align-Right" id="total_fund_sprc"
+														disabled="disabled" /></td>
 												</tr>
 												<tr>
 													<td><div align="center">
-															<strong><spring:message
+															<strong>SPRC <spring:message
 																	code="Label.AdditionalRequirement" htmlEscape="true" /></strong>
 														</div></td>
 													<td colspan="3"></td>
 													<td>
-														<div align="center" id="additionalRequirementState">${additionalRequirementState}</div>
-														<form:input path="additionalRequirement" type="text"
-															onkeypress="return isNumber(event)"
+													<div align="center" id="additionalRequirementSprcStateId">${institueInfraHrActivityState.additionalRequirementSprc}</div>
+													<form:input path="additionalRequirementSprc"
+															type="text" onkeypress="return isNumber(event)"
 															class="active12 form-control Align-Right"
-															id="additionalRequirement"
-															onkeyup="validatingAdditionalRequirement(${count});calculateGrandTotal();onLoadChangeColor()" />
-													</td>
+															id="additionalRequirementSprcId"
+															onkeyup="calculateGrandTotal()" /></td>
 												</tr>
+												<!-- SPRC LOOP ENDS HERE -->
+												
+												<!-- DPRC LOOP BEGINS -->
+												<c:forEach items="${LIST_OF_ACTIVITY_HR_TYPE}" var="ACTIVITY"  begin="3" end="5" varStatus="index">
+													<input type="hidden" id="ISFREEZE" value="${ISFREEZE}" />
+													<input type="hidden" id="trainingInstituteId_${index.index}"
+														value="${ACTIVITY.trainingInstitueType.trainingInstitueTypeId}" />
+													<form:hidden
+														path="institueInfraHrActivityDetails[${index.index}].instituteInfraHrActivityType.instituteInfraHrActivityTypeId"
+														value="${ACTIVITY.instituteInfraHrActivityTypeId}" />
+													<form:hidden
+														path="institueInfraHrActivityDetails[${index.index}].instituteInfrsaHrActivityDetailsId" />
+													<tr>
+														<td><div align="center">
+																<strong>${ACTIVITY.trainingInstitueType.trainingInstitueTypeName}</strong>
+															</div></td>
+
+														<td><div align="center">
+																<strong>${ACTIVITY.instituteInfraHrActivityName}</strong>
+															</div></td>
+
+														<td>
+															<div align="center" id="noOfUnitsState_${index.index}">${institueInfraHrActivityDetailsState[index.index].noOfUnits}</div>
+															<c:if test="${index.index ne 2 and index.index ne 5}">
+															<form:input
+																path="institueInfraHrActivityDetails[${index.index}].noOfUnits"
+																onkeypress="return isNumber(event)"
+																class="active12 form-control Align-Right"
+																onkeyup="onLoadChangeColor();"
+																onchange="domainValidation('noOfUnitsDprc_${index.index}')"
+																id="noOfUnits_${index.index}" />
+																</c:if>
+														</td>
+
+														<td>
+														<c:if test="${index.index ne 2 and index.index ne 5}">
+																<div align="center" id="noOfMonthsState_${index.index}">${institueInfraHrActivityDetailsState[index.index].noOfMonths}</div>
+																<form:input
+																	path="institueInfraHrActivityDetails[${index.index}].noOfMonths"
+																	onkeypress="return isNumber(event)"
+																	class="active12 form-control Align-Right"
+																	onkeyup="onLoadChangeColor()" id="noOfMonths_${index.index}" />
+															</c:if>
+														</td>
+
+														<td>
+															<div align="center" id="fundState_${index.index}">${institueInfraHrActivityDetailsState[index.index].fund}</div>
+															<form:input
+																path="institueInfraHrActivityDetails[${index.index}].fund"
+																readonly="" type="text"
+																onkeypress="return isNumber(event)"
+																class="active12 form-control Align-Right"
+																onkeyup="calculateTotalFundDprc();onLoadChangeColor();validateCeilingValue(${index.index})" id="fund_${index.index}" />
+														</td>
+
+														<c:choose>
+															<c:when test="${index.index eq 0 }">
+																<td><button type="button"
+																		class="btn btn-primary btn-lg" data-toggle="modal"
+																		data-target="#myModal">Fill Domain Details</button></td>
+															</c:when>
+
+															<c:when test="${index.index eq 3}">
+																<td><button type="button"
+																		class="btn btn-primary btn-lg" data-toggle="modal"
+																		data-target="#myModal2">Fill Domain Details</button></td>
+															</c:when>
+															<c:otherwise>
+																<td></td>
+															</c:otherwise>
+														</c:choose>
+														<td><form:textarea
+																path="institueInfraHrActivityDetails[${index.index}].remarks"
+																rows="3" cols="5" class="active12 form-control" /></td>
+													</tr>
+													<c:set var="countDprc" value="${countDprc + 1}" scope="page" />
+												</c:forEach>
+												
+												<tr>
+													<td><div align="center">
+															<strong>Total DPRC Fund</strong>
+														</div></td>
+													<td colspan="3"></td>
+													<td>
+													<div align="center" id="total_fund_dprc_state">${DPRC_TOTAL_STATE}</div>
+													<input type="text"
+														class="form-control Align-Right" id="total_fund_dprc"
+														disabled="disabled" /></td>
+												</tr>
+												<tr>
+													<td><div align="center">
+															<strong>DPRC <spring:message
+																	code="Label.AdditionalRequirement" htmlEscape="true" /></strong>
+														</div></td>
+													<td colspan="3"></td>
+													<td>
+													<div align="center" id="additionalRequirementDprcStateId">${institueInfraHrActivityState.additionalRequirementDprc}</div>
+													<form:input path="additionalRequirementDprc"
+															type="text" onkeypress="return isNumber(event)"
+															class="active12 form-control Align-Right"
+															id="additionalRequirementDprcId"
+															onkeyup="calculateGrandTotal()" /></td>
+												</tr>
+												<!-- DPRC LOOP ENDS -->
 												<tr>
 													<td><div align="center">
 															<strong><spring:message
@@ -459,16 +573,20 @@ function validationOnSubmit(){
 														</div></td>
 													<td colspan="3"></td>
 													<td>
-														<div align="center" id="grandTotalState">${additionalRequirementState + totalState}</div>
+														<div align="center" id="grandTotalState">${institueInfraHrActivityState.additionalRequirementDprc + DPRC_TOTAL_STATE+ institueInfraHrActivityState.additionalRequirementSprc + SPRC_TOTAL_STATE}</div>
 														<form:input path="grand_total" type="text"
-															class="active12 form-control Align-Right" id="grandTotal"
-															onchange="validatingAdditionalRequirement(${count});onLoadChangeColor()"
+															class="active12 form-control Align-Right" id="grandTotalId"
+															onchange="validatingAdditionalRequirement(${index.index});onLoadChangeColor()"
 															disabled="true" />
 													</td>
 												</tr>
 											</tbody>
 										</table>
+										
+										<!-- HIDDEN FIELDS -->
 										<input type="hidden" name="dbFileName" id="dbFileName">
+										<input type="hidden" id="countSprcId" value="${countSprc}" />
+										<input type="hidden" id="countDprcId" value="${countDprc}" />
 										<input type="hidden" name="instituteInfraHrActivityId"
 											value="${institueInfraHrActivity.instituteInfraHrActivityId}">
 										<form:hidden path="userType"
@@ -497,10 +615,8 @@ function validationOnSubmit(){
 																				<strong>
 																					${DOMAINS.trainingInstitueType.trainingInstitueTypeName}</strong>
 																			</p>
-																			<%-- <option value="${DOMAINS.trainingInstitueType.trainingInstitueTypeId}">${DOMAINS.trainingInstitueType.trainingInstitueTypeName }</option> --%>
 																		</c:if>
 																	</c:forEach>
-																	<!-- </select> -->
 																</div>
 															</div>
 														</div>
@@ -541,13 +657,6 @@ function validationOnSubmit(){
 																							onkeyup="onLoadChangeColor();domainValidation(${temp})"
 																							class="active12 form-control Align-Right"
 																							id="noOfFaculty_${temp}" /></td>	
-																						<%-- <td>
-																							<div align="center" id="noOfFacultyState_${temp}">${tIWiseProposedDomainExpertsState[temp].noOfExperts}</div>
-																							<form:hidden
-																								path="tIWiseProposedDomainExperts[${temp}].noOfExperts"
-																								value="${tIWiseProposedDomainExpertsState[temp].noOfExperts}"
-																								id="noOfFaculty_${temp}" />
-																						</td> --%>
 																					</tr>
 																				</c:if>
 																				<c:set var="temp" value="${temp+1}" scope="page" />
@@ -581,7 +690,6 @@ function validationOnSubmit(){
 																<label for="sprc" class="col-sm-3"><spring:message
 																		code="Label.InstituteType" htmlEscape="true" /></label>
 																<div class="col-sm-6" style="display: contents;">
-																	<!-- <select> -->
 																	<c:forEach items="${LIST_OF_DOMAINS}" var="DOMAINS"
 																		begin="1" end="3">
 																		<c:if
@@ -589,10 +697,8 @@ function validationOnSubmit(){
 																			<p class="text-justify">
 																				<strong>${DOMAINS.trainingInstitueType.trainingInstitueTypeName}</strong>
 																			</p>
-																			<%-- <option value="${DOMAINS.trainingInstitueType.trainingInstitueTypeId}">${DOMAINS.trainingInstitueType.trainingInstitueTypeName}</option> --%>
 																		</c:if>
 																	</c:forEach>
-																	<!-- </select> -->
 																</div>
 															</div>
 														</div>
@@ -606,12 +712,6 @@ function validationOnSubmit(){
 																		id="activedropdownState" />
 																	<div id="districtStateId"
 																		style="font-weight: bold; margin-left: -12px;">${SELECTED_DISTRICT_IN_STATE.districtNameEnglish}</div>
-																	<%-- <form:select path="districtCode" id="activedropdown">
-																		<option value="0">---select---</option>
-																		<c:forEach items="${LIST_OF_DISTRICT}" var="DISTRICT" >
-																			<form:option value="${DISTRICT.districtCode}">${DISTRICT.districtNameEnglish}</form:option>
-																		</c:forEach>
-																	</form:select> --%>
 																</div>
 															</div>
 														</div>
@@ -651,14 +751,6 @@ function validationOnSubmit(){
 																							onkeyup="onLoadChangeColor();domainValidation(${index})"
 																							id="noOfExpert_${index}" 
 																							class="active12 form-control Align-Right" /></td>
-																								
-																						<%-- <td>
-																							<div align="center" id="noOfExpertState_${index}">${tIWiseProposedDomainExpertsState[index].noOfExperts}</div>
-																							<form:hidden
-																								path="tIWiseProposedDomainExperts[${index}].noOfExperts"
-																								value="${tIWiseProposedDomainExpertsState[index].noOfExperts}"
-																								id="noOfExpert_${index}" />
-																						</td> --%>
 																					</tr>
 																				</c:if>
 																				<c:set var="index" value="${index+1}" scope="page" />
@@ -670,7 +762,6 @@ function validationOnSubmit(){
 														</div>
 													</div>
 													<div class="modal-footer">
-														<!-- <button type="button" class="btn btn-success">Save</button> -->
 														<button type="button" class="btn btn-danger"
 															data-dismiss="modal">Close</button>
 													</div>
@@ -766,9 +857,6 @@ function validationOnSubmit(){
 													<th><div align="center">
 															<spring:message code="Label.NoofUnits" htmlEscape="true" />
 														</div></th>
-													<%-- <th><div align="center">
-														<spring:message code="Label.UnitCost" htmlEscape="true" />
-													</div></th> --%>
 													<th><div align="center">
 															<spring:message code="Label.NoOfMonths" htmlEscape="true" />
 														</div></th>
@@ -789,9 +877,8 @@ function validationOnSubmit(){
 											</thead>
 											<tbody>
 												<tr>
-													<c:set var="count" value="0" scope="page" />
-													<c:forEach items="${LIST_OF_ACTIVITY_HR_TYPE}"
-														var="ACTIVITY" varStatus="index">
+												<!-- SPRC LOOP BEGINS -->
+													<c:forEach items="${LIST_OF_ACTIVITY_HR_TYPE}" var="ACTIVITY" varStatus="index" begin="0" end="2">
 														<tr>
 															<td><div align="center">
 																	<strong>${ACTIVITY.trainingInstitueType.trainingInstitueTypeName}</strong>
@@ -801,22 +888,20 @@ function validationOnSubmit(){
 																	<strong>${ACTIVITY.instituteInfraHrActivityName}</strong>
 																</div></td>
 
-															<td><div align="center">${institueInfraHrActivityDetailsMopr[count].noOfUnits}</div></td>
+															<td><div align="center">${institueInfraHrActivityDetailsMopr[index.index].noOfUnits}</div></td>
 
-															<%-- <td><div align="center">${institueInfraHrActivityDetailsMopr[count].unitCost}</div></td> --%>
+															<td><div align="center">${institueInfraHrActivityDetailsMopr[index.index].noOfMonths}</div></td>
 
-															<td><div align="center">${institueInfraHrActivityDetailsMopr[count].noOfMonths}</div></td>
-
-															<td><div align="center">${institueInfraHrActivityDetailsMopr[count].fund}</div></td>
+															<td><div align="center">${institueInfraHrActivityDetailsMopr[index.index].fund}</div></td>
 
 															<c:choose>
-																<c:when test="${count eq 0 }">
+																<c:when test="${index.index eq 0 }">
 																	<td><button type="button"
 																			class="btn btn-primary btn-lg" data-toggle="modal"
 																			data-target="#myModal3">See Domain Details</button></td>
 																</c:when>
 
-																<c:when test="${count eq 3}">
+																<c:when test="${index.index eq 3}">
 																	<td><button type="button"
 																			class="btn btn-primary btn-lg" data-toggle="modal"
 																			data-target="#myModal4">See Domain Details</button></td>
@@ -827,7 +912,7 @@ function validationOnSubmit(){
 															</c:choose>
 															<td><c:choose>
 																	<c:when
-																		test="${institueInfraHrActivityDetailsMopr[count].isApproved eq true}">
+																		test="${institueInfraHrActivityDetailsMopr[index.index].isApproved eq true}">
 																		<i class="fa fa-check" aria-hidden="true"
 																			style="color: #00cc00"></i>
 																	</c:when>
@@ -837,35 +922,100 @@ function validationOnSubmit(){
 																	</c:otherwise>
 																</c:choose></td>
 															<td>
-																<div align="center">${institueInfraHrActivityDetailsMopr[count].remarks }</div>
+																<div align="center">${institueInfraHrActivityDetailsMopr[index.index].remarks }</div>
 															</td>
 														</tr>
-														<c:set var="count" value="${count +1}" scope="page" />
 													</c:forEach>
 												</tr>
 												<tr>
 													<td><div align="center">
-															<strong><spring:message code="Label.TotalCost"
-																	htmlEscape="true" /></strong>
+															<strong>Total SPRC Fund</strong>
 														</div></td>
 													<td colspan="3"></td>
-													<td><div align="center">${totalMopr}</div></td>
+													<td><div align="center">${SPRC_TOTAL_MOPR}</div></td>
 												</tr>
 												<tr>
 													<td><div align="center">
-															<strong><spring:message
+															<strong>SPRC <spring:message
 																	code="Label.AdditionalRequirement" htmlEscape="true" /></strong>
 														</div></td>
 													<td colspan="3"></td>
-													<td><div align="center">${additionalRequirementMopr}</div></td>
+													<td><div align="center">${institueInfraHrActivityMopr.additionalRequirementSprc}</div></td>
 												</tr>
+												<!-- SPRC LOOP ENDS -->
+												
+												<!-- DPRC LOOP BEGINS -->
+												<c:forEach items="${LIST_OF_ACTIVITY_HR_TYPE}" var="ACTIVITY" varStatus="index" begin="0" end="2">
+														<tr>
+															<td><div align="center">
+																	<strong>${ACTIVITY.trainingInstitueType.trainingInstitueTypeName}</strong>
+																</div></td>
+
+															<td><div align="center">
+																	<strong>${ACTIVITY.instituteInfraHrActivityName}</strong>
+																</div></td>
+
+															<td><div align="center">${institueInfraHrActivityDetailsMopr[index.index].noOfUnits}</div></td>
+
+															<td><div align="center">${institueInfraHrActivityDetailsMopr[index.index].noOfMonths}</div></td>
+
+															<td><div align="center">${institueInfraHrActivityDetailsMopr[index.index].fund}</div></td>
+
+															<c:choose>
+																<c:when test="${index.index eq 0 }">
+																	<td><button type="button"
+																			class="btn btn-primary btn-lg" data-toggle="modal"
+																			data-target="#myModal3">See Domain Details</button></td>
+																</c:when>
+
+																<c:when test="${index.index eq 3}">
+																	<td><button type="button"
+																			class="btn btn-primary btn-lg" data-toggle="modal"
+																			data-target="#myModal4">See Domain Details</button></td>
+																</c:when>
+																<c:otherwise>
+																	<td></td>
+																</c:otherwise>
+															</c:choose>
+															<td><c:choose>
+																	<c:when
+																		test="${institueInfraHrActivityDetailsMopr[index.index].isApproved eq true}">
+																		<i class="fa fa-check" aria-hidden="true"
+																			style="color: #00cc00"></i>
+																	</c:when>
+																	<c:otherwise>
+																		<i class="fa fa-times" aria-hidden="true"
+																			style="color: red"></i>
+																	</c:otherwise>
+																</c:choose></td>
+															<td>
+																<div align="center">${institueInfraHrActivityDetailsMopr[index.index].remarks }</div>
+															</td>
+														</tr>
+													</c:forEach>
+												<tr>
+													<td><div align="center">
+															<strong>Total DPRC Fund</strong>
+														</div></td>
+													<td colspan="3"></td>
+													<td><div align="center">${DPRC_TOTAL_MOPR}</div></td>
+												</tr>
+												<tr>
+													<td><div align="center">
+															<strong>DPRC <spring:message
+																	code="Label.AdditionalRequirement" htmlEscape="true" /></strong>
+														</div></td>
+													<td colspan="3"></td>
+													<td><div align="center">${institueInfraHrActivityMopr.additionalRequirementDprc}</div></td>
+												</tr>
+												<!-- DPRC LOOP ENDS -->
 												<tr>
 													<td><div align="center">
 															<strong><spring:message
 																	code="Label.TotalProposedFund" htmlEscape="true" /></strong>
 														</div></td>
 													<td colspan="3"></td>
-													<td><div align="center">${additionalRequirementMopr + totalMopr}</div></td>
+													<td><div align="center">${institueInfraHrActivityMopr.additionalRequirementSprc + SPRC_TOTAL_MOPR + institueInfraHrActivityMopr.additionalRequirementDprc + DPRC_TOTAL_MOPR}</div></td>
 												</tr>
 											</tbody>
 										</table>

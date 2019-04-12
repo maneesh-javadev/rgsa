@@ -61,9 +61,12 @@ public class FetchTraining {
 	
 	@Transient
 	List<FetchTrainingDetails> trainingDetailList;
-	
+		
 	@Transient
 	private Integer preTrainingActivityId;
+	
+	@Transient
+	private String delIds;
 
 	public Integer getTrainingActivityId() {
 		return trainingActivityId;
@@ -175,6 +178,14 @@ public class FetchTraining {
 
 	public void setPreTrainingActivityId(Integer preTrainingActivityId) {
 		this.preTrainingActivityId = preTrainingActivityId;
+	}
+
+	public String getDelIds() {
+		return delIds;
+	}
+
+	public void setDelIds(String delIds) {
+		this.delIds = delIds;
 	}
 
 	

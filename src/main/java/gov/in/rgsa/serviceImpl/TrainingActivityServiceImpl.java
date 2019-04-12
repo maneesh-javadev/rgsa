@@ -23,6 +23,7 @@ import org.springframework.stereotype.Service;
 import gov.in.rgsa.dao.CommonRepository;
 import gov.in.rgsa.entity.FetchTraining;
 import gov.in.rgsa.entity.FetchTrainingDetails;
+import gov.in.rgsa.entity.Plan;
 import gov.in.rgsa.entity.Subjects;
 import gov.in.rgsa.entity.TargetGroupMaster;
 import gov.in.rgsa.entity.TrainingActivity;
@@ -32,8 +33,10 @@ import gov.in.rgsa.entity.TrainingMode;
 import gov.in.rgsa.entity.TrainingSubjects;
 import gov.in.rgsa.entity.TrainingTargetGroups;
 import gov.in.rgsa.entity.TrainingVenueLevel;
+import gov.in.rgsa.entity.TrainingWiseCategory;
 import gov.in.rgsa.model.Response;
 import gov.in.rgsa.service.FacadeService;
+import gov.in.rgsa.service.PlanAllocationService;
 import gov.in.rgsa.service.TrainingActivityService;
 import gov.in.rgsa.user.preference.UserPreference;
 
@@ -53,6 +56,9 @@ public class TrainingActivityServiceImpl implements TrainingActivityService {
 	
 	@Autowired
 	private FacadeService facadeService;
+	
+	@Autowired
+	private PlanAllocationService planAllocationService;
 	
 	@Override
 public void save(TrainingActivity activity) {
@@ -373,6 +379,13 @@ public void save(TrainingActivity activity) {
 			fetchTrainingDetailsList = commonRepository.findAll("Fetch_Training_Details", params);
 		}
 		
+		
+		Integer planStatus=0;
+		List<Plan> planList = planAllocationService.showHidePlanStatus(userPreference.getStateCode());
+		if(planList!=null && !planList.isEmpty())
+		{
+			planStatus=planList.get(0).getPlanStatusId();
+		}
 		Map<String,Object> data = new HashMap<>();
 		data.put("fetchTraining", fetchTraining);
 		data.put("fetchTrainingDetailsList", fetchTrainingDetailsList);
@@ -381,8 +394,7 @@ public void save(TrainingActivity activity) {
 		data.put("trngVenueList",this.trainingVenueLevelsList());
 		data.put("subjectsList",this.subjectsList());
 		data.put("modeOfTraining",this.fetchModeOfTraining());
-		data.put("planStateStatus",userPreference.getPlanStatus()==1);
-		
+		data.put("planStateStatus",planStatus==1);
 		return data;
 	}
 	
@@ -401,9 +413,17 @@ public void save(TrainingActivity activity) {
 			trainingSubjectsIds.add(trainingSubjects.getTrngSubjectId().getSubjectId().toString());
 		}
 		
+		List<TrainingWiseCategory> trainingwiseCatgryList = this.fetchTrainingWiseCategoryList(trngId);
+		List<String> trainingCategoryIds=new ArrayList<String>();
+		for(TrainingWiseCategory trainingWiseCategory:trainingwiseCatgryList) {
+			trainingCategoryIds.add(trainingWiseCategory.getTrainingCategories().getTrainingCategoryId().toString());
+		}
+		
+		
 		Map<String,Object> data = new HashMap<>();
 		data.put("targetGroupMasterIds",targetGroupMasterIds);
 		data.put("trainingSubjectsIds",trainingSubjectsIds);
+		data.put("trainingCategoryIds",trainingCategoryIds);
 		return data;
 	}
 	
@@ -473,11 +493,26 @@ public void save(TrainingActivity activity) {
 				}
 				trainingActivityDetails.setTrainingSubjectsList(selectSubList);
 				
+				List<TrainingWiseCategory> trainingWiseCategoryList=new ArrayList<TrainingWiseCategory>();
+				scanner = new Scanner(fetchTrainingDetails.getTrgCategoryArr());
+				 scanner.useDelimiter(",");
+				 TrainingWiseCategory trainingWiseCategory=null;
+				while (scanner.hasNext()) {
+						params1 = new HashMap<>();
+						params1.put("trainingCategoryId", Integer.parseInt(scanner.next()));
+						TrainingCategories trainingCategories = commonRepository.find("Fetch_Training_Categories_BY_Id", params1);
+						trainingWiseCategory=new TrainingWiseCategory();
+						trainingWiseCategory.setTargetTrainingActivityDetails(trainingActivityDetails);
+						trainingWiseCategory.setTrainingCategories(trainingCategories);
+						trainingWiseCategoryList.add(trainingWiseCategory);
+				}				
+				trainingActivityDetails.setTrainingWiseCategoryList(trainingWiseCategoryList);
 				
-				params1 = new HashMap<>();
+				
+				/*params1 = new HashMap<>();
 				params1.put("trainingCategoryId", fetchTrainingDetails.getTrainingCategoryId());
 				TrainingCategories trainingCategories = commonRepository.find("Fetch_Training_Categories_BY_Id", params1);
-				trainingActivityDetails.setTrainingCategoryId(trainingCategories);
+				trainingActivityDetails.setTrainingCategoryId(trainingCategories);*/
 				
 				List<TrainingActivityDetails> trainingActivityDetailsList=new ArrayList<TrainingActivityDetails>();
 				trainingActivityDetailsList.add(trainingActivityDetails);
@@ -508,10 +543,10 @@ public void save(TrainingActivity activity) {
 					trainingActivityDetails.setIsActive(Boolean.TRUE);
 					
 					
-					param = new HashMap<>();
+					/*param = new HashMap<>();
 					param.put("trainingCategoryId", fetchTrainingDetails.getTrainingCategoryId());
 					TrainingCategories trainingCategories = commonRepository.find("Fetch_Training_Categories_BY_Id", param);
-					trainingActivityDetails.setTrainingCategoryId(trainingCategories);
+					trainingActivityDetails.setTrainingCategoryId(trainingCategories);*/
 					
 					
 				}else {
@@ -522,12 +557,23 @@ public void save(TrainingActivity activity) {
 					
 					Map<String,Object> param = new HashMap<>();
 					param.put("trngId",fetchTrainingDetails.getTrainingId());
-					commonRepository.excuteUpdate("DELETE_TARGETGRP_TRAINING_ID", param);	
+					commonRepository.excuteUpdate("DELETE_TARGETGRP_TRAINING_ID", param);
+					
+					Map<String,Object> param1 = new HashMap<>();
+					param.put("trngId",fetchTrainingDetails.getTrainingId());
+					commonRepository.excuteUpdate("DELETE_TRANGCATEGORY_TRAINING_ID", param);	
 					
 					
 					Map<String,Object> params = new HashMap<>();
 					params.put("trainingActivityDetailsId", fetchTrainingDetails.getTrainingId());
 					trainingActivityDetails = commonRepository.find("FIND_TrainingActivityDetails_BY_ID", params);
+					
+					trainingActivityDetails.setRemarks(fetchTrainingDetails.getRemarks());
+					trainingActivityDetails.setNoOfDays(fetchTrainingDetails.getNoOfDays());
+					trainingActivityDetails.setNoOfParticipants(fetchTrainingDetails.getNoOfParticipants());
+					trainingActivityDetails.setUnitCost(fetchTrainingDetails.getUnitCost());
+					trainingActivityDetails.setFunds(fetchTrainingDetails.getFunds());
+					
 					
 				}
 			
@@ -554,7 +600,7 @@ public void save(TrainingActivity activity) {
 			trainingActivityDetails.setTrainingVenueLevelId(trainingVenueLevel);
 			
 			params1 = new HashMap<>();
-			params1.put("trainingModeId",fetchTrainingDetails.getTrainingVenueLevelId() );
+			params1.put("trainingModeId",fetchTrainingDetails.getTrainingMode());
 			TrainingMode trainingMode=commonRepository.find("FETCH_TRAINING_MODES_by_Id",params1);
 			trainingActivityDetails.setTrainingMode(trainingMode);
 			
@@ -574,8 +620,24 @@ public void save(TrainingActivity activity) {
 					trainingSubjects.setTrngSubjectId(subjects);
 					selectSubList.add(trainingSubjects);
 			}
-			trainingActivityDetails.setTrainingSubjectsList(selectSubList);
 			
+			List<TrainingWiseCategory> trainingWiseCategoryList=new ArrayList<TrainingWiseCategory>();
+			scanner = new Scanner(fetchTrainingDetails.getTrgCategoryArr());
+			 scanner.useDelimiter(",");
+			 TrainingWiseCategory trainingWiseCategory=null;
+			while (scanner.hasNext()) {
+					params1 = new HashMap<>();
+					params1.put("trainingCategoryId", Integer.parseInt(scanner.next()));
+					TrainingCategories trainingCategories = commonRepository.find("Fetch_Training_Categories_BY_Id", params1);
+					trainingWiseCategory=new TrainingWiseCategory();
+					trainingWiseCategory.setTargetTrainingActivityDetails(trainingActivityDetails);
+					trainingWiseCategory.setTrainingCategories(trainingCategories);
+					trainingWiseCategoryList.add(trainingWiseCategory);
+			}				
+			trainingActivityDetails.setTrainingWiseCategoryList(trainingWiseCategoryList);
+			
+			trainingActivityDetails.setTrainingSubjectsList(selectSubList);
+			trainingActivityDetails.setUnitCost(fetchTrainingDetails.getUnitCost());
 			trainingActivityDetails.setRemarks(fetchTrainingDetails.getRemarks());
 			trainingActivityDetails.setNoOfDays(fetchTrainingDetails.getNoOfDays());
 			trainingActivityDetails.setNoOfParticipants(fetchTrainingDetails.getNoOfParticipants());
@@ -594,17 +656,7 @@ public void save(TrainingActivity activity) {
 			
 			}
 			
-			String delIds= fetchTrainingDetails.getDelIds();
-			if(delIds!=null && delIds.length()>0) {
-				Scanner scanner = new Scanner(delIds);
-				 scanner.useDelimiter(",");
-				List<Integer> delIdArr=new ArrayList<Integer>();
-				while (scanner.hasNext()) {
-					delIdArr.add(Integer.parseInt(scanner.next()));	
-				}
-				
-				this.deleteMultiple(delIdArr);
-			}
+			
 			
 			
 
@@ -617,10 +669,19 @@ public void save(TrainingActivity activity) {
 	}
 	
 	@Override
-	public List<Subjects> fetchSubjectsList(Integer trainingCategoryId) {
+	public List<Subjects> fetchSubjectsList(String strTrainingCategoryIds) {
+		
+		List<Integer> trainingCategoryIds=new ArrayList<Integer>();
+		trainingCategoryIds.add(-1);
+		Scanner scanner = new Scanner(strTrainingCategoryIds);
+		 scanner.useDelimiter(",");
+		while (scanner.hasNext()) {
+		trainingCategoryIds.add(Integer.parseInt(scanner.next()));
+		}
+		
 		Map<String,Object> params = new HashMap<>();
-		params.put("trainingCategoryId", trainingCategoryId);
-		return commonRepository.findAll("FETCH_SUBJECT_LIST_by_CATEGORY",params );
+		params.put("trainingCategoryIds", trainingCategoryIds);
+		return commonRepository.findAll("FETCH_SUBJECT_LIST_by_CATEGORIES",params );
 	}
 	
 	@Override
@@ -635,9 +696,24 @@ public void save(TrainingActivity activity) {
 			
 			commonRepository.excuteUpdate("UPDATE_Training_Activity", param);	
 			
+			String delIds= fetchTraining.getDelIds();
+			if(delIds!=null && delIds.length()>0) {
+				Scanner scanner = new Scanner(delIds);
+				 scanner.useDelimiter(",");
+				List<Integer> delIdArr=new ArrayList<Integer>();
+				while (scanner.hasNext()) {
+					delIdArr.add(Integer.parseInt(scanner.next()));	
+				}
+				
+				this.deleteMultiple(delIdArr);
+			}
+			
 			if(fetchTraining.getIsFreeze()) {
 				facadeService.populateStateFunds("1");
 			}
+			
+			
+			
 			response1.setResponseMessage("Training Details update");
 			response1.setResponseCode(200);
 			
@@ -779,7 +855,7 @@ public void save(TrainingActivity activity) {
 					
 					
 					
-						trainingActivityDetails.setTrainingCategoryId(trainingActivityDetailsPreLvl.getTrainingCategoryId());	
+						//trainingActivityDetails.setTrainingCategoryId(trainingActivityDetailsPreLvl.getTrainingCategoryId());	
 						trainingActivityDetails.setTrainingVenueLevelId(trainingActivityDetailsPreLvl.getTrainingVenueLevelId());
 						trainingActivityDetails.setTrainingMode(trainingActivityDetailsPreLvl.getTrainingMode());
 						
@@ -820,11 +896,24 @@ public void save(TrainingActivity activity) {
 						}
 						trainingActivityDetails.setTrainingSubjectsList(newList);
 						
+						 TrainingWiseCategory trainingWiseCategory=null;
+						List<TrainingWiseCategory> trainingWiseCategoryList=new ArrayList<TrainingWiseCategory>();
+						for(TrainingWiseCategory preTrainingWiseCategory:trainingActivityDetailsPreLvl.getTrainingWiseCategoryList()) {
+							params1 = new HashMap<>();
+							params1.put("trainingCategoryId", preTrainingWiseCategory.getTrainingCategories().getTrainingCategoryId());
+							TrainingCategories trainingCategories = commonRepository.find("Fetch_Training_Categories_BY_Id", params1);
+							trainingWiseCategory=new TrainingWiseCategory();
+							trainingWiseCategory.setTargetTrainingActivityDetails(trainingActivityDetails);
+							trainingWiseCategory.setTrainingCategories(trainingCategories);
+							trainingWiseCategoryList.add(trainingWiseCategory);
+							
+						}
+						trainingActivityDetails.setTrainingWiseCategoryList(trainingWiseCategoryList);
+						
 						trainingActivityDetailsList.add(trainingActivityDetails);
+						
 						}
 						activity.setTrainingActivityDetailsList(trainingActivityDetailsList);
-						
-						
 						commonRepository.save(activity);
 						if(activity.getIsFreeze()) {
 							facadeService.populateStateFunds("1");
@@ -889,6 +978,13 @@ public void save(TrainingActivity activity) {
 			}
 		}
 		return fetchTrainingDetails;
+	}
+	
+	@Override
+	public List<TrainingWiseCategory> fetchTrainingWiseCategoryList(Integer trngId) {
+		Map<String,Object> params = new HashMap<>();
+		params.put("trngId", trngId);
+		return commonRepository.findAll("FETCH_TRANGCATEGORY_TRAINING_ID", params);
 	}
 
 }

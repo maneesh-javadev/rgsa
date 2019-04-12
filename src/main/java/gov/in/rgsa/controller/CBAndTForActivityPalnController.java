@@ -280,7 +280,7 @@ public class CBAndTForActivityPalnController {
 			if(!trngActvty.isEmpty()) {
 			for(int i=0 ; i<trngActvty.get(0).getTrainingActivityDetailsList().size();i++) {
 				if(trngActvty.get(0).getTrainingActivityDetailsList().get(i).getTrainingActivityDetailsId() == trainingActivity.getIdToEdit()) {
-					trngActvty.get(0).getTrainingActivityDetailsList().get(i).setTrainingCategoryId(trainingCategories);
+					//trngActvty.get(0).getTrainingActivityDetailsList().get(i).setTrainingCategoryId(trainingCategories);
 					model.addAttribute("showTrainingActivity",trngActvty.get(0).getTrainingActivityDetailsList().get(i));
 				}
 				
@@ -300,14 +300,14 @@ public class CBAndTForActivityPalnController {
 			}
 		}
 		else if(trainingActivity.getIdToEdit() == null) {
-			trainingActivity.getTrainingActivityDetailsList().get(0).setTrainingCategoryId(trainingCategories);
-			model.addAttribute("setCatgryId", trainingActivity.getTrainingActivityDetailsList().get(0).getTrainingCategoryId().getTrainingCategoryId());
+		//	trainingActivity.getTrainingActivityDetailsList().get(0).setTrainingCategoryId(trainingCategories);
+			//model.addAttribute("setCatgryId", trainingActivity.getTrainingActivityDetailsList().get(0).getTrainingCategoryId().getTrainingCategoryId());
 			model.addAttribute("setTrainingActivity",trainingActivity.getTrainingActivityId());
 			model.addAttribute("setAddtnlReqrmnt", trngActvty.get(0).getAdditionalRequirement());
 		}
 	}else {
-		trainingActivity.getTrainingActivityDetailsList().get(0).setTrainingCategoryId(trainingCategories);
-		model.addAttribute("setCatgryId", trainingActivity.getTrainingActivityDetailsList().get(0).getTrainingCategoryId().getTrainingCategoryId());
+		//trainingActivity.getTrainingActivityDetailsList().get(0).setTrainingCategoryId(trainingCategories);
+		//model.addAttribute("setCatgryId", trainingActivity.getTrainingActivityDetailsList().get(0).getTrainingCategoryId().getTrainingCategoryId());
 		model.addAttribute("setTrainingActivity",trainingActivity.getTrainingActivityId());
 	}
 		Integer planStatus=userPreference.getPlanStatus();	
@@ -363,8 +363,8 @@ public class CBAndTForActivityPalnController {
 	}
 	
 	@RequestMapping(value = "fetchSubjectsListData", method = RequestMethod.GET)
-	private @ResponseBody List<Subjects> fetchSubjectsListData(Integer trainingCategoryId) {
-		return  trainingActivityService.fetchSubjectsList(trainingCategoryId);
+	private @ResponseBody List<Subjects> fetchSubjectsListData(String strTrainingCategoryIds) {
+		return  trainingActivityService.fetchSubjectsList(strTrainingCategoryIds);
 	}
 	
 	@RequestMapping(value="updateTrainingActivityData",method=RequestMethod.POST)

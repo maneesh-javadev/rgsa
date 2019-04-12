@@ -1,19 +1,11 @@
 <%@include file="../taglib/taglib.jsp"%>
 <script>
 $('document').ready(function(){
-	calTotalFundMOPR();
-	calTotalFundState();
-	;
-	 var calculated_total_sum = 0;
-	    
-	    $("#supportStaff .txtCal").each(function () {
-	        var get_textbox_value = $(this).val();
-	        if ($.isNumeric(get_textbox_value)) {
-	           calculated_total_sum += parseFloat(get_textbox_value);
-	           }                  
-	         });
-	    document.getElementById("grandtotal").value=calculated_total_sum;
-	    onLoadChangeColor();
+	/* calTotalFundMOPR();
+	calTotalFundState(); */
+	calculateTotalFundSpmu();
+	calculateTotalFundDpmu();
+	onLoadChangeColor();
 		
 		var myBoolean = document.getElementById("isFreeze").value;
 		if(myBoolean == "true"){
@@ -35,7 +27,7 @@ $('document').ready(function(){
 		 }
 });
 
-function calTotalFundMOPR(){
+/* function calTotalFundMOPR(){
 	var total=0;
 	for(var i=0;i < $('#myTableId tr').length -1;i++){
 		if($('#fundMOPR_'+i).text() == undefined){
@@ -45,9 +37,9 @@ function calTotalFundMOPR(){
 		}
 	}
 	$('#totalFundIdMOPR').text(total);
-}
+} */
 
-function calTotalFundState(){
+/* function calTotalFundState(){
 	var total=0;
 	for(var i=0;i < $('#myTableId tr').length -1;i++){
 		if($('#fundState_'+i).text() == undefined){
@@ -57,7 +49,7 @@ function calTotalFundState(){
 		}
 	}
 	$('#totalFundIdState').text(total);
-}
+} */
 
 function isNumber(evt) {
    evt = (evt) ? evt : window.event;
@@ -73,34 +65,31 @@ function calculate(obj)
 	if(noOfMonths > 12)
 		{
 			alert("Months should be less than 12 !");
-			$("#noOfMonths_"+obj).val('');
-			$("#noOfMonths_"+obj).focus();
-			$("#fund_"+obj).val('');
+			$("#noOfMonths_"+obj).val(0);
 		}
-	else if(noOfMonths > 0 && noOfMonths < 12) {
+	else if(noOfMonths > 0) {
 		$("#fund_"+obj).val(parseFloat($("#noOfUnits_"+obj).val()) * parseFloat($("#unitCost_"+obj).val()) * parseFloat($("#noOfMonths_"+obj).val())); 
-		+$("#fundState_"+obj).text() > +$("#fund_"+obj).val() ? $("#fundState_"+obj).css('color','red') : $("#fundState_"+obj).css('color','#00cc00');
-		$("#totalFund_"+obj).val(parseFloat($("#fund_"+obj).val()));
-		totalfunds();
 	}
-	else if((noOfMonths == 0 || noOfMonths < 0) && noOfMonths !="") {
+	else if(noOfMonths == 0 && noOfMonths !="") {
 		alert("Months should be greater than 0!");
-		$("#noOfMonths_"+obj).val('');
-		$("#noOfMonths_"+obj).focus();
-		$("#fund_"+obj).val('');
+		$("#noOfMonths_"+obj).val(1);
 	}
-	totalfunds();
+	calculateTotalFundSpmu();
+	calculateTotalFundDpmu();
 }
 
 function totalfunds(){
-	var totalFunds = 0;
-	 for(var i=0;i<6;i++){
-		 	var funds = $("#fund_"+i).val();
-		 	if(funds != "")
-	    	totalFunds += parseInt(funds);
-	    }
-	    $("#grandtotal").val(totalFunds);
-	    +$("#totalFundIdState").text() > +$("#grandtotal").val() ? $("#totalFundIdState").css('color','red') : $("#totalFundIdState").css('color','#00cc00');
+	
+	if($("#total_fund_spmu").val() == "" && $("#total_fund_dpmu").val() != ""){
+		$("#grandtotal").val( +$("#total_fund_spmu").val() + + $("#total_fund_dpmu").val());
+	}else if($("#total_fund_dpmu").val() == "" && $("#total_fund_spmu").val() != ""){
+		$("#grandtotal").val( +$("#total_fund_spmu").val() + + $("#total_fund_dpmu").val());
+	}else if($("#total_fund_dpmu").val() == "" && $("#total_fund_spmu").val() == ""){
+		$("#grandtotal").val('');
+	}else{
+		$("#grandtotal").val( +$("#total_fund_spmu").val() + + $("#total_fund_dpmu").val());
+	}
+    
 }
 function toFreeze(){
 	 $("input").prop('disabled', false);
@@ -119,6 +108,8 @@ function onLoadChangeColor(){
 		+$("#fundState_"+i).text() > +$("#fund_"+i).val() ? $("#fundState_"+i).css('color','red') : $("#fundState_"+i).css('color','#00cc00');
 		+$("#noOfMonthsState_"+i).text() > +$("#noOfMonths_"+i).val() ? $("#noOfMonthsState_"+i).css('color','red') : $("#noOfMonthsState_"+i).css('color','#00cc00');
 	}
+	+$("#total_fund_spmu_state").text() > +$("#total_fund_spmu").val() ? $("#total_fund_spmu_state").css('color','red') : $("#total_fund_spmu_state").css('color','#00cc00');
+	+$("#total_fund_dpmu_state").text() > +$("#total_fund_dpmu").val() ? $("#total_fund_dpmu_state").css('color','red') : $("#total_fund_dpmu_state").css('color','#00cc00');
 	+$("#totalFundIdState").text() > +$("#grandtotal").val() ? $("#totalFundIdState").css('color','red') : $("#totalFundIdState").css('color','#00cc00');
 	
 	for(var j=0;j < rowModal1 ;j++){
@@ -202,6 +193,30 @@ function validationOnSubmit(){
 	}
 	return flag;
 }
+
+function calculateTotalFundSpmu() {
+	var count = $("#countSpmuId").val();
+	var total_spmu_fund = 0;
+	for (var i = 0; i < count; i++) {
+		if($("#fund_" + i).val() != null && $("#fund_" + i).val() != ""){
+			total_spmu_fund += +$("#fund_" + i).val();
+		}
+	}
+	$("#total_fund_spmu").val(+total_spmu_fund); 
+	totalfunds();
+};
+
+function calculateTotalFundDpmu() {
+	var count = $("#countDpmuId").val();
+	var total_dpmu_fund = 0;
+	for (var i = 0; i < count; i++) {
+		if($("#fund_"+(i + +$("#countSpmuId").val())).val() != null && $("#fund_"+(i + +$("#countSpmuId").val())).val() != ""){
+			total_dpmu_fund += +$("#fund_"+(i + +$("#countSpmuId").val())).val();
+		}
+	}
+	$("#total_fund_dpmu").val(total_dpmu_fund); 
+	totalfunds();
+};
 </script>
 <section class="content">
 	<div class="container-fluid">
@@ -265,21 +280,13 @@ function validationOnSubmit(){
 											</tr>
 										</thead>
 										<tbody id="tbody">
-											<c:set var="count" value="0" scope="page" />
-												<c:forEach items="${LIST_OF_ACTIVITY_PMU_TYPE}"
-													var="ACTIVITY" varStatus="srl">
-													<input type="hidden" name="pmuActivityId"
-														value="${pmuActivity.pmuActivityId}">
-													<input type="hidden"
-														name="pmuActivityDetails[${count}].pmuActivityTypeId"
-														value="${ACTIVITY.pmuActivityTypeId}">
-													<input type="hidden" id="isFreeze" name="isFreeze"
-														value="${pmuActivity.isFreeze}">
-													<input type="hidden"
-														name="pmuActivityDetails[${count}].pmuDetailsId"
-														value="${pmuActivity.pmuActivityDetails[count].pmuDetailsId}">
-													<input type="hidden" name="userType"
-														value="${pmuActivity.userType}" />
+											<c:set var="countSpmu" value="0" scope="page" />
+											<c:set var="countDpmu" value="0" scope="page" />
+											<!-- SPMU LOOP STARTS -->
+												<c:forEach items="${LIST_OF_ACTIVITY_PMU_TYPE}" var="ACTIVITY" varStatus="srl" begin="0" end="2">
+													<input type="hidden" name="pmuActivityDetails[${srl.index}].pmuActivityTypeId" value="${ACTIVITY.pmuActivityTypeId}">
+													<input type="hidden" name="pmuActivityDetails[${srl.index}].pmuDetailsId" value="${pmuActivity.pmuActivityDetails[srl.index].pmuDetailsId}">
+													<input	type="hidden" name="pmuActivityDetails[${srl.index}].pmuActivityType.pmuActivityTypeId"	value="${ACTIVITY.pmuActivityTypeId}" />
 													<tr>
 														<td><div align="center">
 																<strong>${ACTIVITY.pmuType.pmuTypeName}</strong>
@@ -288,37 +295,37 @@ function validationOnSubmit(){
 																<strong>${ACTIVITY.pmuActivityName}</strong>
 															</div></td>
 														<td>
-														<div align="center" id="noOfUnitsState_${count}">${pmuActivityState.pmuActivityDetails[srl.index].noOfUnits}</div>
+														<div align="center" id="noOfUnitsState_${srl.index}">${pmuActivityState.pmuActivityDetails[srl.index].noOfUnits}</div>
 														<input
 															value="${pmuActivity.pmuActivityDetails[srl.index].noOfUnits}"
 															name="pmuActivityDetails[${srl.index}].noOfUnits" min="1"
 															maxlength="3" onkeypress="return isNumber(event)"
 															oninput="validity.valid||(value='');" type="text"
-															class="active12 form-control" id="noOfUnits_${count}"
-															onkeyup="onLoadChangeColor();calculate(${count})"
-															style="text-align: right;" /></td>
+															class="active12 form-control" id="noOfUnits_${srl.index}"
+															onkeyup="onLoadChangeColor();calculate(${srl.index})"
+															style="text-align: right;" required="required"/></td>
 														<td>
-														<div align="center" id="unitCostState_${count}">${pmuActivityState.pmuActivityDetails[srl.index].unitCost}</div>
+														<div align="center" id="unitCostState_${srl.index}">${pmuActivityState.pmuActivityDetails[srl.index].unitCost}</div>
 														<input
 															value="${pmuActivity.pmuActivityDetails[srl.index].unitCost}"
 															name="pmuActivityDetails[${srl.index}].unitCost" min="1"
 															maxlength="7" onkeypress="return isNumber(event)"
 															oninput="validity.valid||(value='');" type="text"
-															class="active12 form-control" id="unitCost_${count}"
-															onkeyup="calculate(${count});onLoadChangeColor()"
-															style="text-align: right;" /></td>
+															class="active12 form-control" id="unitCost_${srl.index}"
+															onkeyup="calculate(${srl.index});onLoadChangeColor()"
+															style="text-align: right;" required="required"/></td>
 														<td>
-														<div align="center" id="noOfMonthsState_${count}">${pmuActivityState.pmuActivityDetails[srl.index].noOfMonths}</div>
+														<div align="center" id="noOfMonthsState_${srl.index}">${pmuActivityState.pmuActivityDetails[srl.index].noOfMonths}</div>
 														<input
 															value="${pmuActivity.pmuActivityDetails[srl.index].noOfMonths}"
 															name="pmuActivityDetails[${srl.index}].noOfMonths"  type="text" min="1"
-															class="active12 form-control" onkeyup="calculate(${count});onLoadChangeColor()"
+															class="active12 form-control" onkeyup="calculate(${srl.index});onLoadChangeColor()"
 															oninput="validity.valid||(value='');" onkeypress="return isNumber(event)"
-															id="noOfMonths_${count}" style="text-align: right;"/></td>
+															id="noOfMonths_${srl.index}" style="text-align: right;" required="required"/></td>
 														<c:set var="totalFundToCalc"
 															value="${pmuActivity.pmuActivityDetails[srl.index].fund}"></c:set>
 														<td>
-														<div align="center" id="fundState_${count}">${pmuActivityState.pmuActivityDetails[srl.index].fund}</div>
+														<div align="center" id="fundState_${srl.index}">${pmuActivityState.pmuActivityDetails[srl.index].fund}</div>
 														<input
 															value="${pmuActivity.pmuActivityDetails[srl.index].fund}"
 															readonly="readonly"
@@ -326,15 +333,15 @@ function validationOnSubmit(){
 															onkeypress="return isNumber(event)"
 															onchange="onLoadChangeColor()"
 															oninput="validity.valid||(value='');" type="text" min="1"
-															class="active12 form-control txtCal" id="fund_${count}"
+															class="active12 form-control txtCal" id="fund_${srl.index}"
 															style="text-align: right;" /></td>
 														<c:choose>
-															<c:when test="${count eq 0 }">
+															<c:when test="${srl.index eq 0 }">
 																<td><button type="button"
 																		class="btn btn-primary btn-lg" data-toggle="modal"
 																		data-target="#myModal">Fill <spring:message code="Label.DomainDetails" htmlEscape="true" /></button></td>
 															</c:when>
-															<c:when test="${count eq 3}">
+															<c:when test="${srl.index eq 3}">
 																<td><button type="button"
 																		class="btn btn-primary btn-lg" data-toggle="modal"
 																		data-target="#myModal2">Fill <spring:message code="Label.DomainDetails" htmlEscape="true" /></button></td>
@@ -344,17 +351,115 @@ function validationOnSubmit(){
 															</c:otherwise>
 														</c:choose>
 														<td><textarea
-																name="pmuActivityDetails[${count}].remarks" rows="3"
+																name="pmuActivityDetails[${srl.index}].remarks" rows="3"
 																class="form-control" cols="5"><c:out
-																	value="${pmuActivity.pmuActivityDetails[count].remarks}"></c:out></textarea></td>
+																	value="${pmuActivity.pmuActivityDetails[srl.index].remarks}"></c:out></textarea></td>
 													</tr>
-													<c:set var="count" value="${count +1}" scope="page" />
+													<c:set var="countSpmu" value="${countSpmu + 1}" scope="page" />
 												</c:forEach>
+												<tr>
+													<th colspan="5"><label>Total SPMU Fund</label></th>
+													<td>
+													<div align="center" id="total_fund_spmu_state">${SPMU_TOTAL_STATE }</div>
+													<input type="text" style="background: #dddddd;"
+														class="form-control Align-Right" id="total_fund_spmu"
+														value="" disabled="disabled" onchange="onLoadChangeColor()"></td>
+													<td></td>
+													<td></td>
+												</tr>
+												<!-- SPMU LOOP ENDS HERE -->
+												
+												<!-- DPMU LOOP STARTS -->
+												<c:forEach items="${LIST_OF_ACTIVITY_PMU_TYPE}" var="ACTIVITY" varStatus="srl" begin="3" end="5">
+													<input type="hidden" name="pmuActivityDetails[${srl.index}].pmuActivityTypeId" value="${ACTIVITY.pmuActivityTypeId}">
+													<input type="hidden" name="pmuActivityDetails[${srl.index}].pmuDetailsId" value="${pmuActivity.pmuActivityDetails[srl.index].pmuDetailsId}">
+													<input	type="hidden" name="pmuActivityDetails[${srl.index}].pmuActivityType.pmuActivityTypeId"	value="${ACTIVITY.pmuActivityTypeId}" />
+													<tr>
+														<td><div align="center">
+																<strong>${ACTIVITY.pmuType.pmuTypeName}</strong>
+															</div></td>
+														<td><div align="center">
+																<strong>${ACTIVITY.pmuActivityName}</strong>
+															</div></td>
+														<td>
+														<div align="center" id="noOfUnitsState_${srl.index}">${pmuActivityState.pmuActivityDetails[srl.index].noOfUnits}</div>
+														<input
+															value="${pmuActivity.pmuActivityDetails[srl.index].noOfUnits}"
+															name="pmuActivityDetails[${srl.index}].noOfUnits" min="1"
+															maxlength="3" onkeypress="return isNumber(event)"
+															oninput="validity.valid||(value='');" type="text"
+															class="active12 form-control" id="noOfUnits_${srl.index}"
+															onkeyup="onLoadChangeColor();calculate(${srl.index})"
+															style="text-align: right;" required="required"/></td>
+														<td>
+														<div align="center" id="unitCostState_${srl.index}">${pmuActivityState.pmuActivityDetails[srl.index].unitCost}</div>
+														<input
+															value="${pmuActivity.pmuActivityDetails[srl.index].unitCost}"
+															name="pmuActivityDetails[${srl.index}].unitCost" min="1"
+															maxlength="7" onkeypress="return isNumber(event)"
+															oninput="validity.valid||(value='');" type="text"
+															class="active12 form-control" id="unitCost_${srl.index}"
+															onkeyup="calculate(${srl.index});onLoadChangeColor()"
+															style="text-align: right;" required="required"/></td>
+														<td>
+														<div align="center" id="noOfMonthsState_${srl.index}">${pmuActivityState.pmuActivityDetails[srl.index].noOfMonths}</div>
+														<input
+															value="${pmuActivity.pmuActivityDetails[srl.index].noOfMonths}"
+															name="pmuActivityDetails[${srl.index}].noOfMonths"  type="text" min="1"
+															class="active12 form-control" onkeyup="calculate(${srl.index});onLoadChangeColor()"
+															oninput="validity.valid||(value='');" onkeypress="return isNumber(event)"
+															id="noOfMonths_${srl.index}" style="text-align: right;" required="required"/></td>
+														<c:set var="totalFundToCalc"
+															value="${pmuActivity.pmuActivityDetails[srl.index].fund}"></c:set>
+														<td>
+														<div align="center" id="fundState_${srl.index}">${pmuActivityState.pmuActivityDetails[srl.index].fund}</div>
+														<input
+															value="${pmuActivity.pmuActivityDetails[srl.index].fund}"
+															readonly="readonly"
+															name="pmuActivityDetails[${srl.index}].fund"
+															onkeypress="return isNumber(event)"
+															onchange="onLoadChangeColor()"
+															oninput="validity.valid||(value='');" type="text" min="1"
+															class="active12 form-control txtCal" id="fund_${srl.index}"
+															style="text-align: right;" /></td>
+														<c:choose>
+															<c:when test="${srl.index eq 0 }">
+																<td><button type="button"
+																		class="btn btn-primary btn-lg" data-toggle="modal"
+																		data-target="#myModal">Fill <spring:message code="Label.DomainDetails" htmlEscape="true" /></button></td>
+															</c:when>
+															<c:when test="${srl.index eq 3}">
+																<td><button type="button"
+																		class="btn btn-primary btn-lg" data-toggle="modal"
+																		data-target="#myModal2">Fill <spring:message code="Label.DomainDetails" htmlEscape="true" /></button></td>
+															</c:when>
+															<c:otherwise>
+																<td></td>
+															</c:otherwise>
+														</c:choose>
+														<td><textarea
+																name="pmuActivityDetails[${srl.index}].remarks" rows="3"
+																class="form-control" cols="5"><c:out
+																	value="${pmuActivity.pmuActivityDetails[srl.index].remarks}"></c:out></textarea></td>
+													</tr>
+													<c:set var="countDpmu" value="${countDpmu + 1}" scope="page" />
+												</c:forEach>
+												<tr>
+													<th colspan="5"><label>Total DPMU Fund</label></th>
+													<td>
+													<div align="center" id="total_fund_dpmu_state">${DPMU_TOTAL_STATE }</div>
+													<input type="text" style="background: #dddddd;"
+														class="form-control Align-Right" id="total_fund_dpmu"
+														value="" disabled="disabled" onchange="onLoadChangeColor()"></td>
+													<td></td>
+													<td></td>
+												</tr>
+												<!-- DPMU LOOP ENDS HERE -->
 												<tr>
 													<th colspan="5"><label><spring:message
 																code="Label.TotalAmountProposed" htmlEscape="true" /></label></th>
 													<td>
-													<div align="center" id="totalFundIdState"></div>
+													<div align="center" id="totalFundIdState">${SPMU_TOTAL_STATE + DPMU_TOTAL_STATE }</div>
 													<input type="text" style="background: #dddddd;"
 														class="form-control Align-Right" id="grandtotal"
 														value="${totalFundToCalc}" disabled="disabled" onchange="onLoadChangeColor()"></td>
@@ -479,21 +584,6 @@ function validationOnSubmit(){
 																<div class="col-sm-5">
 																<div  id="districtTextState"><strong>${DISTRICT_DETAILS_STATE.districtNameEnglish}</strong></div>
 																<input type="hidden" id="districtCodeStateId" name="setDistrictIdPmuWise" value="${DISTRICT_DETAILS_STATE.districtCode}">
-																	<%-- <select name="setDistrictIdPmuWise" id="activedropdown" disabled="disabled">
-																		<option value="0">---select---</option>
-																		<c:forEach items="${LIST_OF_DISTRICT}" var="DISTRICT">
-																			<c:choose>
-																				<c:when test="${pmuActivity.setDistrictIdPmuWise == DISTRICT[0]}">
-																				<c:when
-																					test="${pmuWiseDomainList[3].districtId == DISTRICT[0]}">
-																					<option value="${DISTRICT[0]}" selected="selected">${DISTRICT[1]}</option>
-																				</c:when>
-																				<c:otherwise>
-																					<option value="${DISTRICT[0]}">${DISTRICT[1]}</option>
-																				</c:otherwise>
-																			</c:choose>
-																		</c:forEach>
-																	</select> --%>
 																</div>
 															</div>
 														</div>
@@ -580,9 +670,17 @@ function validationOnSubmit(){
 										
 									</div>
 									</div>
+									
+									<!-- HIDDEN FIELDS STARTS -->
+									<input type="hidden" name="pmuActivityId" value="${pmuActivity.pmuActivityId}">
+									<input type="hidden" id="isFreeze" name="isFreeze" value="${pmuActivity.isFreeze}">
+									<input type="hidden" name="userType" value="${pmuActivity.userType}" />
+									<input type="hidden" id="countSpmuId" value="${countSpmu}">
+									<input type="hidden" id="countDpmuId" value="${countDpmu}">
+									
 								</form:form>
 							</div>
-								
+						<!-- MOPR TAB STARTS -->		
 							<div class="container tab-pane fade" id="MOPR"
 								style="width: auto;">
 								<div class="table-responsive">
@@ -626,7 +724,46 @@ function validationOnSubmit(){
 											</tr>
 										</thead>
 										<tbody id="myTableId">
-											<c:forEach items="${LIST_OF_ACTIVITY_PMU_TYPE}" var="ACTIVITY" varStatus="srl">
+										<!-- SPMU LOOP STARTS -->
+											<c:forEach items="${LIST_OF_ACTIVITY_PMU_TYPE}" var="ACTIVITY" varStatus="srl" begin="0" end="2">
+											<tr>
+												<td><div align="center"><strong>${ACTIVITY.pmuType.pmuTypeName}</strong></div></td>
+												<td><div align="center"><strong>${ACTIVITY.pmuActivityName}</strong></div></td>
+												<td><div align="center">${pmuActivityMOPR.pmuActivityDetails[srl.index].noOfUnits}</div></td>
+												<td><div align="center"> ${pmuActivityMOPR.pmuActivityDetails[srl.index].unitCost }</div></td>
+												<td><div align="center">${pmuActivityMOPR.pmuActivityDetails[srl.index].noOfMonths}</div></td>
+												<td><div align="center" id="fundMOPR_${srl.index}">${pmuActivityMOPR.pmuActivityDetails[srl.index].fund}</div></td>
+													<c:choose>
+														<c:when test="${srl.index eq 0 }">
+															<td><button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal3">See <spring:message code="Label.DomainDetails" htmlEscape="true" /></button></td>
+														</c:when>
+														<c:when test="${srl.index eq 3}">
+															<td><button type="button"	class="btn btn-primary btn-lg" data-toggle="modal"	data-target="#myModal4">See <spring:message code="Label.DomainDetails" htmlEscape="true" /></button></button></td>
+														</c:when>
+														<c:otherwise>
+															<td></td>
+														</c:otherwise>
+													</c:choose>
+	                                             <td><c:choose>
+	                                             			<c:when test="${pmuActivityMOPR.pmuActivityDetails[srl.index].isApproved}">	
+														  		 <i class="fa fa-check" aria-hidden="true" style="color: #00cc00 "></i>
+														   </c:when>
+														   <c:otherwise>
+														   		<i class="fa fa-times" aria-hidden="true" style="color: red "></i>
+														   </c:otherwise>
+													</c:choose>
+												</td>
+										   		<td><div align="center">${pmuActivityMOPR.pmuActivityDetails[srl.index].remarks}</div></td>
+												</tr>
+											</c:forEach>
+											<tr>
+											<th colspan="5"><label>Total SPMU Fund</label></th>
+													<td><div align="center">${SPMU_TOTAL_MOPR}</div></td>
+														<td colspan="4"></td>
+												</tr>
+											<!-- SPMU LOOP ENDS -->
+											<!-- DPMU LOOP STARTS -->
+											<c:forEach items="${LIST_OF_ACTIVITY_PMU_TYPE}" var="ACTIVITY" varStatus="srl" begin="3" end="5">
 											<tr>
 												<td><div align="center"><strong>${ACTIVITY.pmuType.pmuTypeName}</strong></div></td>
 												<td><div align="center"><strong>${ACTIVITY.pmuActivityName}</strong></div></td>
@@ -658,8 +795,14 @@ function validationOnSubmit(){
 												</tr>
 											</c:forEach>
 											<tr>
+											<th colspan="5"><label>Total DPMU Fund</label></th>
+													<td><div align="center">${DPMU_TOTAL_MOPR}</div></td>
+														<td colspan="4"></td>
+												</tr>
+												<!-- DPMU LOOP ENDS -->
+											<tr>
 											<th colspan="5"><label><spring:message code="Label.TotalAmountProposed" htmlEscape="true" /></label></th>
-													<td><div align="center" id="totalFundIdMOPR"></div></td>
+													<td><div align="center" id="totalFundIdMOPR">${DPMU_TOTAL_MOPR + SPMU_TOTAL_MOPR}</div></td>
 														<td colspan="4"></td>
 												</tr>
 											</tbody>

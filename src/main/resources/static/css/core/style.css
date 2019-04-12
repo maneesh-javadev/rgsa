@@ -8141,3 +8141,7 @@ body{
 .table tbody tr th {
    border-bottom:1px solid #0c0c0c !important;
  }
+ 
+ .padding_right {
+   padding-right: 10px;
+ }

@@ -2,8 +2,12 @@ package gov.in.rgsa.config;
 
 import gov.in.rgsa.intercepter.AuditTrailIntercepter;
 import gov.in.rgsa.intercepter.Captcha;
+import gov.in.rgsa.intercepter.DevQuirksInterceptor;
 import gov.in.rgsa.intercepter.VisitorCountInterceptor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.boot.web.servlet.ServletContextInitializer;
 import org.springframework.boot.web.servlet.ServletListenerRegistrationBean;
@@ -11,14 +15,13 @@ import org.springframework.boot.web.servlet.ServletRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
-import org.springframework.context.annotation.ImportResource;
-import org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor;
 import org.springframework.web.filter.CharacterEncodingFilter;
 import org.springframework.web.servlet.DispatcherServlet;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+import org.springframework.web.servlet.handler.MappedInterceptor;
 import org.springframework.web.servlet.i18n.LocaleChangeInterceptor;
 
 import javax.servlet.DispatcherType;
@@ -39,6 +42,18 @@ public class WebConfig implements WebMvcConfigurer {
     @Value("${rgsa.captcha.width}")
     private String captchaWidth;
 
+    @Value("${rgsa.view.homepage:forward:/index.html}")
+    private String viewHomepage;
+
+    static Logger logger = LoggerFactory.getLogger(WebConfig.class);
+
+
+    @Override
+    public void addInterceptors(InterceptorRegistry registry){
+        registry.addInterceptor(getAuditTrailIntercepter());
+        registry.addInterceptor(getVisitorCountInterceptor());
+        registry.addInterceptor(getLocaleChangeInterceptor());
+    }
 
     // Resource pointer == mvc:resources
     @Override
@@ -51,7 +66,7 @@ public class WebConfig implements WebMvcConfigurer {
     // Welcome page pointer
     @Override
     public void addViewControllers(ViewControllerRegistry registry) {
-        registry.addViewController("/").setViewName("forward:/index.html");
+        registry.addViewController("/").setViewName(viewHomepage);
     }
 
     // ApplicationContext.xml loader
@@ -194,11 +209,17 @@ public class WebConfig implements WebMvcConfigurer {
         return localeChangeInterceptor;
     }
 
-    @Override
-    public void addInterceptors(InterceptorRegistry registry){
-        registry.addInterceptor(getAuditTrailIntercepter());
-        registry.addInterceptor(getVisitorCountInterceptor());
-        registry.addInterceptor(getLocaleChangeInterceptor());
+    @Bean(name = "DevQuirksInterceptorBean")
+    @ConditionalOnProperty(prefix = "rgsa.dev.user", name = "auto_inject")
+    public DevQuirksInterceptor getDevQuirksInterceptor(){
+        return new DevQuirksInterceptor();
+    }
+
+    @Bean(name = "MappedDevQuirksInterceptorBean")
+    @ConditionalOnProperty(prefix = "rgsa.dev.user", name = "auto_inject")
+    public MappedInterceptor devQuirksInterceptor() {
+        logger.info("Dev interceptor hooked-in.");
+        return new MappedInterceptor(new String[] {"/**"}, getDevQuirksInterceptor());
     }
 
 }

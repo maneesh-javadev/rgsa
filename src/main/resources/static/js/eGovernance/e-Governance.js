@@ -2,7 +2,8 @@ $('document').ready(function() {
 	$(".reset").bind("click", function() {
 		$("input[type=text]").val('');
 	});
-	calculateTotalFund();
+	calculateTotalFundSpmu();
+	calculateTotalFundDpmu();
 	calculateGrandTotal();
 });
 
@@ -60,30 +61,48 @@ function calculateProposedFund(obj) {
 	var fund = document.getElementById("fundId_" + obj).value;
 	document.getElementById("fundId_" + obj).value = noOfPost * month
 			* unitCost;
-	calculateTotalFund();
+	calculateTotalFundDpmu();
+	calculateTotalFundSpmu();
 };
 
-function calculateTotalFund() {
-	var count = $("#count").val();
-	var grand_total = 0;
+function calculateTotalFundSpmu() {
+	var count = $("#countSpmuId").val();
+	var total_spmu_fund = 0;
 	for (var i = 0; i < count; i++) {
-		grand_total += +document.getElementById("fundId_" + i).value;
+		if($("#fundId_" + i).val() != null && $("#fundId_" + i).val() != ""){
+			total_spmu_fund += +$("#fundId_" + i).val();
+		}
 	}
-	var totalFund = document.getElementById("total_fund").value = grand_total;
+	$("#total_fund_spmu").val(+total_spmu_fund); 
+	calculateGrandTotal();
+};
+
+function calculateTotalFundDpmu() {
+	var count = $("#countDpmuId").val();
+	var total_dpmu_fund = 0;
+	for (var i = 0; i < count; i++) {
+		if($("#fundId_"+(i + +$("#countSpmuId").val())).val() != null && $("#fundId_"+(i + +$("#countSpmuId").val())).val() != ""){
+			total_dpmu_fund += +$("#fundId_"+(i + +$("#countSpmuId").val())).val();
+		}
+	}
+	$("#total_fund_dpmu").val(total_dpmu_fund); 
 	calculateGrandTotal();
 };
 
 function validateCielingValue(obj) {
 	var total_spmu_unit_cost = 0;
 	var total_dpmu_unit_cost = 0;
-	for (var i = 0; i < ($('#tbodyId tr').length-3); i++) {
-		total_fund += +document.getElementById("fundId_"+ i).value;
-		if (document.getElementById("postId_" + i).value == 1) {
+	for (var i = 0; i < +$("#countSpmuId").val(); i++) {
+		if(+$("#unitCostId_"+i).val() != "" && $("#unitCostId_"+i).val() != null){
 			total_spmu_unit_cost += +document.getElementById("unitCostId_" + i).value;
-		} else {
-			total_dpmu_unit_cost += +document.getElementById("unitCostId_" + i).value;
 		}
 	}
+	for (var i = 0; i < +$("#countDpmuId").val(); i++) {
+		if(+$("#unitCostId_"+(i + +$("#countSpmuId").val())).val() != "" && $("#unitCostId_"+(i + +$("#countSpmuId").val())).val() != null){
+			total_dpmu_unit_cost += +document.getElementById("unitCostId_" + (i + +$("#countSpmuId").val())).value;
+		}
+	}
+	
 	if (total_spmu_unit_cost > 50000) {
 		alert("Total unit cost for SPMU should be less than 50,000");
 		document.getElementById("unitCostId_" + obj).value = 0;
@@ -94,7 +113,8 @@ function validateCielingValue(obj) {
 		document.getElementById("unitCostId_" + obj).value = 0;
 		document.getElementById("fundId_" + obj).value = 0;
 	}
-	calculateTotalFund();
+	calculateTotalFundDpmu();
+	calculateTotalFundSpmu();
 };
 
 function validateMonth(obj) {
@@ -104,22 +124,29 @@ function validateMonth(obj) {
 		document.getElementById("monthId_" + obj).value = '';
 		document.getElementById("fundId_" + obj).value = 0;
 	}
-	calculateTotalFund();
+	calculateTotalFundDpmu();
+	calculateTotalFundSpmu();
 };
 
 function calculateGrandTotal() {
 	var grand_total = 0;
-	if($('#additionalRequirementId').val() != ''){
-		if (document.getElementById("additionalRequirementId").value > 0.25 * document
-				.getElementById("total_fund").value) {
-			alert("Additional Requirement should be less than or equal to 25% of Total Fund");
-			document.getElementById("additionalRequirementId").value = '';
-			document.getElementById("grandTotalId").value = '';
-		} else {
-			document.getElementById("grandTotalId").value = +document
-					.getElementById("additionalRequirementId").value
-					+ +document.getElementById("total_fund").value;
+	if($('#additionalRequirementSpmuId').val() != '' && $('#total_fund_spmu').val() !=""){
+		if($('#additionalRequirementSpmuId').val() > 0.25 * $('#total_fund_spmu').val()){
+			alert("SPMU additional Requirement should be less than or equal to 25% of SPMU total Fund :" +  0.25 * $('#total_fund_spmu').val());
+			$('#additionalRequirementSpmuId').val('');
+			$('#grandTotalId').val('');
+		}else{
+			$('#grandTotalId').val(+$('#additionalRequirementDpmuId').val() + +$("#total_fund_dpmu").val() + +$('#additionalRequirementSpmuId').val() + +$("#total_fund_spmu").val());
 		}
 	}
 	
+	if($('#additionalRequirementDpmuId').val() != '' && $('#total_fund_dpmu').val() !=""){
+		if($('#additionalRequirementDpmuId').val() > 0.25 * $('#total_fund_dpmu').val()){
+			alert("DPMU additional Requirement should be less than or equal to 25% of DPMU total Fund :" + +  0.25 * $('#total_fund_dpmu').val());
+			$('#additionalRequirementDpmuId').val('');
+			$('#grandTotalId').val('');
+		}else{							
+			$('#grandTotalId').val(+$('#additionalRequirementDpmuId').val() + +$("#total_fund_dpmu").val() + +$('#additionalRequirementSpmuId').val() + +$("#total_fund_spmu").val());
+		}
+	}
 };

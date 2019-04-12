@@ -2,6 +2,8 @@ package gov.in.rgsa.model;
 
 import java.util.List;
 
+import javax.persistence.Column;
+
 import gov.in.rgsa.entity.EGovSupportActivityDetails;
 
 public class EGovernanceSupportModel {
@@ -27,15 +29,10 @@ public class EGovernanceSupportModel {
 	
 	private String remarks;
 	
-	private Integer additionalRequirement;
+	public Integer additionalRequirementSpmu;
+	
+	public Integer additionalRequirementDpmu;
 
-	public Integer getAdditionalRequirement() {
-		return additionalRequirement;
-	}
-
-	public void setAdditionalRequirement(Integer additionalRequirement) {
-		this.additionalRequirement = additionalRequirement;
-	}
 
 	public String getDbFileName() {
 		return dbFileName;
@@ -125,6 +122,22 @@ public class EGovernanceSupportModel {
 
 	public void seteGovSupportActivityDetails(List<EGovSupportActivityDetails> eGovSupportActivityDetails) {
 		this.eGovSupportActivityDetails = eGovSupportActivityDetails;
+	}
+
+	public Integer getAdditionalRequirementSpmu() {
+		return additionalRequirementSpmu;
+	}
+
+	public void setAdditionalRequirementSpmu(Integer additionalRequirementSpmu) {
+		this.additionalRequirementSpmu = additionalRequirementSpmu;
+	}
+
+	public Integer getAdditionalRequirementDpmu() {
+		return additionalRequirementDpmu;
+	}
+
+	public void setAdditionalRequirementDpmu(Integer additionalRequirementDpmu) {
+		this.additionalRequirementDpmu = additionalRequirementDpmu;
 	}
 
 }
