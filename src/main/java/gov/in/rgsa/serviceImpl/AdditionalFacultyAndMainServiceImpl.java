@@ -49,7 +49,8 @@ public class AdditionalFacultyAndMainServiceImpl implements AdditionalFacultyAnd
 		institueInfraHrActivity.setStateCode(userPreference.getStateCode());
 		institueInfraHrActivity.setYearId(userPreference.getFinYearId());
 		institueInfraHrActivity.setUserType(userPreference.getUserType());
-		institueInfraHrActivity.setAdditionalRequirement(additionalFactultyAndMaintModel.getAdditionalRequirement());
+		institueInfraHrActivity.setAdditionalRequirementSprc(additionalFactultyAndMaintModel.getAdditionalRequirementSprc());
+		institueInfraHrActivity.setAdditionalRequirementDprc(additionalFactultyAndMaintModel.getAdditionalRequirementDprc());
 		institueInfraHrActivity.setCreatedBy(userPreference.getUserId());
 		institueInfraHrActivity.setLastUpdateBy(userPreference.getUserId());
 		institueInfraHrActivity.setDistrictsSupported(additionalFactultyAndMaintModel.getDistrictsSupported());
@@ -73,7 +74,8 @@ public class AdditionalFacultyAndMainServiceImpl implements AdditionalFacultyAnd
 					}
 			}
 			institueInfraHrActivity.settIWiseProposedDomainExperts(tIWiseProposedDomainExperts);
-		institueInfraHrActivity.setAdditionalRequirement(additionalFactultyAndMaintModel.getAdditionalRequirement());
+			institueInfraHrActivity.setAdditionalRequirementSprc(additionalFactultyAndMaintModel.getAdditionalRequirementSprc());
+			institueInfraHrActivity.setAdditionalRequirementDprc(additionalFactultyAndMaintModel.getAdditionalRequirementDprc());
 		commonRepository.save(institueInfraHrActivity);
 		for(InstitueInfraHrActivityDetails details : institueInfraHrActivityDetails )
 		{
@@ -88,7 +90,8 @@ public class AdditionalFacultyAndMainServiceImpl implements AdditionalFacultyAnd
 		}
 		else
 		{
-			institueInfraHrActivity.setAdditionalRequirement(additionalFactultyAndMaintModel.getAdditionalRequirement());
+			institueInfraHrActivity.setAdditionalRequirementSprc(additionalFactultyAndMaintModel.getAdditionalRequirementSprc());
+			institueInfraHrActivity.setAdditionalRequirementDprc(additionalFactultyAndMaintModel.getAdditionalRequirementDprc());
 			if(userPreference.getUserType().equalsIgnoreCase("M") && previousRecordUserType.equalsIgnoreCase("S")){
 					commonRepository.save(institueInfraHrActivity);
 					institueInfraHrActivity.setUserType(userPreference.getUserType());
@@ -109,7 +112,8 @@ public class AdditionalFacultyAndMainServiceImpl implements AdditionalFacultyAnd
 							}
 					}
 					institueInfraHrActivity.settIWiseProposedDomainExperts(tIWiseProposedDomainExperts);
-				institueInfraHrActivity.setAdditionalRequirement(additionalFactultyAndMaintModel.getAdditionalRequirement());
+					institueInfraHrActivity.setAdditionalRequirementSprc(additionalFactultyAndMaintModel.getAdditionalRequirementSprc());
+					institueInfraHrActivity.setAdditionalRequirementDprc(additionalFactultyAndMaintModel.getAdditionalRequirementDprc());
 				commonRepository.save(institueInfraHrActivity);
 					for(InstitueInfraHrActivityDetails details: institueInfraHrActivityDetails)
 					{
