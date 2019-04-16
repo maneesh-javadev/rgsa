@@ -14,7 +14,7 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "iec_activity_dropdown", schema = "rgsa")
 
-public class IecActivityDropedown implements Serializable {
+public class IecActivityDropdown implements Serializable {
 
 private static final long serialVersionUID = 1L;
 
@@ -26,8 +26,8 @@ private static final long serialVersionUID = 1L;
 
 		@Column(name = "nature_iec_Activity")
 		private String natureIecActivity;
-		
-		
+
+
 		public Integer getIecId() {
 			return iecId;
 		}
@@ -48,8 +48,6 @@ private static final long serialVersionUID = 1L;
 			return serialVersionUID;
 		}
 
-		
-		}
+}
 
-	
 

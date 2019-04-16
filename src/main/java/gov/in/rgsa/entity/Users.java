@@ -253,6 +253,18 @@ public class Users implements Serializable {
 		this.confirmPassword = confirmPassword;
 	}
 
+	public static String getTypeForState(){
+		return "S";
+	}
+
+	public static String getTypeForMOPR(){
+		return "M";
+	}
+
+	public static String getTypeForCEC(){
+		return "C";
+	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;

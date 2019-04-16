@@ -1,22 +1,20 @@
 package gov.in.rgsa.serviceImpl;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.function.Consumer;
+import java.util.stream.Collectors;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.transaction.Transactional;
 
+import gov.in.rgsa.entity.*;
+import gov.in.rgsa.model.IecFormModel;
 import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import gov.in.rgsa.dao.CommonRepository;
-import gov.in.rgsa.entity.IecActivity;
-import gov.in.rgsa.entity.IecActivityDetails;
-import gov.in.rgsa.entity.IecActivityDropedown;
 import gov.in.rgsa.service.FacadeService;
 import gov.in.rgsa.service.IecService;
 import gov.in.rgsa.user.preference.UserPreference;
@@ -26,27 +24,24 @@ import gov.in.rgsa.user.preference.UserPreference;
 public class IecServiceImpl implements IecService {
 
 	@Autowired
-	private CommonRepository dao;
-
-	@Autowired
 	public UserPreference userPreference;
 
 	@Autowired
 	private CommonRepository commonRepository;
-
-	@PersistenceContext
-	private EntityManager entityManager;
 	
 
 	@Autowired
 	private FacadeService facadeService;
 
-	public List<IecActivityDropedown> findAllActivityById() {
-		return dao.findAll("FIND_IEC_ID", null);
-	}
+	/*
 
 	@Override
 	public void save(final IecActivity iecActivity) {
+		if(userPreference.isState())
+			saveIecForState(iecActivity);
+		if(userPreference.isMOPR()){
+			saveIecForMopr(iecActivity, iecActivityState);
+		}
 
 		if (userPreference.getUserType().equalsIgnoreCase('s' + "") || userPreference.getUserType().equalsIgnoreCase("C")) {
 			saveIecForState(iecActivity);
@@ -55,42 +50,27 @@ public class IecServiceImpl implements IecService {
 				saveIecForMopr(iecActivity);
 
 			} else {
-				List<IecActivityDetails> iecActivityDetail = iecActivity.getIecActivityDetails();
+				IecActivityDetails iecActivityDetail = iecActivity.getIecActivityDetails();
 				iecActivity.setCreatedBy(userPreference.getUserId());
 				iecActivity.setStateCode(userPreference.getStateCode());
 				iecActivity.setYearId(userPreference.getFinYearId());
 				iecActivity.setUserType(userPreference.getUserType());
 				iecActivity.setIsFreez(false);
-
-				for (IecActivityDetails details : iecActivityDetail) {
-					details.setIecActivity(iecActivity);
-				}
+				iecActivityDetail.setIecActivity(iecActivity);
 				commonRepository.update(iecActivity);
 			}
 		}
-		
-		
 	}
 
-	private void saveIecForMopr(final IecActivity iecActivity) {
-		iecActivity.setId(null);
-		List<IecActivityDetails> iecActivityDetail = iecActivity.getIecActivityDetails();
 
-		iecActivity.setCreatedBy(userPreference.getUserId());
-		iecActivity.setUserType(userPreference.getUserType());
-		iecActivity.setStateCode(userPreference.getStateCode());
-		iecActivity.setYearId(userPreference.getFinYearId());
-		iecActivity.setIsFreez(false);
-		for (IecActivityDetails details : iecActivityDetail) {
-			details.setIdMain(null);
-			details.setIecActivity(iecActivity);
-		}
+	private void saveIecForMopr(IecActivity iecActivity) {
+		setIecActivity(iecActivity);
 		commonRepository.save(iecActivity);
 	}
 
 	private void saveIecForState(final IecActivity iecActivity) {
 
-		List<IecActivityDetails> iecActivityDetail = iecActivity.getIecActivityDetails();
+		IecActivityDetails iecActivityDetail = iecActivity.getIecActivityDetails();
 		if (iecActivity.getId() == null || iecActivity.getId() == 0) {
 
 			iecActivity.setCreatedBy(userPreference.getUserId());
@@ -98,9 +78,7 @@ public class IecServiceImpl implements IecService {
 			iecActivity.setStateCode(userPreference.getStateCode());
 			iecActivity.setYearId(userPreference.getFinYearId());
 			iecActivity.setIsFreez(false);
-			for (IecActivityDetails details : iecActivityDetail) {
-				details.setIecActivity(iecActivity);
-			}
+			iecActivityDetail.setIecActivity(iecActivity);
 			commonRepository.save(iecActivity);
 		}
 
@@ -149,17 +127,6 @@ public class IecServiceImpl implements IecService {
 		}
 	}
 
-	public void update(IecActivity iecActivity) {
-
-		/*
-		 * iecActivity.setCreatedBy(user.getUserId());
-		 * iecActivity.setStateCode(user.getStateCode());
-		 * iecActivity.setYearId(user.getFinYearId());
-		 * commonRepository.update(iecActivity);
-		 */
-
-	}
-
 	@Override
 	public void delete(int idMain) {
 		IecActivity xyz = fetchIecDetail(userPreference.getUserType());
@@ -177,15 +144,13 @@ public class IecServiceImpl implements IecService {
 
 	@Override
 	public void freezeAndUnfreeze(IecActivity iecActivity) {
-		List<IecActivityDetails> iecActivityDetail = iecActivity.getIecActivityDetails();
+		IecActivityDetails iecActivityDetail = iecActivity.getIecActivityDetails();
 		if (iecActivity.getId() != 0 || iecActivity.getId() != null) {
 			iecActivity.setCreatedBy(userPreference.getUserId());
 			iecActivity.setStateCode(userPreference.getStateCode());
 			iecActivity.setYearId(userPreference.getFinYearId());
 			iecActivity.setUserType(userPreference.getUserType());
-			for (IecActivityDetails details : iecActivityDetail) {
-				details.setIecActivity(iecActivity);
-			}
+			iecActivityDetail.setIecActivity(iecActivity);
 			if (iecActivity.getDbFileName().equals("freeze")) {
 				iecActivity.setIsFreez(true);
 				
@@ -199,12 +164,155 @@ public class IecServiceImpl implements IecService {
 			facadeService.populateStateFunds("11");
 		}
 	}
+	*/
+
+
+
+	@Override
+	public List<IecActivityDropdown> findAllActivityById() {
+		return commonRepository.findAll(IecActivityDropdown.class);
+		//return dao.findAll("FIND_IEC_ID", null);
+	}
+
+
+	@Override
+	public IecActivity fetchIecDetail(){
+		Map<String, Object> params = new HashMap<>();
+		params.put("stateCode", userPreference.getStateCode());
+		params.put("userType", userPreference.getUserType());
+		return commonRepository.find(IecActivity.class, params);
+	}
+
+
 	@Override
 	public List<IecActivity> fetchApprovedIec() {
 		Map<String, Object> params=new HashMap<>();
 		params.put("stateCode", userPreference.getStateCode());
 		params.put("yearId", userPreference.getFinYearId());
-		params.put("userType", "C");
+		params.put("userType", Users.getTypeForCEC());
 		return commonRepository.findAll("FETCH_IEC_APPROVED_ACTIVITY", params);
-}
+	}
+
+
+
+	private void setIecActivity(IecActivity iecActivity){
+		setIecActivity(iecActivity, userPreference.getStateCode());
+	}
+
+	private void setIecActivity(IecActivity iecActivity, Integer stateCode){
+		iecActivity.setCreatedBy(userPreference.getUserId());
+		iecActivity.setUserType(userPreference.getUserType());
+		iecActivity.setStateCode(stateCode);
+		iecActivity.setYearId(userPreference.getFinYearId());
+		iecActivity.setIsFreez(false);
+	}
+
+	private void saveForState(IecFormModel iecFormModel){
+		IecActivity iecActivity;
+		if(iecFormModel.getIecId() == 0 || iecFormModel.getIecId() == null) {
+			// Create scenario
+			iecActivity = new IecActivity();
+			setIecActivity(iecActivity);
+			commonRepository.save(iecActivity);
+		}else {
+			// Modify scenario
+			iecActivity = commonRepository.find(IecActivity.class, iecFormModel.getIecId());
+			if(iecActivity.getIsFreez())
+				throw new RuntimeException("Frozen forms cannot be saved. UnFreeze first.");
+		}
+		// Now save the details and link
+		saveDetailLink(iecFormModel, iecActivity);
+	}
+
+	private void saveForMOPR(IecFormModel iecFormModel){
+		IecActivity stateIecActivity = commonRepository.find(IecActivity.class, iecFormModel.getIecId());
+		if(stateIecActivity == null) {
+			throw new RuntimeException("MOPR can only modify.");
+		}
+		IecActivity iecActivity;
+		if(stateIecActivity.getUserType().equalsIgnoreCase(Users.getTypeForState())) {
+			// Creation for MOPR
+			iecActivity = new IecActivity();
+			setIecActivity(iecActivity, stateIecActivity.getStateCode());
+			commonRepository.save(iecActivity);
+		} else {
+			// Modification for MOPR
+			iecActivity = stateIecActivity;
+			if(iecActivity.getIsFreez())
+				throw new RuntimeException("Frozen forms cannot be saved. UnFreeze first.");
+		}
+		// Now save the details and link
+		saveDetailLink(iecFormModel, iecActivity);
+	}
+
+	private void saveDetailLink(IecFormModel iecFormModel, IecActivity iecActivity) {
+		IecActivityDetails iecActivityDetails = iecActivity.getIecActivityDetails();
+
+		// Create if doesn't exist
+		if(iecActivityDetails == null){
+			iecActivityDetails = new IecActivityDetails();
+			iecActivityDetails.setIecActivity(iecActivity);
+			iecActivityDetails.setIsActive(true);
+			iecActivityDetails.setIsApproved(false);
+		}
+
+		// Set amount in both cases
+		iecActivityDetails.setTotalAmountProposed(iecFormModel.getAmount());
+		commonRepository.save(iecActivityDetails);
+
+		// Now update Detail-Dropdown-link
+		final IecActivityDetails fIecActivityDetails = iecActivityDetails;
+		List<IecDetailsDropdown> dropdownSet = iecActivityDetails.getIecDetailsDropdownSet();
+		Set<Integer> previousIds = dropdownSet==null? new HashSet<>(): dropdownSet.stream()
+				.map(item -> item.getIecActivityDropdown().getIecId())
+				.collect(Collectors.toSet());
+		IecFormModel previousFormModel = new IecFormModel();
+		previousFormModel.setSelectedIdInteger(previousIds);
+		iecFormModel.invokeOnChanges(previousFormModel, addedDropDownId -> {
+			IecDetailsDropdown iecDetailsDropdown = new IecDetailsDropdown();
+			iecDetailsDropdown.setIecActivityDetails(fIecActivityDetails);
+			iecDetailsDropdown.setIecActivityDropdown(commonRepository.find(IecActivityDropdown.class, addedDropDownId));
+			commonRepository.save(iecDetailsDropdown);
+		}, deletedDropDownId -> {
+			Map<String, Object> findParams = new HashMap<>(2);
+			findParams.put("iecActivityDropdown", deletedDropDownId);
+			findParams.put("iecActivityDetails", fIecActivityDetails.getIdMain());
+			IecDetailsDropdown iecDetailsDropdown = commonRepository.find(IecDetailsDropdown.class,findParams);
+			if(iecDetailsDropdown != null)
+				commonRepository.delete(IecDetailsDropdown.class, iecDetailsDropdown.getIecDetailsDropdownId());
+		});
+	}
+
+	@Override
+	public void save(IecFormModel iecFormModel){
+		if(userPreference.isState())
+			saveForState(iecFormModel);
+		if(userPreference.isMOPR())
+			saveForMOPR(iecFormModel);
+	}
+
+	private IecActivity checkFreezeValidity(IecFormModel iecFormModel, boolean atFreeze) {
+		IecActivity iecActivity = commonRepository.find(IecActivity.class, iecFormModel.getIecId());
+		if(iecActivity == null)
+			throw new RuntimeException("Form doesn't exists for unfreezing");
+		if(iecActivity.getIsFreez() != atFreeze)
+			throw new RuntimeException("Form already unfreezed");
+		return iecActivity;
+	}
+
+	@Override
+	public void freeze(IecFormModel iecFormModel){
+		IecActivity iecActivity = checkFreezeValidity(iecFormModel,false);
+		iecActivity.setIsFreez(true);
+		commonRepository.save(iecActivity);
+	}
+
+	@Override
+	public void unfreeze(IecFormModel iecFormModel){
+		IecActivity iecActivity = checkFreezeValidity(iecFormModel,true);
+		iecActivity.setIsFreez(false);
+		commonRepository.save(iecActivity);
+	}
+
+
 }
