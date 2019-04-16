@@ -326,37 +326,32 @@ public class ProgressReportServiceImpl implements ProgressReportService{
 
 	@Override
 	public void saveQprIncomeEnhancement(QprIncomeEnhancement qprIncomeEnhancement) {
+		qprIncomeEnhancement.setCreatedBy(userPreference.getUserId());
+		qprIncomeEnhancement.setIsFreeze(false);
+		qprIncomeEnhancement.setLastUpdatedBy(userPreference.getUserId());
+		List<QprIncomeEnhancementDetails> enhancementDetails = qprIncomeEnhancement.getQprIncomeEnhancementDetails();
+			for(QprIncomeEnhancementDetails qprIncomeEnhancementDetails : enhancementDetails){
+				qprIncomeEnhancementDetails.setQprIncomeEnhancement(qprIncomeEnhancement);
+			}
 		if(qprIncomeEnhancement.getQprIncomeEnhancementId() == null){
-			qprIncomeEnhancement.setCreatedBy(userPreference.getUserId());
-			qprIncomeEnhancement.setIsFreeze(false);
-			qprIncomeEnhancement.setLastUpdatedBy(userPreference.getUserId());
-			
-			List<QprIncomeEnhancementDetails> enhancementDetails = qprIncomeEnhancement.getQprIncomeEnhancementDetails();
-				for(QprIncomeEnhancementDetails qprIncomeEnhancementDetails : enhancementDetails){
-					qprIncomeEnhancementDetails.setQprIncomeEnhancement(qprIncomeEnhancement);
-				}
 				commonRepository.save(qprIncomeEnhancement);
 		}
 		else{
 			qprIncomeEnhancement.setIsFreeze(false);
-			qprIncomeEnhancement.setLastUpdatedBy(userPreference.getUserId());
-			List<QprIncomeEnhancementDetails> enhancementDetails = qprIncomeEnhancement.getQprIncomeEnhancementDetails();
-			for(QprIncomeEnhancementDetails qprIncomeEnhancementDetails : enhancementDetails){
-				qprIncomeEnhancementDetails.setQprIncomeEnhancement(qprIncomeEnhancement);
-			}
 			commonRepository.update(qprIncomeEnhancement);
 		}
+		
+		/* this method is to insert and update record in quater_wise_fund table*/
+		saveQprWiseFundData(userPreference.getStateCode(),userPreference.getFinYearId(),qprIncomeEnhancement.getQuarterDuration().getQtrId(),10);
 	}
 	
 	
 	@Override
-	public QprIncomeEnhancement fetchQprIncmEnhncmnt(int quarterId) {
+	public QprIncomeEnhancement fetchQprIncmEnhncmnt(int incomeEnhancementId,int quarterId) {
 		List<QprIncomeEnhancement> qprIncomeEnhancement =null;
 		Map<String, Object> params = new HashMap<>();
-		params.put("stateCode", userPreference.getStateCode());
-		params.put("yearId", userPreference.getFinYearId());
-		params.put("userType", userPreference.getUserType().charAt(0));
 		params.put("quarterId",quarterId);
+		params.put("incomeEnhancementId",incomeEnhancementId);
 		qprIncomeEnhancement = commonRepository.findAll("QPR_INCM_ENHNCMNT_REPORT_BASED_ON_QUARTER", params);
 		if(!qprIncomeEnhancement.isEmpty()){
 			return qprIncomeEnhancement.get(0);

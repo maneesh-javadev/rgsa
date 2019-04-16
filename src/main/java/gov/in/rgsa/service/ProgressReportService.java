@@ -60,7 +60,7 @@ public interface ProgressReportService {
 
 	public void saveQprIncomeEnhancement(QprIncomeEnhancement qprIncomeEnhancement);
 	
-	public QprIncomeEnhancement fetchQprIncmEnhncmnt(int quarterId);
+	public QprIncomeEnhancement fetchQprIncmEnhncmnt(int incomeEnhancementId, int quarterId);
 
 	public void FrzUnfrzIncomeEnhancmnt(QprIncomeEnhancement qprIncomeEnhancement);
 
