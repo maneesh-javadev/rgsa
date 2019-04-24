@@ -799,5 +799,12 @@
 </definition>
 
 <definition name="UtilizationCertificateTmpl" template="/WEB-INF/jsp/UtilizationCertificate/template.jsp"></definition>
+
+<definition name="institutionalInfraActivityPlanMopr" extends="base.definition.admin">
+	<put-attribute name="title" value="institutional Infra CEC" />
+	<put-attribute name="body"
+		value="/WEB-INF/jsp/InstitutionalInfraActivityPlan/institutionalInfraActivityPlanMopr.jsp" />
+</definition>
+
 </tiles-definitions>
 

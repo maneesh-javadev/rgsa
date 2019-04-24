@@ -9,6 +9,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
@@ -16,6 +17,7 @@ import javax.persistence.Transient;
 
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
+import org.hibernate.annotations.Where;
 
 /**
  * 
@@ -25,7 +27,10 @@ import org.hibernate.annotations.UpdateTimestamp;
 
 @Entity
 @Table(name="institutional_infra_activity", schema = "rgsa")
-@NamedQuery(name="FETCH_ALL_INSTITUTIONAL_ACTIVITY",query="SELECT I FROM InstitutionalInfraActivityPlan I where stateCode =:stateCode and yearId =:yearId and userType =:userType")
+@NamedQueries({
+@NamedQuery(name="FETCH_ALL_INSTITUTIONAL_ACTIVITY",query="SELECT I FROM InstitutionalInfraActivityPlan I where stateCode =:stateCode and yearId =:yearId and userType =:userType "),
+@NamedQuery(name="UPDATE_FREEZE_UNFREEZE_STATUS_Institutional",query="UPDATE InstitutionalInfraActivityPlan SET isFreeze = :isFreeze,additionalRequirement=:additionalRequirement,additionalRequirementDPRC=:additionalRequirementDPRC  where institutionalInfraActivityId=:institutionalInfraActivityId"),
+})
 public class InstitutionalInfraActivityPlan {
 	
 	@Id
@@ -68,11 +73,16 @@ public class InstitutionalInfraActivityPlan {
 	@Column(name="is_freeze")
 	private Boolean isFreeze;
 	
+	@Column(name="additional_requirement_dprc")
+	private int additionalRequirementDPRC;
+	
+	
 	@Transient
 	private Integer detailsListLength;
 	
 	@Transient
 	private String dataFor;
+	
 
 	public Integer getDetailsListLength() {
 		return detailsListLength;
@@ -186,4 +196,14 @@ public class InstitutionalInfraActivityPlan {
 	public void setDataFor(String dataFor) {
 		this.dataFor = dataFor;
 	}
+
+	public int getAdditionalRequirementDPRC() {
+		return additionalRequirementDPRC;
+	}
+
+	public void setAdditionalRequirementDPRC(int additionalRequirementDPRC) {
+		this.additionalRequirementDPRC = additionalRequirementDPRC;
+	}
+	
+	
 }

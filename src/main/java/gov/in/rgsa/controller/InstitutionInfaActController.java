@@ -41,6 +41,8 @@ public class InstitutionInfaActController {
 	public static final String REDIRECT_BAISC_INFO_DETAILS = "redirect:basicinfo.add.html";
 	public static final String REDIRECT_MODIFY_BAISC_INFO_DETAILS = "redirect:managebasicInfoDetails.html";
 	private static final String INSTITUTION_INFRA_ACT_CEC = "institutionalInfraActivityPlanCec";
+	public static final String INSTITUTION_INFRA_ACT_MOPR = "institutionalInfraActivityPlanMopr";
+	
 
 	@RequestMapping(value = "institutionalInfraActivityPlan", method = RequestMethod.GET)
 	private String institutionInfaActivityGet(Model model,RedirectAttributes redirectAttributes) {
@@ -76,8 +78,8 @@ public class InstitutionInfaActController {
 	
 	@ResponseBody
 	@RequestMapping(value="saveInstitutionalInfraActivityPlanDetails", method=RequestMethod.POST)
-	private InstitutionalInfraActivityPlan saveInstitutionalInfraActivityPlanDetails(@RequestBody final InstitutionalInfraActivityPlan institutionalInfraActivityPlan,@RequestParam(value="instituteType", required= false) String instituteType,@RequestParam(value="updateStatus" ,required=false) String updateStatus,RedirectAttributes re) {
-		institutionalInfraActivityPlanService.saveInstitutionalInfraActivityPlanDetails(institutionalInfraActivityPlan,Integer.parseInt(instituteType),updateStatus);
+	private InstitutionalInfraActivityPlan saveInstitutionalInfraActivityPlanDetails(@RequestBody final InstitutionalInfraActivityPlan institutionalInfraActivityPlan,@RequestParam(value="updateStatus" ,required=false) String updateStatus,RedirectAttributes re) {
+		institutionalInfraActivityPlanService.saveInstitutionalInfra(institutionalInfraActivityPlan,updateStatus);
 		 return institutionalInfraActivityPlan;
 	}
 	@ResponseBody
@@ -138,13 +140,31 @@ public class InstitutionInfaActController {
 		List<InstitutionalInfraActivityPlanDetails> institutionalInfraActivityPlanDetails=new ArrayList<>();
 		institutionalInfraActivityPlan = institutionalInfraActivityPlanService.fetchInstitutionalInfraActivity(null);
 		if(!CollectionUtils.isEmpty(institutionalInfraActivityPlan)){
+			institutionalInfraActivityPlanService.fetchAllDetails(institutionalInfraActivityPlan.get(0).getInstitutionalInfraActivityId());
+			
+			
+			
 			institutionalInfraActivityPlanDetails= institutionalInfraActivityPlanService.fetchInstitutionalInfraActivityDetails(institutionalInfraActivityPlan.get(0),institutionalInfraActivityPlan.get(0).getInstitutionalInfraActivityId(),instituteType);
-				String[] location=new String[institutionalInfraActivityPlanDetails.size()];
+				
+				List<String> locationNB=new ArrayList<String>();
+				List<String> locationCF=new ArrayList<String>();
+				/*String[] locationNB=new String[institutionalInfraActivityPlanDetails.size()];
+				String[] locationCF=new String[institutionalInfraActivityPlanDetails.size()];*/
 				for(int i=0;i<institutionalInfraActivityPlanDetails.size();i++){
-					 location[i]=String.valueOf(institutionalInfraActivityPlanDetails.get(i).getInstitutionalInfraLocation());
+					if(institutionalInfraActivityPlanDetails.get(i).getWorkType()=='N') {
+						locationNB.add(String.valueOf(institutionalInfraActivityPlanDetails.get(i).getInstitutionalInfraLocation()));
+					}else if(institutionalInfraActivityPlanDetails.get(i).getWorkType()=='C') {
+						locationCF.add(String.valueOf(institutionalInfraActivityPlanDetails.get(i).getInstitutionalInfraLocation()));
+					}
+						
 				}
 				for (InstitutionalInfraActivityPlanDetails details : institutionalInfraActivityPlanDetails) {
-					details.setLocationName(location);
+					if(details.getWorkType()=='N' && locationNB.size()>0) {
+						details.setLocationName(locationNB.toArray(new String[0]));
+					}else if(details.getWorkType()=='C'  && locationCF.size()>0) {
+						details.setLocationName(locationCF.toArray(new String[0]));
+					}
+					
 				}
 			institutionalInfraActivityPlan.get(0).setDetailsListLength(institutionalInfraActivityPlanDetails.size());
 			institutionaInfraResponseMap.put("institutionalInfraActivityPlan", institutionalInfraActivityPlan.get(0));
@@ -164,6 +184,64 @@ public class InstitutionInfaActController {
 	private InstitutionalInfraActivityPlan feezUnFreezInstitutionalInfraActivityPlan(@RequestBody InstitutionalInfraActivityPlan institutionalInfraActivityPlan) {
 		 institutionalInfraActivityPlanService.feezUnFreezInstitutionalInfraActivityPlan(institutionalInfraActivityPlan);
 	 return institutionalInfraActivityPlan;
+	}
+	
+	@ResponseBody
+	@RequestMapping(value="fetchInstitutionalInfraDataForStateAndMOPRNew", method = RequestMethod.GET)
+	private InstitutionalInfraActivityPlan fetchInstitutionalInfraDataForStateAndMOPRNew(){
+		//Map<String, Object> institutionaInfraResponseMap = new HashMap<>();
+		InstitutionalInfraActivityPlan institutionalInfraActivityPlan=null;
+		List<InstitutionalInfraActivityPlan> institutionalInfraActivityPlanList=institutionalInfraActivityPlanService.fetchInstitutionalInfraActivity(null);
+		if(institutionalInfraActivityPlanList!=null && !institutionalInfraActivityPlanList.isEmpty()) {
+			institutionalInfraActivityPlan=institutionalInfraActivityPlanList.get(0);
+			/*List<InstitutionalInfraActivityPlanDetails> institutionalInfraActivityPlanDetails=institutionalInfraActivityPlanService.fetchAllDetails(institutionalInfraActivityPlan.getInstitutionalInfraActivityId());
+			institutionalInfraActivityPlan.setInstitutionalInfraActivityPlanDetails(institutionalInfraActivityPlanDetails);*/
+			//institutionaInfraResponseMap.put("institutionalInfraActivityPlan", institutionalInfraActivityPlan);
+			
+		}
+		return institutionalInfraActivityPlan;
+		
+	}
+	
+	@RequestMapping(value = "institutionalInfraActivityPlanMOPR", method = RequestMethod.GET)
+	private String institutionalInfraActivityPlanMOPR(Model model,RedirectAttributes redirectAttributes) {
+	model.addAttribute("STATE_CODE",userPreference.getStateCode());	
+	return INSTITUTION_INFRA_ACT_MOPR ;
+	}
+	
+	@ResponseBody
+	@RequestMapping(value="saveInstitutionalInfraActivityPlanDetailsMOPRCEC", method=RequestMethod.POST)
+	private InstitutionalInfraActivityPlan saveInstitutionalInfraActivityPlanDetailsMOPRCEC(@RequestBody final InstitutionalInfraActivityPlan institutionalInfraActivityPlan,RedirectAttributes re) {
+		institutionalInfraActivityPlanService.saveInstitutionalInfraMOPRCEC(institutionalInfraActivityPlan);
+		 return institutionalInfraActivityPlan;
+	}
+	
+	@ResponseBody
+	@RequestMapping(value="fetchInstitutionalInfraDataForCECNew", method = RequestMethod.GET)
+	private Map<String, Object> fetchInstitutionalInfraDataForCECNew(){
+		Map<String, Object> institutionaInfraResponseMap = new HashMap<>();
+		InstitutionalInfraActivityPlan institutionalInfraActivityPlan=null;
+		List<InstitutionalInfraActivityPlan> institutionalInfraActivityPlanList=institutionalInfraActivityPlanService.fetchInstitutionalInfraActivity(null);
+		if(institutionalInfraActivityPlanList!=null && !institutionalInfraActivityPlanList.isEmpty()) {
+			institutionalInfraActivityPlan=institutionalInfraActivityPlanList.get(0);
+			institutionaInfraResponseMap.put("institutionalInfraActivityPlanCEC", institutionalInfraActivityPlan);
+		}
+		
+		institutionalInfraActivityPlan=null;
+		institutionalInfraActivityPlanList=institutionalInfraActivityPlanService.fetchInstitutionalInfraActivity("M");
+		if(institutionalInfraActivityPlanList!=null && !institutionalInfraActivityPlanList.isEmpty()) {
+			institutionalInfraActivityPlan=institutionalInfraActivityPlanList.get(0);
+			institutionaInfraResponseMap.put("institutionalInfraActivityPlanMOPR", institutionalInfraActivityPlan);
+		}
+		
+		institutionalInfraActivityPlan=null;
+		institutionalInfraActivityPlanList=institutionalInfraActivityPlanService.fetchInstitutionalInfraActivity("S");
+		if(institutionalInfraActivityPlanList!=null && !institutionalInfraActivityPlanList.isEmpty()) {
+			institutionalInfraActivityPlan=institutionalInfraActivityPlanList.get(0);
+			institutionaInfraResponseMap.put("institutionalInfraActivityPlanState", institutionalInfraActivityPlan);
+		}
+		return institutionaInfraResponseMap;
+		
 	}
 
 }

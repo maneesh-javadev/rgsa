@@ -24,7 +24,8 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 @Table(name="institutional_infra_activity_details", schema = "rgsa")
 @NamedQueries({
 	@javax.persistence.NamedQuery(name="FETCH_ALL_INSTITUTIONAL_ACTIVITY_DETAILS",query="FROM InstitutionalInfraActivityPlanDetails where institutionalInfraActivityPlan.institutionalInfraActivityId=:institutionalInfraActivityId and trainingInstitueType.trainingInstitueTypeId=:instituteType order by institutionalInfraActivityDetailsId asc"),
-	@javax.persistence.NamedQuery(name="FETCH_ALL_DETAILS",query="FROM InstitutionalInfraActivityPlanDetails where institutionalInfraActivityPlan.institutionalInfraActivityId=:institutionalInfraActivityId order by institutionalInfraActivityDetailsId asc")
+	@javax.persistence.NamedQuery(name="FETCH_ALL_DETAILS",query="FROM InstitutionalInfraActivityPlanDetails where institutionalInfraActivityPlan.institutionalInfraActivityId=:institutionalInfraActivityId order by institutionalInfraActivityDetailsId asc"),
+	@javax.persistence.NamedQuery(name="UPDATE_DELETE_STATUS_BY_MULTIPLE_ID_Institutional",query="UPDATE InstitutionalInfraActivityPlanDetails SET isactive = false where institutionalInfraActivityPlan.institutionalInfraActivityId=:institutionalInfraActivityId"),
 })
 
 public class InstitutionalInfraActivityPlanDetails {
@@ -75,6 +76,21 @@ public class InstitutionalInfraActivityPlanDetails {
 	
 	@Column(name="work_type")
 	private Character workType;
+	
+	@Column(name="fund_sanctioned")
+	private Integer fundSanctioned;
+	
+	@Column(name="fund_released")
+	private Integer fundReleased;
+	
+	@Column(name="fund_utilized")
+	private Integer fundUtilized;
+	
+	@Column(name="fund_required")
+	private Integer fundRequired;
+	
+	@Column(name="is_active")
+	private Boolean isactive;
 
 	public Integer getInstitutionalInfraActivityDetailsId() {
 		return institutionalInfraActivityDetailsId;
@@ -187,5 +203,49 @@ public class InstitutionalInfraActivityPlanDetails {
 	public void setWorkType(Character workType) {
 		this.workType = workType;
 	}
+
+	public Integer getFundSanctioned() {
+		return fundSanctioned;
+	}
+
+	public void setFundSanctioned(Integer fundSanctioned) {
+		this.fundSanctioned = fundSanctioned;
+	}
+
+	public Integer getFundReleased() {
+		return fundReleased;
+	}
+
+	public void setFundReleased(Integer fundReleased) {
+		this.fundReleased = fundReleased;
+	}
+
+	public Integer getFundUtilized() {
+		return fundUtilized;
+	}
+
+	public void setFundUtilized(Integer fundUtilized) {
+		this.fundUtilized = fundUtilized;
+	}
+
+	public Integer getFundRequired() {
+		return fundRequired;
+	}
+
+	public void setFundRequired(Integer fundRequired) {
+		this.fundRequired = fundRequired;
+	}
+
+	public Boolean getIsactive() {
+		return isactive;
+	}
+
+	public void setIsactive(Boolean isactive) {
+		this.isactive = isactive;
+	}
+
+	
+	
+	
 	
 }

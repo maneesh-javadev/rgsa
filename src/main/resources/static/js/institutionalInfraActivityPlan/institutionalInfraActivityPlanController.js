@@ -5,6 +5,20 @@ publicModule.controller("institutionalInfraActivityPlanController", [ '$scope', 
 	
 	$scope.institutionalInfraActivityPlan={};
 	$scope.institutionalInfraActivityPlan.institutionalInfraActivityPlanDetails=[];
+
+	$scope.institutionalInfraActivityPlanDetailsNBState=[];
+	$scope.institutionalInfraActivityPlanDetailsNBDistrict=[];
+	$scope.institutionalInfraActivityPlanDetailsCFState=[];
+	$scope.institutionalInfraActivityPlanDetailsCFDistrict=[];
+	nbdArr=[];
+	nbsArr=[];
+	cfdArr=[];
+	cfsArr=[];
+	nbstatetArr =new Map();
+	cfstateArr =new Map();
+	nbdistrictArr =new Map();
+	cfdistrictArr =new Map();
+	
 	$scope.fullDetails=[];//contains details about sprc and dprc both
 	$scope.stackOfPreviousRecord=[];
 	$scope.secondStackOfPreviousRecord=[];
@@ -12,408 +26,652 @@ publicModule.controller("institutionalInfraActivityPlanController", [ '$scope', 
 	$scope.flag=false;
 	let total_fund=0;
 	let total=0;//sprc+dprc
-	fetchInstitutionalInfraActivityPlanData();
+	init();
 	
-	function fetchInstitutionalInfraActivityPlanData(){
-		institutionalInfraActivityPlanService.fetchTrainingInstituteType().then(function(response){
-			$scope.trainingInstituteType = response.data.TrainingInstituteType;
-			$scope.userType=response.data.userType;
-			if($scope.userType == "C"){
-				$scope.initial_status=response.data.initial_status;
-				$scope.institutionalInfraActivityPlanState=response.data.institutionalInfraActivityPlanState;
-				$scope.grandTotalState=calGrandTotalCEC($scope.institutionalInfraActivityPlanState.institutionalInfraActivityPlanDetails) + $scope.institutionalInfraActivityPlanState.additionalRequirement;
-				$scope.institutionalInfraActivityPlanMopr=response.data.institutionalInfraActivityPlanMopr;
-				$scope.grandTotalMopr=calGrandTotalCEC($scope.institutionalInfraActivityPlanMopr.institutionalInfraActivityPlanDetails);
-				if(response.data.institutionalInfraActivityPlanCEC === undefined || response.data.institutionalInfraActivityPlanCEC === null){
-					$scope.institutionalInfraActivityPlan = JSON.parse(JSON.stringify($scope.institutionalInfraActivityPlanState));
-					for(let i =0;i<$scope.institutionalInfraActivityPlan.institutionalInfraActivityPlanDetails.length ; i++){
-						$scope.institutionalInfraActivityPlan.institutionalInfraActivityPlanDetails[i].fundProposed='';
-						$scope.institutionalInfraActivityPlan.institutionalInfraActivityPlanDetails[i].totalFund='';
-					}
-					$scope.institutionalInfraActivityPlan.additionalRequirement='';
-					$scope.dataOfState=true;
-				}else{
-					$scope.dataOfState=false;
-					$scope.institutionalInfraActivityPlan = response.data.institutionalInfraActivityPlanCEC;
-					calGrandTotal();
-				}
-				
-			}
+	function init(){
+		institutionalInfraActivityPlanService.fetchDistrictListBasedOnState().then(function(response){
+			$scope.districtList = response.data;
+			load_data();
 		},function(error){
 			
 		});
 	}
 	
-	function calGrandTotalCEC(object){
-		let total=0;
-		for(let i=0;i<object.length;i++){
-			total += object[i].totalFund;
-		}
-		return total;
-	}
-	
+	/*function fetchInstitutionalInfraActivityPlanData(){
+		load_data();
+		institutionalInfraActivityPlanService.fetchTrainingInstituteType().then(function(response){
+			$scope.trainingInstituteType = response.data.TrainingInstituteType;
+			//load_state_data();
+			$scope.fetchDistricts();
+			load_data();
+		},function(error){
+			
+		});
+		
+		
+	}*/
 	$scope.fetchDistricts=function(){
 		institutionalInfraActivityPlanService.fetchDistrictListBasedOnState().then(function(response){
 			$scope.districtList = response.data;
-			$scope.institutionalInfraActivityPlan.institutionalInfraActivityPlanDetails[0].locationName=null;
-			$scope.flag=false;
-			
+		
 		},function(error){
 			
 		});
 	};
 	
-	$scope.validateDistrictSelection=function(trainingInstituteTypeId){
-		if(trainingInstituteTypeId==2 && $scope.institutionalInfraActivityPlan.institutionalInfraActivityPlanDetails[0].locationName.length == 1){
-			$scope.generatedRows(trainingInstituteTypeId);
-			$scope.flag=true;
-		}else if(trainingInstituteTypeId == 4){
-			$scope.generatedRows(trainingInstituteTypeId);
-			$scope.flag=true;
-		}
-		else{
-			$scope.flag=false;
-			trainingInstituteTypeId == 2 ? toastr.error("Please select single district in case of SPRC.") : toastr.error("You selected district in wrong way.");
-			$scope.institutionalInfraActivityPlan.institutionalInfraActivityPlanDetails[0].locationName = null;
-			$scope.trainingInstituteTypeId=0;
-		}
-		$scope.calculationDependentField(trainingInstituteTypeId);
-	};
-	
-	$scope.generatedRows=function(trainingInstituteTypeId){
-		$scope.selectedDistrictlist=[];
-		$scope.list=$scope.institutionalInfraActivityPlan.institutionalInfraActivityPlanDetails[0].locationName;
-		$scope.createSelectedDistrictList(trainingInstituteTypeId);
-		if($scope.institutionalInfraActivityPlan.institutionalInfraActivityPlanDetails.length > 0){
-			$scope.stackOfPreviousRecord=$scope.institutionalInfraActivityPlan.institutionalInfraActivityPlanDetails.slice();
-		}
-		institutionalInfraActivityPlanService.fetchDataBasedOnInstituteType(trainingInstituteTypeId).then(function(response){
-			if(response.data.institutionalInfraActivityPlanDetails.length > 0){
-				$scope.institutionalInfraActivityPlan.institutionalInfraActivityPlanDetails=response.data.institutionalInfraActivityPlanDetails;
-				$scope.addField(trainingInstituteTypeId);
-				$scope.secondStackOfPreviousRecord=$scope.stackOfPreviousRecord.slice();
-				$scope.stackOfPreviousRecord=$scope.institutionalInfraActivityPlan.institutionalInfraActivityPlanDetails.slice();
-				$scope.deleteIrreleventField();
-				$scope.flag=true;
-				/*$scope.calculationDependentField(trainingInstituteTypeId);*/
-			}else{
-				$scope.institutionalInfraActivityPlan.institutionalInfraActivityPlanDetails=[];
-				for(let i=0;i<$scope.selectedDistrictlist.length;i++){
-					$scope.institutionalInfraActivityPlan.institutionalInfraActivityPlanDetails[i]={
-							institutionalInfraActivityDetailsId :null,
-							fundProposed :'',
-							totalFund :'',
-							remarks :'',
-							institutionalInfraLocation : $scope.selectedDistrictlist[i].districtCode,
-							isApproved :false,
-							districtName : $scope.selectedDistrictlist[i].districtName,
-							workType :"N",
-							locationName : $scope.list,
-							trainingInstitueType :{
-								trainingInstitueTypeId : $scope.trainingInstituteTypeId,
-								trainingInstitueTypeName : $scope.selectedDistrictlist[i].instituteType,
-							}
-					}
+	function load_data(){
+		$scope.nbsindex=0;
+		$scope.nbdindex=0;
+		$scope.cfsindex=0;
+		$scope.cfdindex=0;
+		
+		institutionalInfraActivityPlanService.fetchInstitutionalInfraDataForStateAndMOPRNew().then(function(response){
+			$scope.institutionalInfraActivityPlan=response.data;
+			$scope.institutionalInfraActivityPlan.institutionalInfraActivityPlanDetails=response.data.institutionalInfraActivityPlanDetails;
+			for (var i = 0; i < $scope.institutionalInfraActivityPlan.institutionalInfraActivityPlanDetails.length; i++) { 
+				workType=$scope.institutionalInfraActivityPlan.institutionalInfraActivityPlanDetails[i].workType;
+				trainingInstitueTypeId=$scope.institutionalInfraActivityPlan.institutionalInfraActivityPlanDetails[i].trainingInstitueType.trainingInstitueTypeId;
+				dlc=$scope.institutionalInfraActivityPlan.institutionalInfraActivityPlanDetails[i].institutionalInfraLocation;
+				isactive=$scope.institutionalInfraActivityPlan.institutionalInfraActivityPlanDetails[i].isactive;
+				if(workType=='N' && trainingInstitueTypeId==2 && isactive==true){
+					$scope.institutionalInfraActivityPlanDetailsNBState[$scope.nbsindex]=$scope.institutionalInfraActivityPlan.institutionalInfraActivityPlanDetails[i];
+					districtObj=find_district(dlc);
+					nbsArr.push(dlc);
+					$scope.institutionalInfraActivityPlanDetailsNBState[$scope.nbsindex].districtName=districtObj.districtNameEnglish;
+					$scope.nbsindex++;
+				}else if(workType=='N' && trainingInstitueTypeId==4 && isactive==true){
+					$scope.institutionalInfraActivityPlanDetailsNBDistrict[$scope.nbdindex]=$scope.institutionalInfraActivityPlan.institutionalInfraActivityPlanDetails[i];
+					districtObj=find_district(dlc);
+					nbdArr.push(dlc.toString());
+					$scope.institutionalInfraActivityPlanDetailsNBDistrict[$scope.nbdindex].districtName=districtObj.districtNameEnglish;
+					
+					/*nbdistrictArr.set("fundProposed_"+dlc,$scope.institutionalInfraActivityPlan.institutionalInfraActivityPlanDetails[i].fundProposed);
+					nbdistrictArr.set("remarks_"+dlc,$scope.institutionalInfraActivityPlan.institutionalInfraActivityPlanDetails[i].remarks);
+					nbdistrictArr.set("institutionalInfraActivityDetailsId"+dlc,$scope.institutionalInfraActivityPlan.institutionalInfraActivityPlanDetails[i].institutionalInfraActivityDetailsId);*/
+					
+					$scope.nbdindex++;
+				}else if(workType=='C' && trainingInstitueTypeId==2 && isactive==true){
+					$scope.institutionalInfraActivityPlanDetailsCFState[$scope.cfsindex]=$scope.institutionalInfraActivityPlan.institutionalInfraActivityPlanDetails[i];
+					districtObj=find_district(dlc);
+					cfsArr.push(dlc);
+					$scope.institutionalInfraActivityPlanDetailsCFState[$scope.cfsindex].districtName=districtObj.districtNameEnglish;
+					$scope.cfsindex++;
+				}else if(workType=='C' && trainingInstitueTypeId==4 && isactive==true){
+					$scope.institutionalInfraActivityPlanDetailsCFDistrict[$scope.cfdindex]=$scope.institutionalInfraActivityPlan.institutionalInfraActivityPlanDetails[i];
+					districtObj=find_district(dlc);
+					cfdArr.push(dlc.toString());
+					$scope.institutionalInfraActivityPlanDetailsCFDistrict[$scope.cfdindex].districtName=districtObj.districtNameEnglish;
+					
+					/*cfdistrictArr.set("fundSanctioned_"+dlc,$scope.institutionalInfraActivityPlan.institutionalInfraActivityPlanDetails[i].fundSanctioned);
+					cfdistrictArr.set("fundReleased_"+dlc,$scope.institutionalInfraActivityPlan.institutionalInfraActivityPlanDetails[i].fundReleased);
+					cfdistrictArr.set("fundUtilized_"+dlc,$scope.institutionalInfraActivityPlan.institutionalInfraActivityPlanDetails[i].fundUtilized);
+					cfdistrictArr.set("fundRequired_"+dlc,$scope.institutionalInfraActivityPlan.institutionalInfraActivityPlanDetails[i].fundRequired);
+					cfdistrictArr.set("institutionalInfraActivityDetailsId"+dlc,$scope.institutionalInfraActivityPlan.institutionalInfraActivityPlanDetails[i].institutionalInfraActivityDetailsId);*/
+					
+					$scope.cfdindex++;
 				}
+				
+				
 			}
+			
+			
+			
+			if(nbsArr.length>0){
+				$scope.sprcDistrictNB=nbsArr.toString();
+			}
+			if(nbdArr.length>0){
+				$scope.dprcDistrictNB=nbdArr;
+			}
+			if(cfsArr.length>0){
+				$scope.sprcDistrictCF=cfsArr.toString() ;
+			}
+			if(cfdArr.length>0){
+				$scope.dprcDistrictCF=cfdArr;
+			}
+			
+			$scope.institutionalInfraActivityPlan.additionalRequirementNBS=$scope.institutionalInfraActivityPlan.additionalRequirement;
+			$scope.institutionalInfraActivityPlan.additionalRequirementNBD=$scope.institutionalInfraActivityPlan.additionalRequirementDPRC;
+			
+			$scope.calculate_total_fund(1,null,null);
+			$scope.calculate_total_fund(2,null,null);
+			$scope.calculate_total_fund(3,null,null);
+			$scope.calculate_total_fund(4,null,null);
 		});
 	}
 	
-	$scope.addField=function(trainingInstituteTypeId){
-		for(let i=0;i<$scope.selectedDistrictlist.length;i++){
-			let found=false;
-			let detailId=0;
-			for(let j =0;j<$scope.institutionalInfraActivityPlan.institutionalInfraActivityPlanDetails.length;j++){
-				detailId=$scope.institutionalInfraActivityPlan.institutionalInfraActivityPlanDetails[j].institutionalInfraActivityDetailsId;
-				$scope.selectedDistrictlist[i].districtCode == $scope.institutionalInfraActivityPlan.institutionalInfraActivityPlanDetails[j].institutionalInfraLocation ? found = true : found =false;
-				if(found){
-					$scope.institutionalInfraActivityPlan.institutionalInfraActivityPlanDetails[j].districtName=$scope.selectedDistrictlist[i].districtName;
-					detailId=$scope.institutionalInfraActivityPlan.institutionalInfraActivityPlanDetails[j].institutionalInfraActivityDetailsId;
-					break;
-				}
+	function find_district(dlc){
+		var districtObj=null;
+		for (var i = 0; i < $scope.districtList.length; i++) { 
+			if($scope.districtList[i].districtCode==dlc){
+				districtObj=$scope.districtList[i];
 			}
-			if(found==false){
-				$scope.institutionalInfraActivityPlan.institutionalInfraActivityPlanDetails.splice(i,0,{institutionalInfraActivityDetailsId : null , fundProposed : '' , totalFund : '' , remarks :'', institutionalInfraLocation : '', isApproved :false, districtName : '', workType :"N", locationName : '', trainingInstitueType :{},});
-				if(trainingInstituteTypeId==2){
-					$scope.institutionalInfraActivityPlan.institutionalInfraActivityPlanDetails[i].institutionalInfraActivityDetailsId=detailId;
+		}
+		
+		  return districtObj;
+	}
+	
+	$scope.add_row_nb=function(trainingType){
+		
+	 if(trainingType==2){
+		 	$scope.institutionalInfraActivityPlanDetailsNBState=[];
+		 	$scope.calculate_total_fund(1,null,null);
+		 	/*if($scope.nbsindex!=null && $scope.nbsindex!=undefined){
+			   $scope.nbsindex=$scope.nbsindex+1;
+		 	}else{
+				  $scope.nbsindex=0;
+		 	}*/
+		 
+		 create_state_row_NB($scope.nbsindex,'State Panchayat Resource Center(SPRC)',2);
+	 }else if(trainingType==4){
+		 /*if($scope.nbdindex!=null && $scope.nbdindex!=undefined){
+			   $scope.nbdindex=$scope.nbdindex+1;
+		 	}else{
+				  $scope.nbdindex=0;
+		 	}*/
+		 	
+		 	
+		 	$scope.calculate_total_fund(2,null,null);
+		 create_district_row_NB($scope.nbdindex,'District Panchayat Resource Center(DPRC)',4);
+	 }
+			
+	}
+	
+	
+	
+	function create_state_row_NB(rindex,name,id){
+		
+		
+		//clear_new_building(2);
+		//clear_carry_froward(2);
+		
+		rindex=0;
+		angular.forEach($scope.districtList,function(item){
+		  	if(item.districtCode == $scope.sprcDistrictNB){
+		  		$scope.currentObject = item;
+		  	}
+		  })
+		
+		create_new_building_state_object(rindex,name,id,$scope.currentObject);
+		//create_carry_froward_object(rindex,name,id,$scope.currentObject);
+		$scope.rindex=(--rindex);
+	}
+	
+	function create_district_row_NB(rindex,name,id){
+		
+		for (var i = 0; i < $scope.institutionalInfraActivityPlanDetailsNBDistrict.length; i++) { 
+			nbdistrictArr.set("fundProposed_"+$scope.institutionalInfraActivityPlanDetailsNBDistrict[i].institutionalInfraLocation,$scope.institutionalInfraActivityPlanDetailsNBDistrict[i].fundProposed);
+			nbdistrictArr.set("remarks_"+$scope.institutionalInfraActivityPlanDetailsNBDistrict[i].institutionalInfraLocation,$scope.institutionalInfraActivityPlanDetailsNBDistrict[i].remarks);
+			nbdistrictArr.set("institutionalInfraActivityDetailsId_"+$scope.institutionalInfraActivityPlanDetailsNBDistrict[i].institutionalInfraLocation,$scope.institutionalInfraActivityPlanDetailsNBDistrict[i].institutionalInfraActivityDetailsId);
+		}
+		
+		
+		$scope.institutionalInfraActivityPlanDetailsNBDistrict=[];
+		//clear_new_building(4);
+		//clear_carry_froward(4);
+		rindex=0;
+		angular.forEach($scope.districtList,function(item){
+			fundProposed='';
+			remarks='';
+			institutionalInfraActivityDetailsId=null;
+		  	if($scope.dprcDistrictNB.includes(item.districtCode.toString())){
+		  		if(nbdistrictArr.has("fundProposed_"+item.districtCode)){
+		  			fundProposed=nbdistrictArr.get("fundProposed_"+item.districtCode)
+		  		}
+		  		if(nbdistrictArr.has("remarks_"+item.districtCode)){
+		  			remarks=nbdistrictArr.get("remarks_"+item.districtCode)
+		  		}
+		  		
+		  		if(nbdistrictArr.has("institutionalInfraActivityDetailsId_"+item.districtCode)){
+		  			institutionalInfraActivityDetailsId=nbdistrictArr.get("institutionalInfraActivityDetailsId_"+item.districtCode);
+		  		}
+		  		create_new_building_district_object(rindex,name,id,item,fundProposed,remarks,institutionalInfraActivityDetailsId);
+		  		
+		  		//create_carry_froward_object(rindex,name,id,item);
+				rindex++;
+		  	}else{
+		  		
+		  	}
+		  });
+		$scope.calculate_total_fund(2,null,null,null)
+		$scope.rindex=(--rindex);
+		
+		}
+	
+	
+	function create_new_building_state_object(rindex,name,id,object)
+	{
+			$scope.institutionalInfraActivityPlanDetailsNBState[rindex]={
+				institutionalInfraActivityDetailsId :null,
+				fundProposed :'',
+				totalFund :'',
+				remarks :'',
+				institutionalInfraLocation : object.districtCode,
+				isApproved :false,
+				districtName : object.districtNameEnglish,
+				workType :"N",
+				locationName : $scope.list,
+				fundSanctioned:'',
+				fundReleased:'',
+				fundUtilized:'',
+				fundRequired:'',
+				trainingInstitueType :{
+					trainingInstitueTypeId : id,
+					trainingInstitueTypeName : name,
 				}
-				$scope.institutionalInfraActivityPlan.institutionalInfraActivityPlanDetails[i].institutionalInfraLocation=$scope.selectedDistrictlist[i].districtCode;
-				$scope.institutionalInfraActivityPlan.institutionalInfraActivityPlanDetails[i].districtName=$scope.selectedDistrictlist[i].districtName;
-				$scope.institutionalInfraActivityPlan.institutionalInfraActivityPlanDetails[i].trainingInstitueType.trainingInstitueTypeId= $scope.trainingInstituteTypeId;
-				$scope.institutionalInfraActivityPlan.institutionalInfraActivityPlanDetails[i].trainingInstitueType.trainingInstitueTypeName=$scope.selectedDistrictlist[i].instituteType;
-				$scope.institutionalInfraActivityPlan.institutionalInfraActivityPlanDetails[i].locationName= $scope.list;
-			}
 		}
 	}
 	
-	$scope.deleteIrreleventField=function(){
-		for(let i=0;i<$scope.institutionalInfraActivityPlan.institutionalInfraActivityPlanDetails.length;i++){
-			let found=false;
-			for(let j=0;j<$scope.selectedDistrictlist.length;j++){
-				 $scope.institutionalInfraActivityPlan.institutionalInfraActivityPlanDetails[i].institutionalInfraLocation==$scope.selectedDistrictlist[j].districtCode ? found = true : found =false;
-				if(found){
-					$scope.institutionalInfraActivityPlan.institutionalInfraActivityPlanDetails[i].locationName=$scope.list;
-					break;
+	function create_new_building_district_object(rindex,name,id,object,fundProposed,remarks,institutionalInfraActivityDetailsId)
+	{
+			$scope.institutionalInfraActivityPlanDetailsNBDistrict[rindex]={
+				institutionalInfraActivityDetailsId :institutionalInfraActivityDetailsId,
+				fundProposed :fundProposed,
+				totalFund :'',
+				remarks :remarks,
+				institutionalInfraLocation : object.districtCode,
+				isApproved :false,
+				districtName : object.districtNameEnglish,
+				workType :"N",
+				locationName : $scope.list,
+				fundSanctioned:'',
+				fundReleased:'',
+				fundUtilized:'',
+				fundRequired:'',
+				trainingInstitueType :{
+					trainingInstitueTypeId : id,
+					trainingInstitueTypeName : name,
 				}
-			}
-			if(found==false){
-				delete $scope.institutionalInfraActivityPlan.institutionalInfraActivityPlanDetails[i];
-			}
 		}
-		$scope.institutionalInfraActivityPlan.institutionalInfraActivityPlanDetails=$scope.institutionalInfraActivityPlan.institutionalInfraActivityPlanDetails.filter(function(el){
-			return el != null;
-		});
 	}
 	
-	$scope.createSelectedDistrictList=function(instituteType){
-		if(instituteType == 2){
-			for(var i = 0;i < $scope.list.length;i++){
-				for(var j = 0;j<$scope.districtList.length;j++){
-					if($scope.list[i] == $scope.districtList[j].districtCode){
-						$scope.selectedDistrictlist[i] = {	"districtCode" : $scope.districtList[j].districtCode,
-															"districtName" : $scope.districtList[j].districtNameEnglish,
-															"instituteType" : "State Panchayat Resource Center(SPRC)",};
-					}
+	
+	$scope.add_row_cf=function(trainingType){
+		
+	 if(trainingType==2){
+		 $scope.institutionalInfraActivityPlanDetailsCFState=[];
+		 
+		/* if($scope.cfsindex!=null && $scope.cfsindex!=undefined){
+			   $scope.cfsindex=$scope.cfsindex+1;
+		 	}else{
+				  $scope.cfsindex=0;
+		 	}*/
+		 create_state_row_CF($scope.cfsindex,'State Panchayat Resource Center(SPRC)',2);
+	 }else if(trainingType==4){
+		
+		 
+		 create_district_row_CF($scope.cfdindex,'District Panchayat Resource Center(DPRC)',4);
+	 }
+			
+	}
+	
+	
+function create_state_row_CF(rindex,name,id){
+		
+		
+		//clear_new_building(2);
+		//clear_carry_froward(2);
+		angular.forEach($scope.districtList,function(item){
+		  	if(item.districtCode == $scope.sprcDistrictCF){
+		  		$scope.currentObject = item;
+		  	}
+		  })
+		
+		create_carry_froward_state_object(rindex,name,id,$scope.currentObject);
+		//create_carry_froward_object(rindex,name,id,$scope.currentObject);
+		$scope.rindex=(--rindex);
+	}
+	
+	function create_district_row_CF(rindex,name,id){
+		
+		
+		for (var i = 0; i < $scope.institutionalInfraActivityPlanDetailsCFDistrict.length; i++) { 
+			cfdistrictArr.set("fundSanctioned_"+$scope.institutionalInfraActivityPlanDetailsCFDistrict[i].institutionalInfraLocation,$scope.institutionalInfraActivityPlanDetailsCFDistrict[i].fundSanctioned);
+			cfdistrictArr.set("fundReleased_"+$scope.institutionalInfraActivityPlanDetailsCFDistrict[i].institutionalInfraLocation,$scope.institutionalInfraActivityPlanDetailsCFDistrict[i].fundReleased);
+			cfdistrictArr.set("fundUtilized_"+$scope.institutionalInfraActivityPlanDetailsCFDistrict[i].institutionalInfraLocation,$scope.institutionalInfraActivityPlanDetailsCFDistrict[i].fundUtilized);
+			cfdistrictArr.set("fundRequired_"+$scope.institutionalInfraActivityPlanDetailsCFDistrict[i].institutionalInfraLocation,$scope.institutionalInfraActivityPlanDetailsCFDistrict[i].fundRequired);
+			cfdistrictArr.set("institutionalInfraActivityDetailsId_"+$scope.institutionalInfraActivityPlanDetailsNBDistrict[i].institutionalInfraLocation,$scope.institutionalInfraActivityPlanDetailsNBDistrict[i].institutionalInfraActivityDetailsId);
+		}
+		
+		$scope.institutionalInfraActivityPlanDetailsCFDistrict=[];
+		rindex=0;
+		//clear_new_building(4);
+		//clear_carry_froward(4);
+		angular.forEach($scope.districtList,function(item){
+		  	if($scope.dprcDistrictCF.includes(item.districtCode.toString())){
+		  		fundSanctioned='';
+		  		fundReleased='';
+		  		fundUtilized='';
+		  		fundRequired='';
+		  		institutionalInfraActivityDetailsId=null;
+		  		if(cfdistrictArr.has("fundSanctioned_"+item.districtCode)){
+		  			fundSanctioned=cfdistrictArr.get("fundSanctioned_"+item.districtCode)
+		  		}
+		  		if(cfdistrictArr.has("fundReleased_"+item.districtCode)){
+		  			fundReleased=cfdistrictArr.get("fundReleased_"+item.districtCode)
+		  		}
+		  		if(cfdistrictArr.has("fundUtilized_"+item.districtCode)){
+		  			fundUtilized=cfdistrictArr.get("fundUtilized_"+item.districtCode)
+		  		}
+		  		if(cfdistrictArr.has("fundRequired_"+item.districtCode)){
+		  			fundRequired=cfdistrictArr.get("fundRequired_"+item.districtCode)
+		  		}
+		  		
+		  		if(cfdistrictArr.has("institutionalInfraActivityDetailsId_"+item.districtCode)){
+		  			institutionalInfraActivityDetailsId=cfdistrictArr.get("institutionalInfraActivityDetailsId_"+item.districtCode)
+		  		}
+		  		
+		  		create_carry_froward_district_object(rindex,name,id,item,fundSanctioned,fundReleased,fundUtilized,fundRequired,institutionalInfraActivityDetailsId);
+		  		//create_carry_froward_object(rindex,name,id,item);
+				rindex++;
+		  	}
+		  });
+		$scope.calculate_total_fund(4,null,null,null)
+		$scope.rindex=(--rindex);
+		
+		}
+	
+	
+	function create_carry_froward_state_object(rindex,name,id,object)
+	{
+			$scope.institutionalInfraActivityPlanDetailsCFState[rindex]={
+				institutionalInfraActivityDetailsId :null,
+				fundProposed :'',
+				totalFund :'',
+				remarks :'',
+				institutionalInfraLocation : object.districtCode,
+				isApproved :false,
+				districtName : object.districtNameEnglish,
+				workType :"C",
+				locationName : $scope.list,
+				fundSanctioned:'',
+				fundReleased:'',
+				fundUtilized:'',
+				fundRequired:'',
+				isactive:true,
+				trainingInstitueType :{
+					trainingInstitueTypeId : id,
+					trainingInstitueTypeName : name,
 				}
-			}
-		}else{
-			for(var n = 0;n < $scope.list.length;n++){
-				for(var m = 0;m<$scope.districtList.length;m++){
-					if($scope.list[n] == $scope.districtList[m].districtCode){
-						$scope.selectedDistrictlist[n] = {	"districtCode" : $scope.districtList[m].districtCode,
-															"districtName" : $scope.districtList[m].districtNameEnglish,
-															"instituteType" : "District Panchayat Resource Center(DPRC)",};
+		}
+	}
+	
+	function create_carry_froward_district_object(rindex,name,id,object,fundSanctioned,fundReleased,fundUtilized,fundRequired,institutionalInfraActivityDetailsId)
+	{
+			$scope.institutionalInfraActivityPlanDetailsCFDistrict[rindex]={
+				institutionalInfraActivityDetailsId :institutionalInfraActivityDetailsId,
+				fundProposed :'',
+				totalFund :'',
+				remarks :'',
+				institutionalInfraLocation : object.districtCode,
+				isApproved :false,
+				districtName : object.districtNameEnglish,
+				workType :"C",
+				locationName : $scope.list,
+				fundSanctioned:fundSanctioned,
+				fundReleased:fundReleased,
+				fundUtilized:fundUtilized,
+				fundRequired:fundRequired,
+				trainingInstitueType :{
+					trainingInstitueTypeId : id,
+					trainingInstitueTypeName : name,
+				}
+		}
+	}
+	
+	
+	/*
+	 * typeId  Discription    
+	 * 1- State New Building
+	 * 2- District New Building
+	 * 3- State Carry Forward
+	 * 4- District Carry Forward
+	 */
+	$scope.calculate_total_fund=function(typeId,index,id){
+		if(typeId==1){
+			var totalOfFunds = 0;
+			var totalOfFundsReq=0;
+			var addiReq=0;
+				for (var i = 0; i < $scope.institutionalInfraActivityPlanDetailsNBState.length; i++) {
+					if(  $scope.institutionalInfraActivityPlanDetailsNBState[i].fundProposed!= null && $scope.institutionalInfraActivityPlanDetailsNBState[i].fundProposed!= undefined && $scope.institutionalInfraActivityPlanDetailsNBState[i].fundProposed!= ""){
+						totalOfFunds = totalOfFunds + parseInt($scope.institutionalInfraActivityPlanDetailsNBState[i].fundProposed);
 					}
 				}
 				
+				if(index!=null && totalOfFunds>10000000){
+					totalOfFunds=totalOfFunds-$scope.institutionalInfraActivityPlanDetailsNBState[index].fundProposed;
+					$scope.institutionalInfraActivityPlanDetailsNBState[index].fundProposed=null;
+					toastr.error("Fund proposed in case of SPRC should be less than or equal to 1 crore");
+				}
+				
+			$scope.totalWithoutAddRequirementsNBS = totalOfFunds;
+			if($scope.institutionalInfraActivityPlan.additionalRequirementNBS != null && $scope.institutionalInfraActivityPlan.additionalRequirementNBS != undefined){
+				addiReq=parseInt($scope.institutionalInfraActivityPlan.additionalRequirementNBS);
 			}
+			if(addiReq>(totalOfFunds*25/100)){
+				$scope.institutionalInfraActivityPlan.additionalRequirementNBS=null;
+				addiReq=0;
+				toastr.error("Additional Requirement must be less then 25% of total Fund proposed");
+			}
+			$scope.grandTotalNBS = parseInt($scope.totalWithoutAddRequirementsNBS) + addiReq;
 		}
 		
-	};
+		if(typeId==2){
+			var totalOfFunds = 0;
+			var totalOfFundsReq=0;
+			var addiReq=0;
+				for (var i = 0; i < $scope.institutionalInfraActivityPlanDetailsNBDistrict.length; i++) {
+					if(  $scope.institutionalInfraActivityPlanDetailsNBDistrict[i].fundProposed!= null && $scope.institutionalInfraActivityPlanDetailsNBDistrict[i].fundProposed!= undefined && $scope.institutionalInfraActivityPlanDetailsNBDistrict[i].fundProposed!= ""){
+						totalOfFunds = totalOfFunds + parseInt($scope.institutionalInfraActivityPlanDetailsNBDistrict[i].fundProposed);
+					}
+				}
+				
+				if(index!=null && totalOfFunds>20000000){
+					totalOfFunds=totalOfFunds-$scope.institutionalInfraActivityPlanDetailsNBDistrict[index].fundProposed;
+					$scope.institutionalInfraActivityPlanDetailsNBDistrict[index].fundProposed=null;
+					toastr.error("Fund proposed in case of DPRC should be less than or equal to 2 crore");
+				}
+			$scope.totalWithoutAddRequirementsNBD = totalOfFunds;
+			if($scope.institutionalInfraActivityPlan.additionalRequirementNBD != null && $scope.institutionalInfraActivityPlan.additionalRequirementNBD != undefined){
+				addiReq=parseInt($scope.institutionalInfraActivityPlan.additionalRequirementNBD);
+			}
+			
+			if(addiReq>(totalOfFunds*25/100)){
+				$scope.institutionalInfraActivityPlan.additionalRequirementNBD=null;
+				addiReq=0;
+				toastr.error("Additional Requirement must be less then 25% of total Fund proposed");
+			}
+			$scope.grandTotalNBD = parseInt($scope.totalWithoutAddRequirementsNBD) + addiReq;
+		}	
+		
+		if(typeId==3){
+			
+			if(index!=null){
+				var FREL=0,FUTI=0,FREQ=0,FSAN=0;
+				var isError=false;
+				if($scope.institutionalInfraActivityPlanDetailsCFState[index].fundSanctioned != null && $scope.institutionalInfraActivityPlanDetailsCFState[index].fundSanctioned != undefined){
+						FSAN=parseInt($scope.institutionalInfraActivityPlanDetailsCFState[index].fundSanctioned);
+				}
+				if($scope.institutionalInfraActivityPlanDetailsCFState[index].fundReleased != null && $scope.institutionalInfraActivityPlanDetailsCFState[index].fundReleased!= undefined){
+						FREL=parseInt($scope.institutionalInfraActivityPlanDetailsCFState[index].fundReleased);
+				}
+				if($scope.institutionalInfraActivityPlanDetailsCFState[index].fundUtilized != null && $scope.institutionalInfraActivityPlanDetailsCFState[index].fundUtilized != undefined){
+						FUTI=parseInt($scope.institutionalInfraActivityPlanDetailsCFState[index].fundUtilized);
+				}
+					
+					if(FREL>FSAN && id!='SAN'){
+						toastr.error("Fund Sanctioned must be greater then Fund Released");
+						isError=true;
+					}else{
+						if(id!='SAN'){
+							if(FREL>FUTI){
+								FREQ=FREL-FUTI;
+								if(FSAN>FREQ){
+									$scope.institutionalInfraActivityPlanDetailsCFState[index].fundRequired=FREQ;
+									
+								}
+								else{
+									toastr.error("Fund Required must be greater then Fund Sanctioned");
+									isError=true;
+								}
+							}else{
+								toastr.error("Fund Released must be greater then Fund Utilized");
+								isError=true;
+							}
+						}else{
+							$scope.institutionalInfraActivityPlanDetailsCFState[index].fundRequired=null;
+							$scope.institutionalInfraActivityPlanDetailsCFState[index].fundReleased=null;
+							$scope.institutionalInfraActivityPlanDetailsCFState[index].fundUtilized=null;
+						}
+						
+						
+						}
+				
+					
+					
+					
+					if(isError){
+						if(id=='REL'){
+							$scope.institutionalInfraActivityPlanDetailsCFState[index].fundReleased=null;
+						}else if(id=='UTI')	{
+							$scope.institutionalInfraActivityPlanDetailsCFState[index].fundUtilized=null;
+						}else if(id=='SAN')	{
+							$scope.institutionalInfraActivityPlanDetailsCFState[index].fundSanctioned=null;
+						}
+						$scope.institutionalInfraActivityPlanDetailsCFState[index].fundRequired=null;
+					}
+			}
+			
+				
+				var totalOfFunds=0;
+				for (var i = 0; i < $scope.institutionalInfraActivityPlanDetailsCFState.length; i++) {
+					if(  $scope.institutionalInfraActivityPlanDetailsCFState[i].fundRequired!= null && $scope.institutionalInfraActivityPlanDetailsCFState[i].fundRequired!= undefined && $scope.institutionalInfraActivityPlanDetailsCFState[i].fundRequired!= ""){
+						totalOfFunds = totalOfFunds + parseInt($scope.institutionalInfraActivityPlanDetailsCFState[i].fundRequired);
+					}
+				}
+			$scope.totalWithoutAddRequirementsCFS = totalOfFunds;
+			
+		}
+		
+		if(typeId==4){
+
+			if(index!=null){
+				var FREL=0,FUTI=0,FREQ=0,FSAN=0;
+				var isError=false;
+				if($scope.institutionalInfraActivityPlanDetailsCFDistrict[index].fundSanctioned != null && $scope.institutionalInfraActivityPlanDetailsCFDistrict[index].fundSanctioned != undefined){
+						FSAN=parseInt($scope.institutionalInfraActivityPlanDetailsCFDistrict[index].fundSanctioned);
+				}
+				if($scope.institutionalInfraActivityPlanDetailsCFDistrict[index].fundReleased != null && $scope.institutionalInfraActivityPlanDetailsCFDistrict[index].fundReleased!= undefined){
+						FREL=parseInt($scope.institutionalInfraActivityPlanDetailsCFDistrict[index].fundReleased);
+				}
+				if($scope.institutionalInfraActivityPlanDetailsCFDistrict[index].fundUtilized != null && $scope.institutionalInfraActivityPlanDetailsCFDistrict[index].fundUtilized != undefined){
+						FUTI=parseInt($scope.institutionalInfraActivityPlanDetailsCFDistrict[index].fundUtilized);
+				}
+					
+					if(FREL>FSAN && id!='SAN'){
+						toastr.error("Fund Sanctioned must be greater then Fund Released");
+						isError=true;
+					}else{
+						if(id!='SAN'){
+							if(FREL>FUTI){
+								FREQ=FREL-FUTI;
+								if(FSAN>FREQ){
+									$scope.institutionalInfraActivityPlanDetailsCFDistrict[index].fundRequired=FREQ;
+									
+								}
+								else{
+									toastr.error("Fund Required must be greater then Fund Sanctioned");
+									isError=true;
+								}
+							}else{
+								toastr.error("Fund Released must be greater then Fund Utilized");
+								isError=true;
+							}
+						}else{
+							$scope.institutionalInfraActivityPlanDetailsCFDistrict[index].fundRequired=null;
+							$scope.institutionalInfraActivityPlanDetailsCFDistrict[index].fundReleased=null;
+							$scope.institutionalInfraActivityPlanDetailsCFDistrict[index].fundUtilized=null;
+						}
+						
+						
+						}
+				
+					
+					
+					
+					if(isError){
+						if(id=='REL'){
+							$scope.institutionalInfraActivityPlanDetailsCFDistrict[index].fundReleased=null;
+						}else if(id=='UTI')	{
+							$scope.institutionalInfraActivityPlanDetailsCFDistrict[index].fundUtilized=null;
+						}else if(id=='SAN')	{
+							$scope.institutionalInfraActivityPlanDetailsCFDistrict[index].fundSanctioned=null;
+						}
+						$scope.institutionalInfraActivityPlanDetailsCFDistrict[index].fundRequired=null;
+					}
+			}
+			
+			
+				
+				var totalOfFunds=0;
+				for (var i = 0; i < $scope.institutionalInfraActivityPlanDetailsCFDistrict.length; i++) {
+					if(  $scope.institutionalInfraActivityPlanDetailsCFDistrict[i].fundRequired!= null && $scope.institutionalInfraActivityPlanDetailsCFDistrict[i].fundRequired!= undefined && $scope.institutionalInfraActivityPlanDetailsCFDistrict[i].fundRequired!= ""){
+						totalOfFunds = totalOfFunds + parseInt($scope.institutionalInfraActivityPlanDetailsCFDistrict[i].fundRequired);
+					}
+				}
+			$scope.totalWithoutAddRequirementsCFD = totalOfFunds;
+		}	
+		
+	}
 	
 	
-	
-	$scope.saveInstitutionalInfraActivityPlanDetails=function(trainingInstituteTypeId,updateStatus){
-		let saveStatus=false;
+	$scope.save_data=function(status){
+		$scope.institutionalInfraActivityPlan.institutionalInfraActivityPlanDetails=[];
+		index=0;
+		$scope.institutionalInfraActivityPlan.additionalRequirement=$scope.institutionalInfraActivityPlan.additionalRequirementNBS;
+		$scope.institutionalInfraActivityPlan.additionalRequirementDPRC=$scope.institutionalInfraActivityPlan.additionalRequirementNBD;
+		for (var i = 0; i < $scope.institutionalInfraActivityPlanDetailsNBState.length; i++) { 
+			$scope.institutionalInfraActivityPlan.institutionalInfraActivityPlanDetails[index]=$scope.institutionalInfraActivityPlanDetailsNBState[i];
+			index++;
+		}
+		
+		for (var i = 0; i < $scope.institutionalInfraActivityPlanDetailsNBDistrict.length; i++) { 
+			$scope.institutionalInfraActivityPlan.institutionalInfraActivityPlanDetails[index]=$scope.institutionalInfraActivityPlanDetailsNBDistrict[i];
+			index++;
+		}
+		
+		for (var i = 0; i < $scope.institutionalInfraActivityPlanDetailsCFState.length; i++) { 
+			$scope.institutionalInfraActivityPlan.institutionalInfraActivityPlanDetails[index]=$scope.institutionalInfraActivityPlanDetailsCFState[i];
+			index++;
+		}
+		
+		for (var i = 0; i < $scope.institutionalInfraActivityPlanDetailsCFDistrict.length; i++) { 
+			$scope.institutionalInfraActivityPlan.institutionalInfraActivityPlanDetails[index]=$scope.institutionalInfraActivityPlanDetailsCFDistrict[i];
+			index++;
+		}
+		
 		for(let i=0;i<$scope.institutionalInfraActivityPlan.institutionalInfraActivityPlanDetails.length;i++){
-			($scope.institutionalInfraActivityPlan.institutionalInfraActivityPlanDetails[i].fundProposed !== "" && $scope.institutionalInfraActivityPlan.institutionalInfraActivityPlanDetails[i].fundProposed != 0) ? saveStatus = true : saveStatus =false;
+			(($scope.institutionalInfraActivityPlan.institutionalInfraActivityPlanDetails[i].fundProposed !== "" && $scope.institutionalInfraActivityPlan.institutionalInfraActivityPlanDetails[i].fundProposed != 0)
+			|| ($scope.institutionalInfraActivityPlan.institutionalInfraActivityPlanDetails[i].fundRequired!== "" && $scope.institutionalInfraActivityPlan.institutionalInfraActivityPlanDetails[i].fundRequired != 0)) 
+			? saveStatus = true : saveStatus =false;
 		}
 		if(saveStatus){
-			institutionalInfraActivityPlanService.saveInstitutionalInfraActivityPlanDetails($scope.institutionalInfraActivityPlan,trainingInstituteTypeId,$scope.updateStatus).then(function(response){
-				$scope.institutionalInfraActivityPlan = response.data;
-				$scope.fetchData($scope.institutionalInfraActivityPlan.institutionalInfraActivityPlanDetails[0].trainingInstitueType.trainingInstitueTypeId);
+			$scope.institutionalInfraActivityPlan.isFreeze=false;
+			if(status=='F'){
+				$scope.institutionalInfraActivityPlan.isFreeze=true;
+			}
+			institutionalInfraActivityPlanService.saveInstitutionalInfraActivityPlanDetails($scope.institutionalInfraActivityPlan,$scope.updateStatus).then(function(response){
+				//$scope.institutionalInfraActivityPlan = response.data;
+				//$scope.fetchData($scope.institutionalInfraActivityPlan.institutionalInfraActivityPlanDetails[0].trainingInstitueType.trainingInstitueTypeId);
 					toastr.success("Plan Saved Successfully");
+					load_data();
 			},function(error){
 				toastr.error("Something went wrong");
 			});	
 		}else{
 			toastr.error("Fund value should not be blank or zero.");
 		}
-		
-	};
-	
-	$scope.saveCec=function(){
-		let saveStatus=false;
-		for(let i=0;i<$scope.institutionalInfraActivityPlan.institutionalInfraActivityPlanDetails.length;i++){
-			($scope.institutionalInfraActivityPlan.institutionalInfraActivityPlanDetails[i].fundProposed !== "" && $scope.institutionalInfraActivityPlan.institutionalInfraActivityPlanDetails[i].fundProposed != 0) ? saveStatus = true : saveStatus =false;
-		}
-		if(saveStatus){
-			institutionalInfraActivityPlanService.saveCec($scope.institutionalInfraActivityPlan).then(function(response){
-				$scope.institutionalInfraActivityPlan = response.data;
-				fetchInstitutionalInfraActivityPlanData();
-					toastr.success("Plan Saved Successfully");
-			},function(error){
-				toastr.error("Something went wrong");
-			});	
-		}else{
-			toastr.error("Fund value should not be blank or zero.");
-		}
 	}
 	
-	$scope.calculationDependentField=function(trainingInstituteTypeId){
-		total_fund=0;
-		if(trainingInstituteTypeId == 2){
-			if($scope.institutionalInfraActivityPlan.institutionalInfraActivityPlanDetails.length > 0){
-				for(let i=0;i<$scope.institutionalInfraActivityPlan.institutionalInfraActivityPlanDetails.length;i++){
-					if($scope.institutionalInfraActivityPlan.institutionalInfraActivityPlanDetails[i].fundProposed != "" || $scope.institutionalInfraActivityPlan.institutionalInfraActivityPlanDetails[i].fundProposed != undefined){
-						if($scope.institutionalInfraActivityPlan.institutionalInfraActivityPlanDetails[i].fundProposed > 10000000){
-							$scope.institutionalInfraActivityPlan.institutionalInfraActivityPlanDetails[i].fundProposed=0;
-							$scope.institutionalInfraActivityPlan.institutionalInfraActivityPlanDetails[i].totalFund =$scope.institutionalInfraActivityPlan.institutionalInfraActivityPlanDetails[i].fundProposed;
-							toastr.error("Fund proposed in case of SPRC should be less than or equal to 1 crore");
-						}else{
-							$scope.institutionalInfraActivityPlan.institutionalInfraActivityPlanDetails[i].totalFund =$scope.institutionalInfraActivityPlan.institutionalInfraActivityPlanDetails[i].fundProposed;
-							total_fund=$scope.institutionalInfraActivityPlan.institutionalInfraActivityPlanDetails[i].totalFund;
-						}
-					}
-				}
-			}
-		}else{
-			if($scope.institutionalInfraActivityPlan.institutionalInfraActivityPlanDetails.length > 0){
-				for(let i=0;i<$scope.institutionalInfraActivityPlan.institutionalInfraActivityPlanDetails.length;i++){
-					if($scope.institutionalInfraActivityPlan.institutionalInfraActivityPlanDetails[i].fundProposed != "" || $scope.institutionalInfraActivityPlan.institutionalInfraActivityPlanDetails[i].fundProposed != undefined){
-						if($scope.institutionalInfraActivityPlan.institutionalInfraActivityPlanDetails[i].fundProposed > 20000000){
-							$scope.institutionalInfraActivityPlan.institutionalInfraActivityPlanDetails[i].fundProposed=0;
-							toastr.error("Fund proposed in case of DPRC should be less than or equal to 2 crore");
-						}else{
-							$scope.institutionalInfraActivityPlan.institutionalInfraActivityPlanDetails[i].totalFund =$scope.institutionalInfraActivityPlan.institutionalInfraActivityPlanDetails[i].fundProposed;
-							total_fund +=parseInt($scope.institutionalInfraActivityPlan.institutionalInfraActivityPlanDetails[i].totalFund);
-						}
-					}
-				}
-			}
-		}
-		
-		// setting value of sub total
-		$scope.subTotal=total_fund;
-		$scope.calculateTotalProposedFund();
-		
-	};
 	
-	$scope.validateAdditionalRequirement=function(){
-		if($scope.institutionalInfraActivityPlan.additionalRequirement !== ""){
-			if($scope.institutionalInfraActivityPlan.additionalRequirement > 0.25 * total){
-				$scope.institutionalInfraActivityPlan.additionalRequirement = '';
-				toastr.error("Additional Requirement should be less than or equal to 25% of Total Fund of SPRC & DPRC =" + (0.25*total));
-			}
-		}
-		if($scope.institutionalInfraActivityPlan.additionalRequirement === ""){
-			$scope.totalFundAdditional=parseInt(total) + 0;
-		}else{
-		$scope.totalFundAdditional=parseInt(total)+ parseInt($scope.institutionalInfraActivityPlan.additionalRequirement);
-		}
-	};
-	
-	$scope.fetchData=function(trainingInstituteTypeId){
-		institutionalInfraActivityPlanService.fetchDataBasedOnInstituteType(trainingInstituteTypeId).then(function(response){
-			if(response.data.institutionalInfraActivityPlan != undefined && response.data.institutionalInfraActivityPlan != null){
-				$scope.institutionalInfraActivityPlan=response.data.institutionalInfraActivityPlan;
-				$scope.fullDetails=response.data.institutionalInfraActivityPlan.institutionalInfraActivityPlanDetails;//contains full data 
-				$scope.updateStatus=response.data.update_Status;
-				$scope.userType=response.data.userType;
-				if(response.data.institutionalInfraActivityPlanDetails.length !== 0){
-					$scope.institutionalInfraActivityPlan.institutionalInfraActivityPlanDetails=response.data.institutionalInfraActivityPlanDetails;
-					$scope.generatedRows(trainingInstituteTypeId);
-				}else{
-					$scope.institutionalInfraActivityPlan.institutionalInfraActivityPlanDetails=response.data.institutionalInfraActivityPlanDetails;
-					/*$scope.institutionalInfraActivityPlan.additionalRequirement='';*/
-				}
-				$scope.calculationDependentField(trainingInstituteTypeId);
-				$scope.calculateTotalProposedFund();
-			}else{
-				$scope.updateStatus=response.data.update_Status;
-			}
-		},function(error){
-			
-		});
-		
-	};
-	
-	$scope.calculateTotalProposedFund=function(){
-		total=0;
-		let dprcAmount=0;
-		let sprcAmount=0;
-		for(let i=0;i<$scope.fullDetails.length;i++){
-			total += $scope.fullDetails[i].fundProposed;
-			if($scope.fullDetails[i].trainingInstitueType.trainingInstitueTypeId == 2){
-				sprcAmount=$scope.fullDetails[i].fundProposed;
-			}
-		}
-		
-		dprcAmount = total-sprcAmount;
-		if($scope.trainingInstituteTypeId == 2){
-			total = total + (total_fund - sprcAmount);
-		}else{
-			total = total + (total_fund - dprcAmount);
-		}
-		
-		if($scope.institutionalInfraActivityPlan.additionalRequirement !== ""){
-			if($scope.institutionalInfraActivityPlan.additionalRequirement > (0.25 * total)){
-				$scope.institutionalInfraActivityPlan.additionalRequirement = 0;
-			}
-		}
-		
-		$scope.totalFundAdditional=0;
-		if($scope.institutionalInfraActivityPlan.additionalRequirement === ""){
-			$scope.totalFundAdditional=parseInt(total_fund) + 0;
-		}else{
-			$scope.totalFundAdditional=parseInt(total)+ parseInt($scope.institutionalInfraActivityPlan.additionalRequirement);
-		}
-	}
-	
-	$scope.freezUnFreezInstitutionalInfraActivityPlan=function(freezUnfreez){
-		if(freezUnfreez == 'freez'){
-			$scope.institutionalInfraActivityPlan.isFreeze = true;
-		}else{
-			$scope.institutionalInfraActivityPlan.isFreeze = false;
-		}
-		institutionalInfraActivityPlanService.freezUnFreezInstitutionalInfraActivityPlan($scope.institutionalInfraActivityPlan).then(function(response){
-			$scope.institutionalInfraActivityPlan = response.data;
-			if($scope.userType == 'C'){
-				fetchInstitutionalInfraActivityPlanData();
-			}else{
-			$scope.fetchData($scope.institutionalInfraActivityPlan.institutionalInfraActivityPlanDetails[0].trainingInstitueType.trainingInstitueTypeId);
-			}
-			if(freezUnfreez == 'freez'){
-				toastr.success("Plan Freezed Successfully");
-			}else{
-				toastr.success("Plan UnFreezed Successfully");
-			}
-		},function(error){
-			alert(error);
-		});
-	};
-	
-	$scope.onClearField = function(){
-		
-		for(let i=0;i<$scope.institutionalInfraActivityPlan.institutionalInfraActivityPlanDetails.length;i++){
-			$scope.institutionalInfraActivityPlan.additionalRequirement = 0;
-			$scope.institutionalInfraActivityPlan.institutionalInfraActivityPlanDetails[i].fundProposed='';
-			$scope.institutionalInfraActivityPlan.institutionalInfraActivityPlanDetails[i].totalFund='';
-			$scope.institutionalInfraActivityPlan.institutionalInfraActivityPlanDetails[i].remarks='';
-			$scope.totalFundAdditional='';
-			$scope.institutionalInfraActivityPlan.institutionalInfraActivityPlanDetails[i].locationName ='';
-			$scope.subTotal='';
-			
-		}
-		
-	};
-	
-	$scope.calTotalsCec=function(index){
-		if($scope.institutionalInfraActivityPlan.institutionalInfraActivityPlanDetails[index].trainingInstitueType.trainingInstitueTypeId ==2){
-			if($scope.institutionalInfraActivityPlan.institutionalInfraActivityPlanDetails[index].fundProposed > 10000000){
-				$scope.institutionalInfraActivityPlan.institutionalInfraActivityPlanDetails[index].fundProposed=0;
-				toastr.error("Fund proposed in case of SPRC should be less than or equal to 1 crore");
-			}else{
-				$scope.institutionalInfraActivityPlan.institutionalInfraActivityPlanDetails[index].totalFund=$scope.institutionalInfraActivityPlan.institutionalInfraActivityPlanDetails[index].fundProposed;
-			}
-		}else{
-			if($scope.institutionalInfraActivityPlan.institutionalInfraActivityPlanDetails[index].fundProposed > 20000000){
-				$scope.institutionalInfraActivityPlan.institutionalInfraActivityPlanDetails[index].fundProposed=0;
-				toastr.error("Fund proposed in case of DPRC should be less than or equal to 2 crore");
-			}else{
-				$scope.institutionalInfraActivityPlan.institutionalInfraActivityPlanDetails[index].totalFund=$scope.institutionalInfraActivityPlan.institutionalInfraActivityPlanDetails[index].fundProposed;
-			}
-		}
-		calGrandTotal();
-	}
-	
-	function calGrandTotal(){
-		var grandTotal=0;
-		for(let i=0;i<$scope.institutionalInfraActivityPlan.institutionalInfraActivityPlanDetails.length;i++){
-			if($scope.institutionalInfraActivityPlan.institutionalInfraActivityPlanDetails[i].fundProposed === ""){
-				grandTotal += 0 ;
-			}else{
-				grandTotal += +$scope.institutionalInfraActivityPlan.institutionalInfraActivityPlanDetails[i].fundProposed;
-			}
-			
-		}
-		total=0;
-		total = grandTotal;
-		if($scope.institutionalInfraActivityPlan.additionalRequirement === ""){
-			$scope.totalFundAdditional=parseInt(grandTotal) + 0;
-		}else{
-			$scope.totalFundAdditional=parseInt(grandTotal)+ parseInt($scope.institutionalInfraActivityPlan.additionalRequirement);
-		}
-	}
 	
 }]);

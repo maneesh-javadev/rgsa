@@ -8145,3 +8145,19 @@ body{
  .padding_right {
    padding-right: 10px;
  }
+ .form-checkbox {
+   width: 100%;
+    height: 15px;
+    padding: 6px 12px;
+}
+
+.sub_head{
+	 border-bottom: 1px solid black;
+    padding-bottom: 5px;
+    padding-top: 15px;
+    font-size: 17px;
+    font-weight: bold;
+}
+ .padding_top {
+   padding-top: 10px;
+ }

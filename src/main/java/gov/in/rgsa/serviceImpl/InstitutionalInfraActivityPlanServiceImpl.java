@@ -188,9 +188,18 @@ public class InstitutionalInfraActivityPlanServiceImpl implements InstitutionalI
 		if(userPreference.getUserType().equalsIgnoreCase("M") && CollectionUtils.isEmpty(activity)){
 			params.put("userType", "S");
 			activity= commonRepository.findAll("FETCH_ALL_INSTITUTIONAL_ACTIVITY", params);
-			if(CollectionUtils.isNotEmpty(activity)){
-				activity.get(0).setIsFreeze(false);
+			if(activity!=null && !activity.isEmpty()) {
+				InstitutionalInfraActivityPlan institutionalInfraActivityPlan=activity.get(0);
+				institutionalInfraActivityPlan.setInstitutionalInfraActivityId(null);
+				for(InstitutionalInfraActivityPlanDetails institutionalInfraActivityPlanDetails:institutionalInfraActivityPlan.getInstitutionalInfraActivityPlanDetails()) {
+					institutionalInfraActivityPlanDetails.setInstitutionalInfraActivityDetailsId(null);
+					
+				}
+				
+				activity.set(0, institutionalInfraActivityPlan);
 			}
+			
+			
 		}
 		
 		return activity;
@@ -342,6 +351,86 @@ public class InstitutionalInfraActivityPlanServiceImpl implements InstitutionalI
 		
 	}
 	
-
+	@Override
+	public void saveInstitutionalInfra(InstitutionalInfraActivityPlan institutionalInfraActivityPlan,String updateStatus) {
+		Integer institutionalInfraActivityId=institutionalInfraActivityPlan.getInstitutionalInfraActivityId();
+		if(institutionalInfraActivityId!=null) {
+			Map<String,Object> params = new HashMap<>();
+			params.put("institutionalInfraActivityId", institutionalInfraActivityId);
+			commonRepository.excuteUpdate("UPDATE_DELETE_STATUS_BY_MULTIPLE_ID_Institutional", params);
+		}
+		
+		
+		
+		if(institutionalInfraActivityPlan.getInstitutionalInfraActivityId() == null){
+			institutionalInfraActivityPlan=setObjectsForInstitutionalInfraActivityPlanForState(institutionalInfraActivityPlan);
+			for(InstitutionalInfraActivityPlanDetails institutionalInfraActivityPlanDetails:institutionalInfraActivityPlan.getInstitutionalInfraActivityPlanDetails()) {
+				institutionalInfraActivityPlanDetails.setInstitutionalInfraActivityPlan(institutionalInfraActivityPlan);
+			}
+			commonRepository.save(institutionalInfraActivityPlan);
+		}else {
+			
+			Map<String,Object> params = new HashMap<>();
+			params.put("institutionalInfraActivityId", institutionalInfraActivityId);
+			params.put("isFreeze", institutionalInfraActivityPlan.getIsFreeze());
+			params.put("additionalRequirement", institutionalInfraActivityPlan.getAdditionalRequirement());
+			params.put("additionalRequirementDPRC", institutionalInfraActivityPlan.getAdditionalRequirementDPRC());
+			commonRepository.excuteUpdate("UPDATE_FREEZE_UNFREEZE_STATUS_Institutional", params);
+			
+			for(InstitutionalInfraActivityPlanDetails institutionalInfraActivityPlanDetails:institutionalInfraActivityPlan.getInstitutionalInfraActivityPlanDetails()) {
+				institutionalInfraActivityPlanDetails.setInstitutionalInfraActivityPlan(institutionalInfraActivityPlan);
+				institutionalInfraActivityPlanDetails.setIsactive(Boolean.TRUE);
+				if(institutionalInfraActivityPlanDetails.getInstitutionalInfraActivityDetailsId()==null) {
+					commonRepository.save(institutionalInfraActivityPlanDetails);
+				}else {
+					commonRepository.update(institutionalInfraActivityPlanDetails);
+				}
+			}
+		}
+		if(institutionalInfraActivityPlan.getIsFreeze()) {
+			facadeService.populateStateFunds("2");
+		}
+		
+		
+			
+		}
+	
+	
+	
+	@Override
+	public void saveInstitutionalInfraMOPRCEC(InstitutionalInfraActivityPlan institutionalInfraActivityPlan) {
+		Integer institutionalInfraActivityId=institutionalInfraActivityPlan.getInstitutionalInfraActivityId();
+		
+		if(institutionalInfraActivityPlan.getInstitutionalInfraActivityId() == null){
+			institutionalInfraActivityPlan=setObjectsForInstitutionalInfraActivityPlanForState(institutionalInfraActivityPlan);
+			for(InstitutionalInfraActivityPlanDetails institutionalInfraActivityPlanDetails:institutionalInfraActivityPlan.getInstitutionalInfraActivityPlanDetails()) {
+				institutionalInfraActivityPlanDetails.setInstitutionalInfraActivityPlan(institutionalInfraActivityPlan);
+			}
+			
+			commonRepository.save(institutionalInfraActivityPlan);
+		}else {
+			
+			Map<String,Object> params = new HashMap<>();
+			params.put("institutionalInfraActivityId", institutionalInfraActivityId);
+			params.put("isFreeze", institutionalInfraActivityPlan.getIsFreeze());
+			params.put("additionalRequirement", institutionalInfraActivityPlan.getAdditionalRequirement());
+			params.put("additionalRequirementDPRC", institutionalInfraActivityPlan.getAdditionalRequirementDPRC());
+			
+			commonRepository.excuteUpdate("UPDATE_FREEZE_UNFREEZE_STATUS_Institutional", params);
+			
+			for(InstitutionalInfraActivityPlanDetails institutionalInfraActivityPlanDetails:institutionalInfraActivityPlan.getInstitutionalInfraActivityPlanDetails()) {
+				institutionalInfraActivityPlanDetails.setInstitutionalInfraActivityPlan(institutionalInfraActivityPlan);
+				institutionalInfraActivityPlanDetails.setIsactive(Boolean.TRUE);
+				commonRepository.update(institutionalInfraActivityPlanDetails);
+				
+			}
+		}
+		if(institutionalInfraActivityPlan.getIsFreeze()) {
+			facadeService.populateStateFunds("2");
+		}
+		
+		
+			
+		}
 	
 }

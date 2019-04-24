@@ -44,5 +44,9 @@ public interface InstitutionalInfraActivityPlanService {
 	public InstitutionalInfraActivityPlan saveCecData(InstitutionalInfraActivityPlan institutionalInfraActivityPlan);
 
 	public List<TrainingInstitueType> fetchTrainingInstituteTypeId();
+	
+	public void saveInstitutionalInfra(InstitutionalInfraActivityPlan institutionalInfraActivityPlan,String updateStatus);
+	
+	public void saveInstitutionalInfraMOPRCEC(InstitutionalInfraActivityPlan institutionalInfraActivityPlan);
 
 }

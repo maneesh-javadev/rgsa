@@ -31,5 +31,16 @@ publicModule.service('institutionalInfraActivityPlanService', [ '$http', functio
 		return $http.post("feezUnFreezInstitutionalInfraActivityPlan.html?<csrf:token uri=feezUnFreezInstitutionalInfraActivityPlan.html/>",institutionalInfraActivityPlan);
 	}
 	
+	this.fetchInstitutionalInfraDataForStateAndMOPRNew=function(){
+		return $http.get("fetchInstitutionalInfraDataForStateAndMOPRNew.html?<csrf:token uri=fetchInstitutionalInfraDataForStateAndMOPRNew.html/>");
+	}
+	
+	this.saveInstitutionalInfraActivityPlanDetailsMOPRCEC = function(institutionalInfraActivityPlan){
+		return $http.post("saveInstitutionalInfraActivityPlanDetailsMOPRCEC.html?<csrf:token uri=saveInstitutionalInfraActivityPlanDetailsMOPRCEC.htm/>",institutionalInfraActivityPlan);
+	}
+	
+	this.fetchInstitutionalInfraDataForCECNew=function(){
+		return $http.get("fetchInstitutionalInfraDataForCECNew.html?<csrf:token uri=fetchInstitutionalInfraDataForCECNew.html/>");
+	}
 	
 } ]);
