@@ -505,7 +505,7 @@ function create_state_row_CF(rindex,name,id){
 						if(id!='SAN'){
 							if(FREL>FUTI){
 								FREQ=FREL-FUTI;
-								if(FSAN>FREQ){
+								if(FSAN>=FREQ){
 									$scope.institutionalInfraActivityPlanDetailsCFState[index].fundRequired=FREQ;
 									
 								}
@@ -574,7 +574,7 @@ function create_state_row_CF(rindex,name,id){
 						if(id!='SAN'){
 							if(FREL>FUTI){
 								FREQ=FREL-FUTI;
-								if(FSAN>FREQ){
+								if(FSAN>=FREQ){
 									$scope.institutionalInfraActivityPlanDetailsCFDistrict[index].fundRequired=FREQ;
 									
 								}

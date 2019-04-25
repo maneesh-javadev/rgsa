@@ -387,7 +387,7 @@ publicModule.controller("institutionalInfraActivityPlanController", [ '$scope', 
 						if(id!='SAN'){
 							if(FREL>FUTI){
 								FREQ=FREL-FUTI;
-								if(FSAN>FREQ){
+								if(FSAN>=FREQ){
 									$scope.institutionalPlanDetailsCFStateCEC[index].fundRequired=FREQ;
 									
 								}
@@ -456,7 +456,7 @@ publicModule.controller("institutionalInfraActivityPlanController", [ '$scope', 
 						if(id!='SAN'){
 							if(FREL>FUTI){
 								FREQ=FREL-FUTI;
-								if(FSAN>FREQ){
+								if(FSAN>=FREQ){
 									$scope.institutionalPlanDetailsCFDistrictCEC[index].fundRequired=FREQ;
 									
 								}

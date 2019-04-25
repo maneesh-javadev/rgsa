@@ -17,10 +17,12 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import gov.in.rgsa.entity.InstitutionalInfraActivityPlan;
 import gov.in.rgsa.entity.InstitutionalInfraActivityPlanDetails;
+import gov.in.rgsa.entity.Plan;
 import gov.in.rgsa.entity.TrainingInstitueType;
 import gov.in.rgsa.service.BasicInfoService;
 import gov.in.rgsa.service.InstitutionalInfraActivityPlanService;
 import gov.in.rgsa.service.LGDService;
+import gov.in.rgsa.service.PlanAllocationService;
 import gov.in.rgsa.user.preference.UserPreference;
 import gov.in.rgsa.utils.Message;
 
@@ -34,6 +36,9 @@ public class InstitutionInfaActController {
 	BasicInfoService basicInfoService;
 	@Autowired
 	private UserPreference userPreference;
+	
+	@Autowired
+	private PlanAllocationService planAllocationService;
 	
 @Autowired
 	private LGDService lgdservice;
@@ -61,17 +66,13 @@ public class InstitutionInfaActController {
 			return REDIRECT_MODIFY_BAISC_INFO_DETAILS;
 		}
 		
-		Integer planStatus=userPreference.getPlanStatus();	
-	    Boolean flag= false;
-        if(planStatus!=null && planStatus==1 && userPreference.getUserType().equalsIgnoreCase("S")) {
-        	flag = true;
-		}else if(planStatus!=null && planStatus==2 && userPreference.getUserType().equalsIgnoreCase("M")) {
-			flag = true;
+		Integer planStatus=0;
+		List<Plan> planList = planAllocationService.showHidePlanStatus(userPreference.getStateCode());
+		if(planList!=null && !planList.isEmpty())
+		{
+			planStatus=planList.get(0).getPlanStatusId();
 		}
-      	else {
-      		flag= false;
-      	}
-	      model.addAttribute("Plan_Status", flag);
+		model.addAttribute("Plan_Status", planStatus==1);
 		return INSTITUTION_INFRA_ACT ;
 		}
 	}
