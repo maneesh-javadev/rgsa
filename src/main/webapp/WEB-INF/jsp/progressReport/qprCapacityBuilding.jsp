@@ -1,324 +1,333 @@
 <%@include file="../taglib/taglib.jsp"%>
+<script>
+var quater_id = '${QTR_ID}';
+var fund_allocated_by_state='${FUND_ALLOCATED_BY_STATE}';
+var fund_used='${FUND_USED_IN_OTHER_QUATOR}';
+if(quater_id > 2){
+	var fund_allocated_in_pre_qtr = '${FUND_ALLOCATED_BY_STATE_PREVIOUS}';
+	var fund_used_in_qtr_1_and_2 = '${TOTAL_FUND_USED_IN_QTR_1_AND_2}';
+}
+$('document').ready(function(){
+	$('#quaterDropDownId').val(quater_id);
+	showTablediv();
+});
 
-
-<script type="text/javascript">
-$(document).ready(function() {
- var calculated_total_sum = 0;
-     
-     $("#mytable .expnditure").each(function () {
-         var get_textbox_value = $(this).val();
-         if ($.isNumeric(get_textbox_value)) {
-            calculated_total_sum += parseFloat(get_textbox_value);
-            }                  
-          });
-     document.getElementById("totalFunds").value=calculated_total_sum;
-     document.getElementById("grandTotal").value=calculated_total_sum +  parseInt($('#additionalRequirements').val());
-     
-     $("#adtnlCalc").on('input',$("#additionalRequirements"), function () {
-    	 if($('#additionalRequirements').val() == ''){
-    		 return false;
-    	 }else
-		 document.getElementById("grandTotal").value=calculated_total_sum +  parseInt($('#additionalRequirements').val());
-	})
-     
-		});
+function showTablediv(){
+	if($('#quaterDropDownId').val() > 0){
+		$('#mainDivId').show();
+	}else{
+		$('#mainDivId').hide();
+	}
+}
+function showImage(tableName,tableId){
+	document.qpqCapacityBuilding.method = "post";
+	document.qpqCapacityBuilding.action = "getQprCbActivityPdf.html?<csrf:token uri='getQprCbActivityPdf.html'/>&tableName="+tableName+"&tableId="+tableId;
+	document.qpqCapacityBuilding.submit();
+}
 
 function getSelelctedQtrRprt(){
-	 var qtId = $('#qtrIdDurtn').val();
-	  $('#showQqrtrId').val(qtId); 
-	 	 document.qpqCapacityBuilding.method = "post";
-		document.qpqCapacityBuilding.action = "qprCapacityBuildingBasedOnQtr.html?<csrf:token uri='qprCapacityBuildingBasedOnQtr.html'/>";
-		document.qpqCapacityBuilding.submit(); 
+	$('#quaterTransient').val($('#quaterDropDownId').val());
+	// document.qpqCapacityBuilding.action = "saveQprCapacityBuilding.html?<csrf:token uri='saveQprCapacityBuilding.html'/>";
+	document.qpqCapacityBuilding.submit(); 
+}
+
+function isNoOfUnitAndExpInurredFilled(index){
+	if(($('#noOfUnitCompleted_'+index).val() == 0 || $('#noOfUnitCompleted_'+index).val() == null || $('#noOfUnitCompleted_'+index).val() =='') && ($('#expenditureIncurred_'+index).val() != 0 && $('#expenditureIncurred_'+index).val() != '')){
+		alert('Expenditure incurred cannot be filled if number of unit filled is zero or blank.');
+		$('#expenditureIncurred_'+index).val('');
+		$('#noOfUnitCompleted_'+index).focus();
+	}
+}
+
+function validateNoOfUnits(index){
+	var no_of_unit_cec= +$('#noOfUnitCecId_'+index).text();	
+	var total_no_of_unit_remaining = no_of_unit_cec - $('#totalNoOfUnit_'+index).val();
+	if($('#noOfUnitCompleted_'+index).val() > total_no_of_unit_remaining){
+		alert('total number of units should not exceed '+total_no_of_unit_remaining);
+		$('#noOfUnitCompleted_'+index).val('');
+		$('#noOfUnitCompleted_'+index).focus();
+	}
+}
+
+function validateFundByAllocatedFund(obj){
+	var noOfRows=$("#tbodyId tr").length;
+	var fund_allocated_by_state_local = +fund_allocated_by_state;
+	var fund_used_local= +fund_used;
+	var total=0;
+	
+	if(quater_id > 2){
+		fund_allocated_by_state_local += +(fund_allocated_in_pre_qtr - fund_used_in_qtr_1_and_2);
+	}
+	if(fund_used !=0){
+		fund_allocated_by_state_local -=  +fund_used_local;
+	}
+	for (var index = 0; index < noOfRows; index++) {
+		total +=  +$('#expenditureIncurred_'+index).val();
+	}
+	if(total > fund_allocated_by_state_local){
+		if(fund_used != 0){
+			alert('Total expenditure should not exceed total remaining for this component which is Rs. '+ (fund_allocated_by_state_local - (total - $('#expenditureIncurred_'+obj).val())));
+		}else{
+			alert('Total expenditure should not exceed total fund allocted by state for this component which is Rs. '+ (fund_allocated_by_state_local - (total - $('#expenditureIncurred_'+obj).val())));
+		}
+		$('#expenditureIncurred_'+obj).val('');
+	}
 }
 
 </script>
-
-<html>
-	<section class="content">
-		<div class="container-fluid">
-			<div class="row clearfix">
-				<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-					<div class="card">
-						<div class="header">
-							<h2>Training Activities</h2>
+<section class="content">
+	<div class="container-fluid">
+		<div class="row clearfix">
+			<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+				<div class="card">
+					<div class="header">
+						<h2>Training Activities</h2>
+					</div>
+					<form:form action="qprCapacityBuilding.html" method="POST" name="qpqCapacityBuilding" class="form-inline" modelAttribute="QPR_CAPACITY_BUILDING" enctype="multipart/form-data">
+					<input type="hidden" name="<csrf:token-name/>" value="<csrf:token-value uri="saveQprCapacityBuilding.html"/>" />
+						<br />
+						<div class="row clearfix">
+							<div class="form-group">
+								<div class="col-lg-2">
+									&nbsp;&nbsp;&nbsp;&nbsp;<label for="QuaterId1"><strong>Quarter Duration :</strong></label>
+								</div>
+								<div align="center" class="col-lg-4">
+									<select id="quaterDropDownId" name="quarterDuration.qtrId" class="form-control"
+										onchange="getSelelctedQtrRprt();showTablediv()">
+										<option value="0">Select quarter</option>
+										<c:forEach items="${quarter_duration}" var="qtr">
+											<option value="${qtr.qtrId}">${qtr.qtrDuration}</option>
+										</c:forEach>
+									</select>
+								</div>
+							</div>
 						</div>
-						<form action="saveQprCapacityBuilding.html" method="POST" name="qpqCapacityBuilding" class="form-inline" modelAttribute="Qpr_Capacity_Building" enctype="multipart/form-data">
-						 <input type="hidden" name="<csrf:token-name/>" value="<csrf:token-value uri="saveQprCapacityBuilding.html"/>" />
-						<div align="center"><label><strong >Select Quarter Duration</strong></label></div>
-							<div align="center"><label>
-								<select name="quarterDuration.qtrId" id="qtrIdDurtn" onchange="getSelelctedQtrRprt();"  class="form-control">
-									 <c:forEach items="${quarter_duration}" var="duration">
-										<c:choose>
-					            				<c:when test="${duration.qtrId == SetNewQtrId}">
-				                   					<option value="${duration.qtrId}" selected="selected">${duration.qtrDuration} </option>
-				                   				</c:when>
-				                   				<c:otherwise>
-				                   					<option value="${duration.qtrId}">${duration.qtrDuration} </option>
-				                   				</c:otherwise>
-						                   	</c:choose>
-			                       		</c:forEach>
-                             	</select>
-                             </label></div>
-						<div class="tab-content">
-							<div role="tabpanel" class="tab-pane fade in active"
-								id="home_with_icon_title">
-								<div class="table-responsive">
-								
-									<table class="table table-hover dashboard-task-infos" id="mytable" >
-										<thead>
+						<br/>
+						<div id="mainDivId">
+							<div class="table-responsive">
+								<table class="table table-hover dashboard-task-infos" id="mytable">
+									<thead>
+										<tr>
+											<th><div align="center"><strong>S.No.</strong></div></th>
+											<th><div align="center"><strong>Activity Name</strong></div></th>
+											<th><div align="center"><strong>No. Of Unit Proposed</strong></div></th>
+											<th><div align="center"><strong>Fund Proposed</strong></div></th>
+											<th><div align="center"><strong>No. of Days Completed</strong></div></th>
+											<th><div align="center"><strong>No. of Units Completed</strong></div></th>
+											<th><div align="center"><strong>Expenditure Incurred</strong></div></th>
+											<th><div align="center"><strong>Fill Details</strong></div></th>
+										</tr>
+									</thead>
+									<tbody id="tbodyId">
+										<c:forEach items="${CB_MASTERS}" var="master" varStatus="index">
 											<tr>
-												<th>
-													<div align="center">
-														<strong>S.No.</strong>
-													</div>
-												</th>
-												<th>
-													<div align="center">
-														<strong>Activity
-														</strong>
-													</div>
-												</th>
+												<!-- total number of units filled in rest quaters -->
+												<c:choose>
+													<c:when test="${not empty DEATIL_FOR_TOTAL_NO_OF_UNIT}">
+														<input type="hidden" id="totalExpenditureIncurred_${index.index}" value="${DEATIL_FOR_TOTAL_NO_OF_UNIT[index.index].expenditureIncurred}" />
+														<input type="hidden" id="totalNoOfUnit_${index.index}" value="${DEATIL_FOR_TOTAL_NO_OF_UNIT[index.index].noOfUnitsCompleted}" />
+													</c:when>
+													<c:otherwise>
+														<input type="hidden" id="totalNoOfUnit_${index.index}" value="0" />
+														<input type="hidden" id="totalExpenditureIncurred_${index.index}" value="0" />	
+													</c:otherwise>
+												</c:choose>
+											<!-- ends here -->
 												
-												<th>
-													<div align="center">
-														<strong>No. of Days Completed
-														</strong>
-													</div>
-												</th>
-												<th>
-													<div align="center">
-														<strong>No. of Units Completed
-														</strong>
-													</div>
-												</th>
-												<th>
-													<div align="center">
-														<strong>Expenditure Incurred</strong>
-													</div>
-												</th>
-												<th>
-													<div align="center">
-														<strong>Fill Details</strong>
-													</div>
-												</th>
-											</tr>
-										</thead>
-										
-										<tbody>
-										 <c:forEach items="${cbMasters}" var="cbMasters" varStatus="count">
-											<tr>
-												<td>${count.count}</td>
-												<td>${cbMasters.cbName}
-													<input type="hidden" class="form-control" value="${cbMasters.cbMasterId}" style="text-align:right;" />
-												</td>
-												<td>
-													<input style="text-align:right;" name="qprCbActivityDetails[${count.index}].noOfDaysCompleted" value="${qprCbActivities.qprCbActivityDetails[count.index].noOfDaysCompleted}" type="text" maxlength="3" onkeyup="this.value=this.value.replace(/[^0-9]/g,'');" class="form-control"/>
-												</td>
-												<td>
-													<input  maxlength="5" type="text"  name="qprCbActivityDetails[${count.index}].noOfUnitsCompleted" value="${qprCbActivities.qprCbActivityDetails[count.index].noOfUnitsCompleted}" class="form-control" onkeyup="this.value=this.value.replace(/[^0-9]/g,'');" style="text-align:right;"/>
-												</td>
-												<td>
-													<input maxlength="7"  min="1"  type="text" name="qprCbActivityDetails[${count.index}].expenditureIncurred" value="${qprCbActivities.qprCbActivityDetails[count.index].expenditureIncurred}" class="form-control expnditure" onkeyup="this.value=this.value.replace(/[^0-9]/g,'');" style="text-align:right;" />
-												</td>
+												<td><div align="center"><strong>${index.count}.</strong></div></td>
+												<td><div align="center"><strong>${master.cbName}</strong></div></td>
+												<td><div align="center" id="noOfUnitCecId_${index.index}"><strong>${CEC_APPROVED_ACTIVITY.capacityBuildingActivityDetails[index.index].noOfUnits}</strong></div></td>
+												<td><div align="center"><strong>${CEC_APPROVED_ACTIVITY.capacityBuildingActivityDetails[index.index].funds}</strong></div></td>
+												<c:choose>
+													<c:when test="${not empty QPR_CB_ACT_DATA}">
+														<td><div align="center"><input type="text" name="qprCbActivityDetails[${index.index}].noOfDaysCompleted" class="form-control Align-Right" id="noOfDaysCompleted_${index.index}" value="${QPR_CB_ACT_DATA.qprCbActivityDetails[index.index].noOfDaysCompleted }"></div></td>
+														<td><div align="center"><input type="text" name="qprCbActivityDetails[${index.index}].noOfUnitsCompleted" class="form-control Align-Right" id="noOfUnitCompleted_${index.index}" value="${QPR_CB_ACT_DATA.qprCbActivityDetails[index.index].noOfUnitsCompleted}"
+																				onkeyup="this.value=this.value.replace(/[^0-9]/g,'');validateNoOfUnits(${index.index});validateFundByAllocatedFund(${index.index})" ></div></td>
+														<td><div align="center"><input type="text" name="qprCbActivityDetails[${index.index}].expenditureIncurred" class="form-control Align-Right" id="expenditureIncurred_${index.index}" value="${QPR_CB_ACT_DATA.qprCbActivityDetails[index.index].expenditureIncurred}"
+																				onkeyup="this.value=this.value.replace(/[^0-9]/g,'');validateFundByAllocatedFund(${index.index});
+																				isNoOfUnitAndExpInurredFilled(${index.index})" ></div></td>
+													</c:when>
+													<c:otherwise>
+														<td><div align="center"><input type="text" name="qprCbActivityDetails[${index.index}].noOfDaysCompleted" class="form-control Align-Right" id="noOfDaysCompleted_${index.index}"></div></td>
+														<td><div align="center"><input type="text" name="qprCbActivityDetails[${index.index}].noOfUnitsCompleted" class="form-control Align-Right" id="noOfUnitCompleted_${index.index}"
+																				onkeyup="this.value=this.value.replace(/[^0-9]/g,'');validateFundByAllocatedFund(${index.index});
+																				validateNoOfUnits(${index.index})"></div></td>
+														<td><div align="center"><input type="text" name="qprCbActivityDetails[${index.index}].expenditureIncurred" class="form-control Align-Right" id="expenditureIncurred_${index.index}"
+																				onkeyup="this.value=this.value.replace(/[^0-9]/g,'');validateFundByAllocatedFund(${index.index});isNoOfUnitAndExpInurredFilled(${index.index})"></div></td>
+													</c:otherwise>
+												</c:choose>
 												<!----------------------------- modal Starts  here------------------------------------------------ -->
-													<c:choose>
-												<c:when test="${count.index eq 0 }">
-													<td><button type="button"
-															class="btn btn-primary btn-lg" data-toggle="modal"
-															data-target="#myModal">Fill Details</button></td>
-												</c:when>
+												<c:choose>
+													<c:when test="${index.index eq 0 }">
+														<td><button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#tnaTrainingEavltionModal">Fill Details</button></td>
+													</c:when>
 
-												<c:when test="${count.index eq 1}">
-													<td><button type="button"
-															class="btn btn-primary btn-lg" data-toggle="modal"
-															data-target="#myModal1">Fill Details</button></td>
-												</c:when>
-												<c:when test="${count.index eq 2}">
-													<td><button type="button"
-															class="btn btn-primary btn-lg" data-toggle="modal"
-															data-target="#myModal2">Fill Details</button></td>
-												</c:when>
-												<c:when test="${count.index eq 3 }">
-													<td><button type="button"
-															class="btn btn-primary btn-lg" data-toggle="modal"
-															data-target="#myModal3">Fill Details</button></td>
-												</c:when>
-												<c:when test="${count.index eq 6}">
-													<td><button type="button"
-															class="btn btn-primary btn-lg" data-toggle="modal"
-															data-target="#myModal6">Fill Details</button></td>
-												</c:when>
-												<c:when test="${count.index eq 7}">
-													<td><button type="button"
-															class="btn btn-primary btn-lg" data-toggle="modal"
-															data-target="#myModal7">Fill Details</button></td>
-												</c:when>
+													<c:when test="${index.index eq 1}">
+														<td><button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#trainingModuleModal">Fill Details</button></td>
+													</c:when>
 												
-												<c:otherwise>
-													<td></td>
-												</c:otherwise>
-											</c:choose>
+													<c:when test="${index.index eq 2}">
+														<td><button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#trainingMaterailModal">Fill Details</button></td>
+													</c:when>
 												
+													<c:when test="${index.index eq 3 }">
+														<td><button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#tnaTrainingEavltionModal2">Fill Details</button></td>
+													</c:when>
+													
+													<c:when test="${index.index eq 6}">
+														<td><button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#handHoldingModal">Fill Details</button></td>
+													</c:when>
+												
+													<c:when test="${index.index eq 7}">
+														<td><button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#panchayatCentrerModal">Fill Details</button></td>
+													</c:when>
+												
+													<c:otherwise>
+														<td></td>
+													</c:otherwise>
+												</c:choose>
 												<!----------------------------- modal ends  here------------------------------------------------ -->
 											</tr>
-											 <input type="hidden" name="showQqrtrId" id="showQqrtrId">
-											 <input type="hidden" name="isFreeze" id="isFreeze" value="${qprCapacityBuilding.isFreeze}" />
-											 <input type="hidden" name="qpCbActivityId" value="${qprCbActivities.qpCbActivityId}">
-											 <input type="hidden" name="qprCbActivityDetails[${count.index}].capacityBuildingActivityDetails.capacityBuildingActivityDetailsId" value="${capacityBuildingDetails[count.index].capacityBuildingActivityDetailsId}">
-											 <input type="hidden" name="qprCbActivityDetails[${count.index}].qprCbActivityDetailsId" value="${qprCbActivities.qprCbActivityDetails[count.index].qprCbActivityDetailsId}">
-											 <input type="hidden" name="capacityBuildingActivity.cbActivityId" value="${capacityBuildingActivity.cbActivityId}" >
-											</c:forEach>
-											 
-											<tr>
-												<th colspan="4" align="center" >&nbsp;&nbsp;Total Funds</th>
-												<td><input type="text" maxlength="5" id="totalFunds" disabled="disabled"  class="form-control" style="text-align:right;" /></td>											
-												<td></td>
-												<td></td>
-											</tr>
-											<tr id="adtnlCalc">
-												<th colspan="4">&nbsp;&nbsp;Additional Requirement</th>
-												<td ><input type="text" class="form-control" id="additionalRequirements" value="${qprCbActivities.additionalRequirement}" onkeyup="this.value=this.value.replace(/[^0-9]/g,'');" name="additionalRequirement" placeholder="25% of Total Cost " style="text-align:right;" /></td>
-												<td></td>
-												<td><input type="hidden" name="qprCbActivityDetails[0].qprTnaTrgEvaluation[0].qprTnaTrgEvaluationId" value="${qprCbActivities.qprCbActivityDetails[0].qprTnaTrgEvaluation[0].qprTnaTrgEvaluationId}">
-													 <input type="hidden" name="qprCbActivityDetails[0].qprTnaTrgEvaluation[0].fileName" value="${qprCbActivities.qprCbActivityDetails[0].qprTnaTrgEvaluation[0].fileName}">
-													 <input type="hidden" name="qprCbActivityDetails[0].qprTnaTrgEvaluation[0].fileLocation" value="${qprCbActivities.qprCbActivityDetails[0].qprTnaTrgEvaluation[0].fileLocation}">
-													 <input type="hidden" name="qprCbActivityDetails[0].qprTnaTrgEvaluation[0].fileContentType" value="${qprCbActivities.qprCbActivityDetails[0].qprTnaTrgEvaluation[0].fileContentType}">
-													 <input type="hidden" name="qprCbActivityDetails[3].qprTnaTrgEvaluation[0].qprTnaTrgEvaluationId" value="${qprCbActivities.qprCbActivityDetails[3].qprTnaTrgEvaluation[0].qprTnaTrgEvaluationId}">
-													 <input type="hidden" name="qprCbActivityDetails[3].qprTnaTrgEvaluation[0].fileName" value="${qprCbActivities.qprCbActivityDetails[3].qprTnaTrgEvaluation[0].fileName}">
-													 <input type="hidden" name="qprCbActivityDetails[3].qprTnaTrgEvaluation[0].fileLocation" value="${qprCbActivities.qprCbActivityDetails[3].qprTnaTrgEvaluation[0].fileLocation}">
-													 <input type="hidden" name="qprCbActivityDetails[3].qprTnaTrgEvaluation[0].fileContentType" value="${qprCbActivities.qprCbActivityDetails[3].qprTnaTrgEvaluation[0].fileContentType}">
-													 <input type="hidden" name="qprCbActivityDetails[1].qprTrgMaterialAndModule[0].qprTrgMaterialAndModuleId" value="${qprCbActivities.qprCbActivityDetails[1].qprTrgMaterialAndModule[0].qprTrgMaterialAndModuleId}">
-													 <input type="hidden" name="qprCbActivityDetails[2].qprTrgMaterialAndModule[0].qprTrgMaterialAndModuleId" value="${qprCbActivities.qprCbActivityDetails[2].qprTrgMaterialAndModule[0].qprTrgMaterialAndModuleId}">
-													 <input type="hidden" name="qprCbActivityDetails[6].qprHandholdingGpdp.qprHandholdingGpdpId" value="${qprCbActivities.qprCbActivityDetails[6].qprHandholdingGpdp.qprHandholdingGpdpId}">
-													 <input type="hidden" name="qprCbActivityDetails[6].qprHandholdingGpdp.fileName" value="${qprCbActivities.qprCbActivityDetails[6].qprHandholdingGpdp.fileName}">
-													 <input type="hidden" name="qprCbActivityDetails[6].qprHandholdingGpdp.fileLocation" value="${qprCbActivities.qprCbActivityDetails[6].qprHandholdingGpdp.fileLocation}">
-													 <input type="hidden" name="qprCbActivityDetails[6].qprHandholdingGpdp.fileContentType" value="${qprCbActivities.qprCbActivityDetails[6].qprHandholdingGpdp.fileContentType}">
-													 <input type="hidden" name="qprCbActivityDetails[7].qprPanchayatLearningCenter.qprPanchayatLearningId" value="${qprCbActivities.qprCbActivityDetails[7].qprPanchayatLearningCenter.qprPanchayatLearningId}">
-													 <input type="hidden" name="qprCbActivityDetails[7].qprPanchayatLearningCenter.fileName" value="${qprCbActivities.qprCbActivityDetails[7].qprPanchayatLearningCenter.fileName}">
-													 <input type="hidden" name="qprCbActivityDetails[7].qprPanchayatLearningCenter.fileLocation" value="${qprCbActivities.qprCbActivityDetails[7].qprPanchayatLearningCenter.fileLocation}">
-													 <input type="hidden" name="qprCbActivityDetails[7].qprPanchayatLearningCenter.fileContentType" value="${qprCbActivities.qprCbActivityDetails[7].qprPanchayatLearningCenter.fileContentType}">
-											</td>
-											</tr>
-											<tr>
-												<th colspan="4">&nbsp;Total Proposed Fund</th>
-												<td ><input type="text" maxlength="5" id="grandTotal" disabled="disabled" class="form-control" style="text-align:right;" /></td>
-												<td></td>
-												<td></td>
-											</tr>
-										</tbody>
-									</table>
-									<!-- Modal content TNA & Training Evaluation-->
-									<div id="myModal" class="modal fade" role="dialog">
-									<div class="modal-dialog">
-										<div class="modal-content">
-											<div class="modal-header">
-												<button type="button" class="close" data-dismiss="modal">&times;</button>
-											</div>
-											<div class="modal-body">
-												<div class="row">
-													<div class="form-group">
-														<label for="sprc" class="col-sm-3"> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
-														<div class="col-sm-5">
-															<p class="text-justify"><strong>TNA & Training Evaluation</strong></p>
+											<c:if test="${not empty QPR_CB_ACT_DATA}">
+												<input type="hidden" name="qpCbActivityId" value="${QPR_CB_ACT_DATA.qpCbActivityId}" />
+												<input type="hidden" name="qprCbActivityDetails[${index.index}].qprCbActivityDetailsId" value="${QPR_CB_ACT_DATA.qprCbActivityDetails[index.index].qprCbActivityDetailsId }" />
+												<input type="hidden" name="qprCbActivityDetails[${index.index}].capacityBuildingActivityDetails.capacityBuildingActivityDetailsId" value="${CEC_APPROVED_ACTIVITY.capacityBuildingActivityDetails[index.index].capacityBuildingActivityDetailsId}" />
+											</c:if>
+										</c:forEach>
+									</tbody>
+								</table>
+								<!-- Modal content TNA & Training Evaluation-->
+										<div id="tnaTrainingEavltionModal" class="modal fade" role="dialog">
+											<div class="modal-dialog modal-lg">
+												<div class="modal-content modal-lg">
+													<div class="modal-header">
+														<button type="button" class="close" data-dismiss="modal">&times;</button>
+													</div>
+													<div class="modal-body">
+														<div class="row">
+															<div class="form-group">
+																<label for="sprc" class="col-sm-3">
+																	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
+																<div class="col-sm-5">
+																	<p class="text-justify">
+																		<strong>TNA & Training Evaluation</strong>
+																	</p>
+																</div>
+															</div>
+														</div>
+														<div class="row clearfix">
+										
+															<div class="body">
+																<div class="table-responsive">
+																	<table class="table table-bordered">
+																		<thead>
+																			<tr>
+																				<th><div align="center">No. of Person Involved</div></th>
+																				<th><div align="center">Training Subjects</div></th>
+																				<th><div align="center">File Upload(PDF)</div></th>
+																			</tr>
+																		</thead>
+																		<tbody>
+																			<tr>
+																				<td><input type="text"
+																					name="qprCbActivityDetails[0].qprTnaTrgEvaluation.noOfPersons"
+																					value="${QPR_CB_ACT_DATA.qprCbActivityDetails[0].qprTnaTrgEvaluation.noOfPersons}"
+																					class="active12 form-control Align-Right"></td>
+																				<td><select class="form-control"
+																					name="qprCbActivityDetails[0].qprTnaTrgEvaluation.trngSubject.subjectId">
+																						<option value="">select</option>
+																						<c:forEach items="${SUBJECTS_LIST}" var="sbjctLst">
+																					<c:choose>
+																						<c:when
+																							test="${QPR_CB_ACT_DATA.qprCbActivityDetails[0].qprTnaTrgEvaluation.trngSubject.subjectId == sbjctLst.subjectId}">
+																							<option value="${sbjctLst.subjectId}" selected="selected">${sbjctLst.subjectName}</option>
+																						</c:when>
+																						<c:otherwise>
+																							<option value="${sbjctLst.subjectId}">${sbjctLst.subjectName}</option>
+																						</c:otherwise>
+																					</c:choose>
+																				</c:forEach>
+																				</select></td>
+																				<td><input name="qprCbActivityDetails[0].qprTnaTrgEvaluation.file"
+																						type="file" class="active12 form-control" />
+																					<c:if test="${not empty QPR_CB_ACT_DATA and not empty QPR_CB_ACT_DATA.qprCbActivityDetails[0].qprTnaTrgEvaluation.fileNode.uploadName}">
+																						<input type="button" value="Download File" class="btn bg-grey waves-effect" onclick='showImage("TnaTrgEvaluation",${QPR_CB_ACT_DATA.qprCbActivityDetails[0].qprTnaTrgEvaluation.qprTnaTrgEvaluationId});' />
+																					</c:if>
+																				</td>
+																			</tr>
+																	</table>
+																</div>
+															</div>
 														</div>
 													</div>
-												</div>
-												<div class="row clearfix">
-
-													<div class="body">
-														<div class="table-responsive">
-															<table class="table table-bordered">
-																<thead>
-																	<tr>
-																		<th><div align="center">No. of Person Involved</div></th>
-																		<th><div align="center">Training Subjects</div></th>
-																		<th><div align="center">File Upload(PDF)</div></th>
-																	</tr>
-																</thead>
-																<tbody>
-																<tr>
-																	<td><input type="text" name="qprCbActivityDetails[0].qprTnaTrgEvaluation[0].noOfPersons" value="${qprCbActivities.qprCbActivityDetails[0].qprTnaTrgEvaluation[0].noOfPersons}" class="active12 form-control Align-Right"></td>
-																	<td>
-																		<select name="qprCbActivityDetails[0].qprTnaTrgEvaluation[0].trngSubject.subjectId" type="text" class="active12 form-control">
-																			<c:forEach items="${subjectsList}" var="sbjctLst">
-																			<c:choose>
-																				<c:when test="${qprCbActivities.qprCbActivityDetails[0].qprTnaTrgEvaluation[0].trngSubject.subjectId == sbjctLst.subjectId}">
-																					<option value="${sbjctLst.subjectId}" selected="selected">${sbjctLst.subjectName}</option>
-																				</c:when>
-																				<c:otherwise>
-																					<option value="${sbjctLst.subjectId}" >${sbjctLst.subjectName}</option>
-																				</c:otherwise>
-																			</c:choose>	
-																			</c:forEach>	
-																		</select>
-																	</td>
-																	<td><input name="qprCbActivityDetails[0].qprTnaTrgEvaluation[0].file" type="file" class="active12 form-control"/></td>
-																</tr>
-															</table>
-														</div>
+													<div class="modal-footer">
+														<button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
 													</div>
 												</div>
-											</div>
-											<div class="modal-footer">
-												<button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
 											</div>
 										</div>
-									</div>
-								</div>
-								<!-- Modal content ends here-->
-								<!-- Modal content Training Module-->
-									<div id="myModal1" class="modal fade" role="dialog">
-									<div class="modal-dialog">
-										<div class="modal-content">
-											<div class="modal-header">
-												<button type="button" class="close" data-dismiss="modal">&times;</button>
-											</div>
-											<div class="modal-body">
-												<div class="row">
-													<div class="form-group">
-														<label for="sprc" class="col-sm-3"> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
-														<div class="col-sm-5">
-																	<p class="text-justify"><strong>Training Material & Module</strong></p>
+										<!-- Modal content TNA & Training Evaluation ends here-->
+										
+										<!-- Modal content Training Module-->
+										<div id="trainingModuleModal" class="modal fade" role="dialog">
+											<div class="modal-dialog modal-lg">
+												<div class="modal-content modal-lg">
+													<div class="modal-header">
+														<button type="button" class="close" data-dismiss="modal">&times;</button>
+													</div>
+													<div class="modal-body">
+														<div class="row">
+															<div class="form-group">
+																<label for="sprc" class="col-sm-3">
+																	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
+																<div class="col-sm-5">
+																	<p class="text-justify">
+																		<strong>Training Material & Module</strong>
+																	</p>
+																</div>
+															</div>
+														</div>
+														<div class="row clearfix">
+										
+															<div class="body">
+																<div class="table-responsive">
+																	<table class="table table-bordered">
+																		<thead>
+																			<tr>
+																				<th><div align="center">Module Used</div></th>
+																				<th><div align="center">Institute Involved</div></th>
+																			</tr>
+																		</thead>
+																		<tbody>
+																			<tr>
+																				<c:choose>
+																					<c:when test="${QPR_CB_ACT_DATA.qprCbActivityDetails[1].qprTrgMaterialAndModule.materialUsed eq true}">
+																						<td><div align="center"><input type="radio" name="qprCbActivityDetails[1].qprTrgMaterialAndModule.materialUsed" class="active12 form-control" checked="checked"></div></td>
+																					</c:when>
+																					<c:otherwise><td><div align="center"><input type="radio" name="qprCbActivityDetails[1].qprTrgMaterialAndModule.materialUsed" class="active12 form-control"></div></td></c:otherwise>
+																				</c:choose>
+										
+																				<td><div align="center"><input type="text"
+																					name="qprCbActivityDetails[1].qprTrgMaterialAndModule.instituteInvolved"
+																					value="${QPR_CB_ACT_DATA.qprCbActivityDetails[1].qprTrgMaterialAndModule.instituteInvolved}"
+																					class="active12 form-control Align-Right" /></div></td>
+																			</tr>
+																	</table>
+																</div>
+															</div>
 														</div>
 													</div>
-												</div>
-												<div class="row clearfix">
-
-													<div class="body">
-														<div class="table-responsive">
-															<table class="table table-bordered">
-																<thead>
-																	<tr>
-																		<th><div align="center">Module Used</div></th>
-																		<th><div align="center">Institute Involved</div></th>
-																	</tr>
-																</thead>
-																<tbody>
-																<tr> <c:if test="${qprCbActivities.qprCbActivityDetails[1].qprTrgMaterialAndModule[0].materialUsed ==  true}">
-																		<td><input type="radio" name="qprCbActivityDetails[1].qprTrgMaterialAndModule[0].materialUsed" checked="checked" class="active12 form-control"></td>
-																	</c:if>
-																	<c:if test="${empty qprCbActivities.qprCbActivityDetails[1].qprTrgMaterialAndModule[0].materialUsed}">
-																		<td><input type="radio" name="qprCbActivityDetails[1].qprTrgMaterialAndModule[0].materialUsed" class="active12 form-control"></td>
-																	</c:if>
-																	
-																	<td><input type="text" name="qprCbActivityDetails[1].qprTrgMaterialAndModule[0].instituteInvolved" value="${qprCbActivities.qprCbActivityDetails[1].qprTrgMaterialAndModule[0].instituteInvolved}" class="active12 form-control"  /></td>
-																</tr>
-															</table>
-														</div>
+													<div class="modal-footer">
+														<button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
 													</div>
 												</div>
-											</div>
-											<div class="modal-footer">
-												<button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
 											</div>
 										</div>
-									</div>
-								</div>
-								<!-- Modal content ends here-->
+								<!-- Modal content Training Module ends here-->
 								<!-- Modal content Training Material-->
-									<div id="myModal2" class="modal fade" role="dialog">
-									<div class="modal-dialog">
-										<div class="modal-content">
+									<div id="trainingMaterailModal" class="modal fade" role="dialog">
+									<div class="modal-dialog modal-lg">
+										<div class="modal-content modal-lg">
 											<div class="modal-header">
 												<button type="button" class="close" data-dismiss="modal">&times;</button>
 											</div>
@@ -343,14 +352,15 @@ function getSelelctedQtrRprt(){
 																	</tr>
 																</thead>
 																<tbody>
-																<tr> <c:if test="${qprCbActivities.qprCbActivityDetails[2].qprTrgMaterialAndModule[0].materialUsed ==  true}">
-																		<td><input type="radio" name="qprCbActivityDetails[2].qprTrgMaterialAndModule[0].materialUsed" checked="checked" class="active12 form-control"></td>
-																	</c:if>
-																	<c:if test="${empty qprCbActivities.qprCbActivityDetails[2].qprTrgMaterialAndModule[0].materialUsed}">
-																		<td><input type="radio" name="qprCbActivityDetails[2].qprTrgMaterialAndModule[0].materialUsed" class="active12 form-control"></td>
-																	</c:if>
+																<tr> 
+																	<c:choose>
+																		<c:when test="${QPR_CB_ACT_DATA.qprCbActivityDetails[2].qprTrgMaterialAndModule.materialUsed eq true}">
+																			<td><div align="center"><input type="radio" name="qprCbActivityDetails[2].qprTrgMaterialAndModule.materialUsed" class="form-control" value="${QPR_CB_ACT_DATA.qprCbActivityDetails[2].qprTrgMaterialAndModule.materialUsed}" checked="checked"></div></td>
+																		</c:when>
+																		<c:otherwise><td><div align="center"><input type="radio" name="qprCbActivityDetails[2].qprTrgMaterialAndModule.materialUsed" class="form-control"> </div></td></c:otherwise>
+																	</c:choose>
 																	
-																	<td><input type="text" name="qprCbActivityDetails[2].qprTrgMaterialAndModule[0].instituteInvolved" value="${qprCbActivities.qprCbActivityDetails[2].qprTrgMaterialAndModule[0].instituteInvolved}" class="active12 form-control"  /></td>
+																	<td><div align="center"><input type="text" name="qprCbActivityDetails[2].qprTrgMaterialAndModule.instituteInvolved" value="${QPR_CB_ACT_DATA.qprCbActivityDetails[2].qprTrgMaterialAndModule.instituteInvolved}" class="active12 Align-Right form-control"  /></div></td>
 																</tr>
 															</table>
 														</div>
@@ -363,11 +373,11 @@ function getSelelctedQtrRprt(){
 										</div>
 									</div>
 								</div>
-								<!-- Modal content ends here-->
-								<!-- Modal content TNA & Training Evaluation-->
-									<div id="myModal3" class="modal fade" role="dialog">
-									<div class="modal-dialog">
-										<div class="modal-content">
+								<!-- Modal content Training Material ends here-->
+								<!-- Modal content TNA & Training Evaluation second-->
+									<div id="tnaTrainingEavltionModal2" class="modal fade" role="dialog">
+									<div class="modal-dialog modal-lg">
+										<div class="modal-content modal-lg">
 											<div class="modal-header">
 												<button type="button" class="close" data-dismiss="modal">&times;</button>
 											</div>
@@ -394,22 +404,28 @@ function getSelelctedQtrRprt(){
 																</thead>
 																<tbody>
 																<tr>
-																	<td><input type="text" name="qprCbActivityDetails[3].qprTnaTrgEvaluation[0].noOfPersons" value="${qprCbActivities.qprCbActivityDetails[3].qprTnaTrgEvaluation[0].noOfPersons}" class="active12 form-control Align-Right"></td>
+																	<td><input type="text" name="qprCbActivityDetails[3].qprTnaTrgEvaluation.noOfPersons" value="${QPR_CB_ACT_DATA.qprCbActivityDetails[3].qprTnaTrgEvaluation.noOfPersons}" class="active12 Align-Right form-control Align-Right"></td>
 																	<td>
-																		<select name="qprCbActivityDetails[3].qprTnaTrgEvaluation[0].trngSubject.subjectId" type="text" class="active12 form-control">
-																			<c:forEach items="${subjectsList}" var="sbjctLst">
-																			<c:choose>
-																				<c:when test="${qprCbActivities.qprCbActivityDetails[3].qprTnaTrgEvaluation[0].trngSubject.subjectId == sbjctLst.subjectId}">
-																					<option value="${sbjctLst.subjectId}" selected="selected">${sbjctLst.subjectName}</option>
-																				</c:when>
-																				<c:otherwise>
-																					<option value="${sbjctLst.subjectId}" >${sbjctLst.subjectName}</option>
-																				</c:otherwise>
-																			</c:choose>	
-																			</c:forEach>	
+																		<select name="qprCbActivityDetails[3].qprTnaTrgEvaluation.trngSubject.subjectId" class="form-control">
+																			<option value="">select</option>
+																			<c:forEach items="${SUBJECTS_LIST}" var="sbjctLst">
+																				<c:choose>
+																						<c:when
+																							test="${QPR_CB_ACT_DATA.qprCbActivityDetails[3].qprTnaTrgEvaluation.trngSubject.subjectId == sbjctLst.subjectId}">
+																							<option value="${sbjctLst.subjectId}" selected="selected">${sbjctLst.subjectName}</option>
+																						</c:when>
+																						<c:otherwise>
+																							<option value="${sbjctLst.subjectId}">${sbjctLst.subjectName}</option>
+																						</c:otherwise>
+																					</c:choose>
+																			</c:forEach>
 																		</select>
 																	</td>
-																	<td><input name="qprCbActivityDetails[3].qprTnaTrgEvaluation[0].file" type="file" class="active12 form-control"/></td>
+																	<td><input name="qprCbActivityDetails[3].qprTnaTrgEvaluation.file" type="file" class="form-control"/>
+																	<c:if test="${not empty QPR_CB_ACT_DATA and  not empty QPR_CB_ACT_DATA.qprCbActivityDetails[3].qprTnaTrgEvaluation.fileNode.uploadName}">
+																		<input type="button" value="Download File" class="btn bg-grey waves-effect" onclick='showImage("TnaTrgEvaluation",${QPR_CB_ACT_DATA.qprCbActivityDetails[3].qprTnaTrgEvaluation.qprTnaTrgEvaluationId});' />
+																	</c:if>
+																	</td>
 																</tr>
 															</table>
 														</div>
@@ -422,11 +438,11 @@ function getSelelctedQtrRprt(){
 										</div>
 									</div>
 								</div>
-								<!-- Modal content ends here-->
+								<!-- Modal content TNA & Training Evaluation second ends here-->
 								<!-- Modal content Hand Holding For gpdp-->
-									<div id="myModal6" class="modal fade" role="dialog">
-									<div class="modal-dialog">
-										<div class="modal-content">
+									<div id="handHoldingModal" class="modal fade" role="dialog">
+									<div class="modal-dialog modal-lg">
+										<div class="modal-content modal-lg">
 											<div class="modal-header">
 												<button type="button" class="close" data-dismiss="modal">&times;</button>
 											</div>
@@ -452,8 +468,13 @@ function getSelelctedQtrRprt(){
 																</thead>
 																<tbody>
 																<tr>
-																	<td><input name="qprCbActivityDetails[6].qprHandholdingGpdp.instituteInvolved" value="${qprCbActivities.qprCbActivityDetails[6].qprHandholdingGpdp.instituteInvolved}" type="text" class="active12 form-control"/></td>
-																	<td><input name="qprCbActivityDetails[6].qprHandholdingGpdp.file" type="file" class="active12 form-control"/></td>
+																	<td><input name="qprCbActivityDetails[6].qprHandholdingGpdp.instituteInvolved" value="${QPR_CB_ACT_DATA.qprCbActivityDetails[6].qprHandholdingGpdp.instituteInvolved}" type="text" class="active12 Align-Right form-control"/></td>
+																	<td>
+																	<input name="qprCbActivityDetails[6].qprHandholdingGpdp.file" type="file" class="active12 form-control"/>
+																	<c:if test="${not empty QPR_CB_ACT_DATA and  not empty QPR_CB_ACT_DATA.qprCbActivityDetails[6].qprHandholdingGpdp.fileNode.uploadName}">
+																		<input type="button" value="Download File" class="btn bg-grey waves-effect" onclick='showImage("HandholdingGpdp",${QPR_CB_ACT_DATA.qprCbActivityDetails[6].qprHandholdingGpdp.qprHandholdingGpdpId});' />
+																	</c:if>
+																	</td>
 																</tr>
 															</table>
 														</div>
@@ -466,11 +487,11 @@ function getSelelctedQtrRprt(){
 										</div>
 									</div>
 								</div>
-								<!-- Modal content ends here-->
+								<!-- Modal content Hand Holding For gpdp ends here-->
 								<!-- Modal content Panchayat Learning Center-->
-									<div id="myModal7" class="modal fade" role="dialog">
-									<div class="modal-dialog">
-										<div class="modal-content">
+									<div id="panchayatCentrerModal" class="modal fade" role="dialog">
+									<div class="modal-dialog modal-lg">
+										<div class="modal-content modal-lg">
 											<div class="modal-header">
 												<button type="button" class="close" data-dismiss="modal">&times;</button>
 											</div>
@@ -495,7 +516,13 @@ function getSelelctedQtrRprt(){
 																</thead>
 																<tbody>
 																<tr>
-																	<td><div align="center"><input name="qprCbActivityDetails[7].qprPanchayatLearningCenter.file" type="file" class="active12 form-control"/></div></td>
+																	<td>
+																		<div align="center" class="row"><input name="qprCbActivityDetails[7].qprPanchayatLearningCenter.file" type="file" class="active12 form-control"/>
+																		<c:if test="${not empty QPR_CB_ACT_DATA and QPR_CB_ACT_DATA.qprCbActivityDetails[7].qprPanchayatLearningCenter.fileNode.uploadName}">
+																			<input type="button" value="Download File" class="btn bg-grey waves-effect" onclick='showImage("PanchayatLearningCenter",${QPR_CB_ACT_DATA.qprCbActivityDetails[7].qprPanchayatLearningCenter.qprPanchayatLearningId});' />
+																		</c:if>
+																		</div>
+																	</td>
 																</tr>
 															</table>
 														</div>
@@ -509,39 +536,55 @@ function getSelelctedQtrRprt(){
 									</div>
 								</div>
 								<!-- Modal content ends here-->
-								
-									</div>
 							</div>
 							
-							<div class="form-group text-right ex1">
-							<button  type="submit" class="btn bg-green waves-effect">
-									<spring:message code="Label.SAVE" htmlEscape="true" />
-								</button>
-								<%-- <button  type="button"  class="btn bg-green waves-effect">
-									<spring:message code="UNFREEZE" htmlEscape="true" />
-								</button>
-								<button type="button" class="btn bg-green waves-effect">
-									<spring:message code="FREEZE" htmlEscape="true" />
-								</button> --%>
-								
+							<div class="form-group text-right ex1" style="margin-bottom: 5px;">
+								<input type="submit" name="origin" value="SAVE"  class="btn bg-green waves-effect" />
 								<button type="button" data-ng-click="onClear()" class="btn bg-light-blue waves-effect">
 									<spring:message code="Label.CLEAR" htmlEscape="true" />
 								</button>
 								<button type="button" onclick="onClose('home.html?<csrf:token uri='home.html'/>')" class="btn bg-orange waves-effect">
 									<spring:message code="Label.CLOSE" htmlEscape="true" />
 								</button>
-							</div>
-							
+							</div><br />
 						</div>
-						</form>
-					</div>
+						<!-- HIDDEN FIELDS STARTS-->
+							<!---- qprTnaTrgEvaluation ends ----->
+							 <input type="hidden" name="qprCbActivityDetails[0].qprTnaTrgEvaluation.qprTnaTrgEvaluationId" value="${QPR_CB_ACT_DATA.qprCbActivityDetails[0].qprTnaTrgEvaluation.qprTnaTrgEvaluationId}">
+							 <input type="hidden" name="qprCbActivityDetails[0].qprTnaTrgEvaluation.fileNode.fileNodeId" value="${QPR_CB_ACT_DATA.qprCbActivityDetails[0].qprTnaTrgEvaluation.fileNode.fileNodeId}">
+							 <input type="hidden" name="qprCbActivityDetails[3].qprTnaTrgEvaluation.qprTnaTrgEvaluationId" value="${QPR_CB_ACT_DATA.qprCbActivityDetails[3].qprTnaTrgEvaluation.qprTnaTrgEvaluationId}">
+							 <input type="hidden" name="qprCbActivityDetails[3].qprTnaTrgEvaluation.fileNode.fileNodeId" value="${QPR_CB_ACT_DATA.qprCbActivityDetails[3].qprTnaTrgEvaluation.fileNode.fileNodeId}">
+							 <!---- qprTnaTrgEvaluation ends ----->
+							 <!----materialUsed ----->
+							 <input type="hidden" name="qprCbActivityDetails[1].qprTrgMaterialAndModule.qprTrgMaterialAndModuleId" value="${QPR_CB_ACT_DATA.qprCbActivityDetails[1].qprTrgMaterialAndModule.qprTrgMaterialAndModuleId}">
+							 <input type="hidden" name="qprCbActivityDetails[2].qprTrgMaterialAndModule.qprTrgMaterialAndModuleId" value="${QPR_CB_ACT_DATA.qprCbActivityDetails[2].qprTrgMaterialAndModule.qprTrgMaterialAndModuleId}">
+							 <!---materialUsed end ----->
+							 <!------qprHandholdingGpdp starts----->
+							 <input type="hidden" name="qprCbActivityDetails[6].qprHandholdingGpdp.qprHandholdingGpdpId" value="${QPR_CB_ACT_DATA.qprCbActivityDetails[6].qprHandholdingGpdp.qprHandholdingGpdpId}">
+							 <input type="hidden" name="qprCbActivityDetails[6].qprHandholdingGpdp.fileNode.fileNodeId" value="${QPR_CB_ACT_DATA.qprCbActivityDetails[6].qprHandholdingGpdp.fileNode.fileNodeId}">
+							 <!------qprHandholdingGpdp ends----->
+							 <!------ qprPanchayatLearningCenter starts -------->
+							 <input type="hidden" name="qprCbActivityDetails[7].qprPanchayatLearningCenter.qprPanchayatLearningId" value="${QPR_CB_ACT_DATA.qprCbActivityDetails[7].qprPanchayatLearningCenter.qprPanchayatLearningId}">
+							 <input type="hidden" name="qprCbActivityDetails[7].qprPanchayatLearningCenter.fileNode.fileNodeId" value="${QPR_CB_ACT_DATA.qprCbActivityDetails[7].qprPanchayatLearningCenter.fileNode.fileNodeId}">
+							 <!------ qprPanchayatLearningCenter ends -------->
+							 
+							 <input type="hidden" name="showQqrtrId" id="quaterTransient" value="${QTR_ID}" />
+							 <input type="hidden" name="capacityBuildingActivity.cbActivityId" value="${CEC_APPROVED_ACTIVITY.cbActivityId}" />
+							 <input type="hidden" name="path" id="path" > 
+							 <input type="hidden" name="dbFileName" id="dbFileName" >
+						<!-- HIDDEN FIELDS ENDS -->
+					</form:form>
 				</div>
 			</div>
 		</div>
-	</section>
-</html>
+	</div>
+</section>
 <style>
 .ex1 {
-  margin-left: -26px;
+  margin-left: -10px;
 }
+.Align-Right {
+	text-align: right;
+}
+</style>
 </style>

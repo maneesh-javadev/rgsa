@@ -67,9 +67,9 @@ function validateFundByAllocatedFund(obj){
 						name="incomeEnhancement" class="form-inline"
 						action="incomeEnhancementQuaterly.html"
 						modelAttribute="QPR_INCOME_ENHANCEMENT">
-						<div class="body">
-							<input type="hidden" name="<csrf:token-name/>"
+						<input type="hidden" name="<csrf:token-name/>"
 								value="<csrf:token-value uri="incomeEnhancementQuaterly.html"/>" />
+						<div class="body">
 									<div class="row clearfix">
 										<div class="form-group">
 											<div class="col-lg-2">
@@ -96,9 +96,8 @@ function validateFundByAllocatedFund(obj){
 											<th rowspan="2"><div align="center">S.No.</div></th>
 											<th rowspan="2"><div align="center">Name of Activity</div></th>
 											<th rowspan="2"><div align="center">District Name</div></th>
-											<th rowspan="2"><div align="center">Fund Approved (in RS.)</div></th>
-											<th rowspan="2"><div align="center">Expenditure
-													incurred</div></th>
+											<th rowspan="2"><div align="center">Fund Approved (in Rs.)</div></th>
+											<th rowspan="2"><div align="center">Expenditure incurred</div></th>
 										</tr>
 									</thead>
 									<tbody id="tbodyId">

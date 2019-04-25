@@ -5,6 +5,7 @@ import java.util.Map;
 
 import gov.in.rgsa.entity.FetchTraining;
 import gov.in.rgsa.entity.FetchTrainingDetails;
+import gov.in.rgsa.entity.FileNode;
 import gov.in.rgsa.entity.Subjects;
 import gov.in.rgsa.entity.TargetGroupMaster;
 import gov.in.rgsa.entity.TrainingActivity;
@@ -70,5 +71,13 @@ public interface TrainingActivityService {
 	public Response saveorUpdateTrainingActivityDetailsCECMOPR(FetchTraining FetchTraining);
 	
 	public List<TrainingWiseCategory> fetchTrainingWiseCategoryList(Integer trngId);
+
+	public FileNode loadFileNode(FileNode fileNode);
+
+	public FileNode fetchQprTnaTrgEvaluation(Integer tableId);
+
+	public FileNode fetchQprHandholdingGpdp(Integer tableId);
+
+	public FileNode fetchQprPanchayatLearningCenter(Integer tableId);
 	
 }

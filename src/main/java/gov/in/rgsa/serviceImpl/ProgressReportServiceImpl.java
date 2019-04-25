@@ -1,5 +1,6 @@
 package gov.in.rgsa.serviceImpl;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -8,6 +9,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -420,13 +422,13 @@ public class ProgressReportServiceImpl implements ProgressReportService{
 	}
 
 	@Override
-	public QprCbActivity fetchQprCapcityBuilding(Integer showQqrtrId) {
+	public QprCbActivity fetchQprCapcityBuilding(Integer cbActivityId,Integer showQqrtrId) {
 		List<QprCbActivity> qprCbActivity =null;
 		Map<String, Object> params = new HashMap<>();
 		params.put("stateCode", userPreference.getStateCode());
 		params.put("yearId", userPreference.getFinYearId());
-		params.put("userType", userPreference.getUserType().charAt(0));
 		params.put("quarterId",showQqrtrId);
+		params.put("cbActivityId",cbActivityId);
 		qprCbActivity = commonRepository.findAll("QPR_CAPACITY_BUILDING_REPORT_BASED_ON_QUARTER", params);
 		if(!qprCbActivity.isEmpty()){
 			return qprCbActivity.get(0);
@@ -436,48 +438,30 @@ public class ProgressReportServiceImpl implements ProgressReportService{
 
 	@Override
 	public void saveQprCbActivity(QprCbActivity qprCbActivity) {
+		qprCbActivity.setCreatedBy(userPreference.getUserId());
+		qprCbActivity.setLastUpdatedBy(userPreference.getUserId());
+		qprCbActivity.setIsFreeze(false);
+		
+		List<QprCbActivityDetails> qprCbActivityDetails = qprCbActivity.getQprCbActivityDetails();
+		for(QprCbActivityDetails details : qprCbActivityDetails){
+			details.setQprCbActivity(qprCbActivity);
+		}
+		qprCbActivity.getQprCbActivityDetails().get(0).getQprTnaTrgEvaluation().setCbActivityDetails(qprCbActivityDetails.get(0));
+		qprCbActivity.getQprCbActivityDetails().get(1).getQprTrgMaterialAndModule().setCbActivityDetails(qprCbActivityDetails.get(1));
+		qprCbActivity.getQprCbActivityDetails().get(2).getQprTrgMaterialAndModule().setCbActivityDetails(qprCbActivityDetails.get(2));
+		qprCbActivity.getQprCbActivityDetails().get(3).getQprTnaTrgEvaluation().setCbActivityDetails(qprCbActivityDetails.get(3));
+		qprCbActivity.getQprCbActivityDetails().get(6).getQprHandholdingGpdp().setCbActivityDetails(qprCbActivityDetails.get(6));
+		qprCbActivity.getQprCbActivityDetails().get(7).getQprPanchayatLearningCenter().setCbActivityDetails(qprCbActivityDetails.get(7));
 		if(qprCbActivity.getQpCbActivityId() == null){
-			qprCbActivity.setCreatedBy(userPreference.getUserId());
-			qprCbActivity.setLastUpdatedBy(userPreference.getUserId());
-			qprCbActivity.setIsFreeze(false);
-			
-			List<QprCbActivityDetails> qprCbActivityDetails = qprCbActivity.getQprCbActivityDetails();
-			for(QprCbActivityDetails details : qprCbActivityDetails){
-				details.setQprCbActivity(qprCbActivity);
-			}
-			qprCbActivity.getQprCbActivityDetails().get(0).getQprTnaTrgEvaluation().get(0).setCbActivityDetails(qprCbActivityDetails.get(0));
-			qprCbActivity.getQprCbActivityDetails().get(1).getQprTrgMaterialAndModule().get(0).setCbActivityDetails(qprCbActivityDetails.get(1));
-			qprCbActivity.getQprCbActivityDetails().get(2).getQprTrgMaterialAndModule().get(0).setCbActivityDetails(qprCbActivityDetails.get(2));
-			qprCbActivity.getQprCbActivityDetails().get(3).getQprTnaTrgEvaluation().get(0).setCbActivityDetails(qprCbActivityDetails.get(3));
-			qprCbActivity.getQprCbActivityDetails().get(6).getQprHandholdingGpdp().setCbActivityDetails(qprCbActivityDetails.get(6));
-			qprCbActivity.getQprCbActivityDetails().get(7).getQprPanchayatLearningCenter().setCbActivityDetails(qprCbActivityDetails.get(7));
-			
 			commonRepository.save(qprCbActivity);
 		}
 		else{
-			qprCbActivity.setLastUpdatedBy(userPreference.getUserId());
-			qprCbActivity.setIsFreeze(false);
-			
-			List<QprCbActivityDetails> qprCbActivityDetails = qprCbActivity.getQprCbActivityDetails();
-			for(QprCbActivityDetails details : qprCbActivityDetails){
-				details.setQprCbActivity(qprCbActivity);
-			}
-			QprTnaTrgEvaluation evaluation = new QprTnaTrgEvaluation();
-			evaluation.setCbActivityDetails(qprCbActivityDetails.get(0));
-			qprCbActivity.getQprCbActivityDetails().get(0).getQprTnaTrgEvaluation().get(0).setCbActivityDetails(qprCbActivityDetails.get(0));
-			qprCbActivity.getQprCbActivityDetails().get(1).getQprTrgMaterialAndModule().get(0).setCbActivityDetails(qprCbActivityDetails.get(1));
-			qprCbActivity.getQprCbActivityDetails().get(2).getQprTrgMaterialAndModule().get(0).setCbActivityDetails(qprCbActivityDetails.get(2));
-			qprCbActivity.getQprCbActivityDetails().get(3).getQprTnaTrgEvaluation().get(0).setCbActivityDetails(qprCbActivityDetails.get(3));
-			qprCbActivity.getQprCbActivityDetails().get(6).getQprHandholdingGpdp().setCbActivityDetails(qprCbActivityDetails.get(6));
-			qprCbActivity.getQprCbActivityDetails().get(7).getQprPanchayatLearningCenter().setCbActivityDetails(qprCbActivityDetails.get(7));
 			commonRepository.update(qprCbActivity);
 		}
+		
+		/* this method is to insert and update record in quater_wise_fund table*/
+		saveQprWiseFundData(userPreference.getStateCode(),userPreference.getFinYearId(),qprCbActivity.getQuarterDuration().getQtrId(),13);
 	}
-
-	
-		
-		
-	
 
 	@Override
 	public QprEnablement fetchQprEnablement(Integer eEnablementId, int quarterId) {
@@ -545,27 +529,21 @@ public class ProgressReportServiceImpl implements ProgressReportService{
 
 	@Override
 	public void saveInnovative(QprInnovativeActivity qprInnovativeActivity) {
-		if(qprInnovativeActivity.getQprIaId() == null){
-			qprInnovativeActivity.setCreatedBy(userPreference.getUserId());
-			qprInnovativeActivity.setIsFreeze(false);
-			qprInnovativeActivity.setLastUpdatedBy(userPreference.getUserId());
-			
-			List<QprInnovativeActivityDetails> innovativeActivityDetail = qprInnovativeActivity.getQprInnovativeActivityDetails();
-				for(QprInnovativeActivityDetails innovativeActivityDetails : innovativeActivityDetail){
-					innovativeActivityDetails.setQprInnovativeActivity(qprInnovativeActivity);
-				}
-				commonRepository.save(qprInnovativeActivity);
+		qprInnovativeActivity.setCreatedBy(userPreference.getUserId());
+		qprInnovativeActivity.setIsFreeze(false);
+		qprInnovativeActivity.setLastUpdatedBy(userPreference.getUserId());
+		List<QprInnovativeActivityDetails> innovativeActivityDetail = qprInnovativeActivity.getQprInnovativeActivityDetails();
+		for(QprInnovativeActivityDetails innovativeActivityDetails : innovativeActivityDetail){
+			innovativeActivityDetails.setQprInnovativeActivity(qprInnovativeActivity);
 		}
-		else{
-			qprInnovativeActivity.setIsFreeze(false);
-			qprInnovativeActivity.setLastUpdatedBy(userPreference.getUserId());
-			List<QprInnovativeActivityDetails> qprInnovativeActivityDetail = qprInnovativeActivity.getQprInnovativeActivityDetails();
-			for(QprInnovativeActivityDetails qprInnovativeActivityDetails : qprInnovativeActivityDetail){
-				qprInnovativeActivityDetails.setQprInnovativeActivity(qprInnovativeActivity);
-			}
+		if(qprInnovativeActivity.getQprIaId() == null){
+				commonRepository.save(qprInnovativeActivity);
+		}else{
 			commonRepository.update(qprInnovativeActivity);
 		}
 		
+		/* this method is to insert and update record in quater_wise_fund table*/
+		saveQprWiseFundData(userPreference.getStateCode(),userPreference.getFinYearId(),qprInnovativeActivity.getQuarterDuration().getQtrId(),9);
 	}
 
 	@Override
@@ -663,5 +641,22 @@ public class ProgressReportServiceImpl implements ProgressReportService{
 		params.put("componentId", componentId);
 		params.put("installmentNo", installmentNo);
 		return commonRepository.findAll("FETCH_STATE_ALLOCATION_BY_COMP_ID_AND_INSTALL_NO", params);
+	}
+
+	@Override
+	public List<QprCbActivityDetails> getQprTrainActBasedOnActIdAndQtrId(Integer cbActivityId, int quarterId) {
+		Map<String, Object> params = new HashMap();
+		params.put("cbActivityId", cbActivityId);
+		params.put("quarterId", quarterId);	
+		List<QprCbActivity> qprCbActivities= commonRepository.findAll("FETCH_QPR_TRAINING_ACT_BY_QTR_ID_AND_ACT_ID", params);
+		List<QprCbActivityDetails> qprCbActivityDetails=new ArrayList<>();
+		if(CollectionUtils.isNotEmpty(qprCbActivities)){
+			for (QprCbActivity qprCbActivity : qprCbActivities) {
+				qprCbActivityDetails.addAll(qprCbActivity.getQprCbActivityDetails());
+			}
+			return qprCbActivityDetails;
+		}else{
+			return null;
+		}
 	}
 }

@@ -6,14 +6,11 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -55,7 +52,6 @@ import gov.in.rgsa.entity.InstitueInfraHrActivity;
 import gov.in.rgsa.entity.InstitueInfraHrActivityDetails;
 import gov.in.rgsa.entity.InstituteInfraHrActivityType;
 import gov.in.rgsa.entity.PmuActivity;
-import gov.in.rgsa.entity.PmuActivityType;
 import gov.in.rgsa.entity.PmuProgress;
 import gov.in.rgsa.entity.PmuProgressDetails;
 import gov.in.rgsa.entity.QprAdminAndFinancialDataActivity;
@@ -63,7 +59,6 @@ import gov.in.rgsa.entity.QprAdminAndFinancialDataActivityDetails;
 import gov.in.rgsa.entity.QprEnablement;
 import gov.in.rgsa.entity.QprEnablementDetails;
 import gov.in.rgsa.entity.QprIncomeEnhancement;
-import gov.in.rgsa.entity.QprIncomeEnhancementDetails;
 import gov.in.rgsa.entity.QprInnovativeActivity;
 import gov.in.rgsa.entity.QprInstitutionalInfraDetails;
 import gov.in.rgsa.entity.QprInstitutionalInfrastructure;
@@ -78,8 +73,6 @@ import gov.in.rgsa.entity.TrainingProgressReport;
 import gov.in.rgsa.service.AdditionalFacultyAndMainService;
 import gov.in.rgsa.service.AdminAndFinancialDataCellService;
 import gov.in.rgsa.service.AdminTechSupportService;
-import gov.in.rgsa.service.CBMasterService;
-import gov.in.rgsa.service.CapacityBuildingService;
 import gov.in.rgsa.service.EEnablementOfPanchayatService;
 import gov.in.rgsa.service.IecService;
 import gov.in.rgsa.service.IncomeEnhancementService;
@@ -113,7 +106,10 @@ public class ProgressReportController {
 	public static final String TRAINING_PROGRESS_PMU = "approvePmuQuaterly";
 	public static final String REDIRECT_TRAINING_PROGRESS_PMU = "redirect:pmuProgresReport.html";
 
-	private static final String PANCHAYAT_BHAWAN_REPORT = "panchayatBhawanQuaterlyReport";
+	/*
+	 * private static final String PANCHAYAT_BHAWAN_REPORT =
+	 * "panchayatBhawanQuaterlyReport";
+	 */
 	private static final String INSTITUTIONAL_INFRA_REPORT = "institutionalInfraQuaterlyReport";
 	public static final String INCOMEENHANCEMENT_QUATERLY = "incomeEnhancementQuaterly";
 	public static final String CURRENT_SATCOM_QUATERLY = "approvedCurrentUsageSatcomQuaterly";
@@ -178,8 +174,9 @@ public class ProgressReportController {
 	@Autowired
 	private AdditionalFacultyAndMainService additionalFacultyAndMainService;
 
-	@Autowired
-	private CapacityBuildingService capacityBuildingService;
+	/*
+	 * @Autowired private CapacityBuildingService capacityBuildingService;
+	 */
 
 	@Autowired
 	private PmuActivityService pmuActivityService;
@@ -187,8 +184,9 @@ public class ProgressReportController {
 	@Autowired
 	private EEnablementOfPanchayatService eEnablementOfPanchayatService;
 
-	@Autowired
-	private CBMasterService cbMasterService;
+	/*
+	 * @Autowired private CBMasterService cbMasterService;
+	 */
 
 	@Autowired
 	private AdminAndFinancialDataCellService adminAndFinancialDataCellService;
@@ -372,32 +370,15 @@ public class ProgressReportController {
 		model.addAttribute("QUATER_DETAILS", progressReportService.getQuarterDurations());
 		List<QuaterWiseFund> totalQuatorWiseFund = new ArrayList<>();
 		List<IecActivity> iecActivitiesApproved = iecService.fetchApprovedIec();// this gives CEC approved data.
-		List<StateAllocation> stateAllocation = progressReportService.fetchStateAllocationDataByCompIdandInstallNo(11,
-				installmentNo);
+		List<StateAllocation> stateAllocation = progressReportService.fetchStateAllocationDataByCompIdandInstallNo(11,installmentNo);
 		if (quarterId == 3 || quarterId == 4) {
-			stateAllocation.add(progressReportService.fetchStateAllocationDataByCompIdandInstallNo(11, 1).get(0)); // total
-																													// fund
-																													// allocated
-																													// in
-																													// first
-																													// installment
+			stateAllocation.add(progressReportService.fetchStateAllocationDataByCompIdandInstallNo(11, 1).get(0)); // total fund allocated in first installment
 			totalQuatorWiseFund = progressReportService.fetchTotalQuaterWiseFundData(userPreference.getStateCode(), 11);
 			model.addAttribute("TOTAL_FUND_USED_IN_QTR_1_AND_2", calTotalFundUsedInQtr1And2(totalQuatorWiseFund));
 		}
 		if (CollectionUtils.isNotEmpty(stateAllocation) && CollectionUtils.isNotEmpty(iecActivitiesApproved)) {
 			if (stateAllocation.size() > 1) {
-				model.addAttribute("FUND_ALLOCATED_BY_STATE_PREVIOUS", stateAllocation.get(1).getFundsAllocated()); // we
-																													// will
-																													// use
-																													// this
-																													// in
-																													// jsp
-																													// to
-																													// calculate
-																													// the
-																													// total
-																													// remaining
-																													// field
+				model.addAttribute("FUND_ALLOCATED_BY_STATE_PREVIOUS", stateAllocation.get(1).getFundsAllocated()); // we will use this in jsp to calculate the total remaining field
 			}
 			model.addAttribute("CEC_APPROVED_ACTIVITY", iecActivitiesApproved.get(0));
 			model.addAttribute("CEC_APPROVED_ACT_ID", iecActivitiesApproved.get(0).getId());
@@ -880,7 +861,6 @@ public class ProgressReportController {
 			model.addAttribute("approved", false);
 
 		}
-		Thread th=new Thread();
 		return ADDITIONAL_FACULTY_QUADERLY;
 
 	}
@@ -1165,7 +1145,7 @@ public class ProgressReportController {
 		return ENABLEMENT_PROGRESS_REPORT;
 	}
 
-	private double calTotalFundUsedInQtr1And2(List<QuaterWiseFund> obj) {
+	protected double calTotalFundUsedInQtr1And2(List<QuaterWiseFund> obj) {
 		double total = 0;
 		for (QuaterWiseFund object : obj) {
 			if (object.getQuarter_id() < 3) {
@@ -1178,8 +1158,6 @@ public class ProgressReportController {
 	@RequestMapping(value = "enablementQuaterly", method = RequestMethod.POST)
 	public String getEnablementQuaterlyPost(@ModelAttribute("Enablement") QprEnablement qprEnablement, Model model,
 			HttpServletRequest request, RedirectAttributes re) {
-		// Integer Activity =
-		// satcomActivityProgress.getSatcomActivity().get(0).getSatcomActivityId();
 		progressReportService.saveEnablement(qprEnablement);
 		re.addFlashAttribute(Message.SUCCESS_KEY, Message.SAVE_SUCCESS);
 		return REDIRECT_ENABLEMENT_PROGRESS_REPORT;
@@ -1187,71 +1165,75 @@ public class ProgressReportController {
 
 	@RequestMapping(value = "innovativeActivityQpr", method = RequestMethod.GET)
 	public String qprGetFormInnovativeActivityQpr(
-			@ModelAttribute("INNOVATIVE_ACTIVITY_QUATER") QprInnovativeActivity qprInnovativeActivity, Model model,
+			@ModelAttribute("INNOVATIVE_ACTIVITY_QUATERLY_REPORT") QprInnovativeActivity qprInnovativeActivity, Model model,
 			HttpServletRequest request) {
 
-		int quarterId = 1;
-		model.addAttribute("approved", true);
-		List<InnovativeActivity> innovativeActivityApproved = innovativeActivityService.fetchApprovedInnovative();
-
-		if (innovativeActivityApproved != null && !innovativeActivityApproved.isEmpty()) {
-			Integer id = innovativeActivityApproved.get(0).getInnovativeActivityId();
-			if (qprInnovativeActivity.getQtrId() != null) {
-				quarterId = qprInnovativeActivity.getQtrId();
-			} else
-
-				quarterId = 1;
-
-			/*
-			 * List<Integer> activityDetailsId = new ArrayList<>(); for(int
-			 * i=0;i<approvedTraining.get(0).getTrainingActivityDetailsList().size();i++) {
-			 * int id = approvedTraining.get(0).getTrainingActivityDetailsList().get(i).
-			 * getTrainingActivityDetailsId(); activityDetailsId.add(id); }
-			 */
-			QprInnovativeActivity fetchInnovativeQuaterProgressReport = progressReportService.getInnovative(id,
-					quarterId);
-			if (fetchInnovativeQuaterProgressReport != null) {
-
-				model.addAttribute("INNOVATIVE_ACTIVITY_PROGRESS", fetchInnovativeQuaterProgressReport);
-				// model.addAttribute("satcomActivityProgressDetails",
-				// satcomActivityProgressDetails);
+		int quarterId = 0;
+		if (qprInnovativeActivity.getQtrId() != null) {
+			quarterId = qprInnovativeActivity.getQtrId();
+		} else {
+			quarterId = 0;
+		}
+		
+		int installmentNo = (quarterId < 3) ? 1 : 2; // installment number for qtrId 1 & 2 = 1 and 3 & 4 = 2
+		model.addAttribute("QTR_ID", quarterId);
+		model.addAttribute("QUATER_DETAILS", progressReportService.getQuarterDurations());
+		List<QuaterWiseFund> totalQuatorWiseFund = new ArrayList<>();
+		List<InnovativeActivity> innovativeActApproved=innovativeActivityService.fetchApprovedInnovative(); 
+		List<StateAllocation> stateAllocation = progressReportService.fetchStateAllocationDataByCompIdandInstallNo(9,installmentNo);
+		if (quarterId == 3 || quarterId == 4) {
+			stateAllocation.add(progressReportService.fetchStateAllocationDataByCompIdandInstallNo(9, 1).get(0)); // total fund allocated in first quator
+			totalQuatorWiseFund = progressReportService.fetchTotalQuaterWiseFundData(userPreference.getStateCode(), 9);
+			model.addAttribute("TOTAL_FUND_USED_IN_QTR_1_AND_2", calTotalFundUsedInQtr1And2(totalQuatorWiseFund));
+		}
+		
+		if(CollectionUtils.isNotEmpty(stateAllocation) && CollectionUtils.isNotEmpty(innovativeActApproved)) {
+			if (stateAllocation.size() > 1) {
+				model.addAttribute("FUND_ALLOCATED_BY_STATE_PREVIOUS", stateAllocation.get(1).getFundsAllocated()); // we will use this in jsp to calculate the total remaining field
 			}
-
-			else {
-				QprInnovativeActivity qprInnovativeActivity1 = progressReportService
-						.getfetchInnovativeProgressReportToGeReportId(id);
-				if (qprInnovativeActivity1 != null) {
-					model.addAttribute("getIecId", qprInnovativeActivity1.getQprIaId());
+			
+			QprInnovativeActivity qprInnovativeAct=progressReportService.getInnovative(innovativeActApproved.get(0).getInnovativeActivityId(), quarterId);
+			if(qprInnovativeAct != null) {
+				Collections.sort(qprInnovativeAct.getQprInnovativeActivityDetails(), (o1,o2) -> o1.getQprIaDetailsId() - o2.getQprIaDetailsId());
+				model.addAttribute("QPR_INNOVATIVE_ACTIVITY", qprInnovativeAct);
+			}else {
+				if(qprInnovativeActivity.getQprInnovativeActivityDetails() != null) {
+					qprInnovativeActivity.getQprInnovativeActivityDetails().clear();
 				}
 			}
-
-			model.addAttribute("innovativeActivityId", id);
-			model.addAttribute("SetNewQtrId1", qprInnovativeActivity.getQtrId());
-			model.addAttribute("fetchInnovativeActivity", innovativeActivityApproved.get(0));
-			model.addAttribute("QUATER_DETAILS", progressReportService.getQuarterDurations());
-		} else {
-			model.addAttribute("approved", false);
+			
+			/* used to get previous data stored which is then use to validate the  expenditure incurred */
+			List<QuaterWiseFund> quaterWiseFund = new ArrayList<>();
+			if (quarterId == 1 || quarterId == 3) {
+				quaterWiseFund = progressReportService.fetchQuaterWiseFundData(userPreference.getStateCode(),
+						(quarterId + 1), 9);
+			} else {
+				quaterWiseFund = progressReportService.fetchQuaterWiseFundData(userPreference.getStateCode(),
+						(quarterId - 1), 9);
+			}
+			if (CollectionUtils.isNotEmpty(quaterWiseFund)) {
+				model.addAttribute("FUND_USED_IN_OTHER_QUATOR", quaterWiseFund.get(0).getFunds());
+			}
+			/*----------------------------end here-------------------------------------------------- */
+			
+			model.addAttribute("FUND_ALLOCATED_BY_STATE", stateAllocation.get(0).getFundsAllocated());
+			model.addAttribute("CEC_APPROVED_ACTIVITY", innovativeActApproved.get(0));
+			return INNOVATIVE_PROGRESS_REPORT;
+		}else {
+			return NO_FUND_ALLOCATED_JSP;
 		}
-
-		return INNOVATIVE_PROGRESS_REPORT;
+		
 	}
 
 	@RequestMapping(value = "innovativeActivityQpr", method = RequestMethod.POST)
-	public String innovativeQtrProgressReport(
-			@ModelAttribute("INNOVATIVE_ACTIVITY_QUATER") QprInnovativeActivity qprInnovativeActivity, Model model,
-			HttpServletRequest request, RedirectAttributes re) {
-		// Integer Activity =
-		// satcomActivityProgress.getSatcomActivity().get(0).getSatcomActivityId();
-		progressReportService.saveInnovative(qprInnovativeActivity);
+	public String innovativeQtrProgressReport(@ModelAttribute("INNOVATIVE_ACTIVITY_QUATERLY_REPORT") QprInnovativeActivity qprInnovativeActivity, RedirectAttributes re) {
+ 		progressReportService.saveInnovative(qprInnovativeActivity);
 		re.addFlashAttribute(Message.SUCCESS_KEY, Message.SAVE_SUCCESS);
-
 		return REDIRECT_INNOVATIVE_PROGRESS_REPORT;
 	}
 
 	@RequestMapping(value = "adminDataFinQuaterlyGet", method = RequestMethod.GET)
-	public String qprGetFormAdminDataFinQuaterly(
-			@ModelAttribute("QPR_ADMIN_DATA_FIN") QprAdminAndFinancialDataActivity qprAdminAndFinancialDataActivity,
-			Model model) {
+	public String qprGetFormAdminDataFinQuaterly(@ModelAttribute("QPR_ADMIN_DATA_FIN") QprAdminAndFinancialDataActivity qprAdminAndFinancialDataActivity,Model model) {
 
 		int quarterId = 0;
 		if (qprAdminAndFinancialDataActivity.getShowQqrtrId() != null) {
@@ -1262,18 +1244,11 @@ public class ProgressReportController {
 
 		int installmentNo = (quarterId < 3) ? 1 : 2; // installment number for qtrId 1 & 2 = 1 and 3 & 4 = 2
 		List<QuaterWiseFund> totalQuatorWiseFund = new ArrayList<>();
-		List<AdminAndFinancialDataActivity> adminAndFinancialDataActivityApproved = adminAndFinancialDataCellService
-				.fetchApprovedActivity();
-		List<StateAllocation> stateAllocation = progressReportService.fetchStateAllocationDataByCompIdandInstallNo(8,
-				installmentNo);
+		List<AdminAndFinancialDataActivity> adminAndFinancialDataActivityApproved = adminAndFinancialDataCellService.fetchApprovedActivity();
+		List<StateAllocation> stateAllocation = progressReportService.fetchStateAllocationDataByCompIdandInstallNo(8,installmentNo);
 		model.addAttribute("quarter_duration", progressReportService.getQuarterDurations());
 		if (quarterId == 3 || quarterId == 4) {
-			stateAllocation.add(progressReportService.fetchStateAllocationDataByCompIdandInstallNo(8, 1).get(0)); // total
-																													// fund
-																													// allocated
-																													// in
-																													// first
-																													// quator
+			stateAllocation.add(progressReportService.fetchStateAllocationDataByCompIdandInstallNo(8, 1).get(0)); // total fund allocated in first quator
 			totalQuatorWiseFund = progressReportService.fetchTotalQuaterWiseFundData(userPreference.getStateCode(), 8);
 			model.addAttribute("TOTAL_FUND_USED_IN_QTR_1_AND_2", calTotalFundUsedInQtr1And2(totalQuatorWiseFund));
 		}
@@ -1281,18 +1256,7 @@ public class ProgressReportController {
 				&& CollectionUtils.isNotEmpty(adminAndFinancialDataActivityApproved)) {
 
 			if (stateAllocation.size() > 1) {
-				model.addAttribute("FUND_ALLOCATED_BY_STATE_PREVIOUS", stateAllocation.get(1).getFundsAllocated()); // we
-																													// will
-																													// use
-																													// this
-																													// in
-																													// jsp
-																													// to
-																													// calculate
-																													// the
-																													// total
-																													// remaining
-																													// field
+				model.addAttribute("FUND_ALLOCATED_BY_STATE_PREVIOUS", stateAllocation.get(1).getFundsAllocated()); // we will use this in jsp to calculate the total remaining field
 			}
 
 			// list to get total number of unit in all quator except current one
@@ -1322,10 +1286,7 @@ public class ProgressReportController {
 				}
 			}
 
-			/*
-			 * used to get previous data stored which is then use to validate the
-			 * expenditure incurred
-			 */
+			/* used to get previous data stored which is then use to validate the  expenditure incurred */
 			List<QuaterWiseFund> quaterWiseFund = new ArrayList<>();
 			if (quarterId == 1 || quarterId == 3) {
 				quaterWiseFund = progressReportService.fetchQuaterWiseFundData(userPreference.getStateCode(),
@@ -1413,7 +1374,7 @@ public class ProgressReportController {
 		Set<InstitutionalInfraProgressReportDTO> set = new HashSet<>();
 		List<InstitutionalInfraProgressReportDTO> institutionalInfraProgressReportDTO = institutionalInfraActivityPlanService
 				.fetchInstInfraStateDataForProgressReport(TrainingInstituteTypeId);
-		Iterator itr = institutionalInfraProgressReportDTO.iterator();
+		Iterator<InstitutionalInfraProgressReportDTO> itr = institutionalInfraProgressReportDTO.iterator();
 		while (itr.hasNext()) {
 
 			InstitutionalInfraProgressReportDTO obj = (InstitutionalInfraProgressReportDTO) itr.next();

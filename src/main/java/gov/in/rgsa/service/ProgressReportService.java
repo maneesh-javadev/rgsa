@@ -11,6 +11,7 @@ import gov.in.rgsa.entity.InstitutionalInfraActivityPlanProgress;
 import gov.in.rgsa.entity.PmuProgress;
 import gov.in.rgsa.entity.QprAdminAndFinancialDataActivity;
 import gov.in.rgsa.entity.QprCbActivity;
+import gov.in.rgsa.entity.QprCbActivityDetails;
 import gov.in.rgsa.entity.QprEnablement;
 import gov.in.rgsa.entity.QprEnablementDetails;
 import gov.in.rgsa.entity.QuarterDuration;
@@ -72,7 +73,7 @@ public interface ProgressReportService {
 
 	public void saveEnablement(QprEnablement qprEnablement);
 	
-	public QprCbActivity fetchQprCapcityBuilding(Integer showQqrtrId);
+	public QprCbActivity fetchQprCapcityBuilding(Integer cbActivityId,Integer showQqrtrId);
 
 	public void saveQprCbActivity(QprCbActivity qprCbActivity);
 
@@ -97,5 +98,7 @@ public interface ProgressReportService {
 	public List<QuaterWiseFund> fetchTotalQuaterWiseFundData(Integer stateCode, int componentId);
 
 	public List<StateAllocation> fetchStateAllocationDataByCompIdandInstallNo(int componentId, int installmentNo);
+
+	public List<QprCbActivityDetails> getQprTrainActBasedOnActIdAndQtrId(Integer cbActivityId, int quarterId);
 
 }
