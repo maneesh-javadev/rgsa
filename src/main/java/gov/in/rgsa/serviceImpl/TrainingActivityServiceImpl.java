@@ -23,7 +23,11 @@ import org.springframework.stereotype.Service;
 import gov.in.rgsa.dao.CommonRepository;
 import gov.in.rgsa.entity.FetchTraining;
 import gov.in.rgsa.entity.FetchTrainingDetails;
+import gov.in.rgsa.entity.FileNode;
 import gov.in.rgsa.entity.Plan;
+import gov.in.rgsa.entity.QprHandholdingGpdp;
+import gov.in.rgsa.entity.QprPanchayatLearningCenter;
+import gov.in.rgsa.entity.QprTnaTrgEvaluation;
 import gov.in.rgsa.entity.Subjects;
 import gov.in.rgsa.entity.TargetGroupMaster;
 import gov.in.rgsa.entity.TrainingActivity;
@@ -59,6 +63,8 @@ public class TrainingActivityServiceImpl implements TrainingActivityService {
 	
 	@Autowired
 	private PlanAllocationService planAllocationService;
+	
+	
 	
 	@Override
 public void save(TrainingActivity activity) {
@@ -985,6 +991,26 @@ public void save(TrainingActivity activity) {
 		Map<String,Object> params = new HashMap<>();
 		params.put("trngId", trngId);
 		return commonRepository.findAll("FETCH_TRANGCATEGORY_TRAINING_ID", params);
+	}
+
+	@Override
+	public FileNode loadFileNode(FileNode fileNode) {
+		return commonRepository.find(FileNode.class, fileNode.getFileNodeId());
+	}
+
+	@Override
+	public FileNode fetchQprTnaTrgEvaluation(Integer tableId) {
+		return commonRepository.find(QprTnaTrgEvaluation.class, tableId).getFileNode();
+	}
+
+	@Override
+	public FileNode fetchQprHandholdingGpdp(Integer tableId) {
+		return commonRepository.find(QprHandholdingGpdp.class, tableId).getFileNode();
+	}
+
+	@Override
+	public FileNode fetchQprPanchayatLearningCenter(Integer tableId) {
+		return commonRepository.find(QprPanchayatLearningCenter.class, tableId).getFileNode();
 	}
 
 }

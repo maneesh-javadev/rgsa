@@ -29,8 +29,9 @@ import org.hibernate.annotations.UpdateTimestamp;
 @Entity
 @Table(name="qpr_cb_activity" , schema="rgsa")
 @NamedQueries({
+@NamedQuery(name="FETCH_QPR_TRAINING_ACT_BY_QTR_ID_AND_ACT_ID",query="from QprCbActivity where capacityBuildingActivity.cbActivityId=:cbActivityId and quarterDuration.qtrId!=:quarterId"),	
 @NamedQuery(name="UPDATE_QPRCBACtivity_FRZUNFREEZ_STATUS", query="UPDATE QprCbActivity SET  isFreeze=:isFreeze where qpCbActivityId=:qpCbActivityId"),
-@NamedQuery(name="QPR_CAPACITY_BUILDING_REPORT_BASED_ON_QUARTER", query="Select QCA from QprCbActivity QCA where  QCA.capacityBuildingActivity.stateCode=:stateCode AND  QCA.capacityBuildingActivity.yearId=:yearId AND  QCA.capacityBuildingActivity.userType=:userType AND QCA.quarterDuration.qtrId=:quarterId")
+@NamedQuery(name="QPR_CAPACITY_BUILDING_REPORT_BASED_ON_QUARTER", query="Select QCA from QprCbActivity QCA where  QCA.capacityBuildingActivity.stateCode=:stateCode AND  QCA.capacityBuildingActivity.yearId=:yearId AND QCA.quarterDuration.qtrId=:quarterId AND capacityBuildingActivity.cbActivityId=:cbActivityId")
 })
 public class QprCbActivity {
 
@@ -76,7 +77,10 @@ public class QprCbActivity {
 	private Integer menuId;
 	
 	@Transient
-	private Integer showQqrtrId;
+	private Integer showQqrtrId=0;
+	
+	@Transient
+	private String origin;
 
 	public Integer getShowQqrtrId() {
 		return showQqrtrId;
@@ -173,4 +177,15 @@ public class QprCbActivity {
 	public void setShowQqrtrId(Integer showQqrtrId) {
 		this.showQqrtrId = showQqrtrId;
 	}
+
+	public String getOrigin() {
+		return origin;
+	}
+
+	public void setOrigin(String origin) {
+		this.origin = origin;
+	}
+	
+	
+
 }
