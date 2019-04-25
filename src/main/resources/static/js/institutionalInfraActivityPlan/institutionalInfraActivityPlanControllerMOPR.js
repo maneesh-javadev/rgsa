@@ -121,6 +121,10 @@ publicModule.controller("institutionalInfraActivityPlanController", [ '$scope', 
 			$scope.calculate_total_fund(2,null,null);
 			$scope.calculate_total_fund(3,null,null);
 			$scope.calculate_total_fund(4,null,null);
+			
+			if($scope.institutionalInfraActivityPlan.userType=='S'){
+				$scope.institutionalInfraActivityPlan.isFreeze=false;
+			}
 		});
 	}
 	

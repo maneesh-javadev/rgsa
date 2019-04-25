@@ -375,6 +375,7 @@ public class CBAndTForActivityPalnController {
 	@RequestMapping(value="planForCapacityBuildingForMOPR",method = RequestMethod.GET)
 	public String planForCapacityBuildingForMOPR( Model model,RedirectAttributes redirectAttributes)
 	{
+		model.addAttribute("STATE_CODE", userPreference.getStateCode());
 		return CAPACITY_BUILDING_PLAN_MOPR;
 		
 	}

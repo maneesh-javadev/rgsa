@@ -174,6 +174,16 @@ table.dataTable thead > tr > th, table.dataTable thead > tr > td {
 								
 								<br/>
 								<br/>
+								<div class="col-md-4  text-left">
+										&nbsp;&nbsp;
+										<button type="button"
+											onclick="onClose('viewPlanDetails.html?<csrf:token uri='viewPlanDetails.html'/>&stateCode=${STATE_CODE}')"
+											class="btn bg-orange waves-effect">
+											<i class="fa fa-arrow-left" aria-hidden="true"></i>
+											<spring:message code="Label.BACK" htmlEscape="true" />
+										</button>
+										<br>
+									</div>
 								<div class="text-right padding_right">
 									 
 									<button type="button" ng-show="!fetchTrainingMOPR.isFreeze" ng-click="saveTrainingDetails('S')"
