@@ -238,7 +238,7 @@ public class InnovativeActivityServiceImpl implements InnovativeActivityService 
 		Map<String, Object> params=new HashMap<>();
 		params.put("stateCode", userPreference.getStateCode());
 		params.put("yearId", userPreference.getFinYearId());
-		params.put("userType", userPreference.getUserType().charAt(0));
+		params.put("userType", 'C');
 		return commonRepository.findAll("FETCH_INNOVATIVE_ACTIVITY_APPROVED_ACTIVITY", params);
 	}
 	

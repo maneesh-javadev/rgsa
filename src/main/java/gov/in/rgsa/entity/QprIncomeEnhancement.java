@@ -31,7 +31,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 @Table(name="qpr_income_enhancement" , schema="rgsa")
 @NamedQueries({
 @NamedQuery(name="UPDATE_QPR_FRZUNFREEZ_STATUS", query="UPDATE QprIncomeEnhancement SET  isFreeze=:isFreeze where qprIncomeEnhancementId=:qprIncomeEnhancementId"),
-@NamedQuery(name="QPR_INCM_ENHNCMNT_REPORT_BASED_ON_QUARTER", query="Select QIE from QprIncomeEnhancement QIE where  QIE.incomeEnhancementActivity.stateCode=:stateCode AND  QIE.incomeEnhancementActivity.yearId=:yearId AND  QIE.incomeEnhancementActivity.userType=:userType AND QIE.quarterDuration.qtrId=:quarterId")
+@NamedQuery(name="QPR_INCM_ENHNCMNT_REPORT_BASED_ON_QUARTER", query="Select QIE from QprIncomeEnhancement QIE where QIE.quarterDuration.qtrId=:quarterId and QIE.incomeEnhancementActivity.incomeEnhancementId=:incomeEnhancementId")
 })
 public class QprIncomeEnhancement {
 	

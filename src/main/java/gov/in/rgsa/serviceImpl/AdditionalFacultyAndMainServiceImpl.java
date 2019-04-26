@@ -184,9 +184,7 @@ public class AdditionalFacultyAndMainServiceImpl implements AdditionalFacultyAnd
 		}else{
 			params.put("userType", userPreference.getUserType());
 		}
-		
 		activity = commonRepository.findAll("FETCH_INSTITUTE_HR_ACTIVITY", params);
-		
 		if((userPreference.getUserType().equalsIgnoreCase("M")) && CollectionUtils.isEmpty(activity)){
 			params.put("userType", "S");
 			activity = commonRepository.findAll("FETCH_INSTITUTE_HR_ACTIVITY", params);

@@ -5,18 +5,7 @@ import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.List;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
-import javax.persistence.Transient;
+import javax.persistence.*;
 
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
@@ -44,8 +33,8 @@ public class IecActivity implements Serializable {
 	@Transient
 	private Integer idToDelete;
 	
-	@OneToMany(mappedBy="iecActivity",cascade=CascadeType.ALL,fetch=FetchType.EAGER)
-	private List<IecActivityDetails> iecActivityDetails;
+	@OneToOne(mappedBy="iecActivity",cascade=CascadeType.ALL,fetch=FetchType.LAZY)
+	private IecActivityDetails iecActivityDetails;
 
 	@Column(name = "state_code")
 	private int stateCode;
@@ -152,11 +141,11 @@ public class IecActivity implements Serializable {
 		this.idToDelete = idToDelete;
 	}
 
-	public List<IecActivityDetails> getIecActivityDetails() {
+	public IecActivityDetails getIecActivityDetails() {
 		return iecActivityDetails;
 	}
 
-	public void setIecActivityDetails(List<IecActivityDetails> iecActivityDetails) {
+	public void setIecActivityDetails(IecActivityDetails iecActivityDetails) {
 		this.iecActivityDetails = iecActivityDetails;
 	}
 
