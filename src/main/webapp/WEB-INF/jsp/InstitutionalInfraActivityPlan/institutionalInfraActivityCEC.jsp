@@ -46,6 +46,8 @@ function isNumber(evt) {
 										htmlEscape="true" /></a></li>
 						</ul>
 						<div class="tab-content">
+						
+						
 							<div role="tabpanel" class="container tab-pane active" id="state"
 								style="width: auto;">
 
@@ -53,7 +55,7 @@ function isNumber(evt) {
 					<div class="records">
                         <div class="">
                            <div  class="col-lg-12 sub_head">
-                              <spring:message code="Label.NewBuilding" htmlEscape="true" />
+                              <spring:message code="Label.NewBuilding" htmlEscape="true" />(SPRC)
                            </div>
                            
                            <div class="row">
@@ -172,9 +174,18 @@ function isNumber(evt) {
                               
                              
                            </table>
-                           <br/>
-                           <br/>
+                          
+                           </div>
+                         </div> 
                            
+                         <div class="records">
+                        <div class="">
+                           <div  class="col-lg-12 sub_head">
+                              <spring:message code="Label.NewBuilding" htmlEscape="true" />(DPRC)
+                           </div>
+                           <div class="row">
+                           <div class="col-lg-12 padding_top"></div>
+                           </div>
                             <table id="trainingActivityTblId"
                               class="table table-hover dashboard-task-infos">
                              <thead>
@@ -294,14 +305,14 @@ function isNumber(evt) {
 					<div class="records">
                         <div class="">
                            <div  class="col-lg-12 sub_head">
-                              <spring:message code="Label.CarryForward" htmlEscape="true" />
+                              <spring:message code="Label.CarryForward" htmlEscape="true" />(SPRC)
                            </div>
                            <div class="row">
                            <div class="col-lg-12 padding_top"></div>
                            </div>
                           
 					  
-							<br/>
+							
                            <table id="trainingActivityTblId"
                               class="table table-hover dashboard-task-infos">
                              <thead>
@@ -432,9 +443,20 @@ function isNumber(evt) {
 											</tr>
                               </tfoot>
                            </table>
+                          
+                          </div>
+                       </div> 
                            
+					  <div class="records">
+                        <div class="">
+                           <div  class="col-lg-12 sub_head">
+                              <spring:message code="Label.CarryForward" htmlEscape="true" />(DPRC)
+                           </div>
+                           <div class="row">
+                           <div class="col-lg-12 padding_top"></div>
+                           </div>
 					  
-							<br/>
+					  
                            <table id="trainingActivityTblId"
                               class="table table-hover dashboard-task-infos">
                              <thead>
@@ -568,26 +590,16 @@ function isNumber(evt) {
 								
 								
 								
-								
-								
-								
-								<div class="table-responsive">
-								
-								
-								
-								
-								
-						
-									<div class="col-md-4">
-										<button type="button"
-											onclick="onClose('viewPlanDetails.html?<csrf:token uri='viewPlanDetails.html'/>&stateCode=${STATE_CODE}')"
-											class="btn bg-orange waves-effect">
-											<i class="fa fa-arrow-left" aria-hidden="true"></i>
-											<spring:message code="Label.BACK" htmlEscape="true" />
-										</button>
-									</div>
+						<div class="col-md-4">
+							<button type="button"
+								onclick="onClose('viewPlanDetails.html?<csrf:token uri='viewPlanDetails.html'/>&stateCode=${STATE_CODE}')"
+								class="btn bg-orange waves-effect">
+								<i class="fa fa-arrow-left" aria-hidden="true"></i>
+								<spring:message code="Label.BACK" htmlEscape="true" />
+							</button>
+					    </div>
 									
-									<div class="form-group text-right">
+						<div class="form-group text-right">
 									 
 								<button data-ng-show="institutionalInfraActivityPlan.isFreeze" type="button" class="btn bg-green waves-effect" disabled="disabled"><spring:message code="Label.SAVE" htmlEscape="true"/></button>
 								<button data-ng-show="!institutionalInfraActivityPlan.isFreeze" data-ng-click="save_data('S')" type="button" class="btn bg-green waves-effect"><spring:message code="Label.SAVE" htmlEscape="true" /></button>
@@ -608,20 +620,24 @@ function isNumber(evt) {
 								</button>
 								<br/>
 								<br/>
-							</div>
+						</div>
 
 									
 									
-								</div>
+								
 							</div>
+							
+							
+							
+							
 							<div role="tabpanel" class="container tab-pane" id="MOPR"
 								style="width: auto;">
 								
 								
-																			<div class="records">
+					<div class="records">
                         <div class="">
                            <div  class="col-lg-12 sub_head">
-                              <spring:message code="Label.NewBuilding" htmlEscape="true" />
+                              <spring:message code="Label.NewBuilding" htmlEscape="true" />(SPRC)
                            </div>
                            
                            <div class="row">
@@ -728,8 +744,20 @@ function isNumber(evt) {
                               
                              
                            </table>
-                           <br/>
-                           <br/>
+                           
+                           
+                           </div>
+                       </div>
+                           
+                           <div class="records">
+                        <div class="">
+                           <div  class="col-lg-12 sub_head">
+                              <spring:message code="Label.NewBuilding" htmlEscape="true" />(DPRC)
+                           </div>
+                           
+                           <div class="row">
+                           <div class="col-lg-12 padding_top"></div>
+                           </div>
                            
                             <table id="trainingActivityTblId"
                               class="table table-hover dashboard-task-infos">
@@ -837,7 +865,7 @@ function isNumber(evt) {
 					<div class="records">
                         <div class="">
                            <div  class="col-lg-12 sub_head">
-                              <spring:message code="Label.CarryForward" htmlEscape="true" />
+                              <spring:message code="Label.CarryForward" htmlEscape="true" />(SPRC)
                            </div>
                            <div class="row">
                            <div class="col-lg-12 padding_top"></div>
@@ -955,8 +983,17 @@ function isNumber(evt) {
                               </tfoot>
                            </table>
                            
+                           </div>
+                         </div>
 					  
-							<br/>
+					 <div class="records">
+                        <div class="">
+                           <div  class="col-lg-12 sub_head">
+                              <spring:message code="Label.CarryForward" htmlEscape="true" />(DPRC)
+                           </div>
+                           <div class="row">
+                           <div class="col-lg-12 padding_top"></div>
+                           </div>
                            <table id="trainingActivityTblId"
                               class="table table-hover dashboard-task-infos">
                              <thead>

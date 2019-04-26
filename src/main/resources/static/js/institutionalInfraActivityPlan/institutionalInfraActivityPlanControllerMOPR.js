@@ -121,6 +121,10 @@ publicModule.controller("institutionalInfraActivityPlanController", [ '$scope', 
 			$scope.calculate_total_fund(2,null,null);
 			$scope.calculate_total_fund(3,null,null);
 			$scope.calculate_total_fund(4,null,null);
+			
+			if($scope.institutionalInfraActivityPlan.userType=='S'){
+				$scope.institutionalInfraActivityPlan.isFreeze=false;
+			}
 		});
 	}
 	
@@ -227,7 +231,7 @@ publicModule.controller("institutionalInfraActivityPlanController", [ '$scope', 
 						if(id!='SAN'){
 							if(FREL>FUTI){
 								FREQ=FREL-FUTI;
-								if(FSAN>FREQ){
+								if(FSAN>=FREQ){
 									$scope.institutionalInfraActivityPlanDetailsCFState[index].fundRequired=FREQ;
 									
 								}
@@ -296,7 +300,7 @@ publicModule.controller("institutionalInfraActivityPlanController", [ '$scope', 
 						if(id!='SAN'){
 							if(FREL>FUTI){
 								FREQ=FREL-FUTI;
-								if(FSAN>FREQ){
+								if(FSAN>=FREQ){
 									$scope.institutionalInfraActivityPlanDetailsCFDistrict[index].fundRequired=FREQ;
 									
 								}
