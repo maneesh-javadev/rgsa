@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import gov.in.rgsa.dao.CommonRepository;
+import gov.in.rgsa.dto.SubcomponentwiseQuaterBalance;
 import gov.in.rgsa.entity.AdditionalFacultyProgress;
 import gov.in.rgsa.entity.AdditionalFacultyProgressDetail;
 import gov.in.rgsa.entity.AdministrativeTechnicalDetailProgress;
@@ -668,5 +669,15 @@ public class ProgressReportServiceImpl implements ProgressReportService{
 		params.put("componentId", componentId);
 		params.put("installmentNo", installmentNo);
 		return commonRepository.findAll("FETCH_STATE_ALLOCATION_BY_COMP_ID_AND_INSTALL_NO", params);
+	}
+	
+	@Override
+	public List<SubcomponentwiseQuaterBalance> fetchSubcomponentwiseQuaterBalance(Integer componentId,Integer quaterId) {
+		Map<String, Object> params=new HashMap<>();
+		params.put("stateCode", userPreference.getStateCode());
+		params.put("yearId", userPreference.getFinYearId());
+		params.put("componentId", componentId);
+		params.put("quaterId", quaterId);
+		return commonRepository.findAll("FETCH_Subcomponent_wise_Quater_Balance", params);
 	}
 }

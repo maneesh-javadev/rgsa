@@ -593,7 +593,7 @@
 		<put-attribute name="title"
 			value="institutional Infra Quaterly Report" />
 		<put-attribute name="body"
-			value="/WEB-INF/jsp/progressReport/institutionalInfraQuaterlyReport.jsp" />
+			value="/WEB-INF/jsp/progressReport/institutionalInfraQuaterlyReportNew.jsp" />
 	</definition>
 	<definition name="incomeEnhancementQuaterly" extends="base.definition.admin">
 		<put-attribute name="title" value="Essential Conditions " />

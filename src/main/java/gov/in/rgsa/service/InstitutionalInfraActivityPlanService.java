@@ -31,7 +31,7 @@ public interface InstitutionalInfraActivityPlanService {
 
 	public List<InstitutionalInfraActivityPlanDetails> fetchAllDetails(Integer institutionalInfraActivityId);
 
-	public List<InstitutionalInfraProgressReportDTO> fetchInstInfraStateDataForProgressReport(Integer trainingInstituteTypeId);
+	public List<InstitutionalInfraProgressReportDTO> fetchInstInfraStateDataForProgressReport();
 
 	public List<InstInfraStatus> fetchInstInfraStatus(Integer trainingInstituteTypeId);
 

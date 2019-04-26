@@ -86,6 +86,7 @@ import gov.in.rgsa.service.InnovativeActivityService;
 import gov.in.rgsa.service.InstitutionalInfraActivityPlanService;
 import gov.in.rgsa.service.LGDService;
 import gov.in.rgsa.service.PanchayatBhawanService;
+import gov.in.rgsa.service.PlanAllocationService;
 import gov.in.rgsa.service.PmuActivityService;
 import gov.in.rgsa.service.ProgressReportService;
 import gov.in.rgsa.service.SatcomActivityProgressService;
@@ -128,6 +129,8 @@ public static final String ADMIN_DATA_FIN_QUATERLY ="approvedadminDataFinQuaterl
 
 public static final String REDIRECT_ADMIN_DATA_FIN_QUATERLY ="redirect:adminDataFinQuaterlyGet.html";
 private static final String NO_FUND_ALLOCATED_JSP = "noFundAlloctedJsp";
+public static final String REDIRECT_PLAN_ALLOCATION = "redirect:planAllocation.html";
+
 
 
 	@Autowired
@@ -194,6 +197,9 @@ private static final String NO_FUND_ALLOCATED_JSP = "noFundAlloctedJsp";
 	
 	@Autowired
 	InstitutionalInfraActivityPlanService InstitutionalInfraActivityPlanService;
+	
+	@Autowired
+	PlanAllocationService planAllocationService;
 	
 	
 	@RequestMapping(value = "trainingProgressReport", method = RequestMethod.GET)
@@ -1190,12 +1196,18 @@ private List<QprAdminAndFinancialDataActivityDetails> getTotalUnitAndExpIncurred
 
 /*new method ends here*/
 
-@RequestMapping(value="institutionalInfraQuaterlyReport",method = RequestMethod.GET)
-public String getQprgGramPanchayat(@ModelAttribute("QPR_INSTITUTIONALINFRAQUATERLY") QprInstitutionalInfrastructure qprInstitutionalInfrastructure ,Model model,HttpServletResponse httpResponse)
+//@RequestMapping(value="institutionalInfraQuaterlyReport",method = RequestMethod.GET)
+public String getQprgGramPanchayat(@ModelAttribute("QPR_INSTITUTIONALINFRAQUATERLY") QprInstitutionalInfrastructure qprInstitutionalInfrastructure ,Model model,RedirectAttributes redirectAttributes)
 {
 	model.addAttribute("quarterDuration", progressReportService.getQuarterDurations());
 	model.addAttribute("buildingType",institutionalInfraActivityPlanService.fetchTrainingInstituteTypeId());
-	
+	List<StateAllocation> stateAllocationList=planAllocationService.fetchStateAllocationListMaxINSTALLMENTNO();
+	if(stateAllocationList!=null && stateAllocationList.isEmpty()) {
+		redirectAttributes.addFlashAttribute("isPlanAllocationNotExist",Boolean.TRUE);
+		return REDIRECT_PLAN_ALLOCATION;
+	}
+	model.addAttribute("stateAllocationList",stateAllocationList);
+
 	return INSTITUTIONAL_INFRA_REPORT;
 }
 
@@ -1204,9 +1216,16 @@ private String getQprgGramPanchayatActivity(@ModelAttribute("QPR_INSTITUTIONALIN
 	int quatorId =qprInstitutionalInfrastructure.getQuaterId();
 	int institutionalInfraActivivtyId = 0;
 	int instituteInfrsaHrActivityDetailsId = 0;
-	int TrainingInstituteTypeId =qprInstitutionalInfrastructure.getTrainingInstituteTypeId();
+	Integer TrainingInstituteTypeId=null;
+	String workType=null;
+	String trainingInstituteTypeIddetails =qprInstitutionalInfrastructure.getTrainingInstituteTypeId();
+	if(trainingInstituteTypeIddetails!=null && trainingInstituteTypeIddetails.length()>2 ) {
+		String trainingInstituteTypeId[]= trainingInstituteTypeIddetails.split(",");
+		TrainingInstituteTypeId=Integer.parseInt(trainingInstituteTypeId[0]);
+		workType=trainingInstituteTypeId[1];
+	}
 	Set <InstitutionalInfraProgressReportDTO> set =new HashSet<>();
-	List<InstitutionalInfraProgressReportDTO> institutionalInfraProgressReportDTO =institutionalInfraActivityPlanService.fetchInstInfraStateDataForProgressReport(TrainingInstituteTypeId);
+	List<InstitutionalInfraProgressReportDTO> institutionalInfraProgressReportDTO =null;//institutionalInfraActivityPlanService.fetchInstInfraStateDataForProgressReport(TrainingInstituteTypeId,workType);
 	Iterator itr= institutionalInfraProgressReportDTO.iterator(); 
 	while(itr.hasNext())
 	{
@@ -1230,14 +1249,14 @@ private String getQprgGramPanchayatActivity(@ModelAttribute("QPR_INSTITUTIONALIN
 	{
 		for(int i=0 ;i<qprInstitutionalInfra.get(0).getQprInstitutionalInfraDetails().size() ;i++)
 		{
-			if(qprInstitutionalInfrastructure.getTrainingInstituteTypeId()== 2) {
-				List<QprInstitutionalInfraDetails> qprInstitutionalInfraDetailsForType2 = institutionalInfraActivityPlanService.fetchDataOfDetailAccordingToQuator(qprInstitutionalInfrastructure.getTrainingInstituteTypeId(), qprInstitutionalInfra.get(0).getQprInstInfraId());
+			if(TrainingInstituteTypeId== 2) {
+				List<QprInstitutionalInfraDetails> qprInstitutionalInfraDetailsForType2 = institutionalInfraActivityPlanService.fetchDataOfDetailAccordingToQuator(TrainingInstituteTypeId, qprInstitutionalInfra.get(0).getQprInstInfraId());
 				model.addAttribute("QPR_INSTITUTIONAL_INFRA_DETAILS", qprInstitutionalInfraDetailsForType2);
 
 		}
-		else if(qprInstitutionalInfrastructure.getTrainingInstituteTypeId()== 4)
+		else if(TrainingInstituteTypeId== 4)
 		{
-			List<QprInstitutionalInfraDetails> qprInstitInfraDetailsForType4 = institutionalInfraActivityPlanService.fetchDataOfDetailAccordingToQuator(qprInstitutionalInfrastructure.getTrainingInstituteTypeId(), qprInstitutionalInfra.get(0).getQprInstInfraId());
+			List<QprInstitutionalInfraDetails> qprInstitInfraDetailsForType4 = institutionalInfraActivityPlanService.fetchDataOfDetailAccordingToQuator(TrainingInstituteTypeId, qprInstitutionalInfra.get(0).getQprInstInfraId());
 			
 			model.addAttribute("QPR_INSTITUTIONAL_INFRA_DETAILS", qprInstitInfraDetailsForType4);
 		}
@@ -1250,7 +1269,7 @@ private String getQprgGramPanchayatActivity(@ModelAttribute("QPR_INSTITUTIONALIN
 	//Collections.sort(QprPanchayatBhawan.get(0).getQprPanhcayatBhawanDetails(), Comparator.comparing(QprPanhcayatBhawanDetails::getQprPanhcayatBhawanDetailsId));
 	
 		model.addAttribute("INSTITUTIONAL_INFRA_REPORT_DTO", set);
-	
+		model.addAttribute("subcomponentwiseQuaterBalance", progressReportService.fetchSubcomponentwiseQuaterBalance(15, quatorId));
 	//model.addAttribute("GPBhawanStatus", panchayatBhawanService.fetchGPBhawanStatus(TrainingInstituteTypeId));
 	model.addAttribute("panchayatActivity",institutionalInfraActivityPlanService.fetchTrainingInstituteTypeId());
 	model.addAttribute("buildingType",institutionalInfraActivityPlanService.fetchTrainingInstituteTypeId());
@@ -1327,4 +1346,35 @@ private String saveQprInstInfraData(@ModelAttribute("QPR_INSTITUTIONALINFRAQUATE
 	
 	 return REDIRECT_INSTITUTIONAL_INFRA_REPORT;
 }
+
+
+
+@RequestMapping(value="institutionalInfraQuaterlyReport",method = RequestMethod.GET)
+private String institutionalInfraActivityPlanMOPR(Model model,RedirectAttributes redirectAttributes) {
+	List<StateAllocation> stateAllocationList=planAllocationService.fetchStateAllocationListMaxINSTALLMENTNO();
+	if(stateAllocationList!=null && stateAllocationList.isEmpty()) {
+		redirectAttributes.addFlashAttribute("isPlanAllocationNotExist",Boolean.TRUE);
+		return REDIRECT_PLAN_ALLOCATION;
+	}
+	
+	
+	return INSTITUTIONAL_INFRA_REPORT ;
+}
+
+@RequestMapping(value = "fetchquarterDuration", method = RequestMethod.GET)
+private @ResponseBody Map<String, Object> fetchquarterDuration(){
+	Map<String, Object> detailsMaps = new HashMap<>();
+	detailsMaps.put("quarterDuration", progressReportService.getQuarterDurations());
+	return detailsMaps;
+}
+
+
+@RequestMapping(value = "fetchDetailsForInstitutionalInfraProgressReport", method = RequestMethod.GET)
+private @ResponseBody Map<String, Object> fetchDetailsForInstitutionalInfraProgressReport(Integer quterId){
+	Map<String, Object> detailsMaps = new HashMap<>();
+	detailsMaps.put("instInfraStateDataForProgressReport", institutionalInfraActivityPlanService.fetchInstInfraStateDataForProgressReport());
+	return detailsMaps;
+}
+
+
 }

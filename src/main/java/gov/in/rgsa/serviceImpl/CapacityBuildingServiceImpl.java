@@ -67,7 +67,12 @@ public class CapacityBuildingServiceImpl implements CapacityBuildingService{
 		if(userPreference.getUserType().equalsIgnoreCase("M") && CollectionUtils.isEmpty(capacityBuildingActivities)){
 			params.put("userType", 'S');
 			capacityBuildingActivities=commonRepository.findAll("FETCH_CAPACITY_BUILDING", params);
-			return capacityBuildingActivities.get(0);
+			if(capacityBuildingActivities!=null && !capacityBuildingActivities.isEmpty()) {
+				return capacityBuildingActivities.get(0);
+			}
+			else {
+				return null;
+			}
 		}
 		/*if (userPreference.getUserType().equalsIgnoreCase("C") && CollectionUtils.isEmpty(capacityBuildingActivities)) {
 			params.put("userType", 'S');

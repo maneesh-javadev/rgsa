@@ -7,22 +7,59 @@ publicModule.controller("InstitutionalInfraProgressReportController", [ '$scope'
 	$scope.QprInstitutionalInfrastructure.qprInstitutionalInfraDetails=[];
 	$scope.institutionaInfraReportStateData={};
 	
-	fetchDetailsForInstitutionalInfraProgressReport();
+	$scope.institutionalInfraActivityPlanDetailsNBState=[];
+	$scope.institutionalInfraActivityPlanDetailsNBDistrict=[];
+	$scope.institutionalInfraActivityPlanDetailsCFState=[];
+	$scope.institutionalInfraActivityPlanDetailsCFDistrict=[];
 	
-	function fetchDetailsForInstitutionalInfraProgressReport(){
-		InstitutionalInfraProgressReportService.fetchDetailsForInstitutionalInfraProgressReport().then(function(response) {
+	fetchquarterDuration();
+	
+	function fetchquarterDuration(){
+		InstitutionalInfraProgressReportService.fetchquarterDuration().then(function(response) {
 			$scope.quatorDuration = response.data.quarterDuration;
-			$scope.trainingnstituteType =response.data.buildingType;
+			
 		},function(error){
 			alert(error);
 		});
 	}
 	
-	$scope.fetchInstInfraStatus=function(TrainingInstituteTypeId){
-         InstitutionalInfraProgressReportService.fetchInstInfraStatus(TrainingInstituteTypeId).then(function(response){
-        	 $scope.instInfraStatus=response.data;
+	$scope.fetchDetailsForInstitutionalInfraProgressReport=function(quterId){
+         InstitutionalInfraProgressReportService.fetchDetailsForInstitutionalInfraProgressReport(quterId).then(function(response){
+        	 $scope.qprDetailsForInstitutional=response.data.instInfraStateDataForProgressReport;
+        	 load_data();
 		});
 	};
+	
+	
+	function load_data(){
+		$scope.nbsindex=0;
+		$scope.nbdindex=0;
+		$scope.cfsindex=0;
+		$scope.cfdindex=0;
+		
+		
+			for (var i = 0; i < $scope.qprDetailsForInstitutional.length; i++) { 
+				workType=$scope.qprDetailsForInstitutional[i].workType;
+				trainingInstitueTypeId=$scope.qprDetailsForInstitutional[i].institutionalActivityTypeId;
+				
+				if(workType=='N' && trainingInstitueTypeId==2){
+					$scope.institutionalInfraActivityPlanDetailsNBState[$scope.nbsindex]=$scope.qprDetailsForInstitutional[i];
+					$scope.nbsindex++;
+				}else if(workType=='N' && trainingInstitueTypeId==4 ){
+					$scope.institutionalInfraActivityPlanDetailsNBDistrict[$scope.nbdindex]=$scope.qprDetailsForInstitutional[i];
+					$scope.nbdindex++;
+				}else if(workType=='C' && trainingInstitueTypeId==2 ){
+					$scope.institutionalInfraActivityPlanDetailsCFState[$scope.cfsindex]=$scope.qprDetailsForInstitutional[i];
+					$scope.cfsindex++;
+				}else if(workType=='C' && trainingInstitueTypeId==4 ){
+					$scope.institutionalInfraActivityPlanDetailsCFDistrict[$scope.cfdindex]=$scope.qprDetailsForInstitutional[i];
+					$scope.cfdindex++;
+				}
+				
+				
+			}
+	}
+	
 	
 	$scope.resetDetails=function(){
 		$scope.TrainingInstituteTypeId=0;

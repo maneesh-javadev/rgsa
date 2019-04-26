@@ -5,6 +5,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.NamedNativeQueries;
+import javax.persistence.NamedNativeQuery;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
@@ -16,6 +18,11 @@ import javax.persistence.Table;
 	@NamedQuery(name="FETCH_STATE_ALLOCATION_BY_COMP_ID",query="from StateAllocation where componentId=:componentId and installmentNo=:installmentNo and subcomponentId=:subCompnentId and fundsAllocated is not null and fundsAllocated != 0"),
 	@NamedQuery(name="FETCH_STATE_ALLOCATION_BY_COMP_ID_AND_INSTALL_NO",query="from StateAllocation where componentId=:componentId and installmentNo=:installmentNo and fundsAllocated is not null and fundsAllocated != 0")
 	
+})
+
+@NamedNativeQueries({
+	@NamedNativeQuery(name="FETCH_MAX_INSTALLMENT_NO_AND_PLAN_CODE",query="select p.plan_code||','||max(sa.installment_no) from rgsa.plan p left join rgsa.state_allocation sa on p.plan_code=sa.plan_code\r\n" + 
+			"  where state_code=:stateCode and year_id=:yearId and plan_status_id=5 group by p.plan_code"),
 })
 
 

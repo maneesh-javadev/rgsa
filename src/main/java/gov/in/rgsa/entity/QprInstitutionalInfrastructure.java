@@ -61,7 +61,7 @@ public class QprInstitutionalInfrastructure {
 	private Integer quaterId;
 	
 	@Transient
-	private Integer trainingInstituteTypeId;
+	private String trainingInstituteTypeId;
 	
 	@Transient
 	private String path;
@@ -91,15 +91,17 @@ public class QprInstitutionalInfrastructure {
 	private List<QprInstitutionalInfraDetails> qprInstitutionalInfraDetails;
 
 	@Transient
-	private Integer trainingTypeId;
+	private String trainingTypeId;
 
 
 	
-	public Integer getTrainingTypeId() {
+	
+	
+	public String getTrainingTypeId() {
 		return trainingTypeId;
 	}
 
-	public void setTrainingTypeId(Integer trainingTypeId) {
+	public void setTrainingTypeId(String trainingTypeId) {
 		this.trainingTypeId = trainingTypeId;
 	}
 
@@ -199,12 +201,14 @@ public class QprInstitutionalInfrastructure {
 		this.quaterId = quaterId;
 	}
 
-	public Integer getTrainingInstituteTypeId() {
+	public String getTrainingInstituteTypeId() {
 		return trainingInstituteTypeId;
 	}
 
-	public void setTrainingInstituteTypeId(Integer trainingInstituteTypeId) {
+	public void setTrainingInstituteTypeId(String trainingInstituteTypeId) {
 		this.trainingInstituteTypeId = trainingInstituteTypeId;
 	}
+
+	
 	
 }

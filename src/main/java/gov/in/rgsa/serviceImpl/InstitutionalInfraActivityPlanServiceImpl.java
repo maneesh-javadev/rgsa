@@ -251,12 +251,12 @@ public class InstitutionalInfraActivityPlanServiceImpl implements InstitutionalI
 	}
 
 	@Override
-	public List<InstitutionalInfraProgressReportDTO> fetchInstInfraStateDataForProgressReport(Integer trainingInstituteTypeId) {
+	public List<InstitutionalInfraProgressReportDTO> fetchInstInfraStateDataForProgressReport() {
 		Map<String, Object> params=new HashMap<String, Object>();
 		params.put("stateCode", userPreference.getStateCode());
 		params.put("yearId", userPreference.getFinYearId());
 		params.put("userType", 'C');
-		params.put("trainingInstituteTypeId", trainingInstituteTypeId);
+		
 		return commonRepository.findAll("GET_INITIAL_DATA_FOR_INST_INFRA", params);
 	}
 
@@ -290,7 +290,7 @@ public class InstitutionalInfraActivityPlanServiceImpl implements InstitutionalI
 		List<QprInstitutionalInfraDetails> details = qprInstitutionalInfrastructure.getQprInstitutionalInfraDetails();
 		for (QprInstitutionalInfraDetails qprInstitutionalInfraDetails : details) {
 			qprInstitutionalInfraDetails.setQprInstitutionalInfrastructure(qprInstitutionalInfrastructure);
-			qprInstitutionalInfraDetails.setTrainingInstitueTypeId(qprInstitutionalInfrastructure.getTrainingTypeId());
+			//qprInstitutionalInfraDetails.setTrainingInstitueTypeId(qprInstitutionalInfrastructure.getTrainingTypeId());
 		}
 		qprInstitutionalInfrastructure.setQprInstitutionalInfraDetails(details);
 		return qprInstitutionalInfrastructure;
