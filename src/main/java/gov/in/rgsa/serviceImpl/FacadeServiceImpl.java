@@ -6,6 +6,8 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.collections.CollectionUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -54,6 +56,8 @@ public class FacadeServiceImpl implements FacadeService {
 	
 	private static final int PLAN_STATUS_FORWARD_TO_CEC=4;
 
+	static Logger logger = LoggerFactory.getLogger(FacadeServiceImpl.class);
+
 	@Override
 	public UserPreference findUser(FacadeModel model) {
 
@@ -91,10 +95,9 @@ public class FacadeServiceImpl implements FacadeService {
 		parameter.put("userType", user.getUserType());
 		List<StatePlanComponentsFunds> componentsFunds= commonRepository.findAll("STATE_PLAN_FUNDS", parameter);
 		for(StatePlanComponentsFunds obj : componentsFunds) {
-			System.out.print("component id-->"+obj.getComponentsId()+" ");
-			System.out.print("sub component id-->"+obj.getSubcomponentsId()+" ");
-			System.out.print("fund -->"+obj.getAmountProposed()+" ");
-			System.out.println();
+			logger.debug("component id-->"+obj.getComponentsId()+" ");
+			logger.debug("sub component id-->"+obj.getSubcomponentsId()+" ");
+			logger.debug("fund -->"+obj.getAmountProposed()+" ");
 		}
 		/*
 		 * if(componentsFunds!=null && !componentsFunds.isEmpty()){ for
@@ -253,37 +256,36 @@ public class FacadeServiceImpl implements FacadeService {
 	
 	
 	@Override
-	public void populateStateFunds(String componentIds){
-		if(userPreference.getUserType()!=null && userPreference.getUserType().length()>0 && componentIds!=null && componentIds.length()>0)
-		{
-			if(userPreference.getUserType().charAt(0)!='S' && componentIds!=null) {
+	public void populateStateFunds(String componentIds) {
+		if (userPreference.getUserType() != null && userPreference.getUserType().length() > 0 && componentIds != null && componentIds.length() > 0) {
+			if (userPreference.getUserType().charAt(0) != 'S' && componentIds != null) {
 				populateFundbyUserType(componentIds);
-			}else {
+			} else {
 				Map<String, Object> parameter = new HashMap<String, Object>();
-				parameter.put("componentIds",componentIds);
+				parameter.put("componentIds", componentIds);
 				parameter.put("stateCode", userPreference.getStateCode());
 				parameter.put("yearId", userPreference.getFinYearId());
-				
-				System.out.println("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
-				System.out.println("populate value for component id->"+componentIds+" stateCode->"
-				+userPreference.getStateCode()+	"  yearId->"+userPreference.getFinYearId());
-				 boolean status=commonRepository.find("POPULATE_SUMMARY_STATE_FUNDS", parameter);
-				if(status) {
+
+				logger.debug("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
+				logger.debug("populate value for component id->" + componentIds + " stateCode->"
+						+ userPreference.getStateCode() + "  yearId->" + userPreference.getFinYearId());
+				boolean status = commonRepository.find("POPULATE_SUMMARY_STATE_FUNDS", parameter);
+				if (status) {
 					parameter = new HashMap<String, Object>();
 					parameter.put("stateCode", userPreference.getStateCode());
 					parameter.put("yearId", userPreference.getFinYearId());
 					parameter.put("userType", userPreference.getUserType());
-					List<StatePlanComponentsFunds> statePlanComponentsFundsList=commonRepository.findAll("STATE_PLAN_FUNDS", parameter);
-					if(statePlanComponentsFundsList!=null && !statePlanComponentsFundsList.isEmpty()) {
+					List<StatePlanComponentsFunds> statePlanComponentsFundsList = commonRepository.findAll("STATE_PLAN_FUNDS", parameter);
+					if (statePlanComponentsFundsList != null && !statePlanComponentsFundsList.isEmpty()) {
 						userPreference.setStatePlanComponentsFunds(statePlanComponentsFundsList);
-						System.out.println("########################## set user preference  ###########");
+						logger.debug("########################## set user preference  ###########");
 					}
 				}
-			
+
 			}
 		}
-		
-		
+
+
 	}
 	
 	@Override
@@ -297,8 +299,8 @@ public class FacadeServiceImpl implements FacadeService {
 		parameter.put("componentIds",componentIds);
 		parameter.put("stateCode", userPreference.getStateCode());
 		parameter.put("yearId", userPreference.getFinYearId());
-		System.out.println("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
-		System.out.println("populate value for component id->"+componentIds+" stateCode->"
+		logger.debug("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
+		logger.debug("populate value for component id->"+componentIds+" stateCode->"
 		+userPreference.getStateCode()+	"  yearId->"+userPreference.getFinYearId()+" userType->"+userPreference.getUserType());
 		if(userPreference.getUserType()!=null && userPreference.getUserType().length()>0) {
 			if( userPreference.getUserType().charAt(0)=='M') {

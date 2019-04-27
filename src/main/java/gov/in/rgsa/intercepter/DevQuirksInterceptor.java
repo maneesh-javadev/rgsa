@@ -46,6 +46,11 @@ public class DevQuirksInterceptor extends HandlerInterceptorAdapter {
         if( userPreference == null )
             userPreference = new UserPreference();
         if(userPreference.getUserId() == null) {
+            String hitAt = request.getRequestURI();
+            if(hitAt.endsWith("logout.html") || hitAt.endsWith("login.html")) {
+                logger.info("Skipping user injection for path: " + hitAt);
+                return true;
+            }
             letUserLogin();
             checkFillBasicInfo();
         } else {
@@ -72,7 +77,7 @@ public class DevQuirksInterceptor extends HandlerInterceptorAdapter {
         switch (basicInfoService.fillFirstBasicInfo()){
             case "create":
                 logger.info("Automatically filling basic info....");
-                // Fill data
+                // basicInfoService.save(fillBasicInfo());
                 break;
             default:
                 break;

@@ -21,19 +21,18 @@ import gov.in.rgsa.entity.FocusArea;
 import gov.in.rgsa.model.BasicInfoModel;
 import gov.in.rgsa.service.BasicInfoService;
 import gov.in.rgsa.user.preference.UserPreference;
-import gov.in.rgsa.utils.CommonConstant;
 import gov.in.rgsa.utils.Message;
 
 @Controller
 public class BasicInfoController {
 
-	public static final String BAISC_INFO_DETAILS = "basicinfo.add";
-	public static final String MANAGE_BAISC_INFO_DETAILS = "basicinfo.manage";
-	public static final String VIEW_BAISC_INFO_DETAILS = "basicinfo.view";
-	public static final String MODIFY_BAISC_INFO_DETAILS = "basicinfo.update";
-	public static final String REDIRECT_BAISC_INFO = "redirect:managebasicInfoDetails.html";
+	public static final String BASIC_INFO_DETAILS = "basicinfo.add";
+	public static final String MANAGE_BASIC_INFO_DETAILS = "basicinfo.manage";
+	public static final String VIEW_BASIC_INFO_DETAILS = "basicinfo.view";
+	public static final String MODIFY_BASIC_INFO_DETAILS = "basicinfo.update";
+	public static final String REDIRECT_BASIC_INFO = "redirect:managebasicInfoDetails.html";
 
-	public static final String REDIRECT_VIEW_BAISC_INFO_DETAILS = "redirect:basicinfo.view";
+	public static final String REDIRECT_VIEW_BASIC_INFO_DETAILS = "redirect:basicinfo.view";
 	
 	@Autowired
 	private UserPreference userPreference; 
@@ -52,7 +51,7 @@ public class BasicInfoController {
 		model.addAttribute("BESIC_DEFINATION", basicInfoDefination);
 		model.addAttribute("FOCUS_AREAS_LIST", focusAreas);
 		model.addAttribute("isPesaState",isPesaEnabled(userPreference.getStateCode()));
-		return BAISC_INFO_DETAILS;
+		return BASIC_INFO_DETAILS;
 
 	}
 	
@@ -93,7 +92,7 @@ public class BasicInfoController {
 		if(basicInfoModel.getStatus()!=null && basicInfoModel.getStatus().charAt(0)=='F'){
 			re.addFlashAttribute(Message.UPDATE_KEY, Message.FRIZEE_SUCESS);
 		}
-		return REDIRECT_BAISC_INFO;
+		return REDIRECT_BASIC_INFO;
 
 	}
 	
@@ -118,13 +117,13 @@ public class BasicInfoController {
 	private String manageBasicInfoDetails(@ModelAttribute("BASIC_INFO_MODEL") BasicInfoModel basicInfoModel, Model model) {
 		BasicInfoDefination basicInfoDefination = basicInfoService.getBasicInfoDefinationDetails(userPreference.getFinYearId(),"BI");
 		model.addAttribute("BASIC_INFO", basicInfoService.findBesicInfo(userPreference.getFinYearId(), userPreference.getStateCode(),basicInfoDefination.getBasicInfoDefinationId()));
-		return MANAGE_BAISC_INFO_DETAILS;
+		return MANAGE_BASIC_INFO_DETAILS;
 	}
 	
 	@RequestMapping(value = "viewBasicInfoDetails", method = RequestMethod.GET)
 	private String viewBasicInfoDetails(@ModelAttribute("BASIC_INFO_MODEL") BasicInfoModel basicInfoModel, Model model) {
 		addCommonData(basicInfoModel, model);
-		return VIEW_BAISC_INFO_DETAILS;
+		return VIEW_BASIC_INFO_DETAILS;
 	}
 	
 	@RequestMapping(value = "updateBasicInfoDetails", method = RequestMethod.GET)
@@ -136,7 +135,7 @@ public class BasicInfoController {
 		model.addAttribute("FOCUS_AREAS_LIST", focusAreas);
 		model.addAttribute("STATE_CODE", userPreference.getStateCode());
 		addCommonData(basicInfoModel, model);
-		return MODIFY_BAISC_INFO_DETAILS;
+		return MODIFY_BASIC_INFO_DETAILS;
 	}
 	
 	@RequestMapping(value = "updateBasicInfoDetails", method = RequestMethod.POST)
@@ -150,14 +149,14 @@ public class BasicInfoController {
 		}
 		model.addAttribute("STATE_CODE", userPreference.getStateCode());
 		model.addAttribute("isPesaState",isPesaEnabled(userPreference.getStateCode()));
-		return REDIRECT_BAISC_INFO;
+		return REDIRECT_BASIC_INFO;
 		
 	}
 	@RequestMapping(value = "freezeBasicInfoDetails", method = RequestMethod.GET)
 	private String freezeBasicInfoDetails(@ModelAttribute("BASIC_INFO_MODEL") BasicInfoModel basicInfoModel, Model model,@ RequestParameters int basicInfoId,RedirectAttributes re) {
 		basicInfoService.freezeBasicInfoDetails(basicInfoId);
 		re.addFlashAttribute(Message.UPDATE_KEY, Message.UPDATE_SUCCESS);
-		return REDIRECT_VIEW_BAISC_INFO_DETAILS;
+		return REDIRECT_VIEW_BASIC_INFO_DETAILS;
 		
 	}
 	

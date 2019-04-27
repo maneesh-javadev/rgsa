@@ -176,10 +176,11 @@ public class IecServiceImpl implements IecService {
 
 
 	@Override
-	public IecActivity fetchIecDetail(){
+	public IecActivity fetchIecDetail(String userType){
 		Map<String, Object> params = new HashMap<>();
 		params.put("stateCode", userPreference.getStateCode());
-		params.put("userType", userPreference.getUserType());
+		params.put("userType", userType);
+		params.put("yearId", userPreference.getFinYearId());
 		return commonRepository.find(IecActivity.class, params);
 	}
 
@@ -224,10 +225,10 @@ public class IecServiceImpl implements IecService {
 		saveDetailLink(iecFormModel, iecActivity);
 	}
 
-	private void saveForMOPR(IecFormModel iecFormModel){
+	private void saveForMOPRCEC(IecFormModel iecFormModel, String agent){
 		IecActivity stateIecActivity = commonRepository.find(IecActivity.class, iecFormModel.getIecId());
 		if(stateIecActivity == null) {
-			throw new RuntimeException("MOPR can only modify.");
+			throw new RuntimeException(agent + " can only modify.");
 		}
 		IecActivity iecActivity;
 		if(stateIecActivity.getUserType().equalsIgnoreCase(Users.getTypeForState())) {
@@ -285,10 +286,16 @@ public class IecServiceImpl implements IecService {
 
 	@Override
 	public void save(IecFormModel iecFormModel){
+
+		// If iecFormModel has no drop-downs throw
+		if(iecFormModel.getSelectedId().isEmpty())
+			throw new RuntimeException("No Activity has been selected please select some.");
 		if(userPreference.isState())
 			saveForState(iecFormModel);
 		if(userPreference.isMOPR())
-			saveForMOPR(iecFormModel);
+			saveForMOPRCEC(iecFormModel, "MOPR");
+		if(userPreference.isCEC())
+			saveForMOPRCEC(iecFormModel, "CEC");
 	}
 
 	private IecActivity checkFreezeValidity(IecFormModel iecFormModel, boolean atFreeze) {
@@ -305,6 +312,9 @@ public class IecServiceImpl implements IecService {
 		IecActivity iecActivity = checkFreezeValidity(iecFormModel,false);
 		iecActivity.setIsFreez(true);
 		commonRepository.save(iecActivity);
+		if(iecActivity.getIsFreez()) {
+			facadeService.populateStateFunds("11");
+		}
 	}
 
 	@Override

@@ -15,6 +15,7 @@ public class IecFormModel {
 	private String remarks=null;
 	private Boolean isFreeze=false;
 	private String action=SAVE;
+	private Boolean isOwnData=true;
 
 	public Integer getIecId() {
 		return iecId;
@@ -69,7 +70,21 @@ public class IecFormModel {
 		this.action = action;
 	}
 
-	public void invokeOnChanges(IecFormModel previous, Consumer<Integer> adder, Consumer<Integer> deleter){
+    public Boolean getOwnData() {
+        return isOwnData;
+    }
+
+    public void setOwnData(Boolean ownData) {
+        isOwnData = ownData;
+    }
+
+    public void setOwnDataCascade(Boolean ownData) {
+        isOwnData = ownData;
+        if(!isOwnData && isFreeze)
+            isFreeze = false;
+    }
+
+    public void invokeOnChanges(IecFormModel previous, Consumer<Integer> adder, Consumer<Integer> deleter){
 		Set<Integer> added = new HashSet<>(this.selectedId);
 		Set<Integer> deleted = new HashSet<>(previous.getSelectedId());
 		added.removeAll(previous.getSelectedId());

@@ -27,7 +27,7 @@ public interface IecService {
 
 	List<IecActivityDropdown> findAllActivityById();
 
-	IecActivity fetchIecDetail();
+	IecActivity fetchIecDetail(String userType);
 
 	List<IecActivity> fetchApprovedIec();
 
