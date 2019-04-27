@@ -1,112 +1,101 @@
 package gov.in.rgsa.entity;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.Table;
+import javax.persistence.*;
+import java.util.List;
 
 
-	@Entity
-	@Table(name="iec_activity_details", schema = "rgsa")
-	@NamedQueries({
-		@NamedQuery(name = "FIND_IEC_ID", query = "SELECT C FROM IecActivityDropedown C  "),
-		@NamedQuery(name="FETCH_Iec_Activity_BY_ID",query="Delete FROM IecActivityDetails where idMain=:idMain")
-		/*@NamedQuery(name="FETCH_Iec_DETAILS",query="SELECT IAD FROM IecActivityDetails IAD where idMain=:idMain")*/
+@Entity
+@Table(name = "iec_activity_details", schema = "rgsa")
+@NamedQueries({
+        @NamedQuery(name = "FIND_IEC_ID", query = "SELECT C FROM IecActivityDropdown C  "),
+        @NamedQuery(name = "FETCH_Iec_Activity_BY_ID", query = "Delete FROM IecActivityDetails where idMain=:idMain")
+        /*@NamedQuery(name="FETCH_Iec_DETAILS",query="SELECT IAD FROM IecActivityDetails IAD where idMain=:idMain")*/
 })
-                   
-	public class IecActivityDetails {
-		
-		@Id
-		@GeneratedValue(strategy=GenerationType.IDENTITY)
-		@Column(name="id_main",nullable=false)
-		private Integer idMain;
-		
-		@JoinColumn(name="id",referencedColumnName="id")
-		@ManyToOne
-		private IecActivity iecActivity;
-		
-		@Column(name="Total_Amount_Proposed")
-		private Integer TotalAmountProposed;
-		
-		@ManyToOne(fetch=FetchType.LAZY)
-		@JoinColumn(name="iec_id")
-		private IecActivityDropedown iecActivityDropedown;
-		
-		@Column(name="remarks")
-		private String remarks;
-		
-		@Column(name="is_approved")
-		private Boolean isApproved;
 
-		@Column(name="is_active")
-		private Boolean isActive;
-		
-		public Integer getIdMain() {
-			return idMain;
-		}
+public class IecActivityDetails {
 
-		public void setIdMain(Integer idMain) {
-			this.idMain = idMain;
-		}
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "iec_activity_details_id", nullable = false)
+    private Integer idMain;
 
-		public Integer getTotalAmountProposed() {
-			return TotalAmountProposed;
-		}
+    @JoinColumn(name = "iec_activity_id", referencedColumnName = "id")
+    @OneToOne
+    private IecActivity iecActivity;
 
-		public void setTotalAmountProposed(Integer totalAmountProposed) {
-			TotalAmountProposed = totalAmountProposed;
-		}
+    @Column(name = "Total_Amount_Proposed")
+    private Integer TotalAmountProposed;
 
-		public IecActivity getIecActivity() {
-			return iecActivity;
-		}
+    @Column(name = "remarks")
+    private String remarks;
 
-		public void setIecActivity(IecActivity iecActivity) {
-			this.iecActivity = iecActivity;
-		}
+    @Column(name = "is_approved")
+    private Boolean isApproved;
 
-		public IecActivityDropedown getIecActivityDropedown() {
-			return iecActivityDropedown;
-		}
+    @Column(name = "is_active")
+    private Boolean isActive;
 
-		public void setIecActivityDropedown(IecActivityDropedown iecActivityDropedown) {
-			this.iecActivityDropedown = iecActivityDropedown;
-		}
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "iecActivityDetails")
+    private List<IecDetailsDropdown> iecDetailsDropdownSet;
 
-		public String getRemarks() {
-			return remarks;
-		}
+    public Integer getIdMain() {
+        return idMain;
+    }
 
-		public void setRemarks(String remarks) {
-			this.remarks = remarks;
-		}
+    public void setIdMain(Integer idMain) {
+        this.idMain = idMain;
+    }
 
-		public Boolean getIsApproved() {
-			return isApproved;
-		}
+    public Integer getTotalAmountProposed() {
+        return TotalAmountProposed;
+    }
 
-		public void setIsApproved(Boolean isApproved) {
-			this.isApproved = isApproved;
-		}
+    public void setTotalAmountProposed(Integer totalAmountProposed) {
+        TotalAmountProposed = totalAmountProposed;
+    }
 
-		public Boolean getIsActive() {
-			return isActive;
-		}
+    public IecActivity getIecActivity() {
+        return iecActivity;
+    }
 
-		public void setIsActive(Boolean isActive) {
-			this.isActive = isActive;
-		}
-		
-		
-		
-	}
+    public void setIecActivity(IecActivity iecActivity) {
+        this.iecActivity = iecActivity;
+    }
+
+    public String getRemarks() {
+        return remarks;
+    }
+
+    public void setRemarks(String remarks) {
+        this.remarks = remarks;
+    }
+
+    public Boolean getIsApproved() {
+        return isApproved;
+    }
+
+    public void setIsApproved(Boolean isApproved) {
+        this.isApproved = isApproved;
+    }
+
+    public Boolean getIsActive() {
+        return isActive;
+    }
+
+    public void setIsActive(Boolean isActive) {
+        this.isActive = isActive;
+    }
+
+
+    public List<IecDetailsDropdown> getIecDetailsDropdownSet() {
+        return iecDetailsDropdownSet;
+    }
+
+    public void setIecDetailsDropdownSet(List<IecDetailsDropdown> iecDetailsDropdownSet) {
+        this.iecDetailsDropdownSet = iecDetailsDropdownSet;
+    }
+
+}
 
 	
 
