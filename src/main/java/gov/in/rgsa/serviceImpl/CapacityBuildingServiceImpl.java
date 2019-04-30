@@ -152,17 +152,19 @@ private void saveCapacityBuildingActivityAndDetailsForStateAndCec(CapacityBuildi
 					}
 				}
 			);
-		List<CapacityBuildingActivityDetails> CapacityBuildingActivityDetails2  = new ArrayList<>();
-		for (CapacityBuildingActivityDetails capacityBuildingActivityDetails3 : capacityBuildingActivityDetails) {
-			if(capacityBuildingActivityDetails3.getFunds() != null && capacityBuildingActivityDetails3.getFunds() != 0){
-				if(capacityBuildingActivityDetails3.getIsApproved() == null)
-					capacityBuildingActivityDetails3.setIsApproved(false);
-				CapacityBuildingActivityDetails2.add(capacityBuildingActivityDetails3);
-				
-			}
-		}
+		/*
+		 * List<CapacityBuildingActivityDetails> CapacityBuildingActivityDetails2 = new
+		 * ArrayList<>(); for (CapacityBuildingActivityDetails
+		 * capacityBuildingActivityDetails3 : capacityBuildingActivityDetails) {
+		 * if(capacityBuildingActivityDetails3.getFunds() != null){
+		 * if(capacityBuildingActivityDetails3.getIsApproved() == null)
+		 * capacityBuildingActivityDetails3.setIsApproved(false);
+		 * CapacityBuildingActivityDetails2.add(capacityBuildingActivityDetails3);
+		 * 
+		 * } }
+		 */
 		
-		capacityBuildingActivity.setCapacityBuildingActivityDetails(CapacityBuildingActivityDetails2);
+		capacityBuildingActivity.setCapacityBuildingActivityDetails(capacityBuildingActivityDetails);
 		
 		if(capacityBuildingActivity.getCbActivityId() == null || capacityBuildingActivity.getCbActivityId() == 0 ) {
 			commonRepository.save(capacityBuildingActivity);

@@ -86,8 +86,6 @@ public interface ProgressReportService {
 	public QprAdminAndFinancialDataActivity fetchQprAdminFin(int activityId, int quarterId);
 
 	public void saveAdminDataFinQuaterly(QprAdminAndFinancialDataActivity qprAdminAndFinancialDataActivity);
-	
-	public List<StateAllocation> fetchStateAllocationData(int componentId, int subCompnentId, int installmentNo);
 
 	public Boolean saveQprWiseFundData(int stateCode,int yearId,int quatorId,int componentId);
 
@@ -97,7 +95,9 @@ public interface ProgressReportService {
 
 	public List<QuaterWiseFund> fetchTotalQuaterWiseFundData(Integer stateCode, int componentId);
 
-	public List<StateAllocation> fetchStateAllocationDataByCompIdandInstallNo(int componentId, int installmentNo);
+	public List<StateAllocation> fetchStateAllocationData(int componentId, int installmentNo);
+	
+	public List<StateAllocation> fetchStateAllocationData(int componentId, int subComponentId ,int installmentNo);
 
 	public List<QprCbActivityDetails> getQprTrainActBasedOnActIdAndQtrId(Integer cbActivityId, int quarterId);
 
