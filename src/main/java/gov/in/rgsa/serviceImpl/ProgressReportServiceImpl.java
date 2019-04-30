@@ -201,36 +201,25 @@ public class ProgressReportServiceImpl implements ProgressReportService{
 
 	@Override
 	public void saveAdditionalFacultyProgress(AdditionalFacultyProgress additionalFacultyProgress) {
+		List<AdditionalFacultyProgressDetail> additionalFacultyProgressDetail = additionalFacultyProgress.getAdditionalFacultyProgressDetail();
+		additionalFacultyProgress.setLastUpdatedBy(userPreference.getUserId());
+		additionalFacultyProgress.setCreatedBy(userPreference.getUserId());
+		additionalFacultyProgress.setQuarterDuration(additionalFacultyProgress.getQuarterDuration());
+		
+		for (AdditionalFacultyProgressDetail Details : additionalFacultyProgressDetail) {
+			if(Details != null){
+				Details.setAdditionalFacultyProgress(additionalFacultyProgress);
+			}
+		}
+		
 		if(additionalFacultyProgress.getQprInstInfraHrId() == null) {
-			List<AdditionalFacultyProgressDetail> additionalFacultyProgressDetail = additionalFacultyProgress.getAdditionalFacultyProgressDetail();
-				
-			additionalFacultyProgress.setLastUpdatedBy(userPreference.getUserId());
-			additionalFacultyProgress.setCreatedBy(userPreference.getUserId());
-			additionalFacultyProgress.setQuarterDuration(additionalFacultyProgress.getQuarterDuration());
-			
-			for (AdditionalFacultyProgressDetail Details : additionalFacultyProgressDetail) {
-				if(Details != null)
-				{
-									Details.setAdditionalFacultyProgress(additionalFacultyProgress);
-									
-			    }
-				}	
 			commonRepository.save(additionalFacultyProgress);
-			}
-			else
-			{
-				List<AdditionalFacultyProgressDetail> additionalFacultyProgressDetail = additionalFacultyProgress.getAdditionalFacultyProgressDetail();
-				additionalFacultyProgress.setQuarterDuration(additionalFacultyProgress.getQuarterDuration());
-				for (AdditionalFacultyProgressDetail Details : additionalFacultyProgressDetail) {
-					if(Details != null)
-					{
-										Details.setAdditionalFacultyProgress(additionalFacultyProgress);
-					 }
-					}	
-				commonRepository.update(additionalFacultyProgress);
-			}
+		}else{
+			commonRepository.update(additionalFacultyProgress);
+		}
 		
-		
+		/* this method is to insert and update record in quater_wise_fund table*/
+		saveQprWiseFundData(userPreference.getStateCode(),userPreference.getFinYearId(),additionalFacultyProgress.getQuarterDuration().getQtrId(),14);
 	}
 
 	/*@Override
@@ -590,15 +579,6 @@ public class ProgressReportServiceImpl implements ProgressReportService{
 		/* this method is to insert and update record in quater_wise_fund table*/
 		saveQprWiseFundData(userPreference.getStateCode(),userPreference.getFinYearId(),qprAdminAndFinancialDataActivity.getQuarterDuration().getQtrId(),8);
 }
-	
-	@Override
-	public List<StateAllocation> fetchStateAllocationData(int componentId,int subCompnentId,int installmentNo) {
-		Map<String, Object> params=new HashMap<>();
-		params.put("componentId", componentId);
-		params.put("subCompnentId", subCompnentId);
-		params.put("installmentNo", installmentNo);
-		return commonRepository.findAll("FETCH_STATE_ALLOCATION_BY_COMP_ID", params);
-	}
 
 	@Override
 	public Boolean saveQprWiseFundData(int stateCode, int yearId, int quatorId, int componentId) {
@@ -635,15 +615,24 @@ public class ProgressReportServiceImpl implements ProgressReportService{
 		return commonRepository.findAll("FETCH_ALL_QUATOR_WISE_FUND", params);
 	}
 
-	@Override
-	public List<StateAllocation> fetchStateAllocationDataByCompIdandInstallNo(int componentId, int installmentNo) {
+	
+	public List<StateAllocation> fetchStateAllocationData(int componentId, int installmentNo) {
 		Map<String, Object> params=new HashMap<>();
 		params.put("componentId", componentId);
 		params.put("installmentNo", installmentNo);
 		return commonRepository.findAll("FETCH_STATE_ALLOCATION_BY_COMP_ID_AND_INSTALL_NO", params);
 	}
+	
 
-	@Override
+	public List<StateAllocation> fetchStateAllocationData(int componentId, int subComponentId ,int installmentNo) {
+		Map<String, Object> params=new HashMap<>();
+		params.put("componentId", componentId);
+		params.put("installmentNo", installmentNo);
+		params.put("subComponentId", subComponentId);
+		return commonRepository.findAll("FETCH_STATE_ALLOCATION_BY_COMP_ID_AND_SUBCOMPID_AND_INSTALL_NO", params);
+	}
+
+
 	public List<QprCbActivityDetails> getQprTrainActBasedOnActIdAndQtrId(Integer cbActivityId, int quarterId) {
 		Map<String, Object> params = new HashMap();
 		params.put("cbActivityId", cbActivityId);
