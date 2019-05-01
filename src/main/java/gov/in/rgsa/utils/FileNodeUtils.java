@@ -8,10 +8,15 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
+import javax.servlet.ServletOutputStream;
+import javax.servlet.http.HttpServletResponse;
+
+import org.springframework.util.FileCopyUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import gov.in.rgsa.entity.FileNode;
 import gov.in.rgsa.entity.FileNode.STATUS;
+import gov.in.rgsa.model.multipart.FileNodeMultipart;
 
 public class FileNodeUtils {
 	public static enum UPLOAD_STATUS{
@@ -137,6 +142,45 @@ public class FileNodeUtils {
 	
 	public static String readFile(String filePath, String fileName) throws IOException {
 		return new String(Files.readAllBytes(Paths.get(filePath, fileName)));
+	}
+	
+	public static void streamFileNode(FileNode fileNode, HttpServletResponse response) {
+		streamFileNode(fileNode, response, true);
+	}
+	
+	public static void streamFileNode(FileNode fileNode, HttpServletResponse response, boolean inline) {		
+		if(fileNode == null) {
+			setTextResponse("No file has been uploaded", response);
+			return;
+		}
+		MultipartFile uploadedFile = new FileNodeMultipart(fileNode);
+		response.setContentType(uploadedFile.getContentType());
+		String disposition = String.format("%s; filename=\"%s\"", inline ? "inline" : "attachment", uploadedFile.getOriginalFilename());
+		response.setHeader("Content-Disposition", disposition);
+		response.setContentLength((int) uploadedFile.getSize());
+		
+		//Copy bytes from source to destination(outputstream in this example), closes both streams.
+		try {
+			FileCopyUtils.copy(uploadedFile.getInputStream(), response.getOutputStream());
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			setTextResponse("Some error occured while reading file.", response);
+		}
+	}
+	
+	private static void setTextResponse(String content, HttpServletResponse response) {
+		response.setContentType("text/plain;charset=UTF-8");
+		response.setContentLength(content.length());
+		response.setHeader("Content-Disposition", "inline");
+        ServletOutputStream sout;
+		try {
+			sout = response.getOutputStream();
+			sout.print(content);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}        
 	}
 
 }

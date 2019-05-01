@@ -1,7 +1,5 @@
 package gov.in.rgsa.entity;
 
-import java.util.List;
-
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -10,12 +8,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
-
-import org.hibernate.annotations.LazyCollection;
-import org.hibernate.annotations.LazyCollectionOption;
 
 /**
  * @author Mohammad Ayaz 31/12/2018
@@ -47,20 +41,16 @@ public class QprCbActivityDetails {
 	@Column(name="expenditure_incurred")
 	private Integer expenditureIncurred;
 	
-	@OneToMany(mappedBy="cbActivityDetails",cascade=CascadeType.ALL)
-	@LazyCollection(LazyCollectionOption.FALSE)
-	private List<QprTnaTrgEvaluation> qprTnaTrgEvaluation;
-	
-	@OneToMany(mappedBy="cbActivityDetails",cascade=CascadeType.ALL)
-	@LazyCollection(LazyCollectionOption.FALSE)
-	private List<QprTrgMaterialAndModule> qprTrgMaterialAndModule;
+	@OneToOne(mappedBy="cbActivityDetails",cascade=CascadeType.ALL)
+	private QprTnaTrgEvaluation qprTnaTrgEvaluation;
 	
 	@OneToOne(mappedBy="cbActivityDetails",cascade=CascadeType.ALL)
-	@LazyCollection(LazyCollectionOption.FALSE)
+	private QprTrgMaterialAndModule qprTrgMaterialAndModule;
+	
+	@OneToOne(mappedBy="cbActivityDetails",cascade=CascadeType.ALL)
 	private QprHandholdingGpdp qprHandholdingGpdp;
 	
 	@OneToOne(mappedBy="cbActivityDetails",cascade=CascadeType.ALL)
-	@LazyCollection(LazyCollectionOption.FALSE)
 	private QprPanchayatLearningCenter qprPanchayatLearningCenter;
 
 	public Integer getQprCbActivityDetailsId() {
@@ -111,19 +101,19 @@ public class QprCbActivityDetails {
 		this.expenditureIncurred = expenditureIncurred;
 	}
 
-	public List<QprTnaTrgEvaluation> getQprTnaTrgEvaluation() {
+	public QprTnaTrgEvaluation getQprTnaTrgEvaluation() {
 		return qprTnaTrgEvaluation;
 	}
 
-	public void setQprTnaTrgEvaluation(List<QprTnaTrgEvaluation> qprTnaTrgEvaluation) {
+	public void setQprTnaTrgEvaluation(QprTnaTrgEvaluation qprTnaTrgEvaluation) {
 		this.qprTnaTrgEvaluation = qprTnaTrgEvaluation;
 	}
 
-	public List<QprTrgMaterialAndModule> getQprTrgMaterialAndModule() {
+	public QprTrgMaterialAndModule getQprTrgMaterialAndModule() {
 		return qprTrgMaterialAndModule;
 	}
 
-	public void setQprTrgMaterialAndModule(List<QprTrgMaterialAndModule> qprTrgMaterialAndModule) {
+	public void setQprTrgMaterialAndModule(QprTrgMaterialAndModule qprTrgMaterialAndModule) {
 		this.qprTrgMaterialAndModule = qprTrgMaterialAndModule;
 	}
 

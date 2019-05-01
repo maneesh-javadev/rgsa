@@ -10,11 +10,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import gov.in.rgsa.dao.CommonRepository;
+import gov.in.rgsa.entity.AdditionalFacultyProgress;
+import gov.in.rgsa.entity.AdditionalFacultyProgressDetail;
 import gov.in.rgsa.entity.District;
 import gov.in.rgsa.entity.Domains;
 import gov.in.rgsa.entity.InstitueInfraHrActivity;
 import gov.in.rgsa.entity.InstitueInfraHrActivityDetails;
 import gov.in.rgsa.entity.InstituteInfraHrActivityType;
+import gov.in.rgsa.entity.PmuProgress;
+import gov.in.rgsa.entity.PmuProgressDetails;
 import gov.in.rgsa.entity.TIWiseProposedDomainExperts;
 import gov.in.rgsa.entity.TrainingInstituteCurrentStatusDetails;
 import gov.in.rgsa.model.AdditionalFactultyAndMaintModel;
@@ -184,9 +188,7 @@ public class AdditionalFacultyAndMainServiceImpl implements AdditionalFacultyAnd
 		}else{
 			params.put("userType", userPreference.getUserType());
 		}
-		
 		activity = commonRepository.findAll("FETCH_INSTITUTE_HR_ACTIVITY", params);
-		
 		if((userPreference.getUserType().equalsIgnoreCase("M")) && CollectionUtils.isEmpty(activity)){
 			params.put("userType", "S");
 			activity = commonRepository.findAll("FETCH_INSTITUTE_HR_ACTIVITY", params);
@@ -231,7 +233,7 @@ public class AdditionalFacultyAndMainServiceImpl implements AdditionalFacultyAnd
 		Map<String, Object> params=new HashMap<>();
 		params.put("stateCode", userPreference.getStateCode());
 		params.put("yearId", userPreference.getFinYearId());
-		params.put("userType", userPreference.getUserType());
+		params.put("userType", "C");
 		return commonRepository.findAll("FETCH_INSTITUTE_APPROVED_HR_ACTIVITY", params);
 	}
 	@Override
@@ -246,6 +248,47 @@ public class AdditionalFacultyAndMainServiceImpl implements AdditionalFacultyAnd
 		Map<String, Object> params=new HashMap<>();
 		params.put("instituteInfraHrActivityId", instituteInfraHrActivityId);
 		return commonRepository.findAll("FETCH_DOMAIN_EXPERT_TI_WISE_ACT_ID", params);
+	}
+
+	@Override
+	public List<AdditionalFacultyProgressDetail> getAdditionalFacultyProgressBasedOnActIdAndQtrId(
+			Integer instituteInfraHrActivityId, int quarterId) {
+		List<AdditionalFacultyProgress> additionalFacultyProgress = getQprHrSupportActivity(instituteInfraHrActivityId, quarterId);
+		List<AdditionalFacultyProgressDetail> additionalFacultyProgressDetail=new ArrayList<>();
+		if(CollectionUtils.isNotEmpty(additionalFacultyProgress)){
+			for (AdditionalFacultyProgress additionalFaculty_Progress : additionalFacultyProgress) {
+				additionalFacultyProgressDetail.addAll(additionalFaculty_Progress.getAdditionalFacultyProgressDetail());
+			}
+			return additionalFacultyProgressDetail;
+		}else{
+			return null;
+		}
+	}
+	
+	public List<AdditionalFacultyProgress> getQprHrSupportActivity(Integer instituteInfraHrActivityId , int quarterId){
+		Map<String, Object> params = new HashMap<String,Object>();
+		params.put("instituteInfraHrActivityId", instituteInfraHrActivityId);
+		params.put("quarterId", quarterId);	
+		return commonRepository.findAll("FETCH_HR_SUPPORT_ACT_QTR_ID_AND_ACT_ID", params);
+	}
+
+	@Override
+	public Map<? extends String, ? extends Object> getTotalAddReqBesidesCurrentQtr(Integer instituteInfraHrActivityId,
+			int quarterId) {
+		Map<String, Object> params = new HashMap<String,Object>();
+		List<AdditionalFacultyProgress> additionalFacultyProgress = getQprHrSupportActivity(instituteInfraHrActivityId, quarterId);
+		int total_sprc_additional_req=0,total_dprc_additional_req=0;
+		for (AdditionalFacultyProgress additional_Faculty_Progress : additionalFacultyProgress) {
+			if(additional_Faculty_Progress.getAdditionalReqSprc() != null) {
+				total_sprc_additional_req += additional_Faculty_Progress.getAdditionalReqSprc();
+			}
+			if(additional_Faculty_Progress.getAdditionalReqDprc() != null) {
+				total_dprc_additional_req += additional_Faculty_Progress.getAdditionalReqDprc();
+			}
+		}
+		params.put("total_add_req_sprc", total_sprc_additional_req);
+		params.put("total_add_req_dprc", total_dprc_additional_req);
+		return params;
 	}
 
 }

@@ -694,7 +694,7 @@
 		<put-attribute name="title"
 			value="Quarterly Progress Report" />
 		<put-attribute name="body"
-			value="/WEB-INF/jsp/progressReport/innovativeActivityQpr.jsp" />
+			value="/WEB-INF/jsp/progressReport/innovativeActivityQprReport.jsp" />
 	</definition>
 	
 	<definition name="approvedadminDataFinQuaterlyGet"

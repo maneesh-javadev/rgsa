@@ -1,7 +1,9 @@
 package gov.in.rgsa.entity;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -35,15 +37,10 @@ public class QprTnaTrgEvaluation {
 	@ManyToOne
 	@JoinColumn(name="trg_subjects")
 	private Subjects trngSubject;
-	
-	@Column(name="file_name")
-	private String fileName;
-	
-	@Column(name="file_content_type")
-	private String fileContentType;
-	
-	@Column(name="file_location")
-	private String fileLocation;
+
+	@OneToOne(fetch=FetchType.EAGER,cascade=CascadeType.ALL)
+	@JoinColumn(name="file_node_id")
+	private FileNode fileNode;
 	
 	@Transient
 	private MultipartFile file;
@@ -88,31 +85,12 @@ public class QprTnaTrgEvaluation {
 		this.trngSubject = trngSubject;
 	}
 
-	public String getFileName() {
-		return fileName;
+	public FileNode getFileNode() {
+		return fileNode;
 	}
 
-	public void setFileName(String fileName) {
-		this.fileName = fileName;
+	public void setFileNode(FileNode fileNode) {
+		this.fileNode = fileNode;
 	}
-
-	public String getFileContentType() {
-		return fileContentType;
-	}
-
-	public void setFileContentType(String fileContentType) {
-		this.fileContentType = fileContentType;
-	}
-
-	public String getFileLocation() {
-		return fileLocation;
-	}
-
-	public void setFileLocation(String fileLocation) {
-		this.fileLocation = fileLocation;
-	}
-
-	
-	
 	
 }

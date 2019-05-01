@@ -1,27 +1,10 @@
 package gov.in.rgsa.service;
 
 import java.util.List;
-import gov.in.rgsa.entity.QprIncomeEnhancement;
-import gov.in.rgsa.entity.QprInnovativeActivity;
-import gov.in.rgsa.entity.QprInstitutionalInfrastructure;
-import gov.in.rgsa.dto.SubcomponentwiseQuaterBalance;
-import gov.in.rgsa.entity.AdditionalFacultyProgress;
-import gov.in.rgsa.entity.AdministrativeTechnicalProgress;
-import gov.in.rgsa.entity.FileNode;
-import gov.in.rgsa.entity.IecQuater;
-import gov.in.rgsa.entity.InstInfraStatus;
-import gov.in.rgsa.entity.InstitutionalInfraActivityPlanProgress;
-import gov.in.rgsa.entity.PmuProgress;
-import gov.in.rgsa.entity.QprAdminAndFinancialDataActivity;
-import gov.in.rgsa.entity.QprCbActivity;
-import gov.in.rgsa.entity.QprEnablement;
-import gov.in.rgsa.entity.QprEnablementDetails;
-import gov.in.rgsa.entity.QuarterDuration;
-import gov.in.rgsa.entity.QuaterWiseFund;
-import gov.in.rgsa.entity.StateAllocation;
-import gov.in.rgsa.entity.TrainingProgressReport;
-import gov.in.rgsa.model.multipart.FileNodeMultipart;
 
+import gov.in.rgsa.dto.SubcomponentwiseQuaterBalance;
+import gov.in.rgsa.entity.*;
+import gov.in.rgsa.model.multipart.FileNodeMultipart;
 
 public interface ProgressReportService {
 
@@ -65,7 +48,7 @@ public interface ProgressReportService {
 
 	public void saveQprIncomeEnhancement(QprIncomeEnhancement qprIncomeEnhancement);
 	
-	public QprIncomeEnhancement fetchQprIncmEnhncmnt(int quarterId);
+	public QprIncomeEnhancement fetchQprIncmEnhncmnt(int incomeEnhancementId, int quarterId);
 
 	public void FrzUnfrzIncomeEnhancmnt(QprIncomeEnhancement qprIncomeEnhancement);
 
@@ -77,7 +60,7 @@ public interface ProgressReportService {
 
 	public void saveEnablement(QprEnablement qprEnablement);
 	
-	public QprCbActivity fetchQprCapcityBuilding(Integer showQqrtrId);
+	public QprCbActivity fetchQprCapcityBuilding(Integer cbActivityId,Integer showQqrtrId);
 
 	public void saveQprCbActivity(QprCbActivity qprCbActivity);
 
@@ -90,8 +73,6 @@ public interface ProgressReportService {
 	public QprAdminAndFinancialDataActivity fetchQprAdminFin(int activityId, int quarterId);
 
 	public void saveAdminDataFinQuaterly(QprAdminAndFinancialDataActivity qprAdminAndFinancialDataActivity);
-	
-	public List<StateAllocation> fetchStateAllocationData(int componentId, int subCompnentId, int installmentNo);
 
 	public Boolean saveQprWiseFundData(int stateCode,int yearId,int quatorId,int componentId);
 
@@ -101,14 +82,20 @@ public interface ProgressReportService {
 
 	public List<QuaterWiseFund> fetchTotalQuaterWiseFundData(Integer stateCode, int componentId);
 
+	public List<StateAllocation> fetchStateAllocationData(int componentId, int installmentNo);
+	
+	public List<StateAllocation> fetchStateAllocationData(int componentId, int subComponentId ,int installmentNo);
+
+	public List<QprCbActivityDetails> getQprTrainActBasedOnActIdAndQtrId(Integer cbActivityId, int quarterId);
+
 	public List<StateAllocation> fetchStateAllocationDataByCompIdandInstallNo(int componentId, int installmentNo);
 	
-	public List<SubcomponentwiseQuaterBalance> fetchSubcomponentwiseQuaterBalance(Integer componentId,Integer quaterId);
+	public List<SubcomponentwiseQuaterBalance> fetchSubcomponentwiseQuaterBalance(Integer componentId, Integer quaterId);
 	
 	public void saveInstitutionalInfraProgressReport(QprInstitutionalInfrastructure qprInstitutionalInfrastructure);
 	
 	public FileNode loadFileNode(FileNode fileNode);
-	
-	public FileNodeMultipart getUploadedFile(Integer fileNodeId);
+
+	FileNode getUploadedFile(Integer fileNodeId);
 
 }

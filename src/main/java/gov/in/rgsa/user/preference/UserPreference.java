@@ -2,6 +2,7 @@ package gov.in.rgsa.user.preference;
 
 import java.util.List;
 
+import gov.in.rgsa.utils.PlanUtil;
 import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.stereotype.Component;
@@ -215,8 +216,20 @@ public class UserPreference {
 		this.planStatus = planStatus;
 	}
 
-	
-	
-	
+	public boolean isState(){
+		return getUserType().equalsIgnoreCase("S");
+	}
+
+	public boolean isMOPR(){
+		return getUserType().equalsIgnoreCase("M");
+	}
+
+	public boolean isCEC(){
+		return getUserType().equalsIgnoreCase("C");
+	}
+
+	public PlanUtil getPlanStatusEnum() {
+		return new PlanUtil(getPlanStatus());
+	}
 	
 }

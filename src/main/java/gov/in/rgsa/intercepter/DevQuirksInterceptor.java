@@ -3,6 +3,7 @@ package gov.in.rgsa.intercepter;
 import gov.in.rgsa.dao.CommonRepository;
 import gov.in.rgsa.entity.Users;
 import gov.in.rgsa.model.FacadeModel;
+import gov.in.rgsa.service.BasicInfoService;
 import gov.in.rgsa.service.FacadeService;
 import gov.in.rgsa.user.preference.UserPreference;
 import org.slf4j.Logger;
@@ -35,6 +36,9 @@ public class DevQuirksInterceptor extends HandlerInterceptorAdapter {
     @Autowired
     private FacadeService facadeService;
 
+    @Autowired
+    BasicInfoService basicInfoService;
+
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         if(!devUserAutoInject || injectedUser == null)
@@ -42,22 +46,42 @@ public class DevQuirksInterceptor extends HandlerInterceptorAdapter {
         if( userPreference == null )
             userPreference = new UserPreference();
         if(userPreference.getUserId() == null) {
-            logger.info("User  is null, need to set something here.");
-            Map<String, Object> userMap = new HashMap<>(2);
-            userMap.put("userName", injectedUser);
-            Users user = commonRepository.find(Users.class, userMap);
-            FacadeModel facadeModel = new FacadeModel();
-            facadeModel.setLoginId(user.getUserName());
-            facadeModel.setPassword(user.getPassword());
-            UserPreference facadeServiceUser =facadeService.findUser(facadeModel);
-            setPreference(facadeServiceUser);
-            logger.info("Using account: " + userPreference.getUserName());
-
+            String hitAt = request.getRequestURI();
+            if(hitAt.endsWith("logout.html") || hitAt.endsWith("login.html")) {
+                logger.info("Skipping user injection for path: " + hitAt);
+                return true;
+            }
+            letUserLogin();
+            checkFillBasicInfo();
         } else {
             logger.info(String.format("UserPreference => Type: %s, Id: %s, Year: %s", userPreference.getUserType(), userPreference.getUserId(), userPreference.getFinYear()) );
         }
         return true;
 
+    }
+
+    private void letUserLogin(){
+        logger.info("User  is null, need to set something here.");
+        Map<String, Object> userMap = new HashMap<>(2);
+        userMap.put("userName", injectedUser);
+        Users user = commonRepository.find(Users.class, userMap);
+        FacadeModel facadeModel = new FacadeModel();
+        facadeModel.setLoginId(user.getUserName());
+        facadeModel.setPassword(user.getPassword());
+        UserPreference facadeServiceUser =facadeService.findUser(facadeModel);
+        setPreference(facadeServiceUser);
+        logger.info("Using account: " + userPreference.getUserName());
+    }
+
+    private void checkFillBasicInfo(){
+        switch (basicInfoService.fillFirstBasicInfo()){
+            case "create":
+                logger.info("Automatically filling basic info....");
+                // basicInfoService.save(fillBasicInfo());
+                break;
+            default:
+                break;
+        }
     }
 
 
