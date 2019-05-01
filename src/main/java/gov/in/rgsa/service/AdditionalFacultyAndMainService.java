@@ -1,7 +1,9 @@
 package gov.in.rgsa.service;
 
 import java.util.List;
+import java.util.Map;
 
+import gov.in.rgsa.entity.AdditionalFacultyProgressDetail;
 import gov.in.rgsa.entity.District;
 import gov.in.rgsa.entity.Domains;
 import gov.in.rgsa.entity.InstitueInfraHrActivity;
@@ -34,6 +36,12 @@ public interface AdditionalFacultyAndMainService {
 	public List<InstitueInfraHrActivityDetails> fetchInstituteHrActivityApprovedDetails(Integer instituteInfraHrActivityId);
 
 	public List<TIWiseProposedDomainExperts> fetchTiWiseDomainExpertById(Integer instituteInfraHrActivityId);
+
+	public List<AdditionalFacultyProgressDetail> getAdditionalFacultyProgressBasedOnActIdAndQtrId(
+			Integer instituteInfraHrActivityId, int quarterId);
+
+	public Map<? extends String, ? extends Object> getTotalAddReqBesidesCurrentQtr(Integer instituteInfraHrActivityId,
+			int quarterId);
 
 
 }

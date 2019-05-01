@@ -24,7 +24,8 @@ import org.hibernate.annotations.UpdateTimestamp;
 @Entity
 @Table(name="qpr_inst_infra_hr", schema="rgsa")
 @NamedQueries ({@NamedQuery(name="FETCH_Additional_Faculty_progress_report_DETAILS", query="Select AFP from AdditionalFacultyProgress AFP RIGHT OUTER JOIN FETCH AFP.additionalFacultyProgressDetail AFPD where AFP.institueInfraHrActivity.instituteInfraHrActivityId=:instituteInfraHrActivityId AND AFP.quarterDuration.qtrId=:qtrId order by AFPD.qprInstInfraHrDetailsId asc"),
-@NamedQuery(name="FETCH_Additional_Facult_progress_report_BASED_ID", query="Select AFP from AdditionalFacultyProgress AFP  where AFP.institueInfraHrActivity.instituteInfraHrActivityId=:instituteInfraHrActivityId")
+@NamedQuery(name="FETCH_Additional_Facult_progress_report_BASED_ID", query="Select AFP from AdditionalFacultyProgress AFP  where AFP.institueInfraHrActivity.instituteInfraHrActivityId=:instituteInfraHrActivityId"),
+@NamedQuery(name="FETCH_HR_SUPPORT_ACT_QTR_ID_AND_ACT_ID",query="from AdditionalFacultyProgress where institueInfraHrActivity.instituteInfraHrActivityId=:instituteInfraHrActivityId and quarterDuration.qtrId !=:quarterId")
 })
 public class AdditionalFacultyProgress {
 
@@ -47,9 +48,11 @@ public class AdditionalFacultyProgress {
 	@OneToMany(cascade=CascadeType.ALL,mappedBy="additionalFacultyProgress",fetch=FetchType.EAGER)
 	private List<AdditionalFacultyProgressDetail> additionalFacultyProgressDetail;
 
+	@Column(name="additional_req_sprc")
+	private Integer additionalReqSprc;
 	
-	@Column(name="additional_requirement")
-	private Integer additionalRequirement;
+	@Column(name="additional_req_dprc")
+	private Integer additionalReqDprc;
 	
 	@Column(name="created_by")
 	private Integer createdBy;
@@ -71,9 +74,11 @@ public class AdditionalFacultyProgress {
 	@Column(name="is_freez")
 	private Boolean isFreeze;
 
-
 	@Transient
 	private Integer qtrIdJsp3;
+	
+	@Transient
+	private String origin;
 
 	public Integer getQprInstInfraHrId() {
 		return qprInstInfraHrId;
@@ -98,14 +103,6 @@ public class AdditionalFacultyProgress {
 
 	public void setQuarterDuration(QuarterDuration quarterDuration) {
 		this.quarterDuration = quarterDuration;
-	}
-
-	public Integer getAdditionalRequirement() {
-		return additionalRequirement;
-	}
-
-	public void setAdditionalRequirement(Integer additionalRequirement) {
-		this.additionalRequirement = additionalRequirement;
 	}
 
 	public Integer getCreatedBy() {
@@ -172,6 +169,30 @@ public class AdditionalFacultyProgress {
 
 	public void setAdditionalFacultyProgressDetail(List<AdditionalFacultyProgressDetail> additionalFacultyProgressDetail) {
 		this.additionalFacultyProgressDetail = additionalFacultyProgressDetail;
+	}
+
+	public String getOrigin() {
+		return origin;
+	}
+
+	public void setOrigin(String origin) {
+		this.origin = origin;
+	}
+
+	public Integer getAdditionalReqSprc() {
+		return additionalReqSprc;
+	}
+
+	public void setAdditionalReqSprc(Integer additionalReqSprc) {
+		this.additionalReqSprc = additionalReqSprc;
+	}
+
+	public Integer getAdditionalReqDprc() {
+		return additionalReqDprc;
+	}
+
+	public void setAdditionalReqDprc(Integer additionalReqDprc) {
+		this.additionalReqDprc = additionalReqDprc;
 	}
 	
 	

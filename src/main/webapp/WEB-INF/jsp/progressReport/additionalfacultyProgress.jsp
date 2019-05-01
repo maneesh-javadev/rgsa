@@ -1,10 +1,26 @@
 <%@include file="../taglib/taglib.jsp"%>
 <script>
+var quater_id = '${QTR_ID}';
+var fund_allocted_sprc = '${FUND_ALLOCATED_SPRC}';
+var fund_allocted_dprc = '${FUND_ALLOCATED_DPRC}';
+var fund_used_other_qtr_sprc = '${FUND_USED_IN_OTHER_QTR_SPRC}';
+var fund_used_other_qtr_dprc = '${FUND_USED_IN_OTHER_QTR_DPRC}';
+var pre_install_fund_sprc = '${PRE_INSTALLMENT_FUND_SPRC}';
+var pre_install_fund_dprc = '${PRE_INSTALLMENT_FUND_DPRC}';
+var total_fund_used_qtr_1_2_sprc = '${TOTAL_SPRC_FUND_USED_IN_QTR_1_AND_2}';
+var total_fund_used_qtr_1_2_dprc = '${TOTAL_DPRC_FUND_USED_IN_QTR_1_AND_2}';
+var total_add_req_sprc_filled = '${TOTAL_ADD_REQ_SPRC}';
+var total_add_req_dprc_filled = '${TOTAL_ADD_REQ_DPRC}';
 
-function getSelelctedQtrRprt(){
-	 var qtId = $('#quaterId').val();
-	 $('#qtrIdJsp3').val(qtId);
-	 	document.additionalFacultyProgress.method = "get";
+$(document).ready(function() {
+	$('#quaterDropDownId').val(quater_id);
+	showTablediv();
+});
+
+function saveAndGetDataQtrRprt(msg){
+	 	$('#qtrIdJsp3').val($('#quaterDropDownId').val());
+	 	$('#origin').val(msg);
+	 	document.additionalFacultyProgress.method = "post";
 		document.additionalFacultyProgress.action = "additionalfacultyProgress.html?<csrf:token uri='additionalfacultyProgress.html'/>";
 		document.additionalFacultyProgress.submit();
 }
@@ -21,9 +37,106 @@ $( document ).ready(function() {
 	  });
 });
 
-</script>
-<script  type="text/javascript" src="${pageContext.request.contextPath}/resources/plugins/angular/angular.min.js"></script>
+function showTablediv(){
+	if($('#quaterDropDownId').val() > 0){
+		$('#mainDivId').show();
+	}else{
+		$('#mainDivId').hide();
+	}
+}
 
+function validateFundByAllocatedFund(index){
+	var noOfRows=$("#tbodyId tr").length;
+	var fund_allocted_sprc_local = +fund_allocted_sprc;
+	var fund_allocted_dprc_local = +fund_allocted_dprc;
+	var total_fund_filled_sprc=0;
+	var total_fund_filled_dprc=0;
+	
+	if(fund_used_other_qtr_sprc != '' && fund_used_other_qtr_sprc != null){
+		fund_allocted_sprc_local -= +fund_used_other_qtr_sprc;
+	}
+	
+	if(fund_used_other_qtr_dprc != '' && fund_used_other_qtr_dprc != null){
+		fund_allocted_dprc_local -= +fund_used_other_qtr_dprc;
+	}
+	
+	if(pre_install_fund_sprc != null && total_fund_used_qtr_1_2_sprc != null){
+		fund_allocted_sprc_local += +(pre_install_fund_sprc - total_fund_used_qtr_1_2_sprc);
+	}
+	
+	if(pre_install_fund_dprc != null && total_fund_used_qtr_1_2_dprc != null){
+		fund_allocted_dprc_local += +(pre_install_fund_dprc - total_fund_used_qtr_1_2_dprc);
+	}
+	
+	for(var i = 0; i < noOfRows;i++){
+		if($('#expenditureIncurred_'+i).val() != null && $('#expenditureIncurred_'+i).val() != ''){
+			if(i< 3){
+				total_fund_filled_sprc += +$('#expenditureIncurred_'+i).val();
+			}else{
+				total_fund_filled_dprc += +$('#expenditureIncurred_'+i).val();
+			}
+		}
+	}
+	if(total_fund_filled_sprc > fund_allocted_sprc_local){
+		alert('Total expenditure should not exceed total remaining for this component which is Rs. '+ (fund_allocted_sprc_local - (total_fund_filled_sprc - $('#expenditureIncurred_'+index).val())));
+		$('#expenditureIncurred_'+index).val('');
+		$('#expenditureIncurred_'+index).focus();
+	}
+	if(total_fund_filled_dprc > fund_allocted_dprc_local){
+		alert('Total expenditure should not exceed total remaining for this component which is Rs. '+ (fund_allocted_dprc_local - (total_fund_filled_dprc - $('#expenditureIncurred_'+index).val())));
+		$('#expenditureIncurred_'+index).val('');
+		$('#expenditureIncurred_'+index).focus();
+	}
+}
+
+function isNoOfUnitAndExpInurredFilled(index){
+	if(($('#noOfUnitCompleted_'+index).val() == null || $('#noOfUnitCompleted_'+index).val() =='') && (index != 2 && index != 5)){
+		alert('Expenditure incurred cannot be filled if number of unit filled is zero or blank.');
+		$('#expenditureIncurred_'+index).val('');
+		$('#noOfUnitCompleted_'+index).focus();
+	}
+}
+
+function validateWithCorrespondingFund(index){
+	var tota_fund_cec= +$('#fundCecId_'+index).text();	
+	var total_corresponding_fund_remaining = tota_fund_cec - $('#totalExpenditureIncurred_'+index).val();
+	if($('#expenditureIncurred_'+index).val() > total_corresponding_fund_remaining){
+		alert('total expenditure should not exceed '+ total_corresponding_fund_remaining);
+		$('#expenditureIncurred_'+index).val('');
+		$('#expenditureIncurred_'+index).focus();
+	}
+}
+
+function validateNoOfUnits(index){
+	var no_of_unit_cec= +$('#noOfUnitCecId_'+index).text();	
+	var total_no_of_unit_remaining = no_of_unit_cec - $('#totalNoOfUnit_'+index).val();
+	if($('#noOfUnitCompleted_'+index).val() > total_no_of_unit_remaining){
+		alert('total number of units should not exceed '+total_no_of_unit_remaining);
+		$('#noOfUnitCompleted_'+index).val('');
+		$('#noOfUnitCompleted_'+index).focus();
+	}
+}
+
+function validateAddReq(msg){
+	var main_add_req_sprc = $('#additionalReqSprcStateId').text();
+	var main_add_req_dprc = $('#additionalReqDprcStateId').text();
+	
+	if(msg == 'sprc'){
+		if($('#additionalReqSprcId').val() > (main_add_req_sprc - total_add_req_sprc_filled)){
+			alert('Additional requirement for SPRC should not exceed : ' + (main_add_req_sprc - total_add_req_sprc_filled));
+			$('#additionalReqSprcId').val('');
+			$('#additionalReqSprcId').focus();
+			
+		}		
+	}else{
+		if($('#additionalReqDprcId').val() > (main_add_req_dprc - total_add_req_dprc_filled)){
+			alert('Additional requirement for DPRC should not exceed : ' + (main_add_req_dprc - total_add_req_dprc_filled));
+			$('#additionalReqDprcId').val('');
+			$('#additionalReqDprcId').focus();		
+		}
+	}
+}
+</script>
 <section class="content" > 
 	<div class="container-fluid">
 		<div class="row clearfix">
@@ -32,10 +145,8 @@ $( document ).ready(function() {
 					<div class="header">
 						<h2>Additional Faculty and Maintenance at SPRC and DPRC</h2>
 					</div>
-					<form:form method="post" name="additionalFacultyProgress" action="additionalfacultyProgress.html"
-						modelAttribute="ADD_QUATER">
-						<input type="hidden" name="<csrf:token-name/>"
-							value="<csrf:token-value uri="additionalfacultyProgress.html" />" />
+					<form:form method="post" name="additionalFacultyProgress" action="additionalfacultyProgress.html" modelAttribute="HR_SUPPORT_SPRC_DPRC_QUATER">
+					<input type="hidden" name="<csrf:token-name/>" value="<csrf:token-value uri="additionalfacultyProgress.html" />" />
 					<div class="body">
 					<c:set var="count" value="0" scope="page" />
 					<div class="row clearfix">
@@ -44,157 +155,98 @@ $( document ).ready(function() {
 						  	<label for="QuaterId1"><strong>Quarter Duration :</strong></label>
 					    </div>
 							<div align="center" class="col-lg-4">
-					<select id="quaterId"  name="quarterDuration.qtrId" class="form-control" onchange="getSelelctedQtrRprt();">
-								<option value="">Select</option>
-							<c:choose>
-			            		<c:when test="${not empty Additional_Faculty_PROGRESS}">
-				            				<c:forEach items="${QUATER_DETAILS}" var="duration">
-					            				<c:choose>
-						            				<c:when test="${duration.qtrId == Additional_Faculty_PROGRESS.quarterDuration.qtrId}">
-					                   					<option value="${duration.qtrId}" selected="selected">${duration.qtrDuration} </option>
-					                   				</c:when>
-					                   				<c:otherwise>
-					                   					<option value="${duration.qtrId}">${duration.qtrDuration}</option>
-					                   				</c:otherwise>
-				                   				</c:choose>
-				                       		</c:forEach>
-			            			</c:when> 
-			            			<c:when test="${not empty SetNewQtrId1}">
-			            			<c:forEach items="${QUATER_DETAILS}" var="duration">
-			            				<c:choose>
-						            				<c:when test="${duration.qtrId == SetNewQtrId1}">
-					                   					<option value="${duration.qtrId}" selected="selected">${duration.qtrDuration} </option>
-					                   				</c:when>
-					                   				<c:otherwise>
-					                   					<option value="${duration.qtrId}">${duration.qtrDuration} </option>
-					                   				</c:otherwise>
-					                   	</c:choose>
-					                   	</c:forEach>
-			            			</c:when>
-			            			<c:otherwise>
-			            				<c:forEach items="${QUATER_DETAILS}" var="duration">
-		                   					<option value="${duration.qtrId}">${duration.qtrDuration} </option>
-			                       		</c:forEach>
-			                       		
-			            			</c:otherwise>
-			            		</c:choose> 
-								
-                          </select>
-                             </div>
+								<select id="quaterDropDownId" name="quarterDuration.qtrId"
+									class="form-control" onchange="saveAndGetDataQtrRprt('qtrChange');">
+									<option value="0">Select quarter</option>
+									<c:forEach items="${QUATER_DETAILS}" var="qtr">
+										<option value="${qtr.qtrId}">${qtr.qtrDuration}</option>
+									</c:forEach>
+								</select>
+							</div>
                            </div>
                         </div>
+                        <div id="mainDivId">
 						<table class="table table-bordered">
 							<thead>
 								<tr>
-									<th>
-										<div align="center">
-											<strong>Type of Center</strong>
-										</div>
-									</th>
-									<th>
-										<div align="center">
-											<strong>Faculty and Staff</strong>
-										</div>
-									</th>
-									<th>
-										<div align="center">
-											<strong>No of Units Approved<br>A
-											</strong>
-										</div>
-									</th>
-									<th>
-										<div align="center">
-											<strong>Unit Cost Approved<br>B
-											</strong>
-										</div>
-									</th>
-									<th>
-										<div align="center">
-											<strong>No. of Unit Filled
-											</strong>
-										</div>
-									</th>
-								   <th>
-								   		<div align="center">Expenditure Incurred </div>
-								   </th>
-									<input type="hidden" id="qtrIdJsp3" name="qtrIdJsp3" value=''/>
-								   
+									<th><div align="center">Type of Center</div></th>
+									<th><div align="center">Faculty and Staff</div></th>
+									<th><div align="center">No of Units Approved<br>A</div></th>
+									<th><div align="center">Unit Cost Approved<br>B</div></th>
+									<th><div align="center">No. of Unit Filled</div></th>
+								   <th><div align="center">Expenditure Incurred </div></th>
 								</tr>
 							</thead>
-							<tbody>
-							<c:if test="${approved}">
-					<c:choose>
-							<c:when test="${not empty Additional_Faculty_PROGRESS}">
-							
-							
-							<c:forEach items="${adtnlfacltyDtlsList}"  var="obj" varStatus="count" >
-							
-						<input type="hidden" name="institueInfraHrActivity.instituteInfraHrActivityId" value="${Additional_Faculty_PROGRESS.institueInfraHrActivity.instituteInfraHrActivityId}" > 
-						 	 <input type="hidden" name="qprInstInfraHrId"  value="${Additional_Faculty_PROGRESS.qprInstInfraHrId}">
-							 	<input type="hidden" name="additionalFacultyProgressDetail[${count.index}].qprInstInfraHrDetailsId" value="${Additional_Faculty_PROGRESS.additionalFacultyProgressDetail[count.index].qprInstInfraHrDetailsId}">
-	
-								<tr>
-									<%-- <c:forEach items="${fetchinstitueInfraHrActivityDetails}"  var="obj1" varStatus="count"> --%>
-									<td>
-										 <strong>${fetchinstitueInfraHrActivityDetails[count.index].instituteInfraHrActivityType.trainingInstitueType.trainingInstitueTypeName}</strong> 
+							<tbody id="tbodyId">
+								<c:forEach items="${CEC_APPROVED_ACTIVITY_DETAILS}"  var="approvedActDetail" varStatus="count" >
+									
+									<!-- total number of units filled in rest quaters -->
+										<c:choose>
+											<c:when test="${not empty DEATIL_FOR_TOTAL_NO_OF_UNIT}">
+											<input type="hidden" id="totalExpenditureIncurred_${count.index}"
+													value="${DEATIL_FOR_TOTAL_NO_OF_UNIT[count.index].expenditureIncurred}" />
+											
+												<input type="hidden" id="totalNoOfUnit_${count.index}"
+													value="${DEATIL_FOR_TOTAL_NO_OF_UNIT[count.index].noOfUnitsFilled}" />
+											</c:when>
+											<c:otherwise>
+												<input type="hidden" id="totalNoOfUnit_${count.index}"
+													value="0" />
+												<input type="hidden" id="totalExpenditureIncurred_${count.index}"
+													value="0" />	
+											</c:otherwise>
+										</c:choose>
+									<!-- ends here -->
 										
-									</td>
-									<td><strong>${fetchinstitueInfraHrActivityDetails[count.index].instituteInfraHrActivityType.instituteInfraHrActivityName}</strong></td>
-									<td><input type="text" class="form-control" value="${fetchinstitueInfraHrActivityDetails[count.index].noOfUnits}" disabled/></td>
-									<td><input type="text" class="form-control" value="${fetchinstitueInfraHrActivityDetails[count.index].unitCost}" disabled /></td>
-								<%-- </c:forEach> --%>
-								<td><input name="additionalFacultyProgressDetail[${count.index}].noOfUnitsFilled" type="text" style="text-align: right;" class="form-control validate" value="${obj.noOfUnitsFilled}" /></td>
-								 	<td><input name="additionalFacultyProgressDetail[${count.index}].expenditureIncurred" type="text" style="text-align: right;" class="form-control validate" value="${obj.expenditureIncurred}"></td>
-						
-								</tr>
+									<input type="hidden" name="institueInfraHrActivity.instituteInfraHrActivityId" value="${CEC_APPROVED_ACTIVITY.instituteInfraHrActivityId}" /> 
+						 	 		<input type="hidden" name="qprInstInfraHrId"  value="${QPR_ACTIVITY.qprInstInfraHrId}" />
+						 	 		<input type="hidden" name="additionalFacultyProgressDetail[${count.index}].instituteInfraHrActivityType.instituteInfraHrActivityTypeId" value="${approvedActDetail.instituteInfraHrActivityType.instituteInfraHrActivityTypeId}" />
+							 		<input type="hidden" name="additionalFacultyProgressDetail[${count.index}].qprInstInfraHrDetailsId" value="${QPR_ACTIVITY.additionalFacultyProgressDetail[count.index].qprInstInfraHrDetailsId}" />
+									<tr>
+										<td><div align="center"><strong>${approvedActDetail.instituteInfraHrActivityType.trainingInstitueType.trainingInstitueTypeName}</strong></div></td>
+										<td><div align="center"><strong>${approvedActDetail.instituteInfraHrActivityType.instituteInfraHrActivityName}</strong></div></td>
+										<td><div align="center" id="noOfUnitCecId_${count.index}"><strong>${approvedActDetail.noOfUnits}</strong></div></td>
+										<td><div align="center" id="fundCecId_${count.index}"><strong>${approvedActDetail.fund}</strong></div></td>
+										<c:choose>
+											<c:when test="${not empty QPR_ACTIVITY}">
+												<td><c:if test="${count.index ne 2 and count.index ne 5}">
+													<input name="additionalFacultyProgressDetail[${count.index}].noOfUnitsFilled" id="noOfUnitCompleted_${count.index}" type="text" style="text-align: right;" class="form-control validate"  value="${QPR_ACTIVITY.additionalFacultyProgressDetail[count.index].noOfUnitsFilled}" onkeyup="validateNoOfUnits(${count.index})"/>
+								 				</c:if></td>
+									 				<td><input name="additionalFacultyProgressDetail[${count.index}].expenditureIncurred" id="expenditureIncurred_${count.index}" type="text" style="text-align: right;" class="form-control validate" value="${QPR_ACTIVITY.additionalFacultyProgressDetail[count.index].expenditureIncurred }" onkeyup="validateFundByAllocatedFund(${count.index});validateWithCorrespondingFund(${count.index});isNoOfUnitAndExpInurredFilled(${count.index})"/></td>
+											</c:when>
+											<c:otherwise>
+												<td><c:if test="${count.index ne 2 and count.index ne 5}">
+													<input name="additionalFacultyProgressDetail[${count.index}].noOfUnitsFilled" id="noOfUnitCompleted_${count.index}" type="text" style="text-align: right;" class="form-control validate" onkeyup="validateNoOfUnits(${count.index})" />
+								 				</c:if></td>
+									 				<td><input name="additionalFacultyProgressDetail[${count.index}].expenditureIncurred" id="expenditureIncurred_${count.index}" type="text" style="text-align: right;" class="form-control validate" onkeyup="validateFundByAllocatedFund(${count.index});validateWithCorrespondingFund(${count.index});isNoOfUnitAndExpInurredFilled(${count.index})"></td>
+											</c:otherwise>
+										</c:choose>
+										
+									</tr>
 								</c:forEach>
-								
-						</c:when>
-						<c:otherwise>
-						<c:forEach items="${fetchinstitueInfraHrActivityDetails}" var="obj" varStatus="count">
-						
-					 <input type="hidden" name="institueInfraHrActivity.instituteInfraHrActivityId"  value="${instituteInfraHrActivityId}">
-							<%-- 	<input type="hidden" name="qprInstInfraHrId"  value="${qprInstInfraHrId}"> --%>
-<%-- 							 <input type="hidden" name="additionalFacultyProgressDetail[${count.index}].instituteInfraHrActivityType.instituteInfraHrActivityTypeId"  value="${fetchinstitueInfraHrActivityDetails.instituteInfraHrActivityTypeId}">
- --%>		
-							
-								<tr>
-							<td>
-										<div align="center">
-										 <strong>${obj.instituteInfraHrActivityType.trainingInstitueType.trainingInstitueTypeName}</strong> 
-										</div>
-									</td>
-									<td><strong>${obj.instituteInfraHrActivityType.instituteInfraHrActivityName}</strong></td> 
-									<td><input type="text" class="form-control" value="${obj.noOfUnits}" disabled/></td>
-									<td><input type="text" class="form-control" value="${obj.unitCost}" disabled /></td>
-									<td><input name="additionalFacultyProgressDetail[${count.index}].noOfUnitsFilled" type="text" class="form-control validate" /></td>
-								 	<td><input name="additionalFacultyProgressDetail[${count.index}].expenditureIncurred" type="text" class="form-control validate"/></td> 
-								 	
-								</tr>
-								
-								
-							 </c:forEach> 
-							</c:otherwise>
-						</c:choose>
-						</c:if>
-						
+									<tr>
+										<th colspan="2"><div align="center">Additional Requirement SPRC</div></th>
+										<th colspan="2"><div align="center" id="additionalReqSprcStateId">${CEC_APPROVED_ACTIVITY.additionalRequirementSprc }</div></th>
+										<td><input type="text" name="additionalReqSprc" id="additionalReqSprcId" value="${QPR_ACTIVITY.additionalReqSprc}" class="form-control validate" onkeyup="validateAddReq('sprc')"></td>
+									</tr>
+									
+									<tr>
+										<th colspan="2"><div align="center">Additional Requirement DPRC</div></th>
+										<th colspan="2"><div align="center" id="additionalReqDprcStateId">${CEC_APPROVED_ACTIVITY.additionalRequirementDprc }</div></th>
+										<td><input type="text" name="additionalReqDprc" id="additionalReqDprcId" value="${QPR_ACTIVITY.additionalReqDprc}" class="form-control validate" onkeyup="validateAddReq('sprc')"></td>
+									</tr>
 							</tbody>
 						</table>
-						<c:if test="${!approved}">
-								<div class="alert alert-danger">
-	  								<strong>Danger!</strong> There is no training Activity.
-								</div>
-							</c:if>
-						<div class="text-right"><button type="submit" class="btn bg-green waves-effect">
-										SAVE</button>
-									<button type="button" onclick="onClear(this)"
-										class="btn bg-light-blue waves-effect">CLEAR</button>
-									<button type="button"
-										onclick="onClose('home.html?<csrf:token uri='home.html'/>')"
-										class="btn bg-orange waves-effect">CLOSE</button>
-								</div> 
-								
-					</div>
+							<div class="text-right">
+								<button type="submit" onclick="saveAndGetDataQtrRprt('save')" class="btn bg-green waves-effect">SAVE</button>
+								<button type="button" onclick="onClear(this)" class="btn bg-light-blue waves-effect">CLEAR</button>
+								<button type="button" onclick="onClose('home.html?<csrf:token uri='home.html'/>')" class="btn bg-orange waves-effect">CLOSE</button>
+							</div>
+						</div>
+						</div>
+							<input type="hidden" id="qtrIdJsp3" name="qtrIdJsp3" value=""/>
+							<input type="hidden" id="origin" name="origin" />
+							
 					</form:form>
 				</div>
 				
@@ -202,5 +254,4 @@ $( document ).ready(function() {
 		</div>
 	</div>
 </section>
-                             
-                            
+ <script  type="text/javascript" src="${pageContext.request.contextPath}/resources/plugins/angular/angular.min.js"></script>                          
