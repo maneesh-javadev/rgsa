@@ -297,13 +297,10 @@ public class InstitutionalInfraActivityPlanServiceImpl implements InstitutionalI
 	}
 
 	@Override
-	public List<QprInstitutionalInfrastructure> fetchDataAccordingToQuator(Integer quatorId, int institutionalActivityId ) {
-		
+	public List<QprInstitutionalInfrastructure> fetchDataAccordingToQuator(Integer quatorId,Integer activityId) {
 		Map<String, Object> params=new HashMap<>();
 		params.put("quatorId", quatorId);
-		params.put("institutionalActivityId", institutionalActivityId);
-		
-
+		params.put("activityId", activityId);
 		return commonRepository.findAll("FETCH_QPR_INST_ACTIVITY_DEPEND_ON_QUATOR", params);
 				
 				
@@ -432,5 +429,10 @@ public class InstitutionalInfraActivityPlanServiceImpl implements InstitutionalI
 		
 			
 		}
+	
+	@Override
+	public List<InstInfraStatus> fetchALLInstInfraStatus() {
+	return commonRepository.findAll("GET_ALL_INST_INFRA_STATUS", null);
+	}
 	
 }

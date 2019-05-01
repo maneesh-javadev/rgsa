@@ -3,9 +3,11 @@ package gov.in.rgsa.service;
 import java.util.List;
 import gov.in.rgsa.entity.QprIncomeEnhancement;
 import gov.in.rgsa.entity.QprInnovativeActivity;
+import gov.in.rgsa.entity.QprInstitutionalInfrastructure;
 import gov.in.rgsa.dto.SubcomponentwiseQuaterBalance;
 import gov.in.rgsa.entity.AdditionalFacultyProgress;
 import gov.in.rgsa.entity.AdministrativeTechnicalProgress;
+import gov.in.rgsa.entity.FileNode;
 import gov.in.rgsa.entity.IecQuater;
 import gov.in.rgsa.entity.InstInfraStatus;
 import gov.in.rgsa.entity.InstitutionalInfraActivityPlanProgress;
@@ -18,6 +20,7 @@ import gov.in.rgsa.entity.QuarterDuration;
 import gov.in.rgsa.entity.QuaterWiseFund;
 import gov.in.rgsa.entity.StateAllocation;
 import gov.in.rgsa.entity.TrainingProgressReport;
+import gov.in.rgsa.model.multipart.FileNodeMultipart;
 
 
 public interface ProgressReportService {
@@ -101,5 +104,11 @@ public interface ProgressReportService {
 	public List<StateAllocation> fetchStateAllocationDataByCompIdandInstallNo(int componentId, int installmentNo);
 	
 	public List<SubcomponentwiseQuaterBalance> fetchSubcomponentwiseQuaterBalance(Integer componentId,Integer quaterId);
+	
+	public void saveInstitutionalInfraProgressReport(QprInstitutionalInfrastructure qprInstitutionalInfrastructure);
+	
+	public FileNode loadFileNode(FileNode fileNode);
+	
+	public FileNodeMultipart getUploadedFile(Integer fileNodeId);
 
 }

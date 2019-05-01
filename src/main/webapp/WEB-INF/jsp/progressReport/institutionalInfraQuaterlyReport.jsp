@@ -24,7 +24,7 @@ function getSelelctedQtrRprt()
 	
 
 	document.qprInstitutionalInfrastructure.method = "post";
-	document.qprInstitutionalInfrastructure.action = "institutionalInfraQuaterlyReport.html?<csrf:token uri='institutionalInfraQuaterlyReport.html'/>";
+	document.qprInstitutionalInfrastructure.action = "saveQprInstitutionalInfrastructureData.html?<csrf:token uri='saveQprInstitutionalInfrastructureData.html'/>";
 	document.qprInstitutionalInfrastructure.submit();
 }
 

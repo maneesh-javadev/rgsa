@@ -12,6 +12,17 @@ publicModule.controller("InstitutionalInfraProgressReportController", [ '$scope'
 	$scope.institutionalInfraActivityPlanDetailsCFState=[];
 	$scope.institutionalInfraActivityPlanDetailsCFDistrict=[];
 	
+	$scope.qprInstitutionalNBState=[];
+	$scope.qprInstitutionalNBDistrict=[];
+	$scope.qprInstitutionalCFState=[];
+	$scope.qprInstitutionalCFDistrict=[];
+	
+	$scope.InstInfraStatusState=[];
+	$scope.InstInfraStatusDistrict=[];
+	
+	 var data = new FormData();
+
+	
 	fetchquarterDuration();
 	
 	function fetchquarterDuration(){
@@ -26,6 +37,7 @@ publicModule.controller("InstitutionalInfraProgressReportController", [ '$scope'
 	$scope.fetchDetailsForInstitutionalInfraProgressReport=function(quterId){
          InstitutionalInfraProgressReportService.fetchDetailsForInstitutionalInfraProgressReport(quterId).then(function(response){
         	 $scope.qprDetailsForInstitutional=response.data.instInfraStateDataForProgressReport;
+        	 $scope.InstInfraStatus=response.data.InstInfraStatus;
         	 load_data();
 		});
 	};
@@ -36,6 +48,19 @@ publicModule.controller("InstitutionalInfraProgressReportController", [ '$scope'
 		$scope.nbdindex=0;
 		$scope.cfsindex=0;
 		$scope.cfdindex=0;
+		k=0;
+		l=0;
+		
+		for (var i = 0; i < $scope.InstInfraStatus.length; i++) { 
+			trainingInstitueTypeId=$scope.InstInfraStatus[i].trainingInstitueType.trainingInstitueTypeId;
+			if(trainingInstitueTypeId==2){
+				$scope.InstInfraStatusState[k]=$scope.InstInfraStatus[i];
+				k++;
+			}else if(trainingInstitueTypeId==4){
+				$scope.InstInfraStatusDistrict[l]=$scope.InstInfraStatus[i];
+				l++;
+			}
+		}
 		
 		
 			for (var i = 0; i < $scope.qprDetailsForInstitutional.length; i++) { 
@@ -59,6 +84,71 @@ publicModule.controller("InstitutionalInfraProgressReportController", [ '$scope'
 				
 			}
 	}
+	
+	
+	 $scope.saveQprInstitutionalInfrastructureData=function(){
+		 
+		 	document.qprInstitutionalInfrastructure.method = "post";
+			document.qprInstitutionalInfrastructure.action = "institutionalInfraQuaterlyReport.html?<csrf:token uri='institutionalInfraQuaterlyReport.html'/>";
+			document.qprInstitutionalInfrastructure.submit();
+		 
+		 var data = new FormData();
+
+         for (var i in $scope.files) {
+             data.append("uploadedFile", $scope.files[i]);
+         }
+		 
+		 $scope.x=$scope.qprInstitutionalNBState;
+		  /* let status=false;
+		   for(let i=0; i < $scope.institutionaInfraReportStateData.length;i++){
+			   $scope.QprInstitutionalInfrastructure.qprInstitutionalInfraDetails[i].instituteInfrsaHrActivityDetailsId=$scope.institutionaInfraReportStateData[i].institutionalInfraActivityDetailId;
+			   $scope.QprInstitutionalInfrastructure.institutionalInfraActivivtyId=$scope.institutionaInfraReportStateData[i].institutionalInfraActivityId;
+			   $scope.QprInstitutionalInfrastructure.qprInstitutionalInfraDetails[i].institutionalActivityTypeId=$scope.TrainingInstituteTypeId;
+			   if("expenditureIncurred" in $scope.QprInstitutionalInfrastructure.qprInstitutionalInfraDetails[i]){
+				   $scope.QprInstitutionalInfrastructure.qprInstitutionalInfraDetails[i].instInfraStatusId == 0 ? status=false : status=true;
+			   }else{
+				   status=false;
+				   break;
+			   }
+		   }
+		   if(status){
+			   InstitutionalInfraProgressReportService.saveQprInstitutionalInfrastructureData($scope.QprInstitutionalInfrastructure).then(function(response){
+				   $scope.QprInstitutionalInfrastructure = response.data;
+						toastr.success("Data Saved Successfully");
+				},function(error){
+					toastr.error("Something went wrong");
+				});
+		   }else{
+			   toastr.error("Please fill All the Fields.");
+		   }	*/
+		  };
+	
+	
+	$scope.getFileDetails = function (e) {
+
+        //$scope.files = [];
+        $scope.$apply(function () {
+
+            // STORE THE FILE OBJECT IN AN ARRAY.
+            for (var i = 0; i < e.files.length; i++) {
+            	 //data.append("uploadedFile", e.files[i]);
+            	//$scope.qprInstitutionalNBState[0].filename.push(e.files[i]);
+               $scope.files.push(e.files[i])
+            }
+
+        });
+    };
+	
+	
+    /* $scope.uploadFiles = function () {
+
+         //FILL FormData WITH FILE DETAILS.
+         var data = new FormData();
+
+         for (var i in $scope.files) {
+             data.append("uploadedFile", $scope.files[i]);
+         }
+	 };*/
 	
 	
 	$scope.resetDetails=function(){
@@ -119,29 +209,6 @@ publicModule.controller("InstitutionalInfraProgressReportController", [ '$scope'
 		
 	};
 	
-   $scope.saveQprInstitutionalInfrastructureData=function(){
-	   let status=false;
-	   for(let i=0; i < $scope.institutionaInfraReportStateData.length;i++){
-		   $scope.QprInstitutionalInfrastructure.qprInstitutionalInfraDetails[i].instituteInfrsaHrActivityDetailsId=$scope.institutionaInfraReportStateData[i].institutionalInfraActivityDetailId;
-		   $scope.QprInstitutionalInfrastructure.institutionalInfraActivivtyId=$scope.institutionaInfraReportStateData[i].institutionalInfraActivityId;
-		   $scope.QprInstitutionalInfrastructure.qprInstitutionalInfraDetails[i].institutionalActivityTypeId=$scope.TrainingInstituteTypeId;
-		   if("expenditureIncurred" in $scope.QprInstitutionalInfrastructure.qprInstitutionalInfraDetails[i]){
-			   $scope.QprInstitutionalInfrastructure.qprInstitutionalInfraDetails[i].instInfraStatusId == 0 ? status=false : status=true;
-		   }else{
-			   status=false;
-			   break;
-		   }
-	   }
-	   if(status){
-		   InstitutionalInfraProgressReportService.saveQprInstitutionalInfrastructureData($scope.QprInstitutionalInfrastructure).then(function(response){
-			   $scope.QprInstitutionalInfrastructure = response.data;
-					toastr.success("Data Saved Successfully");
-			},function(error){
-				toastr.error("Something went wrong");
-			});
-	   }else{
-		   toastr.error("Please fill All the Fields.");
-	   }	
-	  };
+  
 	  
 }]);

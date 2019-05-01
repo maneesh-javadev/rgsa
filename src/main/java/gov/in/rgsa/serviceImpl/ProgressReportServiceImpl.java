@@ -1,5 +1,7 @@
 package gov.in.rgsa.serviceImpl;
 
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -10,6 +12,7 @@ import javax.persistence.Query;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import gov.in.rgsa.dao.CommonRepository;
 import gov.in.rgsa.dto.SubcomponentwiseQuaterBalance;
@@ -17,6 +20,7 @@ import gov.in.rgsa.entity.AdditionalFacultyProgress;
 import gov.in.rgsa.entity.AdditionalFacultyProgressDetail;
 import gov.in.rgsa.entity.AdministrativeTechnicalDetailProgress;
 import gov.in.rgsa.entity.AdministrativeTechnicalProgress;
+import gov.in.rgsa.entity.FileNode;
 import gov.in.rgsa.entity.IecQuater;
 import gov.in.rgsa.entity.IecQuaterDetails;
 import gov.in.rgsa.entity.InnovativeActivityDetails;
@@ -32,14 +36,21 @@ import gov.in.rgsa.entity.QprIncomeEnhancement;
 import gov.in.rgsa.entity.QprIncomeEnhancementDetails;
 import gov.in.rgsa.entity.QprInnovativeActivity;
 import gov.in.rgsa.entity.QprInnovativeActivityDetails;
+import gov.in.rgsa.entity.QprInstitutionalInfraDetails;
+import gov.in.rgsa.entity.QprInstitutionalInfrastructure;
 import gov.in.rgsa.entity.QprTnaTrgEvaluation;
 import gov.in.rgsa.entity.QuarterDuration;
 import gov.in.rgsa.entity.QuaterWiseFund;
 import gov.in.rgsa.entity.StateAllocation;
 import gov.in.rgsa.entity.TrainingDetailsProgressReport;
 import gov.in.rgsa.entity.TrainingProgressReport;
+import gov.in.rgsa.entity.UtilCert;
+import gov.in.rgsa.model.multipart.FileNodeMultipart;
+import gov.in.rgsa.service.InnovativeActivityService;
+import gov.in.rgsa.service.InstitutionalInfraActivityPlanService;
 import gov.in.rgsa.service.ProgressReportService;
 import gov.in.rgsa.user.preference.UserPreference;
+import gov.in.rgsa.utils.FileNodeUtils;
 
 @Service
 public class ProgressReportServiceImpl implements ProgressReportService{
@@ -53,6 +64,12 @@ public class ProgressReportServiceImpl implements ProgressReportService{
 	
 	@PersistenceContext
 	private EntityManager entityManager;
+	
+	@Autowired
+	InnovativeActivityService innovativeActivityService;
+
+	@Autowired
+	InstitutionalInfraActivityPlanService institutionalInfraActivityPlanService;
 	
 	@Override
 	public List<QuarterDuration> getQuarterDurations() {
@@ -680,4 +697,113 @@ public class ProgressReportServiceImpl implements ProgressReportService{
 		params.put("quaterId", quaterId);
 		return commonRepository.findAll("FETCH_Subcomponent_wise_Quater_Balance", params);
 	}
+	
+	@Override
+	public void saveInstitutionalInfraProgressReport(QprInstitutionalInfrastructure qprInstitutionalInfrastructure) {
+		
+		FileNodeUtils uploadReport=null;
+		MultipartFile multipartFile=null;
+		
+		try {
+
+		String uploadPath =innovativeActivityService.findfilePath().getFileLocation();
+		if(qprInstitutionalInfrastructure.getQprInstInfraId()==null) {
+			qprInstitutionalInfrastructure.setCreatedBy(userPreference.getUserId());
+			qprInstitutionalInfrastructure.setCreatedOn(new Date());
+		}else {
+			Map<String,Object> params = new HashMap<>();
+			params.put("additionalRequirement", qprInstitutionalInfrastructure.getAdditionalRequirement());
+			params.put("additionalRequirementDPRC", qprInstitutionalInfrastructure.getAdditionalRequirementDPRC());
+			params.put("qprInstInfraId", qprInstitutionalInfrastructure.getQprInstInfraId());
+			commonRepository.excuteUpdate("UPDATE_QPR_INST_ACTIVITY_DEPEND_ON_QUATOR", params);
+		}
+		
+		qprInstitutionalInfrastructure.setLastUpdatedBy(userPreference.getUserId());
+		qprInstitutionalInfrastructure.setLastUpdateOn(new Date());
+		
+		List<QprInstitutionalInfraDetails> updateQprInstitutionalInfraDetailsList=new ArrayList<QprInstitutionalInfraDetails>();
+		
+		for(QprInstitutionalInfraDetails obj:qprInstitutionalInfrastructure.getQprInstitutionalInfraDetails()) {
+			obj.setQprInstitutionalInfrastructure(qprInstitutionalInfrastructure);
+			if(obj.getExpenditureIncurred()!=null && obj.getInstInfraStatusId()!=null) {
+				multipartFile = obj.getFile();
+				if(multipartFile.getSize()>0) {
+				uploadReport = attemptUpload(obj.getFileNode(), multipartFile, uploadPath, qprInstitutionalInfrastructure.getQtrId(),"institutional");
+				obj.setFileNode(uploadReport.getFileNode());
+				updateQprInstitutionalInfraDetailsList.add(obj);
+				}else {
+					obj.setFileNode(null);
+				}
+			}
+		}
+		
+		for(QprInstitutionalInfraDetails obj:updateQprInstitutionalInfraDetailsList) {
+			
+			if(qprInstitutionalInfrastructure.getQprInstInfraId()!=null) {
+				if(obj.getQprInstInfraDetailsId()==null) {
+					commonRepository.save(obj);
+				}else {
+					commonRepository.update(obj);
+				}
+			}
+		
+		}
+		
+		
+		if(qprInstitutionalInfrastructure.getQprInstInfraId()==null) {
+			qprInstitutionalInfrastructure.setQprInstitutionalInfraDetails(updateQprInstitutionalInfraDetailsList);
+			commonRepository.save(qprInstitutionalInfrastructure);
+			
+			
+		}
+		
+		this.saveQprWiseFundData(userPreference.getStateCode(), userPreference.getFinYearId(), qprInstitutionalInfrastructure.getQtrId(), 2);
+		
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+		
+	}
+	
+	private FileNodeUtils attemptUpload(FileNode fileNode, MultipartFile multipartFile, String uploadPath,Integer quarterId, String string) {
+		FileNodeUtils uploadReport;
+		
+		if(fileNode!=null &&   fileNode.getFileNodeId() != null) {
+			// if file node is not loaded
+			if(fileNode.getFileName() == null)
+				fileNode = this.loadFileNode(fileNode);
+			uploadReport = FileNodeUtils.updateFile(multipartFile, fileNode);
+			if(uploadReport.getUploadStatus() == FileNodeUtils.UPLOAD_STATUS.REQUESTED_FAILED) 
+				throw new RuntimeException();		
+		} else {
+			uploadReport = FileNodeUtils.createNewFile(multipartFile, uploadPath, getNameForFile(quarterId,string, "pdf"));
+			if(uploadReport.getUploadStatus() == FileNodeUtils.UPLOAD_STATUS.REQUESTED_FAILED)
+				throw new RuntimeException();
+		}
+		return uploadReport;		
+	}
+	
+	private String getNameForFile(Integer quarterId, String formName, String extension) {
+		return String.format("Uploaded_QprCbActivity_%d_%d_%d_%s.%s", userPreference.getStateCode(), userPreference.getFinYearId(), quarterId,formName ,extension);
+	}
+
+	
+	@Override
+	public FileNode loadFileNode(FileNode fileNode) {
+		return commonRepository.find(FileNode.class, fileNode.getFileNodeId());
+	}
+	
+	@Override
+	public FileNodeMultipart getUploadedFile(Integer fileNodeId) {
+		FileNode fileNode=new FileNode();
+		fileNode.setFileNodeId(fileNodeId);
+		fileNode = loadFileNode(fileNode);
+		if(fileNode == null)
+			return null;
+		return new FileNodeMultipart(fileNode);
+	}
+	
+	
+
+
 }

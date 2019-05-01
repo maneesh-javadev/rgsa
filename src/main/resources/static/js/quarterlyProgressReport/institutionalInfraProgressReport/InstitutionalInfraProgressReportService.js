@@ -23,4 +23,6 @@ publicModule.service('InstitutionalInfraProgressReportService', [ '$http', funct
 	this.saveQprInstitutionalInfrastructureData=function(qprInstitutionalInfrastructure){
 		return $http.post("saveQprInstitutionalInfrastructureData.html?<csrf:token uri=saveQprInstitutionalInfrastructureData.htm/>",qprInstitutionalInfrastructure);
 	};
+	
+	
 }]);
