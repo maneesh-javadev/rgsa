@@ -16,6 +16,8 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+
+import java.math.BigInteger;
 import java.util.*;
 
 @Service
@@ -741,5 +743,18 @@ public class ProgressReportServiceImpl implements ProgressReportService {
     public FileNode getUploadedFile(Integer fileNodeId) {
         return commonRepository.find(FileNode.class, fileNodeId);
     }
+    
+    @Override
+    public String getBalanceAdditionalReqiurment(Integer componentId,Integer quaterId) {
+    	Map<String, Object> params=new HashMap<>();
+		params.put("stateCode", userPreference.getStateCode());
+		params.put("yearId", userPreference.getFinYearId());
+		params.put("componentId", componentId);
+		params.put("quaterId", quaterId);
+		// return balnce of additonal requirment sprc and dprc
+		String addReqirmentDetails = commonRepository.find("FETCH_Component_wise_Additional_Requirment_Quater_Balance", params);
+		return addReqirmentDetails;
+    }
+    
 
 }

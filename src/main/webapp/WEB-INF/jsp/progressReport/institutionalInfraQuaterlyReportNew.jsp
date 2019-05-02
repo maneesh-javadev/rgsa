@@ -188,7 +188,7 @@
 								<tr>
 									<td colspan="4">
 										<strong>
-											<spring:message code="Label.AdditionalRequirement" htmlEscape="true" /> (SPRC)(Approved Amount:${additionalRequirement})
+											<spring:message code="Label.AdditionalRequirement" htmlEscape="true" /> (SPRC)(Balance Additional Requirement:${balAddiReqSPRC})
 											
 										</strong>
 									</td>
@@ -347,7 +347,7 @@
 								<tr>
 									<td colspan="4">
 										<strong>
-											<spring:message code="Label.AdditionalRequirement" htmlEscape="true" /> (DPRC)(Approved Amount:${additionalRequirementDPRC})
+											<spring:message code="Label.AdditionalRequirement" htmlEscape="true" /> (DPRC)(Balance Additional Requirement:${balAddiReqDPRC})
 											
 										</strong>
 									</td>

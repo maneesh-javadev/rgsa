@@ -1583,6 +1583,13 @@ public class ProgressReportController {
             if (subcomponentwiseQuaterBalanceList != null && !subcomponentwiseQuaterBalanceList.isEmpty()) {
                 model.addAttribute("subcomponentwiseQuaterBalanceList", subcomponentwiseQuaterBalanceList);
                 model.addAttribute("installementExist", Boolean.TRUE);
+                String addReqirmentDetails=progressReportService.getBalanceAdditionalReqiurment(2, quaterId);
+                if(addReqirmentDetails!=null && addReqirmentDetails.indexOf(",")>0) {
+                	String addReqirmentArr[]=addReqirmentDetails.split(",");
+                	 model.addAttribute("balAddiReqSPRC", Integer.parseInt(addReqirmentArr[0]));
+                	 model.addAttribute("balAddiReqDPRC", Integer.parseInt(addReqirmentArr[1]));
+                	 model.addAttribute("installementExist", Boolean.TRUE);
+                }
             } else {
                 model.addAttribute("isError", "2nd installement not released");
                 model.addAttribute("installementExist", Boolean.FALSE);

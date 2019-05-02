@@ -97,5 +97,7 @@ public interface ProgressReportService {
 	public FileNode loadFileNode(FileNode fileNode);
 
 	FileNode getUploadedFile(Integer fileNodeId);
+	
+    String getBalanceAdditionalReqiurment(Integer componentId,Integer quaterId);
 
 }

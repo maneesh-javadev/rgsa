@@ -113,7 +113,7 @@ function calculcate_total(subtotal,id){
 	addReq=0;
 	if(temp!=null && temp!=undefined && temp!=""){
 		addReq=parseInt(temp);	
-		approvedAddReq=id=="nbs"?parseInt('${additionalRequirement}'):parseInt('${additionalRequirementDPRC}');
+		approvedAddReq=id=="nbs"?parseInt('${balAddiReqSPRC}'):parseInt('${balAddiReqDPRC}');
 		if( addReq>((subtotal*25)/100))
 		{
 			$("#"+id+"_addReq").val("");
