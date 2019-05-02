@@ -527,9 +527,38 @@ function isNumber(evt) {
                            </table>
                            </div>
                          </div>	
+                         
+                         <div class="records">
+																			<div class="">
+																				<div  class="col-lg-12 sub_head">
+																					<!-- Grand Total -->
+																					
+																				</div>
+																				<div class="row">
+																					<div class="col-lg-12 padding_top"></div>
+																				</div>
+																				<table width="100%">
+																				<tfoot>
+																					<tr>
+																						<td colspan="4" width="60%">
+																							<strong>
+																								Grand Total(New Building Total Fund(SPRC)+New Building Total Fund(DPRC)+Carry Forward Total Fund(SPRC)+Carry Forward Total Fund(DPRC))
+																							</strong>
+																						</td>
+																						<td align="right" width="40%">
+																							<input type="text"  class="form-control" data-ng-model="grandTotal" readonly="readonly" style="text-align:right;"/>
+																						</td>
+																					</tr>
+																				</tfoot>
+																				
+																				</table>
+																				<br/><br/>
+																					
+																			</div>
+																		</div>
 						
 						</form>
-						
+						<br/><br/>
 						
 									<div class="col-md-4  text-left"  style="margin-bottom: 5px">
 								&nbsp;&nbsp;<button type="button"

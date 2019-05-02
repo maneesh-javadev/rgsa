@@ -24,13 +24,28 @@ function getSelelctedQtrRprt()
 	
 
 	document.qprInstitutionalInfrastructure.method = "post";
-	document.qprInstitutionalInfrastructure.action = "institutionalInfraQuaterlyReport.html?<csrf:token uri='institutionalInfraQuaterlyReport.html'/>";
+	document.qprInstitutionalInfrastructure.action = "saveQprInstitutionalInfrastructureData.html?<csrf:token uri='saveQprInstitutionalInfrastructureData.html'/>";
 	document.qprInstitutionalInfrastructure.submit();
-	
-	
-
-
 }
+
+
+function valdiate_fund(expenditureIncurred,totalFundApproved,fundsAllocated,index)
+{
+	var incurred=expenditureIncurred!=null?parseInt(expenditureIncurred):0;
+	var ifundApproved=totalFundApproved!=null?parseInt(totalFundApproved):0;
+	var ifundsAllocated=fundsAllocated!=null?parseInt(fundsAllocated):0;
+	if(incurred>ifundApproved || expenditureIncurred>ifundsAllocated ){
+		$("#incurredname_"+index).val("");
+		$("#error_incurredname").text("expenditure Incurred must be less then fund approved by CEC and fund allocated of this subcomponent");
+		$('#error_incurredname').addClass('errormessage show');
+		
+	}else
+		{
+		$("#error_incurredname").text("");
+		$('#error_incurredname').addClass('errormessage hide');
+		}
+}
+
 
 </script>
 
@@ -57,7 +72,7 @@ function getSelelctedQtrRprt()
 							<div class="col-lg-2"></div>
 								<label for="QuaterDuration" class="col-sm-3"><spring:message code="Label.QuaterDuration" htmlEscape="true" /></label>
 								<div class="col-lg-4">
-									<select class="form-control" id="qtrId"  name="qtrId" onchange="getSelelctedQtrRprt();">
+									<select class="form-control" id="qtrId"  name="qtrId" >
 										<option value="0">Select Quarter Duration</option>
 										
 										<c:forEach items="${quarterDuration}" var="duration">
@@ -80,24 +95,26 @@ function getSelelctedQtrRprt()
 								<div class="col-lg-4">
 									<select class="form-control" id="institutionalInfraActivivtyId"  name="trainingInstitueTypeId" onchange="getSelelctedQtrRprt();">
 										<option value="0">Select Activity</option>
-										<c:forEach items="${buildingType}" var="activity">
-											<c:choose>
-										<c:when test="${activity.trainingInstitueTypeId == SetActivityId}">
-									
-										<option  value="${activity.trainingInstitueTypeId}" selected="selected">${activity.trainingInstitueTypeName}</option>
-										</c:when>
-										<c:otherwise>
-										<option  value="${activity.trainingInstitueTypeId}">${activity.trainingInstitueTypeName}</option>
 										
-										</c:otherwise>
-										</c:choose>
-									</c:forEach>
+										
+										<option  value="2,N">State Panchayat Resource Center(SPRC)</option>
+										<option  value="4,N">District Panchayat Resource Center(DPRC)</option>
+										<option  value="2,C">State Panchayat Resource Center(SPRC)(Carry Forward)</option>
+										<option  value="4,C">District Panchayat Resource Center(DPRC)(Carry Forward)</option>
+										
+								
 									</select>
 								</div>
 							</div>
 						</div>
 						
-						<div class="body" id="body" onclick="showHide()" >
+						<div class="body" id="body" >
+						
+							<div class="form-group">
+								<div class="col-lg-12">
+									<span class="errormessage" id="error_incurredname"></span><br/>
+								</div>
+							</div>
 							<table class="table table-bordered table-striped table-hover" >
 								<thead>
 									<tr>
@@ -173,7 +190,11 @@ function getSelelctedQtrRprt()
 								
 								</td>
 								<td><strong>${bhawanDto.totalFundApproved}</strong></td>
-								<td><input type="text" class="form-control" name="qprInstitutionalInfraDetails[${count.index}].expenditureIncurred" value="${QPR_INSTITUTIONAL_INFRA_DETAILS[count.index].expenditureIncurred} "/></td>
+								<td>
+								<input type="text" class="form-control"  id="incurredname_${count.index}" name="qprInstitutionalInfraDetails[${count.index}].expenditureIncurred" 
+								value="${QPR_INSTITUTIONAL_INFRA_DETAILS[count.index].expenditureIncurred} " onchange="valdiate_fund(this.value,'${bhawanDto.totalFundApproved}','${bhawanDto.fundsAllocated}','${count.index}')"/>
+								
+								</td>
 								<td><input type="file" name="qprInstitutionalInfraDetails[${count.index}].file" class="form-control"/></td>
 								</tr>
 								</c:forEach>

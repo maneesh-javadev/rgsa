@@ -10,6 +10,9 @@ import javax.persistence.NamedNativeQuery;
 @NamedNativeQuery(name="FETCH_Subcomponent_wise_Quater_Balance",resultClass=SubcomponentwiseQuaterBalance.class,
 query="select * from rgsa.get_balance_amount_to_quater(:stateCode,:yearId,:componentId,:quaterId)")	
 
+@NamedNativeQuery(name="FETCH_Component_wise_Additional_Requirment_Quater_Balance",query="select * from  "
+		+ "rgsa.get_balance_additional_requirement_to_quater(:stateCode, :yearId, :componentId, :quaterId)")
+
 public class SubcomponentwiseQuaterBalance {
 	
 	@Id

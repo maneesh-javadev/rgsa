@@ -124,7 +124,7 @@ planAllocation.controller("planAllocationController",['$scope','planAllocationSe
 		}
 		if(!isFreeze){
 			alert("data saved");
-			/*planAllocationService.savePlanAllocation($scope.PLAN_ALLOCATION).then(function(response){
+			planAllocationService.savePlanAllocation($scope.PLAN_ALLOCATION).then(function(response){
 				if(response!=null && response.status==200){
 					toastr.success(response.data.responseMessage);
 					fetchOnLoad();
@@ -134,7 +134,7 @@ planAllocation.controller("planAllocationController",['$scope','planAllocationSe
 				}
 			},function(error){
 				toastr.error("Something is wrong");
-			});*/
+			});
 		}else{
 			toastr.error("allocate fund must be equal to release fund of installment");
 		}

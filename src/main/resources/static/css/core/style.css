@@ -8161,3 +8161,12 @@ body{
  .padding_top {
    padding-top: 10px;
  }
+ 
+ .errormsg {
+    color: red;
+    display:none;
+   	text-align:center;
+    padding:15px;
+    font-weight:600;
+    margin-bottom:15px;
+}

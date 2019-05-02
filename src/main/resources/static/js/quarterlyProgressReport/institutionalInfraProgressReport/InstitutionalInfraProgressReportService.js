@@ -1,7 +1,11 @@
 publicModule.service('InstitutionalInfraProgressReportService', [ '$http', function($http) {
 	
-	this.fetchDetailsForInstitutionalInfraProgressReport=function(){
-		return $http.get("fetchDetailsForInstInfraProgressReport.html?<csrf:token uri=fetchDetailsForInstInfraProgressReport.htm/>");
+	this.fetchquarterDuration=function(){
+		return $http.get("fetchquarterDuration.html?<csrf:token uri=fetchquarterDuration.htm/>");
+	};
+	
+	this.fetchDetailsForInstitutionalInfraProgressReport=function(quterId){
+		return $http.get("fetchDetailsForInstitutionalInfraProgressReport.html?<csrf:token uri=fetchDetailsForInstitutionalInfraProgressReport.htm/>&quterId="+quterId+"");
 	};
 	
 	this.fetchInstInfraStatus=function(TrainingInstituteTypeId){
@@ -19,4 +23,6 @@ publicModule.service('InstitutionalInfraProgressReportService', [ '$http', funct
 	this.saveQprInstitutionalInfrastructureData=function(qprInstitutionalInfrastructure){
 		return $http.post("saveQprInstitutionalInfrastructureData.html?<csrf:token uri=saveQprInstitutionalInfrastructureData.htm/>",qprInstitutionalInfrastructure);
 	};
+	
+	
 }]);
