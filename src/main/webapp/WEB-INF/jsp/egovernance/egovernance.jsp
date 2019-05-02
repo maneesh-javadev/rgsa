@@ -31,6 +31,21 @@
 						<c:set var="countSpmu" value="0" scope="page" />
 						<c:set var="countDpmu" value="0" scope="page" />
 						<div class="body">
+							<div class="row clearfix">
+									<div class="form-group">
+										<div class="col-sm-4">
+											<label for="District">District supported for DPMU <span><sup style="color: red;">*</sup></span>
+											</label>
+										</div>
+	
+											<div class="col-sm-4">
+										<div class="form-line">
+											<form:input id="districtSupportedId" path="noOfDistrictSupported" class="form-control Align-Right"
+												onkeypress="return isNumber(event)" onkeyup="validateDistricts()" maxlength="7"/></div>
+										</div>
+										<input type="hidden" id="districtsInState" value="${DISTRICTS_IN_STATE}">
+									</div>
+								</div>
 							<div class="table-responsive">
 								<table id="tableId" class="table table-bordered">
 									<thead>

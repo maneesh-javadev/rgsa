@@ -32,6 +32,8 @@ public class EGovernanceSupportModel {
 	public Integer additionalRequirementSpmu;
 	
 	public Integer additionalRequirementDpmu;
+	
+	private Integer noOfDistrictSupported;
 
 
 	public String getDbFileName() {
@@ -138,6 +140,14 @@ public class EGovernanceSupportModel {
 
 	public void setAdditionalRequirementDpmu(Integer additionalRequirementDpmu) {
 		this.additionalRequirementDpmu = additionalRequirementDpmu;
+	}
+
+	public Integer getNoOfDistrictSupported() {
+		return noOfDistrictSupported;
+	}
+
+	public void setNoOfDistrictSupported(Integer noOfDistrictSupported) {
+		this.noOfDistrictSupported = noOfDistrictSupported;
 	}
 
 }

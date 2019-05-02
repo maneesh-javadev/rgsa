@@ -58,6 +58,9 @@ public class EGovSupportActivity {
 	@Column(name="is_freeze")
 	public Boolean status;
 	
+	@Column(name="no_of_districts_supported")
+	private Integer noOfDistrictSupported;
+	
 	@OneToMany(cascade=CascadeType.ALL,mappedBy="eGovSupportActivity",fetch=FetchType.EAGER)
 	private List<EGovSupportActivityDetails> eGovSupportActivityDetails;
 	
@@ -172,6 +175,14 @@ public class EGovSupportActivity {
 
 	public void setAdditionalRequirementDpmu(Integer additionalRequirementDpmu) {
 		this.additionalRequirementDpmu = additionalRequirementDpmu;
+	}
+
+	public Integer getNoOfDistrictSupported() {
+		return noOfDistrictSupported;
+	}
+
+	public void setNoOfDistrictSupported(Integer noOfDistrictSupported) {
+		this.noOfDistrictSupported = noOfDistrictSupported;
 	}
 
 	/*public String getStatus() {
