@@ -1,6 +1,7 @@
 <%@include file="../taglib/taglib.jsp"%>
-<script type="text/javascript">
+<script>
 var quater_id = '${QTR_ID}';
+var remaining_add_req = '${REMAINING_ADD_REQ}';
 var fund_allocated_by_state='${FUND_ALLOCATED_BY_STATE}';
 var fund_used='${FUND_USED_IN_OTHER_QUATOR}';
 if(quater_id > 2){
@@ -20,9 +21,10 @@ function compareFunds(indx){
 	}
 } 
 
-function getSelelctedQtrRprt(){
+function saveAndGetDataQtrRprt(msg){
 	  $('#showQqrtrId').val($('#quaterDropDownId').val()); 
-	 	 document.qprAdminAndFinancialDataActivity.method = "get";
+	  $('#origin').val(msg);
+	 	 document.qprAdminAndFinancialDataActivity.method = "post";
 		document.qprAdminAndFinancialDataActivity.action = "adminDataFinQuaterlyGet.html?<csrf:token uri='adminDataFinQuaterlyGet.html'/>";
 		document.qprAdminAndFinancialDataActivity.submit(); 
 }
@@ -46,7 +48,7 @@ function validateNoOfUnits(index){
 }
 
 function validateFundByAllocatedFund(obj){
-	var noOfRows=$("#tbodyId tr").length;
+	var noOfRows=$("#tbodyId tr").length-1;
 	var fund_allocated_by_state_local = +fund_allocated_by_state;
 	var fund_used_local= +fund_used;
 	var total=0;
@@ -87,6 +89,14 @@ function isNoOfUnitAndExpInurredFilled(index){
 		$('#noOfUnitCompleted_'+index).focus();
 	}
 }
+
+function validateAddReq(){
+	if(+$('#additionalReqId').val() > +remaining_add_req){
+		alert('Additional requirementshould not exceed : ' + remaining_add_req);
+		$('#additionalReqId').val('');
+		$('#additionalReqId').focus();
+	}
+}
 </script>
 <section class="content">
 	<div class="container-fluid">
@@ -117,7 +127,7 @@ function isNoOfUnitAndExpInurredFilled(index){
 									</div>
 									<div align="center" class="col-lg-4">
 										<select name="quarterDuration.qtrId" id="quaterDropDownId"
-											onchange="getSelelctedQtrRprt();showTablediv()"
+											onchange="saveAndGetDataQtrRprt('qtrChange');showTablediv()"
 											class="form-control">
 											<option value="0">Select quarter</option>
 											<c:forEach items="${quarter_duration}" var="qtr">
@@ -189,7 +199,7 @@ function isNoOfUnitAndExpInurredFilled(index){
 														id="noOfUnitCompleted_${index.index}"
 														name="qprAdminAndFinancialDataActivityDetails[${index.index}].noOfUnitsFilled"
 														value="${ADMIN_FIN_CELL_QPR_ACT.qprAdminAndFinancialDataActivityDetails[index.index].noOfUnitsFilled}"
-														onkeyup="this.value=this.value.replace(/[^0-9]/g,'');validateNoOfUnits(${index.index});isNoOfUnitAndExpInurredFilled(${index.index})" required="required" /></td>
+														onkeyup="this.value=this.value.replace(/[^0-9]/g,'');validateNoOfUnits(${index.index});" required="required" /></td>
 
 													<td><input type="text" maxlength="7"
 														class="form-control expnditureId"
@@ -203,7 +213,7 @@ function isNoOfUnitAndExpInurredFilled(index){
 														class="form-control expnditureId"
 														id="noOfUnitCompleted_${index.index}" required="required"
 														name="qprAdminAndFinancialDataActivityDetails[${index.index}].noOfUnitsFilled"
-														onkeyup="this.value=this.value.replace(/[^0-9]/g,'');validateNoOfUnits(${index.index});isNoOfUnitAndExpInurredFilled(${index.index})" /></td>
+														onkeyup="this.value=this.value.replace(/[^0-9]/g,'');validateNoOfUnits(${index.index});" /></td>
 
 													<td><input type="text" maxlength="7"
 														class="form-control expnditureId"
@@ -214,12 +224,17 @@ function isNoOfUnitAndExpInurredFilled(index){
 											</c:choose>
 											</tr>
 										</c:forEach>
+										<tr>
+											<th colspan="2"><div align="center">Additional Requirement</div></th>
+											<th colspan="3"><div align="center" id="additionalReqStateId">${CEC_APPROVED_ACTIVITY.additionalRequirement }</div></th>
+											<td><input type="text" name="additionalRequirement" id="additionalReqId" value="${ADMIN_FIN_CELL_QPR_ACT.additionalRequirement}" class="form-control validate Align-Right" onkeyup="validateAddReq()"></td>
+										</tr>
 									</tbody>
 								</table>
 								<br>
 							</div>
 							<div class="form-group text-right" style="padding-right: 10px;">
-								<button type="submit" id="saveButtn"
+								<button type="button" onclick="saveAndGetDataQtrRprt('save')" id="saveButtn"
 									class="btn bg-green waves-effect">SAVE</button>
 								<button type="button" id="clearButtn" onclick="onClear(this)"
 									class="btn bg-light-blue waves-effect">CLEAR</button>
@@ -231,6 +246,7 @@ function isNoOfUnitAndExpInurredFilled(index){
 						<br />
 						<!-- hidden fields -->
 						<input type="hidden" name="showQqrtrId" id="showQqrtrId">
+						<input type="hidden" id="origin" name="origin" />
 						<input type="hidden" name="adminAndFinancialDataActivity.adminFinancialDataActivityId" value="${CEC_APPROVED_ACTIVITY.adminFinancialDataActivityId}">
 					</form:form>
 				</div>

@@ -1,6 +1,7 @@
 <%@include file="../taglib/taglib.jsp"%>
 <script type="text/javascript">
 var quater_id = '${QTR_ID}';
+var remaining_add_req = '${REMAINING_ADD_REQ}';
 var fund_allocated_by_state='${FUND_ALLOCATED_BY_STATE}';
 var fund_used='${FUND_USED_IN_OTHER_QUATOR}';
 if(quater_id > 2){
@@ -12,9 +13,10 @@ $(document).ready(function() {
 	showTablediv();
 }); 
 
-function getSelelctedQtrRprt(){
+function saveAndGetDataQtrRprt(msg){
 	$('#quaterTransient').val($('#quaterDropDownId').val()); 
- 	document.incomeEnhancement.method = "get";
+	$('#origin').val(msg);
+ 	document.incomeEnhancement.method = "post";
 	document.incomeEnhancement.action = "incomeEnhancementQuaterly.html?<csrf:token uri='incomeEnhancementQuaterly.html'/>";
 	document.incomeEnhancement.submit(); 
 }
@@ -27,8 +29,15 @@ function showTablediv(){
 	}
 }
 
+function validateAddReq(){
+	if(+$('#additionalReqId').val() > +remaining_add_req){
+		alert('Additional requirementshould not exceed : ' + remaining_add_req);
+		$('#additionalReqId').val('');
+		$('#additionalReqId').focus();
+	}
+}
 function validateFundByAllocatedFund(obj){
-	var noOfRows=$("#tbodyId tr").length;
+	var noOfRows=$("#tbodyId tr").length -1;
 	var fund_allocated_by_state_local = +fund_allocated_by_state;
 	var fund_used_local= +fund_used;
 	var total=0;
@@ -78,7 +87,7 @@ function validateFundByAllocatedFund(obj){
 											</div>
 											<div align="center" class="col-lg-4">
 												<select id="quaterDropDownId" name="quarterDuration.qtrId"
-													class="form-control" onchange="getSelelctedQtrRprt();showTablediv()">
+													class="form-control" onchange="saveAndGetDataQtrRprt('qtrChange');showTablediv()">
 													<option value="0">Select quarter</option>
 													<c:forEach items="${QUATER_DETAILS}" var="qtr">
 														<option value="${qtr.qtrId}">${qtr.qtrDuration}</option>
@@ -138,12 +147,17 @@ function validateFundByAllocatedFund(obj){
 										</td>
 										</tr>
 										</c:forEach>
+										<tr>
+											<th colspan="2"><div align="center">Additional Requirement</div></th>
+											<th colspan="2"><div align="center" id="additionalReqStateId">${CEC_APPROVED_ACTIVITY.additionalRequirement }</div></th>
+											<td><div align="center"><input type="text" name="additionalRequirement" id="additionalReqId" value="${QPR_ENHANCEMENT.additionalRequirement}" class="form-control validate Align-Right" onkeyup="validateAddReq()"></div></td>
+										</tr>
 									</tbody>
 								</table>
 							</div>
 								<div class="form-group text-right">
-									<button type="submit" id="saveButtn"
-										class="btn bg-green waves-effect">SAVE</button>
+									<button type="button" id="saveButtn"
+										class="btn bg-green waves-effect" onclick="saveAndGetDataQtrRprt('save')">SAVE</button>
 									<button type="button" id="clearButtn" onclick="onClear(this)"
 										class="btn bg-light-blue waves-effect">CLEAR</button>
 									<button type="button"
@@ -158,6 +172,7 @@ function validateFundByAllocatedFund(obj){
 						<input type="hidden" name="qprIncomeEnhancementId" value="${QPR_ENHANCEMENT.qprIncomeEnhancementId}" />
 						<input type="hidden" name="qprPmuId" value="${QPR_ENHANCEMENT.qprIncomeEnhancementId}" />
 						<input type="hidden" id="quaterTransient" name="showQqrtrId" />
+						<input type="hidden" id="origin" name="origin" />
 					</form:form>
 				</div>
 			</div>

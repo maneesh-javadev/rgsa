@@ -1,6 +1,7 @@
 <%@include file="../taglib/taglib.jsp"%>
 <script>
 var quator_id='${QTR_ID}';
+var remaining_add_req = '${REMAINING_ADD_REQ}';
 var fund_allocated_by_state='${FUND_ALLOCATED_BY_STATE}';
 var fund_used='${FUND_USED_IN_OTHER_QUATOR}';
 if(quator_id > 2){
@@ -23,10 +24,11 @@ $('document').ready(function() {
 	  });
 });
 
-function getDataAccToQtr(){
+function saveAndGetDataQtrRprt(msg){
 	$('#qtrId').val($('#qtrDropDownId').val());
-	document.satcomActivityProgress.method = "get";
-	document.satcomActivityProgress.action = "currentUsageSatcomQuaterly.html?<csrf:token uri='currentUsageSatcomQuaterly.html'/>";
+ 	$('#origin').val(msg);
+	document.satcomActivityProgress.method = "post";
+	document.satcomActivityProgress.action = "currentUsageSatcomQuaterlyPost.html?<csrf:token uri='currentUsageSatcomQuaterlyPost.html'/>";
 	document.satcomActivityProgress.submit();
 }
 
@@ -39,7 +41,7 @@ function showTable(){
 }
 
 function validateFundByAllocatedFund(obj){
-	var noOfRows=$("#tbodyId tr").length;
+	var noOfRows=$("#tbodyId tr").length-1;
 	var fund_allocated_by_state_local = +fund_allocated_by_state;
 	var fund_used_local= +fund_used;
 	var total=0;
@@ -80,6 +82,25 @@ function isNoOfUnitAndExpInurredFilled(index){
 		$('#noOfUnitCompleted_'+index).focus();
 	}
 }
+
+function validateAddReq(){
+	if(+$('#additionalReqId').val() > +remaining_add_req){
+		alert('Additional requirementshould not exceed : ' + remaining_add_req);
+		$('#additionalReqId').val('');
+		$('#additionalReqId').focus();
+	}
+			
+}
+
+function validateWithCorrespondingFund(index){
+	var tota_fund_cec= +$('#fundCecId_'+index).text();	
+	var total_corresponding_fund_remaining = tota_fund_cec - $('#totalExpenditureIncurred_'+index).val();
+	if($('#expenditureIncurred_'+index).val() > total_corresponding_fund_remaining){
+		alert('total expenditure should not exceed '+ total_corresponding_fund_remaining);
+		$('#expenditureIncurred_'+index).val('');
+		$('#expenditureIncurred_'+index).focus();
+	}
+}
 </script>
 <section class="content">
 	<div class="container-fluid">
@@ -100,7 +121,7 @@ function isNoOfUnitAndExpInurredFilled(index){
 										<label for="QuaterId1"><strong>Quarter Duration :</strong></label>
 									</div>
 									<div class="col-lg-4">
-										<select class="form-control" name="satcomActivityProgressDetails[${count}].quarterDuration.qtrId" id="qtrDropDownId" onchange="getDataAccToQtr();showTable()">
+										<select class="form-control" name="satcomActivityProgressDetails[${count}].quarterDuration.qtrId" id="qtrDropDownId" onchange="saveAndGetDataQtrRprt('qtrChange');showTable()">
 											<option value="0">Select Quator</option>
 											<c:forEach items="${QUATER_DETAILS}" var="qtr">
 											<option value="${qtr.qtrId}">${qtr.qtrDuration}</option>
@@ -129,9 +150,11 @@ function isNoOfUnitAndExpInurredFilled(index){
 									<c:choose>
 									<c:when test="${not empty DEATIL_FOR_TOTAL_NO_OF_UNIT}">
 										<input type="hidden" id="totalNoOfUnit_${index.index}" value="${DEATIL_FOR_TOTAL_NO_OF_UNIT[index.index].noOfUnitCompleted}" />
+										<input type="hidden" id="totalExpenditureIncurred_${index.index}" value="${DEATIL_FOR_TOTAL_NO_OF_UNIT[index.index].expenditureIncurred}" />
 									</c:when>
 									<c:otherwise>
 										<input type="hidden" id="totalNoOfUnit_${index.index}" value="0" />
+										<input type="hidden" id="totalExpenditureIncurred_${index.index}" value="0" />
 									</c:otherwise>
 									</c:choose>
 									<input type="hidden" name="satcomActivityProgressDetails[${index.index}].satcomDetailsProgressId"
@@ -142,20 +165,26 @@ function isNoOfUnitAndExpInurredFilled(index){
 									<td><div align="center"><strong>${detailObjCec.level.satcomLevelName}</strong></div></td>
 									<td id="noOfUnitCecId_${index.index}"><div align="center"><strong>${detailObjCec.noOfUnits}</strong></div></td>
 									<td><div align="center"><strong>${detailObjCec.unitCost}</strong></div></td>
-									<td><div align="center"><strong>${detailObjCec.funds}</strong></div></td>
+									<td id="fundCecId_${index.index}"><div align="center"><strong>${detailObjCec.funds}</strong></div></td>
 									<c:choose>
 										<c:when test="${not empty SATCOM_QUATER.satcomActivityProgressDetails }">
-											<td><input type="text" name="satcomActivityProgressDetails[${index.index}].noOfUnitCompleted" class="form-control validate" style="text-align: right;" id="noOfUnitCompleted_${index.index}" value="${SATCOM_QUATER.satcomActivityProgressDetails[index.index].noOfUnitCompleted }" onkeyup="validateNoOfUnits(${index.index});isNoOfUnitAndExpInurredFilled(${index.index})" required="required"/></td>
-											<td><input type="text" name="satcomActivityProgressDetails[${index.index}].expenditureIncurred" class="form-control validate" style="text-align: right;" value="${SATCOM_QUATER.satcomActivityProgressDetails[index.index].expenditureIncurred }" id="expenditureIncurred_${index.index}" onkeyup="validateFundByAllocatedFund(${index.index});isNoOfUnitAndExpInurredFilled(${index.index})" required="required"/></td>
+											<td><input type="text" name="satcomActivityProgressDetails[${index.index}].noOfUnitCompleted" class="form-control validate" style="text-align: right;" id="noOfUnitCompleted_${index.index}" value="${SATCOM_QUATER.satcomActivityProgressDetails[index.index].noOfUnitCompleted }" onkeyup="validateNoOfUnits(${index.index});" required="required"/></td>
+											<td><input type="text" name="satcomActivityProgressDetails[${index.index}].expenditureIncurred" class="form-control validate" style="text-align: right;" value="${SATCOM_QUATER.satcomActivityProgressDetails[index.index].expenditureIncurred }" id="expenditureIncurred_${index.index}" onkeyup="validateFundByAllocatedFund(${index.index});isNoOfUnitAndExpInurredFilled(${index.index});validateWithCorrespondingFund(${index.index})" required="required"/></td>
 										</c:when>
 										<c:otherwise>
-											<td><input type="text" name="satcomActivityProgressDetails[${index.index}].noOfUnitCompleted" class="form-control validate" style="text-align: right;" id="noOfUnitCompleted_${index.index}" onkeyup="validateNoOfUnits(${index.index});isNoOfUnitAndExpInurredFilled(${index.index})" required="required"/></td>
-											<td><input type="text" name="satcomActivityProgressDetails[${index.index}].expenditureIncurred" class="form-control validate" style="text-align: right;" id="expenditureIncurred_${index.index}" onkeyup="validateFundByAllocatedFund(${index.index});isNoOfUnitAndExpInurredFilled(${index.index})" required="required"/></td>
+											<td><input type="text" name="satcomActivityProgressDetails[${index.index}].noOfUnitCompleted" class="form-control validate" style="text-align: right;" id="noOfUnitCompleted_${index.index}" onkeyup="validateNoOfUnits(${index.index});" required="required"/></td>
+											<td><input type="text" name="satcomActivityProgressDetails[${index.index}].expenditureIncurred" class="form-control validate" style="text-align: right;" id="expenditureIncurred_${index.index}" onkeyup="validateFundByAllocatedFund(${index.index});isNoOfUnitAndExpInurredFilled(${index.index}); validateWithCorrespondingFund(${index.index})" required="required"/></td>
 										</c:otherwise>
 									</c:choose>
 									
 									</tr>
 									</c:forEach>
+									<tr>
+										<th colspan="2"><div align="center">Additional Requirement</div></th>
+										<th colspan="3"><div align="center" id="additionalReqStateId">${SATCOM_ACTIVITY_APPROVED.additionalRequirement }</div></th>
+										<td></td>
+										<td><input type="text" name="additionalRequirement" id="additionalReqId" value="${SATCOM_QUATER.additionalRequirement}" class="form-control validate Align-Right" onkeyup="validateAddReq()"></td>
+									</tr>
 								</c:when>
 								<c:otherwise>
 									<!-- no condition till now -->
@@ -164,7 +193,7 @@ function isNoOfUnitAndExpInurredFilled(index){
 								</tbody>
 							</table>
 								<div class="text-right">
-									<button type="submit" class="btn bg-green waves-effect">
+									<button type="button" onclick="saveAndGetDataQtrRprt('save')" class="btn bg-green waves-effect">
 										SAVE</button>
 									<button type="button" onclick="onClear(this)"
 										class="btn bg-light-blue waves-effect">CLEAR</button>
@@ -175,7 +204,8 @@ function isNoOfUnitAndExpInurredFilled(index){
 							</div>
 						</div>
 						<!--hidden fields  -->
-						<input type="hidden" id="qtrId" name="qtrIdJsp1" value=''/>
+						<input type="hidden" id="qtrId" name="qtrIdJsp1" />
+						<input type="hidden" id="origin" name="origin" />
 						<input type="hidden" name="satcomActivity.satcomActivityId"  value="${satcomActivityId}">
 						<input type="hidden" name="satcomActivityProgressId"  value="${PROGRESS_REPORT_ACT_ID}">
 						

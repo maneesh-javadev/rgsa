@@ -3,6 +3,7 @@
 	src="${pageContext.request.contextPath}/resources/plugins/angular/angular.min.js"></script>
 <script>
 var  quator_id='${quarterId}';
+var remaining_add_req = '${REMAINING_ADD_REQ}';
 var fund_allocated_by_state='${FUND_ALLOCATED_BY_STATE}';
 if(quator_id > 2){
 	var fund_allocated_in_pre_qtr = '${FUND_ALLOCATED_BY_STATE_PREVIOUS}';
@@ -27,12 +28,13 @@ $( document ).ready(function() {
 	}
 });
 
-function getSelelctedQtrRprt(){
+function saveAndGetDataQtrRprt(msg){
 	 var districtId = $('#districtId').val();
 	 var quaterId = $('#quaterId').val();
 	 $('#districtId').val(districtId);
 	 $('#qrtId').val(quaterId);
-	 	document.qprEnablement.method = "get";
+	 $('#origin').val(msg);
+	 	document.qprEnablement.method = "post";
 		document.qprEnablement.action = "enablementQuaterly.html?<csrf:token uri='enablementQuaterly.html'/>";
 		document.qprEnablement.submit();
 }
@@ -42,7 +44,7 @@ function showDistrictDropDown(){
 }
 
 function validateFundByAllocatedFund(obj){
-	var noOfRows=$("#tbodyId tr").length;
+	var noOfRows=$("#tbodyId tr").length -1;
 	var fund_allocated_by_state_local = +fund_allocated_by_state;
 	var fund_used_local= +fund_used;
 	var total=0;
@@ -66,6 +68,13 @@ function validateFundByAllocatedFund(obj){
 	}
 }
 
+function validateAddReq(){
+	if(+$('#additionalReqId').val() > +remaining_add_req){
+		alert('Additional requirementshould not exceed : ' + remaining_add_req);
+		$('#additionalReqId').val('');
+		$('#additionalReqId').focus();
+	}
+}
 </script>
 <section class="content">
 	<div class="container-fluid">
@@ -90,7 +99,7 @@ function validateFundByAllocatedFund(obj){
 									</div>
 									<div align="center" class="col-lg-4">
 										<select id="quaterId" name="quarterDuration.qtrId"
-											class="form-control" onchange="getSelelctedQtrRprt();showDistrictDropDown()">
+											class="form-control" onchange="saveAndGetDataQtrRprt('qtrChange');showDistrictDropDown()">
 											<option value="0">Select</option>
 											<c:choose>
 												<c:when test="${not empty Qpr_Enablement}">
@@ -215,6 +224,11 @@ function validateFundByAllocatedFund(obj){
 																id="expenditureIncurred_${count.index}"></td>
 														</tr>
 													</c:forEach>
+													<tr>
+														<th><div align="center">Additional Requirement</div></th>
+														<th><div align="center" id="additionalReqStateId">${eEnablementsApproved.additionalRequirement }</div></th>
+														<td><input type="text" name="additionalRequirement" id="additionalReqId" value="${Qpr_Enablement.additionalRequirement}" class="form-control validate Align-Right" onkeyup="validateAddReq()"></td>
+													</tr>
 												</c:when>
 												<c:when test="${not empty eEnablementReportDto}">
 													<c:forEach items="${eEnablementReportDto}" var="localbody"
@@ -241,6 +255,11 @@ function validateFundByAllocatedFund(obj){
 																required="required"></td>
 														</tr>
 													</c:forEach>
+													<tr>
+														<th>Additional Requirement</th>
+														<th id="additionalReqStateId">${eEnablementsApproved.additionalRequirement }</th>
+														<td><input type="text" name="additionalRequirement" id="additionalReqId" value="${Qpr_Enablement.additionalRequirement}" class="form-control validate Align-Right" onkeyup="validateAddReq()"></td>
+													</tr>
 												</c:when>
 												<c:otherwise>
 													<div class="form-group">
@@ -274,7 +293,7 @@ function validateFundByAllocatedFund(obj){
 							<c:choose>
 								<c:when test="${not empty eEnablementReportDto}">
 									<div class="text-right">
-										<button type="submit" class="btn bg-green waves-effect">
+										<button type="submit" onclick="saveAndGetDataQtrRprt('save')" class="btn bg-green waves-effect">
 											SAVE</button>
 										<button type="button" onclick="onClear(this)"
 											class="btn bg-light-blue waves-effect">CLEAR</button>
@@ -295,6 +314,7 @@ function validateFundByAllocatedFund(obj){
 						</div>
 						<input type="hidden" id="districtId" name="districtId" value='' />
 						<input type="hidden" id="qrtId" name="qrtId" value='' />
+						<input type="hidden" id="origin" name="origin" />
 					</form:form>
 				</div>
 

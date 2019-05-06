@@ -70,10 +70,14 @@ import org.hibernate.annotations.UpdateTimestamp;
 		@Transient
 		private Integer qtrId;
 		
+		@Column(name="additional_requirement")
+		private Integer additioinalRequirements;
+		
+		@Transient
+		private String origin;
 		
 		@Column(name="is_freeze")
 		private Boolean isFreeze;
-
 
 		public Integer getQprIaId() {
 			return qprIaId;
@@ -182,6 +186,26 @@ import org.hibernate.annotations.UpdateTimestamp;
 
 		public void setIsFreeze(Boolean isFreeze) {
 			this.isFreeze = isFreeze;
+		}
+
+
+		public Integer getAdditioinalRequirements() {
+			return additioinalRequirements;
+		}
+
+
+		public void setAdditioinalRequirements(Integer additioinalRequirements) {
+			this.additioinalRequirements = additioinalRequirements;
+		}
+
+
+		public String getOrigin() {
+			return origin;
+		}
+
+
+		public void setOrigin(String origin) {
+			this.origin = origin;
 		}
 
 		
