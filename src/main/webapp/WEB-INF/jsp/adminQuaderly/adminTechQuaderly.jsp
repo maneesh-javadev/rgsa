@@ -140,7 +140,8 @@ function validateAddReq(){
 											<th>Post Type</th>
 											<th>Post Name</th>
 											<th>No. Of Unit Approved</th>
-											<th>Fund Approved</th>
+											<th>Unit Cost Approved</th>
+											<th>Fund Sanctioned</th>
 											<th>No. of Unit Filled</th>
 											<th>Expenditure Incurred</th>
 										</tr>
@@ -179,6 +180,7 @@ function validateAddReq(){
 												<td><strong>${obj.postType.master.postTypeName}</strong></td>
 												<td><strong>${obj.postType.postName}</strong></td>
 												<td id="noOfUnitCecId_${count.index}"><strong>${obj.noOfUnits}</strong></td>
+												<td><strong>${obj.unitCost}</strong></td>
 												<td id="fundCecId_${count.index}"><strong>${obj.funds}</strong></td>
 												<td><input type="text"
 													name="administrativeTechnicalDetailProgress[${count.index}].noOfUnitCompleted" id="noOfUnitCompleted_${count.index}"

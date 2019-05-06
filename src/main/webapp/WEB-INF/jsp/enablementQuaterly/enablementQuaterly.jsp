@@ -187,7 +187,7 @@ function validateAddReq(){
 
 												<th>
 													<div align="center">
-														<strong>Approved Amount</strong>
+														<strong>Amount Sanctioned</strong>
 													</div>
 												</th>
 												<th>
@@ -214,8 +214,8 @@ function validateAddReq(){
 															name="qprEnablementDetails[${count.index}].localBodyCode"
 															value="${EnablementDtlsList[count.index].localBodyCode}">
 														<tr>
-															<td><strong>${eEnablementReportDto[count.index].localBodyNameEnglish}</strong></td>
-															<td><strong>${eEnablementReportDto[count.index].unitCost}</strong></td>
+															<td><div align="center"><strong>${eEnablementReportDto[count.index].localBodyNameEnglish}</strong></div></td>
+															<td><div align="center"><strong>${eEnablementReportDto[count.index].unitCost}</strong></div></td>
 
 															<td><input type="text" class="form-control Align-Right"
 																name="qprEnablementDetails[${count.index}].expenditureIncurred"
@@ -243,10 +243,10 @@ function validateAddReq(){
 															value="${Qpr_Enablement.qprEnablementDetails[count.index].qprEEenablementDetailsId}">
 
 														<tr>
-															<td><strong>${localbody.localBodyNameEnglish}</strong>
+															<td><div align="center"><strong>${localbody.localBodyNameEnglish}</strong></div>
 															</td>
 
-															<td><strong>${localbody.unitCost}</strong></td>
+															<td><div align="center"><strong>${localbody.unitCost}</strong></div></td>
 															<td><input type="text"
 																class="form-control Align-Right"
 																name="qprEnablementDetails[${count.index}].expenditureIncurred"

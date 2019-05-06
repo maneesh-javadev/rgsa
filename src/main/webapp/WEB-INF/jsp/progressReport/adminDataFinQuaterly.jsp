@@ -146,7 +146,8 @@ function validateAddReq(){
 											<th rowspan="2">Type of Center</th>
 											<th rowspan="2">Domain Experts</th>
 											<th rowspan="2">Approved No. of Staff</th>
-											<th rowspan="2">Approved fund</th>
+											<th rowspan="2">Approved Unit Cost</th>
+											<th rowspan="2">Fund Sanctioned</th>
 											<th rowspan="2"><div align="center">no. Of Units
 													Filled</div></th>
 											<th rowspan="2"><div align="center">Expenditure
@@ -185,6 +186,9 @@ function validateAddReq(){
 											<td><div align="center" id="noOfUnitCecId_${index.index}">
 													<strong>${obj.noOfStaffProposed}</strong>
 												</div></td>
+											<td><div align="center" id="noOfUnitCecId_${index.index}">
+												<strong>${obj.unitCost}</strong>
+											</div></td>
 											<td><div align="center" id="fundCecId_${index.index}">
 													<strong>${obj.funds}</strong>
 												</div></td>
