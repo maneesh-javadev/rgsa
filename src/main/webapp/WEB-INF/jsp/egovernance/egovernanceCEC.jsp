@@ -55,6 +55,24 @@ function changeColor() {
 									action="egovernancesupportgroup.html" modelAttribute="EGOVERN_MODEL">
 									<input type="hidden" name="<csrf:token-name/>"
 										value="<csrf:token-value uri="egovernancesupportgroup.html" />" />
+								<div class="row clearfix">
+									<div class="form-group">
+										<div class="col-sm-4">
+											<label for="District"><spring:message
+													code="Label.DistrictsupportedDprc" htmlEscape="true" /><span><sup
+													style="color: red;">*</sup></span> </label>
+										</div>
+
+										<div class="col-sm-2">
+											<div align="center">
+												<strong>${eGovActivityForState.noOfDistrictSupported}</strong>
+											</div>
+											<form:hidden id="districtSupportedId"
+												path="noOfDistrictSupported"
+												value="${eGovActivityForState.noOfDistrictSupported}" />
+										</div>
+									</div>
+								</div>
 									<c:set var="countSpmuCec" value="0" scope="page" />
 									<c:set var="countDpmuCec" value="0" scope="page" />
 									<div class="table-responsive">
@@ -359,8 +377,22 @@ function changeColor() {
 
 							<div class="container tab-pane fade" id="MOPR"
 								style="width: auto;">
-
-										<div class="table-responsive">
+									<div class="row clearfix">
+										<div class="form-group">
+											<div class="col-sm-4">
+												<label for="District"><spring:message
+														code="Label.DistrictsupportedDprc" htmlEscape="true" /><span><sup
+														style="color: red;">*</sup></span> </label>
+											</div>
+	
+											<div class="col-sm-2">
+												<div align="center">
+													<strong>${eGovActivityForMOPR.noOfDistrictSupported}</strong>
+												</div>
+											</div>
+										</div>
+									</div>
+								<div class="table-responsive">
 											<table id="tableId" class="table table-bordered">
 												<thead>
 													<tr>

@@ -92,6 +92,7 @@ public class EGovernSupportGrpController {
 			form.seteGovSupportActivityDetails(eGovActivityDetails);
 			form.setAdditionalRequirementSpmu(eGovActivity.get(0).getAdditionalRequirementSpmu());
 			form.setAdditionalRequirementDpmu(eGovActivity.get(0).getAdditionalRequirementDpmu());
+			form.setNoOfDistrictSupported(eGovActivity.get(0).getNoOfDistrictSupported());
 			model.addAttribute("initial_status", false);
 		}else{
 			model.addAttribute("initial_status", true);

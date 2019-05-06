@@ -41,7 +41,7 @@
 											<div class="col-sm-4">
 										<div class="form-line">
 											<form:input id="districtSupportedId" path="noOfDistrictSupported" class="form-control Align-Right"
-												onkeypress="return isNumber(event)" onkeyup="validateDistricts()" maxlength="7"/></div>
+												onkeypress="return isNumber(event)" style="text-align:right;" onkeyup="validateDistricts()" readonly="${eGovActivity.status eq true}" maxlength="7"/></div>
 										</div>
 										<input type="hidden" id="districtsInState" value="${DISTRICTS_IN_STATE}">
 									</div>
