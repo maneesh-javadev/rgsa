@@ -75,6 +75,12 @@ public class QprIncomeEnhancement {
 	
 	@Transient
 	private Integer showQqrtrId;
+	
+	@Column(name="additional_requirement")
+	private Integer additionalRequirement;
+	
+	@Transient
+	private String origin;
 
 	public Integer getShowQqrtrId() {
 		return showQqrtrId;
@@ -162,6 +168,22 @@ public class QprIncomeEnhancement {
 
 	public void setMenuId(Integer menuId) {
 		this.menuId = menuId;
+	}
+
+	public String getOrigin() {
+		return origin;
+	}
+
+	public void setOrigin(String origin) {
+		this.origin = origin;
+	}
+
+	public Integer getAdditionalRequirement() {
+		return additionalRequirement;
+	}
+
+	public void setAdditionalRequirement(Integer additionalRequirement) {
+		this.additionalRequirement = additionalRequirement;
 	}
 	
 }

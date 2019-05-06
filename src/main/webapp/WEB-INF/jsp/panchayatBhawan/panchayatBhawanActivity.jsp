@@ -194,7 +194,12 @@
                                     <td>
                                        <input type="text" class="form-control" ng-model="panchayatBhawanActivity.panchatayBhawanActivityDetails[$index].funds" style="text-align:right;" disabled="disabled"/>
                                     </td>
-                                   
+                                   <td  data-ng-if="userType == 'M' || userType == 'C'" align="center">
+													         <input type="checkbox" data-ng-disabled="panchayatBhawanActivity.status == 'F'"  data-ng-model="panchayatBhawanActivity.panchatayBhawanActivityDetails[$index].isApproved"  />
+									</td>
+							        <td data-ng-if="userType == 'M'" style="display: none">
+								         <input type="checkbox" data-ng-disabled="panchayatBhawanActivity.status == 'F'" class="form-control" data-ng-model="panchayatBhawanActivity.panchatayBhawanActivityDetails[$index].isApproved" class="form-control" />
+							     	</td>
                                  </tr>
                               </tbody>
                               <tfoot>
@@ -270,6 +275,22 @@
                                        <br>C=A-B
                                     </div>
                                  </th>
+                                  <th data-ng-if="userType == 'M' || userType == 'C'">
+                                       <div align="center">
+                                          <strong>
+                                             <spring:message code="Label.IsApproved"
+                                                htmlEscape="true" />
+                                          </strong>
+                                       </div>
+                                    </th>
+                                    <th data-ng-if="userType == 'S'" style="display: none">
+                                       <div align="center" >
+                                          <strong>
+                                             <spring:message code="Label.IsApproved"
+                                                htmlEscape="true" />
+                                          </strong>
+                                       </div>
+                                    </th>
                                  </tr>
                               </thead>
                               <tbody>
@@ -292,7 +313,12 @@
                                     <td>
                                        <input type="text" class="form-control" ng-model="panchayatBhawanActivity.panchatayBhawanActivityDetails[$index].funds" style="text-align:right;" disabled="disabled"/>
                                     </td>
-                                  
+                                  	<td  data-ng-if="userType == 'M' || userType == 'C'" align="center">
+													         <input type="checkbox" data-ng-disabled="panchayatBhawanActivity.status == 'F'"  data-ng-model="panchayatBhawanActivity.panchatayBhawanActivityDetails[$index].isApproved"  />
+									</td>
+							        <td data-ng-if="userType == 'M'" style="display: none">
+								         <input type="checkbox" data-ng-disabled="panchayatBhawanActivity.status == 'F'" class="form-control" data-ng-model="panchayatBhawanActivity.panchatayBhawanActivityDetails[$index].isApproved" class="form-control" />
+							     	</td>
                                     
                                  </tr>
                               </tbody>

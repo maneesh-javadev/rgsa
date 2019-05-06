@@ -30,7 +30,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 query="SELECT INNO FROM InnovativeActivity INNO where stateCode=:stateCode and yearId=:yearId and userType=:userType"),
 @NamedQuery(name="DELETE_INNOVATIVE_ACTIVITY",
 query="Delete FROM InnovativeActivity where innovativeActivityId=:innovativeActivityId"),
-@NamedQuery(name="FETCH_INNOVATIVE_ACTIVITY_APPROVED_ACTIVITY" ,query="SELECT IA from InnovativeActivity IA RIGHT OUTER JOIN FETCH IA.innovativeActivityDetails IAD where IA.yearId=:yearId and IAD.isActive='TRUE' and IA.userType=:userType and IA.stateCode=:stateCode and IAD.isApproved='TRUE' ")
+@NamedQuery(name="FETCH_INNOVATIVE_ACTIVITY_APPROVED_ACTIVITY" ,query="SELECT IA from InnovativeActivity IA RIGHT OUTER JOIN FETCH IA.innovativeActivityDetails IAD where IA.yearId=:yearId and IA.userType=:userType and IA.stateCode=:stateCode ")
 
 
 })

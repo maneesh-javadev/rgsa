@@ -122,7 +122,8 @@ public class QprTrainingActivityController {
 				model.addAttribute("FUND_USED_IN_OTHER_QUATOR", quaterWiseFund.get(0).getFunds());
 			}
 			/*----------------------------end here-------------------------------------------------- */
-			
+			if(quarterId !=0) 
+				model.addAttribute("REMAINING_ADD_REQ", Integer.parseInt(progressReportService.getBalanceAdditionalReqiurment(13,quarterId)));
 			model.addAttribute("CB_MASTERS", cbMasters);
 			model.addAttribute("QTR_ID", quarterId);
 			model.addAttribute("FUND_ALLOCATED_BY_STATE", stateAllocation.get(0).getFundsAllocated());

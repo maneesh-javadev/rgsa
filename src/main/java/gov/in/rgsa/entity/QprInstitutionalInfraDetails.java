@@ -1,7 +1,9 @@
 package gov.in.rgsa.entity;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -21,6 +23,9 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 @NamedQuery(name="FETCH_QPR_INST_ACTIVITY_DETAILS_DEPEND_ON_QUATOR",query="SELECt D FROM QprInstitutionalInfraDetails D WHERE D.qprInstitutionalInfrastructure.qprInstInfraId=:qprInstInfraId AND D.trainingInstitueTypeId=:trainingInstituteTypeId")
 public class QprInstitutionalInfraDetails {
 
+
+	
+	
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	@Column(name="qpr_inst_infra_details_id")
@@ -40,15 +45,16 @@ public class QprInstitutionalInfraDetails {
 	@Column(name="expenditure_incurred")
 	private Long expenditureIncurred;
 	
-	@Column(name="file_name")
-	private String fileName;
+	@Column(name="file_path")
+	private String file_path;
 	
-	@Column(name="file_content_type")
-	private String fileContentType;
+	@OneToOne(fetch=FetchType.EAGER,cascade=CascadeType.ALL)
+	@JoinColumn(name="file_node_id")
+	private FileNode fileNode;
+
 	
-	@Column(name="file_location")
-	private String fileLocation;
-		
+	
+	
 	@Column(name="institutional_activity_type_id")
 	private Integer trainingInstitueTypeId;
 
@@ -57,7 +63,8 @@ public class QprInstitutionalInfraDetails {
 	private MultipartFile file;
 
 	
-	
+	@Transient
+	private Integer fileNodeId;
 
 	public MultipartFile getFile() {
 		return file;
@@ -108,30 +115,7 @@ public class QprInstitutionalInfraDetails {
 	}
 
 	
-	public String getFileName() {
-		return fileName;
-	}
-
-	public void setFileName(String fileName) {
-		this.fileName = fileName;
-	}
-
-	public String getFileContentType() {
-		return fileContentType;
-	}
-
-	public void setFileContentType(String fileContentType) {
-		this.fileContentType = fileContentType;
-	}
-
-	public String getFileLocation() {
-		return fileLocation;
-	}
-
-	public void setFileLocation(String fileLocation) {
-		this.fileLocation = fileLocation;
-	}
-
+	
 	public Integer getTrainingInstitueTypeId() {
 		return trainingInstitueTypeId;
 	}
@@ -139,6 +123,32 @@ public class QprInstitutionalInfraDetails {
 	public void setTrainingInstitueTypeId(Integer trainingInstitueTypeId) {
 		this.trainingInstitueTypeId = trainingInstitueTypeId;
 	}
+
+	public String getFile_path() {
+		return file_path;
+	}
+
+	public void setFile_path(String file_path) {
+		this.file_path = file_path;
+	}
+
+	public FileNode getFileNode() {
+		return fileNode;
+	}
+
+	public void setFileNode(FileNode fileNode) {
+		this.fileNode = fileNode;
+	}
+
+	public Integer getFileNodeId() {
+		return fileNodeId;
+	}
+
+	public void setFileNodeId(Integer fileNodeId) {
+		this.fileNodeId = fileNodeId;
+	}
+
+	
 
 	
 	

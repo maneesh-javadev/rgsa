@@ -503,6 +503,13 @@ publicModule.controller("institutionalInfraActivityPlanController", [ '$scope', 
 			$scope.subTotalFundCECCFD = totalOfFunds;
 		}	
 		
+		var totalNBS=$scope.grandTotalNBS!=null && $scope.grandTotalNBS!=undefined?$scope.grandTotalNBS:0;
+		var totalNBD=$scope.grandTotalNBD!=null && $scope.grandTotalNBD!=undefined?$scope.grandTotalNBD:0;
+		var totalCFS=$scope.totalWithoutAddRequirementsCFS!=null && $scope.totalWithoutAddRequirementsCFS!=undefined?$scope.totalWithoutAddRequirementsCFS:0;
+		var totalCFD=$scope.totalWithoutAddRequirementsCFD!=null && $scope.totalWithoutAddRequirementsCFD!=undefined?$scope.totalWithoutAddRequirementsCFD:0;
+		
+		$scope.grandTotal=totalNBS+totalNBD+totalCFS+totalCFD;
+		
 	}
 	
 	

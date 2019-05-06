@@ -1,6 +1,7 @@
 <%@include file="../taglib/taglib.jsp"%>
 <script>
 var quater_id = '${QTR_ID}';
+var remaining_add_req = '${REMAINING_ADD_REQ}';
 var fund_allocated_by_state='${FUND_ALLOCATED_BY_STATE}';
 var fund_used='${FUND_USED_IN_OTHER_QUATOR}';
 if(quater_id > 2){
@@ -74,6 +75,24 @@ function validateFundByAllocatedFund(obj){
 	}
 }
 
+function validateAddReq(){
+	if(+$('#additionalReqId').val() > +remaining_add_req){
+		alert('Additional requirementshould not exceed : ' + remaining_add_req);
+		$('#additionalReqId').val('');
+		$('#additionalReqId').focus();
+	}
+			
+}
+
+function validateWithCorrespondingFund(index){
+	var tota_fund_cec= +$('#fundCecId_'+index).text();	
+	var total_corresponding_fund_remaining = tota_fund_cec - $('#totalExpenditureIncurred_'+index).val();
+	if($('#expenditureIncurred_'+index).val() > total_corresponding_fund_remaining){
+		alert('total expenditure should not exceed '+ total_corresponding_fund_remaining);
+		$('#expenditureIncurred_'+index).val('');
+		$('#expenditureIncurred_'+index).focus();
+	}
+}
 </script>
 <section class="content">
 	<div class="container-fluid">
@@ -137,7 +156,7 @@ function validateFundByAllocatedFund(obj){
 												<td><div align="center"><strong>${index.count}.</strong></div></td>
 												<td><div align="center"><strong>${master.cbName}</strong></div></td>
 												<td><div align="center" id="noOfUnitCecId_${index.index}"><strong>${CEC_APPROVED_ACTIVITY.capacityBuildingActivityDetails[index.index].noOfUnits}</strong></div></td>
-												<td><div align="center"><strong>${CEC_APPROVED_ACTIVITY.capacityBuildingActivityDetails[index.index].funds}</strong></div></td>
+												<td><div align="center" id="fundCecId_${index.index}"><strong>${CEC_APPROVED_ACTIVITY.capacityBuildingActivityDetails[index.index].funds}</strong></div></td>
 												<c:choose>
 													<c:when test="${not empty QPR_CB_ACT_DATA}">
 														<td><div align="center"><input type="text" name="qprCbActivityDetails[${index.index}].noOfDaysCompleted" class="form-control Align-Right" id="noOfDaysCompleted_${index.index}" value="${QPR_CB_ACT_DATA.qprCbActivityDetails[index.index].noOfDaysCompleted }"></div></td>
@@ -145,7 +164,7 @@ function validateFundByAllocatedFund(obj){
 																				onkeyup="this.value=this.value.replace(/[^0-9]/g,'');validateNoOfUnits(${index.index});validateFundByAllocatedFund(${index.index})" ></div></td>
 														<td><div align="center"><input type="text" name="qprCbActivityDetails[${index.index}].expenditureIncurred" class="form-control Align-Right" id="expenditureIncurred_${index.index}" value="${QPR_CB_ACT_DATA.qprCbActivityDetails[index.index].expenditureIncurred}"
 																				onkeyup="this.value=this.value.replace(/[^0-9]/g,'');validateFundByAllocatedFund(${index.index});
-																				isNoOfUnitAndExpInurredFilled(${index.index})" ></div></td>
+																				isNoOfUnitAndExpInurredFilled(${index.index});validateWithCorrespondingFund(${index.index})" ></div></td>
 													</c:when>
 													<c:otherwise>
 														<td><div align="center"><input type="text" name="qprCbActivityDetails[${index.index}].noOfDaysCompleted" class="form-control Align-Right" id="noOfDaysCompleted_${index.index}"></div></td>
@@ -153,7 +172,7 @@ function validateFundByAllocatedFund(obj){
 																				onkeyup="this.value=this.value.replace(/[^0-9]/g,'');validateFundByAllocatedFund(${index.index});
 																				validateNoOfUnits(${index.index})"></div></td>
 														<td><div align="center"><input type="text" name="qprCbActivityDetails[${index.index}].expenditureIncurred" class="form-control Align-Right" id="expenditureIncurred_${index.index}"
-																				onkeyup="this.value=this.value.replace(/[^0-9]/g,'');validateFundByAllocatedFund(${index.index});isNoOfUnitAndExpInurredFilled(${index.index})"></div></td>
+																				onkeyup="this.value=this.value.replace(/[^0-9]/g,'');validateFundByAllocatedFund(${index.index});isNoOfUnitAndExpInurredFilled(${index.index});validateWithCorrespondingFund(${index.index})"></div></td>
 													</c:otherwise>
 												</c:choose>
 												<!----------------------------- modal Starts  here------------------------------------------------ -->
@@ -194,6 +213,11 @@ function validateFundByAllocatedFund(obj){
 												<input type="hidden" name="qprCbActivityDetails[${index.index}].capacityBuildingActivityDetails.capacityBuildingActivityDetailsId" value="${CEC_APPROVED_ACTIVITY.capacityBuildingActivityDetails[index.index].capacityBuildingActivityDetailsId}" />
 											</c:if>
 										</c:forEach>
+										<tr>
+										<th colspan="3"><div align="center">Additional Requirement</div></th>
+										<th colspan="1"><div align="center" id="additionalReqStateId">${CEC_APPROVED_ACTIVITY.additionalRequirement }</div></th>
+										<td colspan="3"><div align="right"><input type="text" name="additionalRequirement" id="additionalReqId" value="${QPR_CB_ACT_DATA.additionalRequirement}" class="form-control validate Align-Right" onkeyup="validateAddReq()"></div></td>
+									</tr>
 									</tbody>
 								</table>
 								<!-- Modal content TNA & Training Evaluation-->

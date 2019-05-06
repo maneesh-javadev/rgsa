@@ -16,7 +16,11 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name="inst_infra_status" , schema="rgsa")
-@NamedQuery(name="GET_INST_INFRA_STATUS",query="SELECT I FROM InstInfraStatus I WHERE trainingInstitueType.trainingInstitueTypeId=:trainingInstituteTypeId")
+@NamedQueries({
+@NamedQuery(name="GET_INST_INFRA_STATUS",query="SELECT I FROM InstInfraStatus I WHERE trainingInstitueType.trainingInstitueTypeId=:trainingInstituteTypeId"),
+@NamedQuery(name="GET_ALL_INST_INFRA_STATUS",query="FROM InstInfraStatus "),
+
+})
 public class InstInfraStatus implements Serializable  {
 	
 	public static long getSerialversionuid() {

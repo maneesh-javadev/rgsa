@@ -73,6 +73,9 @@ public class AdministrativeTechnicalProgress {
 
 	@Transient
 	private Integer qtrIdJsp2;
+	
+	@Transient
+	private String origin;
 
 	public Integer getAtsId() {
 		return atsId;
@@ -172,6 +175,14 @@ public class AdministrativeTechnicalProgress {
 	public void setAdministrativeTechnicalDetailProgress(
 			List<AdministrativeTechnicalDetailProgress> administrativeTechnicalDetailProgress) {
 		this.administrativeTechnicalDetailProgress = administrativeTechnicalDetailProgress;
+	}
+
+	public String getOrigin() {
+		return origin;
+	}
+
+	public void setOrigin(String origin) {
+		this.origin = origin;
 	}
 
 	
