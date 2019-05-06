@@ -63,9 +63,7 @@ public class EGovernanceSupportServiceImpl implements EGovernanceSupportService 
 				commonRepository.update(eGovSupportActivity);
 			}
 		}
-		
-		
-	}
+}
 
 	private void saveEGovSupportActivitysForState(EGovSupportActivity eGovSupportActivity) {
 		List<EGovSupportActivityDetails> egovDetails = eGovSupportActivity.geteGovSupportActivityDetails();
@@ -177,18 +175,15 @@ public class EGovernanceSupportServiceImpl implements EGovernanceSupportService 
 			eGovSupportActivity.setUserType(userPreference.getUserType().charAt(0));
 			eGovSupportActivity.setLastUpdatedBy(userPreference.getUserId());
 			eGovSupportActivity.setLastUpdatedOn(new Date());
-
+			eGovSupportActivity.seteGovSupportActivityId(form.geteGovSupportActivityId());
+			eGovSupportActivity.setAdditionalRequirementDpmu(form.getAdditionalRequirementDpmu());
+			eGovSupportActivity.setAdditionalRequirementSpmu(form.getAdditionalRequirementSpmu());
+			eGovSupportActivity.setNoOfDistrictSupported(form.getNoOfDistrictSupported());
 			if (form.getDbFileName().equals("freeze")) {
-				eGovSupportActivity.seteGovSupportActivityId(form.geteGovSupportActivityId());
-				eGovSupportActivity.setAdditionalRequirementDpmu(form.getAdditionalRequirementDpmu());
-				eGovSupportActivity.setAdditionalRequirementSpmu(form.getAdditionalRequirementSpmu());
 				eGovSupportActivity.setStatus(true);
 			}
 
 			else {
-				eGovSupportActivity.seteGovSupportActivityId(form.geteGovSupportActivityId());
-				eGovSupportActivity.setAdditionalRequirementDpmu(form.getAdditionalRequirementDpmu());
-				eGovSupportActivity.setAdditionalRequirementSpmu(form.getAdditionalRequirementSpmu());
 				eGovSupportActivity.setStatus(false);
 			}
 			commonRepository.update(eGovSupportActivity);

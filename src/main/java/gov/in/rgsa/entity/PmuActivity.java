@@ -29,7 +29,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 							query="SELECT pa FROM PmuActivity pa Left OUTER JOIN FETCH pa.pmuActivityDetails pad  where pa.stateCode =:stateCode and pa.yearId =:yearId and pa.userType =:userType order by pad.pmuDetailsId"),
 				@NamedQuery(name="PMU_FREEZ_UNFREEZE",
 							query="UPDATE PmuActivity SET  isFreeze=:isFreeze where pmuActivityId=:pmuActivityId"),
-				 @NamedQuery(name="FETCH_PMU_APPROVED_ACTIVITY" ,query="SELECT PP from PmuActivity PP RIGHT OUTER JOIN FETCH PP.pmuActivityDetails PAD where PP.yearId=:yearId and PAD.isActive='TRUE' and PP.userType=:userType and PP.stateCode=:stateCode and PAD.isApproved='TRUE' ")
+				 @NamedQuery(name="FETCH_PMU_APPROVED_ACTIVITY" ,query="SELECT PP from PmuActivity PP RIGHT OUTER JOIN FETCH PP.pmuActivityDetails PAD where PP.yearId=:yearId and PP.userType=:userType and PP.stateCode=:stateCode ")
 				
 })
 @Table(name="pmu_activity",schema="rgsa")
