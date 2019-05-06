@@ -806,5 +806,13 @@
 		value="/WEB-INF/jsp/InstitutionalInfraActivityPlan/institutionalInfraActivityPlanMopr.jsp" />
 </definition>
 
+<definition name="trainingDetailsProgressReport"
+		extends="base.definition.admin">
+		<put-attribute name="title"
+			value="Training Details Progress Quaterly Report" />
+		<put-attribute name="body"
+			value="/WEB-INF/jsp/progressReport/trainingDetailsProgressReport.jsp" />
+</definition>
+
 </tiles-definitions>
 
