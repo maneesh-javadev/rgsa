@@ -22,6 +22,7 @@ import gov.in.rgsa.entity.EGovSupportActivityDetails;
 import gov.in.rgsa.model.EGovernanceSupportModel;
 import gov.in.rgsa.service.BasicInfoService;
 import gov.in.rgsa.service.EGovernanceSupportService;
+import gov.in.rgsa.service.LGDService;
 import gov.in.rgsa.user.preference.UserPreference;
 import gov.in.rgsa.utils.Message;
 
@@ -37,7 +38,8 @@ public class EGovernSupportGrpController {
 	@Autowired
 	BasicInfoService basicInfoService;
 
-	
+	@Autowired
+	private LGDService lgdService;
 	
 	private static final String GOVERN_SUPPORT ="eGovernanceSupportGrp";
 	private static final String GOVERN_SUPPORT_FOR_CEC ="egovernanceCEC";
@@ -90,10 +92,12 @@ public class EGovernSupportGrpController {
 			form.seteGovSupportActivityDetails(eGovActivityDetails);
 			form.setAdditionalRequirementSpmu(eGovActivity.get(0).getAdditionalRequirementSpmu());
 			form.setAdditionalRequirementDpmu(eGovActivity.get(0).getAdditionalRequirementDpmu());
+			form.setNoOfDistrictSupported(eGovActivity.get(0).getNoOfDistrictSupported());
 			model.addAttribute("initial_status", false);
 		}else{
 			model.addAttribute("initial_status", true);
 		}
+		model.addAttribute("DISTRICTS_IN_STATE", lgdService.getAllDistrictBasedOnState(userPreference.getStateCode()).size());
 		if(userPreference.getUserType().equalsIgnoreCase("C")){
 			List<EGovSupportActivity> eGovActivityForState=eGovernanceSupportService.fetchEGovActivity('S');
 			List<EGovSupportActivity> eGovActivityForMOPR = eGovernanceSupportService.fetchEGovActivity('M');

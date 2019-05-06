@@ -19,7 +19,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 @NamedQueries({@NamedQuery(name="FETCH_Iec_Activity",query=" FROM IecActivity IA left outer join fetch  IA.iecActivityDetails IAD where IA.stateCode=:stateCode and IA.yearId=:yearId and IA.userType=:userType"),
 @NamedQuery(name="REMOVE_Iec_Activity",
 query="Delete FROM IecActivity where id=:id"),})
-@NamedQuery(name="FETCH_IEC_APPROVED_ACTIVITY" ,query="SELECT IA from IecActivity IA RIGHT OUTER JOIN FETCH IA.iecActivityDetails IAD where IA.yearId=:yearId and IAD.isActive='TRUE' and IA.userType=:userType and IA.stateCode=:stateCode and IAD.isApproved='TRUE' ")
+@NamedQuery(name="FETCH_IEC_APPROVED_ACTIVITY" ,query="SELECT IA from IecActivity IA RIGHT OUTER JOIN FETCH IA.iecActivityDetails IAD where IA.yearId=:yearId and IA.userType=:userType and IA.stateCode=:stateCode")
 
 public class IecActivity implements Serializable {
 

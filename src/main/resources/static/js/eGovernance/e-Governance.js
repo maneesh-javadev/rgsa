@@ -108,7 +108,7 @@ function validateCielingValue(obj) {
 		document.getElementById("unitCostId_" + obj).value = 0;
 		document.getElementById("fundId_" + obj).value = 0;
 	}
-	if (total_dpmu_unit_cost > 35000) {
+	if (total_dpmu_unit_cost > 35000 * $('#districtSupportedId').val()) {
 		alert("Total unit cost for DPMU should be less than 35,000");
 		document.getElementById("unitCostId_" + obj).value = 0;
 		document.getElementById("fundId_" + obj).value = 0;
@@ -150,3 +150,11 @@ function calculateGrandTotal() {
 		}
 	}
 };
+
+function validateDistricts(){
+	if(+$('#districtSupportedId').val() > +$('#districtsInState').val()){
+		alert('District supported should be less than or equal to total districts in state : ' + $('#districtsInState').val());
+		$('#districtSupportedId').val('');
+		$('#districtSupportedId').focus();
+	}
+}	
