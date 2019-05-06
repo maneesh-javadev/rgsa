@@ -313,7 +313,7 @@
 												<input type="text" id="nbd_${sindex}" onkeypress="return isNumber(event)"  name="${status.expression}"  class="form-control"  value="${status.value}" 
 										maxlength="8" style="text-align:right;" required="required" autocomplete="off" onblur="validate_expenditureIncurred('${subcomponentwiseQuaterBalanceList[1].balanceAmount}',this,null)"/>
 										</spring:bind>
-										<span class="errormessage" id="error_nbd_${sindex}"></span>
+										<span class="errormsg" id="error_nbd_${sindex}"></span>
 								
 										
 									</td>

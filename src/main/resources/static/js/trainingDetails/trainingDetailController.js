@@ -20,6 +20,7 @@ trainingDetail.controller("trainingDetailController",['$scope','trainingDetailSe
 	}
 	
 	function fetchOnLoad(){
+		$scope.btn_disabled=false;
 		trainingDetailService.fetchtrainingDetailData(null).then(function(response){
 			delTrainingIdArr=[];
 			$scope.training = response.data.fetchTraining;	
@@ -33,6 +34,7 @@ trainingDetail.controller("trainingDetailController",['$scope','trainingDetailSe
 			$scope.trainingCatgryList=response.data.trainingCatgryList;
 			$scope.trainingDetails.trainingActivityId=$scope.training.trainingActivityId;
 			$scope.isbtnAddTraining=true;
+			
 			if($scope.training.trainingDetailList.length>0){
 				$scope.isShowRecodVisible=true;
 				$scope.isModifyRecodVisible=false;
@@ -255,6 +257,7 @@ trainingDetail.controller("trainingDetailController",['$scope','trainingDetailSe
 	}
 	
 	$scope.saveTrainingDetails=function(status){
+		$scope.btn_disabled=true;
 		if($scope.training.additionalRequirement != null && $scope.training.additionalRequirement!= undefined){
 			if(delTrainingIdArr.length==$scope.training.trainingDetailList.length && status=='F'){
 				toastr.error("can't freeze when delete all training .");

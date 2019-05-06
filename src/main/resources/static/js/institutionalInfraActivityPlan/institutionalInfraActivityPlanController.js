@@ -508,8 +508,8 @@ function create_state_row_CF(rindex,name,id){
 						isError=true;
 					}else{
 						if(id!='SAN'){
-							if(FREL>FUTI){
-								FREQ=FREL-FUTI;
+							if(FSAN>FUTI){
+								FREQ=FSAN-FUTI;
 								if(FSAN>=FREQ){
 									$scope.institutionalInfraActivityPlanDetailsCFState[index].fundRequired=FREQ;
 									
@@ -577,8 +577,8 @@ function create_state_row_CF(rindex,name,id){
 						isError=true;
 					}else{
 						if(id!='SAN'){
-							if(FREL>FUTI){
-								FREQ=FREL-FUTI;
+							if(FSAN>FUTI){
+								FREQ=FSAN-FUTI;
 								if(FSAN>=FREQ){
 									$scope.institutionalInfraActivityPlanDetailsCFDistrict[index].fundRequired=FREQ;
 									

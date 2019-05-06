@@ -58,11 +58,13 @@ workLocation.controller("workLocationController",['$scope','workLocationService'
 					}
 					if(!panchatayBhawanidList.has(item.activity.activityId)){
 						panchatayBhawanidList.set(item.activity.activityId,item.id);
-						if(panchatayBhawanidList.has(1) && panchatayBhawanidList.has(2) && panchatayBhawanidList.has(3)){
-							loadinit_data();
-						}
+						
 					}
 				});
+				
+				if(panchatayBhawanidList.has(1) && panchatayBhawanidList.has(2) && panchatayBhawanidList.has(3)){
+					loadinit_data();
+				}
 			}
 		}
 		else{
@@ -830,7 +832,7 @@ workLocation.controller("workLocationController",['$scope','workLocationService'
 	}
 	function callDatatable(){
 		$('#example').dataTable({
-	        "lengthMenu": [[ 25,50,100, -1], [25, 50,100, "All"]],
+	        "lengthMenu": [[ -1], [ "All"]],
 	         
 	    });	
 		

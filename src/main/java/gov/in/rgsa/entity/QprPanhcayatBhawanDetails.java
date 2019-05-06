@@ -1,12 +1,17 @@
 package gov.in.rgsa.entity;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedNativeQueries;
+import javax.persistence.NamedNativeQuery;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
@@ -16,7 +21,15 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 
 @Entity
 @Table(name="qpr_panhcayat_bhawan_details",schema="rgsa")
+
+@NamedNativeQueries({
+	@NamedNativeQuery(name="SUB_TOTAL_OTHER_PANCHAYAT_BHAWAN",query="select coalesce(sum(expenditure_incurred),0) from rgsa.qpr_panhcayat_bhawan qac left join rgsa.panhcayat_bhawan_activity ac on qac.panhcayat_bhawan_activity_id=ac.panhcayat_bhawan_activity_id "
+			+ " left join rgsa.qpr_panhcayat_bhawan_details qacd on qac.qpr_panhcayat_bhawan_id=qacd.qpr_panhcayat_bhawan_id where ac.state_code=:stateCode and ac.year_id=:yearId and ac.user_type='C'"),
+	})
+
 public class QprPanhcayatBhawanDetails {
+	
+	
 	
 	@Id
 	@Column(name="qpr_panhcayat_bhawan_details_id")
@@ -37,39 +50,18 @@ public class QprPanhcayatBhawanDetails {
 	@Column(name="expenditure_incurred")
 	private Integer expenditureIncurred;
 	
-	@Column(name="file_name")
-	private String fileName;
+	@Column(name="district_code")
+	private Integer districtCode;
 	
-	@Column(name="file_content_type")
-	private String fileContentType;
+	@OneToOne(fetch=FetchType.EAGER,cascade=CascadeType.ALL)
+	@JoinColumn(name="file_node_id")
+	private FileNode fileNode;
 	
-	@Column(name="file_location")
-	private String fileLocation;
 	
-	public String getFileName() {
-		return fileName;
-	}
-
-	public void setFileName(String fileName) {
-		this.fileName = fileName;
-	}
-
-	public String getFileContentType() {
-		return fileContentType;
-	}
-
-	public void setFileContentType(String fileContentType) {
-		this.fileContentType = fileContentType;
-	}
-
-	public String getFileLocation() {
-		return fileLocation;
-	}
-
-	public void setFileLocation(String fileLocation) {
-		this.fileLocation = fileLocation;
-	}
-
+	@Column(name="panhcayat_bhawan_activity_details_id")
+	private Integer panhcayatBhawanActivityDetailsId;
+	
+	
 	@Transient
 	private MultipartFile file;
 
@@ -113,7 +105,29 @@ public class QprPanhcayatBhawanDetails {
 		this.expenditureIncurred = expenditureIncurred;
 	}
 
-	
+	public Integer getDistrictCode() {
+		return districtCode;
+	}
+
+	public Integer getPanhcayatBhawanActivityDetailsId() {
+		return panhcayatBhawanActivityDetailsId;
+	}
+
+	public void setPanhcayatBhawanActivityDetailsId(Integer panhcayatBhawanActivityDetailsId) {
+		this.panhcayatBhawanActivityDetailsId = panhcayatBhawanActivityDetailsId;
+	}
+
+	public void setDistrictCode(Integer districtCode) {
+		this.districtCode = districtCode;
+	}
+
+	public FileNode getFileNode() {
+		return fileNode;
+	}
+
+	public void setFileNode(FileNode fileNode) {
+		this.fileNode = fileNode;
+	}
 
 	public MultipartFile getFile() {
 		return file;
@@ -122,7 +136,7 @@ public class QprPanhcayatBhawanDetails {
 	public void setFile(MultipartFile file) {
 		this.file = file;
 	}
-
+	
 	
 
 }

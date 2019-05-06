@@ -17,6 +17,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
+import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.*;
 
@@ -754,6 +755,200 @@ public class ProgressReportServiceImpl implements ProgressReportService {
 		// return balnce of additonal requirment sprc and dprc
 		String addReqirmentDetails = commonRepository.find("FETCH_Component_wise_Additional_Requirment_Quater_Balance", params);
 		return addReqirmentDetails;
+    }
+    
+    @Override
+    public void saveQprPanchayatBhawan(QprPanchayatBhawan qprPanchayatBhawan) {
+
+        FileNodeUtils uploadReport = null;
+        MultipartFile multipartFile = null;
+
+        try {
+        	int districtCode =qprPanchayatBhawan.getSelectDistrictId();
+            String uploadPath = innovativeActivityService.findfilePath().getFileLocation();
+            if (qprPanchayatBhawan.getQprPanchayatBhawanId() == null) {
+            	qprPanchayatBhawan.setCreatedBy(userPreference.getUserId());
+            	qprPanchayatBhawan.setCreatedOn(new Date());
+            } else {
+                Map<String, Object> params = new HashMap<>();
+                params.put("additionalRequirement", qprPanchayatBhawan.getAdditionalRequirement());
+               params.put("qprInstInfraId", qprPanchayatBhawan.getQprPanchayatBhawanId());
+                commonRepository.excuteUpdate("UPDATE_QPR_Panchayat_Bhawan_DEPEND_ON_QUATOR", params);
+            }
+
+            qprPanchayatBhawan.setLastUpdatedBy(userPreference.getUserId());
+            qprPanchayatBhawan.setLastUpdatedOn(new Date());
+
+            List<QprPanhcayatBhawanDetails> updateQprPanhcayatBhawanDetailsList = new ArrayList<QprPanhcayatBhawanDetails>();
+
+            for (QprPanhcayatBhawanDetails obj : qprPanchayatBhawan.getQprPanhcayatBhawanDetails()) {
+                obj.setQprPanchayatBhawan(qprPanchayatBhawan);
+                if (obj.getExpenditureIncurred() != null && obj.getGpBhawanStatusId() != null) {
+                    multipartFile = obj.getFile();
+                    if (multipartFile.getSize() > 0) {
+                        uploadReport = attemptUpload(obj.getFileNode(), multipartFile, uploadPath, qprPanchayatBhawan.getQtrId(), "panchayat bhwan");
+                        obj.setFileNode(uploadReport.getFileNode());
+                        obj.setDistrictCode(districtCode);
+                        updateQprPanhcayatBhawanDetailsList.add(obj);
+                    } else {
+                        obj.setFileNode(null);
+                    }
+                }
+            }
+
+            for (QprPanhcayatBhawanDetails obj : updateQprPanhcayatBhawanDetailsList) {
+
+                if (qprPanchayatBhawan.getQprPanchayatBhawanId() != null) {
+                    if (obj.getQprPanhcayatBhawanDetailsId() == null) {
+                        commonRepository.save(obj);
+                    } else {
+                        commonRepository.update(obj);
+                    }
+                }
+
+            }
+
+
+            if (qprPanchayatBhawan.getQprPanchayatBhawanId() == null) {
+            	qprPanchayatBhawan.setQprPanhcayatBhawanDetails(updateQprPanhcayatBhawanDetailsList);
+                commonRepository.save(qprPanchayatBhawan);
+
+
+            }
+
+            this.saveQprWiseFundData(userPreference.getStateCode(), userPreference.getFinYearId(), qprPanchayatBhawan.getQtrId(), 3);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
+    
+    @Override
+	public List<District> getDistrictBasedOnPNCHAYATBHAWANnState(Integer activityId) {
+		// TODO Auto-generated method stub
+		Map<String, Object> params=new HashMap<String,Object>();
+		params.put("stateCode", userPreference.getStateCode());
+		params.put("yearId", userPreference.getFinYearId());
+		params.put("activityId",activityId);
+		return commonRepository.findAll("PNCHAYAT_BHAWAN_DISTRICT_LIST_BY_STATE_CODE", params);
+	}
+    
+    @Override
+    public BigDecimal subTOTALofOTHERQPRPANCHAYATBHAWAN() {
+    	 Map<String, Object> params=new HashMap<>();
+    	params.put("stateCode", userPreference.getStateCode());
+		params.put("yearId", userPreference.getFinYearId());
+		BigDecimal otherTotal = (BigDecimal)commonRepository.find("SUB_TOTAL_OTHER_PANCHAYAT_BHAWAN", params);
+		return otherTotal;
+    }
+    
+    @Override
+    public Map<String,Object> fetchTrainingDetailsCEC(Integer qtrId){
+    	
+    	List<FetchTrainingDetails> fetchTrainingDetailsList=new ArrayList<FetchTrainingDetails>();
+		FetchTraining fetchTraining=null;
+		Map<String,Object> data = new HashMap<>();
+		Map<String,Object> params = null;
+    	
+			fetchTraining=new FetchTraining();
+			fetchTrainingDetailsList=new ArrayList<FetchTrainingDetails>();
+			params = new HashMap<>();
+			params.put("yearId", userPreference.getFinYearId());
+			params.put("stateCode", userPreference.getStateCode());
+			params.put("userType", 'C');
+			List<FetchTraining> fetchTrainingList = commonRepository.findAll("Fetch_Training", params);
+			
+			if(fetchTrainingList!=null && !fetchTrainingList.isEmpty()) {
+				fetchTraining=fetchTrainingList.get(0);
+				Integer trainingActivityId=fetchTraining.getTrainingActivityId();
+				params = new HashMap<>();
+				params.put("trainingActivityId", trainingActivityId);
+				params.put("isactive", Boolean.TRUE);
+				fetchTrainingDetailsList = commonRepository.findAll("Fetch_Training_Details", params);
+				data.put("fetchTrainingCEC", fetchTraining);
+				data.put("fetchTrainingDetailsListCEC", fetchTrainingDetailsList);
+			}
+			
+			 params = new HashMap<>();
+			 params.put("qtrId", qtrId);
+			 params.put("trainingActivityId", fetchTraining.getTrainingActivityId());
+			List<QuarterTrainings> quarterTrainingsList = commonRepository.findAll("FETCH_QPR_TRAINING_DETAIL_DEPEND_ON_QUATOR", params);
+			data.put("quarterTrainings", quarterTrainingsList);
+			
+			return data;
+    }
+    
+    @Override
+    public void savetrainingProgressReport(QuarterTrainings quarterTrainings) {
+
+        FileNodeUtils uploadReport = null;
+        MultipartFile multipartFile = null;
+
+        try {
+
+            String uploadPath = innovativeActivityService.findfilePath().getFileLocation();
+            if (quarterTrainings.getQprTrainingsId() == null) {
+            	quarterTrainings.setCreatedBy(userPreference.getUserId());
+            	quarterTrainings.setCreatedOn(new Date());
+            } else {
+                Map<String, Object> params = new HashMap<>();
+                params.put("additionalRequirement", quarterTrainings.getAdditionalRequirement());
+                params.put("qprTrainingsId", quarterTrainings.getQprTrainingsId());
+                commonRepository.excuteUpdate("UPDATE_QPR_TRAINING_DETAIL_DEPEND_ON_QUATOR", params);
+            }
+
+            quarterTrainings.setLastUpdatedBy(userPreference.getUserId());
+            quarterTrainings.setLastUpdateOn(new Date());
+
+            List<QuarterTrainingsDetails> updateQuarterTrainingsDetailsList = new ArrayList<QuarterTrainingsDetails>();
+
+            for (QuarterTrainingsDetails obj : quarterTrainings.getQuarterTrainingsDetailsList()) {
+                obj.setQuarterTrainings(quarterTrainings);
+                if (obj.getExpenditureIncurred() != null ) {
+                    multipartFile = obj.getFile();
+                    if (multipartFile.getSize() > 0) {
+                        uploadReport = attemptUpload(obj.getFileNode(), multipartFile, uploadPath, quarterTrainings.getQtrId(), "QPR Training Detail");
+                        obj.setFileNode(uploadReport.getFileNode());
+                       
+                    } else {
+                    	if(!(obj.getFileNode()!=null && obj.getFileNode().getFileNodeId()!=null)) {
+                    		obj.setFileNode(null);
+                    	}else {
+                    		  obj.setFileNode(this.loadFileNode(obj.getFileNode()));
+                    	}
+                        
+                    }
+                    updateQuarterTrainingsDetailsList.add(obj);
+                }
+            }
+
+            for (QuarterTrainingsDetails obj : updateQuarterTrainingsDetailsList) {
+
+                if (quarterTrainings.getQprTrainingsId() != null) {
+                    if (obj.getQprTrainingsDetailsId() == null) {
+                        commonRepository.save(obj);
+                    } else {
+                        commonRepository.update(obj);
+                    }
+                }
+
+            }
+
+
+            if (quarterTrainings.getQprTrainingsId() == null) {
+            	quarterTrainings.setQuarterTrainingsDetailsList(updateQuarterTrainingsDetailsList);
+                commonRepository.save(quarterTrainings);
+
+
+            }
+
+            this.saveQprWiseFundData(userPreference.getStateCode(), userPreference.getFinYearId(), quarterTrainings.getQtrId(), 1);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
     }
     
 

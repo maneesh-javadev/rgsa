@@ -80,5 +80,7 @@ public class LGDServiceImpl implements LGDService{
 		params.put("districtCode", districtCode);
 		return dao.find("DISTRICT_DETAIL_BY_STATECODE_DISTRICTCODE", params);
 	}
+	
+	
 
 }

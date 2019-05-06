@@ -61,7 +61,8 @@ public class ProgressReportController {
     private static final String NO_FUND_ALLOCATED_JSP = "noFundAlloctedJsp";
     public static final String REDIRECT_PLAN_ALLOCATION = "redirect:planAllocation.html";
     public static final String INSTITUTIONAL_INFRA_REPORT_LOAD = "redirect:institutionalInfraQuaterlyReport.html";
-
+    public static final String TRAINING_DETAILS_PROGRESS_REPORT = "trainingDetailsProgressReport";
+    public static final String REDIRECT_TRAINING_DETAILS_PROGRESS_REPORT = "redirect:trainingProgressReportGETData.html";
 
     @Autowired
     private UserPreference userPreference;
@@ -132,106 +133,7 @@ public class ProgressReportController {
     @Autowired
     PlanAllocationService planAllocationService;
 
-    @RequestMapping(value = "trainingProgressReport", method = RequestMethod.GET)
-    public String qprGetFormTrainingProgressReport(
-            @ModelAttribute("TRAINING_DETAILS") TrainingProgressReport progressReportJsp, Model model) {
-        /*
-         * public String trainingProgressReport(@ModelAttribute("TRAINING_DETAILS")
-         * TrainingProgressReportModel progressReportModel, Model model) BY Monty
-         */
-        int quarterId = 1;
-        model.addAttribute("approved", true);
-        List<TrainingActivity> approvedTraining = trainingActivityService.getApprovedTrainingActivity();
-        if (approvedTraining != null && !approvedTraining.isEmpty()) {
 
-            int activityId = approvedTraining.get(0).getTrainingActivityId();
-            if (progressReportJsp.getQtrIdJsp() != null) {
-                quarterId = progressReportJsp.getQtrIdJsp();
-            } else
-                quarterId = 1;
-
-            List<Integer> activityDetailsId = new ArrayList<>();
-            for (int i = 0; i < approvedTraining.get(0).getTrainingActivityDetailsList().size(); i++) {
-                int id = approvedTraining.get(0).getTrainingActivityDetailsList().get(i).getTrainingActivityDetailsId();
-                activityDetailsId.add(id);
-            }
-            TrainingProgressReport fetchTrainingProgressReport = progressReportService
-                    .fetchprogressReport(activityDetailsId, activityId, quarterId);
-            if (fetchTrainingProgressReport != null) {
-                model.addAttribute("fetchTrainingProgressReport", fetchTrainingProgressReport);
-            } else {
-                TrainingProgressReport trainingReport = progressReportService
-                        .fetchprogressReportToGeReportId(activityId);
-                if (trainingReport != null) {
-                    model.addAttribute("trainingReportIdFromDb", trainingReport.getTrainingReportId());
-                }
-            }
-
-            model.addAttribute("SetNewQtrId", progressReportJsp.getQtrIdJsp());
-            model.addAttribute("allTrainingActivity", approvedTraining.get(0));
-            model.addAttribute("trainingInstituteList", trainingInstitutionService.getTrainingIsntituteType());
-            model.addAttribute("quarter_duration", progressReportService.getQuarterDurations());
-            model.addAttribute("TARGET_GROUP", trainingActivityService.targetGroupMastersList());
-        } else {
-            model.addAttribute("approved", false);
-        }
-        return TRAINING_PROGRESS_REPORT;
-    }
-
-    @RequestMapping(value = "trainingProgressRptQtr", method = RequestMethod.POST)
-    public String trainingProgressReportByQtr(
-            @ModelAttribute("TRAINING_DETAILS") TrainingProgressReport progressReportJsp, Model model) {
-        /*
-         * public String trainingProgressReport(@ModelAttribute("TRAINING_DETAILS")
-         * TrainingProgressReportModel progressReportModel, Model model) BY Monty
-         */
-        int quarterId = 1;
-        model.addAttribute("approved", true);
-        List<TrainingActivity> approvedTraining = trainingActivityService.getApprovedTrainingActivity();
-        if (approvedTraining != null && !approvedTraining.isEmpty()) {
-
-            int activityId = approvedTraining.get(0).getTrainingActivityId();
-            if (progressReportJsp.getQtrIdJsp() != null) {
-                quarterId = progressReportJsp.getQtrIdJsp();
-            } else
-                quarterId = 1;
-
-            List<Integer> activityDetailsId = new ArrayList<>();
-            for (int i = 0; i < approvedTraining.get(0).getTrainingActivityDetailsList().size(); i++) {
-                int id = approvedTraining.get(0).getTrainingActivityDetailsList().get(i).getTrainingActivityDetailsId();
-                activityDetailsId.add(id);
-            }
-            TrainingProgressReport fetchTrainingProgressReport = progressReportService
-                    .fetchprogressReport(activityDetailsId, activityId, quarterId);
-            if (fetchTrainingProgressReport != null) {
-                model.addAttribute("fetchTrainingProgressReport", fetchTrainingProgressReport);
-            } else {
-                TrainingProgressReport trainingReport = progressReportService
-                        .fetchprogressReportToGeReportId(activityId);
-                if (trainingReport != null) {
-                    model.addAttribute("trainingReportIdFromDb", trainingReport.getTrainingReportId());
-                }
-            }
-
-            model.addAttribute("SetNewQtrId", progressReportJsp.getQtrIdJsp());
-            model.addAttribute("allTrainingActivity", approvedTraining.get(0));
-            model.addAttribute("trainingInstituteList", trainingInstitutionService.getTrainingIsntituteType());
-            model.addAttribute("quarter_duration", progressReportService.getQuarterDurations());
-            model.addAttribute("TARGET_GROUP", trainingActivityService.targetGroupMastersList());
-        } else {
-            model.addAttribute("approved", false);
-        }
-        return TRAINING_PROGRESS_REPORT;
-    }
-
-    @RequestMapping(value = "trainingProgressReport", method = RequestMethod.POST)
-    public String saveTrainingProgressData(
-            @ModelAttribute("TRAINING_DETAILS") TrainingProgressReport progressReportJsp) {
-
-        progressReportService.saveTrainingProgressData(progressReportJsp);
-
-        return REDIRECT_TRAINING_PROGRESS_REPORT;
-    }
 
     @RequestMapping(value = "gramPanchayatProgressReport", method = RequestMethod.GET)
     public String qprGetFormGramPanchayatProgressReport() {
@@ -263,7 +165,7 @@ public class ProgressReportController {
         return panchayatBhawanService.fetchGPBhawanData(PanchayatBhawanActvityId, DistrictListId);
     }
 
-    @ResponseBody
+  /* @ResponseBody
     @RequestMapping(value = "fetchDataAccordingToQuator", method = RequestMethod.GET)
     private Map<String, Object> fetchDataAccordingToQuator(
             @RequestParam(value = "quatorId", required = false) Integer quatorId,
@@ -276,8 +178,8 @@ public class ProgressReportController {
                 panchayatBhawanService.fetchDataAccordingToQuator(quatorId, PanchayatBhawanActvityId, districtCode)
                         .get(0).getQprPanhcayatBhawanDetails());
         return map;
-    }
-
+    } 
+*/
     @ResponseBody
     @RequestMapping(value = "saveQprPanchayatBhawanData", method = RequestMethod.POST)
     private QprPanchayatBhawan saveQprPanchayatBhawanData(@RequestBody final QprPanchayatBhawan qprPanchayatBhawan,
@@ -1618,6 +1520,147 @@ public class ProgressReportController {
             throw new RuntimeException("No file exists in databse.");
         FileNodeUtils.streamFileNode(fileNode, response);
     }
+    
+   // @RequestMapping(value = "trainingProgressReport", method = RequestMethod.GET)
+    public String qprGetFormTrainingProgressReport(
+            @ModelAttribute("TRAINING_DETAILS") TrainingProgressReport progressReportJsp, Model model) {
+        /*
+         * public String trainingProgressReport(@ModelAttribute("TRAINING_DETAILS")
+         * TrainingProgressReportModel progressReportModel, Model model) BY Monty
+         */
+        int quarterId = 1;
+        model.addAttribute("approved", true);
+        List<TrainingActivity> approvedTraining = trainingActivityService.getApprovedTrainingActivity();
+        if (approvedTraining != null && !approvedTraining.isEmpty()) {
 
+            int activityId = approvedTraining.get(0).getTrainingActivityId();
+            if (progressReportJsp.getQtrIdJsp() != null) {
+                quarterId = progressReportJsp.getQtrIdJsp();
+            } else
+                quarterId = 1;
 
+            List<Integer> activityDetailsId = new ArrayList<>();
+            for (int i = 0; i < approvedTraining.get(0).getTrainingActivityDetailsList().size(); i++) {
+                int id = approvedTraining.get(0).getTrainingActivityDetailsList().get(i).getTrainingActivityDetailsId();
+                activityDetailsId.add(id);
+            }
+            TrainingProgressReport fetchTrainingProgressReport = progressReportService
+                    .fetchprogressReport(activityDetailsId, activityId, quarterId);
+            if (fetchTrainingProgressReport != null) {
+                model.addAttribute("fetchTrainingProgressReport", fetchTrainingProgressReport);
+            } else {
+                TrainingProgressReport trainingReport = progressReportService
+                        .fetchprogressReportToGeReportId(activityId);
+                if (trainingReport != null) {
+                    model.addAttribute("trainingReportIdFromDb", trainingReport.getTrainingReportId());
+                }
+            }
+
+            model.addAttribute("SetNewQtrId", progressReportJsp.getQtrIdJsp());
+            model.addAttribute("allTrainingActivity", approvedTraining.get(0));
+            model.addAttribute("trainingInstituteList", trainingInstitutionService.getTrainingIsntituteType());
+            model.addAttribute("quarter_duration", progressReportService.getQuarterDurations());
+            model.addAttribute("TARGET_GROUP", trainingActivityService.targetGroupMastersList());
+        } else {
+            model.addAttribute("approved", false);
+        }
+        return TRAINING_PROGRESS_REPORT;
+    }
+
+    @RequestMapping(value = "trainingProgressRptQtr", method = RequestMethod.POST)
+    public String trainingProgressReportByQtr(
+            @ModelAttribute("TRAINING_DETAILS") TrainingProgressReport progressReportJsp, Model model) {
+        /*
+         * public String trainingProgressReport(@ModelAttribute("TRAINING_DETAILS")
+         * TrainingProgressReportModel progressReportModel, Model model) BY Monty
+         */
+        int quarterId = 1;
+        model.addAttribute("approved", true);
+        List<TrainingActivity> approvedTraining = trainingActivityService.getApprovedTrainingActivity();
+        if (approvedTraining != null && !approvedTraining.isEmpty()) {
+
+            int activityId = approvedTraining.get(0).getTrainingActivityId();
+            if (progressReportJsp.getQtrIdJsp() != null) {
+                quarterId = progressReportJsp.getQtrIdJsp();
+            } else
+                quarterId = 1;
+
+            List<Integer> activityDetailsId = new ArrayList<>();
+            for (int i = 0; i < approvedTraining.get(0).getTrainingActivityDetailsList().size(); i++) {
+                int id = approvedTraining.get(0).getTrainingActivityDetailsList().get(i).getTrainingActivityDetailsId();
+                activityDetailsId.add(id);
+            }
+            TrainingProgressReport fetchTrainingProgressReport = progressReportService
+                    .fetchprogressReport(activityDetailsId, activityId, quarterId);
+            if (fetchTrainingProgressReport != null) {
+                model.addAttribute("fetchTrainingProgressReport", fetchTrainingProgressReport);
+            } else {
+                TrainingProgressReport trainingReport = progressReportService
+                        .fetchprogressReportToGeReportId(activityId);
+                if (trainingReport != null) {
+                    model.addAttribute("trainingReportIdFromDb", trainingReport.getTrainingReportId());
+                }
+            }
+
+            model.addAttribute("SetNewQtrId", progressReportJsp.getQtrIdJsp());
+            model.addAttribute("allTrainingActivity", approvedTraining.get(0));
+            model.addAttribute("trainingInstituteList", trainingInstitutionService.getTrainingIsntituteType());
+            model.addAttribute("quarter_duration", progressReportService.getQuarterDurations());
+            model.addAttribute("TARGET_GROUP", trainingActivityService.targetGroupMastersList());
+        } else {
+            model.addAttribute("approved", false);
+        }
+        return TRAINING_PROGRESS_REPORT;
+    }
+
+    @RequestMapping(value = "trainingProgressReport", method = RequestMethod.GET)
+    public String trainingProgressReport(@ModelAttribute("QPR_TRAINING_DETAILS") QuarterTrainings quarterTrainings, Model model, RedirectAttributes redirectAttributes) {
+    	 List<StateAllocation> stateAllocationList = planAllocationService.fetchStateAllocationListMaxINSTALLMENTNO();
+         if (stateAllocationList != null && stateAllocationList.isEmpty()) {
+             redirectAttributes.addFlashAttribute("isPlanAllocationNotExist", Boolean.TRUE);
+             return REDIRECT_PLAN_ALLOCATION;
+         }
+         model.addAttribute("quarterDuration", progressReportService.getQuarterDurations());
+         return TRAINING_DETAILS_PROGRESS_REPORT;
+    }
+    
+    
+    @RequestMapping(value = "trainingProgressReportGETData",method = { RequestMethod.GET, RequestMethod.POST })
+    public String trainingProgressReportGETData(@ModelAttribute("QPR_TRAINING_DETAILS") QuarterTrainings quarterTrainings, Model model, RedirectAttributes redirectAttributes) {
+    	Integer qtrId=quarterTrainings.getQtrId();
+    	Map<String,Object> data =progressReportService.fetchTrainingDetailsCEC(qtrId);
+    	model.addAttribute("fetchTrainingCEC",data.get("fetchTrainingCEC"));
+    	model.addAttribute("fetchTrainingDetailsListCEC",data.get("fetchTrainingDetailsListCEC"));
+    	List<QuarterTrainings> quarterTrainingsList=(List<QuarterTrainings>)data.get("quarterTrainings");
+    	if(quarterTrainingsList!=null && !quarterTrainingsList.isEmpty()) {
+    		quarterTrainings=quarterTrainingsList.get(0);
+    	}else {
+    		 quarterTrainings=new QuarterTrainings();
+    		 quarterTrainings.setQtrId(qtrId);
+    	}
+    	model.addAttribute("quarterDuration", progressReportService.getQuarterDurations());
+    	
+    	  List<SubcomponentwiseQuaterBalance> subcomponentwiseQuaterBalanceList = progressReportService.fetchSubcomponentwiseQuaterBalance(1, qtrId);
+          if (subcomponentwiseQuaterBalanceList != null && !subcomponentwiseQuaterBalanceList.isEmpty()) {
+              model.addAttribute("subcomponentwiseQuaterBalanceList", subcomponentwiseQuaterBalanceList);
+              model.addAttribute("installementExist", Boolean.TRUE);
+              String addReqirmentDetails=progressReportService.getBalanceAdditionalReqiurment(1, qtrId);
+              if(addReqirmentDetails!=null && addReqirmentDetails.length()>0) {
+              	 model.addAttribute("balAddiReq", Integer.parseInt(addReqirmentDetails));
+              	}
+          } else {
+              model.addAttribute("isError", "2nd installement not released");
+              model.addAttribute("installementExist", Boolean.FALSE);
+          }
+          model.addAttribute("QPR_TRAINING_DETAILS", quarterTrainings);
+         return TRAINING_DETAILS_PROGRESS_REPORT;
+    }
+    
+    @RequestMapping(value = "savetrainingProgressReport", method = RequestMethod.POST)
+    public String savetrainingProgressReport(@ModelAttribute("QPR_TRAINING_DETAILS") QuarterTrainings quarterTrainings, Model model, RedirectAttributes redirectAttributes) {
+    	progressReportService.savetrainingProgressReport(quarterTrainings);
+    	 redirectAttributes.addAttribute("isError", "Data save successfully");
+    	 redirectAttributes.addAttribute("qtrId",quarterTrainings.getQtrId());
+         return REDIRECT_TRAINING_DETAILS_PROGRESS_REPORT;
+    }
 }

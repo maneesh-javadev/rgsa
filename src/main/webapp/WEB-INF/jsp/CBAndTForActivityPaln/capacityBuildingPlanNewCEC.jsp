@@ -287,13 +287,13 @@ table.dataTable thead > tr > th, table.dataTable thead > tr > td {
 										<br>
 									</div>
 									 
-									<button type="button" ng-show="!training.isFreeze" ng-click="saveTrainingDetails('S')"
+									<button type="button" ng-show="!training.isFreeze" ng-disabled="capacityBuilding.isFreeze" ng-click="saveTrainingDetails('S')"
 										class="btn bg-green waves-effect">SAVE</button>
 										
-									<button type="button" ng-show="!training.isFreeze" ng-click="saveTrainingDetails('F')"
+									<button type="button" ng-show="!training.isFreeze" ng-disabled="capacityBuilding.isFreeze" ng-click="saveTrainingDetails('F')"
 										class="btn bg-green waves-effect">FREEZE</button>
 										
-										<button type="button" ng-show="training.isFreeze"  ng-click="saveTrainingDetails('U')"
+										<button type="button" ng-show="training.isFreeze" ng-disabled="capacityBuilding.isFreeze" ng-click="saveTrainingDetails('U')"
 										class="btn bg-green waves-effect">UNFREEZE</button>
 										
 									<button type="button" id="clearButtn" onclick="onClear(this)"

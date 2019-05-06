@@ -1,6 +1,6 @@
 package gov.in.rgsa.entity;
 
-import java.sql.Timestamp;
+import java.util.Date;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -15,21 +15,19 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
-
 @Entity
 @Table(name="qpr_panhcayat_bhawan",schema="rgsa")
-@NamedQuery(name="FETCH_ACTIVITY_DEPEND_ON_QUATOR",query="SELECT Q FROM QprPanchayatBhawan Q WHERE qtrId=:quatorId AND activityId=:activityId AND districtCode=:districtCode")
+@NamedQuery(name="FETCH_ACTIVITY_DEPEND_ON_QUATOR",query="SELECT Q FROM QprPanchayatBhawan Q WHERE qtrId=:quatorId AND panchayatBhawanActivityId=:panchayatBhawanActivityId AND activityId=:activityId ")
 public class QprPanchayatBhawan {
 
+	
 	@Id
 	@Column(name="qpr_panhcayat_bhawan_id")
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Long qprPanchayatBhawanId;
 	
 	@Column(name="panhcayat_bhawan_activity_id")
-	private Long panchayatBhawanActivityId;
+	private Integer panchayatBhawanActivityId;
 	
 	@Column(name="qtr_id")
 	private Integer qtrId;
@@ -40,16 +38,14 @@ public class QprPanchayatBhawan {
 	@Column(name="created_by")
 	private Integer createdBy;
 	
-	@CreationTimestamp
 	@Column(name="created_on",updatable=false)
-	private Timestamp createdOn;
+	private Date createdOn;
 	
 	@Column(name="last_updated_by")
 	private Integer lastUpdatedBy;
 	
-	@UpdateTimestamp
 	@Column(name="last_updated_on")
-	private Timestamp lastUpdatedOn;
+	private Date lastUpdatedOn;
 	
 	@Column(name="is_freeze")
 	private Boolean isFreeze;
@@ -60,76 +56,12 @@ public class QprPanchayatBhawan {
 	@Column(name="activity_id")
 	private Integer activityId;
 	
-	@Column(name="district_code")
-	private Integer districtCode;
+	@OneToMany(cascade=CascadeType.ALL,fetch=FetchType.EAGER,mappedBy="qprPanchayatBhawan")
+	private List<QprPanhcayatBhawanDetails> qprPanhcayatBhawanDetails;
 	
 	@Transient
 	private Integer selectDistrictId;
 	
-	@Transient
-	private Integer quaterId;
-	
-	@Transient
-	private Integer activityId1;
-	
-	@Transient
-	private String path;
-	
-	@Transient
-	private String dbFileName;
-	
-	
-	
-	public String getDbFileName() {
-		return dbFileName;
-	}
-
-	public void setDbFileName(String dbFileName) {
-		this.dbFileName = dbFileName;
-	}
-
-	@OneToMany(cascade=CascadeType.ALL,fetch=FetchType.EAGER,mappedBy="qprPanchayatBhawan")
-	private List<QprPanhcayatBhawanDetails> qprPanhcayatBhawanDetails;
-
-	@Transient
-	private Integer previousActivityId;
-	
-	@Transient
-	private Integer previousDistrictCode;
-	
-	
-	
-	public String getPath() {
-		return path;
-	}
-
-	public void setPath(String path) {
-		this.path = path;
-	}
-
-	public Integer getSelectDistrictId() {
-		return selectDistrictId;
-	}
-
-	public void setSelectDistrictId(Integer selectDistrictId) {
-		this.selectDistrictId = selectDistrictId;
-	}
-
-	public Integer getQuaterId() {
-		return quaterId;
-	}
-
-	public void setQuaterId(Integer quaterId) {
-		this.quaterId = quaterId;
-	}
-
-	public Integer getActivityId1() {
-		return activityId1;
-	}
-
-	public void setActivityId1(Integer activityId1) {
-		this.activityId1 = activityId1;
-	}
 
 	public Long getQprPanchayatBhawanId() {
 		return qprPanchayatBhawanId;
@@ -139,11 +71,11 @@ public class QprPanchayatBhawan {
 		this.qprPanchayatBhawanId = qprPanchayatBhawanId;
 	}
 
-	public Long getPanchayatBhawanActivityId() {
+	public Integer getPanchayatBhawanActivityId() {
 		return panchayatBhawanActivityId;
 	}
 
-	public void setPanchayatBhawanActivityId(Long panchayatBhawanActivityId) {
+	public void setPanchayatBhawanActivityId(Integer panchayatBhawanActivityId) {
 		this.panchayatBhawanActivityId = panchayatBhawanActivityId;
 	}
 
@@ -171,11 +103,11 @@ public class QprPanchayatBhawan {
 		this.createdBy = createdBy;
 	}
 
-	public Timestamp getCreatedOn() {
+	public Date getCreatedOn() {
 		return createdOn;
 	}
 
-	public void setCreatedOn(Timestamp createdOn) {
+	public void setCreatedOn(Date createdOn) {
 		this.createdOn = createdOn;
 	}
 
@@ -187,11 +119,11 @@ public class QprPanchayatBhawan {
 		this.lastUpdatedBy = lastUpdatedBy;
 	}
 
-	public Timestamp getLastUpdatedOn() {
+	public Date getLastUpdatedOn() {
 		return lastUpdatedOn;
 	}
 
-	public void setLastUpdatedOn(Timestamp lastUpdatedOn) {
+	public void setLastUpdatedOn(Date lastUpdatedOn) {
 		this.lastUpdatedOn = lastUpdatedOn;
 	}
 
@@ -211,14 +143,6 @@ public class QprPanchayatBhawan {
 		this.menuId = menuId;
 	}
 
-	public List<QprPanhcayatBhawanDetails> getQprPanhcayatBhawanDetails() {
-		return qprPanhcayatBhawanDetails;
-	}
-
-	public void setQprPanhcayatBhawanDetails(List<QprPanhcayatBhawanDetails> qprPanhcayatBhawanDetails) {
-		this.qprPanhcayatBhawanDetails = qprPanhcayatBhawanDetails;
-	}
-
 	public Integer getActivityId() {
 		return activityId;
 	}
@@ -227,27 +151,23 @@ public class QprPanchayatBhawan {
 		this.activityId = activityId;
 	}
 
-	public Integer getDistrictCode() {
-		return districtCode;
+	public List<QprPanhcayatBhawanDetails> getQprPanhcayatBhawanDetails() {
+		return qprPanhcayatBhawanDetails;
 	}
 
-	public void setDistrictCode(Integer districtCode) {
-		this.districtCode = districtCode;
+	public void setQprPanhcayatBhawanDetails(List<QprPanhcayatBhawanDetails> qprPanhcayatBhawanDetails) {
+		this.qprPanhcayatBhawanDetails = qprPanhcayatBhawanDetails;
 	}
 
-	public Integer getPreviousActivityId() {
-		return previousActivityId;
+	public Integer getSelectDistrictId() {
+		return selectDistrictId;
 	}
 
-	public void setPreviousActivityId(Integer previousActivityId) {
-		this.previousActivityId = previousActivityId;
+	public void setSelectDistrictId(Integer selectDistrictId) {
+		this.selectDistrictId = selectDistrictId;
 	}
 
-	public Integer getPreviousDistrictCode() {
-		return previousDistrictCode;
-	}
-
-	public void setPreviousDistrictCode(Integer previousDistrictCode) {
-		this.previousDistrictCode = previousDistrictCode;
-	}
+	
+	
+	
 }

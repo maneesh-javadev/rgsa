@@ -40,7 +40,7 @@ public interface PanchayatBhawanService{
 	
 	public List<PanchayatBhawanProposedInfo> fetchPanchayatBhawanProposedGPsList(Integer activityDetailsId);
 
-	public List<QprPanchayatBhawan> fetchDataAccordingToQuator(Integer quatorId,Integer panchayatBhawanActivityId,Integer districtCode);
+	public List<QprPanchayatBhawan> fetchDataAccordingToQuator(Integer quatorId,Integer activityId,Integer panchayatBhawanActivityId);
 	
 	public Integer fetchBasicInfoKeyValue(Integer stateCode,String defination_key);
 }

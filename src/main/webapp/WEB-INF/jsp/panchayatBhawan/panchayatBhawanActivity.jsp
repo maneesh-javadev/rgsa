@@ -294,8 +294,8 @@
                                  </tr>
                               </thead>
                               <tbody>
-                                 <tr ng-repeat="activity in activityList" ng-if="[4,5,6].indexOf(activity.activityId) > -1">
-                                    <td>{{activity.activityName}}
+                                 <tr ng-repeat="activity in activityList | orderBy:'activity.activityId'" ng-if="[4,5,6].indexOf(activity.activityId) > -1">
+                                    <td>{{activity.activityName}}@{{activity.activityId}}@
                                        <input type="hidden"  ng-model="panchayatBhawanActivity.panchatayBhawanActivityDetails[$index].activity.activityId" ng-init="panchayatBhawanActivity.panchatayBhawanActivityDetails[$index].activity.activityId=activity.activityId"/>
                                     </td>
                                     <td>

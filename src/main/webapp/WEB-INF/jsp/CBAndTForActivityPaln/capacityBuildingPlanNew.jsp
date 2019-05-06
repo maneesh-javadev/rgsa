@@ -190,13 +190,13 @@ table.dataTable thead > tr > th, table.dataTable thead > tr > td {
 								
 								<span ng-show="planStateStatus">
 								
-								<button type="button" ng-show="training.isFreeze==false" ng-click="saveTrainingDetails('S')"
+								<button type="button" ng-show="training.isFreeze==false" ng-disabled="btn_disabled" ng-click="saveTrainingDetails('S')"
 										class="btn bg-green waves-effect">SAVE</button>
 										
-									<button type="button" ng-show="training.isFreeze==false" ng-click="saveTrainingDetails('F')"
+									<button type="button" ng-show="training.isFreeze==false" ng-disabled="btn_disabled" ng-click="saveTrainingDetails('F')"
 										class="btn bg-green waves-effect">FREEZE</button>
 										
-										<button type="button" ng-show="training.isFreeze==true"  ng-click="saveTrainingDetails('U')"
+										<button type="button" ng-show="training.isFreeze==true" ng-disabled="btn_disabled" ng-click="saveTrainingDetails('U')"
 										class="btn bg-green waves-effect">UNFREEZE</button>
 								
 								</span>

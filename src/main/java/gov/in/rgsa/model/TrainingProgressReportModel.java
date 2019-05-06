@@ -2,7 +2,7 @@ package gov.in.rgsa.model;
 
 import java.util.List;
 
-import gov.in.rgsa.controller.QuarterTrainings;
+import gov.in.rgsa.entity.QuarterTrainings;
 
 public class TrainingProgressReportModel {
 

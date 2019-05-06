@@ -18,7 +18,10 @@ import javax.persistence.Table;
 @NamedNativeQuery(query="select state_code,state_version,district_code,district_version,district_name_english,district_name_local from lgd.get_district_list_fn(:id) order by district_code;",name="districtByorder",resultClass=District.class),
 @NamedNativeQuery(name="DISTRICT_NAME_LIST",query="select training_institute_cs_details_id ,training_institue_type_name || ',' ||district_name_english As district_Name_Add_Faclty_And_Main from rgsa.training_institute_cs_details ticsd, rgsa.training_institue_type tit, lgd.district d where d.dlc=ticsd.ti_location and ticsd.training_institue_type_id=tit.training_institue_type_id"),
 @NamedNativeQuery(query="select district_code,district_name_english from lgd.get_district_list_fn(:id)" , name="DISTRICT_PMU_LIST"),
-@NamedNativeQuery(query="select slc as state_code, district_version as state_version,district_code,district_version,district_name_english,district_name_local from lgd.district where district_code=:dlc and isactive" , name="DISTRICT_BY_ID",resultClass=District.class)
+@NamedNativeQuery(query="select slc as state_code, district_version as state_version,district_code,district_version,district_name_english,district_name_local from lgd.district where district_code=:dlc and isactive" , name="DISTRICT_BY_ID",resultClass=District.class),
+@NamedNativeQuery(query="select distinct d.state_code,d.state_version,d.district_code,d.district_version,d.district_name_english,d.district_name_local from lgd.get_district_list_fn(:stateCode) d inner join rgsa.panhcayat_bhawan_activity_gps  pgp " + 
+				  " on pgp.district_code=d.district_code where pgp.panhcayat_bhawan_activity_details_id=(select id from rgsa.panhcayat_bhawan_activity ac left join rgsa.panhcayat_bhawan_activity_details acd on ac.panhcayat_bhawan_activity_id=acd.panhcayat_bhawan_activity_id " + 
+                  " where ac.state_code=:stateCode and ac.year_id =:yearId and ac.user_type='C' and acd.activity_id=:activityId) and pgp.isactive",name="PNCHAYAT_BHAWAN_DISTRICT_LIST_BY_STATE_CODE",resultClass=District.class)
 })
 
 

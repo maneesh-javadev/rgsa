@@ -1,6 +1,9 @@
 package gov.in.rgsa.service;
 
+import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.util.List;
+import java.util.Map;
 
 import gov.in.rgsa.dto.SubcomponentwiseQuaterBalance;
 import gov.in.rgsa.entity.*;
@@ -99,5 +102,14 @@ public interface ProgressReportService {
 	FileNode getUploadedFile(Integer fileNodeId);
 	
     String getBalanceAdditionalReqiurment(Integer componentId,Integer quaterId);
-
+    
+     void saveQprPanchayatBhawan(QprPanchayatBhawan qprPanchayatBhawan);
+     
+     List<District> getDistrictBasedOnPNCHAYATBHAWANnState(Integer activityId);
+     
+     BigDecimal subTOTALofOTHERQPRPANCHAYATBHAWAN();
+     
+     Map<String,Object> fetchTrainingDetailsCEC(Integer qtrId);
+     
+     public void savetrainingProgressReport(QuarterTrainings quarterTrainings);
 }

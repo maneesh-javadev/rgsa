@@ -14,6 +14,7 @@ trainingDetail.controller("trainingDetailMoprController",['$scope','trainingDeta
 	fetchOnLoad();
 	
 	function fetchOnLoad(){
+		$scope.btn_disabled=false;
 		trainingDetailService.fetchTrainingDetailsMOPRCEC().then(function(response){
 			
 			$scope.fetchTrainingDetailsListState=response.data.fetchTrainingDetailsListState;
@@ -127,6 +128,7 @@ trainingDetail.controller("trainingDetailMoprController",['$scope','trainingDeta
 	
 	$scope.saveTrainingDetails=function(status){
 		//alert(validateData($scope.trainingDetails));
+		$scope.btn_disabled=true;
 		if(validateData($scope.training.trainingDetailList)){
 			
 			if(status=='F'){

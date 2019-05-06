@@ -186,13 +186,13 @@ table.dataTable thead > tr > th, table.dataTable thead > tr > td {
 									</div>
 								<div class="text-right padding_right">
 									 
-									<button type="button" ng-show="!fetchTrainingMOPR.isFreeze" ng-click="saveTrainingDetails('S')"
+									<button type="button" ng-show="!fetchTrainingMOPR.isFreeze" ng-disabled="capacityBuilding.isFreeze" ng-click="saveTrainingDetails('S')"
 										class="btn bg-green waves-effect">SAVE</button>
 										
-									<button type="button" ng-show="!fetchTrainingMOPR.isFreeze" ng-click="saveTrainingDetails('F')"
+									<button type="button" ng-show="!fetchTrainingMOPR.isFreeze" ng-disabled="capacityBuilding.isFreeze" ng-click="saveTrainingDetails('F')"
 										class="btn bg-green waves-effect">FREEZE</button>
 										
-										<button type="button" ng-show="fetchTrainingMOPR.isFreeze"  ng-click="saveTrainingDetails('U')"
+										<button type="button" ng-show="fetchTrainingMOPR.isFreeze"  ng-disabled="capacityBuilding.isFreeze" ng-click="saveTrainingDetails('U')"
 										class="btn bg-green waves-effect">UNFREEZE</button>
 										
 									<button ng-click="resetLoading()" type="button"   class="btn bg-light-blue waves-effect"  >
