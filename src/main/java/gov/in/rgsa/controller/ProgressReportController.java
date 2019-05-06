@@ -1311,7 +1311,7 @@ public class ProgressReportController {
         model.addAttribute("quarterDuration", progressReportService.getQuarterDurations());
         model.addAttribute("buildingType", institutionalInfraActivityPlanService.fetchTrainingInstituteTypeId());
         List<StateAllocation> stateAllocationList = planAllocationService.fetchStateAllocationListMaxINSTALLMENTNO();
-        if (stateAllocationList != null && stateAllocationList.isEmpty()) {
+        if (!(stateAllocationList != null && !stateAllocationList.isEmpty())) {
             redirectAttributes.addFlashAttribute("isPlanAllocationNotExist", Boolean.TRUE);
             return REDIRECT_PLAN_ALLOCATION;
         }
@@ -1488,7 +1488,7 @@ public class ProgressReportController {
             @ModelAttribute("QPR_INSTITUTIONALINFRAQUATERLY") QprInstitutionalInfrastructure qprInstitutionalInfrastructure,
             Model model, RedirectAttributes redirectAttributes) {
         List<StateAllocation> stateAllocationList = planAllocationService.fetchStateAllocationListMaxINSTALLMENTNO();
-        if (stateAllocationList != null && stateAllocationList.isEmpty()) {
+        if (!(stateAllocationList != null && !stateAllocationList.isEmpty())) {
             redirectAttributes.addFlashAttribute("isPlanAllocationNotExist", Boolean.TRUE);
             return REDIRECT_PLAN_ALLOCATION;
         }
@@ -1668,7 +1668,7 @@ public class ProgressReportController {
     @RequestMapping(value = "trainingProgressReport", method = RequestMethod.GET)
     public String trainingProgressReport(@ModelAttribute("QPR_TRAINING_DETAILS") QuarterTrainings quarterTrainings, Model model, RedirectAttributes redirectAttributes) {
     	 List<StateAllocation> stateAllocationList = planAllocationService.fetchStateAllocationListMaxINSTALLMENTNO();
-         if (stateAllocationList != null && stateAllocationList.isEmpty()) {
+         if (!(stateAllocationList != null && !stateAllocationList.isEmpty())) {
              redirectAttributes.addFlashAttribute("isPlanAllocationNotExist", Boolean.TRUE);
              return REDIRECT_PLAN_ALLOCATION;
          }

@@ -80,6 +80,10 @@
 											<strong>Venue Level</strong>
 									</th>
 									
+									<th align="left">
+											<strong>Approved Amount</strong>
+									</th>
+									
 									
 									<th align="left">
 											<strong>Expenditure Incurred</strong>
@@ -113,7 +117,7 @@
 								</td>
 								<td align="left"><strong>${obj.subjectName}</strong></td>
 								<td align="left"><strong>${obj.trainingVenueLevelName}</strong></td>
-								
+								<td align="left"><strong>${obj.funds}</strong></td>
 								<td align="left">
 								
 										 <spring:bind path="QPR_TRAINING_DETAILS.quarterTrainingsDetailsList[${count.index}].expenditureIncurred" >

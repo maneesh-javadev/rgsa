@@ -2,18 +2,11 @@ package gov.in.rgsa.controller;
 
 import java.io.IOException;
 import java.math.BigDecimal;
-import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.HashSet;
 
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.commons.lang3.ArrayUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -26,9 +19,11 @@ import gov.in.rgsa.dto.GramPanchayatProgressReportDTO;
 import gov.in.rgsa.dto.SubcomponentwiseQuaterBalance;
 import gov.in.rgsa.entity.QprPanchayatBhawan;
 import gov.in.rgsa.entity.QprPanhcayatBhawanDetails;
+import gov.in.rgsa.entity.StateAllocation;
 import gov.in.rgsa.service.IncomeEnhancementService;
 import gov.in.rgsa.service.LGDService;
 import gov.in.rgsa.service.PanchayatBhawanService;
+import gov.in.rgsa.service.PlanAllocationService;
 import gov.in.rgsa.service.ProgressReportService;
 import gov.in.rgsa.user.preference.UserPreference;
 
@@ -49,6 +44,7 @@ public class QprGramPanchayatController {
 	
 	public static final String REDIRECT_GRAM_PANCHAYAT_PROGRESS_REPORT = "redirect:panchayatBhawanQuaterlyReport.html";
 	
+    public static final String REDIRECT_PLAN_ALLOCATION = "redirect:planAllocation.html";
 	
 	@Autowired
 	private LGDService lgdService;
@@ -57,11 +53,20 @@ public class QprGramPanchayatController {
 	private IncomeEnhancementService enhancementService;
 	
 	
+	@Autowired
+	private PlanAllocationService planAllocationService;
+	
+	
 	
 	@RequestMapping(value="panchayatBhawanQuaterlyReport",method = RequestMethod.GET)
-	public String getQprgGramPanchayat(@ModelAttribute("QPR_PANCHAYAT_BHAWAN") QprPanchayatBhawan qprPanchayatBhawan ,Model model,HttpServletResponse httpResponse)
+	public String getQprgGramPanchayat(@ModelAttribute("QPR_PANCHAYAT_BHAWAN") QprPanchayatBhawan qprPanchayatBhawan ,Model model,HttpServletResponse httpResponse, RedirectAttributes redirectAttributes)
 	{
 		
+		 List<StateAllocation> stateAllocationList = planAllocationService.fetchStateAllocationListMaxINSTALLMENTNO();
+         if (!(stateAllocationList != null && !stateAllocationList.isEmpty())) {
+             redirectAttributes.addFlashAttribute("isPlanAllocationNotExist", Boolean.TRUE);
+             return REDIRECT_PLAN_ALLOCATION;
+         }
 		model.addAttribute("quarterDuration", progressReportService.getQuarterDurations());
 		model.addAttribute("panchayatActivity", panchayatBhawanService.fetchPanchayatBhawanActivity());
 		//model.addAttribute("districtList", lgdService.getAllDistrictBasedOnState(userPreference.getStateCode()));

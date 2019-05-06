@@ -21,8 +21,7 @@ import javax.persistence.Table;
 })
 
 @NamedNativeQueries({
-	@NamedNativeQuery(name="FETCH_MAX_INSTALLMENT_NO_AND_PLAN_CODE",query="select p.plan_code||','||max(sa.installment_no) from rgsa.plan p left join rgsa.state_allocation sa on p.plan_code=sa.plan_code\r\n" + 
-			"  where state_code=:stateCode and year_id=:yearId and plan_status_id=5 group by p.plan_code"),
+	@NamedNativeQuery(name="FETCH_MAX_INSTALLMENT_NO_AND_PLAN_CODE",query="select * from rgsa.fetch_plancode_and_installment_no(:stateCode,:yearId)"),
 })
 
 

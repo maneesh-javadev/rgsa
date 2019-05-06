@@ -227,9 +227,9 @@ public class PlanAllocationServiceImpl implements PlanAllocationService{
 		
 		params.put("stateCode", userPreference.getStateCode());
 		params.put("yearId", userPreference.getFinYearId());
-		String detailString = commonRepository.find("FETCH_MAX_INSTALLMENT_NO_AND_PLAN_CODE", params);
+		String detailString =(String) commonRepository.find("FETCH_MAX_INSTALLMENT_NO_AND_PLAN_CODE", params);
 		
-		if(detailString!=null && detailString.length()>0) {
+		if(detailString!=null && detailString.length()>0 && !detailString.equals("empty")) {
 			String detailArr[]=detailString.split(",");
 			stateAllocationList=this.fetchStateAllocationList(Integer.parseInt(detailArr[0]), Integer.parseInt(detailArr[1]));
 		}
