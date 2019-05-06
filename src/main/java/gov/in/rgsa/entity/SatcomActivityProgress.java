@@ -69,8 +69,14 @@ public class SatcomActivityProgress implements Serializable{
 	@Column(name="is_freeze")
 	private String status;
 	
+	@Column(name="additional_requirement")
+	private Integer additionalRequirement;
+	
 	@Transient
 	private Integer qtrIdJsp1;
+	
+	@Transient
+	private String origin;
 
 	
 	@OneToMany(cascade=CascadeType.ALL,mappedBy="satcomActivityProgress",fetch=FetchType.EAGER)
@@ -158,6 +164,22 @@ public class SatcomActivityProgress implements Serializable{
 
 	public void setQtrIdJsp1(Integer qtrIdJsp1) {
 		this.qtrIdJsp1 = qtrIdJsp1;
+	}
+
+	public String getOrigin() {
+		return origin;
+	}
+
+	public void setOrigin(String origin) {
+		this.origin = origin;
+	}
+
+	public Integer getAdditionalRequirement() {
+		return additionalRequirement;
+	}
+
+	public void setAdditionalRequirement(Integer additionalRequirement) {
+		this.additionalRequirement = additionalRequirement;
 	}
 	
 }

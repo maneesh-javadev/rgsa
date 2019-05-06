@@ -76,6 +76,9 @@ public class QprEnablement {
 	@Transient
 	private Integer qrtId;
 	
+	@Transient
+	private String origin;
+	
 	
 	public Integer getQprEEnablementId() {
 		return qprEEnablementId;
@@ -178,6 +181,14 @@ public class QprEnablement {
 
 	public void setQuarterDuration(QuarterDuration quarterDuration) {
 		this.quarterDuration = quarterDuration;
+	}
+
+	public String getOrigin() {
+		return origin;
+	}
+
+	public void setOrigin(String origin) {
+		this.origin = origin;
 	}
 
 	

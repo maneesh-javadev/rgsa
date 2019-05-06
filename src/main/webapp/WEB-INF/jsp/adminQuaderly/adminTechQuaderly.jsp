@@ -2,6 +2,7 @@
 <script type="text/javascript"> 
 
 var quater_id = '${QTR_ID}';
+var remaining_add_req = '${REMAINING_ADD_REQ}';
 var fund_allocated_by_state='${FUND_ALLOCATED_BY_STATE}';
 var fund_used='${FUND_USED_IN_OTHER_QUATOR}';
 if(quater_id > 2){
@@ -21,9 +22,10 @@ $( document ).ready(function() {
 	  });
 });
 
-function getSelelctedQtrRprt(){
+function saveAndGetDataQtrRprt(msg){
 	 $('#quaterTransient').val($('#quaterDropDownId').val());
-	 	document.administrativeTechnicalProgress.method = "get";
+	 $('#origin').val(msg);
+	 	document.administrativeTechnicalProgress.method = "post";
 		document.administrativeTechnicalProgress.action = "adminTechQuaderly.html?<csrf:token uri='adminTechQuaderly.html'/>";
 		document.administrativeTechnicalProgress.submit();
 }
@@ -88,6 +90,15 @@ function isNoOfUnitAndExpInurredFilled(index){
 		$('#noOfUnitCompleted_'+index).focus();
 	}
 }
+
+function validateAddReq(){
+	if(+$('#additionalReqId').val() > +remaining_add_req){
+		alert('Additional requirementshould not exceed : ' + remaining_add_req);
+		$('#additionalReqId').val('');
+		$('#additionalReqId').focus();
+	}
+			
+}
 </script>
 <section class="content">
 	<div class="container-fluid">
@@ -111,7 +122,7 @@ function isNoOfUnitAndExpInurredFilled(index){
 									</div>
 									<div align="center" class="col-lg-4">
 										<select id="quaterDropDownId" name="quarterDuration.qtrId"
-											class="form-control" onchange="getSelelctedQtrRprt();">
+											class="form-control" onchange="saveAndGetDataQtrRprt('qtrChange');">
 											<option value="0">Select quarter</option>
 											<c:forEach items="${QUATER_DETAILS}" var="qtr">
 												<option value="${qtr.qtrId}">${qtr.qtrDuration}</option>
@@ -172,18 +183,23 @@ function isNoOfUnitAndExpInurredFilled(index){
 												<td><input type="text"
 													name="administrativeTechnicalDetailProgress[${count.index}].noOfUnitCompleted" id="noOfUnitCompleted_${count.index}"
 													value="${ADMINISTRATIVE_TECHNICAL_PROGRESS.administrativeTechnicalDetailProgress[count.index].noOfUnitCompleted}"
-													class="form-control" onkeyup="validateNoOfUnits(${count.index});isNoOfUnitAndExpInurredFilled(${count.index})"></td>
+													class="form-control validate" onkeyup="validateNoOfUnits(${count.index});"></td>
 												<td><input type="text"
 													name="administrativeTechnicalDetailProgress[${count.index}].expenditureIncurred" id="expenditureIncurred_${count.index}"
 													value="${ADMINISTRATIVE_TECHNICAL_PROGRESS.administrativeTechnicalDetailProgress[count.index].expenditureIncurred}"
-													class="form-control" onkeyup="validateFundByAllocatedFund(${count.index});validateWithCorrespondingFund(${count.index});isNoOfUnitAndExpInurredFilled(${count.index})"></td>
+													class="form-control validate" onkeyup="validateFundByAllocatedFund(${count.index});validateWithCorrespondingFund(${count.index});isNoOfUnitAndExpInurredFilled(${count.index})"></td>
 											</tr>
 										</c:forEach>
+										<tr>
+											<th colspan="2"><div align="center">Additional Requirement</div></th>
+											<th colspan="3"><div align="center" id="additionalReqStateId">${APPROVED_ADMIN_TECH_ACT.additionalRequirement }</div></th>
+											<td></td>
+											<td><input type="text" name="additionalRequirement" id="additionalReqId" value="${ADMINISTRATIVE_TECHNICAL_PROGRESS.additionalRequirement}" class="form-control validate Align-Right" onkeyup="validateAddReq()"></td>
+										</tr>
 									</tbody>
 								</table>
 								<div class="text-right">
-									<button type="submit" class="btn bg-green waves-effect">
-										SAVE</button>
+									<button type="button" onclick="saveAndGetDataQtrRprt('save')" class="btn bg-green waves-effect">SAVE</button>
 									<button type="button" onclick="onClear(this)"
 										class="btn bg-light-blue waves-effect">CLEAR</button>
 									<button type="button"
@@ -195,6 +211,7 @@ function isNoOfUnitAndExpInurredFilled(index){
 						</div>
 						<!-- hidden fields -->
 						<input type="hidden" id="quaterTransient" name="qtrIdJsp2" value='${QTR_ID}' />
+						<input type="hidden" id="origin" name="origin" />
 						<input type="hidden" name="administrativeTechnicalSupport.administrativeTechnicalSupportId" value="${APPROVED_ADMIN_TECH_ACT.administrativeTechnicalSupportId}">
 					</form:form>
 				</div>

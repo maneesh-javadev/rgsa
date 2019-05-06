@@ -253,7 +253,7 @@ public class AdditionalFacultyAndMainServiceImpl implements AdditionalFacultyAnd
 	@Override
 	public List<AdditionalFacultyProgressDetail> getAdditionalFacultyProgressBasedOnActIdAndQtrId(
 			Integer instituteInfraHrActivityId, int quarterId) {
-		List<AdditionalFacultyProgress> additionalFacultyProgress = getQprHrSupportActivity(instituteInfraHrActivityId, quarterId);
+		List<AdditionalFacultyProgress> additionalFacultyProgress = getQprHrSupportActivityExceptCurrentQtr(instituteInfraHrActivityId, quarterId);
 		List<AdditionalFacultyProgressDetail> additionalFacultyProgressDetail=new ArrayList<>();
 		if(CollectionUtils.isNotEmpty(additionalFacultyProgress)){
 			for (AdditionalFacultyProgress additionalFaculty_Progress : additionalFacultyProgress) {
@@ -265,7 +265,7 @@ public class AdditionalFacultyAndMainServiceImpl implements AdditionalFacultyAnd
 		}
 	}
 	
-	public List<AdditionalFacultyProgress> getQprHrSupportActivity(Integer instituteInfraHrActivityId , int quarterId){
+	public List<AdditionalFacultyProgress> getQprHrSupportActivityExceptCurrentQtr(Integer instituteInfraHrActivityId , int quarterId){
 		Map<String, Object> params = new HashMap<String,Object>();
 		params.put("instituteInfraHrActivityId", instituteInfraHrActivityId);
 		params.put("quarterId", quarterId);	
@@ -276,7 +276,7 @@ public class AdditionalFacultyAndMainServiceImpl implements AdditionalFacultyAnd
 	public Map<? extends String, ? extends Object> getTotalAddReqBesidesCurrentQtr(Integer instituteInfraHrActivityId,
 			int quarterId) {
 		Map<String, Object> params = new HashMap<String,Object>();
-		List<AdditionalFacultyProgress> additionalFacultyProgress = getQprHrSupportActivity(instituteInfraHrActivityId, quarterId);
+		List<AdditionalFacultyProgress> additionalFacultyProgress = getQprHrSupportActivityExceptCurrentQtr(instituteInfraHrActivityId, quarterId);
 		int total_sprc_additional_req=0,total_dprc_additional_req=0;
 		for (AdditionalFacultyProgress additional_Faculty_Progress : additionalFacultyProgress) {
 			if(additional_Faculty_Progress.getAdditionalReqSprc() != null) {

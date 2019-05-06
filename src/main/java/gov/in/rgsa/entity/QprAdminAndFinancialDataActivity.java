@@ -71,6 +71,12 @@ public class QprAdminAndFinancialDataActivity {
 	
 	@Transient
 	private Integer showQqrtrId;
+	
+	@Column(name="additional_requirement")
+	private Integer additionalRequirement;
+	
+	@Transient
+	private String origin;
 
 	public Integer getQprAfpId() {
 		return qprAfpId;
@@ -159,6 +165,22 @@ public class QprAdminAndFinancialDataActivity {
 
 	public void setShowQqrtrId(Integer showQqrtrId) {
 		this.showQqrtrId = showQqrtrId;
+	}
+
+	public Integer getAdditionalRequirement() {
+		return additionalRequirement;
+	}
+
+	public void setAdditionalRequirement(Integer additionalRequirement) {
+		this.additionalRequirement = additionalRequirement;
+	}
+
+	public String getOrigin() {
+		return origin;
+	}
+
+	public void setOrigin(String origin) {
+		this.origin = origin;
 	}
 
 	
