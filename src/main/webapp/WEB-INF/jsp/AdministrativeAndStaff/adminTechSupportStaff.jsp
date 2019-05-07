@@ -53,7 +53,7 @@ thead {
 
 thead th {
  /*  background-color: #99a; */
-  min-width: 168px; 
+  min-width: 134px; 
   height: 32px;
   border: 1px solid #222;
 }
@@ -71,12 +71,12 @@ tbody {
   display: block; /*seperates the tbody from the header*/
   width: 100%;
   height: 470px;
-  overflow: scroll;
+  overflow-y: scroll;
 }
 
 tbody td {
  /*  background-color: #bbc; */
-  min-width: 168px;
+  min-width: 134px;
   border: 1px solid #222;
 }
 
@@ -97,7 +97,7 @@ table#mytable tbody tr td:first-child {
 
 #mytable th, #mytable td {
 	overflow: hidden;
-	width: 112px;
+	width: 100px;
 	white-space: inherit;
 	word-wrap: break-word;
 }
