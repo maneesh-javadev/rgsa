@@ -166,7 +166,7 @@
                                         
                                        
                                     <td>{{activity.activityName}}
-                                       <input type="hidden"  ng-model="panchayatBhawanActivity.panchatayBhawanActivityDetails[$index].activity.activityId"/>
+                                       <input type="hidden"  ng-model="panchayatBhawanActivity.panchatayBhawanActivityDetails[$index].activity.activityId" ng-init="panchayatBhawanActivity.panchatayBhawanActivityDetails[$index].activity.activityId=activity.activityId"/>
                                     </td>
                                     <!-- 	<td>
                                        <select data-ng-show="panchayatBhawanActivity.status == 'F'"  class="form-control col-sm-1" ng-model="districtCode" disabled="disabled"

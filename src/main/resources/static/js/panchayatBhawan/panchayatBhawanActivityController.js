@@ -40,9 +40,9 @@ $scope.userType = null;
 				$scope.initial_status=false;
 			}else{
 				$scope.initial_status=true;
-				for(var i=0;i<$scope.activityList.length;++i){
+				/*for(var i=0;i<$scope.activityList.length;++i){
 					$scope.panchayatBhawanActivity.panchatayBhawanActivityDetails[i].activity=$scope.activityList[i];
-				}
+				}*/
 			}
 			if($scope.panchayatBhawanActivity.panchatayBhawanActivityDetails != undefined)
 				$scope.calculateTotal();
