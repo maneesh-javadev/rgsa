@@ -22,11 +22,11 @@ $( document ).ready(function() {
 	showTable();
 });
 
-function getSelelctedQtrRprt(){
-	 var qtId = $('#quaterId').val();
-	 $('#qtrId').val(qtId);
-	 	document.iecQuater.method = "get";
-		document.iecQuater.action = "iecQtrProgressReport.html?<csrf:token uri='iecQtrProgressReport.html'/>";
+function saveAndGetDataQtrRprt(msg){
+	 $('#qtrId').val($('#quaterId').val());
+	 $('#origin').val(msg);
+	 	document.iecQuater.method = "post";
+		document.iecQuater.action = "iecQtrProgressReportPost.html?<csrf:token uri='iecQtrProgressReportPost.html'/>";
 		document.iecQuater.submit();
 }
 
@@ -74,6 +74,10 @@ function validateFundByAllocatedFund(obj){
 					</div>
 					<form:form method="POST" name="iecQuater" action="iecQtrProgressReportPost.html" id="iecId" modelAttribute="IEC_ACTIVITY_QUATER" path="iecQtrProgressReport">
 					<input type="hidden" name="<csrf:token-name/>" value="<csrf:token-value uri="iecQtrProgressReportPost.html" />" />
+					<!--hidden fields  -->
+							<input type="hidden" id="qtrId" name="qtrId" value='' />
+							<input type="hidden" name="iecActivity.id" value="${CEC_APPROVED_ACT_ID}">
+							<input type="hidden" id="origin" name="origin" />
 						<div class="row clearfix">
 							<div class="form-group">
 								<div class="col-lg-3" style="margin-left: 5%;">
@@ -81,7 +85,7 @@ function validateFundByAllocatedFund(obj){
 								</div>
 								<div align="center" class="col-lg-4">
 									<select id="quaterId" name="quarterDuration.qtrId"
-										class="form-control" onchange="showTable();getSelelctedQtrRprt();">
+										class="form-control" onchange="saveAndGetDataQtrRprt('qtrChange');showTable();">
 										<option value="0">Select quarter</option>
 										<c:forEach items="${QUATER_DETAILS}" var="qtr">
 											<option value="${qtr.qtrId}">${qtr.qtrDuration}</option>
@@ -90,9 +94,6 @@ function validateFundByAllocatedFund(obj){
 								</div>
 							</div>
 						</div>
-
-						<input type="hidden" name="<csrf:token-name/>"
-							value="<csrf:token-value uri="iec.html"/>" />
 						<div class="body">
 							<div class="table-responsive" id="tableDivId">
 								<table class="table table-bordered" id="mytable">
@@ -114,7 +115,11 @@ function validateFundByAllocatedFund(obj){
 											<input type="hidden" name="qprIecId" value="${IEC_ACTIVITY_PROGRESS.qprIecId}">
 											<input type="hidden" name="iecQuaterDetails[${count.index}].qprIecDetailsId" value="${IEC_ACTIVITY_PROGRESS.iecQuaterDetails[count.index].qprIecDetailsId}">
 											<tr>
-												<td><strong>${obj.iecActivityDropedown.natureIecActivity}</strong></td>
+												<td><ul type="circle">
+												<c:forEach items="${obj.iecDetailsDropdownSet}" var="activitySet">
+												<li><strong>${activitySet.iecActivityDropdown.natureIecActivity}</strong></li>
+												</c:forEach>
+												</ul></td>
 												<td><strong>${obj.totalAmountProposed}</strong></td>
 											<c:choose>
 												<c:when test="${not empty IEC_ACTIVITY_PROGRESS}">
@@ -139,8 +144,8 @@ function validateFundByAllocatedFund(obj){
 									<c:set var="count" value="0" scope="page" />
 								</table>
 								<div class="text-right">
-									<button type="submit" class="btn bg-green waves-effect">
-										SAVE</button>
+									<button type="button" onclick="saveAndGetDataQtrRprt('save')" id="saveButtn"
+										class="btn bg-green waves-effect">SAVE</button>
 									<button type="button" onclick="onClear(this)"
 										class="btn bg-light-blue waves-effect">CLEAR</button>
 									<button type="button"
@@ -150,9 +155,6 @@ function validateFundByAllocatedFund(obj){
 							</div>
 
 						</div>
-							<!--hidden fields  -->
-							<input type="hidden" id="qtrId" name="qtrId" value='' />
-							<input type="hidden" name="iecActivity.id" value="${CEC_APPROVED_ACT_ID}">
 					</form:form>
 				</div>
 			</div>

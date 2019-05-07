@@ -80,6 +80,9 @@ public class PmuProgress {
 
 	@Transient
 	private Integer qtrIdJsp6;
+	
+	@Transient
+	private String origin;
 
 	public Integer getQprPmuId() {
 		return qprPmuId;
@@ -177,11 +180,13 @@ public class PmuProgress {
 		this.qtrIdJsp6 = qtrIdJsp6;
 	}
 
-	
-	
-	
-	
-	
+	public String getOrigin() {
+		return origin;
+	}
+
+	public void setOrigin(String origin) {
+		this.origin = origin;
+	}
 	
 }
 

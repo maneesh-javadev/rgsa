@@ -72,7 +72,7 @@ publicModule.controller("adminTechSupportSaffController",['$scope','adminTechSup
 		var additionalThrashhold = ($scope.fundTotal*25)/100;
 		if(parseInt($scope.adminTechStaffObject.additionalRequirement) > additionalThrashhold){
 			$scope.adminTechStaffObject.additionalRequirement = 0;
-			toastr.error("Value should not be greater than 25% of total funds!");
+			toastr.error("Value should not be greater than 25% of total funds! : " + additionalThrashhold);
 			$scope.grandTotal=0;
 		}
 		$scope.calculateGrandTotal();
