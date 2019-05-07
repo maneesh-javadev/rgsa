@@ -179,7 +179,7 @@ publicModule.controller("pesaPlanController", [ '$scope', "pesaPlanService",
 			}
 		}
 		if(!flag)
-			toastr.error("empty form can't be save.");	
+			toastr.error("empty form can't be save or freezed.");	
 		return flag;
 	}
 	
@@ -199,11 +199,13 @@ publicModule.controller("pesaPlanController", [ '$scope', "pesaPlanService",
 	}
 	
 	$scope.freezUnFreezPesaPlan=function(freezUnfreez){
+		if($scope.validateFields()){
 		if(freezUnfreez == 'freez'){
 			$scope.pesaPlan.isFreez = true;
 		}else{
 			$scope.pesaPlan.isFreez = false;
 		}
+		
 		pesaPlanService.freezUnFreezPesaPlan($scope.pesaPlan).then(function(response){
 			$scope.pesaPlan = response.data;
 			if(freezUnfreez == 'freez'){
@@ -216,5 +218,6 @@ publicModule.controller("pesaPlanController", [ '$scope', "pesaPlanService",
 		},function(error){
 			alert(error);
 		});
+		}
 	}
 }]);
