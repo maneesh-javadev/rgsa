@@ -207,8 +207,8 @@ publicModule.controller("pesaPlanCECController", [ '$scope', "pesaPlanService",
 	}
 	
 	$scope.calculateFundsAndTotalWithoutAdditionaRequirement=function(index){
-		if($scope.pesaPlanForCEC.pesaPlanDetails[index].unitCostPerMonth == 0){
-			$scope.pesaPlanForCEC.pesaPlanDetails[index].unitCostPerMonth ='';
+		if($scope.pesaPlanForCEC.pesaPlanDetails[index].unitCostPerMonth == ''){
+			/*$scope.pesaPlanForCEC.pesaPlanDetails[index].unitCostPerMonth ='';*/
 			return false;
 		}
 		
@@ -217,13 +217,13 @@ publicModule.controller("pesaPlanCECController", [ '$scope', "pesaPlanService",
 			toastr.error("Unit Cost per month for " + $scope.designationArray[index].pesaPostName + " should not be greater than " + $scope.designationArray[index].ceilingValue);
 		}
 		
-		if($scope.pesaPlanForCEC.pesaPlanDetails[index].noOfUnits == 0){
-			$scope.pesaPlanForCEC.pesaPlanDetails[index].noOfUnits ='';
+		if($scope.pesaPlanForCEC.pesaPlanDetails[index].noOfUnits ==''){
+			/*$scope.pesaPlanForCEC.pesaPlanDetails[index].noOfUnits ='';*/
 			return false;
 		}
 		
-		if($scope.pesaPlanForCEC.pesaPlanDetails[index].noOfMonths == 0){
-			$scope.pesaPlanForCEC.pesaPlanDetails[index].noOfMonths ='';
+		if($scope.pesaPlanForCEC.pesaPlanDetails[index].noOfMonths == ''){
+			/*$scope.pesaPlanForCEC.pesaPlanDetails[index].noOfMonths ='';*/
 			return false;
 		}
 		

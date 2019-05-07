@@ -83,8 +83,8 @@ publicModule.controller("pesaPlanController", [ '$scope', "pesaPlanService",
 	}
 	
 	$scope.calculateFundsAndTotalWithoutAdditionaRequirement=function(index){
-		if($scope.pesaPlan.pesaPlanDetails[index].unitCostPerMonth == 0){
-			$scope.pesaPlan.pesaPlanDetails[index].unitCostPerMonth ='';
+		if($scope.pesaPlan.pesaPlanDetails[index].unitCostPerMonth == ''){
+			/*$scope.pesaPlan.pesaPlanDetails[index].unitCostPerMonth ='';*/
 			return false;
 		}
 		
@@ -93,13 +93,13 @@ publicModule.controller("pesaPlanController", [ '$scope', "pesaPlanService",
 			toastr.error("Unit Cost per month for " + $scope.designationArray[index].pesaPostName + " should not be greater than " + $scope.designationArray[index].ceilingValue);
 		}
 		
-		if($scope.pesaPlan.pesaPlanDetails[index].noOfUnits == 0){
-			$scope.pesaPlan.pesaPlanDetails[index].noOfUnits ='';
+		if($scope.pesaPlan.pesaPlanDetails[index].noOfUnits == ''){
+			/*$scope.pesaPlan.pesaPlanDetails[index].noOfUnits ='';*/
 			return false;
 		}
 		
-		if($scope.pesaPlan.pesaPlanDetails[index].noOfMonths == 0){
-			$scope.pesaPlan.pesaPlanDetails[index].noOfMonths ='';
+		if($scope.pesaPlan.pesaPlanDetails[index].noOfMonths ==''){
+			/*$scope.pesaPlan.pesaPlanDetails[index].noOfMonths ='';*/
 			return false;
 		}
 		$scope.pesaPlan.pesaPlanDetails[index].funds = $scope.pesaPlan.pesaPlanDetails[index].noOfUnits * $scope.pesaPlan.pesaPlanDetails[index].unitCostPerMonth * $scope.pesaPlan.pesaPlanDetails[index].noOfMonths
@@ -161,23 +161,26 @@ publicModule.controller("pesaPlanController", [ '$scope', "pesaPlanService",
 	}
 	
 	$scope.validateFields=function(){
+		var flag=false;
 		for (var i = 0; i < $scope.pesaPlan.pesaPlanDetails.length; i++) {
 			if($scope.pesaPlan.pesaPlanDetails[i] != undefined){
-				if(isNaN($scope.pesaPlan.pesaPlanDetails[i].funds)){
-					toastr.error("Fund is required");
-					return false;
+				if(!isNaN($scope.pesaPlan.pesaPlanDetails[i].funds) && $scope.pesaPlan.pesaPlanDetails[i].funds != null && $scope.pesaPlan.pesaPlanDetails[i].funds != ''){
+					flag= true;
+					break;
 				}
-				if($scope.pesaPlan.pesaPlanDetails[i].noOfUnits == undefined){
+				/*if($scope.pesaPlan.pesaPlanDetails[i].noOfUnits == undefined){
 					toastr.error("Number of units is required");
 					return false;
 				}
-				if($scope.pesaPlan.pesaPlanDetails[i].unitCostPerMonth == ""){
+				if($scope.pesaPlan.pesaPlanDetails[i].unitCostPerMonth === ''){
 					toastr.error("Unit Cost Per Month is required");
 					return false;
-				}
+				}*/
 			}
 		}
-		return true;
+		if(!flag)
+			toastr.error("empty form can't be save.");	
+		return flag;
 	}
 	
 	$scope.onClear = function(){

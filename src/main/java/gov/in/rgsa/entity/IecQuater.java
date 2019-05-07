@@ -66,6 +66,9 @@ public class IecQuater {
 	@Transient
 	private Integer qtrId;
 	
+	@Transient
+	private String origin;
+	
 	
 	@Column(name="is_freeze")
 	private Boolean isFreeze;
@@ -178,6 +181,16 @@ public class IecQuater {
 
 	public void setIsFreeze(Boolean isFreeze) {
 		this.isFreeze = isFreeze;
+	}
+
+
+	public String getOrigin() {
+		return origin;
+	}
+
+
+	public void setOrigin(String origin) {
+		this.origin = origin;
 	}
 
 	

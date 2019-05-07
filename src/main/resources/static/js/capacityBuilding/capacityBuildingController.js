@@ -92,6 +92,7 @@ publicModule.controller("capacityBuildingController", [ '$scope', "capacityBuild
 		totalFund = totalFund + capacityBuildingActivityDetails[i].funds;
 		}
 		$scope.subTotal=totalFund;
+		$scope.validateAmount();
 		$scope.calculateGrandTotal();
 	}
 	
