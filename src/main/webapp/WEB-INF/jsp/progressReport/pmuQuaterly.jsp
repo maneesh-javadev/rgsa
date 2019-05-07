@@ -22,9 +22,10 @@ $('document').ready(function(){
 	  });
 });
 
-function getSelelctedQtrRprt(){
+function saveAndGetDataQtrRprt(msg){
 	 $('#quaterTransient').val($('#quaterDropDownId').val());
-	 	document.pmuProgress.method = "get";
+	 $('#origin').val(msg);
+	 	document.pmuProgress.method = "post";
 		document.pmuProgress.action = "pmuProgresReport.html?<csrf:token uri='pmuProgresReport.html'/>";
 		document.pmuProgress.submit();
 }
@@ -112,7 +113,7 @@ function isNoOfUnitAndExpInurredFilled(index){
 											</div>
 											<div align="center" class="col-lg-4">
 												<select id="quaterDropDownId" name="quarterDuration.qtrId"
-													class="form-control" onchange="getSelelctedQtrRprt();showTablediv()">
+													class="form-control" onchange="saveAndGetDataQtrRprt('qtrChange');showTablediv()">
 													<option value="0">Select quarter</option>
 													<c:forEach items="${QUATER_DETAILS}" var="qtr">
 														<option value="${qtr.qtrId}">${qtr.qtrDuration}</option>
@@ -205,8 +206,8 @@ function isNoOfUnitAndExpInurredFilled(index){
 										</tbody>
 									</table>
 									<div class="text-right">
-											<button type="submit" class="btn bg-green waves-effect">
-												SAVE</button>
+											<button type="button" onclick="saveAndGetDataQtrRprt('save')" id="saveButtn"
+												class="btn bg-green waves-effect">SAVE</button>
 											<button type="button" onclick="onClear(this)"
 												class="btn bg-light-blue waves-effect">CLEAR</button>
 											<button type="button"
@@ -217,6 +218,7 @@ function isNoOfUnitAndExpInurredFilled(index){
 							<!-- hidden field -->
 							<input type="hidden" name="pmuActivity.pmuActivityId" value="${CEC_APPROVED_ACTIVITY.pmuActivityId}" />
 							<input type="hidden" name="qprPmuId" value="${PMU_PROGRESS.qprPmuId}" />
+							<input type="hidden" id="origin" name="origin" />
 							<input type="hidden" id="quaterTransient" name="qtrIdJsp6" value='${qtrIdJsp6}' />
 						</form:form>
 					</div>

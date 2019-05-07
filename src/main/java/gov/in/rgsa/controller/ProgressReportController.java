@@ -196,7 +196,7 @@ public class ProgressReportController {
 
     @RequestMapping(value = "iecQtrProgressReport", method = RequestMethod.GET)
     public String qprGetFormIecQtrProgressReport1(@ModelAttribute("IEC_ACTIVITY_QUATER") IecQuater iecQuater,
-                                                  Model model, HttpServletRequest request) {
+                                                  Model model) {
         int quarterId = 0;
         int installmentNo = (quarterId < 3) ? 1 : 2; // installment number for qtrId 1 & 2 = 1 and 3 & 4 = 2
         if (iecQuater.getQtrId() != null) {
@@ -256,7 +256,10 @@ public class ProgressReportController {
     @RequestMapping(value = "iecQtrProgressReportPost", method = RequestMethod.POST)
     public String iecQtrProgressReportPostQuaterly(@ModelAttribute("IEC_ACTIVITY_QUATER") IecQuater iecQuater,
                                                    Model model, HttpServletRequest request, RedirectAttributes re) {
-        progressReportService.saveIec(iecQuater);
+    	if (!iecQuater.getOrigin().equalsIgnoreCase("save")) {
+            return qprGetFormIecQtrProgressReport1(iecQuater, model);
+        }
+    	progressReportService.saveIec(iecQuater);
         re.addFlashAttribute(Message.SUCCESS_KEY, Message.SAVE_SUCCESS);
         return REDIRECT_IEC_PROGRESS_REPORT;
     }
@@ -940,7 +943,10 @@ public class ProgressReportController {
     @RequestMapping(value = "pmuProgresReport", method = RequestMethod.POST)
     public String getPmuActivityPost(@ModelAttribute("PMU_ACTIVITY_QUATERLY") PmuProgress pmuProgress, Model model,
                                      HttpServletRequest request, RedirectAttributes re) {
-        progressReportService.savePmu(pmuProgress);
+    	if (!pmuProgress.getOrigin().equalsIgnoreCase("save")) {
+            return qprGetFormPmuActivityMethodQuaterly(pmuProgress, model,request);
+        }
+    	progressReportService.savePmu(pmuProgress);
         re.addFlashAttribute(Message.SUCCESS_KEY, Message.SAVE_SUCCESS);
         return REDIRECT_TRAINING_PROGRESS_PMU;
     }

@@ -57,13 +57,14 @@ function calculateTotalCost(){
 	} 
 	document.getElementById("TotalCostId").value=total_cost;
 	calculateTotalProposedFund();
+	validateAdditionalRequirement()
 	onloadChangeColor();
 }
 
 function validateAdditionalRequirement(){
 	if($("#TotalCostId").val() != ""){
 		if($("#additionalRequirementId").val() >0.25 * (parseInt($("#TotalCostId").val()))){
-			alert("Additional Requirement should be less than 25% of Total Cost.");
+			alert("Additional Requirement should be less than 25% of Total Cost. : "+ 0.25 * (parseInt($("#TotalCostId").val())));
 			$("#additionalRequirementId").val('');
 			calculateTotalProposedFund();
 		}

@@ -44,6 +44,7 @@ function calculateTotalCost(){
 			total_cost += +document.getElementById("fundId_"+i).value;
 		} 
 		document.getElementById("TotalCostId").value=total_cost;
+		validateAdditionalRequirement()
 		calculateTotalProposedFund();
 	}
 }
@@ -51,7 +52,7 @@ function calculateTotalCost(){
 function validateAdditionalRequirement(){
 	if($("#TotalCostId").val() != ""){
 		if($("#additionalRequirementId").val() >0.25 * (parseInt($("#TotalCostId").val()))){
-			alert("Additional Requirement should be less than 25% of Total Cost.");
+			alert("Additional Requirement should be less than 25% of Total Cost. : " + 0.25 * (parseInt($("#TotalCostId").val())));
 			$("#additionalRequirementId").val('');
 			calculateTotalProposedFund();
 		}
