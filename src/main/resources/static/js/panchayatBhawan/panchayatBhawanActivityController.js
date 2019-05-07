@@ -27,11 +27,22 @@ $scope.userType = null;
 			$scope.panchayatWithoutBhawan = response.data.panchayatWithoutBhawan;
 			$scope.panchayatWithBhawan= response.data.panchayatWithBhawan;
 			$scope.userType = response.data.userType;
-			if(response.data.PANCHAYAT_BHAWAN_ACTIVITY!=undefined){
+			if(response.data.PANCHAYAT_BHAWAN_ACTIVITY!=null && response.data.PANCHAYAT_BHAWAN_ACTIVITY!=undefined){
 				$scope.panchayatBhawanActivity=response.data.PANCHAYAT_BHAWAN_ACTIVITY;
+				$scope.panchatayBhawanActivityDetails=response.data.PANCHAYAT_BHAWAN_ACTIVITY.panchatayBhawanActivityDetails;
+				$scope.panchatayBhawanActivityDetailsSort=[];
+				for(var i=0;i<$scope.panchatayBhawanActivityDetails.length;++i){
+					activityId=$scope.panchatayBhawanActivityDetails[i].activity.activityId;
+					$scope.panchatayBhawanActivityDetailsSort[activityId-1]=$scope.panchatayBhawanActivityDetails[i];
+					
+				}
+				$scope.panchayatBhawanActivity.panchatayBhawanActivityDetails=$scope.panchatayBhawanActivityDetailsSort;
 				$scope.initial_status=false;
 			}else{
 				$scope.initial_status=true;
+				for(var i=0;i<$scope.activityList.length;++i){
+					$scope.panchayatBhawanActivity.panchatayBhawanActivityDetails[i].activity=$scope.activityList[i];
+				}
 			}
 			if($scope.panchayatBhawanActivity.panchatayBhawanActivityDetails != undefined)
 				$scope.calculateTotal();
@@ -253,18 +264,18 @@ $scope.userType = null;
 				isError=true;
 			}else{
 				if(id!='SAN'){
-					if(FREL>FUTI){
-						FREQ=FREL-FUTI;
+					if(FSAN>=FUTI){
+						FREQ=FSAN-FUTI;
 						if(FSAN>=FREQ){
 							$scope.panchayatBhawanActivity.panchatayBhawanActivityDetails[index].funds=FREQ;
 							
 						}
 						else{
-							toastr.error("Fund Required must be greater then Fund Sanctioned");
+							toastr.error("Fund Required must be less then Fund Sanctioned");
 							isError=true;
 						}
 					}else{
-						toastr.error("Fund Released must be greater then Fund Utilized");
+						toastr.error("Fund Released must be greater then Fund Sanctioned");
 						isError=true;
 					}
 				}else{
@@ -305,6 +316,13 @@ $scope.userType = null;
 		}
 		$scope.totalFundReq=totalOfFunds;
 	}
+	
+	$scope.debug=function(ele, ret, msg){
+		console.log(msg?msg:"DEBUG", ele);
+		return ret;
+	}
+	
+	
 	
 	
 }]);

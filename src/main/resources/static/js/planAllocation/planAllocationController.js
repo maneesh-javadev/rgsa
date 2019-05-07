@@ -24,6 +24,12 @@ planAllocation.controller("planAllocationController",['$scope','planAllocationSe
 			totalFundVal=0;
 			$scope.planAllocationList=response.data.PLAN_ALLOCATION_LIST;
 			$scope.PLAN_ALLOCATION=response.data.stateAllocationModal;
+			$scope.is_second_inallment=false;
+			if ($scope.PLAN_ALLOCATION.status=='F' ){
+				$scope.is_second_inallment=true;
+			}
+		
+			
 			//load_calculateTotal();
 			if($scope.PLAN_ALLOCATION.status!=null && $scope.PLAN_ALLOCATION.status=='F'){
 				$scope.btnoneStatus='R';

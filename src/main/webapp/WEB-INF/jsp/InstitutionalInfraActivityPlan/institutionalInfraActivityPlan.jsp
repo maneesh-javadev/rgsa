@@ -623,10 +623,7 @@ function isNumber(evt) {
 																					<spring:message code="Label.CLEAR" htmlEscape="true" />
 																				</button>
 																			</c:if>
-																			<button type="button"
-									onclick="onClose('home.html?
-																				<csrf:token uri='home.html'/>')"
-									class="btn bg-orange waves-effect">
+																			<button type="button" onclick="onClose('home.html?<csrf:token uri='home.html'/>')" class="btn bg-orange waves-effect">
 																				<spring:message code="Label.CLOSE" htmlEscape="true" />
 																			</button>
 																			<br/>

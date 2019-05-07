@@ -152,7 +152,9 @@
                                  </tr>
                               </thead>
                               <tbody>
-                                 <tr ng-repeat="activity in activityList" ng-if="[1, 2,3].indexOf(activity.activityId) > -1">
+                              
+                             
+                                 <tr ng-repeat="activity in activityList" ng-if="[1, 2,3].indexOf(activity.activityId) > -1 ">
                                     <%--  <td><select class="form-control col-sm-1"   ng-model="panchayatBhawanActivity.panchatayBhawanActivityDetails[$index].workType" data-ng-disabled="panchayatBhawanActivity.status == 'F'" data-ng-selected="selected">
                                        <option value="0">select</option>
                                        <option value="N"><spring:message code="Label.NewBuilding" htmlEscape="true" /></option>
@@ -161,8 +163,10 @@
                                        </select>
                                        
                                        </td> --%>
+                                        
+                                       
                                     <td>{{activity.activityName}}
-                                       <input type="hidden"  ng-model="panchayatBhawanActivity.panchatayBhawanActivityDetails[$index].activity.activityId" ng-init="panchayatBhawanActivity.panchatayBhawanActivityDetails[$index].activity.activityId=activity.activityId"/>
+                                       <input type="hidden"  ng-model="panchayatBhawanActivity.panchatayBhawanActivityDetails[$index].activity.activityId"/>
                                     </td>
                                     <!-- 	<td>
                                        <select data-ng-show="panchayatBhawanActivity.status == 'F'"  class="form-control col-sm-1" ng-model="districtCode" disabled="disabled"
@@ -200,6 +204,7 @@
 							        <td data-ng-if="userType == 'M'" style="display: none">
 								         <input type="checkbox" data-ng-disabled="panchayatBhawanActivity.status == 'F'" class="form-control" data-ng-model="panchayatBhawanActivity.panchatayBhawanActivityDetails[$index].isApproved" class="form-control" />
 							     	</td>
+							     	</div>
                                  </tr>
                               </tbody>
                               <tfoot>

@@ -3,32 +3,35 @@ publicModule.controller("institutionalInfraActivityPlanController", [ '$scope', 
 		function($scope, institutionalInfraActivityPlanService) {
 	
 	
-	$scope.institutionalInfraActivityPlan={};
-	$scope.institutionalInfraActivityPlan.institutionalInfraActivityPlanDetails=[];
-
-	$scope.institutionalInfraActivityPlanDetailsNBState=[];
-	$scope.institutionalInfraActivityPlanDetailsNBDistrict=[];
-	$scope.institutionalInfraActivityPlanDetailsCFState=[];
-	$scope.institutionalInfraActivityPlanDetailsCFDistrict=[];
-	nbdArr=[];
-	nbsArr=[];
-	cfdArr=[];
-	cfsArr=[];
-	nbstatetArr =new Map();
-	cfstateArr =new Map();
-	nbdistrictArr =new Map();
-	cfdistrictArr =new Map();
 	
-	$scope.fullDetails=[];//contains details about sprc and dprc both
-	$scope.stackOfPreviousRecord=[];
-	$scope.secondStackOfPreviousRecord=[];
-	$scope.trainingInstituteTypeId=0;
-	$scope.flag=false;
-	let total_fund=0;
-	let total=0;//sprc+dprc
 	init();
 	
 	function init(){
+		
+		$scope.institutionalInfraActivityPlan={};
+		$scope.institutionalInfraActivityPlan.institutionalInfraActivityPlanDetails=[];
+
+		$scope.institutionalInfraActivityPlanDetailsNBState=[];
+		$scope.institutionalInfraActivityPlanDetailsNBDistrict=[];
+		$scope.institutionalInfraActivityPlanDetailsCFState=[];
+		$scope.institutionalInfraActivityPlanDetailsCFDistrict=[];
+		nbdArr=[];
+		nbsArr=[];
+		cfdArr=[];
+		cfsArr=[];
+		nbstatetArr =new Map();
+		cfstateArr =new Map();
+		nbdistrictArr =new Map();
+		cfdistrictArr =new Map();
+		
+		$scope.fullDetails=[];//contains details about sprc and dprc both
+		$scope.stackOfPreviousRecord=[];
+		$scope.secondStackOfPreviousRecord=[];
+		$scope.trainingInstituteTypeId=0;
+		$scope.flag=false;
+		let total_fund=0;
+		let total=0;//sprc+dprc
+		
 		institutionalInfraActivityPlanService.fetchDistrictListBasedOnState().then(function(response){
 			$scope.districtList = response.data;
 			load_data();
@@ -508,18 +511,18 @@ function create_state_row_CF(rindex,name,id){
 						isError=true;
 					}else{
 						if(id!='SAN'){
-							if(FSAN>FUTI){
+							if(FSAN>=FUTI){
 								FREQ=FSAN-FUTI;
 								if(FSAN>=FREQ){
 									$scope.institutionalInfraActivityPlanDetailsCFState[index].fundRequired=FREQ;
 									
 								}
 								else{
-									toastr.error("Fund Required must be greater then Fund Sanctioned");
+									toastr.error("Fund Required must be less then Fund Sanctioned");
 									isError=true;
 								}
 							}else{
-								toastr.error("Fund Released must be greater then Fund Utilized");
+								toastr.error("Fund Released must be greater then Fund Sanctioned");
 								isError=true;
 							}
 						}else{
@@ -572,25 +575,25 @@ function create_state_row_CF(rindex,name,id){
 						FUTI=parseInt($scope.institutionalInfraActivityPlanDetailsCFDistrict[index].fundUtilized);
 				}
 					
-					if(FREL>FSAN && id!='SAN'){
-						toastr.error("Fund Sanctioned must be greater then Fund Released");
-						isError=true;
-					}else{
-						if(id!='SAN'){
-							if(FSAN>FUTI){
-								FREQ=FSAN-FUTI;
-								if(FSAN>=FREQ){
+				if(FREL>FSAN && id!='SAN'){
+					toastr.error("Fund Sanctioned must be greater then Fund Released");
+					isError=true;
+				}else{
+					if(id!='SAN'){
+						if(FSAN>=FUTI){
+							FREQ=FSAN-FUTI;
+							if(FSAN>=FREQ){
 									$scope.institutionalInfraActivityPlanDetailsCFDistrict[index].fundRequired=FREQ;
 									
 								}
-								else{
-									toastr.error("Fund Required must be greater then Fund Sanctioned");
-									isError=true;
-								}
-							}else{
-								toastr.error("Fund Released must be greater then Fund Utilized");
+							else{
+								toastr.error("Fund Required must be less then Fund Sanctioned");
 								isError=true;
 							}
+						}else{
+							toastr.error("Fund Released must be greater then Fund Sanctioned");
+							isError=true;
+						}
 						}else{
 							$scope.institutionalInfraActivityPlanDetailsCFDistrict[index].fundRequired=null;
 							$scope.institutionalInfraActivityPlanDetailsCFDistrict[index].fundReleased=null;
@@ -674,7 +677,7 @@ function create_state_row_CF(rindex,name,id){
 				//$scope.institutionalInfraActivityPlan = response.data;
 				//$scope.fetchData($scope.institutionalInfraActivityPlan.institutionalInfraActivityPlanDetails[0].trainingInstitueType.trainingInstitueTypeId);
 					toastr.success("Plan Saved Successfully");
-					load_data();
+					pathname=window.location.pathname;
 			},function(error){
 				toastr.error("Something went wrong");
 			});	
