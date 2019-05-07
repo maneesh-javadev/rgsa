@@ -303,7 +303,7 @@ publicModule.controller("institutionalInfraActivityPlanController", [ '$scope', 
 		 	}else{
 				  $scope.cfsindex=0;
 		 	}*/
-		 create_state_row_CF($scope.cfsindex,'State Panchayat Resource Center(SPRC)',2);
+		 create_state_row_CF(0,'State Panchayat Resource Center(SPRC)',2);
 	 }else if(trainingType==4){
 		
 		 
@@ -323,8 +323,10 @@ function create_state_row_CF(rindex,name,id){
 		  		$scope.currentObject = item;
 		  	}
 		  })
+		  
+		  $scope.institutionalInfraActivityPlanDetailsCFState=[];
 		
-		create_carry_froward_state_object(rindex,name,id,$scope.currentObject);
+		create_carry_froward_state_object(0,name,id,$scope.currentObject);
 		//create_carry_froward_object(rindex,name,id,$scope.currentObject);
 		$scope.rindex=(--rindex);
 	}
@@ -458,7 +460,7 @@ function create_state_row_CF(rindex,name,id){
 			if(addiReq>(totalOfFunds*25/100)){
 				$scope.institutionalInfraActivityPlan.additionalRequirementNBS=null;
 				addiReq=0;
-				toastr.error("Additional Requirement must be less then 25% of total Fund proposed");
+				toastr.error("Additional Requirement must be less then("+(totalOfFunds*25/100)+") 25% of total Fund proposed");
 			}
 			$scope.grandTotalNBS = parseInt($scope.totalWithoutAddRequirementsNBS) + addiReq;
 		}
@@ -486,7 +488,7 @@ function create_state_row_CF(rindex,name,id){
 			if(addiReq>(totalOfFunds*25/100)){
 				$scope.institutionalInfraActivityPlan.additionalRequirementNBD=null;
 				addiReq=0;
-				toastr.error("Additional Requirement must be less then 25% of total Fund proposed");
+				toastr.error("Additional Requirement must be less then("+(totalOfFunds*25/100)+") 25% of total Fund proposed");
 			}
 			$scope.grandTotalNBD = parseInt($scope.totalWithoutAddRequirementsNBD) + addiReq;
 		}	
@@ -513,7 +515,7 @@ function create_state_row_CF(rindex,name,id){
 						if(id!='SAN'){
 							if(FSAN>=FUTI){
 								FREQ=FSAN-FUTI;
-								if(FSAN>=FREQ){
+								if(FSAN>=FREQ ){
 									$scope.institutionalInfraActivityPlanDetailsCFState[index].fundRequired=FREQ;
 									
 								}
@@ -521,6 +523,12 @@ function create_state_row_CF(rindex,name,id){
 									toastr.error("Fund Required must be less then Fund Sanctioned");
 									isError=true;
 								}
+								
+								if(FREL<FUTI){
+									toastr.error("Fund Utilize must be less then Fund Released ");
+									isError=true;
+								}
+								
 							}else{
 								toastr.error("Fund Released must be greater then Fund Sanctioned");
 								isError=true;
@@ -582,12 +590,17 @@ function create_state_row_CF(rindex,name,id){
 					if(id!='SAN'){
 						if(FSAN>=FUTI){
 							FREQ=FSAN-FUTI;
-							if(FSAN>=FREQ){
+							if(FSAN>=FREQ ){
 									$scope.institutionalInfraActivityPlanDetailsCFDistrict[index].fundRequired=FREQ;
 									
 								}
 							else{
 								toastr.error("Fund Required must be less then Fund Sanctioned");
+								isError=true;
+							}
+							
+							if(FREL<FUTI){
+								toastr.error("Fund Utilize must be less then Fund Released ");
 								isError=true;
 							}
 						}else{
