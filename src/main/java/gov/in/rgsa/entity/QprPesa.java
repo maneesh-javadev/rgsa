@@ -28,29 +28,76 @@ import gov.in.rgsa.outbound.QprQuartProgress;
 @Table(name = "qpr_pesa", schema = "rgsa")
 //@NamedQueries({
 //	//@NamedQuery(name="FETCH_QPR_PESA",query="SELECT QP FROM QprPesa QP where qprQuarterDetail.qtrId=:qid AND createdBy=:createdBy"),
-//	@NamedQuery(name= "FETCH_QPR_PESA", query="SELECT pp, ppd, post, qp, qpd from PesaPlan pp " + 
-//			"JOIN PesaPlanDetails ppd ON ppd.pesaPlanId = pp.pesaPlanId " + 
-//			"JOIN ppd.pesaPost post ON post.pesaPostId = ppd.designationId " + 
-//			"LEFT JOIN QprPesa qp ON qp.pesaPlan.pesaPlanId = pp.pesaPlanId AND qp.qprQuarterDetail.qtrId=:quarterId " + 
-//			"LEFT JOIN QprPesaDetails qpd ON qpd.qprPesa.qprPesaId = qp.qprPesaId AND post.pesaPostId = qpd.pesaPost.pesaPostId " + 
+//	@NamedQuery(name= "FETCH_QPR_PESA", query="SELECT pp, ppd, post, qp, qpd from PesaPlan pp " +
+//			"JOIN PesaPlanDetails ppd ON ppd.pesaPlanId = pp.pesaPlanId " +
+//			"JOIN ppd.pesaPost post ON post.pesaPostId = ppd.designationId " +
+//			"LEFT JOIN QprPesa qp ON qp.pesaPlan.pesaPlanId = pp.pesaPlanId AND qp.qprQuarterDetail.qtrId=:quarterId " +
+//			"LEFT JOIN QprPesaDetails qpd ON qpd.qprPesa.qprPesaId = qp.qprPesaId AND post.pesaPostId = qpd.pesaPost.pesaPostId " +
 //			"where pp.stateCode=:stateCode and yearId=:yearId and pp.userType=:userType ")
 //})
 
 @NamedNativeQueries({
-	@NamedNativeQuery(name="FETCH_QPR_PESA", query="SELECT ppd.id \"pesaPlanDetailsId\" , pp.pesa_plan_id \"pesaPlanId\", ppd.designation_id \"designationId\", post.pesa_post_name \"pesaPostName\", " + 
-			"COALESCE(post.ceiling_value, 0) \"ceilingValue\", COALESCE(ppd.no_of_units, 0) \"noOfUnits\",  " + 
-			"COALESCE(ppd.unit_cost_per_month, 0) \"unitCostPerMonth\",  COALESCE(qp.qpr_pesa_id, -1) \"qprPesaId\", COALESCE(qpd.qpr_pesa_details_id, -1) \"qprPesaDetailsId\", " + 
-			"COALESCE(qpd.no_of_units_filled, 0) \"noOfUnitsFilled\", COALESCE(qpd.expenditure_incurred, 0) \"expenditureIncurred\",  " + 
-			"COALESCE(qp.additional_requirement, 0) \"additionalRequirement\" , COALESCE(qp.is_freez, FALSE) \"isFreeze\" " +
-			"from rgsa.pesa_plan pp " + 
-			"JOIN rgsa.pesa_plan_details ppd ON ppd.pesa_plan_id = pp.pesa_plan_id " + 
-			"JOIN rgsa.pesa_post post ON post.pesa_post_id = ppd.designation_id " + 
-			"LEFT JOIN rgsa.qpr_pesa qp ON qp.pesa_plan_id = pp.pesa_plan_id AND qp.qtr_id=:quarterId " + 
-			"LEFT JOIN rgsa.qpr_pesa_details qpd ON qpd.qpr_pesa_id = qp.qpr_pesa_id AND post.pesa_post_id = qpd.designation_id " + 
-			"where pp.state_code=:stateCode and year_id=:yearId and pp.user_type=:userType "
-			+ " ORDER BY   \"pesaPostName\" ",
-			resultClass = QprQuartProgress.class
-			)
+//	@NamedNativeQuery(name="FETCH_QPR_PESA", query="SELECT ppd.id \"pesaPlanDetailsId\" , pp.pesa_plan_id \"pesaPlanId\", ppd.designation_id \"designationId\", post.pesa_post_name \"pesaPostName\", " +
+//			"COALESCE(post.ceiling_value, 0) \"ceilingValue\", COALESCE(ppd.no_of_units, 0) \"noOfUnits\",  " +
+//			"COALESCE(ppd.unit_cost_per_month, 0) \"unitCostPerMonth\",  COALESCE(qp.qpr_pesa_id, -1) \"qprPesaId\", COALESCE(qpd.qpr_pesa_details_id, -1) \"qprPesaDetailsId\", " +
+//			"COALESCE(qpd.no_of_units_filled, 0) \"noOfUnitsFilled\", COALESCE(qpd.expenditure_incurred, 0) \"expenditureIncurred\",  " +
+//			"COALESCE(qp.additional_requirement, 0) \"additionalRequirement\" , COALESCE(qp.is_freez, FALSE) \"isFreeze\" " +
+//			"from rgsa.pesa_plan pp " +
+//			"JOIN rgsa.pesa_plan_details ppd ON ppd.pesa_plan_id = pp.pesa_plan_id " +
+//			"JOIN rgsa.pesa_post post ON post.pesa_post_id = ppd.designation_id " +
+//			"LEFT JOIN rgsa.qpr_pesa qp ON qp.pesa_plan_id = pp.pesa_plan_id AND qp.qtr_id=:quarterId " +
+//			"LEFT JOIN rgsa.qpr_pesa_details qpd ON qpd.qpr_pesa_id = qp.qpr_pesa_id AND post.pesa_post_id = qpd.designation_id " +
+//			"where pp.state_code=:stateCode and year_id=:yearId and pp.user_type=:userType "
+//			+ " ORDER BY   \"pesaPostName\" ",
+//			resultClass = QprQuartProgress.class
+//			)
+		@NamedNativeQuery(name="FETCH_QPR_PESA", query="SELECT  " +
+				"    ppd.id \"pesaPlanDetailsId\",  " +
+				"    pp.pesa_plan_id \"pesaPlanId\",  " +
+				"    ppd.designation_id \"designationId\",  " +
+				"    post.pesa_post_name \"pesaPostName\",  " +
+				"    COALESCE(post.ceiling_value, 0) \"ceilingValue\",  " +
+				"    COALESCE(ppd.no_of_units, 0) \"noOfUnits\",   " +
+				"    COALESCE(ppd.unit_cost_per_month, 0) \"unitCostPerMonth\",   " +
+				"    COALESCE(qp.qpr_pesa_id, -1) \"qprPesaId\",  " +
+				"    COALESCE(qpd.qpr_pesa_details_id, -1) \"qprPesaDetailsId\",  " +
+				"    COALESCE(qpd.no_of_units_filled, 0) \"noOfUnitsFilled\",  " +
+				"    COALESCE(qpd.expenditure_incurred, 0) \"expenditureIncurred\",  " +
+				"    COALESCE(qp.additional_requirement, 0) \"additionalRequirement\" ,  " +
+				"    COALESCE(qp.is_freez, FALSE) \"isFreeze\", " +
+				"    ppd.funds*1.0 \"funds\", " +
+				"    COALESCE(jt.spent, 0) \"spent\", " +
+				"    COALESCE(jt.ar_used, 0) \"addReqUsed\" " +
+				"FROM rgsa.pesa_plan pp  " +
+				"JOIN rgsa.pesa_plan_details ppd ON ppd.pesa_plan_id = pp.pesa_plan_id  " +
+				"JOIN rgsa.pesa_post post ON post.pesa_post_id = ppd.designation_id  " +
+				"LEFT JOIN rgsa.qpr_pesa qp ON qp.pesa_plan_id = pp.pesa_plan_id AND qp.qtr_id=:quarterId  " +
+				"LEFT JOIN rgsa.qpr_pesa_details qpd ON qpd.qpr_pesa_id = qp.qpr_pesa_id AND post.pesa_post_id = qpd.designation_id  " +
+				"    AND qpd.pesa_plan_details_id = ppd.id AND qpd.designation_id = ppd.designation_id " +
+				" " +
+				"LEFT JOIN ( " +
+				"    SELECT  " +
+				"        ppd_tmp.id \"ppdid\",  " +
+				"        COALESCE(SUM(qpd_tmp.expenditure_incurred), 0) \"spent\",  " +
+				"        COALESCE(SUM(qp_tmp.additional_requirement), 0) \"ar_used\" " +
+				"    FROM  " +
+				"        rgsa.pesa_plan pp_tmp,  " +
+				"        rgsa.pesa_plan_details ppd_tmp,  " +
+				"        rgsa.qpr_pesa qp_tmp,  " +
+				"        rgsa.qpr_pesa_details qpd_tmp " +
+				"    WHERE  " +
+				"        ppd_tmp.pesa_plan_id = pp_tmp.pesa_plan_id AND " +
+				"        ppd_tmp.designation_id = qpd_tmp.designation_id AND " +
+				"        qp_tmp.pesa_plan_id = pp_tmp.pesa_plan_id AND " +
+				"        qpd_tmp.qpr_pesa_id = qp_tmp.qpr_pesa_id AND " +
+				"        qpd_tmp.pesa_plan_details_id = ppd_tmp.id AND " +
+				"        qp_tmp.qtr_id < :quarterId " +
+				"    GROUP BY \"ppdid\" " +
+				") AS jt ON ppd.id = jt.ppdid " +
+				"WHERE pp.state_code=:stateCode and year_id=:yearId and pp.user_type=:userType  " +
+				"ORDER BY   \"pesaPostName\"",
+				resultClass = QprQuartProgress.class
+		)
 })
 public class QprPesa {
 

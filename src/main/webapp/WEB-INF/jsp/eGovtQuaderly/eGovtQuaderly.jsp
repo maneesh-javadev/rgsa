@@ -25,26 +25,15 @@
 					</div>
 
 					<div align="center" class="row">
-						<div align="center" class="form-group">
-							<label for="selectLevel" class="col-sm-3">Select Quarter
+						<div align="center" class="form-group padding_top">
+							<label for="qtrIdDurtn" class="col-sm-3">Select Quarter
 								Duration</label>
 							<div class="col-sm-3">
-								<select class="form-control" id="qtrIdDurtn" 
+								<select name="quarterSelect" class="form-control" id="qtrIdDurtn"
 								data-ng-model="selectedQuarterId" data-ng-change="fetchData( selectedQuarterId, '{{selectedQuarterId}}')">
-									<option value="0">Select Duration</option>
-									<c:forEach items="${quarter_duration}" var="duration"
-										varStatus="index">
-										<c:choose>
-											<c:when
-												test="${duration.qtrId == fetchTrainingProgressReport.trainingDetailsProgressReportList[index.index].quarterDuration.qtrId}">
-												<option value="${duration.qtrId}" selected="selected">${duration.qtrDuration}
-												</option>
-											</c:when>
-											<c:otherwise>
-												<option value="${duration.qtrId}">${duration.qtrDuration}
-												</option>
-											</c:otherwise>
-										</c:choose>
+									<option value="0" selected="selected">-- Select Duration --</option>
+									<c:forEach items="${quarter_duration}" var="duration" varStatus="index">
+										<option value="${duration.qtrId}">${duration.qtrDuration}</option>
 									</c:forEach>
 								</select>
 							</div>
@@ -81,7 +70,7 @@
 									</tr>
 								</thead>
 								<tbody id="tbodyId">
-									<tr data-ng-repeat="expenditure in formObj.expenditures">
+									<tr data-ng-repeat="expenditure in formObj.expenditures" >
 
 											<td class="text-center">
 												<span>{{expenditure.egovPostLevelName}}</span>
@@ -90,13 +79,13 @@
 											<td class="text-center">
 												<span  data-ng-model="expenditure.egovPostId">{{expenditure.egovPostName}}</span>
 											</td>
-											<td class="text-center">
+											<td class="text-center" data-ng-if="expenditure.isPost">
 												<span>{{expenditure.postApproved}}</span>
 											</td>
-											<td class="text-center">
+											<td class="text-center" data-ng-if="expenditure.isPost">
 												<span>{{expenditure.costApproved}}</span>
 											</td>
-											<td class="text-right">
+											<td class="text-right" data-ng-if="expenditure.isPost">
 												<input type="number" name="postFilled_{{$index}}"
 													data-ng-model="expenditure.postFilled"
 													data-ng-disabled="formObj.isFreeze"
@@ -104,19 +93,19 @@
 													min="0"
 													max="{{expenditure.postApproved}}" />
 												<span class="help-block" data-ng-messages="pageForm['postFilled_' + $index].$error">
-													<span ng-message="max" class="text-danger">Above allowed limit</span>
+													<span ng-message="max" class="text-danger">Above allowed limit of {{expenditure.postApproved}}</span>
 												</span>
 											</td>
-											<td class="text-right">
+											<td class="text-right" colspan="{{expenditure.isPost?1:4}}">
 												<input type="number" name="incurred_{{$index}}"
 													data-ng-model="expenditure.incurred"
 													data-ng-disabled="formObj.isFreeze"
 													class="form-control no-scroll"
-													placeholder=" <= {{expenditure.postFilled*expenditure.costApproved}} "
+													placeholder=" <= {{expenditure.funds - expenditure.spent}} "
 													min="0"
-													max="{{expenditure.postFilled*expenditure.costApproved}}"/>
+													max="{{expenditure.funds - expenditure.spent}}"/>
 												<span class="help-block" data-ng-messages="pageForm['incurred_' + $index].$error">
-													<span ng-message="max" class="text-danger">Above allowed limit</span>
+													<span ng-message="max" class="text-danger">Above allowed limit of {{expenditure.funds - expenditure.spent}}</span>
 												</span>
 											</td>
 										</tr>
@@ -133,14 +122,44 @@
 									<tr>
 										<td><div align="center">
 												<strong>Expenditure on <br /> Additional
-													Requirement
+													Requirement(Spmu)
 												</strong>
 											</div></td>
 										<td colspan="4"></td>
-										<td class="text-right"><input type="number" class="form-control no-scroll" 
-												class="form-control" data-ng-disabled="formObj.isFreeze"
-												data-ng-model="formObj.additionalRequirement"
-												placeholder="25% of Total Cost" name="additionalRequirement"" /></td>
+										<td class="text-right">
+											<input type="number"
+												   class="form-control no-scroll"
+												   data-ng-disabled="formObj.isFreeze"
+												   data-ng-model="formObj.addReqSpmu"
+												   name="addReqSpmu"
+												   placeholder=" <= {{formObj.addReqSpmuApproved - formObj.addReqSpmuUsed}} "
+												   min="0"
+												   max="{{formObj.addReqSpmuApproved - formObj.addReqSpmuUsed}}" />
+											<span class="help-block" data-ng-messages="pageForm['addReqSpmu'].$error">
+												<span ng-message="max" class="text-danger">Above allowed limit of {{formObj.addReqSpmuApproved - formObj.addReqSpmuUsed}}</span>
+											</span>
+										</td>
+									</tr>
+									<tr>
+										<td><div align="center">
+												<strong>Expenditure on <br /> Additional
+													Requirement(Dpmu)
+												</strong>
+											</div></td>
+										<td colspan="4"></td>
+										<td class="text-right">
+											<input type="number"
+												   class="form-control no-scroll"
+												   data-ng-disabled="formObj.isFreeze"
+												   data-ng-model="formObj.addReqDpmu"
+												   name="addReqDpmu"
+												   placeholder=" <= {{formObj.addReqDpmuApproved - formObj.addReqDpmuUsed}} "
+												   min="0"
+												   max="{{formObj.addReqDpmuApproved - formObj.addReqDpmuUsed}}" />
+											<span class="help-block" data-ng-messages="pageForm['addReqDpmu'].$error">
+												<span ng-message="max" class="text-danger">Above allowed limit of {{formObj.addReqDpmuApproved - formObj.addReqDpmuUsed}}</span>
+											</span>
+										</td>
 									</tr>
 									<tr>
 										<td><div align="center">

@@ -26,6 +26,10 @@ public class QprPesaDetails {
 	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name="designation_id", nullable=false)
 	private PesaPost pesaPost;
+
+	@ManyToOne(fetch=FetchType.LAZY)
+	@JoinColumn(name="pesa_plan_details_id", nullable=false)
+	private PesaPlanDetails pesaPlanDetails;
 	
 	@Column(name="no_of_units_filled")
 	private Integer noOfUnitsFilled;
@@ -73,4 +77,11 @@ public class QprPesaDetails {
 		this.expenditureIncurred = expenditureIncurred;
 	}
 
+	public PesaPlanDetails getPesaPlanDetails() {
+		return pesaPlanDetails;
+	}
+
+	public void setPesaPlanDetails(PesaPlanDetails pesaPlanDetails) {
+		this.pesaPlanDetails = pesaPlanDetails;
+	}
 }
