@@ -591,9 +591,9 @@ function create_state_row_CF(rindex,name,id){
 						if(FSAN>=FUTI){
 							FREQ=FSAN-FUTI;
 							if(FSAN>=FREQ ){
-									$scope.institutionalInfraActivityPlanDetailsCFDistrict[index].fundRequired=FREQ;
-									
-								}
+								$scope.institutionalInfraActivityPlanDetailsCFDistrict[index].fundRequired=FREQ;
+								
+							}
 							else{
 								toastr.error("Fund Required must be less then Fund Sanctioned");
 								isError=true;
@@ -603,18 +603,18 @@ function create_state_row_CF(rindex,name,id){
 								toastr.error("Fund Utilize must be less then Fund Released ");
 								isError=true;
 							}
+							
 						}else{
 							toastr.error("Fund Released must be greater then Fund Sanctioned");
 							isError=true;
 						}
-						}else{
-							$scope.institutionalInfraActivityPlanDetailsCFDistrict[index].fundRequired=null;
-							$scope.institutionalInfraActivityPlanDetailsCFDistrict[index].fundReleased=null;
-							$scope.institutionalInfraActivityPlanDetailsCFDistrict[index].fundUtilized=null;
-						}
+					}else{
+						$scope.institutionalInfraActivityPlanDetailsCFDistrict[index].fundRequired=null;
+						$scope.institutionalInfraActivityPlanDetailsCFDistrict[index].fundReleased=null;
+						$scope.institutionalInfraActivityPlanDetailsCFDistrict[index].fundUtilized=null;
+					}
 						
-						
-						}
+					}
 				
 					
 					
