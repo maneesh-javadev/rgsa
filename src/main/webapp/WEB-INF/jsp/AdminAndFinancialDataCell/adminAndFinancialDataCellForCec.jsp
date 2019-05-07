@@ -57,6 +57,7 @@ function calculateTotalCost(){
 	} 
 	document.getElementById("TotalCostId").value=total_cost;
 	calculateTotalProposedFund();
+	validateAdditionalRequirement()
 	onloadChangeColor();
 }
 

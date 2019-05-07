@@ -85,6 +85,7 @@ publicModule.controller("adminTechSupportSaffController",['$scope','adminTechSup
 				$scope.adminTechStaffObject.supportDetails[index].unitCost*
 				$scope.adminTechStaffObject.supportDetails[index].noOfMonths;
 		}
+		$scope.validateAdditionalRequirement();
 		$scope.calculateGrandTotal();
 		
 		

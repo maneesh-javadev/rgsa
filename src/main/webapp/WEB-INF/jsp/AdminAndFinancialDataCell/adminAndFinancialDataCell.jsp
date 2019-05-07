@@ -44,6 +44,7 @@ function calculateTotalCost(){
 			total_cost += +document.getElementById("fundId_"+i).value;
 		} 
 		document.getElementById("TotalCostId").value=total_cost;
+		validateAdditionalRequirement()
 		calculateTotalProposedFund();
 	}
 }
