@@ -8,12 +8,14 @@ import gov.in.rgsa.service.EGovQtlService;
 import gov.in.rgsa.user.preference.UserPreference;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+@Transactional
 @Service
 public class EGovQtlServiceImpl implements EGovQtlService {
 
@@ -32,7 +34,6 @@ public class EGovQtlServiceImpl implements EGovQtlService {
         qParams.put("stateCode", userPreference.getStateCode());
         qParams.put("yearId", finYearId);
         qParams.put("userType", userType);
-
         List<QprEGovResponse> qprEGovs = commonRepository.findAll("FETCH_QPR_EGOV_SUPPORT", qParams);
         Map<String, Object> response = new HashMap<>();
         List<Map<String, Object>> expList = new ArrayList<>();
@@ -49,6 +50,7 @@ public class EGovQtlServiceImpl implements EGovQtlService {
                 response.put("versionNo", qprEGov.getVersionNo());
                 response.put("additionalRequirement", qprEGov.getAdditionalRequirement());
                 response.put("isFreeze", qprEGov.getIsFreez());
+                response.put("addReqUsed", qprEGov.getAddReqUsed());
                 topInserted = true;
             }
             Map<String, Object> single = new HashMap<>();
@@ -56,6 +58,7 @@ public class EGovQtlServiceImpl implements EGovQtlService {
             single.put("egovSupportActivityDetailsId", qprEGov.getEgovSupportActivityDetailsId());
             single.put("egovPostLevelId", qprEGov.getEgovPostLevelId());
             single.put("egovPostLevelName", qprEGov.getEgovPostLevelName());
+            single.put("isPost", qprEGov.getIsPost());
             single.put("postApproved", qprEGov.getPostApproved());
             single.put("costApproved", qprEGov.getCostApproved());
             single.put("isApproved", qprEGov.getIsApproved());
@@ -63,6 +66,8 @@ public class EGovQtlServiceImpl implements EGovQtlService {
             single.put("egovPostId", qprEGov.getEgovPostId());
             single.put("postFilled", qprEGov.getPostFilled());
             single.put("incurred", qprEGov.getIncurred());
+            single.put("spent", qprEGov.getSpent());
+            single.put("funds", qprEGov.getFunds());
             expList.add(single);
         }
         response.put("expenditures", expList);
@@ -108,20 +113,28 @@ public class EGovQtlServiceImpl implements EGovQtlService {
             if(eGovSAD == null)
                 throw new IllegalArgumentException(String.format("Invalid EGovSupportActivityDetailsId: %d",  exp.getEgovSupportActivityDetailsId()));
 
+            Map<String, Object> conditionMap = new HashMap<>(3);
+            conditionMap.put("eGovSupportActivityDetails", eGovSAD);
+            List<QprEGovDetails> otherQprDetails = commonRepository.findAllByCondition(QprEGovDetails.class, conditionMap);
+            Double amountSpent = 0.0;
+            for (QprEGovDetails otherQprDetail: otherQprDetails) {
+                if(otherQprDetail.getQprEgov().getQprQuarterDetail().getQtrId() < qprEGovReq.getQuarterId())
+                    amountSpent += otherQprDetail.getExpenditureIncurred();
+            }
+            Double maxAllowedExpenditure = eGovSAD.getFunds() - amountSpent;
+
             if(exp.getQprEGovDetailsId() == -1) {
                 qprEGovDetails = new QprEGovDetails();
             }else {
                 qprEGovDetails = commonRepository.find(QprEGovDetails.class, exp.getQprEGovDetailsId());
             }
-            Integer postFilled = exp.getPostFilled() == null? 0: exp.getPostFilled();
-            Integer unitCost = eGovSAD.getUnitCost() == null? 0: eGovSAD.getUnitCost();
-            Double totalExpenditure = postFilled * unitCost * 1.00;
-            if(exp.getIncurred() > totalExpenditure)
-                throw new IllegalArgumentException(String.format("%s's expenditure can't be above: %.2f",  eGovPost.getEGovPostName(), totalExpenditure));
+            if(exp.getIncurred() > maxAllowedExpenditure)
+                throw new IllegalArgumentException(String.format("%s's expenditure can't be above: %.2f",  eGovPost.getEGovPostName(), maxAllowedExpenditure));
             qprEGovDetails.setExpenditureIncurred(exp.getIncurred());
             qprEGovDetails.setNoOfUnitsFilled(exp.getPostFilled());
             qprEGovDetails.seteGovPost(eGovPost);
             qprEGovDetails.setQprEgov(qprEGov);
+            qprEGovDetails.seteGovSupportActivityDetails(eGovSAD);
             commonRepository.save(qprEGovDetails);
         }
     }

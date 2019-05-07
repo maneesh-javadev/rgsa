@@ -6,7 +6,7 @@ var app = angular.module('qGovProgressApp', ['ngMessages']);
 app.controller('qGovProgressCtrl', qGovProgressCtrlImp); 
         
 function qGovProgressCtrlImp($scope, $http) {
-    $scope.selectedQuarterId = 0;
+    $scope.selectedQuarterId = "0";
     $scope.formObj = null;
     $scope._formObj = null;
 

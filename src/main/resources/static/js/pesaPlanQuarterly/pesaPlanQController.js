@@ -2,7 +2,7 @@ var publicModule = angular.module("publicModule", ['ngMessages']);
 publicModule.controller("pesaPlanQController", [ '$scope', '$http',
 		function($scope, $http) {
 
-	$scope.selectedQuarterId = 0;
+	$scope.selectedQuarterId = "0";
     $scope.formObj = null;
     $scope._formObj = null;
 	

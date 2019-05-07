@@ -25,26 +25,15 @@
 					</div>
 
 					<div align="center" class="row">
-						<div align="center" class="form-group">
-							<label for="selectLevel" class="col-sm-3">Select Quarter
+						<div align="center" class="form-group padding_top">
+							<label for="qtrIdDurtn" class="col-sm-3">Select Quarter
 								Duration</label>
 							<div class="col-sm-3">
-								<select class="form-control" id="qtrIdDurtn" 
+								<select name="quarterSelect" class="form-control" id="qtrIdDurtn"
 								data-ng-model="selectedQuarterId" data-ng-change="fetchData( selectedQuarterId, '{{selectedQuarterId}}')">
-									<option value="0">Select Duration</option>
-									<c:forEach items="${quarter_duration}" var="duration"
-										varStatus="index">
-										<c:choose>
-											<c:when
-												test="${duration.qtrId == fetchTrainingProgressReport.trainingDetailsProgressReportList[index.index].quarterDuration.qtrId}">
-												<option value="${duration.qtrId}" selected="selected">${duration.qtrDuration}
-												</option>
-											</c:when>
-											<c:otherwise>
-												<option value="${duration.qtrId}">${duration.qtrDuration}
-												</option>
-											</c:otherwise>
-										</c:choose>
+									<option value="0" selected="selected">-- Select Duration --</option>
+									<c:forEach items="${quarter_duration}" var="duration" varStatus="index">
+										<option value="${duration.qtrId}">${duration.qtrDuration}</option>
 									</c:forEach>
 								</select>
 							</div>
@@ -81,7 +70,7 @@
 									</tr>
 								</thead>
 								<tbody id="tbodyId">
-									<tr data-ng-repeat="expenditure in formObj.expenditures">
+									<tr data-ng-repeat="expenditure in formObj.expenditures"  data-ng-if="expenditure.isPost">
 
 											<td class="text-center">
 												<span>{{expenditure.egovPostLevelName}}</span>
@@ -112,9 +101,9 @@
 													data-ng-model="expenditure.incurred"
 													data-ng-disabled="formObj.isFreeze"
 													class="form-control no-scroll"
-													placeholder=" <= {{expenditure.postFilled*expenditure.costApproved}} "
+													placeholder=" <= {{expenditure.funds - expenditure.spent}} "
 													min="0"
-													max="{{expenditure.postFilled*expenditure.costApproved}}"/>
+													max="{{expenditure.funds - expenditure.spent}}"/>
 												<span class="help-block" data-ng-messages="pageForm['incurred_' + $index].$error">
 													<span ng-message="max" class="text-danger">Above allowed limit</span>
 												</span>
@@ -140,7 +129,7 @@
 										<td class="text-right"><input type="number" class="form-control no-scroll" 
 												class="form-control" data-ng-disabled="formObj.isFreeze"
 												data-ng-model="formObj.additionalRequirement"
-												placeholder="25% of Total Cost" name="additionalRequirement"" /></td>
+												placeholder="25% of Total Cost" name="additionalRequirement" /></td>
 									</tr>
 									<tr>
 										<td><div align="center">

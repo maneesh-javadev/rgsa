@@ -20,10 +20,7 @@ import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 
 import gov.in.rgsa.dao.CommonRepository;
-/**
-*
-* @author ANJIT
-*/
+
 
 @Repository
 @Transactional
@@ -55,11 +52,7 @@ public class CommonRepositoryImpl implements CommonRepository {
 	public <T> List<T> findAll(String nameQuery, Map<String, Object> params) {
 
 		Query query = entityManager.createNamedQuery(nameQuery);
-		if (MapUtils.isNotEmpty(params)) {
-			for (Entry<String, Object> param : params.entrySet()) {
-				query.setParameter(param.getKey(), param.getValue());
-			}
-		}
+		setQueryParameters(query, params);
 		return query.getResultList();
 	}
 
@@ -67,18 +60,13 @@ public class CommonRepositoryImpl implements CommonRepository {
 	@Override
 	public <T> T find(String nameQuery, Map<String, Object> params) {
 		Query query = entityManager.createNamedQuery(nameQuery);
-		if (MapUtils.isNotEmpty(params)) {
-			for (Entry<String, Object> param : params.entrySet()) {
-				query.setParameter(param.getKey(), param.getValue());
-			}
-		}
+		setQueryParameters(query, params);
 		return (T) query.getSingleResult();
 	}
 
 	@SuppressWarnings("unchecked")
 	@Override
 	public <T> T find(Class<T> entity, Object id) {
-
 		return (T) entityManager.find(entity, id);
 	}
 
@@ -86,11 +74,7 @@ public class CommonRepositoryImpl implements CommonRepository {
 	public <T> int excuteUpdate(String query, Map<String, Object> params) {
 
 		Query query1 = entityManager.createNamedQuery(query);
-		if (MapUtils.isNotEmpty(params)) {
-			for (Entry<String, Object> param : params.entrySet()) {
-				query1.setParameter(param.getKey(), param.getValue());
-			}
-		}
+		setQueryParameters(query1, params);
 		return query1.executeUpdate();
 	}
 	
@@ -99,12 +83,8 @@ public class CommonRepositoryImpl implements CommonRepository {
 	public <T> List<T> findAllByNativeQuery(String nativeQuery, Map<String, Object> params) {
 		
 		Query query = entityManager.createNativeQuery(nativeQuery);
-		if (MapUtils.isNotEmpty(params)) {
-			for (Entry<String, Object> param : params.entrySet()) {
-				query.setParameter(param.getKey(), param.getValue());
-			}
-		}
-		return  query.getResultList();
+		setQueryParameters(query, params);
+		return query.getResultList();
 	}
 
 	@Override
@@ -117,23 +97,46 @@ public class CommonRepositoryImpl implements CommonRepository {
         return allQuery.getResultList();
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public <T> T find(Class<T> resultClass, Map<String, Object> params) {
-		CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
-        CriteriaQuery<T> query = criteriaBuilder.createQuery(resultClass);
-        Root<T> rootEntry = query.from(resultClass);
-        List<Predicate> predicates = new ArrayList<>();
-        params.forEach((k, v) -> {
-        	predicates.add( criteriaBuilder.equal(rootEntry.get(k), v) );        	
-        });
-        query.where(predicates.toArray(new Predicate[predicates.size()]));
-        try {
-        	return entityManager.createQuery(query).getSingleResult();
+		try {
+			Query query = getFindQuery(resultClass, params);
+        	return (T)query.getSingleResult();
         }catch(NoResultException ex) {
         	return null;
         }
 	}
 
-	
+	@SuppressWarnings("unchecked")
+	@Override
+	public <T> List<T> findAllByCondition(Class<T> resultClass, Map<String, Object> params) {
+
+		try {
+			return getFindQuery(resultClass, params).getResultList();
+		}catch(NoResultException ex) {
+			return null;
+		}
+	}
+
+	private <T> Query getFindQuery(Class<T> resultClass, Map<String, Object> params) {
+		CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+		CriteriaQuery<T> query = criteriaBuilder.createQuery(resultClass);
+		Root<T> rootEntry = query.from(resultClass);
+		List<Predicate> predicates = new ArrayList<>();
+		params.forEach((k, v) -> {
+			predicates.add( criteriaBuilder.equal(rootEntry.get(k), v) );
+		});
+		query.where(predicates.toArray(new Predicate[predicates.size()]));
+		return entityManager.createQuery(query);
+	}
+
+	private void setQueryParameters(Query query, Map<String, Object> params){
+		if (MapUtils.isNotEmpty(params)) {
+			for (Entry<String, Object> param : params.entrySet()) {
+				query.setParameter(param.getKey(), param.getValue());
+			}
+		}
+	}
 
 }

@@ -19,23 +19,76 @@ import org.hibernate.annotations.UpdateTimestamp;
 import gov.in.rgsa.outbound.QprEGovResponse;
 
 @NamedNativeQueries({
-	@NamedNativeQuery(name="FETCH_QPR_EGOV_SUPPORT", query="SELECT epl.egov_post_level_id \"egovPostLevelId\", "
-			+ "epl.egov_post_level_name \"egovPostLevelName\", "
-			+ "esa.egov_support_activity_id \"egovSupportActivityId\", esa.state_code \"stateCode\", esa.year_id \"yearId\", "
-			+ "esa.version_no \"versionNo\", COALESCE(qe.additional_requirement, 0) \"additionalRequirement\", "
-			+ "esad.egov_post_id \"egovPostID\", esad.egov_support_activity_details_id \"egovSupportActivityDetailsId\", "
-			+ "COALESCE(esad.no_of_units, 0) \"postApproved\", COALESCE(esad.unit_cost, 0) \"costApproved\", esad.is_approved \"isApproved\", "
-			+ "ep.egov_post_name \"egovPostName\", ep.egov_post_id \"egovPostId\", COALESCE(qe.is_freeze, FALSE) \"isFreez\", "
-			+ "COALESCE(qe.qpr_egov_id, -1) \"qprEGovId\", COALESCE(qed.qpr_egov_details_id, -1) \"qprEGovDetailsId\","
-			+ "COALESCE(qed.no_of_units_filled, 0) \"postFilled\", COALESCE(qed.expenditure_incurred, 0) \"incurred\" "
-			+ "FROM rgsa.egov_support_activity esa \n" + 
-			"JOIN rgsa.egov_support_activity_details esad ON esad.egov_support_activity_id = esa.egov_support_activity_id \n" + 
-			"JOIN rgsa.egov_post ep ON ep.egov_post_id = esad.egov_post_id \n" + 
-			"JOIN rgsa.egov_post_level epl ON ep.egov_post_level_id = epl.egov_post_level_id \n" + 
-			"LEFT JOIN rgsa.qpr_egov qe ON esa.egov_support_activity_id = qe.egov_support_activity_id AND qe.qtr_id=:quarterId \n" + 
-			"LEFT JOIN rgsa.qpr_egov_details qed ON qe.qpr_egov_id = qed.qpr_egov_id AND qed.egov_post_id = esad.egov_post_id \n" + 
-			"WHERE esa.user_type = :userType AND esa.state_code=:stateCode and esa.year_id=:yearId \n" + 
-			"ORDER BY \"egovPostLevelId\"", resultClass=QprEGovResponse.class)
+//	@NamedNativeQuery(name="FETCH_QPR_EGOV_SUPPORT", query="SELECT epl.egov_post_level_id \"egovPostLevelId\", "
+//			+ "epl.egov_post_level_name \"egovPostLevelName\", "
+//			+ "esa.egov_support_activity_id \"egovSupportActivityId\", esa.state_code \"stateCode\", esa.year_id \"yearId\", "
+//			+ "esa.version_no \"versionNo\", COALESCE(qe.additional_requirement, 0) \"additionalRequirement\", "
+//			+ "esad.egov_post_id \"egovPostID\", esad.egov_support_activity_details_id \"egovSupportActivityDetailsId\", "
+//			+ "COALESCE(esad.no_of_units, 0) \"postApproved\", COALESCE(esad.unit_cost, 0) \"costApproved\", esad.is_approved \"isApproved\", "
+//			+ "ep.egov_post_name \"egovPostName\", ep.egov_post_id \"egovPostId\", COALESCE(qe.is_freeze, FALSE) \"isFreez\", ep.is_post \"isPost\", "
+//			+ "COALESCE(qe.qpr_egov_id, -1) \"qprEGovId\", COALESCE(qed.qpr_egov_details_id, -1) \"qprEGovDetailsId\","
+//			+ "COALESCE(qed.no_of_units_filled, 0) \"postFilled\", COALESCE(qed.expenditure_incurred, 0) \"incurred\" "
+//			+ "FROM rgsa.egov_support_activity esa \n" +
+//			"JOIN rgsa.egov_support_activity_details esad ON esad.egov_support_activity_id = esa.egov_support_activity_id \n" +
+//			"JOIN rgsa.egov_post ep ON ep.egov_post_id = esad.egov_post_id \n" +
+//			"JOIN rgsa.egov_post_level epl ON ep.egov_post_level_id = epl.egov_post_level_id \n" +
+//			"LEFT JOIN rgsa.qpr_egov qe ON esa.egov_support_activity_id = qe.egov_support_activity_id AND qe.qtr_id=:quarterId \n" +
+//			"LEFT JOIN rgsa.qpr_egov_details qed ON qe.qpr_egov_id = qed.qpr_egov_id AND qed.egov_post_id = esad.egov_post_id \n" +
+//			"WHERE esa.user_type = :userType AND esa.state_code=:stateCode and esa.year_id=:yearId \n" +
+//			"ORDER BY \"egovPostLevelId\", \"egovPostLevelName\", \"egovPostName\" ", resultClass=QprEGovResponse.class),
+
+    // additional requirement is summed as the sums will be across quarters.
+
+    @NamedNativeQuery(name="FETCH_QPR_EGOV_SUPPORT", query="SELECT  " +
+            "    epl.egov_post_level_id \"egovPostLevelId\",  " +
+            "    epl.egov_post_level_name \"egovPostLevelName\",  " +
+            "    ep.egov_post_name \"egovPostName\",  " +
+            "    esa.egov_support_activity_id \"egovSupportActivityId\",  " +
+            "    esa.state_code \"stateCode\",  " +
+            "    esa.year_id \"yearId\",  " +
+            "    esa.version_no \"versionNo\",  " +
+            "    COALESCE(qe.additional_requirement, 0) \"additionalRequirement\",  " +
+            "    esad.egov_post_id \"egovPostID\",  " +
+            "    esad.egov_support_activity_details_id \"egovSupportActivityDetailsId\",  " +
+            "    COALESCE(esad.no_of_units, 0) \"postApproved\", " +
+            "    COALESCE(esad.unit_cost, 0) \"costApproved\",  " +
+            "    esad.is_approved \"isApproved\",  " +
+            "    ep.egov_post_id \"egovPostId\", " +
+            "    COALESCE(qe.is_freeze, FALSE) \"isFreez\",  " +
+            "    ep.is_post \"isPost\",  " +
+            "    COALESCE(qe.qpr_egov_id, -1) \"qprEGovId\", " +
+            "    COALESCE(qed.qpr_egov_details_id, -1) \"qprEGovDetailsId\",  " +
+            "    COALESCE(qed.no_of_units_filled, 0) \"postFilled\",  " +
+            "    COALESCE(qed.expenditure_incurred, 0) \"incurred\", " +
+            "    esad.funds*1.0 \"funds\", " +
+            "    COALESCE(jt.spent, 0) \"spent\", " +
+            "    COALESCE(jt.ar_used, 0) \"addReqUsed\"  " +
+            "FROM rgsa.egov_support_activity esa  " +
+            "JOIN rgsa.egov_support_activity_details esad ON esad.egov_support_activity_id = esa.egov_support_activity_id  " +
+            "JOIN rgsa.egov_post ep ON ep.egov_post_id = esad.egov_post_id  " +
+            "JOIN rgsa.egov_post_level epl ON ep.egov_post_level_id = epl.egov_post_level_id  " +
+            "LEFT JOIN rgsa.qpr_egov qe ON esa.egov_support_activity_id = qe.egov_support_activity_id AND qe.qtr_id = :quarterId " +
+            "LEFT JOIN rgsa.qpr_egov_details qed ON qe.qpr_egov_id = qed.qpr_egov_id AND qed.egov_post_id = esad.egov_post_id  " +
+            "LEFT JOIN (  " +
+            "    SELECT  " +
+            "      esad_tmp.egov_support_activity_details_id \"esadid\", " +
+            "      COALESCE(SUM(qed_tmp.expenditure_incurred), 0) \"spent\", " +
+            "      COALESCE(SUM(qe_tmp.additional_requirement), 0) \"ar_used\" " +
+            "    FROM  " +
+            "      rgsa.qpr_egov qe_tmp,  " +
+            "      rgsa.qpr_egov_details qed_tmp, " +
+            "      rgsa.egov_support_activity esa_tmp,  " +
+            "      rgsa.egov_support_activity_details esad_tmp " +
+            "    WHERE  " +
+            "      qe_tmp.qpr_egov_id = qed_tmp.qpr_egov_id AND " +
+            "      qe_tmp.egov_support_activity_id = esa_tmp.egov_support_activity_id AND " +
+            "      qed_tmp.egov_support_activity_details_id = esad_tmp.egov_support_activity_details_id AND " +
+            "      esad_tmp.egov_support_activity_id = esa_tmp.egov_support_activity_id AND " +
+            "      qe_tmp.qtr_id < :quarterId " +
+            "    GROUP BY \"esadid\" " +
+            ") AS jt ON esad.egov_support_activity_details_id = jt.esadid " +
+            "WHERE esa.user_type = :userType AND esa.state_code=:stateCode and esa.year_id=:yearId  " +
+            "ORDER BY \"egovPostLevelId\", \"egovPostLevelName\", \"egovPostName\"", resultClass=QprEGovResponse.class)
 })
 @Entity
 @Table(name="qpr_egov", schema="rgsa")

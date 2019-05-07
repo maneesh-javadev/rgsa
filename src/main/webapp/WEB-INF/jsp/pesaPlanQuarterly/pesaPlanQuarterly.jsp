@@ -16,12 +16,6 @@
 
 <link rel="stylesheet" type="text/css"
 	href="${pageContext.request.contextPath}/resources/css/angular/toastr.css">
-<script type="text/javascript">
-$('document').ready(function(){
-	 $('.active1').prop('readonly',true);
-});
-
-</script>
 
 <html data-ng-app="publicModule">
 
@@ -40,19 +34,13 @@ $('document').ready(function(){
 							<label for="selectLevel" class="col-sm-3">Select Quarter
 								Duration</label>
 							<div class="col-sm-3">
-								<select class="form-control" id="qtrIdDurtn" ng-model="selectedQuarterId" ng-change="fetchData( selectedQuarterId, '{{selectedQuarterId}}')">
-				            		<option value="0">Select Duration</option>
+								<select name="quarterSelect" class="form-control" id="qtrIdDurtn"
+										data-ng-model="selectedQuarterId" data-ng-change="fetchData( selectedQuarterId, '{{selectedQuarterId}}')">
+									<option value="0" selected="selected">-- Select Duration --</option>
 									<c:forEach items="${quarter_duration}" var="duration" varStatus="index">
-			            				<c:choose>
-				            				<c:when test="${duration.qtrId == fetchTrainingProgressReport.trainingDetailsProgressReportList[index.index].quarterDuration.qtrId}">
-			                   					<option value="${duration.qtrId}" selected="selected">${duration.qtrDuration} </option>
-			                   				</c:when>
-			                   				<c:otherwise>
-			                   					<option value="${duration.qtrId}">${duration.qtrDuration} </option>
-			                   				</c:otherwise>
-		                   				</c:choose>
-		                       		</c:forEach>
-	                        	</select>
+										<option value="${duration.qtrId}">${duration.qtrDuration}</option>
+									</c:forEach>
+								</select>
 							</div>
 						</div>
 					</div>
@@ -112,9 +100,9 @@ $('document').ready(function(){
 											data-ng-disabled="formObj.isFreeze"
 											data-ng-model="expenditure.expenditure"
 											class="form-control"
-											placeholder=" <= {{expenditure.unitCompleted*expenditure.costApproved}} "
+											placeholder=" <= {{expenditure.funds - expenditure.spent}} "
 											min="0"
-											max="{{expenditure.unitCompleted*expenditure.costApproved}}"/>
+											max="{{expenditure.funds - expenditure.spent}}"/>
 											<span class="help-block" data-ng-messages="pageForm['expenditure_' + $index].$error">
 												<span ng-message="max" class="text-danger">Above allowed limit</span>
 											</span>

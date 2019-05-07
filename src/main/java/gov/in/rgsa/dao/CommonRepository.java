@@ -29,5 +29,7 @@ public interface CommonRepository {
 	public <T> List<T> findAll(Class<T> resultClass);
 	
 	public <T> T find(Class<T> resultClass, Map<String, Object> params);
+
+	<T> List<T> findAllByCondition(Class<T> resultClass, Map<String, Object> params);
 	
 }

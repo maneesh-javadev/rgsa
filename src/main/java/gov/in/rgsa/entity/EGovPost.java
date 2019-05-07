@@ -28,6 +28,9 @@ public class EGovPost {
 	@Column(name="ceiling_value")
 	private Integer ceilingValue;
 
+	@Column(name="is_post")
+	private Boolean isPost;
+
 	public Integer geteGovPostId() {
 		return eGovPostId;
 	}
@@ -60,4 +63,11 @@ public class EGovPost {
 		EGovPostLevel = eGovPostLevel;
 	}
 
+	public Boolean getPost() {
+		return isPost;
+	}
+
+	public void setPost(Boolean post) {
+		isPost = post;
+	}
 }

@@ -1,12 +1,6 @@
 package gov.in.rgsa.controller;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
-
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 
 import gov.in.rgsa.service.EGovQtlService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,20 +14,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import gov.in.rgsa.dao.CommonRepository;
-import gov.in.rgsa.entity.EGovPost;
-import gov.in.rgsa.entity.EGovSupportActivity;
-import gov.in.rgsa.entity.EGovSupportActivityDetails;
 import gov.in.rgsa.entity.ExtentOfCoverage;
-import gov.in.rgsa.entity.QprEGov;
-import gov.in.rgsa.entity.QprEGovDetails;
-import gov.in.rgsa.entity.QprQuarterDetail;
 import gov.in.rgsa.inbound.QprEGovReq;
-import gov.in.rgsa.inbound.QprEGovReq.Expenditure;
 import gov.in.rgsa.outbound.MsgReply;
-import gov.in.rgsa.outbound.QprEGovResponse;
 import gov.in.rgsa.service.ProgressReportService;
-import gov.in.rgsa.user.preference.UserPreference;
 
 @Controller
 public class EGovernQuaterly {
