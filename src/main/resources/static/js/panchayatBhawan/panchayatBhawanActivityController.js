@@ -274,6 +274,11 @@ $scope.userType = null;
 							toastr.error("Fund Required must be less then Fund Sanctioned");
 							isError=true;
 						}
+						
+						if(FREL<FUTI){
+							toastr.error("Fund Utilize must be less then Fund Released ");
+							isError=true;
+						}
 					}else{
 						toastr.error("Fund Released must be greater then Fund Sanctioned");
 						isError=true;
