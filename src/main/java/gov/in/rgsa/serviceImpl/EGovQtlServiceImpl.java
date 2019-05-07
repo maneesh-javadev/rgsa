@@ -48,9 +48,14 @@ public class EGovQtlServiceImpl implements EGovQtlService {
                 response.put("yearId", qprEGov.getYearId());
                 response.put("quarterId", quarterId);
                 response.put("versionNo", qprEGov.getVersionNo());
-                response.put("additionalRequirement", qprEGov.getAdditionalRequirement());
+                response.put("addReqSpmu", qprEGov.getAdditionalReqSpmu());
+                response.put("addReqDpmu", qprEGov.getAdditionalReqDpmu());
                 response.put("isFreeze", qprEGov.getIsFreez());
-                response.put("addReqUsed", qprEGov.getAddReqUsed());
+                response.put("addReqSpmuApproved", qprEGov.getAddReqSpmuApproved());
+                response.put("addReqDpmuApproved", qprEGov.getAddReqDpmuApproved());
+                response.put("addReqSpmuUsed", qprEGov.getAddReqSpmuUsed());
+                response.put("addReqDpmuUsed", qprEGov.getAddReqDpmuUsed());
+
                 topInserted = true;
             }
             Map<String, Object> single = new HashMap<>();
@@ -98,7 +103,8 @@ public class EGovQtlServiceImpl implements EGovQtlService {
 
         qprEGov.setIsFreeze(false);
         qprEGov.setEgovSupportActivity(eGovSA);
-        qprEGov.setAdditionalRequirement(qprEGovReq.getAdditionalRequirement());
+        qprEGov.setAdditionalReqSpmu(qprEGovReq.getAddReqSpmu());
+        qprEGov.setAdditionalReqDpmu(qprEGovReq.getAddReqDpmu());
         qprEGov.setQprQuarterDetail(qprQuarterDetail);
         qprEGov.setMenuId(0);
         qprEGov.setLastUpdatedBy(userPreference.getUserId());
@@ -131,7 +137,10 @@ public class EGovQtlServiceImpl implements EGovQtlService {
             if(exp.getIncurred() > maxAllowedExpenditure)
                 throw new IllegalArgumentException(String.format("%s's expenditure can't be above: %.2f",  eGovPost.getEGovPostName(), maxAllowedExpenditure));
             qprEGovDetails.setExpenditureIncurred(exp.getIncurred());
-            qprEGovDetails.setNoOfUnitsFilled(exp.getPostFilled());
+            if(eGovPost.getPost())
+                qprEGovDetails.setNoOfUnitsFilled(exp.getPostFilled());
+            else
+                qprEGovDetails.setNoOfUnitsFilled(0);
             qprEGovDetails.seteGovPost(eGovPost);
             qprEGovDetails.setQprEgov(qprEGov);
             qprEGovDetails.seteGovSupportActivityDetails(eGovSAD);

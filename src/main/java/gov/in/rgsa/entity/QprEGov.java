@@ -47,7 +47,8 @@ import gov.in.rgsa.outbound.QprEGovResponse;
             "    esa.state_code \"stateCode\",  " +
             "    esa.year_id \"yearId\",  " +
             "    esa.version_no \"versionNo\",  " +
-            "    COALESCE(qe.additional_requirement, 0) \"additionalRequirement\",  " +
+            "    COALESCE(qe.additional_req_spmu, 0) \"additionalReqSpmu\",  " +
+            "    COALESCE(qe.additional_req_dpmu, 0) \"additionalReqDpmu\",  " +
             "    esad.egov_post_id \"egovPostID\",  " +
             "    esad.egov_support_activity_details_id \"egovSupportActivityDetailsId\",  " +
             "    COALESCE(esad.no_of_units, 0) \"postApproved\", " +
@@ -61,8 +62,11 @@ import gov.in.rgsa.outbound.QprEGovResponse;
             "    COALESCE(qed.no_of_units_filled, 0) \"postFilled\",  " +
             "    COALESCE(qed.expenditure_incurred, 0) \"incurred\", " +
             "    esad.funds*1.0 \"funds\", " +
+            "    COALESCE(esa.additional_req_spmu, 0) \"addReqSpmuApproved\",  " +
+            "    COALESCE(esa.additional_req_dpmu, 0) \"addReqDpmuApproved\",  " +
             "    COALESCE(jt.spent, 0) \"spent\", " +
-            "    COALESCE(jt.ar_used, 0) \"addReqUsed\"  " +
+            "    COALESCE(jt.ars_used, 0) \"addReqSpmuUsed\",  " +
+            "    COALESCE(jt.ard_used, 0) \"addReqDpmuUsed\"  " +
             "FROM rgsa.egov_support_activity esa  " +
             "JOIN rgsa.egov_support_activity_details esad ON esad.egov_support_activity_id = esa.egov_support_activity_id  " +
             "JOIN rgsa.egov_post ep ON ep.egov_post_id = esad.egov_post_id  " +
@@ -73,7 +77,8 @@ import gov.in.rgsa.outbound.QprEGovResponse;
             "    SELECT  " +
             "      esad_tmp.egov_support_activity_details_id \"esadid\", " +
             "      COALESCE(SUM(qed_tmp.expenditure_incurred), 0) \"spent\", " +
-            "      COALESCE(SUM(qe_tmp.additional_requirement), 0) \"ar_used\" " +
+            "      COALESCE(SUM(qe_tmp.additional_req_spmu), 0) \"ars_used\", " +
+            "      COALESCE(SUM(qe_tmp.additional_req_dpmu), 0) \"ard_used\" " +
             "    FROM  " +
             "      rgsa.qpr_egov qe_tmp,  " +
             "      rgsa.qpr_egov_details qed_tmp, " +
@@ -107,8 +112,8 @@ public class QprEGov
 	@JoinColumn(name="qtr_id", nullable=false)
 	private QprQuarterDetail qprQuarterDetail;
 
-	@Column(name="additional_requirement")
-	private Double additionalRequirement;
+    @Column(name="additional_req_dpmu")
+	private Double additionalReqDpmu;
 
 	@Column(name="created_by")
 	private Integer createdBy;
@@ -154,13 +159,17 @@ public class QprEGov
 		this.qprQuarterDetail = qprQuarterDetail;
 	}
 
-	public Double getAdditionalRequirement() {
-		return additionalRequirement;
+	public Double getAdditionalReqSpmu() {
+		return additionalReqSpmu;
 	}
 
-	public void setAdditionalRequirement(Double additionalRequirement) {
-		this.additionalRequirement = additionalRequirement;
+	public void setAdditionalReqSpmu(Double additionalReqSpmu) {
+		this.additionalReqSpmu = additionalReqSpmu;
 	}
+
+    @Column(name="additional_req_spmu")
+    private Double additionalReqSpmu;
+
 
 	public Integer getCreatedBy() {
 		return createdBy;
@@ -209,7 +218,13 @@ public class QprEGov
 	public void setMenuId(Integer menuId) {
 		this.menuId = menuId;
 	}
-	
-	
+
+    public Double getAdditionalReqDpmu() {
+        return additionalReqDpmu;
+    }
+
+    public void setAdditionalReqDpmu(Double additionalReqDpmu) {
+        this.additionalReqDpmu = additionalReqDpmu;
+    }
 
 }

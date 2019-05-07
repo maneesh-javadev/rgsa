@@ -16,7 +16,8 @@ function qGovProgressCtrlImp($scope, $http) {
         this.quarterId = newPageData.quarterId;
         this.egovSupportActivityId = newPageData.egovSupportActivityId;
         this.qprEGovId = newPageData.qprEGovId;
-        this.additionalRequirement = toNumber(newPageData.additionalRequirement, 0);
+        this.addReqSpmu = toNumber(newPageData.addReqSpmu, 0);
+        this.addReqDpmu = toNumber(newPageData.addReqDpmu, 0);
         this.isNew = newPageData.isNew;
         this.expenditures = [];
         for(var i=0; i < newPageData.expenditures.length; ++i){
@@ -109,7 +110,7 @@ function qGovProgressCtrlImp($scope, $http) {
                 return newVal;
             return def;
         }
-        if( angular.isUndefined(val))
+        if( angular.isUndefined(val) || val == null)
             return def;
         return val;		
     }
@@ -135,7 +136,7 @@ function qGovProgressCtrlImp($scope, $http) {
             return total;
         }
         total += getExpenditure();
-        total += $scope.formObj.additionalRequirement;
+        total += toNumber($scope.formObj.addReqSpmu) + toNumber($scope.formObj.addReqDpmu);
         return total;
     }
     

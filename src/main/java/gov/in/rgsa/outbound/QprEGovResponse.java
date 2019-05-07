@@ -13,7 +13,8 @@ public class QprEGovResponse {
     private Integer stateCode;
     private Integer yearId;
     private Integer versionNo;
-    private Integer additionalRequirement;
+    private Integer additionalReqSpmu;
+    private Integer additionalReqDpmu;
     private Boolean isFreez;
     private Boolean isPost;
 
@@ -28,7 +29,10 @@ public class QprEGovResponse {
     private Double incurred;
     private Double funds;
     private Double spent;
-    private Integer addReqUsed;
+    private Integer addReqSpmuApproved;
+    private Integer addReqDpmuApproved;
+    private Integer addReqSpmuUsed;
+    private Integer addReqDpmuUsed;
 
     public Integer getEgovSupportActivityDetailsId() {
         return egovSupportActivityDetailsId;
@@ -78,12 +82,12 @@ public class QprEGovResponse {
         this.versionNo = versionNo;
     }
 
-    public Integer getAdditionalRequirement() {
-        return additionalRequirement;
+    public Integer getAdditionalReqSpmu() {
+        return additionalReqSpmu;
     }
 
-    public void setAdditionalRequirement(Integer additionalRequirement) {
-        this.additionalRequirement = additionalRequirement;
+    public void setAdditionalReqSpmu(Integer additionalReqSpmu) {
+        this.additionalReqSpmu = additionalReqSpmu;
     }
 
     public Integer getPostApproved() {
@@ -190,19 +194,51 @@ public class QprEGovResponse {
         this.spent = spent;
     }
 
-    public Integer getAddReqUsed() {
-        return addReqUsed;
-    }
-
-    public void setAddReqUsed(Integer addReqUsed) {
-        this.addReqUsed = addReqUsed;
-    }
-
     public Double getFunds() {
         return funds;
     }
 
     public void setFunds(Double funds) {
         this.funds = funds;
+    }
+
+    public Integer getAdditionalReqDpmu() {
+        return additionalReqDpmu;
+    }
+
+    public void setAdditionalReqDpmu(Integer additionalReqDpmu) {
+        this.additionalReqDpmu = additionalReqDpmu;
+    }
+
+    public Integer getAddReqSpmuApproved() {
+        return addReqSpmuApproved;
+    }
+
+    public void setAddReqSpmuApproved(Integer addReqSpmuApproved) {
+        this.addReqSpmuApproved = addReqSpmuApproved;
+    }
+
+    public Integer getAddReqDpmuApproved() {
+        return addReqDpmuApproved;
+    }
+
+    public void setAddReqDpmuApproved(Integer addReqDpmuApproved) {
+        this.addReqDpmuApproved = addReqDpmuApproved;
+    }
+
+    public Integer getAddReqSpmuUsed() {
+        return addReqSpmuUsed;
+    }
+
+    public void setAddReqSpmuUsed(Integer addReqSpmuUsed) {
+        this.addReqSpmuUsed = addReqSpmuUsed;
+    }
+
+    public Integer getAddReqDpmuUsed() {
+        return addReqDpmuUsed;
+    }
+
+    public void setAddReqDpmuUsed(Integer addReqDpmuUsed) {
+        this.addReqDpmuUsed = addReqDpmuUsed;
     }
 }
