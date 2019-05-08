@@ -19,6 +19,9 @@ public class QprQuartProgress {
 	public Double expenditureIncurred ;
 	public Integer additionalRequirement ;
 	public Boolean isFreeze;
+	private Double funds;
+	private Double spent;
+	private Integer addReqUsed;
 	
 	public Integer getPesaPlanDetailsId() {
 		return pesaPlanDetailsId;
@@ -97,5 +100,29 @@ public class QprQuartProgress {
 	}
 	public void setQprPesaDetailsId(Integer qprPesaDetailsId) {
 		this.qprPesaDetailsId = qprPesaDetailsId;
+	}
+
+	public Double getSpent() {
+		return spent;
+	}
+
+	public void setSpent(Double spent) {
+		this.spent = spent;
+	}
+
+	public Integer getAddReqUsed() {
+		return addReqUsed;
+	}
+
+	public void setAddReqUsed(Integer addReqUsed) {
+		this.addReqUsed = addReqUsed;
+	}
+
+	public Double getFunds() {
+		return funds;
+	}
+
+	public void setFunds(Double funds) {
+		this.funds = funds;
 	}
 }

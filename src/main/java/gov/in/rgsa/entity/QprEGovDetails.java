@@ -24,6 +24,10 @@ public class QprEGovDetails
 	private QprEGov qprEgov;
 
 	@ManyToOne(fetch=FetchType.LAZY)
+	@JoinColumn(name="egov_support_activity_details_id", nullable=false)
+	private EGovSupportActivityDetails eGovSupportActivityDetails;
+
+	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name="egov_post_id", nullable=false)
 	private EGovPost eGovPost;
 
@@ -72,6 +76,12 @@ public class QprEGovDetails
 	public void setExpenditureIncurred(Double expenditureIncurred) {
 		this.expenditureIncurred = expenditureIncurred;
 	}
-	
-	
+
+	public EGovSupportActivityDetails geteGovSupportActivityDetails() {
+		return eGovSupportActivityDetails;
+	}
+
+	public void seteGovSupportActivityDetails(EGovSupportActivityDetails eGovSupportActivityDetails) {
+		this.eGovSupportActivityDetails = eGovSupportActivityDetails;
+	}
 }

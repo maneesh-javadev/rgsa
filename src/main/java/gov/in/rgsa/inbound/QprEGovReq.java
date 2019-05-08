@@ -7,7 +7,8 @@ public class QprEGovReq {
 	String action;
 	Integer egovSupportActivityId;
 	Integer qprEGovId;
-	Double additionalRequirement = 0.0;
+	Double addReqSpmu = 0.0;
+	Double addReqDpmu = 0.0;
 	Boolean isNew;
 
 	List<Expenditure> expenditures;
@@ -92,12 +93,20 @@ public class QprEGovReq {
 		this.qprEGovId = qprEGovId;
 	}
 
-	public Double getAdditionalRequirement() {
-		return additionalRequirement;
+	public Double getAddReqSpmu() {
+		return addReqSpmu;
 	}
 
-	public void setAdditionalRequirement(Double additionalRequirement) {
-		this.additionalRequirement = additionalRequirement;
+	public void setAddReqSpmu(Double addReqSpmu) {
+		this.addReqSpmu = addReqSpmu;
+	}
+
+	public Double getAddReqDpmu() {
+		return addReqDpmu;
+	}
+
+	public void setAddReqDpmu(Double addReqDpmu) {
+		this.addReqDpmu = addReqDpmu;
 	}
 
 	public Boolean getIsNew() {

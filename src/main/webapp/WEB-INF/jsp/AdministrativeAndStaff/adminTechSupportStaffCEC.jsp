@@ -66,7 +66,7 @@ if($("#noOfMonthsId_"+obj).val() < 1 || $("#noOfMonthsId_"+obj).val() > 12){
 function validateAdditionalRequirement(){
 if($("#total_fund").val() != ""){
 	if($("#additionalRequirementId").val() >0.25 * (parseInt($("#total_fund").val()))){
-		alert("Additional Requirement should be less than 25% of Total Cost.");
+		alert("Additional Requirement should be less than 25% of Total Cost. : " + (0.25 * (parseInt($("#total_fund").val()))));
 		$("#additionalRequirementId").val('');
 		calculateTotalProposedFund();
 	}
