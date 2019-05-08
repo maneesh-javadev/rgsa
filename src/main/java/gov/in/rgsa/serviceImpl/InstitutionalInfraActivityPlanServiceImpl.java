@@ -363,6 +363,7 @@ public class InstitutionalInfraActivityPlanServiceImpl implements InstitutionalI
 			institutionalInfraActivityPlan=setObjectsForInstitutionalInfraActivityPlanForState(institutionalInfraActivityPlan);
 			for(InstitutionalInfraActivityPlanDetails institutionalInfraActivityPlanDetails:institutionalInfraActivityPlan.getInstitutionalInfraActivityPlanDetails()) {
 				institutionalInfraActivityPlanDetails.setInstitutionalInfraActivityPlan(institutionalInfraActivityPlan);
+				institutionalInfraActivityPlanDetails.setIsactive(Boolean.TRUE);
 			}
 			commonRepository.save(institutionalInfraActivityPlan);
 		}else {
@@ -402,6 +403,7 @@ public class InstitutionalInfraActivityPlanServiceImpl implements InstitutionalI
 			institutionalInfraActivityPlan=setObjectsForInstitutionalInfraActivityPlanForState(institutionalInfraActivityPlan);
 			for(InstitutionalInfraActivityPlanDetails institutionalInfraActivityPlanDetails:institutionalInfraActivityPlan.getInstitutionalInfraActivityPlanDetails()) {
 				institutionalInfraActivityPlanDetails.setInstitutionalInfraActivityPlan(institutionalInfraActivityPlan);
+				institutionalInfraActivityPlanDetails.setIsactive(Boolean.TRUE);
 			}
 			
 			commonRepository.save(institutionalInfraActivityPlan);

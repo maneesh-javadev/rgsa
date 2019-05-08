@@ -250,7 +250,7 @@ table.dataTable thead > tr > th, table.dataTable thead > tr > td {
 															{{fetchTrainingState.additionalRequirement}}
 														</strong>
 										</div>
-										  <input type="text" data-ng-disabled="training.isFreeze" data-ng-change="calculateMasterFund()" data-ng-model="training.additionalRequirement" onkeypress="return isNumber(event)" required="required"  class="form-control" maxlength="5" style="text-align:right;">
+										  <input type="text" data-ng-disabled="training.isFreeze" data-ng-change="calculateMasterFund()" data-ng-model="training.additionalRequirement" onkeypress="return isNumber(event)" required="required"  class="form-control" maxlength="9" style="text-align:right;">
 									
 									</div>
 								</div>
@@ -287,13 +287,13 @@ table.dataTable thead > tr > th, table.dataTable thead > tr > td {
 										<br>
 									</div>
 									 
-									<button type="button" ng-show="!training.isFreeze" ng-disabled="capacityBuilding.isFreeze" ng-click="saveTrainingDetails('S')"
+									<button type="button" ng-show="!training.isFreeze" ng-disabled="capacityBuilding.isFreeze||btn_disabled" ng-click="saveTrainingDetails('S')"
 										class="btn bg-green waves-effect">SAVE</button>
 										
-									<button type="button" ng-show="!training.isFreeze" ng-disabled="capacityBuilding.isFreeze" ng-click="saveTrainingDetails('F')"
+									<button type="button" ng-show="!training.isFreeze" ng-disabled="capacityBuilding.isFreeze||btn_disabled" ng-click="saveTrainingDetails('F')"
 										class="btn bg-green waves-effect">FREEZE</button>
 										
-										<button type="button" ng-show="training.isFreeze" ng-disabled="capacityBuilding.isFreeze" ng-click="saveTrainingDetails('U')"
+										<button type="button" ng-show="training.isFreeze" ng-disabled="capacityBuilding.isFreeze||btn_disabled" ng-click="saveTrainingDetails('U')"
 										class="btn bg-green waves-effect">UNFREEZE</button>
 										
 									<button type="button" id="clearButtn" onclick="onClear(this)"

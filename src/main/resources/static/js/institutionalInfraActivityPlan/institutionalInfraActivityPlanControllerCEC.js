@@ -60,6 +60,7 @@ publicModule.controller("institutionalInfraActivityPlanController", [ '$scope', 
 	};
 	
 	function load_data(){
+		$scope.btn_disabled=false;
 		$scope.nbsindex=0;
 		$scope.nbdindex=0;
 		$scope.cfsindex=0;
@@ -223,8 +224,14 @@ publicModule.controller("institutionalInfraActivityPlanController", [ '$scope', 
 			$scope.planstateAdditionalRequirementMOPR=$scope.institutionalInfraActivityPlanMOPR.additionalRequirement;
 			$scope.plandistrictAdditionalRequirementMOPR=$scope.institutionalInfraActivityPlanMOPR.additionalRequirementDPRC;
 			
-			$scope.planstateAdditionalRequirementCEC=$scope.institutionalInfraActivityPlan.additionalRequirement;
-			$scope.plandistrictAdditionalRequirementCEC=$scope.institutionalInfraActivityPlan.additionalRequirementDPRC;
+			if($scope.institutionalInfraActivityPlan!=null && $scope.institutionalInfraActivityPlan!=undefined){
+				$scope.planstateAdditionalRequirementCEC=$scope.institutionalInfraActivityPlan.additionalRequirement;
+				$scope.plandistrictAdditionalRequirementCEC=$scope.institutionalInfraActivityPlan.additionalRequirementDPRC;	
+			}else{
+				$scope.planstateAdditionalRequirementCEC=null;
+				$scope.plandistrictAdditionalRequirementCEC=null;	
+			}
+			
 			
 			$scope.subTotalFundMOPRNBS=calculate_total_fund_other($scope.institutionalPlanDetailsNBStateMOPR,1);
 			$scope.subTotalFundMOPRNBD=calculate_total_fund_other($scope.institutionalPlanDetailsNBDistrictMOPR,1);
@@ -260,7 +267,9 @@ publicModule.controller("institutionalInfraActivityPlanController", [ '$scope', 
 				$scope.plandistrictAdditionalRequirementCEC=null;
 			}
 			
-		
+			$scope.grandTotalMOPR=$scope.subTotalFundMOPRCFS+$scope.subTotalFundMOPRCFD+$scope.totalFundMOPRNBS+$scope.totalFundMOPRNBD;
+			$scope.grandTotalState=$scope.subTotalFundStateCFS+$scope.subTotalFundStateCFD+$scope.totalFundStateNBS+$scope.totalFundStateNBD;
+			$scope.grandTotal=$scope.subTotalFundCECCFS+$scope.subTotalFundCECCFD+$scope.totalFundCECNBS+$scope.totalFundCECNBD;
 			
 			
 		});
@@ -435,7 +444,7 @@ publicModule.controller("institutionalInfraActivityPlanController", [ '$scope', 
 						totalOfFunds = totalOfFunds + parseInt($scope.institutionalPlanDetailsCFStateCEC[i].fundRequired);
 					}
 				}
-			$scope.subTotalFundCECCFS = totalOfFunds;
+				$scope.subTotalFundCECCFS = totalOfFunds;
 			
 		}
 		
@@ -508,13 +517,13 @@ publicModule.controller("institutionalInfraActivityPlanController", [ '$scope', 
 						totalOfFunds = totalOfFunds + parseInt($scope.institutionalPlanDetailsCFDistrictCEC[i].fundRequired);
 					}
 				}
-			$scope.subTotalFundCECCFD = totalOfFunds;
+				$scope.subTotalFundCECCFD = totalOfFunds;
 		}	
 		
-		var totalNBS=$scope.grandTotalNBS!=null && $scope.grandTotalNBS!=undefined?$scope.grandTotalNBS:0;
+		var totalNBS=$scope.totalFundCECNBS!=null && $scope.totalFundCECNBS!=undefined?$scope.totalFundCECNBS:0;
 		var totalNBD=$scope.grandTotalNBD!=null && $scope.grandTotalNBD!=undefined?$scope.grandTotalNBD:0;
-		var totalCFS=$scope.totalWithoutAddRequirementsCFS!=null && $scope.totalWithoutAddRequirementsCFS!=undefined?$scope.totalWithoutAddRequirementsCFS:0;
-		var totalCFD=$scope.totalWithoutAddRequirementsCFD!=null && $scope.totalWithoutAddRequirementsCFD!=undefined?$scope.totalWithoutAddRequirementsCFD:0;
+		var totalCFS=$scope.subTotalFundCECCFS!=null && $scope.subTotalFundCECCFS!=undefined?$scope.subTotalFundCECCFS:0;
+		var totalCFD=$scope.subTotalFundCECCFD!=null && $scope.subTotalFundCECCFD!=undefined?$scope.subTotalFundCECCFD:0;
 		
 		$scope.grandTotal=totalNBS+totalNBD+totalCFS+totalCFD;
 		
@@ -523,6 +532,7 @@ publicModule.controller("institutionalInfraActivityPlanController", [ '$scope', 
 	
 	$scope.save_data=function(status){
 		
+		$scope.btn_disabled=true;
 		$scope.institutionalInfraActivityPlan.institutionalInfraActivityPlanDetails=[];
 		index=0;
 		$scope.institutionalInfraActivityPlan.additionalRequirement=$scope.planstateAdditionalRequirementCEC;
@@ -562,21 +572,25 @@ $scope.institutionalInfraActivityPlan.institutionalInfraActivityPlanDetails[inde
 			$scope.institutionalInfraActivityPlan.institutionalInfraActivityPlanDetails[index].trainingInstitueType=$scope.institutionalPlanDetailsCFDistrictMOPR[i].trainingInstitueType;
 			index++;
 		}
+		var  saveStatus = false;
 		
-		for(let i=0;i<$scope.institutionalInfraActivityPlan.institutionalInfraActivityPlanDetails.length;i++){
-			(($scope.institutionalInfraActivityPlan.institutionalInfraActivityPlanDetails[i].fundProposed !== "" && $scope.institutionalInfraActivityPlan.institutionalInfraActivityPlanDetails[i].fundProposed != 0)
-			|| ($scope.institutionalInfraActivityPlan.institutionalInfraActivityPlanDetails[i].fundRequired!== "" && $scope.institutionalInfraActivityPlan.institutionalInfraActivityPlanDetails[i].fundRequired != 0)) 
-			? saveStatus = true : saveStatus =false;
+		if ($scope.institutionalInfraActivityPlan!=null && $scope.institutionalInfraActivityPlan!=""){
+			for(let i=0;i<$scope.institutionalInfraActivityPlan.institutionalInfraActivityPlanDetails.length;i++){
+				(($scope.institutionalInfraActivityPlan.institutionalInfraActivityPlanDetails[i].fundProposed !== "" && $scope.institutionalInfraActivityPlan.institutionalInfraActivityPlanDetails[i].fundProposed != 0)
+				|| ($scope.institutionalInfraActivityPlan.institutionalInfraActivityPlanDetails[i].fundRequired!== "" && $scope.institutionalInfraActivityPlan.institutionalInfraActivityPlanDetails[i].fundRequired != 0)) 
+				? saveStatus = true : saveStatus =false;
+			}
 		}
+		
+	
+		
 		if(saveStatus){
 			$scope.institutionalInfraActivityPlan.isFreeze=false;
 			if(status=='F'){
 				$scope.institutionalInfraActivityPlan.isFreeze=true;
 			}
 			institutionalInfraActivityPlanService.saveInstitutionalInfraActivityPlanDetailsMOPRCEC($scope.institutionalInfraActivityPlan).then(function(response){
-				//$scope.institutionalInfraActivityPlan = response.data;
-				//$scope.fetchData($scope.institutionalInfraActivityPlan.institutionalInfraActivityPlanDetails[0].trainingInstitueType.trainingInstitueTypeId);
-					toastr.success("Plan Saved Successfully");
+				toastr.success("Plan Saved Successfully");
 					load_data();
 			},function(error){
 				toastr.error("Something went wrong");

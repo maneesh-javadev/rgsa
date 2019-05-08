@@ -54,9 +54,9 @@ trainingDetail.controller("trainingDetailMoprController",['$scope','trainingDeta
 	$scope.calculateMasterFund=function(){
 		var additionalRequirement=0;
 		if($scope.training.additionalRequirement != null && $scope.training.additionalRequirement != undefined){
-			if($scope.training.additionalRequirement>($scope.allTrainingFund*.025)){
+			if($scope.training.additionalRequirement>($scope.allTrainingFund*.25)){
 				$scope.training.additionalRequirement=0;
-				toastr.error("Additional Requirement must be less then ("+$scope.allTrainingFund*.025+") 25% of total Fund proposed");
+				toastr.error("Additional Requirement must be less then ("+$scope.allTrainingFund*.25+") 25% of total Fund proposed");
 			}else{
 				additionalRequirement=parseInt($scope.training.additionalRequirement);
 			}

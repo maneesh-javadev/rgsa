@@ -110,7 +110,7 @@ function isNumber(evt) {
 												<td ><strong>{{details.districtName}}</strong></td>
 											
 												<td>
-												<div align="center" data-ng-style="{'color':(institutionalPlanDetailsNBState[$index].fundProposed > details.fundProposed) ? 'red' : '#00cc00'}">
+												<div align="center" data-ng-style="{'color':(institutionalPlanDetailsNBStateCEC[$index].fundProposed < details.fundProposed) ? 'red' : '#00cc00'}">
 												<strong>{{institutionalPlanDetailsNBState[$index].fundProposed}}</strong></div>
 												<input type="text" onkeypress="return isNumber(event)" data-ng-show="!institutionalInfraActivityPlan.isFreeze" data-ng-model="institutionalPlanDetailsNBStateCEC[$index].fundProposed" class="form-control" id="fundProposedId" data-ng-keyup="calculate_total_fund(1,$index,null)" maxlength="8" style="text-align:right;" required="required" autocomplete="off"/>
 												<input type="text" data-ng-show="institutionalInfraActivityPlan.isFreeze" data-ng-model="institutionalPlanDetailsNBStateCEC[$index].fundProposed" class="form-control" readonly="readonly" style="text-align:right;"/>
@@ -125,7 +125,7 @@ function isNumber(evt) {
 													<input type="checkbox" data-ng-show="institutionalInfraActivityPlan.isFreeze" data-ng-model="institutionalPlanDetailsNBStateCEC[$index].isApproved" disabled="disabled">
 												</td>
 												<td align="center">
-													<div align="center" data-ng-style="{'color':(institutionalPlanDetailsNBState[$index].remarks > details.remarks) ? 'red' : '#00cc00'}">
+													<div align="center" data-ng-style="{'color':(institutionalPlanDetailsNBStateCEC[$index].remarks< details.remarks) ? 'red' : '#00cc00'}">
 													<strong>{{institutionalPlanDetailsNBState[$index].remarks}}</strong></div>
 													<textarea rows="2" data-ng-show="!institutionalInfraActivityPlan.isFreeze" data-ng-model="institutionalPlanDetailsNBStateCEC[$index].remarks" cols="10"></textarea>
 													<textarea rows="2" data-ng-show="institutionalInfraActivityPlan.isFreeze" data-ng-model="institutionalPlanDetailsNBStateCEC[$index].remarks" cols="10" readonly="readonly" autocomplete="off"></textarea>
@@ -233,7 +233,7 @@ function isNumber(evt) {
 												<td align="center"><strong>{{details.districtName}}</strong></td>
 											
 												<td>
-												<div align="center" data-ng-style="{'color':(institutionalPlanDetailsNBStateCEC[$index].fundProposed < details.fundProposed) ? 'red' : '#00cc00'}">
+												<div align="center" data-ng-style="{'color':(institutionalPlanDetailsNBDistrictCEC[$index].fundProposed < details.fundProposed) ? 'red' : '#00cc00'}">
 												<strong>{{institutionalPlanDetailsNBDistrict[$index].fundProposed}}</strong></div>
 												<input type="text" onkeypress="return isNumber(event)" data-ng-show="!institutionalInfraActivityPlan.isFreeze" data-ng-model="institutionalPlanDetailsNBDistrictCEC[$index].fundProposed" class="form-control" id="fundProposedId" data-ng-keyup="calculate_total_fund(2,$index,null)" maxlength="8" style="text-align:right;" required="required" autocomplete="off"/>
 													<input type="number" onkeypress="return isNumber(event)" data-ng-show="institutionalInfraActivityPlan.isFreeze" data-ng-model="institutionalPlanDetailsNBDistrictCEC[$index].fundProposed" class="form-control" readonly="readonly" style="text-align:right;"/>
@@ -248,7 +248,7 @@ function isNumber(evt) {
 													<input type="checkbox" data-ng-show="institutionalInfraActivityPlan.isFreeze" data-ng-model="institutionalPlanDetailsNBDistrictCEC[$index].isApproved" disabled="disabled">
 												</td>
 												<td align="center">
-													<div align="center" data-ng-style="{'color':(institutionalPlanDetailsNBStateCEC[$index].remarks < details.remarks) ? 'red' : '#00cc00'}">
+													<div align="center" data-ng-style="{'color':(institutionalPlanDetailsNBDistrictCEC[$index].remarks < details.remarks) ? 'red' : '#00cc00'}">
 													<strong>{{institutionalPlanDetailsNBDistrict[$index].remarks}}</strong></div>
 													<textarea rows="2" data-ng-show="!institutionalInfraActivityPlan.isFreeze" data-ng-model="institutionalPlanDetailsNBDistrictCEC[$index].remarks" cols="10" autocomplete="off"></textarea>
 													<textarea rows="2" data-ng-show="institutionalInfraActivityPlan.isFreeze" data-ng-model="institutionalPlanDetailsNBDistrictCEC[$index].remarks" cols="10" readonly="readonly"></textarea>
@@ -578,7 +578,7 @@ function isNumber(evt) {
 												<td colspan="5" class="padding_left_local"><strong><spring:message code="Label.TotalProposedFund" htmlEscape="true" /> (DPRC)</strong></td>
 												<td>
 												<div align="center" data-ng-style="{'color':(subTotalFundStateCFD < subTotalFundCECCFD) ? 'red' : '#00cc00'}">
-												<strong>{{subTotalFundStateCFD}}</strong></div>
+												<strong>{{subTotalFundStateCF}}</strong></div>
 												<input type="text" data-ng-show="!institutionalInfraActivityPlan.isFreeze" class="form-control" data-ng-model="subTotalFundCECCFD" style="text-align:right;" readonly="readonly"/>
 												<input type="text" data-ng-show="institutionalInfraActivityPlan.isFreeze" class="form-control" data-ng-model="subTotalFundCECCFD" readonly="readonly" style="text-align:right;"/>
 												</td>
@@ -587,7 +587,36 @@ function isNumber(evt) {
                            </table>
                         </div>
                      </div>
-								
+						<div class="records">
+								<div class="">
+									<div  class="col-lg-12 sub_head">
+										<!-- Grand Total -->
+										
+									</div>
+									<div class="row">
+										<div class="col-lg-12 padding_top"></div>
+									</div>
+									<table width="100%">
+									<tfoot>
+										<tr>
+											<td colspan="4" width="60%">
+												<strong>
+													Grand Total(New Building Total Fund(SPRC)+New Building Total Fund(DPRC)+Carry Forward Total Fund(SPRC)+Carry Forward Total Fund(DPRC))
+												</strong>
+											</td>
+											<td align="right" width="40%">
+												<div align="center"  align="center" data-ng-style="{'color':(grandTotalState < grandTotal) ? 'red' : '#00cc00'}">
+													<strong>{{grandTotalState}}</strong></div>
+												<input type="text"  class="form-control" data-ng-model="grandTotal" readonly="readonly" style="text-align:right;"/>
+											</td>
+										</tr>
+									</tfoot>
+									
+									</table>
+									<br/><br/>
+										
+								</div>
+							</div>		
 								
 								
 						<div class="col-md-4">
@@ -602,11 +631,11 @@ function isNumber(evt) {
 						<div class="form-group text-right">
 									 
 								<button data-ng-show="institutionalInfraActivityPlan.isFreeze" type="button" class="btn bg-green waves-effect" disabled="disabled"><spring:message code="Label.SAVE" htmlEscape="true"/></button>
-								<button data-ng-show="!institutionalInfraActivityPlan.isFreeze" data-ng-click="save_data('S')" type="button" class="btn bg-green waves-effect"><spring:message code="Label.SAVE" htmlEscape="true" /></button>
-								<button data-ng-show="institutionalInfraActivityPlan.isFreeze" type="button" data-ng-click="save_data('U')" class="btn bg-green waves-effect">
+								<button data-ng-show="!institutionalInfraActivityPlan.isFreeze" data-ng-click="save_data('S')" type="button" ng-disabled="btn_disabled" class="btn bg-green waves-effect"><spring:message code="Label.SAVE" htmlEscape="true" /></button>
+								<button data-ng-show="institutionalInfraActivityPlan.isFreeze" type="button" data-ng-click="save_data('U')" ng-disabled="btn_disabled" class="btn bg-green waves-effect">
 									<spring:message code="UNFREEZE" htmlEscape="true" />
 								</button>
-								<button data-ng-show="!institutionalInfraActivityPlan.isFreeze "    data-ng-click="save_data('F')" class="btn bg-green waves-effect">
+								<button data-ng-show="!institutionalInfraActivityPlan.isFreeze "    data-ng-click="save_data('F')" ng-disabled="btn_disabled" class="btn bg-green waves-effect">
 									<spring:message code="FREEZE" htmlEscape="true" />
 								</button>
 							
@@ -1123,8 +1152,9 @@ function isNumber(evt) {
 												Grand Total(New Building Total Fund(SPRC)+New Building Total Fund(DPRC)+Carry Forward Total Fund(SPRC)+Carry Forward Total Fund(DPRC))
 											</strong>
 										</td>
-										<td align="right" width="40%">
-											<input type="text"  class="form-control" data-ng-model="grandTotal" readonly="readonly" style="text-align:right;"/>
+										<td align="center" width="40%">
+										{{grandTotalMOPR}}
+											
 										</td>
 									</tr>
 								</tfoot>

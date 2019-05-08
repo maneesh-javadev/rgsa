@@ -369,9 +369,9 @@ function calculateTotal(obj){
 										
 									   	<div class="col-md-8 text-right ex1">
  									   	    <button data-ng-show="panchayatBhawanActivity.status == 'F'" data-ng-click="saveData('S')" type="button" class="btn bg-green waves-effect" disabled="disabled"><spring:message code="Label.SAVE" htmlEscape="true"/></button> 
-									   		<button type="button" data-ng-show="panchayatBhawanActivity.status != 'F'" ng-click="saveData('S')" class="btn bg-green waves-effect"><spring:message code="Label.SAVE" htmlEscape="true" /></button>
+									   		<button type="button" data-ng-show="panchayatBhawanActivity.status != 'F'"  ng-disabled="btn_disabled" ng-click="saveData('S')" class="btn bg-green waves-effect"><spring:message code="Label.SAVE" htmlEscape="true" /></button>
 									   		<button data-ng-show="panchayatBhawanActivity.status != 'F' " data-ng-click="saveData('F')" type="button" class="btn bg-green waves-effect" data-ng-disabled="initial_status == true"><spring:message code="Label.FREEZE" htmlEscape="true" /></button>
-								       <button data-ng-show="panchayatBhawanActivity.status == 'F'" type="button" data-ng-click="saveData('UF')" class="btn bg-green waves-effect">
+								       <button data-ng-show="panchayatBhawanActivity.status == 'F'" type="button" data-ng-click="saveData('UF')"  ng-disabled="btn_disabled"  class="btn bg-green waves-effect">
 									      <spring:message code="Label.UNFREEZE" htmlEscape="true" />
 								       </button>
 			 						   		<button type="button" data-ng-show="panchayatBhawanActivity.status == 'F'"  class="btn bg-light-blue waves-effect" disabled="disabled">

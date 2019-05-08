@@ -520,7 +520,7 @@ function saveSubmit(){
 
 									<c:if test="${empty innovativeAcitivityList}">
 										<div class="col-md-8 text-right">
-											<button type="submit" id="save"
+											<button type="button" id="save" onclick="saveSubmit();"
 												class="btn bg-green waves-effect">
 												<spring:message text="SAVE" htmlEscape="true" />
 											</button>

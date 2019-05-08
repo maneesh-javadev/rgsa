@@ -18,9 +18,7 @@ $scope.userType = null;
    
 	
 	function fetchOnLoad(){
-		 $scope.onloadFun = function() {
-		      alert(1);
-		    }
+		$scope.btn_disabled=false;
 		panchayatBhawanActivityService.getPanchayatBhawanActivity().then(function(response){
 			$scope.activityList=response.data.PANCHAYAT_ACTIVITY;
 			$scope.districtList=response.data.DISTRICT_LIST;
@@ -190,6 +188,7 @@ $scope.userType = null;
     	}
 	
 	$scope.saveData=function(status){
+		$scope.btn_disabled=true;
 		$scope.panchayatBhawanActivity.status=status;
 		panchayatBhawanActivityService.saveData($scope.panchayatBhawanActivity).then(function(response){
 			if($scope.panchayatBhawanActivity.status == 'S'){

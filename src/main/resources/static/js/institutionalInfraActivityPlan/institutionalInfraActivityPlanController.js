@@ -63,6 +63,7 @@ publicModule.controller("institutionalInfraActivityPlanController", [ '$scope', 
 	};
 	
 	function load_data(){
+		$scope.btn_disabled=false;
 		$scope.nbsindex=0;
 		$scope.nbdindex=0;
 		$scope.cfsindex=0;
@@ -652,6 +653,7 @@ function create_state_row_CF(rindex,name,id){
 	
 	
 	$scope.save_data=function(status){
+		$scope.btn_disabled=true;
 		$scope.institutionalInfraActivityPlan.institutionalInfraActivityPlanDetails=[];
 		index=0;
 		$scope.institutionalInfraActivityPlan.additionalRequirement=$scope.institutionalInfraActivityPlan.additionalRequirementNBS;
@@ -676,11 +678,15 @@ function create_state_row_CF(rindex,name,id){
 			index++;
 		}
 		
-		for(let i=0;i<$scope.institutionalInfraActivityPlan.institutionalInfraActivityPlanDetails.length;i++){
-			(($scope.institutionalInfraActivityPlan.institutionalInfraActivityPlanDetails[i].fundProposed !== "" && $scope.institutionalInfraActivityPlan.institutionalInfraActivityPlanDetails[i].fundProposed != 0)
-			|| ($scope.institutionalInfraActivityPlan.institutionalInfraActivityPlanDetails[i].fundRequired!== "" && $scope.institutionalInfraActivityPlan.institutionalInfraActivityPlanDetails[i].fundRequired != 0)) 
-			? saveStatus = true : saveStatus =false;
+		var  saveStatus =false;
+		if($scope.institutionalInfraActivityPlan!=null && $scope.institutionalInfraActivityPlan!=""){
+			for(let i=0;i<$scope.institutionalInfraActivityPlan.institutionalInfraActivityPlanDetails.length;i++){
+				(($scope.institutionalInfraActivityPlan.institutionalInfraActivityPlanDetails[i].fundProposed !== "" && $scope.institutionalInfraActivityPlan.institutionalInfraActivityPlanDetails[i].fundProposed != 0)
+				|| ($scope.institutionalInfraActivityPlan.institutionalInfraActivityPlanDetails[i].fundRequired!== "" && $scope.institutionalInfraActivityPlan.institutionalInfraActivityPlanDetails[i].fundRequired != 0)) 
+				? saveStatus = true : saveStatus =false;
+			}
 		}
+		
 		if(saveStatus){
 			$scope.institutionalInfraActivityPlan.isFreeze=false;
 			if(status=='F'){
@@ -690,12 +696,13 @@ function create_state_row_CF(rindex,name,id){
 				//$scope.institutionalInfraActivityPlan = response.data;
 				//$scope.fetchData($scope.institutionalInfraActivityPlan.institutionalInfraActivityPlanDetails[0].trainingInstitueType.trainingInstitueTypeId);
 					toastr.success("Plan Saved Successfully");
-					pathname=window.location.pathname;
+					init();
 			},function(error){
 				toastr.error("Something went wrong");
-			});	
+			});
 		}else{
 			toastr.error("Fund value should not be blank or zero.");
+			init();
 		}
 	}
 	

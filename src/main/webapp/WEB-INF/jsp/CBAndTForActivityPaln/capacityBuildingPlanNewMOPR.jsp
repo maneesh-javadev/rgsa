@@ -155,7 +155,7 @@ table.dataTable thead > tr > th, table.dataTable thead > tr > td {
 									</div>
 									<div class="col-sm-4">
 										
-										  <input type="text" data-ng-disabled="fetchTrainingMOPR.isFreeze" data-ng-change="calculateMasterFund()" data-ng-model="training.additionalRequirement" onkeypress="return isNumber(event)" required="required"  class="form-control" maxlength="5" style="text-align:right;">
+										  <input type="text" data-ng-disabled="fetchTrainingMOPR.isFreeze" data-ng-change="calculateMasterFund()" data-ng-model="training.additionalRequirement" onkeypress="return isNumber(event)" required="required"  class="form-control" maxlength="9" style="text-align:right;">
 									
 									</div>
 								</div>

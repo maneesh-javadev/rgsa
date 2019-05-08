@@ -571,11 +571,11 @@ function isNumber(evt) {
 									<div class="form-group text-right">
 									 
 								<button data-ng-show="institutionalInfraActivityPlan.isFreeze" type="button" class="btn bg-green waves-effect" disabled="disabled"><spring:message code="Label.SAVE" htmlEscape="true"/></button>
-								<button data-ng-show="!institutionalInfraActivityPlan.isFreeze" data-ng-click="save_data('S')" type="button" class="btn bg-green waves-effect"><spring:message code="Label.SAVE" htmlEscape="true" /></button>
-								<button data-ng-show="institutionalInfraActivityPlan.isFreeze" type="button" data-ng-click="save_data('U')" class="btn bg-green waves-effect">
+								<button data-ng-show="!institutionalInfraActivityPlan.isFreeze" ng-disabled="btn_disabled" data-ng-click="save_data('S')" type="button" class="btn bg-green waves-effect"><spring:message code="Label.SAVE" htmlEscape="true" /></button>
+								<button data-ng-show="institutionalInfraActivityPlan.isFreeze" ng-disabled="btn_disabled" type="button" data-ng-click="save_data('U')" class="btn bg-green waves-effect">
 									<spring:message code="UNFREEZE" htmlEscape="true" />
 								</button>
-								<button data-ng-show="!institutionalInfraActivityPlan.isFreeze "    data-ng-click="save_data('F')" class="btn bg-green waves-effect">
+								<button data-ng-show="!institutionalInfraActivityPlan.isFreeze "  ng-disabled="btn_disabled"  data-ng-click="save_data('F')" class="btn bg-green waves-effect">
 									<spring:message code="FREEZE" htmlEscape="true" />
 								</button>
 							

@@ -60,9 +60,9 @@ trainingDetail.controller("trainingDetailController",['$scope','trainingDetailSe
 	$scope.calculateMasterFund=function(){
 		var additionalRequirement=0;
 		if($scope.training.additionalRequirement != null && $scope.training.additionalRequirement != undefined){
-			if($scope.training.additionalRequirement>($scope.allTrainingFund*.025)){
+			if($scope.training.additionalRequirement>($scope.allTrainingFund*.25)){
 				$scope.training.additionalRequirement=0;
-				toastr.error("Additional Requirement must be less then ("+$scope.allTrainingFund*.025+") 25% of total Fund proposed");
+				toastr.error("Additional Requirement must be less then ("+$scope.allTrainingFund*.25+") 25% of total Fund proposed");
 			}else{
 				additionalRequirement=parseInt($scope.training.additionalRequirement);
 			}
@@ -140,6 +140,7 @@ trainingDetail.controller("trainingDetailController",['$scope','trainingDetailSe
 	
 	$scope.updateTrainingDetails=function(){
 		//alert(validateData($scope.trainingDetails));
+		$scope.btn_disabled=true;
 		if(validateData($scope.trainingDetails)){
 			$scope.trainingDetails.targetGrptArr=$scope.trainingDetails.targetGrptArr.toString();
 			$scope.trainingDetails.trainingSubjectArr=$scope.trainingDetails.trainingSubjectArr.toString();
