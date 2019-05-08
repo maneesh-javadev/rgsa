@@ -533,6 +533,9 @@ publicModule.controller("institutionalInfraActivityPlanController", [ '$scope', 
 	$scope.save_data=function(status){
 		
 		$scope.btn_disabled=true;
+		if(!($scope.institutionalInfraActivityPlan!=null && $scope.institutionalInfraActivityPlan!=undefined)){
+			$scope.institutionalInfraActivityPlan={};
+		}
 		$scope.institutionalInfraActivityPlan.institutionalInfraActivityPlanDetails=[];
 		index=0;
 		$scope.institutionalInfraActivityPlan.additionalRequirement=$scope.planstateAdditionalRequirementCEC;
