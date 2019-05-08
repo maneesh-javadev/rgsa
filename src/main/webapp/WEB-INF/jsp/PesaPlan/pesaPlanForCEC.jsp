@@ -131,8 +131,8 @@ $('document').ready(function(){
 													</div> <input type="text" class="form-control"
 													data-ng-disabled="isFreezeOrUnfreeze"
 													data-ng-if="designation.pesaPostId != 4"
-													data-ng-model="pesaPlanForCEC.pesaPlanDetails[$index].noOfMonths"\
-													data-ng-keyup="calculateFundsAndTotalWithoutAdditionaRequirement($index)" 
+													data-ng-model="pesaPlanForCEC.pesaPlanDetails[$index].noOfMonths"
+													data-ng-keyup="calculateFundsAndTotalWithoutAdditionaRequirement($index);" 
 													style="text-align: right; border: none; border-color: transparent;" />
 											
 												

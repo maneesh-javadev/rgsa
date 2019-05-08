@@ -212,6 +212,11 @@ publicModule.controller("pesaPlanCECController", [ '$scope', "pesaPlanService",
 			return false;
 		}
 		
+		if($scope.pesaPlanForCEC.pesaPlanDetails[index].noOfMonths > 12 || $scope.pesaPlanForCEC.pesaPlanDetails[index].noOfMonths < 1){
+			toastr.error('Number of months should be greater than 0 or less than or equal to 12.');
+			$scope.pesaPlanForCEC.pesaPlanDetails[index].noOfMonths='';
+		}
+		
 		if($scope.pesaPlanForCEC.pesaPlanDetails[index].unitCostPerMonth > $scope.designationArray[index].ceilingValue){
 			$scope.pesaPlanForCEC.pesaPlanDetails[index].unitCostPerMonth='';
 			toastr.error("Unit Cost per month for " + $scope.designationArray[index].pesaPostName + " should not be greater than " + $scope.designationArray[index].ceilingValue);
@@ -222,22 +227,23 @@ publicModule.controller("pesaPlanCECController", [ '$scope', "pesaPlanService",
 			return false;
 		}
 		
-		if($scope.pesaPlanForCEC.pesaPlanDetails[index].noOfMonths == ''){
-			/*$scope.pesaPlanForCEC.pesaPlanDetails[index].noOfMonths ='';*/
+		/*if($scope.pesaPlanForCEC.pesaPlanDetails[index].noOfMonths == ''){
+			$scope.pesaPlanForCEC.pesaPlanDetails[index].noOfMonths ='';
 			return false;
-		}
+		}*/
 		
 		if($scope.pesaPlanForState.pesaPlanDetails[index].noOfMonths==null){
 			$scope.pesaPlanForState.pesaPlanDetails[index].noOfMonths=1;
 		}
-		
+		calFund(index);
+	}
+	
+	function calFund(index){
 		if(index==3){
 			$scope.pesaPlanForCEC.pesaPlanDetails[index].funds = $scope.pesaPlanForCEC.pesaPlanDetails[index].noOfUnits * $scope.pesaPlanForCEC.pesaPlanDetails[index].unitCostPerMonth *1;
-			
 		}
 		else{
 			$scope.pesaPlanForCEC.pesaPlanDetails[index].funds = $scope.pesaPlanForCEC.pesaPlanDetails[index].noOfUnits * $scope.pesaPlanForCEC.pesaPlanDetails[index].unitCostPerMonth *$scope.pesaPlanForCEC.pesaPlanDetails[index].noOfMonths;
-			
 		}
 		var totalOfFunds = 0;
 		for (var i = 0; i < $scope.pesaPlanForCEC.pesaPlanDetails.length; i++) {
