@@ -42,7 +42,7 @@ function calculate(obj)
 			$("#noOfMonths_"+obj).val(0);
 		}
 	else if(noOfMonths > 0) {
-		$("#fund_"+obj).val(parseFloat($("#noOfUnits_"+obj).val()) * parseFloat($("#unitCost_"+obj).val()) * parseFloat($("#noOfMonths_"+obj).val())); 
+		$("#fund_"+obj).val($("#noOfUnits_"+obj).val() * $("#unitCost_"+obj).val() * $("#noOfMonths_"+obj).val()); 
 	}
 	else if(noOfMonths == 0 && noOfMonths !="") {
 		alert("Months should be greater than 0!");

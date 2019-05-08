@@ -79,7 +79,7 @@ publicModule.controller("pesaPlanController", [ '$scope', "pesaPlanService",
 				}
 			}
 		$scope.totalWithoutAddRequirements = totalOfFunds;
-		$scope.grandTotal = $scope.totalWithoutAddRequirements + $scope.pesaPlan.additionalRequirement;
+		$scope.grandTotal = +$scope.totalWithoutAddRequirements + +$scope.pesaPlan.additionalRequirement;
 	}
 	
 	$scope.calculateFundsAndTotalWithoutAdditionaRequirement=function(index){
@@ -135,7 +135,7 @@ publicModule.controller("pesaPlanController", [ '$scope', "pesaPlanService",
 			return false;
 		}
 		
-		$scope.grandTotal = $scope.totalWithoutAddRequirements + parseInt($scope.pesaPlan.additionalRequirement);
+		$scope.grandTotal = +$scope.totalWithoutAddRequirements + parseInt($scope.pesaPlan.additionalRequirement);
 	}
 	
 	$scope.savePesaPlan=function(){
