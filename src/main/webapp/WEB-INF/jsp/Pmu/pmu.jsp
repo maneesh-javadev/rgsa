@@ -121,6 +121,12 @@ function validationOnSubmit(){
 	var rowCountSprc=$('#tbodySprcId tr').length;
 	var flag= true;
 	
+	if(($('#total_fund_spmu').val() == 0 || $('#total_fund_spmu').val() == null) && ($('#total_fund_dpmu').val() == 0 || $('#total_fund_dpmu').val() == null)){
+		alert('Blank form cannot be save or freeze.');
+		flag=false;
+	}
+		
+	
 	if($('#noOfUnits_0').val() == "" || $('#noOfUnits_0').val() == null){
 		for(var i=0;i<rowCountSprc;i++){
 			if($('#noOfFaculty_'+i).val() != "" || $('#noOfFaculty_'+i).val() != ""){
@@ -227,7 +233,7 @@ function calculateTotalFundDpmu() {
 													<th><div align="center"><spring:message code="Label.Remarks" htmlEscape="true" /></div></th>
 												</tr>
 											</thead>
-											<tbody id="myTableId">
+											<tbody id="mainTbodyId">
 											<c:set var="countSpmu" value="0" scope="page" />
 											<c:set var="countDpmu" value="0" scope="page" />
 											<c:forEach items="${LIST_OF_ACTIVITY_PMU_TYPE}" var="ACTIVITY" varStatus="srl" begin="0" end="2">
@@ -287,9 +293,9 @@ function calculateTotalFundDpmu() {
 											<tr>
 												<td><div align="center"><strong>${ACTIVITY.pmuType.pmuTypeName}</strong></div></td>
 												<td><div align="center"><strong>${ACTIVITY.pmuActivityName}</strong></div></td>
-												<td><input value="${pmuActivity.pmuActivityDetails[srl.index].noOfUnits}"	name="pmuActivityDetails[${srl.index}].noOfUnits" min="1" maxlength="3"  onkeypress="return isNumber(event)" oninput="validity.valid||(value='');"	type="text" class="active12 form-control" id="noOfUnits_${srl.index}" onchange="calculate(${srl.index}); calculateValue(${srl.index})" style="text-align:right;" required="required"/></td>
-												<td><input value="${pmuActivity.pmuActivityDetails[srl.index].unitCost}"	name="pmuActivityDetails[${srl.index}].unitCost" min="1" maxlength="7"  onkeypress="return isNumber(event)" oninput="validity.valid||(value='');" type="text" class="active12 form-control"	id="unitCost_${srl.index}" onchange="calculate(${srl.index});" style="text-align:right;" required="required"/></td>
-												<td><input value="${pmuActivity.pmuActivityDetails[srl.index].noOfMonths}" 	name="pmuActivityDetails[${srl.index}].noOfMonths" min="1"  onkeypress="return isNumber(event)" oninput="validity.valid||(value='');"	type="text" class="active12 form-control" id="noOfMonths_${srl.index}" onchange="calculate(${srl.index});" style="text-align:right;" required="required"/></td>
+												<td><input value="${pmuActivity.pmuActivityDetails[srl.index].noOfUnits}"	name="pmuActivityDetails[${srl.index}].noOfUnits" min="1" maxlength="3"  onkeypress="return isNumber(event)" oninput="validity.valid||(value='');"	type="text" class="active12 form-control" id="noOfUnits_${srl.index}" onchange="calculate(${srl.index}); calculateValue(${srl.index})" style="text-align:right;" /></td>
+												<td><input value="${pmuActivity.pmuActivityDetails[srl.index].unitCost}"	name="pmuActivityDetails[${srl.index}].unitCost" min="1" maxlength="7"  onkeypress="return isNumber(event)" oninput="validity.valid||(value='');" type="text" class="active12 form-control"	id="unitCost_${srl.index}" onchange="calculate(${srl.index});" style="text-align:right;" /></td>
+												<td><input value="${pmuActivity.pmuActivityDetails[srl.index].noOfMonths}" 	name="pmuActivityDetails[${srl.index}].noOfMonths" min="1"  onkeypress="return isNumber(event)" oninput="validity.valid||(value='');"	type="text" class="active12 form-control" id="noOfMonths_${srl.index}" onchange="calculate(${srl.index});" style="text-align:right;" /></td>
 												<c:set var="totalFundToCalc" value="${pmuActivity.pmuActivityDetails[srl.index].fund}"></c:set>
 												<td><input value="${pmuActivity.pmuActivityDetails[srl.index].fund}" readonly="readonly" name="pmuActivityDetails[${srl.index}].fund"  onkeypress="return isNumber(event)" oninput="validity.valid||(value='');" type="text" min="1" class="active12 form-control txtCal" id="fund_${srl.index}" style="text-align:right;" onchange="calculateTotalFundDpmu()"/></td>
 													<c:choose>

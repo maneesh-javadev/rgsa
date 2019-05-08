@@ -91,6 +91,7 @@ public class AdminAndFinancialDataCellController {
 			model.addAttribute("activityDetailsForState", activityDetailsForState);
 			List<AdminAndFinancialDataActivity> andFinancialDataActivityForMopr = adminAndFinancialDataCellService.fetchAdminAndFinancialActivity("M");
 			if(CollectionUtils.isNotEmpty(andFinancialDataActivityForMopr)){
+				model.addAttribute("activityForMopr", andFinancialDataActivityForMopr.get(0));
 				activityDetailsForMopr=  andFinancialDataActivityForMopr.get(0).getAdminFinancialDataCellActivityDetails();
 			}
 			model.addAttribute("activityDetailsForMopr", activityDetailsForMopr);

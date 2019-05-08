@@ -178,9 +178,14 @@ trgModuleCEC.controller("trainingActivityCEC",['$scope','trgActivityCecService',
 	}
 	
 	$scope.calculateAdditionalRequirment=function(){
+		
 		if($scope.cecData.additionalRequirement == undefined ||$scope.cecData.additionalRequirement == ""){
 			cecadreq = 0 ;
 		}else{
+			if($scope.cecData.additionalRequirement > ($scope.stateTotalFund * .25)){
+				toastr.error("Additional requirement should not exceed : " +  ($scope.stateTotalFund * .25));
+				$scope.cecData.additionalRequirement='';
+			}
 			cecadreq = parseInt($scope.cecData.additionalRequirement) ;
 		}
 		$scope.stateGrandTotal = $scope.stateTotalFund +cecadreq;

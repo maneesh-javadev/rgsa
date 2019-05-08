@@ -253,8 +253,7 @@ publicModule.controller("pesaPlanCECController", [ '$scope', "pesaPlanService",
 	
 	$scope.calculateGrandTotal=function(){
 		
-		$scope.allowedAdditionalRequirement = (25/100)*$scope.totalWithoutAddRequirements
-		
+		$scope.allowedAdditionalRequirement = (25/100)*$scope.totalWithoutAddRequirementsForCEC;
 		if($scope.pesaPlanForCEC.additionalRequirement > $scope.allowedAdditionalRequirement){
 			toastr.error("Additional requirement should not be greater than " + $scope.allowedAdditionalRequirement);
 			$scope.pesaPlanForCEC.additionalRequirement = undefined;

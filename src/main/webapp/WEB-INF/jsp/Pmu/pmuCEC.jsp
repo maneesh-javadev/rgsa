@@ -146,6 +146,11 @@ function validationOnSubmit(){
 	var rowCountSprc=$('#tbodySprcId tr').length;
 	var flag= true;
 	
+	if(($('#total_fund_spmu').val() == 0 || $('#total_fund_spmu').val() == null) && ($('#total_fund_dpmu').val() == 0 || $('#total_fund_dpmu').val() == null)){
+		alert('Blank form cannot be save or freeze.');
+		flag=false;
+	}
+	
 	if($('#noOfUnits_0').val() == "" || $('#noOfUnits_0').val() == null){
 		for(var i=0;i<rowCountSprc;i++){
 			if($('#noOfFaculty_'+i).val() != "" || $('#noOfFaculty_'+i).val() != ""){

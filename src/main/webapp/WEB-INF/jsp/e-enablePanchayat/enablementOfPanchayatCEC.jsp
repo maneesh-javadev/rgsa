@@ -71,7 +71,7 @@ function validateCeiling(){
 function calculateGrandTotal(){
 	var grand_total=0;
 	if(document.getElementById("additionalRequirementId").value > 0.25 *document.getElementById("fund").value){
-		alert("Additional Requirement should be less than or equal to 25% of Total Fund");
+		alert("Additional Requirement should be less than or equal to 25% of Total Fund : "+ (0.25 *document.getElementById("fund").value));
 		document.getElementById("additionalRequirementId").value = '';
 		document.getElementById("grandTotalId").value = '';
 	}else{
