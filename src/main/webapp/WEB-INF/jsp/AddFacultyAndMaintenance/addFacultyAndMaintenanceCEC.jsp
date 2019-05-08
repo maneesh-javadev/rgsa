@@ -503,7 +503,7 @@ function calculateTotalFundDprc() {
 																	path="institueInfraHrActivityDetails[${index.index}].noOfMonths"
 																	onkeypress="return isNumber(event)"
 																	class="active12 form-control Align-Right"
-																	onkeyup="onLoadChangeColor()" id="noOfMonths_${index.index}" />
+																	onkeyup="onLoadChangeColor();validateMonth(${index.index})" id="noOfMonths_${index.index}" />
 															</c:if>
 														</td>
 
