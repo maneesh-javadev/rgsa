@@ -11,9 +11,7 @@ $( document ).ready(function() {
 
 
 function calculateTotalProposedFundForMopr(){
-	
-	
-		$("#GrandTotalId1").val(parseInt($("#totalcostforMopr").val()) + parseInt($("#additionalRequirementId1").val()));
+		$("#GrandTotalIdMopr").text(parseInt($("#totalcostforMopr").text()) + parseInt($("#additionalRequirementIdMopr").text()));
 	}
 
 
@@ -244,7 +242,7 @@ function validatingTotalProposedFund(){
 															<td><div align="center" id="noOfMonthsIdState_${index.index}">${activityDetailsForState[index.index].noOfMonths}</div>
 															<form:input
 																	path="adminFinancialDataCellActivityDetails[${index.index}].noOfMonths"
-																	onkeyup="calculateFund(${index.index}); onloadChangeColor()"
+																	onkeyup="calculateFund(${index.index}); onloadChangeColor() ; validateMonth(${index.index})"
 																	class="form-control Align-Right"
 																	id="noOfMonthsId_${index.index}" readonly="${IS_FREEZE eq true}" /></td>
 															<td><div align="center" id="fundIdState_${index.index}">${activityDetailsForState[index.index].funds}</div>
@@ -491,8 +489,8 @@ function validatingTotalProposedFund(){
 																	htmlEscape="true" /></strong>
 														</div></td>
 													<td colspan="3"></td>
-													<td><div align="center"  >
-															<input type = "text" class="form-control Align-Right" disabled="disabled" value="${totalUnitCostForMopr}"  id ="totalcostforMopr"/>
+													<td><div align="center"  id ="totalcostforMopr"> ${totalUnitCostForMopr}
+															<%-- <input type = "text" class="form-control Align-Right" disabled="disabled" value="${totalUnitCostForMopr}"  id ="totalcostforMopr"/> --%>
 														</div></td>
 												</tr>
 
@@ -502,13 +500,13 @@ function validatingTotalProposedFund(){
 																	code="Label.AdditionalRequirement" htmlEscape="true" /></strong>
 														</div></td>
 													<td colspan="3"></td>
-													<td><form:input path="additionalRequirement"
+													<td><div align="center" id="additionalRequirementIdMopr">${activityForMopr.additionalRequirement }</div><%-- <form:input path="additionalRequirement"
 															type="text" class="form-control Align-Right"
 															onkeypress="return isNumber(event)"
-															id="additionalRequirementId1"
+															id="additionalRequirementIdMopr"
 															onkeyup="validateAdditionalRequirement()"
 															placeholder="25 % of Sub Total"
-															 disabled="true"/></td>
+															 disabled="true"/> --%></td>
 												</tr>
 
 												<tr>
@@ -517,8 +515,8 @@ function validatingTotalProposedFund(){
 																	code="Label.TotalProposedFund" htmlEscape="true" /></strong>
 														</div></td>
 													<td colspan="3"></td>
-													<td><input type="text"
-														class="form-control Align-Right" id="GrandTotalId1" disabled="disabled"/></td>
+													<td ><div align="center" id="GrandTotalIdMopr"></div><!-- <input type="text"
+														class="form-control Align-Right" id="GrandTotalId1" disabled="disabled"/> --></td>
 												</tr>
 											</tbody>
 										</table>

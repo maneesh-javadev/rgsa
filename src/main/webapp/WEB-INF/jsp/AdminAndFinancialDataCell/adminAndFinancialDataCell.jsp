@@ -176,7 +176,7 @@ function validatingTotalProposedFund(){
 															<td><div align="center">
 																	<strong>${activity.pmuActivityName}</strong>
 																</div></td>
-													<td><form:input path="adminFinancialDataCellActivityDetails[${index.index}].noOfStaffProposed" type="text" maxlength="4" class="form-control Align-Right" onkeypress="return isNumber(event)" onkeyup="calculateFund(${index.index})" id="noOfStaffId_${index.index}" disabled="disabled" /></td>
+													<td><form:input path="adminFinancialDataCellActivityDetails[${index.index}].noOfStaffProposed" type="text" maxlength="4" class="form-control Align-Right" onkeypress="return isNumber(event)" onkeyup="calculateFund(${index.index})" id="noOfStaffId_${index.index}" readonly="${IS_FREEZE eq true}" /></td>
 													<td><form:input path="adminFinancialDataCellActivityDetails[${index.index}].unitCost" type="text" maxlength="7" class="form-control Align-Right" onkeypress="return isNumber(event)" onkeyup="calculateFund(${index.index})" id="unitCostId_${index.index}" readonly="${IS_FREEZE eq true}" /></td>
 													<td><form:input path="adminFinancialDataCellActivityDetails[${index.index}].noOfMonths" type="text" class="form-control Align-Right" onkeypress="return isNumber(event)" onkeyup="validateMonth(${index.index});calculateFund(${index.index})" id="noOfMonthsId_${index.index}" readonly="${IS_FREEZE eq true}"/></td>
 													<td><form:input path="adminFinancialDataCellActivityDetails[${index.index}].funds" type="text" class="form-control Align-Right" onkeypress="return isNumber(event)" id="fundId_${index.index}" readonly="true"/></td>
