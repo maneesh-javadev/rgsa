@@ -17,11 +17,11 @@ publicModule.controller("pesaPlanController", [ '$scope', "pesaPlanService",
 		pesaPlanService.fetchDesignations().then(function(response) {
 			$scope.designationArray = response.data.pesaPosts;
 			$scope.userType = response.data.userType;
-			$scope.pesaPlan.isFreez =false;
+			/*$scope.pesaPlan.isFreez =false;*/
 			if(response.data.pesaPlanResponseMap != undefined ){
 				$scope.pesaPlan = response.data.pesaPlanResponseMap;
 				$scope.pesaPlan.pesaPlanId = $scope.pesaPlan.pesaPlanId;
-				$scope.pesaPlan.isFreez = $scope.pesaPlan.isFreez;
+				/*$scope.pesaPlan.isFreez = $scope.pesaPlan.isFreez;*/
 				$scope.pesaPlan.additionalRequirement = $scope.pesaPlan.additionalRequirement;
 				$scope.pesaPlan.pesaPlanDetails = response.data.pesaPlanDetails;
 				
@@ -39,7 +39,7 @@ publicModule.controller("pesaPlanController", [ '$scope', "pesaPlanService",
 				
 				$scope.pesaPlan.pesaPlanDetails = [];
 				for (var i = 0; i < $scope.designationArray.length; i++) {
-					var obj =[];
+					var obj ={};
 					if($scope.postToPesaDetails.get($scope.designationArray[i].pesaPostId) == null){
 						obj.noOfUnits ='';
 						obj.unitCostPerMonth ='';
@@ -83,6 +83,9 @@ publicModule.controller("pesaPlanController", [ '$scope', "pesaPlanService",
 	}
 	
 	$scope.calculateFundsAndTotalWithoutAdditionaRequirement=function(index){
+		if(index == 3)
+			$scope.pesaPlan.pesaPlanDetails[index].noOfMonths=1;
+			
 		if($scope.pesaPlan.pesaPlanDetails[index].unitCostPerMonth == ''){
 			/*$scope.pesaPlan.pesaPlanDetails[index].unitCostPerMonth ='';*/
 			return false;

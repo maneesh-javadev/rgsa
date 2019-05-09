@@ -97,7 +97,6 @@ $('document').ready(function(){
 													<input type="text" class="form-control"
 													data-ng-keyup="calculateFundsAndTotalWithoutAdditionaRequirement($index)" 
 													data-ng-disabled="isFreezeOrUnfreeze"
-													onkeypress="return isNumber(event)"
 													data-ng-model="pesaPlanForCEC.pesaPlanDetails[$index].noOfUnits"
 													maxlength="7"
 													style="text-align: right; border: none; border-color: transparent;" />
@@ -116,7 +115,6 @@ $('document').ready(function(){
 													<input type="text" class="form-control"
 													data-ng-keyup="calculateFundsAndTotalWithoutAdditionaRequirement($index)" 
 													data-ng-disabled="isFreezeOrUnfreeze"
-													onkeypress="return isNumber(event)"
 													data-ng-model="pesaPlanForCEC.pesaPlanDetails[$index].unitCostPerMonth"
 													maxlength="7"
 													style="text-align: right; border: none; border-color: transparent;" />
@@ -152,7 +150,6 @@ $('document').ready(function(){
 													<input type="text" class="form-control"
 													
 													data-ng-disabled="true"
-													onkeypress="return isNumber(event)"
 													data-ng-model="pesaPlanForCEC.pesaPlanDetails[$index].funds"
 													maxlength="7"
 													style="text-align: right; border: none; border-color: transparent;" />
