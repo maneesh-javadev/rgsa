@@ -170,7 +170,7 @@ function isNoOfUnitAndExpInurredFilled(index){
 																name="pmuProgressDetails[${count.index}].noOfUnitsFilled"
 																type="text" style="text-align: right;"
 																class="form-control validate" id="noOfUnitCompleted_${count.index}"
-																onkeyup="validateNoOfUnits(${count.index});isNoOfUnitAndExpInurredFilled(${count.index})"
+																onkeyup="validateNoOfUnits(${count.index});"
 																value="${PMU_PROGRESS.pmuProgressDetails[count.index].noOfUnitsFilled}" required="required"/></td>
 															<td><input
 																name="pmuProgressDetails[${count.index}].expenditureIncurred"
@@ -188,7 +188,7 @@ function isNoOfUnitAndExpInurredFilled(index){
 																name="pmuProgressDetails[${count.index}].noOfUnitsFilled"
 																type="text" style="text-align: right;"
 																id="noOfUnitCompleted_${count.index}"
-																onkeyup="validateNoOfUnits(${count.index});isNoOfUnitAndExpInurredFilled(${count.index})"
+																onkeyup="validateNoOfUnits(${count.index});"
 																class="form-control validate" required="required"/></td>
 															<td><input
 																name="pmuProgressDetails[${count.index}].expenditureIncurred"
