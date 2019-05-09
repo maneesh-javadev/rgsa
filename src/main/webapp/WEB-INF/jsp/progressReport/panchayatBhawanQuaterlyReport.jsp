@@ -69,6 +69,7 @@
 													<spring:message code="Label.District" htmlEscape="true" />
 												</label>
 												<div class="col-lg-4">
+												
 													<select class="form-control" id="districtId" name="selectDistrictId" onchange="getSelelctedQtrRprt();" onclick="showHide()" >
 														<option value="0">Select District</option>
 														<c:forEach items="${districtList}" var="districtList">
@@ -143,12 +144,14 @@
 																<td>${count.index+1}</td>
 																<td>${bhawanDto.localBodyNameEnglish}</td>
 																<td>
-																	<select class="form-control" name="QPR_PANCHAYAT_BHAWAN.qprPanhcayatBhawanDetails[${count.index}].gpBhawanStatusId" id="gpBhawanStatusId_${count.index}">
+																		<spring:bind path="QPR_PANCHAYAT_BHAWAN.qprPanhcayatBhawanDetails[${count.index}].gpBhawanStatusId" >
+																			<select class="form-control" name="${status.expression}" id="gpBhawanStatusId_${count.index}">
 																		<option value="0">Please select gp status</option>
 																		<c:forEach items="${GPBhawanStatus}" var="status" >
 																			<option value="${status.gpBhawanStatusId}" >${status.gpBhawanStatusName}</option>
 																		</c:forEach>
-																	</select>
+																			</select>
+																		</spring:bind>
 																</td>
 																<td>
 																	<spring:bind path="QPR_PANCHAYAT_BHAWAN.qprPanhcayatBhawanDetails[${count.index}].expenditureIncurred" >
@@ -158,12 +161,15 @@
 																	<span class="errormsg" id="error_expenditureIncurred_${count.index}"></span>
 																</td>
 																<td>
-																	<input type="file" name="QPR_PANCHAYAT_BHAWAN.qprPanhcayatBhawanDetails[${count.index}].file" class="form-control"/>
+																	<spring:bind path="QPR_PANCHAYAT_BHAWAN.qprPanhcayatBhawanDetails[${count.index}].file" >
+																	<input type="file" name="${status.expression}" class="form-control"/>
+																	</spring:bind>
 																	<c:if test="${QPR_PANCHAYAT_BHAWAN.qprPanhcayatBhawanDetails[count.index].fileNode.fileNodeId!=null }">
 																		<a type="button" class="btn btn-lg btn-success" href="downloadFileNew.html?fileNodeId=${QPR_PANCHAYAT_BHAWAN.qprPanhcayatBhawanDetails[count.index].fileNode.fileNodeId}" target="_blank">
 																			<span class="glyphicon glyphicon-download" aria-hidden="true"></span>Download File
 																		</a>
 																	</c:if>
+																	
 																</td>
 															</tr>
 														</c:forEach>

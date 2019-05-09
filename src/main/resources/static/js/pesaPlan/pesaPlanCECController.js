@@ -67,7 +67,7 @@ publicModule.controller("pesaPlanCECController", [ '$scope', "pesaPlanService",
 				}
 			}
 		$scope.totalWithoutAddRequirementsForState = totalOfFunds;
-		$scope.grandTotalForState = $scope.totalWithoutAddRequirementsForState + $scope.pesaPlanForState.additionalRequirement;
+		$scope.grandTotalForState = +$scope.totalWithoutAddRequirementsForState + +$scope.pesaPlanForState.additionalRequirement;
 	}
 	
 	$scope.calculateTotalForMOPR=function(){
@@ -267,7 +267,7 @@ publicModule.controller("pesaPlanCECController", [ '$scope', "pesaPlanService",
 			return false;
 		}
 		
-		$scope.grandTotalForCEC = $scope.totalWithoutAddRequirementsForCEC + parseInt($scope.pesaPlanForCEC.additionalRequirement);
+		$scope.grandTotalForCEC = +$scope.totalWithoutAddRequirementsForCEC + parseInt($scope.pesaPlanForCEC.additionalRequirement);
 	}
 	
 	$scope.savePesaPlan=function(){

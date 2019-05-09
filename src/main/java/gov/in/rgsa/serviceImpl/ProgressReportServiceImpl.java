@@ -785,7 +785,7 @@ public class ProgressReportServiceImpl implements ProgressReportService {
                 obj.setQprPanchayatBhawan(qprPanchayatBhawan);
                 if (obj.getExpenditureIncurred() != null && obj.getGpBhawanStatusId() != null) {
                     multipartFile = obj.getFile();
-                    if (multipartFile.getSize() > 0) {
+                    if (multipartFile!=null && multipartFile.getSize() > 0) {
                         uploadReport = attemptUpload(obj.getFileNode(), multipartFile, uploadPath, qprPanchayatBhawan.getQtrId(), "panchayat bhwan");
                         obj.setFileNode(uploadReport.getFileNode());
                         obj.setDistrictCode(districtCode);

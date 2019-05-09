@@ -473,7 +473,7 @@
 												<input type="text" id="cfs_${sindex}" onkeypress="return isNumber(event)"  name="${status.expression}"  class="form-control"  value="${status.value}" 
 										maxlength="8" style="text-align:right;" required="required" autocomplete="off" onblur="validate_expenditureIncurred('${subcomponentwiseQuaterBalanceList[2].balanceAmount}',this,null)"/>
 										</spring:bind>
-										<span class="errormessage" id="error_cfs_${sindex}"></span>
+										<span class="errormsg" id="error_cfs_${sindex}"></span>
 										
 									</td>
 									<td align="left">
@@ -606,7 +606,7 @@
 												<input type="text" id="cfd_${sindex}" onkeypress="return isNumber(event)"  name="${status.expression}"  class="form-control"  value="${status.value}" 
 										maxlength="8" style="text-align:right;" required="required" autocomplete="off" onblur="validate_expenditureIncurred('${subcomponentwiseQuaterBalanceList[3].balanceAmount}',this,null)"/>
 										</spring:bind>
-										<span class="errormessage" id="error_cfd_${sindex}"></span>
+										<span class="errormsg" id="error_cfd_${sindex}"></span>
 										
 									</td>
 									<td align="left">
