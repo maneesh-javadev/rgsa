@@ -93,7 +93,7 @@ import gov.in.rgsa.outbound.QprEGovResponse;
             "    GROUP BY \"esadid\" " +
             ") AS jt ON esad.egov_support_activity_details_id = jt.esadid " +
             "WHERE esa.user_type = :userType AND esa.state_code=:stateCode and esa.year_id=:yearId  " +
-            "ORDER BY \"egovPostLevelId\", \"egovPostLevelName\", \"egovPostName\"", resultClass=QprEGovResponse.class)
+            "ORDER BY \"egovPostLevelId\", \"egovPostLevelName\", \"egovPostID\"", resultClass=QprEGovResponse.class)
 })
 @Entity
 @Table(name="qpr_egov", schema="rgsa")
