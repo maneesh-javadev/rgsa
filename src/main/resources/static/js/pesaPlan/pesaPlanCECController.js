@@ -89,7 +89,7 @@ publicModule.controller("pesaPlanCECController", [ '$scope', "pesaPlanService",
 				}
 			}
 		$scope.totalWithoutAddRequirementsForCEC = totalOfFunds;
-		$scope.grandTotalForCEC = $scope.totalWithoutAddRequirementsForCEC + $scope.pesaPlanForCEC.additionalRequirement;
+		$scope.grandTotalForCEC = +$scope.totalWithoutAddRequirementsForCEC + +$scope.pesaPlanForCEC.additionalRequirement;
 	}
 	
 	$scope.setDataForState=function(response){
@@ -190,7 +190,7 @@ publicModule.controller("pesaPlanCECController", [ '$scope', "pesaPlanService",
 		$scope.pesaPlanForCEC.pesaPlanDetails = [];
 		
 		for (var i = 0; i < $scope.designationArray.length; i++) {
-			var obj =[];
+			var obj ={};
 			if($scope.postToPesaDetailsForCEC.get($scope.designationArray[i].pesaPostId) == null){
 				obj.noOfUnits ='';
 				obj.unitCostPerMonth ='';
@@ -207,6 +207,9 @@ publicModule.controller("pesaPlanCECController", [ '$scope', "pesaPlanService",
 	}
 	
 	$scope.calculateFundsAndTotalWithoutAdditionaRequirement=function(index){
+		if(index == 3)
+			$scope.pesaPlan.pesaPlanDetails[index].noOfMonths=1;
+		
 		if($scope.pesaPlanForCEC.pesaPlanDetails[index].unitCostPerMonth == ''){
 			/*$scope.pesaPlanForCEC.pesaPlanDetails[index].unitCostPerMonth ='';*/
 			return false;
@@ -264,10 +267,10 @@ publicModule.controller("pesaPlanCECController", [ '$scope', "pesaPlanService",
 			toastr.error("Additional requirement should not be greater than " + $scope.allowedAdditionalRequirement);
 			$scope.pesaPlanForCEC.additionalRequirement = undefined;
 			$scope.grandTotal = '';
-			return false;
+			/*return false;*/
 		}
 		
-		$scope.grandTotalForCEC = $scope.totalWithoutAddRequirementsForCEC + parseInt($scope.pesaPlanForCEC.additionalRequirement);
+		$scope.grandTotalForCEC = +$scope.totalWithoutAddRequirementsForCEC + +$scope.pesaPlanForCEC.additionalRequirement;
 	}
 	
 	$scope.savePesaPlan=function(){
