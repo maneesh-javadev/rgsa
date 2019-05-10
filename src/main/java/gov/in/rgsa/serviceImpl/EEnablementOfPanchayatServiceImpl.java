@@ -19,6 +19,7 @@ import gov.in.rgsa.entity.EEnablement;
 import gov.in.rgsa.entity.EEnablementDetails;
 import gov.in.rgsa.entity.EEnablementGPs;
 import gov.in.rgsa.entity.EEnablementMaster;
+import gov.in.rgsa.entity.QprEnablement;
 import gov.in.rgsa.entity.QprEnablementDetails;
 import gov.in.rgsa.model.Response;
 import gov.in.rgsa.service.EEnablementOfPanchayatService;
@@ -292,4 +293,22 @@ public class EEnablementOfPanchayatServiceImpl implements EEnablementOfPanchayat
 	    return commonRepository.findAll("FETCH_ENABLEMENT_DETAILS_GPs", params);
 	}
 
-}
+	@Override
+	public List<QprEnablementDetails> getEnablementQprActBasedOnActIdAndQtrId(Integer eEnablementId, int quarterId) {
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("eEnablementId", eEnablementId);
+		params.put("quarterId", quarterId);	
+		List<QprEnablement> qprEnablement= commonRepository.findAll("FETCH_ENABLEMENT_QPR_ACT_BY_QTR_ID_AND_ACT_ID", params);
+		List<QprEnablementDetails> qprEnablementDetails=new ArrayList<>();
+		if(CollectionUtils.isNotEmpty(qprEnablement)){
+			for (QprEnablement qpr_enablement : qprEnablement) {
+				qprEnablementDetails.addAll(qpr_enablement.getQprEnablementDetails());
+			}
+			return qprEnablementDetails;
+		}else{
+			return null;
+		}
+	}
+	}
+
+

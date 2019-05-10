@@ -34,9 +34,9 @@ public class QprTnaTrgEvaluation {
 	@Column(name="no_of_persons")
 	private Integer noOfPersons;
 	
-	@ManyToOne
-	@JoinColumn(name="trg_subjects")
-	private Subjects trngSubject;
+	/* @ManyToOne */
+	@Column(name="trg_subjects")
+	private Integer trngSubject;
 
 	@OneToOne(fetch=FetchType.EAGER,cascade=CascadeType.ALL)
 	@JoinColumn(name="file_node_id")
@@ -77,11 +77,11 @@ public class QprTnaTrgEvaluation {
 		this.noOfPersons = noOfPersons;
 	}
 
-	public Subjects getTrngSubject() {
+	public Integer getTrngSubject() {
 		return trngSubject;
 	}
 
-	public void setTrngSubject(Subjects trngSubject) {
+	public void setTrngSubject(Integer trngSubject) {
 		this.trngSubject = trngSubject;
 	}
 

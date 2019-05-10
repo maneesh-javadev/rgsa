@@ -11,6 +11,7 @@ if(quater_id > 2){
 $('document').ready(function(){
 	$('#quaterDropDownId').val(quater_id);
 	showTablediv();
+	calTotalExpenditure();
 	
 	$(".validate").keypress(function (e) {
 	    //if the letter is not digit then display error and don't type anything
@@ -40,9 +41,9 @@ function showTablediv(){
 
 function validateNoOfUnits(index){
 	var no_of_unit_cec= +$('#noOfUnitCecId_'+index).text();	
-	var total_no_of_unit_remaining = no_of_unit_cec - $('#totalNoOfUnit_'+index).val();
-	if($('#noOfUnitCompleted_'+index).val() > total_no_of_unit_remaining){
-		alert('total number of units should not exceed '+total_no_of_unit_remaining);
+	/* var total_no_of_unit_remaining = no_of_unit_cec - $('#totalNoOfUnit_'+index).val(); */
+	if($('#noOfUnitCompleted_'+index).val() > no_of_unit_cec){
+		alert('total number of units should not exceed '+no_of_unit_cec);
 		$('#noOfUnitCompleted_'+index).val('');
 		$('#noOfUnitCompleted_'+index).focus();
 	}
@@ -89,6 +90,17 @@ function isNoOfUnitAndExpInurredFilled(index){
 		$('#expenditureIncurred_'+index).val('');
 		$('#noOfUnitCompleted_'+index).focus();
 	}
+}
+
+function calTotalExpenditure(){
+	var rowCount=$('#tbodyId tr').length -1;
+	var total_expenditure=0;
+	for( var i=0;i < rowCount; i++){
+		if($('#expenditureIncurred_'+i).val() != null && $('#expenditureIncurred_'+i).val() != undefined){
+			total_expenditure += +$('#expenditureIncurred_'+i).val();
+		}
+	}
+	$('#totalExpenditureId').val(total_expenditure);
 }
 </script>
 <section class="content">
@@ -176,7 +188,7 @@ function isNoOfUnitAndExpInurredFilled(index){
 																name="pmuProgressDetails[${count.index}].expenditureIncurred"
 																type="text" style="text-align: right;"
 																class="form-control validate" id="expenditureIncurred_${count.index}"
-																onkeyup="validateFundByAllocatedFund(${count.index});validateWithCorrespondingFund(${count.index});isNoOfUnitAndExpInurredFilled(${count.index})"
+																onkeyup="validateFundByAllocatedFund(${count.index});validateWithCorrespondingFund(${count.index});isNoOfUnitAndExpInurredFilled(${count.index});calTotalExpenditure()"
 																value="${PMU_PROGRESS.pmuProgressDetails[count.index].expenditureIncurred}" required="required"></td>
 
 															<input type="hidden"
@@ -194,7 +206,7 @@ function isNoOfUnitAndExpInurredFilled(index){
 																name="pmuProgressDetails[${count.index}].expenditureIncurred"
 																type="text" style="text-align: right;"
 																id="expenditureIncurred_${count.index}"
-																onkeyup="validateFundByAllocatedFund(${count.index});validateWithCorrespondingFund(${count.index});isNoOfUnitAndExpInurredFilled(${count.index})"
+																onkeyup="validateFundByAllocatedFund(${count.index});validateWithCorrespondingFund(${count.index});isNoOfUnitAndExpInurredFilled(${count.index});calTotalExpenditure()"
 																class="form-control validate" required="required" /></td>
 														</c:otherwise>
 													</c:choose>
@@ -202,7 +214,11 @@ function isNoOfUnitAndExpInurredFilled(index){
 
 												</tr>
 											</c:forEach>
-
+												<tr>
+											<th colspan="2"><div align="center">Total Expenditure Incurred</div></th>
+											<td colspan="4"></td>
+											<td><input type="text" id="totalExpenditureId"  class="form-control validate Align-Right" disabled="disabled" style="text-align: right"/></td>
+										</tr>
 										</tbody>
 									</table>
 									<div class="text-right">

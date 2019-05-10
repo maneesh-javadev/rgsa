@@ -12,6 +12,7 @@ if(quater_id > 2){
 $( document ).ready(function() {
 	$('#quaterDropDownId').val(quater_id);
 	showTablediv();
+	calTotalExpenditure()
 	$(".validate").keypress(function (e) {
 	    //if the letter is not digit then display error and don't type anything
 	    if (e.which != 8 && e.which != 0 && (e.which < 48 || e.which > 57)) {
@@ -40,9 +41,9 @@ function showTablediv(){
 
 function validateNoOfUnits(index){
 	var no_of_unit_cec= +$('#noOfUnitCecId_'+index).text();	
-	var total_no_of_unit_remaining = no_of_unit_cec - $('#totalNoOfUnit_'+index).val();
-	if($('#noOfUnitCompleted_'+index).val() > total_no_of_unit_remaining){
-		alert('total number of units should not exceed '+total_no_of_unit_remaining);
+	/* var total_no_of_unit_remaining = no_of_unit_cec - $('#totalNoOfUnit_'+index).val(); */
+	if($('#noOfUnitCompleted_'+index).val() > no_of_unit_cec){
+		alert('total number of units should not exceed '+no_of_unit_cec);
 		$('#noOfUnitCompleted_'+index).val('');
 		$('#noOfUnitCompleted_'+index).focus();
 	}
@@ -98,6 +99,17 @@ function validateAddReq(){
 		$('#additionalReqId').focus();
 	}
 			
+}
+
+function calTotalExpenditure(){
+	var rowCount=$('#tbodyId tr').length -2;
+	var total_expenditure=0;
+	for( var i=0;i < rowCount; i++){
+		if($('#expenditureIncurred_'+i).val() != null && $('#expenditureIncurred_'+i).val() != undefined){
+			total_expenditure += +$('#expenditureIncurred_'+i).val();
+		}
+	}
+	$('#totalExpenditureId').val(total_expenditure + +$('#additionalReqId').val());
 }
 </script>
 <section class="content">
@@ -189,14 +201,20 @@ function validateAddReq(){
 												<td><input type="text"
 													name="administrativeTechnicalDetailProgress[${count.index}].expenditureIncurred" id="expenditureIncurred_${count.index}"
 													value="${ADMINISTRATIVE_TECHNICAL_PROGRESS.administrativeTechnicalDetailProgress[count.index].expenditureIncurred}"
-													class="form-control validate" onkeyup="validateFundByAllocatedFund(${count.index});validateWithCorrespondingFund(${count.index});isNoOfUnitAndExpInurredFilled(${count.index})"></td>
+													class="form-control validate" onkeyup="validateFundByAllocatedFund(${count.index});validateWithCorrespondingFund(${count.index});isNoOfUnitAndExpInurredFilled(${count.index});calTotalExpenditure()"></td>
 											</tr>
 										</c:forEach>
 										<tr>
 											<th colspan="2"><div align="center">Additional Requirement</div></th>
 											<th colspan="3"><div align="center" id="additionalReqStateId">${APPROVED_ADMIN_TECH_ACT.additionalRequirement }</div></th>
-											<td></td>
-											<td><input type="text" name="additionalRequirement" id="additionalReqId" value="${ADMINISTRATIVE_TECHNICAL_PROGRESS.additionalRequirement}" class="form-control validate Align-Right" onkeyup="validateAddReq()"></td>
+											<td colspan="2"></td>
+											<td><input type="text" name="additionalRequirement" id="additionalReqId" value="${ADMINISTRATIVE_TECHNICAL_PROGRESS.additionalRequirement}" class="form-control validate Align-Right" onkeyup="validateAddReq();calTotalExpenditure()"></td>
+										</tr>
+										
+										<tr>
+											<th colspan="2"><div align="center">Total Expenditure Incurred</div></th>
+											<td colspan="5"></td>
+											<td><input type="text" id="totalExpenditureId"  class="form-control validate Align-Right" disabled="disabled" /></td>
 										</tr>
 									</tbody>
 								</table>

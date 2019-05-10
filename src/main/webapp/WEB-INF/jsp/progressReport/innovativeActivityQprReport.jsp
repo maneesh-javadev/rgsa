@@ -11,6 +11,7 @@ if(quater_id > 2){
 $('document').ready(function(){
 	$('#quaterDropDownId').val(quater_id);
 	showTablediv();
+	calTotalExpenditure();
 	$(".validate").keypress(function (e) {
 	    //if the letter is not digit then display error and don't type anything
 	    if (e.which != 8 && e.which != 0 && (e.which < 48 || e.which > 57)) {
@@ -79,6 +80,17 @@ function validateWithCorrespondingFund(index){
 		$('#expenditureIncurred_'+index).focus();
 	}
 }
+
+function calTotalExpenditure(){
+	var rowCount=$('#tbodyId tr').length -2;
+	var total_expenditure=0;
+	for( var i=0;i < rowCount; i++){
+		if($('#expenditureIncurred_'+i).val() != null && $('#expenditureIncurred_'+i).val() != undefined){
+			total_expenditure += +$('#expenditureIncurred_'+i).val();
+		}
+	}
+	$('#totalExpenditureId').val(total_expenditure + +$('#additionalReqId').val());
+}
 </script>
 <section class="content">
 	<div class="container-fluid">
@@ -126,17 +138,31 @@ function validateWithCorrespondingFund(index){
 											</thead>
 											<tbody id="tbodyId">
 											<c:forEach items="${CEC_APPROVED_ACTIVITY.innovativeActivityDetails}" var="cecDetailsData" varStatus="index">
-												<tr>
+													<!-- total number of units filled in rest quaters -->
+													<c:choose>
+														<c:when test="${not empty DEATIL_FOR_TOTAL_NO_OF_UNIT}">
+															<input type="hidden"
+																id="totalExpenditureIncurred_${index.index}"
+																value="${DEATIL_FOR_TOTAL_NO_OF_UNIT[index.index].expenditureIncurred}" />
+														</c:when>
+														<c:otherwise>
+															<input type="hidden"
+																id="totalExpenditureIncurred_${index.index}" value="0" />
+														</c:otherwise>
+													</c:choose>
+													<!-- ends here -->
+
+													<tr>
 													<td><div align="center"><strong>${index.index + 1}. </strong></div></td>
 													<td><div align="center"><strong>${cecDetailsData.activityName}</strong></div></td>
-													<td><div align="center"><strong>${cecDetailsData.fundsName}</strong></div></td>
+													<td><div align="center" id="fundCecId_${index.index}"><strong>${cecDetailsData.fundsName}</strong></div></td>
 													<td><div align="center">
 													<c:choose>
 														<c:when test="${not empty QPR_INNOVATIVE_ACTIVITY}">
-															<input type="text" class="form-control validate Align-Right" name="qprInnovativeActivityDetails[${index.index}].expenditureIncurred" id="expenditureIncurred_${index.index}" value="${QPR_INNOVATIVE_ACTIVITY.qprInnovativeActivityDetails[index.index].expenditureIncurred}" onkeyup="validateFundByAllocatedFund(${index.index});validateWithCorrespondingFund(${index.index })" />
+															<input type="text" class="form-control validate Align-Right" name="qprInnovativeActivityDetails[${index.index}].expenditureIncurred" id="expenditureIncurred_${index.index}" value="${QPR_INNOVATIVE_ACTIVITY.qprInnovativeActivityDetails[index.index].expenditureIncurred}" onkeyup="validateFundByAllocatedFund(${index.index});validateWithCorrespondingFund(${index.index });calTotalExpenditure()" />
 														</c:when>
 														<c:otherwise>
-															<input type="text" class="form-control validate Align-Right" name="qprInnovativeActivityDetails[${index.index}].expenditureIncurred" id="expenditureIncurred_${index.index}" onkeyup="validateFundByAllocatedFund(${index.index});validateWithCorrespondingFund(${index.index })"/>
+															<input type="text" class="form-control validate Align-Right" name="qprInnovativeActivityDetails[${index.index}].expenditureIncurred" id="expenditureIncurred_${index.index}" onkeyup="validateFundByAllocatedFund(${index.index});validateWithCorrespondingFund(${index.index});calTotalExpenditure()"/>
 														</c:otherwise>
 													</c:choose>
 													</div></td>
@@ -148,7 +174,12 @@ function validateWithCorrespondingFund(index){
 												<th><div align="center">Additional Requirement</div></th>
 												<th><div align="center" id="additionalReqStateId">${CEC_APPROVED_ACTIVITY.additioinalRequirements}</div></th>
 												<td></td>
-												<td><div align="center"><input type="text" name="additioinalRequirements" id="additionalReqId" value="${QPR_INNOVATIVE_ACTIVITY.additioinalRequirements}" class="form-control validate Align-Right" onkeyup="validateAddReq()" /></div></td>
+												<td><div align="center"><input type="text" name="additioinalRequirements" id="additionalReqId" value="${QPR_INNOVATIVE_ACTIVITY.additioinalRequirements}" class="form-control validate Align-Right" onkeyup="validateAddReq();calTotalExpenditure()" /></div></td>
+											</tr>
+											<tr>
+											<th colspan="2"><div align="center">Total Expenditure Incurred</div></th>
+											<td></td>
+											<td><div align="center"><input type="text" id="totalExpenditureId"  class="form-control validate Align-Right" disabled="disabled" /></div></td>
 											</tr>
 											</tbody>
 										</table>

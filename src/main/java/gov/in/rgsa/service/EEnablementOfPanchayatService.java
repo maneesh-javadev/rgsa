@@ -35,4 +35,6 @@ public interface EEnablementOfPanchayatService {
 	
 	public List<EEnablemenEntity> fetchEEnablemenEntityDetailsCEC();
 
+	public List<QprEnablementDetails> getEnablementQprActBasedOnActIdAndQtrId(Integer geteEnablementId, int quarterId);
+
 }

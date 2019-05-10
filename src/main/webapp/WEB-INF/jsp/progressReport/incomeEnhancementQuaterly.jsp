@@ -11,6 +11,7 @@ if(quater_id > 2){
 $(document).ready(function() {
 	$('#quaterDropDownId').val(quater_id);
 	showTablediv();
+	calTotalExpenditure();
 }); 
 
 function saveAndGetDataQtrRprt(msg){
@@ -60,6 +61,26 @@ function validateFundByAllocatedFund(obj){
 		$('#expenditureIncurred_'+obj).val('');
 	}
 }
+function validateWithCorrespondingFund(index){
+	var tota_fund_cec= +$('#fundCecId_'+index).text();	
+	var total_corresponding_fund_remaining = tota_fund_cec - $('#totalExpenditureIncurred_'+index).val();
+	if($('#expenditureIncurred_'+index).val() > total_corresponding_fund_remaining){
+		alert('total expenditure should not exceed '+ total_corresponding_fund_remaining);
+		$('#expenditureIncurred_'+index).val('');
+		$('#expenditureIncurred_'+index).focus();
+	}
+}
+
+function calTotalExpenditure(){
+	var rowCount=$('#tbodyId tr').length -2;
+	var total_expenditure=0;
+	for( var i=0;i < rowCount; i++){
+		if($('#expenditureIncurred_'+i).val() != null && $('#expenditureIncurred_'+i).val() != undefined){
+			total_expenditure += +$('#expenditureIncurred_'+i).val();
+		}
+	}
+	$('#totalExpenditureId').val(total_expenditure + +$('#additionalReqId').val());
+}
 </script>
 <section class="content">
 	<div class="container-fluid">
@@ -105,7 +126,7 @@ function validateFundByAllocatedFund(obj){
 											<th rowspan="2"><div align="center">S.No.</div></th>
 											<th rowspan="2"><div align="center">Name of Activity</div></th>
 											<th rowspan="2"><div align="center">District Name</div></th>
-											<th rowspan="2"><div align="center">Fund Approved (in Rs.)</div></th>
+											<th rowspan="2"><div align="center">Fund Sanctioned</div></th>
 											<th rowspan="2"><div align="center">Expenditure incurred</div></th>
 										</tr>
 									</thead>
@@ -115,6 +136,19 @@ function validateFundByAllocatedFund(obj){
 												value="${obj.incomeEnhancementDetailsId}" />
 										<input type="hidden" name="qprIncomeEnhancementDetails[${index.index}].qprIncomeEnhancementDetailsId"
 												value="${QPR_ENHANCEMENT.qprIncomeEnhancementDetails[index.index].qprIncomeEnhancementDetailsId}" />		
+										<!-- total number of units filled in rest quaters -->
+											<c:choose>
+												<c:when test="${not empty DEATIL_FOR_TOTAL_NO_OF_UNIT}">
+												<input type="hidden" id="totalExpenditureIncurred_${index.index}"
+														value="${DEATIL_FOR_TOTAL_NO_OF_UNIT[index.index].expenditureIncurred}" />
+													
+												</c:when>
+												<c:otherwise>
+													<input type="hidden" id="totalExpenditureIncurred_${index.index}"
+														value="0" />	
+												</c:otherwise>
+											</c:choose>
+											<!-- ends here -->
 										<tr>
 										<td><div align="center"><strong>${index.count}. </strong></div></td>
 										<td><div align="center"><strong>${obj.activtyName}</strong></div></td>
@@ -125,23 +159,23 @@ function validateFundByAllocatedFund(obj){
 												</c:if>
 											</c:forEach>
 										</td>
-										<td><div align="center"><strong>${obj.fundsRequired}</strong></div></td>
+										<td><div align="center" id="fundCecId_${index.index}"><strong>${obj.fundsRequired}</strong></div></td>
 										<td> <div align="center">
 											<c:choose>
 												<c:when test="${not empty QPR_ENHANCEMENT}">
 													<input type="text" maxlength="8"
 														class="form-control expnditureId"
 														id="expenditureIncurred_${index.index}"
-														onkeyup="this.value=this.value.replace(/[^0-9]/g,'');validateFundByAllocatedFund(${index.index})"
+														onkeyup="this.value=this.value.replace(/[^0-9]/g,'');validateFundByAllocatedFund(${index.index});validateWithCorrespondingFund(${index.index});calTotalExpenditure()"
 														name="qprIncomeEnhancementDetails[${index.index}].expenditureIncurred"
-														value="${QPR_ENHANCEMENT.qprIncomeEnhancementDetails[index.index].expenditureIncurred}" required="required"/>
+														value="${QPR_ENHANCEMENT.qprIncomeEnhancementDetails[index.index].expenditureIncurred}" style="text-align: right;" />
 												</c:when>
 												<c:otherwise>
 													<input type="text" maxlength="8"
 														class="form-control expnditureId"
 														id="expenditureIncurred_${index.index}"
-														onkeyup="this.value=this.value.replace(/[^0-9]/g,'');validateFundByAllocatedFund(${index.index})"
-														name="qprIncomeEnhancementDetails[${index.index}].expenditureIncurred" required="required"/>
+														onkeyup="this.value=this.value.replace(/[^0-9]/g,'');validateFundByAllocatedFund(${index.index});validateWithCorrespondingFund(${index.index});calTotalExpenditure()"
+														name="qprIncomeEnhancementDetails[${index.index}].expenditureIncurred" style="text-align: right;"/>
 												</c:otherwise>
 											</c:choose></div>
 										</td>
@@ -150,7 +184,12 @@ function validateFundByAllocatedFund(obj){
 										<tr>
 											<th colspan="2"><div align="center">Additional Requirement</div></th>
 											<th colspan="2"><div align="center" id="additionalReqStateId">${CEC_APPROVED_ACTIVITY.additionalRequirement }</div></th>
-											<td><div align="center"><input type="text" name="additionalRequirement" id="additionalReqId" value="${QPR_ENHANCEMENT.additionalRequirement}" class="form-control validate Align-Right" onkeyup="validateAddReq()"></div></td>
+											<td><div align="center"><input type="text" name="additionalRequirement" id="additionalReqId" style="text-align: right;" value="${QPR_ENHANCEMENT.additionalRequirement}" class="form-control validate Align-Right" onkeyup="validateAddReq();calTotalExpenditure()"></div></td>
+										</tr>
+										<tr>
+											<th colspan="2"><div align="center">Total Expenditure Incurred</div></th>
+											<td colspan="2"></td>
+											<td><div align="center"><input type="text" id="totalExpenditureId" style="text-align: right;" class="form-control validate Align-Right" disabled="disabled" /></div></td>
 										</tr>
 									</tbody>
 								</table>

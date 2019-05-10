@@ -12,6 +12,7 @@ if(quater_id > 2){
 $(document).ready(function() {
 	$('#quaterDropDownId').val(quater_id);
 	showTablediv();
+	calTotalExpenditure();
 }); 
 
 function compareFunds(indx){
@@ -39,9 +40,9 @@ function showTablediv(){
 
 function validateNoOfUnits(index){
 	var no_of_unit_cec= +$('#noOfUnitCecId_'+index).text();	
-	var total_no_of_unit_remaining = no_of_unit_cec - $('#totalNoOfUnit_'+index).val();
-	if($('#noOfUnitCompleted_'+index).val() > total_no_of_unit_remaining){
-		alert('total number of units should not exceed '+total_no_of_unit_remaining);
+	/* var total_no_of_unit_remaining = no_of_unit_cec - $('#totalNoOfUnit_'+index).val(); */
+	if($('#noOfUnitCompleted_'+index).val() > no_of_unit_cec){
+		alert('total number of units should not exceed '+no_of_unit_cec);
 		$('#noOfUnitCompleted_'+index).val('');
 		$('#noOfUnitCompleted_'+index).focus();
 	}
@@ -96,6 +97,17 @@ function validateAddReq(){
 		$('#additionalReqId').val('');
 		$('#additionalReqId').focus();
 	}
+}
+
+function calTotalExpenditure(){
+	var rowCount=$('#tbodyId tr').length -2;
+	var total_expenditure=0;
+	for( var i=0;i < rowCount; i++){
+		if($('#expenditureIncurred_'+i).val() != null && $('#expenditureIncurred_'+i).val() != undefined){
+			total_expenditure += +$('#expenditureIncurred_'+i).val();
+		}
+	}
+	$('#totalExpenditureId').val(total_expenditure + +$('#additionalReqId').val());
 }
 </script>
 <section class="content">
@@ -210,7 +222,7 @@ function validateAddReq(){
 														name="qprAdminAndFinancialDataActivityDetails[${index.index}].expenditureIncurred"
 														id="expenditureIncurred_${index.index}" required="required"
 														value="${ADMIN_FIN_CELL_QPR_ACT.qprAdminAndFinancialDataActivityDetails[index.index].expenditureIncurred}"
-														onkeyup="this.value=this.value.replace(/[^0-9]/g,'');validateFundByAllocatedFund(${index.index});validateWithCorrespondingFund(${index.index});isNoOfUnitAndExpInurredFilled(${index.index})" /></td>
+														onkeyup="this.value=this.value.replace(/[^0-9]/g,'');validateFundByAllocatedFund(${index.index});validateWithCorrespondingFund(${index.index});isNoOfUnitAndExpInurredFilled(${index.index});calTotalExpenditure()" /></td>
 												</c:when>
 												<c:otherwise>
 													<td><input type="text" maxlength="7"
@@ -223,15 +235,21 @@ function validateAddReq(){
 														class="form-control expnditureId"
 														name="qprAdminAndFinancialDataActivityDetails[${index.index}].expenditureIncurred"
 														id="expenditureIncurred_${index.index}" required="required"
-														onkeyup="this.value=this.value.replace(/[^0-9]/g,'');validateFundByAllocatedFund(${index.index});validateWithCorrespondingFund(${index.index});isNoOfUnitAndExpInurredFilled(${index.index})" /></td>
+														onkeyup="this.value=this.value.replace(/[^0-9]/g,'');validateFundByAllocatedFund(${index.index});validateWithCorrespondingFund(${index.index});isNoOfUnitAndExpInurredFilled(${index.index});calTotalExpenditure()" /></td>
 												</c:otherwise>
 											</c:choose>
 											</tr>
 										</c:forEach>
 										<tr>
 											<th colspan="2"><div align="center">Additional Requirement</div></th>
-											<th colspan="3"><div align="center" id="additionalReqStateId">${CEC_APPROVED_ACTIVITY.additionalRequirement }</div></th>
-											<td><input type="text" name="additionalRequirement" id="additionalReqId" value="${ADMIN_FIN_CELL_QPR_ACT.additionalRequirement}" class="form-control validate Align-Right" onkeyup="validateAddReq()"></td>
+											<th colspan="4"><div align="center" id="additionalReqStateId">${CEC_APPROVED_ACTIVITY.additionalRequirement }</div></th>
+											<td><input type="text" name="additionalRequirement" id="additionalReqId" value="${ADMIN_FIN_CELL_QPR_ACT.additionalRequirement}" class="form-control validate Align-Right" onkeyup="validateAddReq();calTotalExpenditure()"></td>
+										</tr>
+										
+										<tr>
+											<th colspan="2"><div align="center">Total Expenditure Incurred</div></th>
+											<td colspan="4"></td>
+											<td><input type="text" id="totalExpenditureId"  class="form-control validate Align-Right" disabled="disabled" /></td>
 										</tr>
 									</tbody>
 								</table>

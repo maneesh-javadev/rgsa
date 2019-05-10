@@ -4,6 +4,7 @@ import java.util.List;
 
 import gov.in.rgsa.entity.AttachmentMaster;
 import gov.in.rgsa.entity.IncomeEnhancementActivity;
+import gov.in.rgsa.entity.QprIncomeEnhancementDetails;
 import gov.in.rgsa.entity.SchemeMaster;
 
 /**
@@ -25,5 +26,8 @@ public interface IncomeEnhancementService {
 	public void deleteIncmEnhncmntDtls(int id);
 	
 	public void saveDetailsWithUsertype(IncomeEnhancementActivity enhancementActivity);
+
+	public List<QprIncomeEnhancementDetails> getIncomeEnhanceQprActBasedOnActIdAndQtrId(Integer incomeEnhancementId,
+			int quarterId);
 
 }
