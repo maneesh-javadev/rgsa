@@ -14,7 +14,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
@@ -24,7 +24,8 @@ import org.hibernate.annotations.UpdateTimestamp;
 @Entity
 @Table(name= "qpr_iec" , schema="rgsa")
 @NamedQueries ({@NamedQuery(name="FETCH_IEC_REPORT_DETAILS", query="Select IQ from IecQuater IQ RIGHT OUTER JOIN FETCH IQ.iecQuaterDetails IQD where IQ.iecActivity.id=:id AND IQ.quarterDuration.qtrId=:qtrId  order by IQD.qprIecDetailsId asc"),
-@NamedQuery(name="FETCH_IEC__REPORT_BASED_ID", query="Select IQ from IecQuater IQ where IQ.iecActivity.id=:id")
+@NamedQuery(name="FETCH_IEC__REPORT_BASED_ID", query="Select IQ from IecQuater IQ where IQ.iecActivity.id=:id"),
+@NamedQuery(name="FETCH_IEC_QPR_ACT_BY_QTR_ID_AND_ACT_ID",query="from IecQuater where iecActivity.id=:id and quarterDuration.qtrId !=:quarterId"),
 })
 public class IecQuater {
 
@@ -42,8 +43,8 @@ public class IecQuater {
 	@JoinColumn(name="qtr_id")
 	private QuarterDuration quarterDuration;
 	
-	@OneToMany(cascade=CascadeType.ALL,mappedBy="iecQuater",fetch=FetchType.EAGER)
-	private List<IecQuaterDetails> iecQuaterDetails;
+	@OneToOne(cascade=CascadeType.ALL,mappedBy="iecQuater",fetch=FetchType.EAGER)
+	private IecQuaterDetails iecQuaterDetails;
 
 	@Column(name="created_by")
 	private Integer createdBy;
@@ -114,12 +115,12 @@ public class IecQuater {
 	}
 
 
-	public List<IecQuaterDetails> getIecQuaterDetails() {
+	public IecQuaterDetails getIecQuaterDetails() {
 		return iecQuaterDetails;
 	}
 
 
-	public void setIecQuaterDetails(List<IecQuaterDetails> iecQuaterDetails) {
+	public void setIecQuaterDetails(IecQuaterDetails iecQuaterDetails) {
 		this.iecQuaterDetails = iecQuaterDetails;
 	}
 

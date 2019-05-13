@@ -6,6 +6,7 @@ import java.util.List;
 
 import gov.in.rgsa.entity.IecActivity;
 import gov.in.rgsa.entity.IecActivityDropdown;
+import gov.in.rgsa.entity.IecQuaterDetails;
 import gov.in.rgsa.model.IecFormModel;
 
 
@@ -37,7 +38,7 @@ public interface IecService {
 
 	void unfreeze(IecFormModel iecFormModel);
 
-
+	List<IecQuaterDetails> getIecQprActBasedOnActIdAndQtrId(Integer id, int quarterId);
 	
 }
 

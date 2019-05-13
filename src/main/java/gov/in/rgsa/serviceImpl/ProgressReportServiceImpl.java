@@ -374,17 +374,10 @@ public class ProgressReportServiceImpl implements ProgressReportService {
         iecQuater.setCreatedBy(userPreference.getUserId());
         iecQuater.setIsFreeze(false);
         iecQuater.setLastUpdatedBy(userPreference.getUserId());
+        iecQuater.getIecQuaterDetails().setIecQuater(iecQuater);
         if (iecQuater.getQprIecId() == null) {
-            List<IecQuaterDetails> iecQuaterDetail = iecQuater.getIecQuaterDetails();
-            for (IecQuaterDetails iecQuaterDetails : iecQuaterDetail) {
-                iecQuaterDetails.setIecQuater(iecQuater);
-            }
             commonRepository.save(iecQuater);
         } else {
-            List<IecQuaterDetails> iecQuaterDetail = iecQuater.getIecQuaterDetails();
-            for (IecQuaterDetails iecQuaterDetails : iecQuaterDetail) {
-                iecQuaterDetails.setIecQuater(iecQuater);
-            }
             commonRepository.update(iecQuater);
         }
         /* this method is to insert and update record in quater_wise_fund table*/

@@ -325,4 +325,22 @@ public class IecServiceImpl implements IecService {
 	}
 
 
+	@Override
+	public List<IecQuaterDetails> getIecQprActBasedOnActIdAndQtrId(Integer id, int quarterId) {
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("id", id);
+		params.put("quarterId", quarterId);	
+		List<IecQuater> iecQuater= commonRepository.findAll("FETCH_IEC_QPR_ACT_BY_QTR_ID_AND_ACT_ID", params);
+		List<IecQuaterDetails> iecQuaterDetails=new ArrayList<>();
+		if(CollectionUtils.isNotEmpty(iecQuater)){
+			for (IecQuater iec_quater : iecQuater) {
+				iecQuaterDetails.add(iec_quater.getIecQuaterDetails());
+			}
+			return iecQuaterDetails;
+		}else{
+			return null;
+		}
+	}
+
+
 }
