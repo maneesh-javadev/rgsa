@@ -145,20 +145,24 @@ public class QprTrainingActivityController {
 				count = 0;
 			}
 			for (int i = count; i < count + 1; i++) {
-				if (detailForTotalNoOfUnit.get(i).getNoOfUnitsCompleted() != null) {
+				if (detailForTotalNoOfUnit.get(i).getNoOfUnitsCompleted() != null && qprCbActivityDetailsOfRestQuater.get(j).getNoOfUnitsCompleted() != null) {
 					detailForTotalNoOfUnit.get(i).setNoOfUnitsCompleted(detailForTotalNoOfUnit.get(i).getNoOfUnitsCompleted()
 							+ qprCbActivityDetailsOfRestQuater.get(j).getNoOfUnitsCompleted());
-				} else {
-					detailForTotalNoOfUnit.get(i)
-							.setNoOfUnitsCompleted(0 + qprCbActivityDetailsOfRestQuater.get(j).getNoOfUnitsCompleted());
+				}else if((detailForTotalNoOfUnit.get(i).getNoOfUnitsCompleted() == null  || detailForTotalNoOfUnit.get(i).getNoOfUnitsCompleted() ==  0 ) && qprCbActivityDetailsOfRestQuater.get(j).getNoOfUnitsCompleted() == null) {
+					detailForTotalNoOfUnit.get(i).setNoOfUnitsCompleted(0);
+               	 }else {
+               		 if( qprCbActivityDetailsOfRestQuater.get(j).getNoOfUnitsCompleted() != null)
+					detailForTotalNoOfUnit.get(i).setNoOfUnitsCompleted(0 + qprCbActivityDetailsOfRestQuater.get(j).getNoOfUnitsCompleted());
 				}
-				if (detailForTotalNoOfUnit.get(i).getExpenditureIncurred() != null) {
+				if (detailForTotalNoOfUnit.get(i).getExpenditureIncurred() != null && qprCbActivityDetailsOfRestQuater.get(j).getExpenditureIncurred() != null) {
 					detailForTotalNoOfUnit.get(i)
 							.setExpenditureIncurred(detailForTotalNoOfUnit.get(i).getExpenditureIncurred()
 									+ qprCbActivityDetailsOfRestQuater.get(j).getExpenditureIncurred());
-				} else {
-					detailForTotalNoOfUnit.get(i)
-							.setExpenditureIncurred(qprCbActivityDetailsOfRestQuater.get(j).getExpenditureIncurred() + 0);
+				}else if((detailForTotalNoOfUnit.get(i).getExpenditureIncurred() == null  || detailForTotalNoOfUnit.get(i).getExpenditureIncurred() ==  0 ) && qprCbActivityDetailsOfRestQuater.get(j).getExpenditureIncurred() == null) {
+					detailForTotalNoOfUnit.get(i).setExpenditureIncurred(0);
+              	 } else {
+              		 if( qprCbActivityDetailsOfRestQuater.get(j).getExpenditureIncurred() != null)
+					detailForTotalNoOfUnit.get(i).setExpenditureIncurred(qprCbActivityDetailsOfRestQuater.get(j).getExpenditureIncurred() + 0);
 				}
 			}
 			++count;

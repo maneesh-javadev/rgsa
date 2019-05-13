@@ -362,7 +362,21 @@ public class ProgressReportController {
             if (stateAllocation.size() > 1) {
                 model.addAttribute("FUND_ALLOCATED_BY_STATE_PREVIOUS", stateAllocation.get(1).getFundsAllocated()); // we will use this in jsp to calculate the total remaining field
             }
-
+            
+         // list to get total number of unit in all quator except current one
+            List<QprIncomeEnhancementDetails> detailForTotalNoOfUnit = new ArrayList<>();
+            List<QprIncomeEnhancementDetails> inchomeEnhanceReportDetailOfRestQuater = enhancementService.getIncomeEnhanceQprActBasedOnActIdAndQtrId(incomeEnhancementActApproved.get(0).getIncomeEnhancementId(), quarterId);
+            if (inchomeEnhanceReportDetailOfRestQuater != null) {
+                Collections.sort(inchomeEnhanceReportDetailOfRestQuater,
+                        (o1, o2) -> o1.getQprIncomeEnhancementDetailsId() - o2.getQprIncomeEnhancementDetailsId());
+                detailForTotalNoOfUnit = getTotalUnitAndExpIncurredInAllQtrIncomeEnhance(detailForTotalNoOfUnit,
+                		inchomeEnhanceReportDetailOfRestQuater,incomeEnhancementActApproved.get(0).getIncomeEnhancementDetails().size());
+                		model.addAttribute("DEATIL_FOR_TOTAL_NO_OF_UNIT", detailForTotalNoOfUnit);
+            } else {
+                model.addAttribute("DEATIL_FOR_TOTAL_NO_OF_UNIT", null);
+            }
+            /*----------------------------end here-------------------------------------------------- */
+            
             QprIncomeEnhancement qprEnhancement = progressReportService.fetchQprIncmEnhncmnt(incomeEnhancementActApproved.get(0).getIncomeEnhancementId(), quarterId);
             if (qprEnhancement != null) {
                 Collections.sort(qprEnhancement.getQprIncomeEnhancementDetails(),
@@ -400,7 +414,36 @@ public class ProgressReportController {
         }
     }
 
-    @RequestMapping(value = "incomeEnhancementQuaterly", method = RequestMethod.POST)
+    private List<QprIncomeEnhancementDetails> getTotalUnitAndExpIncurredInAllQtrIncomeEnhance(
+			List<QprIncomeEnhancementDetails> detailForTotalNoOfUnit,
+			List<QprIncomeEnhancementDetails> inchomeEnhanceReportDetailOfRestQuater, int size) {
+     	int count = 0;
+    	  for(int i=0;i< size;i++) {
+    		  detailForTotalNoOfUnit.add(new QprIncomeEnhancementDetails());  
+    	  }
+              
+          for (int j = 0; j < inchomeEnhanceReportDetailOfRestQuater.size(); j++) {
+              if (count == size ) {
+                  count = 0;
+              }
+              for (int i = count; i < count + 1; i++) {
+                  if (detailForTotalNoOfUnit.get(i).getExpenditureIncurred() != null && inchomeEnhanceReportDetailOfRestQuater.get(j).getExpenditureIncurred() != null) {
+                      detailForTotalNoOfUnit.get(i)
+                              .setExpenditureIncurred(detailForTotalNoOfUnit.get(i).getExpenditureIncurred()
+                                      + inchomeEnhanceReportDetailOfRestQuater.get(j).getExpenditureIncurred());
+                  } else if((detailForTotalNoOfUnit.get(i).getExpenditureIncurred() == null || detailForTotalNoOfUnit.get(i).getExpenditureIncurred() == 0 ) && inchomeEnhanceReportDetailOfRestQuater.get(j).getExpenditureIncurred() == null) {
+                  	 detailForTotalNoOfUnit.get(i).setExpenditureIncurred(0);
+                  }else {
+                  	if(inchomeEnhanceReportDetailOfRestQuater.get(j).getExpenditureIncurred() != null)
+                      detailForTotalNoOfUnit.get(i).setExpenditureIncurred(inchomeEnhanceReportDetailOfRestQuater.get(j).getExpenditureIncurred() + 0);
+                  }
+              }
+              ++count;
+          }
+          return detailForTotalNoOfUnit;
+	}
+
+	@RequestMapping(value = "incomeEnhancementQuaterly", method = RequestMethod.POST)
     public String saveIncomeEnhancementQuaterly(@ModelAttribute("QPR_INCOME_ENHANCEMENT") QprIncomeEnhancement qprIncomeEnhancement, RedirectAttributes redirectAttributes,Model model) {
     	if (!qprIncomeEnhancement.getOrigin().equalsIgnoreCase("save")) {
             return qprGetFormIncomeEnhancementDetailsQuaterly(qprIncomeEnhancement, model);
@@ -511,8 +554,8 @@ public class ProgressReportController {
                 } else if(deatilForTotalNoOfUnit.get(i).getNoOfUnitCompleted() == null && detailsBasedOnActIdAndQtrId.get(j).getNoOfUnitCompleted() == null) {
                	 deatilForTotalNoOfUnit.get(i).setNoOfUnitCompleted(0);
                 }else {
-                    deatilForTotalNoOfUnit.get(i)
-                            .setNoOfUnitCompleted(0 + detailsBasedOnActIdAndQtrId.get(j).getNoOfUnitCompleted());
+                	if(detailsBasedOnActIdAndQtrId.get(j).getNoOfUnitCompleted() != null)
+                    deatilForTotalNoOfUnit.get(i).setNoOfUnitCompleted(0 + detailsBasedOnActIdAndQtrId.get(j).getNoOfUnitCompleted());
                 }
                 if (deatilForTotalNoOfUnit.get(i).getExpenditureIncurred() != null && detailsBasedOnActIdAndQtrId.get(j).getExpenditureIncurred() != null) {
                     deatilForTotalNoOfUnit.get(i)
@@ -521,8 +564,8 @@ public class ProgressReportController {
                 } else if(deatilForTotalNoOfUnit.get(i).getExpenditureIncurred()== null && detailsBasedOnActIdAndQtrId.get(j).getExpenditureIncurred() == null) {
                 	deatilForTotalNoOfUnit.get(i).setExpenditureIncurred(0);
                 	}	else {
-                    deatilForTotalNoOfUnit.get(i)
-                            .setExpenditureIncurred(detailsBasedOnActIdAndQtrId.get(j).getExpenditureIncurred() + 0);
+                		if(detailsBasedOnActIdAndQtrId.get(j).getExpenditureIncurred() != null)
+                    deatilForTotalNoOfUnit.get(i).setExpenditureIncurred(detailsBasedOnActIdAndQtrId.get(j).getExpenditureIncurred() + 0);
                 }
             }
             ++count;
@@ -647,8 +690,8 @@ public class ProgressReportController {
                 } else if((deatilForTotalNoOfUnit.get(i).getNoOfUnitCompleted() == null || deatilForTotalNoOfUnit.get(i).getNoOfUnitCompleted() == 0) && detailsBasedOnActIdAndQtrId.get(j).getNoOfUnitCompleted() == null) {
                 	 deatilForTotalNoOfUnit.get(i).setNoOfUnitCompleted(0);
                 }else {
-                    deatilForTotalNoOfUnit.get(i)
-                            .setNoOfUnitCompleted(0 + detailsBasedOnActIdAndQtrId.get(j).getNoOfUnitCompleted());
+                	if(detailsBasedOnActIdAndQtrId.get(j).getNoOfUnitCompleted() != null)
+                    deatilForTotalNoOfUnit.get(i).setNoOfUnitCompleted(0 + detailsBasedOnActIdAndQtrId.get(j).getNoOfUnitCompleted());
                 }
                 if (deatilForTotalNoOfUnit.get(i).getExpenditureIncurred() != null && detailsBasedOnActIdAndQtrId.get(j).getExpenditureIncurred() != null) {
                     deatilForTotalNoOfUnit.get(i)
@@ -657,8 +700,8 @@ public class ProgressReportController {
                 } else if((deatilForTotalNoOfUnit.get(i).getExpenditureIncurred()== null || deatilForTotalNoOfUnit.get(i).getExpenditureIncurred()== 0) && detailsBasedOnActIdAndQtrId.get(j).getExpenditureIncurred() == null) {
                 	deatilForTotalNoOfUnit.get(i).setExpenditureIncurred(0);
                 	}	else {
-                    deatilForTotalNoOfUnit.get(i)
-                            .setExpenditureIncurred(detailsBasedOnActIdAndQtrId.get(j).getExpenditureIncurred() + 0);
+                		if(detailsBasedOnActIdAndQtrId.get(j).getExpenditureIncurred()  != null)
+                    deatilForTotalNoOfUnit.get(i).setExpenditureIncurred(detailsBasedOnActIdAndQtrId.get(j).getExpenditureIncurred() + 0);
                 }
             }
             ++count;
@@ -827,8 +870,8 @@ public class ProgressReportController {
                     	deatilForTotalNoOfUnit.get(i).setNoOfUnitsFilled(0);
                     }
                     else {
-                        deatilForTotalNoOfUnit.get(i)
-                                .setNoOfUnitsFilled(0 + detailsBasedOnActIdAndQtrId.get(j).getNoOfUnitsFilled());
+                    	if(detailsBasedOnActIdAndQtrId.get(j).getNoOfUnitsFilled() != null)
+                        deatilForTotalNoOfUnit.get(i).setNoOfUnitsFilled(0 + detailsBasedOnActIdAndQtrId.get(j).getNoOfUnitsFilled());
                     }
                 }
                 if (deatilForTotalNoOfUnit.get(i).getExpenditureIncurred() != null && detailsBasedOnActIdAndQtrId.get(j).getExpenditureIncurred() != null) {
@@ -839,8 +882,8 @@ public class ProgressReportController {
                 	deatilForTotalNoOfUnit.get(i).setNoOfUnitsFilled(0);
                 } 
                 else {
-                    deatilForTotalNoOfUnit.get(i)
-                            .setExpenditureIncurred(detailsBasedOnActIdAndQtrId.get(j).getExpenditureIncurred() + 0);
+                	if(detailsBasedOnActIdAndQtrId.get(j).getExpenditureIncurred() !=null)
+                    deatilForTotalNoOfUnit.get(i).setExpenditureIncurred(detailsBasedOnActIdAndQtrId.get(j).getExpenditureIncurred() + 0);
                 }
             }
             ++count;
@@ -969,8 +1012,8 @@ public class ProgressReportController {
                 }else if((deatilForTotalNoOfUnit.get(i).getNoOfUnitsFilled() == null || deatilForTotalNoOfUnit.get(i).getNoOfUnitsFilled() == 0) && detailsBasedOnActIdAndQtrId.get(j).getNoOfUnitsFilled() == null) {
                 	deatilForTotalNoOfUnit.get(i).setNoOfUnitsFilled(0);
                 }else {
-                    deatilForTotalNoOfUnit.get(i)
-                            .setNoOfUnitsFilled(0 + detailsBasedOnActIdAndQtrId.get(j).getNoOfUnitsFilled());
+                	if(detailsBasedOnActIdAndQtrId.get(j).getNoOfUnitsFilled() != null)
+                    deatilForTotalNoOfUnit.get(i).setNoOfUnitsFilled(0 + detailsBasedOnActIdAndQtrId.get(j).getNoOfUnitsFilled());
                 }
                 if (deatilForTotalNoOfUnit.get(i).getExpenditureIncurred() != null && detailsBasedOnActIdAndQtrId.get(j).getExpenditureIncurred() != null) {
                     deatilForTotalNoOfUnit.get(i)
@@ -979,8 +1022,8 @@ public class ProgressReportController {
                 }else if((deatilForTotalNoOfUnit.get(i).getExpenditureIncurred() == null || deatilForTotalNoOfUnit.get(i).getExpenditureIncurred() == 0) && detailsBasedOnActIdAndQtrId.get(j).getExpenditureIncurred() == null) {
                 	deatilForTotalNoOfUnit.get(i).setExpenditureIncurred(0);
                 }else {
-                    deatilForTotalNoOfUnit.get(i)
-                            .setExpenditureIncurred(detailsBasedOnActIdAndQtrId.get(j).getExpenditureIncurred() + 0);
+                	if(detailsBasedOnActIdAndQtrId.get(j).getExpenditureIncurred() !=  null)
+                    deatilForTotalNoOfUnit.get(i).setExpenditureIncurred(detailsBasedOnActIdAndQtrId.get(j).getExpenditureIncurred() + 0);
                 }
             }
             ++count;
@@ -991,9 +1034,7 @@ public class ProgressReportController {
     /* new method ends here */
 
     @RequestMapping(value = "enablementQuaterly", method = RequestMethod.GET)
-    public String qprGetFormEnablementQuaderly(@ModelAttribute("Enablement") QprEnablement qprEnablement, Model model,
-                                               RedirectAttributes re) {
-
+    public String qprGetFormEnablementQuaderly(@ModelAttribute("Enablement") QprEnablement qprEnablement, Model model,RedirectAttributes re) {
         int quarterId = 0;
         if (qprEnablement.getQrtId() != null) {
             quarterId = qprEnablement.getQrtId();
@@ -1067,6 +1108,18 @@ public class ProgressReportController {
                 model.addAttribute("FUND_USED_IN_OTHER_QUATOR", quaterWiseFund.get(0).getFunds());
             }
 
+            // list to get total number of unit in all quator except current one
+            List<QprEnablementDetails> detailForTotalNoOfUnit = new ArrayList<>();
+            List<QprEnablementDetails> enablementReportDetailOfRestQuater = eEnablementOfPanchayatService.getEnablementQprActBasedOnActIdAndQtrId(eEnablementsApproved.get(0).geteEnablementId(), quarterId);
+            if (enablementReportDetailOfRestQuater != null) {
+                Collections.sort(enablementReportDetailOfRestQuater,
+                        (o1, o2) -> o1.getQprEEenablementDetailsId() - o2.getQprEEenablementDetailsId());
+                detailForTotalNoOfUnit = getTotalUnitAndExpIncurredInAllQtrEnablement(detailForTotalNoOfUnit,
+                		enablementReportDetailOfRestQuater,eEnablementReportDto.size());
+                model.addAttribute("DEATIL_FOR_TOTAL_NO_OF_UNIT", detailForTotalNoOfUnit);
+            } else {
+                model.addAttribute("DEATIL_FOR_TOTAL_NO_OF_UNIT", null);
+            }
             /*----------------------------end here-------------------------------------------------- */
             model.addAttribute("fetchDetails", fetchDetails);
             if (fetchQprEnablement != null) {
@@ -1086,7 +1139,36 @@ public class ProgressReportController {
         return ENABLEMENT_PROGRESS_REPORT;
     }
 
-    protected double calTotalFundUsedInQtr1And2(List<QuaterWiseFund> obj) {
+    private List<QprEnablementDetails> getTotalUnitAndExpIncurredInAllQtrEnablement(
+			List<QprEnablementDetails> detailForTotalNoOfUnit,
+			List<QprEnablementDetails> enablementReportDetailOfRestQuater, int size) {
+    	  int count = 0;
+    	  for(int i=0;i< size;i++) {
+    		  detailForTotalNoOfUnit.add(new QprEnablementDetails());  
+    	  }
+              
+          for (int j = 0; j < enablementReportDetailOfRestQuater.size(); j++) {
+              if (count == size ) {
+                  count = 0;
+              }
+              for (int i = count; i < count + 1; i++) {
+                  if (detailForTotalNoOfUnit.get(i).getExpenditureIncurred() != null && enablementReportDetailOfRestQuater.get(j).getExpenditureIncurred() != null) {
+                      detailForTotalNoOfUnit.get(i)
+                              .setExpenditureIncurred(detailForTotalNoOfUnit.get(i).getExpenditureIncurred()
+                                      + enablementReportDetailOfRestQuater.get(j).getExpenditureIncurred());
+                  } else if((detailForTotalNoOfUnit.get(i).getExpenditureIncurred() == null || detailForTotalNoOfUnit.get(i).getExpenditureIncurred() == 0 )&& enablementReportDetailOfRestQuater.get(j).getExpenditureIncurred() == null) {
+                  	 detailForTotalNoOfUnit.get(i).setExpenditureIncurred(0);
+                  }else {
+                  	if(enablementReportDetailOfRestQuater.get(j).getExpenditureIncurred() != null)
+                      detailForTotalNoOfUnit.get(i).setExpenditureIncurred(enablementReportDetailOfRestQuater.get(j).getExpenditureIncurred() + 0);
+                  }
+              }
+              ++count;
+          }
+          return detailForTotalNoOfUnit;
+	}
+
+	protected double calTotalFundUsedInQtr1And2(List<QuaterWiseFund> obj) {
         double total = 0;
         for (QuaterWiseFund object : obj) {
             if (object.getQuarter_id() < 3) {
@@ -1134,6 +1216,19 @@ public class ProgressReportController {
             if (stateAllocation.size() > 1) {
                 model.addAttribute("FUND_ALLOCATED_BY_STATE_PREVIOUS", stateAllocation.get(1).getFundsAllocated()); // we will use this in jsp to calculate the total remaining field
             }
+            // list to get total number of unit in all quator except current one
+            List<QprInnovativeActivityDetails> detailForTotalNoOfUnit = new ArrayList<>();
+            List<QprInnovativeActivityDetails>innovativeReportDetailOfRestQuater = innovativeActivityService.getInnovativeQprActBasedOnActIdAndQtrId(innovativeActApproved.get(0).getInnovativeActivityId(), quarterId);
+            if (innovativeReportDetailOfRestQuater != null) {
+                Collections.sort(innovativeReportDetailOfRestQuater,
+                        (o1, o2) -> o1.getQprIaDetailsId() - o2.getQprIaDetailsId());
+                detailForTotalNoOfUnit = getTotalUnitAndExpIncurredInAllQtrInnovative(detailForTotalNoOfUnit,
+                		innovativeReportDetailOfRestQuater,innovativeActApproved.get(0).getInnovativeActivityDetails().size());
+                		model.addAttribute("DEATIL_FOR_TOTAL_NO_OF_UNIT", detailForTotalNoOfUnit);
+            } else {
+                model.addAttribute("DEATIL_FOR_TOTAL_NO_OF_UNIT", null);
+            }
+            /*----------------------------end here-------------------------------------------------- */
 
             QprInnovativeActivity qprInnovativeAct = progressReportService.getInnovative(innovativeActApproved.get(0).getInnovativeActivityId(), quarterId);
             if (qprInnovativeAct != null) {
@@ -1170,7 +1265,36 @@ public class ProgressReportController {
 
     }
 
-    @RequestMapping(value = "innovativeActivityQpr", method = RequestMethod.POST)
+    private List<QprInnovativeActivityDetails> getTotalUnitAndExpIncurredInAllQtrInnovative(
+			List<QprInnovativeActivityDetails> detailForTotalNoOfUnit,
+			List<QprInnovativeActivityDetails> innovativeReportDetailOfRestQuater, int size) {
+    	int count = 0;
+  	  for(int i=0;i< size;i++) {
+  		  detailForTotalNoOfUnit.add(new QprInnovativeActivityDetails());  
+  	  }
+            
+        for (int j = 0; j < innovativeReportDetailOfRestQuater.size(); j++) {
+            if (count == size ) {
+                count = 0;
+            }
+            for (int i = count; i < count + 1; i++) {
+                if (detailForTotalNoOfUnit.get(i).getExpenditureIncurred() != null && innovativeReportDetailOfRestQuater.get(j).getExpenditureIncurred() != null) {
+                    detailForTotalNoOfUnit.get(i)
+                            .setExpenditureIncurred(detailForTotalNoOfUnit.get(i).getExpenditureIncurred()
+                                    + innovativeReportDetailOfRestQuater.get(j).getExpenditureIncurred());
+                } else if((detailForTotalNoOfUnit.get(i).getExpenditureIncurred() == null || detailForTotalNoOfUnit.get(i).getExpenditureIncurred() == 0 )&& innovativeReportDetailOfRestQuater.get(j).getExpenditureIncurred() == null) {
+                	 detailForTotalNoOfUnit.get(i).setExpenditureIncurred(0);
+                }else {
+                	if(innovativeReportDetailOfRestQuater.get(j).getExpenditureIncurred() != null)
+                    detailForTotalNoOfUnit.get(i).setExpenditureIncurred(innovativeReportDetailOfRestQuater.get(j).getExpenditureIncurred() + 0);
+                }
+            }
+            ++count;
+        }
+        return detailForTotalNoOfUnit;
+	}
+
+	@RequestMapping(value = "innovativeActivityQpr", method = RequestMethod.POST)
     public String innovativeQtrProgressReport(@ModelAttribute("INNOVATIVE_ACTIVITY_QUATERLY_REPORT") QprInnovativeActivity qprInnovativeActivity,Model model ,RedirectAttributes re) {
     	if (!qprInnovativeActivity.getOrigin().equalsIgnoreCase("save")) {
             return qprGetFormInnovativeActivityQpr(qprInnovativeActivity, model);
@@ -1289,8 +1413,8 @@ public class ProgressReportController {
                 }else if((deatilForTotalNoOfUnit.get(i).getNoOfUnitsFilled() == null  || deatilForTotalNoOfUnit.get(i).getNoOfUnitsFilled() ==  0 )&& detailsBasedOnActIdAndQtrId.get(j).getNoOfUnitsFilled() == null) {
                 	 deatilForTotalNoOfUnit.get(i).setNoOfUnitsFilled(0);
                 }else {
-                    deatilForTotalNoOfUnit.get(i)
-                            .setNoOfUnitsFilled(0 + detailsBasedOnActIdAndQtrId.get(j).getNoOfUnitsFilled());
+                	if(detailsBasedOnActIdAndQtrId.get(j).getNoOfUnitsFilled() != null)
+                    deatilForTotalNoOfUnit.get(i).setNoOfUnitsFilled(0 + detailsBasedOnActIdAndQtrId.get(j).getNoOfUnitsFilled());
                 }
                 if (deatilForTotalNoOfUnit.get(i).getExpenditureIncurred() != null && detailsBasedOnActIdAndQtrId.get(j).getExpenditureIncurred() != null) {
                     deatilForTotalNoOfUnit.get(i)
@@ -1299,8 +1423,8 @@ public class ProgressReportController {
                 } else if((deatilForTotalNoOfUnit.get(i).getExpenditureIncurred() == null || deatilForTotalNoOfUnit.get(i).getExpenditureIncurred() == 0 )&& detailsBasedOnActIdAndQtrId.get(j).getExpenditureIncurred() == null) {
                 	 deatilForTotalNoOfUnit.get(i).setExpenditureIncurred(0);
                 }else {
-                    deatilForTotalNoOfUnit.get(i)
-                            .setExpenditureIncurred(detailsBasedOnActIdAndQtrId.get(j).getExpenditureIncurred() + 0);
+                	if(detailsBasedOnActIdAndQtrId.get(j).getExpenditureIncurred() != null)
+                    deatilForTotalNoOfUnit.get(i).setExpenditureIncurred(detailsBasedOnActIdAndQtrId.get(j).getExpenditureIncurred() + 0);
                 }
             }
             ++count;

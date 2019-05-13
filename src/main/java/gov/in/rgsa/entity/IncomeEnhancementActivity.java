@@ -40,7 +40,7 @@ public class IncomeEnhancementActivity {
 	@Column(name="income_enhancement_id",nullable=false,updatable=false)
 	private Integer incomeEnhancementId;
 	
-	@OneToMany(mappedBy="incomeEnhancementActivity",cascade=CascadeType.ALL,fetch=FetchType.EAGER)
+	@OneToMany(mappedBy="incomeEnhancementActivity",cascade=CascadeType.ALL,fetch=FetchType.LAZY)
 	private List<IncomeEnhancementDetails> incomeEnhancementDetails;
 	
 	@Column(name="state_code")

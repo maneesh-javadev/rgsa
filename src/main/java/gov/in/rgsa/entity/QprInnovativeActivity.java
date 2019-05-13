@@ -27,7 +27,8 @@ import org.hibernate.annotations.UpdateTimestamp;
 	@Entity
 	@Table(name= "qpr_ia" , schema="rgsa")
 	@NamedQueries ({@NamedQuery(name="FETCH_INNOVATIVE_REPORT_DETAILS", query="Select IA from QprInnovativeActivity IA RIGHT OUTER JOIN FETCH IA.qprInnovativeActivityDetails IQA where IA.innovativeActivity.innovativeActivityId=:innovativeActivityId AND IA.quarterDuration.qtrId=:qtrId "),
-	@NamedQuery(name="FETCH_INNOVATIVE__REPORT_BASED_ID", query="Select IA from QprInnovativeActivity IA where IA.innovativeActivity.innovativeActivityId=:innovativeActivityId")
+	@NamedQuery(name="FETCH_INNOVATIVE__REPORT_BASED_ID", query="Select IA from QprInnovativeActivity IA where IA.innovativeActivity.innovativeActivityId=:innovativeActivityId"),
+	@NamedQuery(name="FETCH_INNOVATIVE_QPR_ACT_BY_QTR_ID_AND_ACT_ID",query="from QprInnovativeActivity where innovativeActivity.innovativeActivityId=:innovativeActivityId and quarterDuration.qtrId!=:quarterId")
 	})
 	public class QprInnovativeActivity {
 

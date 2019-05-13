@@ -26,6 +26,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 @Table(name="qpr_e_enablement" ,schema="rgsa")
 @NamedQueries ({@NamedQuery(name="FETCH_QPR_ENABLEMENT_REPORT_DETAILS", query="Select QE from QprEnablement QE RIGHT OUTER JOIN FETCH QE.qprEnablementDetails QED where QE.eEnablement.eEnablementId=:eEnablementId AND QE.quarterDuration.qtrId=:qtrId"),
 @NamedQuery(name="FETCH_QPR_ENABLEMENT_REPORT_BASED_ID", query="Select  QE from QprEnablement QE  where QE.eEnablement.eEnablementId=:eEnablementId"),
+@NamedQuery(name="FETCH_ENABLEMENT_QPR_ACT_BY_QTR_ID_AND_ACT_ID",query="from QprEnablement where eEnablement.eEnablementId=:eEnablementId and quarterDuration.qtrId!=:quarterId"),
 })
 public class QprEnablement {
 	
