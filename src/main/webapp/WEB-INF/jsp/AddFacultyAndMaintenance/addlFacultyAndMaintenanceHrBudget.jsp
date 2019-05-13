@@ -145,7 +145,6 @@ function validateCeilingValue(count){
 			$("#fund_"+count).val('');
 	 	}
 	}else{
-		if($('#total_fund_dprc').val() > 1000000){
 	 		 if($('#districtSupportedId').val() != ""){
 				 if(($('#total_fund_dprc').val() / $('#districtSupportedId').val()) > 1000000){
 					alert("Total unit cost for DPRC should be less than or equal to 10 lakhs per year");
@@ -155,10 +154,8 @@ function validateCeilingValue(count){
 				 alert("Enter The no. of District supported by DPRC First.");
 				 $("#fund_"+count).val('');
 			 }
-	 	}
+		}
 	}
-	
-}
 
 function freezeAndUnfreeze(obj){
 	$("input").prop('disabled', false);
@@ -231,7 +228,7 @@ function validationOnSubmit(){
 		}
 	}
 	if(!flag){
-		alert("Empty form cannot save.");
+		alert("Empty form cannot save or freezed.");
 	}
 	return flag;
 }
