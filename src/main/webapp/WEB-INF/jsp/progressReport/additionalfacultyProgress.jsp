@@ -15,6 +15,7 @@ var total_add_req_dprc_filled = '${TOTAL_ADD_REQ_DPRC}';
 $(document).ready(function() {
 	$('#quaterDropDownId').val(quater_id);
 	showTablediv();
+	calTotalExpenditure();
 });
 
 function saveAndGetDataQtrRprt(msg){
@@ -109,9 +110,9 @@ function validateWithCorrespondingFund(index){
 
 function validateNoOfUnits(index){
 	var no_of_unit_cec= +$('#noOfUnitCecId_'+index).text();	
-	var total_no_of_unit_remaining = no_of_unit_cec - $('#totalNoOfUnit_'+index).val();
-	if($('#noOfUnitCompleted_'+index).val() > total_no_of_unit_remaining){
-		alert('total number of units should not exceed '+total_no_of_unit_remaining);
+	/* var total_no_of_unit_remaining = no_of_unit_cec - $('#totalNoOfUnit_'+index).val(); */
+	if($('#noOfUnitCompleted_'+index).val() > no_of_unit_cec){
+		alert('total number of units should not exceed '+no_of_unit_cec);
 		$('#noOfUnitCompleted_'+index).val('');
 		$('#noOfUnitCompleted_'+index).focus();
 	}
@@ -135,6 +136,17 @@ function validateAddReq(msg){
 			$('#additionalReqDprcId').focus();		
 		}
 	}
+}
+
+function calTotalExpenditure(){
+	var rowCount=$('#tbodyId tr').length -2;
+	var total_expenditure=0;
+	for( var i=0;i < rowCount; i++){
+		if($('#expenditureIncurred_'+i).val() != null && $('#expenditureIncurred_'+i).val() != undefined){
+			total_expenditure += +$('#expenditureIncurred_'+i).val();
+		}
+	}
+	$('#totalExpenditureId').val(total_expenditure + +$('#additionalReqSprcId').val() + +$('#additionalReqDprcId').val());
 }
 </script>
 <section class="content" > 
@@ -171,8 +183,8 @@ function validateAddReq(msg){
 								<tr>
 									<th><div align="center">Type of Center</div></th>
 									<th><div align="center">Faculty and Staff</div></th>
-									<th><div align="center">No of Units Approved<br>A</div></th>
-									<th><div align="center">Unit Cost Approved<br>B</div></th>
+									<th><div align="center">No of Units Approved</div></th>
+									<th><div align="center">Fund Sanctioned</div></th>
 									<th><div align="center">No. of Unit Filled</div></th>
 								   <th><div align="center">Expenditure Incurred </div></th>
 								</tr>
@@ -212,13 +224,13 @@ function validateAddReq(msg){
 												<td><c:if test="${count.index ne 2 and count.index ne 5}">
 													<input name="additionalFacultyProgressDetail[${count.index}].noOfUnitsFilled" id="noOfUnitCompleted_${count.index}" type="text" style="text-align: right;" class="form-control validate"  value="${QPR_ACTIVITY.additionalFacultyProgressDetail[count.index].noOfUnitsFilled}" onkeyup="validateNoOfUnits(${count.index})"/>
 								 				</c:if></td>
-									 				<td><input name="additionalFacultyProgressDetail[${count.index}].expenditureIncurred" id="expenditureIncurred_${count.index}" type="text" style="text-align: right;" class="form-control validate" value="${QPR_ACTIVITY.additionalFacultyProgressDetail[count.index].expenditureIncurred }" onkeyup="validateFundByAllocatedFund(${count.index});validateWithCorrespondingFund(${count.index});isNoOfUnitAndExpInurredFilled(${count.index})"/></td>
+									 				<td><input name="additionalFacultyProgressDetail[${count.index}].expenditureIncurred" id="expenditureIncurred_${count.index}" type="text" style="text-align: right;" class="form-control validate" value="${QPR_ACTIVITY.additionalFacultyProgressDetail[count.index].expenditureIncurred }" onkeyup="validateFundByAllocatedFund(${count.index});validateWithCorrespondingFund(${count.index});isNoOfUnitAndExpInurredFilled(${count.index});calTotalExpenditure()"/></td>
 											</c:when>
 											<c:otherwise>
 												<td><c:if test="${count.index ne 2 and count.index ne 5}">
 													<input name="additionalFacultyProgressDetail[${count.index}].noOfUnitsFilled" id="noOfUnitCompleted_${count.index}" type="text" style="text-align: right;" class="form-control validate" onkeyup="validateNoOfUnits(${count.index})" />
 								 				</c:if></td>
-									 				<td><input name="additionalFacultyProgressDetail[${count.index}].expenditureIncurred" id="expenditureIncurred_${count.index}" type="text" style="text-align: right;" class="form-control validate" onkeyup="validateFundByAllocatedFund(${count.index});validateWithCorrespondingFund(${count.index});isNoOfUnitAndExpInurredFilled(${count.index})"></td>
+									 				<td><input name="additionalFacultyProgressDetail[${count.index}].expenditureIncurred" id="expenditureIncurred_${count.index}" type="text" style="text-align: right;" class="form-control validate" onkeyup="validateFundByAllocatedFund(${count.index});validateWithCorrespondingFund(${count.index});isNoOfUnitAndExpInurredFilled(${count.index});calTotalExpenditure()"></td>
 											</c:otherwise>
 										</c:choose>
 										
@@ -227,15 +239,26 @@ function validateAddReq(msg){
 									<tr>
 										<th colspan="2"><div align="center">Additional Requirement SPRC</div></th>
 										<th colspan="2"><div align="center" id="additionalReqSprcStateId">${CEC_APPROVED_ACTIVITY.additionalRequirementSprc }</div></th>
-										<td><input type="text" name="additionalReqSprc" id="additionalReqSprcId" value="${QPR_ACTIVITY.additionalReqSprc}" class="form-control validate" onkeyup="validateAddReq('sprc')"></td>
+										<td></td>
+										<td><input type="text" name="additionalReqSprc" id="additionalReqSprcId" style="text-align: right;" value="${QPR_ACTIVITY.additionalReqSprc}" class="form-control validate" onkeyup="validateAddReq('sprc');calTotalExpenditure()"></td>
 									</tr>
 									
 									<tr>
 										<th colspan="2"><div align="center">Additional Requirement DPRC</div></th>
 										<th colspan="2"><div align="center" id="additionalReqDprcStateId">${CEC_APPROVED_ACTIVITY.additionalRequirementDprc }</div></th>
-										<td><input type="text" name="additionalReqDprc" id="additionalReqDprcId" value="${QPR_ACTIVITY.additionalReqDprc}" class="form-control validate" onkeyup="validateAddReq('sprc')"></td>
+										<td></td>
+										<td><input type="text" name="additionalReqDprc" id="additionalReqDprcId" style="text-align: right;" value="${QPR_ACTIVITY.additionalReqDprc}" class="form-control validate" onkeyup="validateAddReq('dprc');calTotalExpenditure()"></td>
 									</tr>
-							</tbody>
+
+									<tr>
+										<th colspan="2"><div align="center">Total
+												Expenditure Incurred</div></th>
+										<td colspan="3"></td>
+										<td><input type="text" id="totalExpenditureId"
+											class="form-control validate Align-Right"
+											disabled="disabled"  style="text-align: right;"/></td>
+									</tr>
+									</tbody>
 						</table>
 							<div class="text-right">
 								<button type="submit" onclick="saveAndGetDataQtrRprt('save')" class="btn bg-green waves-effect">SAVE</button>

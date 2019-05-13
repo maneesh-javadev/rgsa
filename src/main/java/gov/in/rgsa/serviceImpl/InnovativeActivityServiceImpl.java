@@ -14,6 +14,10 @@ import gov.in.rgsa.dao.CommonRepository;
 import gov.in.rgsa.entity.AttachmentMaster;
 import gov.in.rgsa.entity.InnovativeActivity;
 import gov.in.rgsa.entity.InnovativeActivityDetails;
+import gov.in.rgsa.entity.QprEnablement;
+import gov.in.rgsa.entity.QprEnablementDetails;
+import gov.in.rgsa.entity.QprInnovativeActivity;
+import gov.in.rgsa.entity.QprInnovativeActivityDetails;
 import gov.in.rgsa.service.FacadeService;
 import gov.in.rgsa.service.InnovativeActivityService;
 import gov.in.rgsa.user.preference.UserPreference;
@@ -240,6 +244,24 @@ public class InnovativeActivityServiceImpl implements InnovativeActivityService 
 		params.put("yearId", userPreference.getFinYearId());
 		params.put("userType", 'C');
 		return commonRepository.findAll("FETCH_INNOVATIVE_ACTIVITY_APPROVED_ACTIVITY", params);
+	}
+
+	@Override
+	public List<QprInnovativeActivityDetails> getInnovativeQprActBasedOnActIdAndQtrId(Integer innovativeActivityId,
+			int quarterId) {
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("innovativeActivityId", innovativeActivityId);
+		params.put("quarterId", quarterId);	
+		List<QprInnovativeActivity> qprInnovativeActivity= commonRepository.findAll("FETCH_INNOVATIVE_QPR_ACT_BY_QTR_ID_AND_ACT_ID", params);
+		List<QprInnovativeActivityDetails> qprInnovativeActivityDetails=new ArrayList<>();
+		if(CollectionUtils.isNotEmpty(qprInnovativeActivity)){
+			for (QprInnovativeActivity qpr_innovative : qprInnovativeActivity) {
+				qprInnovativeActivityDetails.addAll(qpr_innovative.getQprInnovativeActivityDetails());
+			}
+			return qprInnovativeActivityDetails;
+		}else{
+			return null;
+		}
 	}
 	
 	

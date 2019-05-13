@@ -11,6 +11,7 @@ if(quater_id > 2){
 $('document').ready(function(){
 	$('#quaterDropDownId').val(quater_id);
 	showTablediv();
+	calTotalExpenditure();
 });
 
 function showTablediv(){
@@ -42,9 +43,9 @@ function isNoOfUnitAndExpInurredFilled(index){
 
 function validateNoOfUnits(index){
 	var no_of_unit_cec= +$('#noOfUnitCecId_'+index).text();	
-	var total_no_of_unit_remaining = no_of_unit_cec - $('#totalNoOfUnit_'+index).val();
-	if($('#noOfUnitCompleted_'+index).val() > total_no_of_unit_remaining){
-		alert('total number of units should not exceed '+total_no_of_unit_remaining);
+	/* var total_no_of_unit_remaining = no_of_unit_cec - $('#totalNoOfUnit_'+index).val(); */
+	if($('#noOfUnitCompleted_'+index).val() > no_of_unit_cec){
+		alert('total number of units should not exceed '+no_of_unit_cec);
 		$('#noOfUnitCompleted_'+index).val('');
 		$('#noOfUnitCompleted_'+index).focus();
 	}
@@ -92,6 +93,17 @@ function validateWithCorrespondingFund(index){
 		$('#expenditureIncurred_'+index).val('');
 		$('#expenditureIncurred_'+index).focus();
 	}
+}
+
+function calTotalExpenditure(){
+	var rowCount=$('#tbodyId tr').length -2;
+	var total_expenditure=0;
+	for( var i=0;i < rowCount; i++){
+		if($('#expenditureIncurred_'+i).val() != null && $('#expenditureIncurred_'+i).val() != undefined){
+			total_expenditure += +$('#expenditureIncurred_'+i).val();
+		}
+	}
+	$('#totalExpenditureId').val(total_expenditure + +$('#additionalReqId').val());
 }
 </script>
 <section class="content">
@@ -164,7 +176,7 @@ function validateWithCorrespondingFund(index){
 																				onkeyup="this.value=this.value.replace(/[^0-9]/g,'');validateNoOfUnits(${index.index});validateFundByAllocatedFund(${index.index})" ></div></td>
 														<td><div align="center"><input type="text" name="qprCbActivityDetails[${index.index}].expenditureIncurred" class="form-control Align-Right" id="expenditureIncurred_${index.index}" value="${QPR_CB_ACT_DATA.qprCbActivityDetails[index.index].expenditureIncurred}"
 																				onkeyup="this.value=this.value.replace(/[^0-9]/g,'');validateFundByAllocatedFund(${index.index});
-																				isNoOfUnitAndExpInurredFilled(${index.index});validateWithCorrespondingFund(${index.index})" ></div></td>
+																				isNoOfUnitAndExpInurredFilled(${index.index});validateWithCorrespondingFund(${index.index});calTotalExpenditure()" ></div></td>
 													</c:when>
 													<c:otherwise>
 														<td><div align="center"><input type="text" name="qprCbActivityDetails[${index.index}].noOfDaysCompleted" class="form-control Align-Right" id="noOfDaysCompleted_${index.index}"></div></td>
@@ -216,8 +228,13 @@ function validateWithCorrespondingFund(index){
 										<tr>
 										<th colspan="3"><div align="center">Additional Requirement</div></th>
 										<th colspan="1"><div align="center" id="additionalReqStateId">${CEC_APPROVED_ACTIVITY.additionalRequirement }</div></th>
-										<td colspan="3"><div align="right"><input type="text" name="additionalRequirement" id="additionalReqId" value="${QPR_CB_ACT_DATA.additionalRequirement}" class="form-control validate Align-Right" onkeyup="validateAddReq()"></div></td>
+										<td colspan="3"><div align="right"><input type="text" name="additionalRequirement" id="additionalReqId" value="${QPR_CB_ACT_DATA.additionalRequirement}" class="form-control validate Align-Right" onkeyup="validateAddReq();calTotalExpenditure()"></div></td>
 									</tr>
+										<tr>
+											<th colspan="2"><div align="center">Total Expenditure Incurred</div></th>
+											<td colspan="4"></td>
+											<td><input type="text" id="totalExpenditureId"  class="form-control validate Align-Right" disabled="disabled" /></td>
+										</tr>
 									</tbody>
 								</table>
 								<!-- Modal content TNA & Training Evaluation-->
@@ -258,12 +275,12 @@ function validateWithCorrespondingFund(index){
 																					value="${QPR_CB_ACT_DATA.qprCbActivityDetails[0].qprTnaTrgEvaluation.noOfPersons}"
 																					class="active12 form-control Align-Right"></td>
 																				<td><select class="form-control"
-																					name="qprCbActivityDetails[0].qprTnaTrgEvaluation.trngSubject.subjectId">
+																					name="qprCbActivityDetails[0].qprTnaTrgEvaluation.trngSubject">
 																						<option value="">select</option>
 																						<c:forEach items="${SUBJECTS_LIST}" var="sbjctLst">
 																					<c:choose>
 																						<c:when
-																							test="${QPR_CB_ACT_DATA.qprCbActivityDetails[0].qprTnaTrgEvaluation.trngSubject.subjectId == sbjctLst.subjectId}">
+																							test="${QPR_CB_ACT_DATA.qprCbActivityDetails[0].qprTnaTrgEvaluation.trngSubject == sbjctLst.subjectId}">
 																							<option value="${sbjctLst.subjectId}" selected="selected">${sbjctLst.subjectName}</option>
 																						</c:when>
 																						<c:otherwise>
@@ -430,12 +447,12 @@ function validateWithCorrespondingFund(index){
 																<tr>
 																	<td><input type="text" name="qprCbActivityDetails[3].qprTnaTrgEvaluation.noOfPersons" value="${QPR_CB_ACT_DATA.qprCbActivityDetails[3].qprTnaTrgEvaluation.noOfPersons}" class="active12 Align-Right form-control Align-Right"></td>
 																	<td>
-																		<select name="qprCbActivityDetails[3].qprTnaTrgEvaluation.trngSubject.subjectId" class="form-control">
+																		<select name="qprCbActivityDetails[3].qprTnaTrgEvaluation.trngSubject" class="form-control">
 																			<option value="">select</option>
 																			<c:forEach items="${SUBJECTS_LIST}" var="sbjctLst">
 																				<c:choose>
 																						<c:when
-																							test="${QPR_CB_ACT_DATA.qprCbActivityDetails[3].qprTnaTrgEvaluation.trngSubject.subjectId == sbjctLst.subjectId}">
+																							test="${QPR_CB_ACT_DATA.qprCbActivityDetails[3].qprTnaTrgEvaluation.trngSubject == sbjctLst.subjectId}">
 																							<option value="${sbjctLst.subjectId}" selected="selected">${sbjctLst.subjectName}</option>
 																						</c:when>
 																						<c:otherwise>

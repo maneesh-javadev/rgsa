@@ -5,6 +5,7 @@ import java.util.List;
 import gov.in.rgsa.entity.AttachmentMaster;
 import gov.in.rgsa.entity.InnovativeActivity;
 import gov.in.rgsa.entity.InnovativeActivityDetails;
+import gov.in.rgsa.entity.QprInnovativeActivityDetails;
 
 /**
  * @author Mohammad Ayaz 20/08/2018
@@ -38,4 +39,7 @@ public interface InnovativeActivityService {
 
 	
 	public List<InnovativeActivity> fetchApprovedInnovative();
+
+	public List<QprInnovativeActivityDetails> getInnovativeQprActBasedOnActIdAndQtrId(Integer innovativeActivityId,
+			int quarterId);
 }

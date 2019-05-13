@@ -12,7 +12,7 @@ $('document').ready(function() {
 	$('#qtrId').val(quator_id);
 	$('#qtrDropDownId').val(quator_id);
 	showTable();
-	
+	calTotalExpenditure();	
 	$(".validate").keypress(function (e) {
 	    //if the letter is not digit then display error and don't type anything
 	    if (e.which != 8 && e.which != 0 && (e.which < 48 || e.which > 57)) {
@@ -67,9 +67,9 @@ function validateFundByAllocatedFund(obj){
 
 function validateNoOfUnits(index){
 	var no_of_unit_cec= +$('#noOfUnitCecId_'+index).text();	
-	var total_no_of_unit_remaining = no_of_unit_cec - $('#totalNoOfUnit_'+index).val();
-	if($('#noOfUnitCompleted_'+index).val() > total_no_of_unit_remaining){
-		alert('total number of units should not exceed '+total_no_of_unit_remaining);
+	/* var total_no_of_unit_remaining = no_of_unit_cec - $('#totalNoOfUnit_'+index).val(); */
+	if($('#noOfUnitCompleted_'+index).val() > no_of_unit_cec){
+		alert('total number of units should not exceed '+no_of_unit_cec);
 		$('#noOfUnitCompleted_'+index).val('');
 		$('#noOfUnitCompleted_'+index).focus();
 	}
@@ -100,6 +100,17 @@ function validateWithCorrespondingFund(index){
 		$('#expenditureIncurred_'+index).val('');
 		$('#expenditureIncurred_'+index).focus();
 	}
+}
+
+function calTotalExpenditure(){
+	var rowCount=$('#tbodyId tr').length -2;
+	var total_expenditure=0;
+	for( var i=0;i < rowCount; i++){
+		if($('#expenditureIncurred_'+i).val() != null && $('#expenditureIncurred_'+i).val() != undefined){
+			total_expenditure += +$('#expenditureIncurred_'+i).val();
+		}
+	}
+	$('#totalExpenditureId').val(total_expenditure + +$('#additionalReqId').val());
 }
 </script>
 <section class="content">
@@ -158,7 +169,7 @@ function validateWithCorrespondingFund(index){
 									</c:otherwise>
 									</c:choose>
 									<input type="hidden" name="satcomActivityProgressDetails[${index.index}].satcomDetailsProgressId"
-								 	value="${SATCOM_QUATER.satcomActivityProgressDetails[index.index].satcomDetailsProgressId}">
+								 	value="${QPR_DATA_BASED_CEC_ACT_ID.satcomActivityProgressDetails[index.index].satcomDetailsProgressId}">
 									
 									<tr>
 									<td><div align="center"><strong>${detailObjCec.satcomMaster.satcomMasterName}</strong></div></td>
@@ -167,13 +178,13 @@ function validateWithCorrespondingFund(index){
 									<td><div align="center"><strong>${detailObjCec.unitCost}</strong></div></td>
 									<td id="fundCecId_${index.index}"><div align="center"><strong>${detailObjCec.funds}</strong></div></td>
 									<c:choose>
-										<c:when test="${not empty SATCOM_QUATER.satcomActivityProgressDetails }">
-											<td><input type="text" name="satcomActivityProgressDetails[${index.index}].noOfUnitCompleted" class="form-control validate" style="text-align: right;" id="noOfUnitCompleted_${index.index}" value="${SATCOM_QUATER.satcomActivityProgressDetails[index.index].noOfUnitCompleted }" onkeyup="validateNoOfUnits(${index.index});" required="required"/></td>
-											<td><input type="text" name="satcomActivityProgressDetails[${index.index}].expenditureIncurred" class="form-control validate" style="text-align: right;" value="${SATCOM_QUATER.satcomActivityProgressDetails[index.index].expenditureIncurred }" id="expenditureIncurred_${index.index}" onkeyup="validateFundByAllocatedFund(${index.index});isNoOfUnitAndExpInurredFilled(${index.index});validateWithCorrespondingFund(${index.index})" required="required"/></td>
+										<c:when test="${not empty QPR_DATA_BASED_CEC_ACT_ID.satcomActivityProgressDetails }">
+											<td><input type="text" name="satcomActivityProgressDetails[${index.index}].noOfUnitCompleted" class="form-control validate" style="text-align: right;" id="noOfUnitCompleted_${index.index}" value="${QPR_DATA_BASED_CEC_ACT_ID.satcomActivityProgressDetails[index.index].noOfUnitCompleted }" onkeyup="validateNoOfUnits(${index.index});" required="required"/></td>
+											<td><input type="text" name="satcomActivityProgressDetails[${index.index}].expenditureIncurred" class="form-control validate" style="text-align: right;" value="${QPR_DATA_BASED_CEC_ACT_ID.satcomActivityProgressDetails[index.index].expenditureIncurred }" id="expenditureIncurred_${index.index}" onkeyup="validateFundByAllocatedFund(${index.index});isNoOfUnitAndExpInurredFilled(${index.index});validateWithCorrespondingFund(${index.index});calTotalExpenditure()" required="required"/></td>
 										</c:when>
 										<c:otherwise>
 											<td><input type="text" name="satcomActivityProgressDetails[${index.index}].noOfUnitCompleted" class="form-control validate" style="text-align: right;" id="noOfUnitCompleted_${index.index}" onkeyup="validateNoOfUnits(${index.index});" required="required"/></td>
-											<td><input type="text" name="satcomActivityProgressDetails[${index.index}].expenditureIncurred" class="form-control validate" style="text-align: right;" id="expenditureIncurred_${index.index}" onkeyup="validateFundByAllocatedFund(${index.index});isNoOfUnitAndExpInurredFilled(${index.index}); validateWithCorrespondingFund(${index.index})" required="required"/></td>
+											<td><input type="text" name="satcomActivityProgressDetails[${index.index}].expenditureIncurred" class="form-control validate" style="text-align: right;" id="expenditureIncurred_${index.index}" onkeyup="validateFundByAllocatedFund(${index.index});isNoOfUnitAndExpInurredFilled(${index.index}); validateWithCorrespondingFund(${index.index});calTotalExpenditure()" required="required"/></td>
 										</c:otherwise>
 									</c:choose>
 									
@@ -183,8 +194,14 @@ function validateWithCorrespondingFund(index){
 										<th colspan="2"><div align="center">Additional Requirement</div></th>
 										<th colspan="3"><div align="center" id="additionalReqStateId">${SATCOM_ACTIVITY_APPROVED.additionalRequirement }</div></th>
 										<td></td>
-										<td><input type="text" name="additionalRequirement" id="additionalReqId" value="${SATCOM_QUATER.additionalRequirement}" class="form-control validate Align-Right" onkeyup="validateAddReq()"></td>
+										<td><input type="text" name="additionalRequirement" id="additionalReqId" value="${QPR_DATA_BASED_CEC_ACT_ID.additionalRequirement}" class="form-control validate" style="text-align: right;" onkeyup="validateAddReq();calTotalExpenditure()"></td>
 									</tr>
+									
+										<tr>
+											<th colspan="2"><div align="center">Total Expenditure Incurred</div></th>
+											<td colspan="4"></td>
+											<td><input type="text" id="totalExpenditureId"  class="form-control validate Align-Right" disabled="disabled" style="text-align: right;" /></td>
+										</tr>
 								</c:when>
 								<c:otherwise>
 									<!-- no condition till now -->

@@ -12,6 +12,7 @@ if(quator_id > 2){
 var fund_used='${FUND_USED_IN_OTHER_QUATOR}';
 $( document ).ready(function() {
 	$('#quaterId').val(quator_id);
+	calTotalExpenditure();
 	$(".validate").keypress(function (e) {
 	    //if the letter is not digit then display error and don't type anything
 	    if (e.which != 8 && e.which != 0 && (e.which < 48 || e.which > 57)) {
@@ -31,12 +32,21 @@ $( document ).ready(function() {
 function saveAndGetDataQtrRprt(msg){
 	 var districtId = $('#districtId').val();
 	 var quaterId = $('#quaterId').val();
+	 var flag=true;
 	 $('#districtId').val(districtId);
 	 $('#qrtId').val(quaterId);
 	 $('#origin').val(msg);
 	 	document.qprEnablement.method = "post";
 		document.qprEnablement.action = "enablementQuaterly.html?<csrf:token uri='enablementQuaterly.html'/>";
-		document.qprEnablement.submit();
+		if(msg == 'save'){
+			for (var index = 0; index < (+$("#tbodyId tr").length -2); index++) {
+				if($('#expenditureIncurred_'+index).val() == "" || $('#expenditureIncurred_'+index).val() == null){
+					flag=false;
+					break;
+				}
+			}
+		}
+		flag ? document.qprEnablement.submit() : alert("Expenditure Incurred should not be blank."); 
 }
 
 function showDistrictDropDown(){
@@ -44,7 +54,7 @@ function showDistrictDropDown(){
 }
 
 function validateFundByAllocatedFund(obj){
-	var noOfRows=$("#tbodyId tr").length -1;
+	var noOfRows=$("#tbodyId tr").length -2;
 	var fund_allocated_by_state_local = +fund_allocated_by_state;
 	var fund_used_local= +fund_used;
 	var total=0;
@@ -75,6 +85,28 @@ function validateAddReq(){
 		$('#additionalReqId').focus();
 	}
 }
+
+function validateWithCorrespondingFund(index){
+	var tota_fund_cec= +$('#fundCecId_'+index).text();	
+	var total_corresponding_fund_remaining = tota_fund_cec - $('#totalExpenditureIncurred_'+index).val();
+	if($('#expenditureIncurred_'+index).val() > total_corresponding_fund_remaining){
+		alert('total expenditure should not exceed '+ total_corresponding_fund_remaining);
+		$('#expenditureIncurred_'+index).val('');
+		$('#expenditureIncurred_'+index).focus();
+	}
+}
+
+function calTotalExpenditure(){
+	var rowCount=$('#tbodyId tr').length -2;
+	var total_expenditure=0;
+	for( var i=0;i < rowCount; i++){
+		if($('#expenditureIncurred_'+i).val() != null && $('#expenditureIncurred_'+i).val() != undefined){
+			total_expenditure += +$('#expenditureIncurred_'+i).val();
+		}
+	}
+	$('#totalExpenditureId').val(total_expenditure + +$('#additionalReqId').val());
+}
+
 </script>
 <section class="content">
 	<div class="container-fluid">
@@ -99,7 +131,7 @@ function validateAddReq(){
 									</div>
 									<div align="center" class="col-lg-4">
 										<select id="quaterId" name="quarterDuration.qtrId"
-											class="form-control" onchange="saveAndGetDataQtrRprt('qtrChange');showDistrictDropDown()">
+											class="form-control" onchange="saveAndGetDataQtrRprt('qtrChange');showDistrictDropDown()" >
 											<option value="0">Select</option>
 											<c:choose>
 												<c:when test="${not empty Qpr_Enablement}">
@@ -184,7 +216,13 @@ function validateAddReq(){
 														<strong>Gp Name.</strong>
 													</div>
 												</th>
-
+												
+												<!-- <th>
+													<div align="center">
+														<strong>No. of units Sanctioned</strong>
+													</div>
+												</th> -->
+				
 												<th>
 													<div align="center">
 														<strong>Amount Sanctioned</strong>
@@ -203,7 +241,30 @@ function validateAddReq(){
 												<c:when test="${not empty Qpr_Enablement}">
 													<c:forEach items="${EnablementDtlsList}" var="obj"
 														varStatus="count">
-														<input type="hidden" name="eEnablement.eEnablementId"
+
+																	<!-- total number of units filled in rest quaters -->
+																	<c:choose>
+																		<c:when
+																			test="${not empty DEATIL_FOR_TOTAL_NO_OF_UNIT}">
+																			<input type="hidden"
+																				id="totalExpenditureIncurred_${count.index}"
+																				value="${DEATIL_FOR_TOTAL_NO_OF_UNIT[count.index].expenditureIncurred}" />
+
+																			<%-- <input type="hidden"
+																				id="totalNoOfUnit_${count.index}"
+																				value="${DEATIL_FOR_TOTAL_NO_OF_UNIT[count.index].noOfUnitCompleted}" /> --%>
+																		</c:when>
+																		<c:otherwise>
+																		<%-- 	<input type="hidden"
+																				id="totalNoOfUnit_${count.index}" value="0" /> --%>
+																			<input type="hidden"
+																				id="totalExpenditureIncurred_${count.index}"
+																				value="0" />
+																		</c:otherwise>
+																	</c:choose>
+																	<!-- ends here -->
+
+																	<input type="hidden" name="eEnablement.eEnablementId"
 															value="${Qpr_Enablement.eEnablement.eEnablementId}">
 														<input type="hidden" name="qprEEnablementId"
 															value="${Qpr_Enablement.qprEEnablementId}">
@@ -215,24 +276,55 @@ function validateAddReq(){
 															value="${EnablementDtlsList[count.index].localBodyCode}">
 														<tr>
 															<td><div align="center"><strong>${eEnablementReportDto[count.index].localBodyNameEnglish}</strong></div></td>
-															<td><div align="center"><strong>${eEnablementReportDto[count.index].unitCost}</strong></div></td>
+															<%-- <td><div align="center" id="noOfUnitCecId_${count.index}"><strong>${eEnablementReportDto[count.index].noOfUnit}</strong></div></td> --%>
+															<td><div align="center" id="fundCecId_${count.index}"><strong>${eEnablementReportDto[count.index].fund}</strong></div></td>
 
 															<td><input type="text" class="form-control Align-Right"
 																name="qprEnablementDetails[${count.index}].expenditureIncurred"
 																value="${obj.expenditureIncurred}" required="required"
-																onkeyup="validateFundByAllocatedFund(${count.index})"
-																id="expenditureIncurred_${count.index}"></td>
+																onkeyup="validateFundByAllocatedFund(${count.index});validateWithCorrespondingFund(${count.index});calTotalExpenditure()"
+																id="expenditureIncurred_${count.index}" required="required"></td>
 														</tr>
 													</c:forEach>
 													<tr>
 														<th><div align="center">Additional Requirement</div></th>
 														<th><div align="center" id="additionalReqStateId">${eEnablementsApproved.additionalRequirement }</div></th>
-														<td><input type="text" name="additionalRequirement" id="additionalReqId" value="${Qpr_Enablement.additionalRequirement}" class="form-control validate Align-Right" onkeyup="validateAddReq()"></td>
+														<td><input type="text" name="additionalRequirement" id="additionalReqId" value="${Qpr_Enablement.additionalRequirement}" class="form-control validate Align-Right" onkeyup="validateAddReq();calTotalExpenditure()"></td>
 													</tr>
-												</c:when>
+
+																<tr>
+																	<th><div align="center">Total
+																			Expenditure Incurred</div></th>
+																	<td></td>
+																	<td><input type="text" id="totalExpenditureId"
+																		class="form-control validate Align-Right"
+																		disabled="disabled" /></td>
+																</tr>
+															</c:when>
 												<c:when test="${not empty eEnablementReportDto}">
 													<c:forEach items="${eEnablementReportDto}" var="localbody"
 														varStatus="count">
+														<!-- total number of units filled in rest quaters -->
+																	<c:choose>
+																		<c:when
+																			test="${not empty DEATIL_FOR_TOTAL_NO_OF_UNIT}">
+																			<input type="hidden"
+																				id="totalExpenditureIncurred_${count.index}"
+																				value="${DEATIL_FOR_TOTAL_NO_OF_UNIT[count.index].expenditureIncurred}" />
+
+																		<%-- 	<input type="hidden"
+																				id="totalNoOfUnit_${count.index}"
+																				value="${DEATIL_FOR_TOTAL_NO_OF_UNIT[count.index].noOfUnitCompleted}" /> --%>
+																		</c:when>
+																		<c:otherwise>
+																			<%-- <input type="hidden"
+																				id="totalNoOfUnit_${count.index}" value="0" /> --%>
+																			<input type="hidden"
+																				id="totalExpenditureIncurred_${count.index}"
+																				value="0" />
+																		</c:otherwise>
+																	</c:choose>
+																	<!-- ends here -->
 														<input type="hidden" name="eEnablement.eEnablementId"
 															value="${idEEnablement}">
 														<input type="hidden"
@@ -245,22 +337,31 @@ function validateAddReq(){
 														<tr>
 															<td><div align="center"><strong>${localbody.localBodyNameEnglish}</strong></div>
 															</td>
-
-															<td><div align="center"><strong>${localbody.unitCost}</strong></div></td>
+															<%-- <td><div align="center" id="noOfUnitCecId_${count.index}"><strong>${localbody.noOfUnit}</strong></div></td> --%>
+															<td><div align="center" id="fundCecId_${count.index}"><strong>${localbody.fund}</strong></div></td>
 															<td><input type="text"
 																class="form-control Align-Right"
 																name="qprEnablementDetails[${count.index}].expenditureIncurred"
-																onkeyup="validateFundByAllocatedFund(${count.index})"
+																onkeyup="validateFundByAllocatedFund(${count.index});validateWithCorrespondingFund(${count.index});calTotalExpenditure()"
 																id="expenditureIncurred_${count.index}"
 																required="required"></td>
 														</tr>
 													</c:forEach>
 													<tr>
 														<th>Additional Requirement</th>
-														<th id="additionalReqStateId">${eEnablementsApproved.additionalRequirement }</th>
-														<td><input type="text" name="additionalRequirement" id="additionalReqId" value="${Qpr_Enablement.additionalRequirement}" class="form-control validate Align-Right" onkeyup="validateAddReq()"></td>
+														<th id="additionalReqStateId"><div align="center">${eEnablementsApproved.additionalRequirement }</div></th>
+														<td><input type="text" name="additionalRequirement" id="additionalReqId" value="${Qpr_Enablement.additionalRequirement}" class="form-control validate Align-Right" onkeyup="validateAddReq();calTotalExpenditure()"></td>
 													</tr>
-												</c:when>
+
+																<tr>
+																	<th><div align="center">Total
+																			Expenditure Incurred</div></th>
+																			<td></td>
+																	<td><input type="text" id="totalExpenditureId"
+																		class="form-control validate Align-Right"
+																		disabled="disabled" /></td>
+																</tr>
+															</c:when>
 												<c:otherwise>
 													<div class="form-group">
 														<div align="center" class="Alert">

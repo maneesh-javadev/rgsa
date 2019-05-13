@@ -18,6 +18,10 @@ import gov.in.rgsa.entity.IncomeEnhancementActivity;
 import gov.in.rgsa.entity.IncomeEnhancementDetails;
 import gov.in.rgsa.entity.InnovativeActivity;
 import gov.in.rgsa.entity.InnovativeActivityDetails;
+import gov.in.rgsa.entity.QprEnablement;
+import gov.in.rgsa.entity.QprEnablementDetails;
+import gov.in.rgsa.entity.QprIncomeEnhancement;
+import gov.in.rgsa.entity.QprIncomeEnhancementDetails;
 import gov.in.rgsa.entity.SchemeMaster;
 import gov.in.rgsa.service.FacadeService;
 import gov.in.rgsa.service.IncomeEnhancementService;
@@ -180,6 +184,24 @@ public class IncomeEnhancementServiceImpl implements IncomeEnhancementService {
 			Map<String, Object> param = new HashMap<String, Object>();
 			param.put("incomeEnhancementId", findAllActivity.get(0).getIncomeEnhancementId());
 			commonRepository.excuteUpdate("DELETE_INCM_ENHNCMNT_ACTIVITY", param);
+		}
+	}
+
+	@Override
+	public List<QprIncomeEnhancementDetails> getIncomeEnhanceQprActBasedOnActIdAndQtrId(Integer incomeEnhancementId,
+			int quarterId) {
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("incomeEnhancementId", incomeEnhancementId);
+		params.put("quarterId", quarterId);	
+		List<QprIncomeEnhancement> qprIncomeEnhancement= commonRepository.findAll("FETCH_INCOME_ENHANCE_QPR_ACT_BY_QTR_ID_AND_ACT_ID", params);
+		List<QprIncomeEnhancementDetails> qprIncomeEnhancementDetails=new ArrayList<>();
+		if(CollectionUtils.isNotEmpty(qprIncomeEnhancement)){
+			for (QprIncomeEnhancement qpr_income : qprIncomeEnhancement) {
+				qprIncomeEnhancementDetails.addAll(qpr_income.getQprIncomeEnhancementDetails());
+			}
+			return qprIncomeEnhancementDetails;
+		}else{
+			return null;
 		}
 	}
 	
