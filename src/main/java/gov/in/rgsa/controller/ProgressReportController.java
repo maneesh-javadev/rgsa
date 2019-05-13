@@ -217,18 +217,26 @@ public class ProgressReportController {
             if (stateAllocation.size() > 1) {
                 model.addAttribute("FUND_ALLOCATED_BY_STATE_PREVIOUS", stateAllocation.get(1).getFundsAllocated()); // we will use this in jsp to calculate the total remaining field
             }
+			
+            // list to get total number of unit in all quator except current one
+            List<IecQuaterDetails> detailForTotalNoOfUnit = new ArrayList<>();
+            List<IecQuaterDetails> iecReportDetailOfRestQuater = iecService.getIecQprActBasedOnActIdAndQtrId(iecActivitiesApproved.get(0).getId(), quarterId);
+            if (iecReportDetailOfRestQuater != null) {
+                Collections.sort(iecReportDetailOfRestQuater,
+                        (o1, o2) -> o1.getQprIecDetailsId() - o2.getQprIecDetailsId());
+                detailForTotalNoOfUnit = getTotalUnitAndExpIncurredInAllQtrIec(detailForTotalNoOfUnit,
+                		iecReportDetailOfRestQuater);
+                		model.addAttribute("DEATIL_FOR_TOTAL_NO_OF_UNIT", detailForTotalNoOfUnit.get(0));
+            } else {
+                model.addAttribute("DEATIL_FOR_TOTAL_NO_OF_UNIT", null);
+            }
+            /*----------------------------end here-------------------------------------------------- */
+            
             model.addAttribute("CEC_APPROVED_ACTIVITY", iecActivitiesApproved.get(0));
             model.addAttribute("CEC_APPROVED_ACT_ID", iecActivitiesApproved.get(0).getId());
-            IecQuater iecQuaterProgressReport = progressReportService
-                    .getSatcomProgress(iecActivitiesApproved.get(0).getId(), quarterId);
-            if (iecQuaterProgressReport != null) {
-                Collections.sort(iecQuaterProgressReport.getIecQuaterDetails(),
-                        (o1, o2) -> o1.getQprIecDetailsId() - o2.getQprIecDetailsId());
+            IecQuater iecQuaterProgressReport = progressReportService.getSatcomProgress(iecActivitiesApproved.get(0).getId(), quarterId);
                 model.addAttribute("IEC_ACTIVITY_PROGRESS", iecQuaterProgressReport);
-            } else {
-                if (iecQuater.getIecQuaterDetails() != null)
-                    iecQuater.getIecQuaterDetails().clear();
-            }
+          
             /*
              * used to get previous data stored which is then use to validate the
              * expenditure incurred
@@ -253,7 +261,33 @@ public class ProgressReportController {
         }
     }
 
-    @RequestMapping(value = "iecQtrProgressReportPost", method = RequestMethod.POST)
+    private List<IecQuaterDetails> getTotalUnitAndExpIncurredInAllQtrIec(List<IecQuaterDetails> detailForTotalNoOfUnit,
+			List<IecQuaterDetails> iecReportDetailOfRestQuater) {
+    	int count = 0;
+  		  detailForTotalNoOfUnit.add(new IecQuaterDetails());  
+            
+        for (int j = 0; j < iecReportDetailOfRestQuater.size(); j++) {
+            if (count == 1 ) {
+                count = 0;
+            }
+            for (int i = count; i < count + 1; i++) {
+                if (detailForTotalNoOfUnit.get(i).getExpenditureIncurred() != null && iecReportDetailOfRestQuater.get(j).getExpenditureIncurred() != null) {
+                    detailForTotalNoOfUnit.get(i)
+                            .setExpenditureIncurred(detailForTotalNoOfUnit.get(i).getExpenditureIncurred()
+                                    + iecReportDetailOfRestQuater.get(j).getExpenditureIncurred());
+                } else if((detailForTotalNoOfUnit.get(i).getExpenditureIncurred() == null || detailForTotalNoOfUnit.get(i).getExpenditureIncurred() == 0 ) && iecReportDetailOfRestQuater.get(j).getExpenditureIncurred() == null) {
+                	 detailForTotalNoOfUnit.get(i).setExpenditureIncurred(0);
+                }else {
+                	if(iecReportDetailOfRestQuater.get(j).getExpenditureIncurred() != null)
+                    detailForTotalNoOfUnit.get(i).setExpenditureIncurred(iecReportDetailOfRestQuater.get(j).getExpenditureIncurred() + 0);
+                }
+            }
+            ++count;
+        }
+        return detailForTotalNoOfUnit;
+	}
+
+	@RequestMapping(value = "iecQtrProgressReportPost", method = RequestMethod.POST)
     public String iecQtrProgressReportPostQuaterly(@ModelAttribute("IEC_ACTIVITY_QUATER") IecQuater iecQuater,
                                                    Model model, HttpServletRequest request, RedirectAttributes re) {
     	if (!iecQuater.getOrigin().equalsIgnoreCase("save")) {

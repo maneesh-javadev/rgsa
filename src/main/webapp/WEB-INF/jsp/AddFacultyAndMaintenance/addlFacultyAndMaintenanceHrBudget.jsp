@@ -157,7 +157,7 @@ function validateCeilingValue(count){
 		}
 	}
 
-function freezeAndUnfreeze(obj){
+function freezeAndUnfreeze(obj){o
 	$("input").prop('disabled', false);
 	$('#textarea').attr('disabled',false);
 	document.getElementById("dbFileName").value = obj;
