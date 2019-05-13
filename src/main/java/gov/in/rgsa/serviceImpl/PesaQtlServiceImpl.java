@@ -35,7 +35,7 @@ public class PesaQtlServiceImpl implements PesaQtlService {
         qParams.put("quarterId", quarterId);
         qParams.put("stateCode", userPreference.getStateCode());
         qParams.put("yearId", finYearId);
-        qParams.put("userType", userType);
+        qParams.put("userType", Users.getTypeForCEC());
 
         List<QprQuartProgress> qprQuarts = commonRepository.findAll("FETCH_QPR_PESA", qParams);
         Map<String, Object> response = new HashMap<>();

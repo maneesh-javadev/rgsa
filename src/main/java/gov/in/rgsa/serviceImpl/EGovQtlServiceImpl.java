@@ -33,7 +33,7 @@ public class EGovQtlServiceImpl implements EGovQtlService {
         qParams.put("quarterId", quarterId);
         qParams.put("stateCode", userPreference.getStateCode());
         qParams.put("yearId", finYearId);
-        qParams.put("userType", userType);
+        qParams.put("userType", Users.getTypeForCEC());
         List<QprEGovResponse> qprEGovs = commonRepository.findAll("FETCH_QPR_EGOV_SUPPORT", qParams);
         Map<String, Object> response = new HashMap<>();
         List<Map<String, Object>> expList = new ArrayList<>();
