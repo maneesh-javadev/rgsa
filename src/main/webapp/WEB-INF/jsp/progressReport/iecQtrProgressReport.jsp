@@ -162,6 +162,10 @@ function validateWithCorrespondingFund(){
 											</tr>
 									</tbody>
 								</table>
+								<!-- HIDDEN FIELDS -->
+								<input type="hidden" name="qprIecId" value="${IEC_ACTIVITY_PROGRESS.qprIecId}" />
+								<input type="hidden" name="iecQuaterDetails.qprIecDetailsId" value="${IEC_ACTIVITY_PROGRESS.iecQuaterDetails.qprIecDetailsId}" />
+								
 								<div class="text-right">
 									<button type="button" onclick="saveAndGetDataQtrRprt('save')" id="saveButtn"
 										class="btn bg-green waves-effect">SAVE</button>
