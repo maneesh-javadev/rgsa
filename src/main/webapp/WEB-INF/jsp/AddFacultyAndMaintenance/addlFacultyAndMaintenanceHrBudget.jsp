@@ -110,6 +110,13 @@ function validateDistricts(){
 		$('#districtSupportedId').val('');
 		$('#districtSupportedId').focus();
 	}
+	
+	 if($('#districtSupportedId').val() != ""){
+		 if(($('#total_fund_dprc').val() / $('#districtSupportedId').val()) > 1000000){
+			alert("Total unit cost for DPRC per district should be less than 1000000.Either change number of district or data in DPRC section.");
+			$('#districtSupportedId').val('');
+			}
+	 }
 }	
 	
 function calculateGrandTotal() {
@@ -157,7 +164,7 @@ function validateCeilingValue(count){
 		}
 	}
 
-function freezeAndUnfreeze(obj){o
+function freezeAndUnfreeze(obj){
 	$("input").prop('disabled', false);
 	$('#textarea').attr('disabled',false);
 	document.getElementById("dbFileName").value = obj;
@@ -216,6 +223,11 @@ function validationOnSubmit(){
 	}else if(!flag){
 		alert("Fill the domain details first.");
 		return flag;
+	}
+	
+	if($('#districtSupportedId').val() == "" && $('#total_fund_dprc').val() != '' && $('#total_fund_dprc').val() != 0){
+		alert('No. of districts supported For DPRC should not be ')
+		return false;
 	}
 	
 	/* this is to validate if full form */
