@@ -67,7 +67,7 @@ function calculateProposedFund(obj) {
 
 function calculateTotalFundSpmu() {
 	var count = $("#countSpmuId").val();
-	var total_spmu_fund = 0;
+	var total_spmu_fund=0;
 	for (var i = 0; i < count; i++) {
 		if($("#fundId_" + i).val() != null && $("#fundId_" + i).val() != ""){
 			total_spmu_fund += +$("#fundId_" + i).val();
@@ -79,7 +79,7 @@ function calculateTotalFundSpmu() {
 
 function calculateTotalFundDpmu() {
 	var count = $("#countDpmuId").val();
-	var total_dpmu_fund = 0;
+	var total_dpmu_fund=0;
 	for (var i = 0; i < count; i++) {
 		if($("#fundId_"+(i + +$("#countSpmuId").val())).val() != null && $("#fundId_"+(i + +$("#countSpmuId").val())).val() != ""){
 			total_dpmu_fund += +$("#fundId_"+(i + +$("#countSpmuId").val())).val();
@@ -109,7 +109,7 @@ function validateCielingValue(obj) {
 		document.getElementById("fundId_" + obj).value = 0;
 	}
 	if (total_dpmu_unit_cost > 35000 * $('#districtSupportedId').val()) {
-		alert("Total unit cost for DPMU should be less than 35,000");
+		alert("Total unit cost for DPMU per district should be less than 35,000");
 		document.getElementById("unitCostId_" + obj).value = 0;
 		document.getElementById("fundId_" + obj).value = 0;
 	}
@@ -152,9 +152,31 @@ function calculateGrandTotal() {
 };
 
 function validateDistricts(){
+	var total_dpmu_unit_cost=0;
+	for (var i = 0; i < +$("#countDpmuId").val(); i++) {
+		if(+$("#unitCostId_"+(i + +$("#countSpmuId").val())).val() != "" && $("#unitCostId_"+(i + +$("#countSpmuId").val())).val() != null){
+			total_dpmu_unit_cost += +document.getElementById("unitCostId_" + (i + +$("#countSpmuId").val())).value;
+		}
+	}
+	
 	if(+$('#districtSupportedId').val() > +$('#districtsInState').val()){
 		alert('District supported should be less than or equal to total districts in state : ' + $('#districtsInState').val());
 		$('#districtSupportedId').val('');
 		$('#districtSupportedId').focus();
 	}
+	
+	if($('#districtSupportedId').val() != ''){
+		if(total_dpmu_unit_cost > 35000*$('#districtSupportedId').val()){
+			alert('Total unit cost for DPMU per district should be less than 35,000.Either change number of district or unit cost.');
+			$('#districtSupportedId').val('');
+		}
+	}
 }	
+
+function validationOnSubmit(){
+	
+	if($('#districtSupportedId').val() == "" && $('#total_fund_dpmu').val() != ''){
+		alert('No. of districts supported For DPMU should not be ')
+		return false;
+	}
+}

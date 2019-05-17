@@ -77,11 +77,12 @@
                                     </c:if>
                                 </div>
                                 <div class="col-md-offset-2 text-right">
-                                    <c:if test="${ !IEC_ACTIVITY.getFreeze() }"><input type="submit" name="action" value="SAVE"
+                                
+                                    <c:if test="${planUtil.isNotSubmitted()}"><c:if test="${ !IEC_ACTIVITY.getFreeze() }"><input type="submit" name="action" value="SAVE"
                                                                                        class="btn bg-green waves-effect"/></c:if>
                                     <c:if test="${  IEC_ACTIVITY.getOwnData() }"><input type="submit" name="action"
                                                                                         value="${ IEC_ACTIVITY.getFreeze() ? 'UNFREEZE':'FREEZE'}"
-                                                                                        class="btn bg-green waves-effect"/></c:if>
+                                                                                        class="btn bg-green waves-effect"/></c:if></c:if> 
                                     <button type="button" onclick="onClose('home.html?<csrf:token uri='home.html'/>')"
                                             class="btn bg-orange waves-effect">
                                         <spring:message code="Label.CLOSE" text="Close" htmlEscape="true"/>

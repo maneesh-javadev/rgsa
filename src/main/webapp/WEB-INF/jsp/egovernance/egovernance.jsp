@@ -24,7 +24,7 @@
 					</div>
 					<form:form method="post" name="egovernance"
 						action="egovernancesupportgroup.html"
-						modelAttribute="EGOVERN_MODEL">
+						modelAttribute="EGOVERN_MODEL" onsubmit="return validationOnSubmit()">
 						<input type="hidden" name="<csrf:token-name/>"
 							value="<csrf:token-value uri="egovernancesupportgroup.html" />" />
 						<c:set var="count" value="0" scope="page" />
@@ -332,7 +332,7 @@
 										test="${eGovActivity.status eq false || empty eGovActivity.status}">
 
 										<button type="submit" class="btn bg-green waves-effect"
-											id="saveId" onclick="validateMonth(${count});">
+											id="saveId">
 											<spring:message code="Label.SAVE" htmlEscape="true" />
 										</button>
 										<c:if test="${eGovActivity.status  != undefined}">
