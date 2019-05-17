@@ -194,7 +194,7 @@
 									</td>
 									<td>
 										<spring:bind path="QPR_INSTITUTIONALINFRAQUATERLY.additionalRequirement" >
-										<input type="text" onkeypress="return isNumber(event)" id="nbs_addReq" class="form-control" name="${status.expression}"  value="${status.value}" onblur="calculcate_total(null,'nbs')" placeholder=" 25% of Grand Total cost " maxlength="8" style="text-align:right;" autocomplete="off"/>
+										<input type="text" onkeypress="return isNumber(event)" id="nbs_addReq" class="form-control" name="${status.expression}"  value="${status.value}" onblur="calculcate_total(null,'nbs')"  maxlength="8" style="text-align:right;" autocomplete="off"/>
 										</spring:bind>
 										<span class="errormsg" id="error_nbs_addReq"></span>
 									</td>
@@ -353,7 +353,7 @@
 									</td>
 									<td>
 										<spring:bind path="QPR_INSTITUTIONALINFRAQUATERLY.additionalRequirementDPRC" >
-										<input type="text" onkeypress="return isNumber(event)" id="nbd_addReq" class="form-control" name="${status.expression}"  value="${status.value}" onblur="calculcate_total(null,'nbd')" placeholder=" 25% of Grand Total cost " maxlength="8" style="text-align:right;" autocomplete="off"/>
+										<input type="text" onkeypress="return isNumber(event)" id="nbd_addReq" class="form-control" name="${status.expression}"  value="${status.value}" onblur="calculcate_total(null,'nbd')"  maxlength="8" style="text-align:right;" autocomplete="off"/>
 										</spring:bind>
 										<span class="errormsg" id="error_nbd_addReq"></span>
 									</td>

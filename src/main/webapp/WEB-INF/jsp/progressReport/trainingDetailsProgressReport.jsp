@@ -165,7 +165,7 @@
 									</td>
 									<td>
 										<spring:bind path="QPR_TRAINING_DETAILS.additionalRequirement" >
-										<input type="text" onkeypress="return isNumber(event)" id="addReq" class="form-control" name="${status.expression}"  value="${status.value}" onblur="calculcate_total(null,'expenditureIncurred')" placeholder=" 25% of Grand Total cost " maxlength="8" style="text-align:right;" autocomplete="off"/>
+										<input type="text" onkeypress="return isNumber(event)" id="addReq" class="form-control" name="${status.expression}"  value="${status.value}" onblur="calculcate_total(null,'expenditureIncurred')"  maxlength="8" style="text-align:right;" autocomplete="off"/>
 										</spring:bind>
 										<span class="errormsg" id="error_addReq"></span>
 									</td>

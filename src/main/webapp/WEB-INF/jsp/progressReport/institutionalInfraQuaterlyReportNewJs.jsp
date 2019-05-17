@@ -114,14 +114,14 @@ function calculcate_total(subtotal,id){
 	if(temp!=null && temp!=undefined && temp!=""){
 		addReq=parseInt(temp);	
 		approvedAddReq=id=="nbs"?parseInt('${balAddiReqSPRC}'):parseInt('${balAddiReqDPRC}');
-		if( addReq>((subtotal*25)/100))
+		/* if( addReq>((subtotal*25)/100))
 		{
 			$("#"+id+"_addReq").val("");
 			$("#error_"+id+"_addReq").text("Additional Requirement must be equal or lesss then 25% of Sub-Total cost");
 			$("#error_"+id+"_addReq").addClass('errormsg show');
 			addReq=0;
 			
-		}else if(approvedAddReq<addReq){
+		}else */ if(approvedAddReq<addReq){
 			$("#"+id+"_addReq").val("");
 			$("#error_"+id+"_addReq").text("Additional Requirement must be less then approved amount");
 			$("#error_"+id+"_addReq").addClass('errormsg show');
