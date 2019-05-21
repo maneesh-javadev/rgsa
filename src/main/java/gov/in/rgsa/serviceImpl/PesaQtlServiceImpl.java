@@ -1,12 +1,16 @@
 package gov.in.rgsa.serviceImpl;
 
+import gov.in.rgsa.controller.ProgressReportController;
 import gov.in.rgsa.dao.CommonRepository;
 import gov.in.rgsa.entity.*;
 import gov.in.rgsa.inbound.QprEGovReq;
 import gov.in.rgsa.inbound.QprQuartReply;
 import gov.in.rgsa.outbound.QprQuartProgress;
 import gov.in.rgsa.service.PesaQtlService;
+import gov.in.rgsa.service.ProgressReportService;
 import gov.in.rgsa.user.preference.UserPreference;
+
+import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,6 +26,9 @@ public class PesaQtlServiceImpl implements PesaQtlService {
 
     @Autowired
     UserPreference userPreference;
+    
+    @Autowired
+    ProgressReportService progressReportService;
 
     @Autowired
     CommonRepository commonRepository;
@@ -30,12 +37,13 @@ public class PesaQtlServiceImpl implements PesaQtlService {
     @Override
     public Map<String, Object> getPesaFormMap(Integer quarterId) {
         Map<String, Object> qParams = new HashMap<>();
+        int installmentNo = quarterId > 2 ? 2 : 1;
         String userType = userPreference.getUserType();
         Integer finYearId = userPreference.getFinYearId();
         qParams.put("quarterId", quarterId);
         qParams.put("stateCode", userPreference.getStateCode());
         qParams.put("yearId", finYearId);
-        qParams.put("userType", Users.getTypeForCEC());
+        qParams.put("userType", "C");
 
         List<QprQuartProgress> qprQuarts = commonRepository.findAll("FETCH_QPR_PESA", qParams);
         Map<String, Object> response = new HashMap<>();
@@ -49,9 +57,10 @@ public class PesaQtlServiceImpl implements PesaQtlService {
                 isNew = isNew && (qprQuart.qprPesaId==-1);
                 response.put("quarterId", quarterId);
                 response.put("additional", qprQuart.additionalRequirement);
-                response.put("isFreeze", qprQuart.getIsFreeze());  // @TODO
+                response.put("additionalState", qprQuart.additionalRequirementState);
+                response.put("isFreeze", qprQuart.getIsFreeze()); 
                 response.put("userType", userType);
-                response.put("addReqUsed", qprQuart.getAddReqUsed());
+                response.put("addReqUsed", qprQuart.getAddreqused());
                 topInserted = true;
             }
             Map<String, Object> single = new HashMap<>();
@@ -70,6 +79,33 @@ public class PesaQtlServiceImpl implements PesaQtlService {
         }
         response.put("expenditures", expList);
         response.put("isNew", isNew);
+        
+        // added by aashish barua to apply validation on fund allocation
+        List<QuaterWiseFund> fundOfQtr1And2=new ArrayList();
+        List<StateAllocation> stateAllocation=new ArrayList();
+        stateAllocation=progressReportService.fetchStateAllocationData(6, installmentNo,progressReportService.getCurrentPlanCode());
+         if(quarterId > 2) {
+        	 StateAllocation stateAllocationFirst=progressReportService.fetchStateAllocationData(6, 1,progressReportService.getCurrentPlanCode()).get(0);
+        	 fundOfQtr1And2=progressReportService.fetchTotalQuaterWiseFundData(userPreference.getStateCode(), 6);
+        	 double fund_used_qtr_1_2=new ProgressReportController().calTotalFundUsedInQtr1And2(fundOfQtr1And2);
+        	 if(stateAllocationFirst != null)
+        		 response.put("fundAllocatedFirstInstallment", stateAllocationFirst.getFundsAllocated());
+        	 response.put("fundUsedInQtr1_2", fund_used_qtr_1_2);
+         }
+         if(CollectionUtils.isNotEmpty(stateAllocation))
+        	 response.put("fundAllocatedCurrentInstallment", stateAllocation.get(0).getFundsAllocated());
+         
+         List<QuaterWiseFund> quaterWiseFund = new ArrayList<>();
+         if (quarterId == 1 || quarterId == 3) {
+             quaterWiseFund = progressReportService.fetchQuaterWiseFundData(userPreference.getStateCode(),
+                     (quarterId + 1), 6);
+         } else {
+             quaterWiseFund = progressReportService.fetchQuaterWiseFundData(userPreference.getStateCode(),
+                     (quarterId - 1), 6);
+         }
+         if (CollectionUtils.isNotEmpty(quaterWiseFund)) {
+             response.put("fundUsedInAdjcentQtr", quaterWiseFund.get(0).getFunds());
+         }
         return response;
     }
 
@@ -137,6 +173,9 @@ public class PesaQtlServiceImpl implements PesaQtlService {
             qprPesaDetails.setPesaPlanDetails(pesaPlanDetails);
             commonRepository.save(qprPesaDetails);
         }
+        
+        /* this method is to insert and update record in quater_wise_fund table*/
+        progressReportService.saveQprWiseFundData(userPreference.getStateCode(), userPreference.getFinYearId(), qprQuartReply.getQuarterId(), 6);
 
     }
 

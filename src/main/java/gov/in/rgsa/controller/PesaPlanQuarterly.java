@@ -1,16 +1,22 @@
 package gov.in.rgsa.controller;
 
 import gov.in.rgsa.entity.ExtentOfCoverage;
+import gov.in.rgsa.entity.QuaterWiseFund;
+import gov.in.rgsa.entity.StateAllocation;
 import gov.in.rgsa.inbound.QprQuartReply;
 import gov.in.rgsa.outbound.MsgReply;
 import gov.in.rgsa.service.PesaQtlService;
 import gov.in.rgsa.service.ProgressReportService;
+
+import org.apache.tiles.request.collection.CollectionUtil;
+import org.owasp.esapi.util.CollectionsUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Map;
 
 @Controller
@@ -35,7 +41,6 @@ public class PesaPlanQuarterly {
 	@ResponseBody
 	@RequestMapping(value="fetchQuartExp", method = RequestMethod.GET, produces=MediaType.APPLICATION_JSON_VALUE)
 	public MsgReply<Object> getQuartExp(@RequestParam("qid") Integer quarterId) {
-
 		try {
 			Map<String, Object> response = pesaQtlService.getPesaFormMap(quarterId);
 			return MsgReply.okMessage(response);

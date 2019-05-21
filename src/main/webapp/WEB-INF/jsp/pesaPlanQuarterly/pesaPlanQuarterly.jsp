@@ -51,17 +51,14 @@
 								<thead>
 									<tr>
 										<th class="text-center"><strong>Designation</strong></th>
-										<th class="text-center"><strong>No. of Units Approved<br>
-												A
+										<th class="text-center"><strong>No. of Units Approved
 										</strong></th>
-										<th class="text-center"><strong>Unit Cost per
-												month (in Rs) Approved<br> B
+										<th class="text-center"><strong>Fund sanctioned
 										</strong></th>
 										<th class="text-center"><strong>No. of Units
-												Completed<br> C
+												Completed
 										</strong></th>
-										<th class="text-center"><strong>Expenditure (in
-												Rs) <br>D <= B * C
+										<th class="text-center"><strong>Expenditure
 										</strong></th>
 									</tr>
 								</thead>
@@ -81,14 +78,14 @@
 											style="text-align: center;">{{expenditure.unitApproved}}</span>
 										</td>
 										<td class="text-center"><span
-											style="text-align: center;">{{expenditure.costApproved}}</span>
+											style="text-align: center;">{{expenditure.funds}}</span>
 										</td>
 										<td class="text-right">
-											<input type="number" class="no-scroll" name="unitCompleted_{{$index}}"
+											<input type="number" class="no-scroll form-control" name="unitCompleted_{{$index}}"
 												data-ng-disabled="formObj.isFreeze"
 												data-ng-model="expenditure.unitCompleted"
 												class="form-control" placeholder="Units Completed"
-												min="0"
+												min="0" style="text-align: right"
 												max="{{expenditure.unitApproved}}" />
 
 											<span class="help-block" data-ng-messages="pageForm['unitCompleted_' + $index].$error">
@@ -96,16 +93,16 @@
 											</span>
 										</td>
 										<td class="text-right">
-											<input type="number" class="no-scroll" name="expenditure_{{$index}}"
+											<input type="number" class="no-scroll form-control" name="expenditure_{{$index}}"
 											data-ng-disabled="formObj.isFreeze"
 											data-ng-model="expenditure.expenditure"
-											class="form-control"
+											class="form-control" style="text-align: right"
 											placeholder=" <= {{expenditure.funds - expenditure.spent}} "
-											min="0"
-											max="{{expenditure.funds - expenditure.spent}}"/>
-											<span class="help-block" data-ng-messages="pageForm['expenditure_' + $index].$error">
+											min="0" data-ng-keyup="validatingExpenditureOnNoOfUnit($index);valWithCorrespondingFund($index);validateWithFundAllocated($index)"
+											/><!-- max="{{expenditure.funds - expenditure.spent}}" -->
+											<!-- <span class="help-block" data-ng-messages="pageForm['expenditure_' + $index].$error">
 												<span ng-message="max" class="text-danger">Above allowed limit</span>
-											</span>
+											</span> -->
 										</td>
 									</tr>
 
@@ -116,7 +113,7 @@
 												<label>Additional Requirement</label>
 											</div>
 										</td>
-										<td></td>
+										<td><div align="center">{{formObj.additionalState}}</div></td>
 										<td></td>
 										<td class="text-right">
 											<input type="number" 
@@ -125,11 +122,12 @@
 												data-ng-model="formObj.additional"
 												placeholder="25% of Total Cost"
 												name="additional"
-												min="0"
-												max="{{0.25*getExpenditure()}}"/>
-											<span class="help-block" data-ng-messages="pageForm.additional.$error">
+												data-ng-keyup="validateAdditionalReq()"
+												min="0"  style="text-align: right"
+												/><!-- max="{{0.25*getExpenditure()}}" -->
+											<!-- <span class="help-block" data-ng-messages="pageForm.additional.$error">
 												<span ng-message="max" class="text-danger">Above allowed limit i.e. {{0.25*getExpenditure()}}</span>
-											</span>
+											</span> -->
 										</td>
 										<td></td>
 									</tr>

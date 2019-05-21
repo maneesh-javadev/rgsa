@@ -177,11 +177,46 @@ publicModule.controller("pesaPlanQController", [ '$scope', '$http',
     $scope.getExpenditure = getExpenditure;
     $scope.getTotalExpenditure = getTotalExpenditure;
 
+    //added by aashish barua
+    $scope.validatingExpenditureOnNoOfUnit=function(obj){
+    	let noOfUnit=$scope.formObj.expenditures[obj].unitCompleted;
+    	let expenditureIncurred=$scope.formObj.expenditures[obj].expenditure;
+    	if((noOfUnit == '' || noOfUnit == null) && expenditureIncurred != ''){
+    		toastr.error("Please fill no of unit first.");
+    		$scope.formObj.expenditures[obj].expenditure='';
+    	}
+    }
 
+    $scope.validateAdditionalReq=function(){
+    	if(+$scope.formObj.additional + +$scope._formObj.addReqUsed > $scope._formObj.additionalState){
+    		toastr.error("Additional requirement should not exceed : "+(+$scope._formObj.additionalState - +$scope._formObj.addReqUsed) );
+    		$scope.formObj.additional='';
+    	}
+    }
 
+    $scope.valWithCorrespondingFund=function(index){
+    	if($scope._formObj.expenditures[index].funds < +$scope._formObj.expenditures[index].spent + +$scope.formObj.expenditures[index].expenditure){
+    		toastr.error("Expenditure incurrred should not exceed : "+(+$scope._formObj.expenditures[index].funds - +$scope._formObj.expenditures[index].spent) );
+    		$scope.formObj.expenditures[index].expenditure='';
+    	}
+    }
 
-
-
+    $scope.validateWithFundAllocated=function(index){
+    	let total_expenditure = getExpenditure();
+    	let fund_allocated = ['fundAllocatedCurrentInstallment'] in $scope._formObj ? $scope._formObj.fundAllocatedCurrentInstallment : 0;
+    	if($scope._formObj.quarterId > 2){
+    		let fund_remaining_in_first_installment = +$scope._formObj.fundAllocatedFirstInstallment - +$scope._formObj.fundUsedInQtr1_2;
+    		fund_allocated += +fund_remaining_in_first_installment;
+    	}
+    		if(fund_allocated != 0 && fund_allocated != undefined){
+    			if(fund_allocated < total_expenditure){
+        			toastr.error("Expenditure incurrred should not exceed : "+(total_expenditure - +$scope._formObj.expenditures[index].expenditure) +" as per fund allocated in plan alloccation.");
+        			$scope._formObj.expenditures[index].expenditure='';
+        		}
+    		}else{
+    			toastr.error("Either fund is not allocated or fund is finished.");
+    		}
+    }
 
 
 
