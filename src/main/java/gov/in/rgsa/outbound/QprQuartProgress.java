@@ -18,10 +18,11 @@ public class QprQuartProgress {
 	public Integer noOfUnitsFilled ;
 	public Double expenditureIncurred ;
 	public Integer additionalRequirement ;
+	public Integer additionalRequirementState ;
 	public Boolean isFreeze;
 	private Double funds;
 	private Double spent;
-	private Integer addReqUsed;
+	private Integer addreqused;
 	
 	public Integer getPesaPlanDetailsId() {
 		return pesaPlanDetailsId;
@@ -110,13 +111,12 @@ public class QprQuartProgress {
 		this.spent = spent;
 	}
 
-	public Integer getAddReqUsed() {
-		return addReqUsed;
-	}
-
-	public void setAddReqUsed(Integer addReqUsed) {
-		this.addReqUsed = addReqUsed;
-	}
+	/*
+	 * public Integer getAddReqUsed() { return addReqUsed; }
+	 * 
+	 * public void setAddReqUsed(Integer addReqUsed) { this.addReqUsed = addReqUsed;
+	 * }
+	 */
 
 	public Double getFunds() {
 		return funds;
@@ -124,5 +124,17 @@ public class QprQuartProgress {
 
 	public void setFunds(Double funds) {
 		this.funds = funds;
+	}
+	public Integer getAddreqused() {
+		return addreqused;
+	}
+	public void setAddreqused(Integer addreqused) {
+		this.addreqused = addreqused;
+	}
+	public Integer getAdditionalRequirementState() {
+		return additionalRequirementState;
+	}
+	public void setAdditionalRequirementState(Integer additionalRequirementState) {
+		this.additionalRequirementState = additionalRequirementState;
 	}
 }

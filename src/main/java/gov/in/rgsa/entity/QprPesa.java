@@ -63,6 +63,7 @@ import gov.in.rgsa.outbound.QprQuartProgress;
 				"    COALESCE(qpd.qpr_pesa_details_id, -1) \"qprPesaDetailsId\",  " +
 				"    COALESCE(qpd.no_of_units_filled, 0) \"noOfUnitsFilled\",  " +
 				"    COALESCE(qpd.expenditure_incurred, 0) \"expenditureIncurred\",  " +
+				"    COALESCE(pp.additional_requirement, 0) \"additionalRequirementState\" ,  " +
 				"    COALESCE(qp.additional_requirement, 0) \"additionalRequirement\" ,  " +
 				"    COALESCE(qp.is_freez, FALSE) \"isFreeze\", " +
 				"    ppd.funds*1.0 \"funds\", " +

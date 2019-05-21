@@ -587,19 +587,21 @@ public class ProgressReportServiceImpl implements ProgressReportService {
     }
 
 
-    public List<StateAllocation> fetchStateAllocationData(int componentId, int installmentNo) {
+    public List<StateAllocation> fetchStateAllocationData(int componentId, int installmentNo,int planCode) {
         Map<String, Object> params = new HashMap<>();
         params.put("componentId", componentId);
         params.put("installmentNo", installmentNo);
+        params.put("planCode", planCode);
         return commonRepository.findAll("FETCH_STATE_ALLOCATION_BY_COMP_ID_AND_INSTALL_NO", params);
     }
 
 
-    public List<StateAllocation> fetchStateAllocationData(int componentId, int subComponentId, int installmentNo) {
+    public List<StateAllocation> fetchStateAllocationData(int componentId, int subComponentId, int installmentNo,int planCode) {
         Map<String, Object> params = new HashMap<>();
         params.put("componentId", componentId);
         params.put("installmentNo", installmentNo);
         params.put("subComponentId", subComponentId);
+        params.put("planCode", planCode);
         return commonRepository.findAll("FETCH_STATE_ALLOCATION_BY_COMP_ID_AND_SUBCOMPID_AND_INSTALL_NO", params);
     }
 
@@ -943,6 +945,19 @@ public class ProgressReportServiceImpl implements ProgressReportService {
         }
 
     }
+
+	@Override
+	public int getCurrentPlanCode() {
+		Map<String,Object> map=new HashMap();
+		map.put("stateCode", userPreference.getStateCode());
+		map.put("yearId",userPreference.getFinYearId());
+		Plan plan= (Plan)commonRepository.find("GET_PLAN_CURRENT", map);
+		if(plan == null) {
+			return 0;
+		}else {
+			return plan.getPlanCode();
+		}
+	}
     
 
 }

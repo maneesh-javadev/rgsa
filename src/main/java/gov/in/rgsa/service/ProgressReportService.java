@@ -85,9 +85,9 @@ public interface ProgressReportService {
 
 	public List<QuaterWiseFund> fetchTotalQuaterWiseFundData(Integer stateCode, int componentId);
 
-	public List<StateAllocation> fetchStateAllocationData(int componentId, int installmentNo);
+	public List<StateAllocation> fetchStateAllocationData(int componentId, int installmentNo, int planCode);
 	
-	public List<StateAllocation> fetchStateAllocationData(int componentId, int subComponentId ,int installmentNo);
+	public List<StateAllocation> fetchStateAllocationData(int componentId, int subComponentId ,int installmentNo, int planCode);
 
 	public List<QprCbActivityDetails> getQprTrainActBasedOnActIdAndQtrId(Integer cbActivityId, int quarterId);
 
@@ -112,4 +112,7 @@ public interface ProgressReportService {
      Map<String,Object> fetchTrainingDetailsCEC(Integer qtrId);
      
      public void savetrainingProgressReport(QuarterTrainings quarterTrainings);
+     
+     // newly added function to get plan code
+      public int getCurrentPlanCode();
 }
