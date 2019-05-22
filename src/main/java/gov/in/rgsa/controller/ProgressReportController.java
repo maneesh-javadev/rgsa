@@ -198,12 +198,12 @@ public class ProgressReportController {
     public String qprGetFormIecQtrProgressReport1(@ModelAttribute("IEC_ACTIVITY_QUATER") IecQuater iecQuater,
                                                   Model model) {
         int quarterId = 0;
-        int installmentNo = (quarterId < 3) ? 1 : 2; // installment number for qtrId 1 & 2 = 1 and 3 & 4 = 2
         if (iecQuater.getQtrId() != null) {
             quarterId = iecQuater.getQtrId();
         } else {
             quarterId = 0;
         }
+        int installmentNo = quarterId < 3 ? 1 : 2; // installment number for qtrId 1 & 2 = 1 and 3 & 4 = 2
         model.addAttribute("QUATER_DETAILS", progressReportService.getQuarterDurations());
         List<QuaterWiseFund> totalQuatorWiseFund = new ArrayList<>();
         List<IecActivity> iecActivitiesApproved = iecService.fetchApprovedIec();// this gives CEC approved data.
