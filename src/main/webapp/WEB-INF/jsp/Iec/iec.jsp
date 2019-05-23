@@ -65,6 +65,16 @@
                                             disabled="${ IEC_ACTIVITY.getFreeze() ? 'true' : 'false'}"
                                             id="amount_box"/>
                             </div>
+                            <c:if test="${ userPreference.isMOPR() }">
+                            <div class="form-group">
+                                <label for="is_approved"><spring:message code="Label.IsApproved"
+                                                                        htmlEscape="true"/>:</label>
+                                <form:checkbox path="isApproved"
+                                            class="form-control-check"
+                                            disabled="${ IEC_ACTIVITY.getFreeze() ? 'true' : 'false'}"
+                                            id="isApprovedId"/>
+                            </div>
+                            </c:if>
                             <div class="form-group">
                                 <div class="col-md-4">
                                     <c:if test="${ userPreference.isMOPR() }">
@@ -78,7 +88,7 @@
                                 </div>
                                 <div class="col-md-offset-2 text-right">
                                 
-                                    <c:if test="${planUtil.isNotSubmitted()}"><c:if test="${ !IEC_ACTIVITY.getFreeze() }"><input type="submit" name="action" value="SAVE"
+                                    <c:if test="${planUtil.isNotSubmitted() or planUtil.pendingAtMOPR()}"><c:if test="${ !IEC_ACTIVITY.getFreeze() }"><input type="submit" name="action" value="SAVE"
                                                                                        class="btn bg-green waves-effect"/></c:if>
                                     <c:if test="${  IEC_ACTIVITY.getOwnData() }"><input type="submit" name="action"
                                                                                         value="${ IEC_ACTIVITY.getFreeze() ? 'UNFREEZE':'FREEZE'}"

@@ -16,6 +16,7 @@ public class IecFormModel {
 	private Boolean isFreeze=false;
 	private String action=SAVE;
 	private Boolean isOwnData=true;
+	private Boolean isApproved=false;
 
 	public Integer getIecId() {
 		return iecId;
@@ -95,5 +96,13 @@ public class IecFormModel {
 		for(Integer deletion: deleted){
 			deleter.accept(deletion);
 		}
+	}
+
+	public Boolean getIsApproved() {
+		return isApproved;
+	}
+
+	public void setIsApproved(Boolean isApproved) {
+		this.isApproved = isApproved;
 	}
 }

@@ -99,7 +99,8 @@ public class AdminAndFinancialDataCellController {
 			long totalOfFund =0;
 			for(int i= 0 ; i<activityDetailsForState.size(); i++)
 			 {
-				totalOfFund = totalOfFund + activityDetailsForState.get(i).getFunds();
+				if(activityDetailsForState.get(i).getFunds() != null)
+					totalOfFund = totalOfFund + activityDetailsForState.get(i).getFunds();
 				 
 				
 			 }
@@ -107,7 +108,8 @@ public class AdminAndFinancialDataCellController {
 				
 			 for(int i= 0 ; i<activityDetailsForMopr.size(); i++)
 			 {
-				 totalUnitCost = totalUnitCost + activityDetailsForMopr.get(i).getFunds();
+				 if(activityDetailsForMopr.get(i).getFunds() !=null)
+					 totalUnitCost = totalUnitCost + activityDetailsForMopr.get(i).getFunds();
 				 
 				
 			 }

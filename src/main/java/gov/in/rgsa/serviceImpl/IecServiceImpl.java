@@ -254,10 +254,14 @@ public class IecServiceImpl implements IecService {
 			iecActivityDetails = new IecActivityDetails();
 			iecActivityDetails.setIecActivity(iecActivity);
 			iecActivityDetails.setIsActive(true);
-			iecActivityDetails.setIsApproved(false);
 		}
 
 		// Set amount in both cases
+		if(userPreference.getUserType().equalsIgnoreCase("M")) {
+			iecActivityDetails.setIsApproved(iecFormModel.getIsApproved());
+		}else {
+			iecActivityDetails.setIsApproved(false);
+		}
 		iecActivityDetails.setTotalAmountProposed(iecFormModel.getAmount());
 		commonRepository.save(iecActivityDetails);
 

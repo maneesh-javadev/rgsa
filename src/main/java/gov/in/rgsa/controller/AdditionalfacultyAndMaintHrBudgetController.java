@@ -1,5 +1,6 @@
 package gov.in.rgsa.controller;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -161,6 +162,8 @@ public class AdditionalfacultyAndMaintHrBudgetController {
 			institueInfraHrActivityMopr=additionalFacultyAndMainService.fetchInstituteHrActivity("M");
 			institueInfraHrActivityDetailsState=additionalFacultyAndMainService.fetchInstituteHrActivityDetails(institueInfraHrActivityState.get(0).getInstituteInfraHrActivityId());
 			institueInfraHrActivityDetailsMopr=additionalFacultyAndMainService.fetchInstituteHrActivityDetails(institueInfraHrActivityMopr.get(0).getInstituteInfraHrActivityId());
+			Collections.sort(institueInfraHrActivityState.get(0).gettIWiseProposedDomainExperts(), (o1,o2)-> o1.getTiWiseProposedDomainExpertsId() - o2.getTiWiseProposedDomainExpertsId());
+			Collections.sort(institueInfraHrActivityMopr.get(0).gettIWiseProposedDomainExperts(), (o1,o2)-> o1.getTiWiseProposedDomainExpertsId() - o2.getTiWiseProposedDomainExpertsId());
 			tIWiseProposedDomainExpertsState=institueInfraHrActivityState.get(0).gettIWiseProposedDomainExperts();
 			tIWiseProposedDomainExpertsMopr=institueInfraHrActivityMopr.get(0).gettIWiseProposedDomainExperts();
 			model.addAttribute("institueInfraHrActivityDetailsState", institueInfraHrActivityDetailsState);

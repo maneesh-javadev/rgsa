@@ -132,6 +132,8 @@ public class IecController {
                     .collect(Collectors.toSet()));
             iecFormModel.setAmount(iecActivityDetails.getTotalAmountProposed());
             iecFormModel.setFreeze(iecActivity.getIsFreez());
+            if(userType.equalsIgnoreCase("M"))
+            	iecFormModel.setIsApproved(iecActivityDetails.getIsApproved());
         }
         return iecActivity;
     }
