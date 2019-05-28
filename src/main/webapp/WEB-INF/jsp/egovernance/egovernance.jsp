@@ -119,7 +119,7 @@
 																path="eGovSupportActivityDetails[${index.index}].months"
 																type="text" onkeypress="return isNumber(event)"
 																class="active123 form-control" id="monthId_${index.index}"
-																onchange="validateMonth(${count});calculateProposedFund(${index.index})"
+																onchange="validateMonth(${index.index});calculateProposedFund(${index.index})"
 																style="text-align:right;"
 																disabled="${eGovActivity.status eq true}" /></td>
 														<td><form:input
