@@ -25,5 +25,19 @@ $(function () {
     });
     
 });
+
+function confirmNewPassword(){
+	if($('#newPasswordId').val() != $('#confirmPasswordId').val()){
+		alert('Confirmed password does not match with new password.');
+		$('#confirmPasswordId').val('');
+		$('#confirmPasswordId').focus();
+	}
+}
+
+function resetConfirmPassword(){
+	if($('#newPasswordId').val() == '' || $('#newPasswordId').val() ==null){
+		$('#confirmPasswordId').val('');
+	}
+}
    
     

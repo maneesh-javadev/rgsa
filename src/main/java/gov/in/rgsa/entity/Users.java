@@ -10,12 +10,14 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
 @Entity
 @Table(name = "users", schema = "rgsa")
+@NamedQuery(name="FETCH_USER_CREDENTAILS",query="from Users u where u.userId =:userId")
 public class Users implements Serializable {
 
 	private static final long serialVersionUID = 1L;

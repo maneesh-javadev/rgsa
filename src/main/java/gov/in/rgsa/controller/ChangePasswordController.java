@@ -31,9 +31,14 @@ public class ChangePasswordController {
 	@RequestMapping(value = "changepassword.html", method = RequestMethod.POST)
 	public String ChangePasswordModelPost(@ModelAttribute("CHANGE_PASSWORD_MODEL") ChangePasswordModel form,
 			Model model,RedirectAttributes re) {
-
-		service.changePassword(form);
-		re.addFlashAttribute(Message.UPDATE_KEY, Message.UPDATE_SUCCESS);
+		String result=service.changePassword(form);
+		if(result.equals("updated")) {
+			re.addFlashAttribute(Message.UPDATE_KEY, Message.UPDATE_SUCCESS);
+		}else if(result.equals("error")){
+			re.addFlashAttribute(Message.ERROR_KEY, "Something went wrong");
+		}else {
+			re.addFlashAttribute(Message.ERROR_KEY, "Old password doesnot match.");
+		}
 		return REDIRECT_CHANGE_PASSWORD;
 	}
 }

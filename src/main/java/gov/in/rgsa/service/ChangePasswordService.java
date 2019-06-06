@@ -4,5 +4,5 @@ import gov.in.rgsa.model.ChangePasswordModel;
 
 public interface ChangePasswordService {
 
-	public void changePassword(ChangePasswordModel model);
+	public String changePassword(ChangePasswordModel model);
 }
