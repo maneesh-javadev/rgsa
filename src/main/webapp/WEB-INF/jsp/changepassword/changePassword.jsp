@@ -30,14 +30,14 @@
 							<div class="form-group">
 								<div class="form-line">
 									<form:password path="newPassword" id="newPasswordId"
-										class="form-control" placeholder="Enter your new password" />
+										class="form-control" placeholder="Enter your new password" onchange="resetConfirmPassword()" />
 								</div>
 							</div>
 							<label for="password2"><spring:message code="Label.ReEnterPassword" htmlEscape="true" /></label>
 							<div class="form-group">
 								<div class="form-line">
-									<form:password path="confirmPassword" class="form-control"
-										placeholder="Re-enter your password" />
+									<form:password path="confirmPassword" class="form-control" id="confirmPasswordId"
+										placeholder="Re-enter your password" onchange="confirmNewPassword()" />
 								</div>
 							</div>
 							<div class="form-group text-right">
