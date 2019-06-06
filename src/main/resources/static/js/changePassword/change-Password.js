@@ -35,9 +35,7 @@ function confirmNewPassword(){
 }
 
 function resetConfirmPassword(){
-	if($('#newPasswordId').val() == '' || $('#newPasswordId').val() ==null){
-		$('#confirmPasswordId').val('');
-	}
+	$('#confirmPasswordId').val('');
 }
    
     
