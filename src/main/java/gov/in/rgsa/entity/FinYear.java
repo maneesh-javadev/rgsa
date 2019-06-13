@@ -3,10 +3,12 @@ package gov.in.rgsa.entity;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
 @Entity
 @Table(name = "fin_year", schema = "rgsa")
+@NamedQuery(name="FETCH_ALL_FIN_YEAR",query="from FinYear order by yearId desc")
 public class FinYear {
 
 	@Id

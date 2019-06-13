@@ -1,6 +1,7 @@
 package gov.in.rgsa.controller;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.ResourceBundle;
 
@@ -18,11 +19,14 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import gov.in.rgsa.dto.CustomError;
+import gov.in.rgsa.entity.FinYear;
 import gov.in.rgsa.entity.NodalOfficerDetails;
+import gov.in.rgsa.entity.StatePlanComponentsFunds;
 import gov.in.rgsa.entity.StatewiseEntitiesCount;
 import gov.in.rgsa.exception.RGSAException;
 import gov.in.rgsa.model.BasicInfoModel;
@@ -181,7 +185,7 @@ public class FacadeController {
 		_userPreference.setPlanCode(userPreference.getPlanCode());
 		_userPreference.setPlanStatus(userPreference.getPlanStatus());
 		_userPreference.setPlanVersion(userPreference.getPlanVersion());
-		
+		_userPreference.setFinYearList(userPreference.getFinYearList());
 		_userPreference.setStatePlanComponentsFunds(userPreference.getStatePlanComponentsFunds());
 		_userPreference.setPlansAreFreezed(userPreference.isPlansAreFreezed());
 		_userPreference.setCountPlanSubmittedByState(userPreference.getCountPlanSubmittedByState());
@@ -231,6 +235,13 @@ public class FacadeController {
 	@RequestMapping(value="fetchStatewiseEntitiesCount", method=RequestMethod.GET)
 	private StatewiseEntitiesCount fetchStatewiseEntitiesCount() {
 		return fileUploadService.getDataFromJsonFile();
+	}
+	
+	@RequestMapping(value="demoUrl", method=RequestMethod.POST)
+	private String changeFinYear(@RequestParam(value = "finYearId" ,required = false) String finYearId,@ModelAttribute("FACADE_MODEL") FacadeModel form, Model model, RedirectAttributes re) {
+		System.out.println(">>>>>>>>i am in. " + _userPreference.getUserName() +" ");
+		_userPreference=service.changeAccToNewFinYearId(_userPreference,finYearId);
+		return home(form,model,re);
 	}
 	
 }

@@ -8,6 +8,7 @@ import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.stereotype.Component;
 
 import gov.in.rgsa.entity.ActionPlanStatus;
+import gov.in.rgsa.entity.FinYear;
 import gov.in.rgsa.entity.MenuProfile;
 import gov.in.rgsa.entity.PlanComponents;
 import gov.in.rgsa.entity.StatePlanComponentsFunds;
@@ -42,6 +43,7 @@ public class UserPreference {
 	
 	private long countPlanSubmittedByMOPR;
 	
+	private List<FinYear> finYearList; // added by aashish barua
 	
 	private boolean plansAreFreezed;
 	
@@ -230,6 +232,14 @@ public class UserPreference {
 
 	public PlanUtil getPlanStatusEnum() {
 		return new PlanUtil(getPlanStatus());
+	}
+
+	public List<FinYear> getFinYearList() {
+		return finYearList;
+	}
+
+	public void setFinYearList(List<FinYear> finYearList) {
+		this.finYearList = finYearList;
 	}
 	
 }

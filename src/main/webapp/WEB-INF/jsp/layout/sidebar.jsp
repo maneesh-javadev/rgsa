@@ -14,9 +14,9 @@
                    	</div>
                     <div class="name" data-toggle="dropdown" aria-haspopup="true" 
                     		aria-expanded="false">Financial Year : 
-                    		<esapi:encodeForHTMLAttribute>${sessionScope['scopedTarget.userPreference'].finYear}</esapi:encodeForHTMLAttribute>
-                    		
-                    </div>
+                    		<esapi:encodeForHTMLAttribute>${sessionScope['scopedTarget.userPreference'].finYear}</esapi:encodeForHTMLAttribute>&nbsp;
+                    		<i class="fa fa-pencil-square-o" aria-hidden="true" data-toggle="modal" data-target="#aashish"></i>
+				</div>
                </div>
            </div>
            <!-- #User Info -->
@@ -187,4 +187,64 @@
            </div>
        </aside>
        <!-- #END# Right Sidebar -->
-   </section>
+       <div class="body">
+		<div class="modal fade" id="aashish" tabindex="-1"
+			role="dialog" aria-labelledby="exampleModalCenterTitle"
+			aria-hidden="true">
+			<div class="modal-dialog modal-dialog-centered" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<div align="center"><h5 class="modal-title" id="exampleModalCenterTitle">Select Financial Year</h5></div>
+						<button type="button" class="close" data-dismiss="modal"
+							aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+					<div class="modal-body">
+						<div class="row clearfix">
+							<div class="form-group">
+								<div class="col-lg-4">
+									&nbsp;&nbsp;<label for="FinYear"><strong>Financial Year :</strong></label>
+								</div>
+								<div align="center" class="col-lg-4">
+									<select class="form-control" id="finYearDropDownId">
+										<option value="0">Select quarter</option>
+										<c:forEach items="${sessionScope['scopedTarget.userPreference'].finYearList}" var="finYearList">
+											<option value="${finYearList.yearId}">${finYearList.finYear}</option>										
+										</c:forEach>
+										<!-- <option value="1">2018-19</option>
+										<option value="2">2019-20</option> -->
+									</select>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="modal-footer">
+					<form:form id="formId" name="changeFinYearForm">
+					<div class="text-right">
+						<button type="button" class="btn btn-secondary"
+							data-dismiss="modal">Close</button>
+						<button type="button" class="btn btn-primary" onclick="changeFinYear()">Save
+							changes</button></div>
+							</form:form>
+					</div>
+				</div>
+			</div>
+		</div>
+		<input type="hidden" id="finYearId" value="" />
+	</div>
+</section>
+<script>
+/* function setVal(){
+	var finYearId=$('#finYearDropDownId').val()
+	$('#finYearId').val(finYearId);
+	$('#achorId').action("","demoUrl.html?<csrf:token uri='demoUrl.html'/>&finYearId="+finYearId);
+} */
+
+function changeFinYear(){
+	var finYearId=$('#finYearDropDownId').val();
+	document.changeFinYearForm.method = "post";
+	document.changeFinYearForm.action = "demoUrl.html?<csrf:token uri='demoUrl.html'/>&finYearId="+finYearId;
+	document.changeFinYearForm.submit();
+}
+</script>
