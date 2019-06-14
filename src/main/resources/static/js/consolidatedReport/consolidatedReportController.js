@@ -125,7 +125,17 @@ publicModule.controller("consolidatedReportController", [ '$scope', "consolidate
 			toastr.error("All Plans Are Not Freezed");
 		}else{
 			consolidatedReportService.forwardPlans().then(function(data){
-				toastr.success("Plans Forwarded");
+				var result = data.data.result;
+				switch (result) {
+				case "S" :
+					toastr.success("Plans are forward");
+					break;
+				case "N" :
+					toastr.error("Please fill Nodal Officers deatils first.");
+					break;	
+				default:
+					break;
+				}
 			})
 		}
 	}

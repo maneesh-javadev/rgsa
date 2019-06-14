@@ -25,18 +25,34 @@
                <ul class="list">
                    <!-- <li class="header">Menu</li> -->
                    <li class="active">
-                       <a href="home.html">
+                   <c:choose>
+                   	<c:when test="${sessionScope['scopedTarget.userPreference'].isNodalFilled}"><a href="home.html">
                            <i class="fa fa-home"></i> Home
-                       </a>
+                       </a></c:when>
+                   	<c:otherwise><a href="">
+                           <i class="fa fa-home"></i> Home
+                       </a></c:otherwise>
+                   </c:choose>
                    </li>
                    <c:forEach items="${sessionScope['scopedTarget.userPreference'].menus}" var="itm">
 						
 						<c:choose>
 						  <c:when test="${itm.parent eq 0 and !empty itm.formName}">
-						  	<li>
-		                       <a href="${itm.formName}?menuId=${itm.menuId}&<csrf:token uri='${itm.formName}'/>">
-		                           <i class="fa ${itm.icon} "></i>   ${itm.resourceId}
-		                       </a>
+						  	<li><c:choose>
+									<c:when
+										test="${sessionScope['scopedTarget.userPreference'].isNodalFilled}">
+										<a
+											href="${itm.formName}?menuId=${itm.menuId}&<csrf:token uri='${itm.formName}'/>">
+											<i class="fa ${itm.icon} "></i> ${itm.resourceId}
+										</a>
+									</c:when>
+									<c:otherwise>
+										<a
+											href="">
+											<i class="fa ${itm.icon} "></i> ${itm.resourceId}
+										</a>
+									</c:otherwise>
+								</c:choose> 
 				            </li>
 						  </c:when>
 						  <c:otherwise>
@@ -47,16 +63,27 @@
 								     <i class="fa ${itm.icon}"></i>   ${itm.resourceId}
 								  </a>
 								  <ul class="ml-menu">
-								  	<c:forEach items="${sessionScope['scopedTarget.userPreference'].menus}" var="itm2" varStatus="status"> 
-						       			<c:if test="${itm.menuId eq itm2.parent}">
-					               			<li>
-					               			<a href="${itm2.formName}?menuId=${itm2.menuId}&<csrf:token uri='${itm2.formName}'/>">
-					               				 <i class="fa ${itm2.icon}"></i>  ${itm2.resourceId}
-					               			</a>
-					               			</li>
-						           		</c:if> 
-					           		</c:forEach> 
-						 		  </ul>
+											<c:forEach
+												items="${sessionScope['scopedTarget.userPreference'].menus}"
+												var="itm2" varStatus="status">
+												<c:if test="${itm.menuId eq itm2.parent}">
+													<li><c:choose>
+															<c:when
+																test="${sessionScope['scopedTarget.userPreference'].isNodalFilled}">
+																<a
+																	href="${itm2.formName}?menuId=${itm2.menuId}&<csrf:token uri='${itm2.formName}'/>">
+																	<i class="fa ${itm2.icon}"></i> ${itm2.resourceId}
+																</a>
+															</c:when>
+															<c:otherwise>
+																<a href=""> <i class="fa ${itm2.icon}"></i>
+																	${itm2.resourceId}
+																</a>
+															</c:otherwise>
+														</c:choose></li>
+												</c:if>
+											</c:forEach>
+										</ul>
 								</li>
 						  	   </c:when>
 						  	</c:choose> 

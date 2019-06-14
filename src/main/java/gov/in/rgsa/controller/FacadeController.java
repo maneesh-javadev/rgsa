@@ -206,11 +206,21 @@ public class FacadeController {
 		}
 	}
 	
+	@ResponseBody
 	@RequestMapping(value="/forwardPlans",method=RequestMethod.POST)
-	private String forwardPlans(RedirectAttributes re) {
-		service.forwardPlans();
-		re.addFlashAttribute(Message.SUCCESS_KEY, Message.SAVE_SUCCESS);
-		return HOME_VIEW;
+	private Map<String, Object> forwardPlans(RedirectAttributes re) {
+		Map<String, Object> param=new HashMap<String, Object>();
+		NodalOfficerDetails nodalDetails = officerService.getNodalOfficerDetails();
+		if(nodalDetails != null) {
+			service.forwardPlans();
+			param.put("result", "S");
+			re.addFlashAttribute(Message.SUCCESS_KEY, Message.SAVE_SUCCESS);
+		}else {
+			param.put("result", "N");
+			re.addFlashAttribute(Message.ERROR_KEY,"Please fill the Nodal Officer's deatils first before forwarding plan.");
+		}
+		
+		return param;
 	}
 	
 	

@@ -34,6 +34,7 @@ public class UserPreference {
 	private Integer planCode;
 	private Integer planVersion;
 	private Integer planStatus;
+	private Boolean isNodalFilled=false; // added by aashish barua to check whether nodal officer is filled or not
 	
 	private List<PlanComponents> planComponents;
 	
@@ -240,6 +241,14 @@ public class UserPreference {
 
 	public void setFinYearList(List<FinYear> finYearList) {
 		this.finYearList = finYearList;
+	}
+
+	public Boolean getIsNodalFilled() {
+		return isNodalFilled;
+	}
+
+	public void setIsNodalFilled(Boolean isNodalFilled) {
+		this.isNodalFilled = isNodalFilled;
 	}
 	
 }
