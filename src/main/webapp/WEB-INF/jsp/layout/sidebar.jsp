@@ -235,7 +235,7 @@
 								</div>
 								<div align="center" class="col-lg-4">
 									<select class="form-control" id="finYearDropDownId">
-										<option value="0">Select quarter</option>
+										<option value="0">Select Financial Year</option>
 										<c:forEach items="${sessionScope['scopedTarget.userPreference'].finYearList}" var="finYearList">
 											<option value="${finYearList.yearId}">${finYearList.finYear}</option>										
 										</c:forEach>
