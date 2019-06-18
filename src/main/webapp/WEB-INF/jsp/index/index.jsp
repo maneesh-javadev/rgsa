@@ -808,7 +808,7 @@ function allPolicies(id) {
                 </div>
                 <div class="form-group has-feedback">
                   <label class="control-label">Captcha Answer</label>
-                  <form:input cssStyle="color:black;" id="captchaAnswer" path="captchaAnswer" placeholder="Captcha Answer" value="sa" class="form-control"  htmlEscape="true" autocomplete="off" required="required"/>
+                  <form:input cssStyle="color:black;" id="captchaAnswer" path="captchaAnswer" placeholder="Captcha Answer" value="" class="form-control"  htmlEscape="true" autocomplete="off" required="required"/>
                   <span class="glyphicon glyphicon-ok form-control-feedback" aria-hidden="true"></span>
                 </div>
                 
