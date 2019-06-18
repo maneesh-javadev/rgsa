@@ -138,5 +138,14 @@ public class CommonRepositoryImpl implements CommonRepository {
 			}
 		}
 	}
+	
+	@SuppressWarnings("unchecked")
+	@Override
+	public <T> T findByNativeQuery(String nativeQuery, Map<String, Object> params) {
+		
+		Query query = entityManager.createNativeQuery(nativeQuery);
+		setQueryParameters(query, params);
+		return (T)query.getSingleResult();
+	}
 
 }
