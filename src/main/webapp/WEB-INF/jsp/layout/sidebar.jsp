@@ -15,7 +15,15 @@
                     <div class="name" data-toggle="dropdown" aria-haspopup="true" 
                     		aria-expanded="false">Financial Year : 
                     		<esapi:encodeForHTMLAttribute>${sessionScope['scopedTarget.userPreference'].finYear}</esapi:encodeForHTMLAttribute>&nbsp;
-                    		<i class="fa fa-pencil-square-o" aria-hidden="true" data-toggle="modal" data-target="#aashish"></i>
+                    		<c:choose>
+                    			<c:when test="${sessionScope['scopedTarget.userPreference'].isNodalFilled}">
+                    				<i class="fa fa-pencil-square-o" aria-hidden="true" data-toggle="modal" data-target="#aashish"></i>
+                    			</c:when>
+                    			<c:otherwise>
+                    				<i class="fa fa-pencil-square-o" aria-hidden="true" data-toggle="modal" data-target=""></i>
+                    			</c:otherwise>
+                    		</c:choose>
+                    		
 				</div>
                </div>
            </div>

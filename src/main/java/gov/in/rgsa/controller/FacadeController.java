@@ -247,7 +247,7 @@ public class FacadeController {
 		return fileUploadService.getDataFromJsonFile();
 	}
 	
-	@RequestMapping(value="demoUrl", method=RequestMethod.POST)
+	@RequestMapping(value="changeFinYear", method=RequestMethod.POST)
 	private String changeFinYear(@RequestParam(value = "finYearId" ,required = false) String finYearId,@ModelAttribute("FACADE_MODEL") FacadeModel form, Model model, RedirectAttributes re) {
 		System.out.println(">>>>>>>>i am in. " + _userPreference.getUserName() +" ");
 		_userPreference=service.changeAccToNewFinYearId(_userPreference,finYearId);

@@ -86,7 +86,7 @@ public class DevQuirksInterceptor extends HandlerInterceptorAdapter {
 
 
     private void setPreference(UserPreference passedUserPreference) {
-    	userPreference.setIsNodalFilled(true);
+		/* userPreference.setIsNodalFilled(true); */
         userPreference.setUserId(passedUserPreference.getUserId());
         userPreference.setUserName(passedUserPreference.getUserName());
         userPreference.setFinYear(passedUserPreference.getFinYear());
