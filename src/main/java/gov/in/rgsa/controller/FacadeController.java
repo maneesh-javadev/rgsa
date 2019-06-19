@@ -135,6 +135,8 @@ public class FacadeController {
 			nodalOfficerDetails =officerService.getNodalOfficerDetails();
 			if(nodalOfficerDetails==null && _userPreference.getUserType().equalsIgnoreCase("S")){
 				return REDIRECT_NODAL_OFFICER;
+			}else {
+				_userPreference.setIsNodalFilled(true);
 			}
 			
 			return HOME_VIEW;
