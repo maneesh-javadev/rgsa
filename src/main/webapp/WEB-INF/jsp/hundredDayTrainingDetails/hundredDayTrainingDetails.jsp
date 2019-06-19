@@ -139,20 +139,19 @@ function freezeUnfreeze(msg){
 							<div class="form-group text-right" style="padding-bottom: 5px;">
 								<button type="submit" class="btn bg-green waves-effect"><c:choose><c:when test="${UPDATE_OR_SAVE eq 'update'}">UPDATE</c:when><c:otherwise>SAVE</c:otherwise> </c:choose></button>
 								<c:choose>
-								<c:when test="${not HUN_DAY_TRAINING_DETAIL.isFreeze}">
-								<c:if test="${UPDATE_OR_SAVE eq 'udpate'}">
-										<button type="button" onclick="freezeUnfreeze('freeze')"
-											class="btn bg-blue waves-effect" >FREEZE</button>
+								<c:when test="${HUN_DAY_TRAINING_DETAIL.isFreeze eq true}">
+								<button type="button" onclick="freezeUnfreeze('unfreeze')"
+									class="btn bg-blue waves-effect">UNFREEZE</button>
+								</c:when>
+								<c:otherwise>
+								<c:if test="${UPDATE_OR_SAVE eq 'update'}">
+								<button type="button" onclick="freezeUnfreeze('freeze')"
+									class="btn bg-blue waves-effect">FREEZE</button>
 								</c:if>
-								
 								<c:if test="${UPDATE_OR_SAVE eq 'save'}">
 										<button type="button" onclick="freezeUnfreeze('freeze')"
 											class="btn bg-blue waves-effect" disabled="disabled" >FREEZE</button>
 								</c:if>
-								</c:when>
-								<c:otherwise>
-								<button type="button" onclick="freezeUnfreeze('unfreeze')"
-									class="btn bg-blue waves-effect">UNFREEZE</button>
 								</c:otherwise>
 								</c:choose>
 								<button type="button" onclick="onClear(this)"

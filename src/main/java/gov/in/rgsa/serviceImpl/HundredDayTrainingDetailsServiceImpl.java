@@ -36,6 +36,11 @@ public class HundredDayTrainingDetailsServiceImpl implements HundredDayTrainingD
 		entity.setUserType(userPreference.getUserType());
 		entity.setYearId(userPreference.getFinYearId());
 		entity.setCreatedBy(userPreference.getUserId());
+		if(entity.getMsg().equalsIgnoreCase("freeze")) {
+			entity.setIsFreeze(true);
+		}else {
+			entity.setIsFreeze(false);
+		}
 		 if(entity.getId() != null) {
 			 entity.setLastUpdatedBy(userPreference.getUserId());
 		 }
