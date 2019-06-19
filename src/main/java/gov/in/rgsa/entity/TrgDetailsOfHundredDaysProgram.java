@@ -63,7 +63,7 @@ public class TrgDetailsOfHundredDaysProgram {
 	private Timestamp lastUpdatedOn;
 	
 	@Column(name="is_freeze")
-	private Boolean isFreeze = false;
+	private Boolean isFreeze;
 	
 	@Transient
 	private String msg;
