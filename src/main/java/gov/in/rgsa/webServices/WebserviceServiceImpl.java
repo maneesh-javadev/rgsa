@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import gov.in.rgsa.dao.CommonRepository;
+import gov.in.rgsa.dto.ERRepresentativeHundredDayProg;
 import gov.in.rgsa.dto.StatewiseNoOfParticipants;
 import gov.in.rgsa.entity.FetchPlanStatusCount;
 
@@ -66,6 +67,20 @@ public class WebserviceServiceImpl implements WebserviceService {
 			e.printStackTrace();
 		}
 		return statewiseNoOfParticipantsList;
+	}
+	
+	@Override
+	public List<ERRepresentativeHundredDayProg> fetchERRepresentativeHundredDayProg(String fin_year) {
+		List<ERRepresentativeHundredDayProg> erRepresentativeHundredDayProg=null;
+		try {
+		Map<String, Object> params=new HashMap<>();
+		params.put("fin_year",fin_year);
+		erRepresentativeHundredDayProg= commonRepository.findAll("ER_Representative_Hundred_Day_Prog", params);
+		
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+		return erRepresentativeHundredDayProg;
 	}
 
 }

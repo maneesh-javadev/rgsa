@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.context.support.WebApplicationContextUtils;
 
+import gov.in.rgsa.dto.ERRepresentativeHundredDayProg;
 import gov.in.rgsa.dto.StatewiseNoOfParticipants;
 import gov.in.rgsa.entity.FetchPlanStatusCount;
 
@@ -50,6 +51,15 @@ public class RestService {
 		response.setHeader("Access-Control-Allow-Headers", request.getHeader("Access-Control-Request-Headers"));
 		response.setHeader("Access-Control-Allow-Methods", request.getHeader("Access-Control-Request-Method"));	
 		return webserviceService.fetchNoOfParticipantsStateWise(finYear);
+	}
+	
+	
+	@GetMapping("/webService/totalERRepresentativeDetails/{finYear}")
+	public List<ERRepresentativeHundredDayProg> totalERRepresentativeDetails(@PathVariable String finYear,HttpServletResponse response,HttpServletRequest request) {
+		response.setHeader("Access-Control-Allow-Origin", "*");
+		response.setHeader("Access-Control-Allow-Headers", request.getHeader("Access-Control-Request-Headers"));
+		response.setHeader("Access-Control-Allow-Methods", request.getHeader("Access-Control-Request-Method"));	
+		return webserviceService.fetchERRepresentativeHundredDayProg(finYear);
 	}
 
 	
