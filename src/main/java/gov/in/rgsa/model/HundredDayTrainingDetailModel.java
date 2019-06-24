@@ -20,7 +20,7 @@ public class HundredDayTrainingDetailModel {
 	
 	private Integer stAspirationalParticipants;
 	
-	private Integer womanAspirationalParticipants;
+	private Integer womenAspirationalParticipants;
 	
 	private Integer othersAspirationalParticipants;
 	
@@ -114,14 +114,6 @@ public class HundredDayTrainingDetailModel {
 		this.stAspirationalParticipants = stAspirationalParticipants;
 	}
 
-	public Integer getWomanAspirationalParticipants() {
-		return womanAspirationalParticipants;
-	}
-
-	public void setWomanAspirationalParticipants(Integer womanAspirationalParticipants) {
-		this.womanAspirationalParticipants = womanAspirationalParticipants;
-	}
-
 	public Integer getOthersAspirationalParticipants() {
 		return othersAspirationalParticipants;
 	}
@@ -152,6 +144,14 @@ public class HundredDayTrainingDetailModel {
 
 	public void setDemoEndDate(String demoEndDate) {
 		this.demoEndDate = demoEndDate;
+	}
+
+	public Integer getWomenAspirationalParticipants() {
+		return womenAspirationalParticipants;
+	}
+
+	public void setWomenAspirationalParticipants(Integer womenAspirationalParticipants) {
+		this.womenAspirationalParticipants = womenAspirationalParticipants;
 	}
 	
 	

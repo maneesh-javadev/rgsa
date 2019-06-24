@@ -1,5 +1,7 @@
 package gov.in.rgsa.controller;
 
+import java.util.Date;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -36,6 +38,20 @@ public class HundredDayTrainingDetailsController {
 		if(trgOfHundredDaysProgramCh1 != null) {
 			//trgDetails=hundredDayTrainingDetailsService.fetchTrgDetailByTrgId(trgOfHundredDaysProgram.getTrgOfHundredDaysProgramId());
 			//form.setTrgDetailsOfHundredDaysProgram(trgDetails);
+	 
+			String startarr[]=trgOfHundredDaysProgramCh1.getTrgStartDate().toString().substring(0,10).split("-");
+			form.setDemoStartDate(startarr[2]+"-"+startarr[1]+""+startarr[0]);
+			String endarr[]=trgOfHundredDaysProgramCh1.getTrgEndDate().toString().substring(0,10).split("-");
+			form.setDemoEndDate(endarr[2]+"-"+endarr[1]+""+endarr[0]);
+			//form.setDemoStartDate(String.valueOf(trgOfHundredDaysProgramCh1.getTrgEndDate()).substring(0, 10));
+			form.setScParticipants(trgOfHundredDaysProgramCh1.getScParticipants());
+			form.setStParticipants(trgOfHundredDaysProgramCh1.getStParticipants());
+			form.setOthersParticipants(trgOfHundredDaysProgramCh1.getOthersParticipants());
+			form.setWomenParticipants(trgOfHundredDaysProgramCh1.getWomenParticipants());
+			form.setScAspirationalParticipants(trgOfHundredDaysProgramCh1.getScAspirationalParticipants());
+			form.setStAspirationalParticipants(trgOfHundredDaysProgramCh1.getStAspirationalParticipants());
+			form.setWomenAspirationalParticipants(trgOfHundredDaysProgramCh1.getWomenAspirationalParticipants());
+			form.setOthersAspirationalParticipants(trgOfHundredDaysProgramCh1.getOthersAspirationalParticipants());
 			form.setNoOfTrainingConducted(trgOfHundredDaysProgramCh1.getNoOfTrainingConducted());
 			form.setTrgOfHundredDaysProgramChId(trgOfHundredDaysProgramCh1.getTrgOfHundredDaysProgramChId());
 			form.setIsFreeze(trgOfHundredDaysProgramCh1.getIsFreeze());

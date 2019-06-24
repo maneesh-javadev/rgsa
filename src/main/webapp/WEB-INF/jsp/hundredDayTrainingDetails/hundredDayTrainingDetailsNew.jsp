@@ -52,6 +52,10 @@ function fetchEndDate(){
 }
 
 </script>
+
+<input type="hidden" id="startDateHidden" value="${HUN_DAY_TRAINING.demoStartDate }" />
+<input type="hidden" id="endDateHidden" value="${HUN_DAY_TRAINING.demoEndDate }"/>
+
 <section class="content">
 	<div class="container-fluid">
 		<div class="row clearfix">
@@ -160,7 +164,7 @@ function fetchEndDate(){
 												<th>Women</th>
 												<td><form:input path="womenParticipants"
 														id="totalWomen" class="form-control Align-Right" /></td>
-												<td><form:input path="womanAspirationalParticipants"
+												<td><form:input path="womenAspirationalParticipants"
 														id="aspirationalWomen" class="form-control Align-Right" /></td>
 											</tr>
 											<tr>

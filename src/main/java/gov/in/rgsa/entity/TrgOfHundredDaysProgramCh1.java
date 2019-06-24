@@ -58,7 +58,7 @@ public class TrgOfHundredDaysProgramCh1 {
 	private Integer stAspirationalParticipants;
 
 	@Column(name="woman_aspirational")
-	private Integer womanAspirationalParticipants;
+	private Integer womenAspirationalParticipants;
 	
 	@Column(name="others_aspirational")
 	private Integer othersAspirationalParticipants;
@@ -188,14 +188,6 @@ public class TrgOfHundredDaysProgramCh1 {
 		this.stAspirationalParticipants = stAspirationalParticipants;
 	}
 
-	public Integer getWomanAspirationalParticipants() {
-		return womanAspirationalParticipants;
-	}
-
-	public void setWomanAspirationalParticipants(Integer womanAspirationalParticipants) {
-		this.womanAspirationalParticipants = womanAspirationalParticipants;
-	}
-
 	public Integer getOthersAspirationalParticipants() {
 		return othersAspirationalParticipants;
 	}
@@ -274,5 +266,13 @@ public class TrgOfHundredDaysProgramCh1 {
 
 	public void setDemoEndDate(String demoEndDate) {
 		this.demoEndDate = demoEndDate;
+	}
+
+	public Integer getWomenAspirationalParticipants() {
+		return womenAspirationalParticipants;
+	}
+
+	public void setWomenAspirationalParticipants(Integer womenAspirationalParticipants) {
+		this.womenAspirationalParticipants = womenAspirationalParticipants;
 	}
 }
