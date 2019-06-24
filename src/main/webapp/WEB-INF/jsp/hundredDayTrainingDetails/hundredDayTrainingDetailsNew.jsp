@@ -149,14 +149,14 @@ function fetchEndDate(){
 											<tr>
 												<th>SC</th>
 												<td><form:input path="scParticipants" id="totalSC"
-														class="form-control" /></td>
+														class="form-control Align-Right" /></td>
 												<td><form:input path="scAspirationalParticipants"
 														id="aspirationalSC" class="form-control Align-Right" /></td>
 											</tr>
 											<tr>
 												<th>ST</th>
 												<td><form:input path="stParticipants" id="totalST"
-														class="form-control" /></td>
+														class="form-control Align-Right" /></td>
 												<td><form:input path="stAspirationalParticipants"
 														id="aspirationalST" class="form-control Align-Right" /></td>
 											</tr>

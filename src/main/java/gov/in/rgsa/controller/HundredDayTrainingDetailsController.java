@@ -40,9 +40,9 @@ public class HundredDayTrainingDetailsController {
 			//form.setTrgDetailsOfHundredDaysProgram(trgDetails);
 	 
 			String startarr[]=trgOfHundredDaysProgramCh1.getTrgStartDate().toString().substring(0,10).split("-");
-			form.setDemoStartDate(startarr[2]+"-"+startarr[1]+""+startarr[0]);
+			form.setDemoStartDate(startarr[2]+"-"+startarr[1]+"-"+startarr[0]);
 			String endarr[]=trgOfHundredDaysProgramCh1.getTrgEndDate().toString().substring(0,10).split("-");
-			form.setDemoEndDate(endarr[2]+"-"+endarr[1]+""+endarr[0]);
+			form.setDemoEndDate(endarr[2]+"-"+endarr[1]+"-"+endarr[0]);
 			//form.setDemoStartDate(String.valueOf(trgOfHundredDaysProgramCh1.getTrgEndDate()).substring(0, 10));
 			form.setScParticipants(trgOfHundredDaysProgramCh1.getScParticipants());
 			form.setStParticipants(trgOfHundredDaysProgramCh1.getStParticipants());
