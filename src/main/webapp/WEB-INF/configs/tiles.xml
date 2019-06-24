@@ -817,7 +817,7 @@
 <definition name="hundredDayTrainingDetail" extends="base.definition.admin">
 	<put-attribute name="title" value="hundred Day Training Detail" />
 	<put-attribute name="body"
-		value="/WEB-INF/jsp/hundredDayTrainingDetails/hundredDayTrainingDetails.jsp" />
+		value="/WEB-INF/jsp/hundredDayTrainingDetails/hundredDayTrainingDetailsNew.jsp" />
 </definition>
 
 </tiles-definitions>
