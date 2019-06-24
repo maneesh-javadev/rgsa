@@ -1,69 +1,49 @@
 package gov.in.rgsa.model;
 
 public class HundredDayTrainingDetailModel {
-
-	private Long id;
 	
-	private Integer noOfParticipantsSC;
+	private Long trgOfHundredDaysProgramChId;
 	
-	private Integer noOfParticipantsST;
+	private String demoStartDate;
 	
-	private Integer noOfParticipantsWomen;
+	private String demoEndDate;
 	
-	private Integer noOfParticipantsOthers;
+	private Integer scParticipants; 
 	
-	private Integer noOfTrainingsConducted;
+	private Integer stParticipants;
 	
-	private Boolean isFreeze;
+	private Integer womenParticipants;
+	
+	private Integer othersParticipants;
+	
+	private Integer scAspirationalParticipants;
+	
+	private Integer stAspirationalParticipants;
+	
+	private Integer womenAspirationalParticipants;
+	
+	private Integer othersAspirationalParticipants;
 	
 	private String msg;
 	
-	public Integer getNoOfParticipantsSC() {
-		return noOfParticipantsSC;
+	private Integer noOfTrainingConducted;
+	
+	private Boolean isFreeze;
+
+	public String getMsg() {
+		return msg;
 	}
 
-	public void setNoOfParticipantsSC(Integer noOfParticipantsSC) {
-		this.noOfParticipantsSC = noOfParticipantsSC;
+	public void setMsg(String msg) {
+		this.msg = msg;
 	}
 
-	public Integer getNoOfParticipantsST() {
-		return noOfParticipantsST;
+	public Integer getNoOfTrainingConducted() {
+		return noOfTrainingConducted;
 	}
 
-	public void setNoOfParticipantsST(Integer noOfParticipantsST) {
-		this.noOfParticipantsST = noOfParticipantsST;
-	}
-
-	public Integer getNoOfParticipantsWomen() {
-		return noOfParticipantsWomen;
-	}
-
-	public void setNoOfParticipantsWomen(Integer noOfParticipantsWomen) {
-		this.noOfParticipantsWomen = noOfParticipantsWomen;
-	}
-
-	public Integer getNoOfParticipantsOthers() {
-		return noOfParticipantsOthers;
-	}
-
-	public void setNoOfParticipantsOthers(Integer noOfParticipantsOthers) {
-		this.noOfParticipantsOthers = noOfParticipantsOthers;
-	}
-
-	public Integer getNoOfTrainingsConducted() {
-		return noOfTrainingsConducted;
-	}
-
-	public void setNoOfTrainingsConducted(Integer noOfTrainingsConducted) {
-		this.noOfTrainingsConducted = noOfTrainingsConducted;
-	}
-
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
+	public void setNoOfTrainingConducted(Integer noOfTrainingConducted) {
+		this.noOfTrainingConducted = noOfTrainingConducted;
 	}
 
 	public Boolean getIsFreeze() {
@@ -74,12 +54,106 @@ public class HundredDayTrainingDetailModel {
 		this.isFreeze = isFreeze;
 	}
 
-	public String getMsg() {
-		return msg;
+	/*
+	 * public String getTrgStartDate() { return trgStartDate; }
+	 * 
+	 * public void setTrgStartDate(String trgStartDate) { this.trgStartDate =
+	 * trgStartDate; }
+	 * 
+	 * public String getTrgEndDate() { return trgEndDate; }
+	 * 
+	 * public void setTrgEndDate(String trgEndDate) { this.trgEndDate = trgEndDate;
+	 * }
+	 */
+
+	public Integer getScParticipants() {
+		return scParticipants;
 	}
 
-	public void setMsg(String msg) {
-		this.msg = msg;
+	public void setScParticipants(Integer scParticipants) {
+		this.scParticipants = scParticipants;
 	}
 
-}
+	public Integer getStParticipants() {
+		return stParticipants;
+	}
+
+	public void setStParticipants(Integer stParticipants) {
+		this.stParticipants = stParticipants;
+	}
+
+	public Integer getWomenParticipants() {
+		return womenParticipants;
+	}
+
+	public void setWomenParticipants(Integer womenParticipants) {
+		this.womenParticipants = womenParticipants;
+	}
+
+	public Integer getOthersParticipants() {
+		return othersParticipants;
+	}
+
+	public void setOthersParticipants(Integer othersParticipants) {
+		this.othersParticipants = othersParticipants;
+	}
+
+	public Integer getScAspirationalParticipants() {
+		return scAspirationalParticipants;
+	}
+
+	public void setScAspirationalParticipants(Integer scAspirationalParticipants) {
+		this.scAspirationalParticipants = scAspirationalParticipants;
+	}
+
+	public Integer getStAspirationalParticipants() {
+		return stAspirationalParticipants;
+	}
+
+	public void setStAspirationalParticipants(Integer stAspirationalParticipants) {
+		this.stAspirationalParticipants = stAspirationalParticipants;
+	}
+
+	public Integer getOthersAspirationalParticipants() {
+		return othersAspirationalParticipants;
+	}
+
+	public void setOthersAspirationalParticipants(Integer othersAspirationalParticipants) {
+		this.othersAspirationalParticipants = othersAspirationalParticipants;
+	}
+
+	public Long getTrgOfHundredDaysProgramChId() {
+		return trgOfHundredDaysProgramChId;
+	}
+
+	public void setTrgOfHundredDaysProgramChId(Long trgOfHundredDaysProgramChId) {
+		this.trgOfHundredDaysProgramChId = trgOfHundredDaysProgramChId;
+	}
+
+	public String getDemoStartDate() {
+		return demoStartDate;
+	}
+
+	public void setDemoStartDate(String demoStartDate) {
+		this.demoStartDate = demoStartDate;
+	}
+
+	public String getDemoEndDate() {
+		return demoEndDate;
+	}
+
+	public void setDemoEndDate(String demoEndDate) {
+		this.demoEndDate = demoEndDate;
+	}
+
+	public Integer getWomenAspirationalParticipants() {
+		return womenAspirationalParticipants;
+	}
+
+	public void setWomenAspirationalParticipants(Integer womenAspirationalParticipants) {
+		this.womenAspirationalParticipants = womenAspirationalParticipants;
+	}
+	
+	
+
+} 

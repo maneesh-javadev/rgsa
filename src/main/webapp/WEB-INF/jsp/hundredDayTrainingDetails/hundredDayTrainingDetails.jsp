@@ -1,12 +1,20 @@
 <%@include file="../taglib/taglib.jsp"%>
 <script>
 $('document').ready(function(){
-	var total_participants = +'${HUN_DAY_TRAINING_DETAIL.noOfParticipantsSC}'  + +'${HUN_DAY_TRAINING_DETAIL.noOfParticipantsST}' + +'${HUN_DAY_TRAINING_DETAIL.noOfParticipantsWomen}' + +'${HUN_DAY_TRAINING_DETAIL.noOfParticipantsOthers}';
-	(total_participants == 0) ?  $('#totalNumberOfParticipantsId').val('') : $('#totalNumberOfParticipantsId').val(total_participants);
-	ableBreakFields();
+	var totalRecords = +$('#noOfTargetMaster').val();
+	var totalPopulationMale = 0;
+	var totalPopulationFemale = 0;
+	for(var i=0;i<totalRecords;i++){
+		$('#totalMale_'+i).val( +$('#scMale_'+i).val() + +$('#stMale_'+i).val() + +$('#othersMale_'+i).val());
+		$('#totalFemale_'+i).val( +$('#scFemale_'+i).val() + +$('#stFemale_'+i).val() + +$('#othersFemale_'+i).val());
+		
+		totalPopulationMale += +$('#totalMale_'+i).val();
+		totalPopulationFemale += +$('#totalFemale_'+i).val();
+	}
+	$('#totalParticipantsId').val(totalPopulationMale + totalPopulationFemale);
 });
 
-function ableBreakFields(){
+/* function ableBreakFields(){
 	if($('#totalNumberOfParticipantsId').val() != ''){
 		$('.break-down').prop('disabled',false);
 		$('.break-down').prop('required',true);
@@ -14,7 +22,7 @@ function ableBreakFields(){
 		$('.break-down').prop('disabled',true);
 		$('.break-down').prop('required',false);
 	}
-}
+} */
 
 /* function showBreakDownDiv(){
 	$('#plusId').hide();
@@ -61,6 +69,24 @@ function freezeUnfreeze(msg){
 	document.trainingDetailHundredDay.action = "trainingDetailHundredDay.html?<csrf:token uri='trainingDetailHundredDay.html'/>";
 	document.trainingDetailHundredDay.submit();
 }
+
+function getTotalForEachRow(id){
+	$('#totalMale_'+id).val( +$('#scMale_'+id).val() + +$('#stMale_'+id).val() + +$('#othersMale_'+id).val());
+	$('#totalFemale_'+id).val( +$('#scFemale_'+id).val() + +$('#stFemale_'+id).val() + +$('#othersFemale_'+id).val());
+	calTotalNumberOfParticipants();
+}
+
+function calTotalNumberOfParticipants(){
+	var totalRecords = +$('#noOfTargetMaster').val();
+	var totalPopulationMale = 0;
+	var totalPopulationFemale = 0;
+	for(var i=0;i<totalRecords;i++){
+		totalPopulationMale += +$('#totalMale_'+i).val();
+		totalPopulationFemale += +$('#totalFemale_'+i).val();
+	}
+	
+	$('#totalParticipantsId').val(totalPopulationMale + totalPopulationFemale);
+}
 </script>
 <section class="content">
 	<div class="container-fluid">
@@ -73,73 +99,104 @@ function freezeUnfreeze(msg){
 						</h2>
 					</div>
 					<form:form method="post" id="trainingDetailId" name="trainingDetailHundredDay"
-						action="trainingDetailHundredDay.html" modelAttribute="HUN_DAY_TRAINING_DETAIL">
+						action="trainingDetailHundredDay.html" modelAttribute="HUN_DAY_TRAINING">
 						<input type="hidden" name="<csrf:token-name/>"
 							value="<csrf:token-value uri="trainingDetailHundredDay.html"/>" />
+							<c:set var="noOfTargetMaster" value="0"></c:set>
 						<div class="body">
 							<div class="row clearfix">
-								<div class="col-sm-6">
-									<label for="selectCategory">Number of trainings conducted</label>
+								<div class="col-sm-3">
+										<label for="noOfTrainingConducted">Number of trainings conducted :</label>
+								</div>
+								<div class="col-sm-4">		
 									<div class="form-group">
 										<div class="form-line">
-											<form:input path="noOfTrainingsConducted" id="noOfTrainingConductedId" class="form-control Align-Right" onkeypress="return isNumber(event)" readonly="${HUN_DAY_TRAINING_DETAIL.isFreeze}"/>
+											<form:input path="noOfTrainingConducted" id="noOfTrainingConductedId" class="form-control Align-Right" onkeypress="return isNumber(event)"  readonly="${HUN_DAY_TRAINING.isFreeze}"/>
 										</div>
 									</div>
 								</div>
-								<div class="col-sm-6">
-									<label for="trainingSubject">Number of participants</label>
+							</div>
+							
+							<div class="row clearfix">
+								<div class="col-sm-2">
+										<label for="weekDuration">State date of training :</label>
+								</div>
+								<div class="col-sm-4">		
 									<div class="form-group">
 										<div class="form-line">
-											<form:input path="" class="form-control Align-Right" id="totalNumberOfParticipantsId" onkeyup="ableBreakFields()" onkeypress="return isNumber(event)" readonly="${HUN_DAY_TRAINING_DETAIL.isFreeze}"/>
+											<input type="date" id="dateFormId" class="form-control" readonly="${HUN_DAY_TRAINING.isFreeze}"/>
 										</div>
-										<!-- <div align="right" style="margin-top: 5px; display: none;"><span id="plusId"><button class="btn btn-primary btn-md" type="button" onclick="showBreakDownDiv()">Expand</button> </span>
-											<span style="display: none;" id="minusId"><button class="btn btn-danger btn-md" type="button" onclick="hideBreakDownDiv()">Hide</button></span></div> -->
+									</div>
+								</div>
+								
+								<div class="col-sm-2">
+										<label for="weekDuration">End date of training :</label>
+								</div>
+								<div class="col-sm-4">		
+									<div class="form-group">
+										<div class="form-line">
+											<input type="date"  id="dateToId" class="form-control" readonly="${HUN_DAY_TRAINING.isFreeze}"/>
+										</div>
+									</div>
+								</div>
+							</div>
+							
+							<div class="table-responsive">
+								<table class="table-bordered table-hover">
+									<thead style="background-color: #ef7b7b;color: white;">
+										<tr>
+											<th rowspan="3"><div align="center"><strong>S.No.</strong></div></th>
+											<th rowspan="3"><div align="center"><strong>Target Group</strong></div></th>
+											<th colspan="8"><div align="center"><strong>Number Of Participants</strong></div></th>										
+										</tr>
 										
-									</div>
-								</div>
-							</div>
-							<!-- <div id="breakDownFieldsId" style="display: none;"> -->
-							<div class="row clearfix">
-								<div class="col-sm-6">
-									<label for="scPacticipants">Number of SC participants</label>
-									<div class="form-group">
-										<div class="form-line">
-											<form:input path="noOfParticipantsSC" id="noOfParticipantsSCId" class="form-control break-down Align-Right" onkeyup="validateWithTotalParticipants(this.id)" onkeypress="return isNumber(event)" disabled="true" readonly="${HUN_DAY_TRAINING_DETAIL.isFreeze}"/>
-										</div>
-									</div>
-								</div>
-								<div class="col-sm-6">
-									<label for="stPacticipants">Number of ST participants</label>
-									<div class="form-group">
-										<div class="form-line">
-											<form:input path="noOfParticipantsST" class="form-control break-down Align-Right" id="noOfParticipantsSTId" onkeyup="validateWithTotalParticipants(this.id)" onkeypress="return isNumber(event)" disabled="true" readonly="${HUN_DAY_TRAINING_DETAIL.isFreeze}"/>
-										</div>
-									</div>
-								</div>
-							</div>
-							<div class="row clearfix">
-								<div class="col-sm-6">
-									<label for="womenPacticipants">Number of Women participants</label>
-									<div class="form-group">
-										<div class="form-line">
-											<form:input path="noOfParticipantsWomen" id="noOfParticipantsWomenId" class="form-control break-down Align-Right" onkeyup="validateWithTotalParticipants(this.id)" onkeypress="return isNumber(event)" disabled="true" readonly="${HUN_DAY_TRAINING_DETAIL.isFreeze}"/>
-										</div>
-									</div>
-								</div>
-								<div class="col-sm-6">
-									<label for="otherPacticipants">Number of Other participants</label>
-									<div class="form-group">
-										<div class="form-line">
-											<form:input path="noOfParticipantsOthers" class="form-control break-down Align-Right" id="noOfParticipantsOthersId" onkeyup="validateWithTotalParticipants(this.id)" onkeypress="return isNumber(event)" disabled="true" readonly="${HUN_DAY_TRAINING_DETAIL.isFreeze}"/>
-										</div>
-									</div>
-								</div>
+										<tr>
+											<th colspan="4"><div align="center"><strong>Males</strong></div></th>
+											<th colspan="4"><div align="center"><strong>Females</strong></div></th>
+										</tr>
+										<tr>
+											<th><div align="center"><strong>SC</strong></div></th>
+											<th><div align="center"><strong>ST</strong></div></th>
+											<th><div align="center"><strong>Others</strong></div></th>
+											<th><div align="center"><strong>Total</strong></div></th>
+											<th><div align="center"><strong>SC</strong></div></th>
+											<th><div align="center"><strong>ST</strong></div></th>
+											<th><div align="center"><strong>Others</strong></div></th>
+											<th><div align="center"><strong>Total</strong></div></th>
+										</tr>
+									</thead>
+									<tbody>
+										<c:forEach items="${TARGET_GROUP_MASTER}" var="targetMaster" varStatus="index">
+										<!-- hidden fields -->
+										<input type="hidden" name="trgDetailsOfHundredDaysProgram[${index.index}].trgDetailsOfHundredDaysProgramId" value="${HUN_DAY_TRAINING.trgDetailsOfHundredDaysProgram[index.index].trgDetailsOfHundredDaysProgramId}">
+										<input type="hidden" name="trgDetailsOfHundredDaysProgram[${index.index}].targetGroupMasterId" value="${targetMaster.targetGroupMasterId}">
+										<tr>
+										<td><div align="center"><strong>${index.count}</strong></div></td>
+										<td><div align="center"><strong>${targetMaster.targetGroupMasterName}</strong></div></td>
+										<td><form:input path="trgDetailsOfHundredDaysProgram[${index.index}].maleSC" class="form-control Align-Right" readonly="${HUN_DAY_TRAINING.isFreeze}" title="SC Male" onkeypress="return isNumber(event)" id="scMale_${index.index}" onkeyup="getTotalForEachRow(${index.index})"/></td>
+										<td><form:input path="trgDetailsOfHundredDaysProgram[${index.index}].maleST" class="form-control Align-Right" readonly="${HUN_DAY_TRAINING.isFreeze}" title="ST Male" onkeypress="return isNumber(event)" id="stMale_${index.index}" onkeyup="getTotalForEachRow(${index.index})"/></td>
+										<td><form:input path="trgDetailsOfHundredDaysProgram[${index.index}].maleOthers" class="form-control Align-Right" readonly="${HUN_DAY_TRAINING.isFreeze}" title="Others Male" onkeypress="return isNumber(event)" id="othersMale_${index.index}" onkeyup="getTotalForEachRow(${index.index})"/></td>
+										<td><form:input path="" class="form-control Align-Right" disabled="true" id="totalMale_${index.index}"/></td>
+										<td><form:input path="trgDetailsOfHundredDaysProgram[${index.index}].femaleSC" class="form-control Align-Right" readonly="${HUN_DAY_TRAINING.isFreeze}" title="SC Female" onkeypress="return isNumber(event)" id="scFemale_${index.index}" onkeyup="getTotalForEachRow(${index.index})"/></td>
+										<td><form:input path="trgDetailsOfHundredDaysProgram[${index.index}].femaleST" class="form-control Align-Right" readonly="${HUN_DAY_TRAINING.isFreeze}" title="ST Female" onkeypress="return isNumber(event)" id="stFemale_${index.index}" onkeyup="getTotalForEachRow(${index.index})"/></td>
+										<td><form:input path="trgDetailsOfHundredDaysProgram[${index.index}].femaleOthers" class="form-control Align-Right" readonly="${HUN_DAY_TRAINING.isFreeze}" title="Others Female" onkeypress="return isNumber(event)" id="othersFemale_${index.index}" onkeyup="getTotalForEachRow(${index.index})"/></td>
+										<td><form:input path="" class="form-control Align-Right" disabled="true" id="totalFemale_${index.index}"/></td>
+										</tr>
+										<c:set var="noOfTargetMaster" value="${noOfTargetMaster + 1}"></c:set>
+										</c:forEach>
+										
+										<tr>
+										<th colspan="7"><div align="left"><strong>Total Participants :</strong></div></th>
+										<td colspan="3"><form:input path="" class="form-control Align-Right" disabled="true" id="totalParticipantsId"/></td>
+										</tr>
+									</tbody>
+								</table>
 							</div>
 							</div>
 							<div class="form-group text-right" style="padding-bottom: 5px;">
 								<button type="submit" class="btn bg-green waves-effect"><c:choose><c:when test="${UPDATE_OR_SAVE eq 'update'}">UPDATE</c:when><c:otherwise>SAVE</c:otherwise> </c:choose></button>
 								<c:choose>
-								<c:when test="${HUN_DAY_TRAINING_DETAIL.isFreeze eq true}">
+								<c:when test="${HUN_DAY_TRAINING.isFreeze eq true}">
 								<button type="button" onclick="freezeUnfreeze('unfreeze')"
 									class="btn bg-blue waves-effect">UNFREEZE</button>
 								</c:when>
@@ -160,15 +217,14 @@ function freezeUnfreeze(msg){
 									onclick="onClose('managesubjects.html?<csrf:token uri='managesubjects.html'/>')"
 									class="btn bg-orange waves-effect">CLOSE</button>&nbsp;
 							</div>
-							
-						<!-- </div> -->
-						
-						<!-- HIDDEN FIELDS -->
-						<input type="hidden" name="id" value="${ID}" />
-						<input type="hidden" name="isFreeze" id="isFreezeId" value="${HUN_DAY_TRAINING_DETAIL.isFreeze}" />
-						<input type="hidden" name="msg" id="msgId" value="" />
-						<!-- HIDDEN FIELDS ENDS HERE -->
-					</form:form>
+							<!-- HIDDEN FIELDS -->
+								<input type="hidden" name="trgOfHundredDaysProgramId" value="${HUN_DAY_TRAINING.trgOfHundredDaysProgramId}" />
+								<input type="hidden" name="isFreeze" id="isFreezeId" value="${HUN_DAY_TRAINING.isFreeze}" />
+								<input type="hidden" name="msg" id="msgId" value="" />
+								<input type="hidden" id="noOfTargetMaster" value="${noOfTargetMaster}" />
+							<!-- HIDDEN FIELDS ENDS HERE -->
+						</form:form>
+						</div> 
 				</div>
 			</div>
 		</div>
