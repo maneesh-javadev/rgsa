@@ -1,14 +1,22 @@
 package gov.in.rgsa.serviceImpl;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import gov.in.rgsa.dao.CommonRepository;
 import gov.in.rgsa.entity.TrgDetailsOfHundredDaysProgram;
+import gov.in.rgsa.entity.TrgOfHundredDaysProgram;
+import gov.in.rgsa.entity.TrgOfHundredDaysProgramCh1;
 import gov.in.rgsa.service.HundredDayTrainingDetailsService;
 import gov.in.rgsa.user.preference.UserPreference;
 
@@ -22,41 +30,71 @@ public class HundredDayTrainingDetailsServiceImpl implements HundredDayTrainingD
 	private UserPreference userPreference;
 	
 	@Override
-	public void saveDeatils(TrgDetailsOfHundredDaysProgram entity) {
+	public void saveDeatils(TrgOfHundredDaysProgramCh1 entity) {
 		entity = setBasicFieldsInObject(entity);
-		if(entity.getId() != null) {
+		/*
+		 * List<TrgDetailsOfHundredDaysProgram>
+		 * details=entity.getTrgDetailsOfHundredDaysProgram();
+		 * for(TrgDetailsOfHundredDaysProgram detail : details) {
+		 * detail.setTrgOfHundredDaysProgram(entity); }
+		 * entity.setTrgDetailsOfHundredDaysProgram(details);
+		 */
+		if (entity.getTrgOfHundredDaysProgramChId() != null) {
 			dao.update(entity);
-		}else {
-		dao.save(entity);
+		} else {
+			dao.save(entity);
 		}
+		 
 	}
 
-	private TrgDetailsOfHundredDaysProgram setBasicFieldsInObject(TrgDetailsOfHundredDaysProgram entity) {
-		entity.setStateCode(userPreference.getStateCode());
-		entity.setUserType(userPreference.getUserType());
-		entity.setYearId(userPreference.getFinYearId());
-		entity.setCreatedBy(userPreference.getUserId());
-		if(entity.getMsg().equalsIgnoreCase("freeze")) {
-			entity.setIsFreeze(true);
-		}else {
-			entity.setIsFreeze(false);
-		}
-		 if(entity.getId() != null) {
-			 entity.setLastUpdatedBy(userPreference.getUserId());
-		 }
+	private TrgOfHundredDaysProgramCh1 setBasicFieldsInObject(TrgOfHundredDaysProgramCh1 entity) {
+		try {
+		  entity.setStateCode(userPreference.getStateCode());
+		  entity.setUserType(userPreference.getUserType());
+		  entity.setYearId(userPreference.getFinYearId());
+		  entity.setCreatedBy(userPreference.getUserId());
+		 // Date dateStart = new Date(entity.getDemoStartDate());
+		  DateFormat date= new SimpleDateFormat("dd-MM-yyyy");
+		  Date sdate;
+		 
+			sdate = date.parse(entity.getDemoStartDate());
+		 Date edate=date.parse(entity.getDemoEndDate());
+		  entity.setTrgStartDate(sdate);
+		  entity.setTrgEndDate(edate);
+			if (entity.getMsg().equalsIgnoreCase("freeze")) {
+				entity.setIsFreeze(true);
+			} else {
+				entity.setIsFreeze(false);
+			}
+			if (entity.getTrgOfHundredDaysProgramChId() != null) {
+				entity.setLastUpdatedBy(userPreference.getUserId());
+			}
+		}catch (ParseException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		return entity;
 	}
 
 	@Override
-	public TrgDetailsOfHundredDaysProgram fetchDetails() {
+	public TrgOfHundredDaysProgramCh1 fetchTrgOfHundredDaysProgram() {
 		Map<String, Object> param=new HashMap<String, Object>();
+		List<TrgOfHundredDaysProgramCh1> trgOfHundredDaysProgramCh1=new ArrayList<TrgOfHundredDaysProgramCh1>(); 
 		param.put("stateCode", userPreference.getStateCode());
 		param.put("yearId", userPreference.getFinYearId());
-		List<TrgDetailsOfHundredDaysProgram> details = dao.findAll("FETCH_DETAILS", param);
-		if(!details.isEmpty()) {
-			return details.get(0);
+		trgOfHundredDaysProgramCh1=dao.findAll("FETCH_TRG_OF_100_CH_DAYS", param);
+		if(CollectionUtils.isNotEmpty(trgOfHundredDaysProgramCh1)) {
+			return trgOfHundredDaysProgramCh1.get(0);
 		}else {
 			return null;
 		}
 	}
+
+	@Override
+	public List<TrgDetailsOfHundredDaysProgram> fetchTrgDetailByTrgId(Long trgOfHundredDaysProgramId) {
+		Map<String, Object> param=new HashMap<String, Object>();
+		param.put("trgOfHundredDaysProgramId", trgOfHundredDaysProgramId);
+		return dao.findAll("FETCH_TRG_DETAILS_OF_100_DAYS", param);
+	}
+	
 }

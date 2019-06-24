@@ -1,194 +1,120 @@
 package gov.in.rgsa.entity;
 
-import java.sql.Timestamp;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
-import javax.persistence.Transient;
-
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
 
 @Entity
 @Table(name = "trg_details_of_hundred_days_program",schema = "rgsa")
-@NamedQuery(name="FETCH_DETAILS",query="from TrgDetailsOfHundredDaysProgram where stateCode=:stateCode and yearId=:yearId")
+@NamedQuery(name="FETCH_TRG_DETAILS_OF_100_DAYS",query="from TrgDetailsOfHundredDaysProgram where trgOfHundredDaysProgram.trgOfHundredDaysProgramId=:trgOfHundredDaysProgramId ORDER BY trgDetailsOfHundredDaysProgramId")
 public class TrgDetailsOfHundredDaysProgram {
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	@Column(name="id")
-	private Long id;
+	@Column(name="trg_details_of_hundred_days_program_id")
+	private Long trgDetailsOfHundredDaysProgramId;
 	
-	@Column(name="state_code")
-	private Integer stateCode;
+	@ManyToOne
+	@JoinColumn(name="trg_of_hundred_days_program_id")
+	private TrgOfHundredDaysProgram trgOfHundredDaysProgram;
 	
-	@Column(name="year_id")
-	private Integer yearId;
+	@Column(name="target_group_master_id")
+	private Integer targetGroupMasterId;
 	
-	@Column(name = "no_of_participants_sc")
-	private Integer noOfParticipantsSC;
+	@Column(name = "male_sc")
+	private Integer maleSC;
 	
-	@Column(name = "no_of_participants_st")
-	private Integer noOfParticipantsST;
+	@Column(name = "male_st")
+	private Integer maleST;
 	
-	@Column(name = "no_of_participants_woman")
-	private Integer noOfParticipantsWomen;
+	@Column(name = "male_others")
+	private Integer maleOthers;
 	
-	@Column(name = "no_of_participants_others")
-	private Integer noOfParticipantsOthers;
+	@Column(name = "female_sc")
+	private Integer femaleSC;
 	
-	@Column(name = "no_of_training_conducted")
-	private Integer noOfTrainingsConducted;
+	@Column(name = "female_st")
+	private Integer femaleST;
 	
-	@Column(name="user_type")
-	private String userType;
-	
-	@Column(name="created_by")
-	private Integer createdBy;
-	
-	@CreationTimestamp
-	@Column(name="created_on",updatable=false)
-	private Timestamp createdOn;
-	
-	@Column(name="last_updated_by")
-	private Integer lastUpdatedBy;
-	
-	@UpdateTimestamp
-	@Column(name="last_updated_on")
-	private Timestamp lastUpdatedOn;
-	
-	@Column(name="is_freeze")
-	private Boolean isFreeze;
-	
-	@Transient
-	private String msg;
+	@Column(name="female_others")
+	private Integer femaleOthers;
 
-	public Long getId() {
-		return id;
+	public Long getTrgDetailsOfHundredDaysProgramId() {
+		return trgDetailsOfHundredDaysProgramId;
 	}
 
-	public void setId(Long id) {
-		this.id = id;
+	public void setTrgDetailsOfHundredDaysProgramId(Long trgDetailsOfHundredDaysProgramId) {
+		this.trgDetailsOfHundredDaysProgramId = trgDetailsOfHundredDaysProgramId;
 	}
 
-	public Integer getStateCode() {
-		return stateCode;
+	public Integer getTargetGroupMasterId() {
+		return targetGroupMasterId;
 	}
 
-	public void setStateCode(Integer stateCode) {
-		this.stateCode = stateCode;
+	public void setTargetGroupMasterId(Integer targetGroupMasterId) {
+		this.targetGroupMasterId = targetGroupMasterId;
 	}
 
-	public Integer getYearId() {
-		return yearId;
+	public Integer getMaleSC() {
+		return maleSC;
 	}
 
-	public void setYearId(Integer yearId) {
-		this.yearId = yearId;
+	public void setMaleSC(Integer maleSC) {
+		this.maleSC = maleSC;
 	}
 
-	public Integer getNoOfParticipantsSC() {
-		return noOfParticipantsSC;
+	public Integer getMaleST() {
+		return maleST;
 	}
 
-	public void setNoOfParticipantsSC(Integer noOfParticipantsSC) {
-		this.noOfParticipantsSC = noOfParticipantsSC;
+	public void setMaleST(Integer maleST) {
+		this.maleST = maleST;
 	}
 
-	public Integer getNoOfParticipantsST() {
-		return noOfParticipantsST;
+	public Integer getMaleOthers() {
+		return maleOthers;
 	}
 
-	public void setNoOfParticipantsST(Integer noOfParticipantsST) {
-		this.noOfParticipantsST = noOfParticipantsST;
+	public void setMaleOthers(Integer maleOthers) {
+		this.maleOthers = maleOthers;
 	}
 
-	public Integer getNoOfParticipantsWomen() {
-		return noOfParticipantsWomen;
+	public Integer getFemaleSC() {
+		return femaleSC;
 	}
 
-	public void setNoOfParticipantsWomen(Integer noOfParticipantsWomen) {
-		this.noOfParticipantsWomen = noOfParticipantsWomen;
+	public void setFemaleSC(Integer femaleSC) {
+		this.femaleSC = femaleSC;
 	}
 
-	public Integer getNoOfParticipantsOthers() {
-		return noOfParticipantsOthers;
+	public Integer getFemaleST() {
+		return femaleST;
 	}
 
-	public void setNoOfParticipantsOthers(Integer noOfParticipantsOthers) {
-		this.noOfParticipantsOthers = noOfParticipantsOthers;
+	public void setFemaleST(Integer femaleST) {
+		this.femaleST = femaleST;
 	}
 
-	public String getUserType() {
-		return userType;
+	public Integer getFemaleOthers() {
+		return femaleOthers;
 	}
 
-	public void setUserType(String userType) {
-		this.userType = userType;
+	public void setFemaleOthers(Integer femaleOthers) {
+		this.femaleOthers = femaleOthers;
 	}
 
-	public Integer getCreatedBy() {
-		return createdBy;
+	public TrgOfHundredDaysProgram getTrgOfHundredDaysProgram() {
+		return trgOfHundredDaysProgram;
 	}
 
-	public void setCreatedBy(Integer createdBy) {
-		this.createdBy = createdBy;
+	public void setTrgOfHundredDaysProgram(TrgOfHundredDaysProgram trgOfHundredDaysProgram) {
+		this.trgOfHundredDaysProgram = trgOfHundredDaysProgram;
 	}
-
-	public Timestamp getCreatedOn() {
-		return createdOn;
-	}
-
-	public void setCreatedOn(Timestamp createdOn) {
-		this.createdOn = createdOn;
-	}
-
-	public Integer getLastUpdatedBy() {
-		return lastUpdatedBy;
-	}
-
-	public void setLastUpdatedBy(Integer lastUpdatedBy) {
-		this.lastUpdatedBy = lastUpdatedBy;
-	}
-
-	public Timestamp getLastUpdatedOn() {
-		return lastUpdatedOn;
-	}
-
-	public void setLastUpdatedOn(Timestamp lastUpdatedOn) {
-		this.lastUpdatedOn = lastUpdatedOn;
-	}
-
-	public Boolean getIsFreeze() {
-		return isFreeze;
-	}
-
-	public void setIsFreeze(Boolean isFreeze) {
-		this.isFreeze = isFreeze;
-	}
-
-	public Integer getNoOfTrainingsConducted() {
-		return noOfTrainingsConducted;
-	}
-
-	public void setNoOfTrainingsConducted(Integer noOfTrainingsConducted) {
-		this.noOfTrainingsConducted = noOfTrainingsConducted;
-	}
-
-	public String getMsg() {
-		return msg;
-	}
-
-	public void setMsg(String msg) {
-		this.msg = msg;
-	}
-	
-	
-	
 	
 }
