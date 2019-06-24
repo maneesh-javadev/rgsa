@@ -14,6 +14,10 @@
 
 <script type="text/javascript" src="${pageContext.request.contextPath}/resources/plugins/datepicker/js/bootstrap-datetimepicker.min.js"></script>
 <script type="text/javascript">
+$('document').ready(function(){
+	getTotal();
+});
+
 $(function () {
     
     $("#bstartDate").datetimepicker({
@@ -23,11 +27,11 @@ $(function () {
         autoclose: true,
 		minView : 'month',
 		startDate :'03/06/2019',
-		//maxDate : "11/09/2019",
 		pickerPosition : "bottom-left",
 		endDate:'11/09/2019'
 	}) ;
 });
+
 function fetchEndDate(){
 	 var monthNames = [
 		    "01", "02", "03",
@@ -35,13 +39,8 @@ function fetchEndDate(){
 		    "08", "09", "10",
 		    "11", "12"
 		  ];
-	 //var endDate = $("#startDate").val();
 	 var from = $("#startDate").val().split("-")
 	 var f = new Date(from[2], from[1] - 1, from[0]);
-	 //f.setDate(f.getDate()+6);
-	 //alert(f.getDate() + '-' + f.getMonth() + '-'+ f.getFullYear());
-	// alert($.datetimepicker.format('dd-mm-yyyy', f));
-	 //$("#endDate").val();
 	 if(f.getDate() > 5 && monthNames[f.getMonth()] == '09'){
 		 $('#endDate').val('11' + '-' + '09'+ '-'+ '2019');
 	 }else{
@@ -50,11 +49,65 @@ function fetchEndDate(){
 	 }
 	 
 }
+function getTotal(){
+	var total=0;
+	var totalAspirational=0;
+	total = +$('#totalSC').val() + +$('#totalST').val() + +$('#totalWomen').val() + +$('#totalOthers').val();
+	totalAspirational = +$('#aspirationalSC').val() + +$('#aspirationalST').val() + +$('#aspirationalWomen').val() + +$('#aspirationalOthers').val();
+	$('#TotalParticipants').val(total);
+	$('#TotalAspirationalParticipants').val(totalAspirational);
+}
 
+function validateWithAspirational(){
+	if($('#totalSC').val() != '' && $('#aspirationalSC').val() != ''){
+		if(+$('#totalSC').val() < +$('#aspirationalSC').val()){
+			alert('Value should not exceed the total SC participants.');
+			 $('#aspirationalSC').val('');
+		}
+	}
+	if($('#totalST').val() != '' && $('#aspirationalST').val() != ''){
+		if(+$('#totalST').val() < +$('#aspirationalST').val()){
+			alert('Value should not exceed the total ST participants.');
+			 $('#aspirationalST').val('');
+		}
+	}
+	if($('#totalWomen').val() != '' && $('#aspirationalWomen').val() != ''){
+		if(+$('#totalWomen').val() < +$('#aspirationalWomen').val()){
+			alert('Value should not exceed the total Women participants.');
+			 $('#aspirationalWomen').val('');
+		}
+	}
+	if($('#totalOthers').val() != '' && $('#aspirationalOthers').val() != ''){
+		if(+$('#totalOthers').val() < +$('#aspirationalOthers').val()){
+			alert('Value should not exceed the total Others participants.');
+			 $('#aspirationalOthers').val('');
+		}
+	}
+	getTotal();
+}
+
+function isNumber(evt) {
+    evt = (evt) ? evt : window.event;
+    var charCode = (evt.which) ? evt.which : evt.keyCode;
+    if (charCode > 31 && (charCode < 48 || charCode > 57)) {
+        return false;
+    }
+    return true;
+}
+
+function freezeUnfreeze(msg){
+	 if(msg == 'freeze') {
+		 $('#isFreezeId').val(true) ;
+		 $('#msgId').val('freeze') 
+	 }else{
+		  $('#isFreezeId').val(false);
+	 	$('#msgId').val('unfreeze') ;
+	 }
+	document.trainingDetailHundredDay.method = "post";
+	document.trainingDetailHundredDay.action = "trainingDetailHundredDay.html?<csrf:token uri='trainingDetailHundredDay.html'/>";
+	document.trainingDetailHundredDay.submit();
+}
 </script>
-
-<input type="hidden" id="startDateHidden" value="${HUN_DAY_TRAINING.demoStartDate }" />
-<input type="hidden" id="endDateHidden" value="${HUN_DAY_TRAINING.demoEndDate }"/>
 
 <section class="content">
 	<div class="container-fluid">
@@ -83,7 +136,7 @@ function fetchEndDate(){
 									<div class="col-xs-4">
 										<div class="form-line">
 											<div class="input-group date datepicker" id="bstartDate">
-												<form:input path="demoStartDate" class="form-control" id="startDate" onchange="fetchEndDate();" />
+												<form:input path="demoStartDate" class="form-control" id="startDate" onchange="fetchEndDate();" readonly="${HUN_DAY_TRAINING.isFreeze}"/>
 												<span class="input-group-addon"><span
 													class="glyphicon glyphicon-calendar"></span></span>
 											</div>
@@ -131,7 +184,7 @@ function fetchEndDate(){
 										<div class="form-group">
 											<div class="form-line">
 												<form:input path="noOfTrainingConducted" id="noOfTrainingConductedId"
-													class="form-control Align-Right" />
+													class="form-control Align-Right" onkeypress="return isNumber(event)" readonly="${HUN_DAY_TRAINING.isFreeze}"/>
 											</div>
 										</div>
 									</div>
@@ -149,37 +202,37 @@ function fetchEndDate(){
 											<tr>
 												<th>SC</th>
 												<td><form:input path="scParticipants" id="totalSC"
-														class="form-control Align-Right" /></td>
+														class="form-control Align-Right" onkeyup="getTotal()" onkeypress="return isNumber(event)" readonly="${HUN_DAY_TRAINING.isFreeze}"/></td>
 												<td><form:input path="scAspirationalParticipants"
-														id="aspirationalSC" class="form-control Align-Right" /></td>
+														id="aspirationalSC" class="form-control Align-Right" onkeyup="validateWithAspirational();getTotal()" onkeypress="return isNumber(event)" readonly="${HUN_DAY_TRAINING.isFreeze}"/></td>
 											</tr>
 											<tr>
 												<th>ST</th>
 												<td><form:input path="stParticipants" id="totalST"
-														class="form-control Align-Right" /></td>
+														class="form-control Align-Right" onkeyup="getTotal()" onkeypress="return isNumber(event)" readonly="${HUN_DAY_TRAINING.isFreeze}"/></td>
 												<td><form:input path="stAspirationalParticipants"
-														id="aspirationalST" class="form-control Align-Right" /></td>
+														id="aspirationalST" class="form-control Align-Right" onkeyup="validateWithAspirational();getTotal()" onkeypress="return isNumber(event)" readonly="${HUN_DAY_TRAINING.isFreeze}"/></td>
 											</tr>
 											<tr>
 												<th>Women</th>
 												<td><form:input path="womenParticipants"
-														id="totalWomen" class="form-control Align-Right" /></td>
+														id="totalWomen" class="form-control Align-Right" onkeyup="getTotal()" onkeypress="return isNumber(event)" readonly="${HUN_DAY_TRAINING.isFreeze}"/></td>
 												<td><form:input path="womenAspirationalParticipants"
-														id="aspirationalWomen" class="form-control Align-Right" /></td>
+														id="aspirationalWomen" class="form-control Align-Right" onkeyup="validateWithAspirational();getTotal()" onkeypress="return isNumber(event)" readonly="${HUN_DAY_TRAINING.isFreeze}"/></td>
 											</tr>
 											<tr>
 												<th>Other</th>
 												<td><form:input path="othersParticipants"
-														id="totalOthers" class="form-control Align-Right" /></td>
+														id="totalOthers" class="form-control Align-Right" onkeyup="getTotal()" onkeypress="return isNumber(event)" readonly="${HUN_DAY_TRAINING.isFreeze}"/></td>
 												<td><form:input path="othersAspirationalParticipants"
-														id="aspirationalOthers" class="form-control Align-Right" /></td>
+														id="aspirationalOthers" class="form-control Align-Right" onkeyup="validateWithAspirational();getTotal()" onkeypress="return isNumber(event)" readonly="${HUN_DAY_TRAINING.isFreeze}"/></td>
 											</tr>
 											<tr>
 												<th>Total</th>
 												<td><input type="text" id="TotalParticipants"
-													class="form-control Align-Right" /></td>
+													class="form-control Align-Right" disabled="disabled"/></td>
 												<td><input type="text"
-													id="TotalAspirationalParticipants" class="form-control Align-Right" /></td>
+													id="TotalAspirationalParticipants" class="form-control Align-Right" disabled="disabled"/></td>
 											</tr>
 										</tbody>
 									</table>
