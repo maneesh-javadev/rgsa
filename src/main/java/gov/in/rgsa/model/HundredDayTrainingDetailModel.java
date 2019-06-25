@@ -29,6 +29,10 @@ public class HundredDayTrainingDetailModel {
 	private Integer noOfTrainingConducted;
 	
 	private Boolean isFreeze;
+	
+	private java.util.Date trgStartDate;
+	
+	private java.util.Date trgEndDate;
 
 	public String getMsg() {
 		return msg;
@@ -152,6 +156,22 @@ public class HundredDayTrainingDetailModel {
 
 	public void setWomenAspirationalParticipants(Integer womenAspirationalParticipants) {
 		this.womenAspirationalParticipants = womenAspirationalParticipants;
+	}
+
+	public java.util.Date getTrgStartDate() {
+		return trgStartDate;
+	}
+
+	public void setTrgStartDate(java.util.Date trgStartDate) {
+		this.trgStartDate = trgStartDate;
+	}
+
+	public java.util.Date getTrgEndDate() {
+		return trgEndDate;
+	}
+
+	public void setTrgEndDate(java.util.Date trgEndDate) {
+		this.trgEndDate = trgEndDate;
 	}
 	
 	

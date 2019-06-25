@@ -17,6 +17,7 @@ import gov.in.rgsa.dao.CommonRepository;
 import gov.in.rgsa.entity.TrgDetailsOfHundredDaysProgram;
 import gov.in.rgsa.entity.TrgOfHundredDaysProgram;
 import gov.in.rgsa.entity.TrgOfHundredDaysProgramCh1;
+import gov.in.rgsa.model.HundredDayTrainingDetailModel;
 import gov.in.rgsa.service.HundredDayTrainingDetailsService;
 import gov.in.rgsa.user.preference.UserPreference;
 
@@ -95,6 +96,22 @@ public class HundredDayTrainingDetailsServiceImpl implements HundredDayTrainingD
 		Map<String, Object> param=new HashMap<String, Object>();
 		param.put("trgOfHundredDaysProgramId", trgOfHundredDaysProgramId);
 		return dao.findAll("FETCH_TRG_DETAILS_OF_100_DAYS", param);
+	}
+
+	@Override
+	public TrgOfHundredDaysProgramCh1 fetchTrgOfHundredDaysProgramByDate(TrgOfHundredDaysProgramCh1 form) {
+		Map<String, Object> param=new HashMap<String, Object>();
+		List<TrgOfHundredDaysProgramCh1> trgOfHundredDaysProgramCh1=new ArrayList<TrgOfHundredDaysProgramCh1>(); 
+		param.put("stateCode", userPreference.getStateCode());
+		param.put("yearId", userPreference.getFinYearId());
+		param.put("startDate", form.getTrgStartDate());
+		//param.put("EndDate", form.getTrgEndDate());
+		trgOfHundredDaysProgramCh1 = dao.findAll("FETCH_TRG_OF_100_CH_DAYS_BY_DATE_RANGE", param);
+		if(CollectionUtils.isNotEmpty(trgOfHundredDaysProgramCh1)) {
+			return trgOfHundredDaysProgramCh1.get(0);
+		}else {
+			return null;
+		}
 	}
 	
 }
