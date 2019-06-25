@@ -72,9 +72,6 @@ public class HundredDayTrainingDetailsController {
 	private String postHundredDayTrainingDetails(@ModelAttribute("HUN_DAY_TRAINING") TrgOfHundredDaysProgramCh1 entity , RedirectAttributes redirect,Model model) {
 		System.err.println(".................i am in post controller brother......");
 		
-		if(entity.getMsg().equalsIgnoreCase("fetch")) {
-			return fetchTrainingDetails(entity,model);
-		}else {
 			hundredDayTrainingDetailsService.saveDeatils(entity);
 			switch (entity.getMsg()) { 
 			  case "freeze": redirect.addFlashAttribute(Message.SUCCESS_KEY, Message.FRIZEE_SUCESS);
@@ -85,7 +82,6 @@ public class HundredDayTrainingDetailsController {
 			  
 			  default: redirect.addFlashAttribute(Message.SUCCESS_KEY,Message.SAVE_SUCCESS);
 			  			break; }
-		}
 		return  REDIRECT_HUNDRED_DAY_DETAIL;
 	}
 	
@@ -114,6 +110,7 @@ public class HundredDayTrainingDetailsController {
 			entity.setWomenAspirationalParticipants(trgOfHundredDaysProgramCh1.getWomenAspirationalParticipants());
 			entity.setOthersParticipants(trgOfHundredDaysProgramCh1.getOthersParticipants());
 			entity.setOthersAspirationalParticipants(trgOfHundredDaysProgramCh1.getOthersAspirationalParticipants());
+			entity.setTrgOfHundredDaysProgramChId(trgOfHundredDaysProgramCh1.getTrgOfHundredDaysProgramChId());
 			String startarr[]=trgOfHundredDaysProgramCh1.getTrgStartDate().toString().substring(0,10).split("-");
 			entity.setDemoStartDate(startarr[2]+"-"+startarr[1]+"-"+startarr[0]);
 			String endarr[]=trgOfHundredDaysProgramCh1.getTrgEndDate().toString().substring(0,10).split("-");
@@ -123,6 +120,7 @@ public class HundredDayTrainingDetailsController {
 			//entity = new TrgOfHundredDaysProgramCh1();
 			entity.setDemoStartDate(demoStart);
 			entity.setDemoEndDate(demoEnd);
+			entity.setTrgOfHundredDaysProgramChId(null);
 			entity.setNoOfTrainingConducted(null);
 			entity.setScParticipants(null);
 			entity.setScAspirationalParticipants(null);
