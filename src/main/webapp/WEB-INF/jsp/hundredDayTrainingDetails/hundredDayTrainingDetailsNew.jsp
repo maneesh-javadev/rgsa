@@ -14,9 +14,9 @@
 
 <script type="text/javascript" src="${pageContext.request.contextPath}/resources/plugins/datepicker/js/bootstrap-datetimepicker.min.js"></script>
 <script type="text/javascript">
-var startDate = '${HUN_DAY_TRAINING.trgStartDate}';
+var startDate = '${HUN_DAY_TRAINING.demoStartDate}';
 $('document').ready(function(){
-	if(startDate != null && startDate != undefined){
+	if(startDate != ''){
 		$('#mainDivId').show();
 	}
 	getTotal();
@@ -147,14 +147,33 @@ function freezeUnfreeze(msg){
 									</div>
 
 									<div class="col-xs-4">
-										<div class="form-line">
-											<div class="input-group date datepicker" id="bstartDate">
+										<!-- <div class="form-line"> -->
+										<c:choose>
+										<c:when test="${HUN_DAY_TRAINING.isFreeze}"><div class="" id="">
+											<div class="form-group">
+												<div class="form-line">
+													<form:input path="demoStartDate" class="form-control" id="startDate" onchange="fetchEndDate();" readonly="${HUN_DAY_TRAINING.isFreeze}"/>
+												</div> <!-- <span class="input-group-addon"><span
+													class="glyphicon glyphicon-calendar"></span></span> -->
+												</div>
+											</div>
+										</c:when>
+										<c:otherwise>
+											<div class="form-line">
+												<div class="input-group date datepicker" id="bstartDate">
+													<form:input path="demoStartDate" class="form-control" id="startDate" onchange="fetchEndDate();" readonly="${HUN_DAY_TRAINING.isFreeze}"/>
+													<span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+												</div>
+											</div>
+										</c:otherwise>
+										</c:choose>
+											<%-- <div class="input-group date datepicker" id="bstartDate">
 												<form:input path="demoStartDate" class="form-control" id="startDate" onchange="fetchEndDate();" readonly="${HUN_DAY_TRAINING.isFreeze}"/>
 												<span class="input-group-addon"><span
 													class="glyphicon glyphicon-calendar"></span></span>
-											</div>
+											</div> --%>
 
-										</div>
+										<!-- </div> -->
 									</div>
 									<!-- <div class="col-sm-4">
 										<div class="form-group">
@@ -171,7 +190,7 @@ function freezeUnfreeze(msg){
 									<div class="col-xs-4">
 										<div class="form-line">
 											<div class="input-group date datepicker" id="bendDate">
-												<form:input path="demoEndDate" class="form-control" id="endDate" disabled="disabled"/>
+												<form:input path="demoEndDate" class="form-control" id="endDate" readonly="true"/>
 												<span class="input-group-addon"><span
 													class="glyphicon glyphicon-calendar"></span></span>
 											</div>
@@ -252,12 +271,25 @@ function freezeUnfreeze(msg){
 									</table>
 								</div>
 								<div class="form-group text-right" style="padding-bottom: 5px;">
-							<button type="submit" class="btn bg-green waves-effect">
+							<c:choose>
+								<c:when test="${HUN_DAY_TRAINING.isFreeze}">
+									<button type="submit" class="btn bg-green waves-effect" disabled="disabled">
 								<c:choose>
 									<c:when test="${UPDATE_OR_SAVE eq 'update'}">UPDATE</c:when>
 									<c:otherwise>SAVE</c:otherwise>
 								</c:choose>
 							</button>
+								</c:when>
+								<c:otherwise>
+								<button type="submit" class="btn bg-green waves-effect" >
+								<c:choose>
+									<c:when test="${UPDATE_OR_SAVE eq 'update'}">UPDATE</c:when>
+									<c:otherwise>SAVE</c:otherwise>
+								</c:choose>
+							</button>
+								</c:otherwise>
+							</c:choose>
+							
 							<c:choose>
 								<c:when test="${HUN_DAY_TRAINING.isFreeze eq true}">
 									<button type="button" onclick="freezeUnfreeze('unfreeze')"
@@ -274,10 +306,21 @@ function freezeUnfreeze(msg){
 									</c:if>
 								</c:otherwise>
 							</c:choose>
-							<button type="button" onclick="onClear(this)"
+							
+							<c:choose>
+								<c:when test="${HUN_DAY_TRAINING.isFreeze}">
+									<button type="button" onclick="onClear(this)"
+								class="btn bg-light-blue waves-effect" disabled="disabled">CLEAR</button>
+								</c:when>
+								<c:otherwise>
+								<button type="button" onclick="onClear(this)"
 								class="btn bg-light-blue waves-effect">CLEAR</button>
+								</c:otherwise>
+								</c:choose>
+							
+							
 							<button type="button"
-								onclick="onClose('managesubjects.html?<csrf:token uri='managesubjects.html'/>')"
+								onclick="onClose('home.html?<csrf:token uri='home.html'/>')"
 								class="btn bg-orange waves-effect">CLOSE</button>
 							&nbsp;
 						</div>

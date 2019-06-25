@@ -110,6 +110,7 @@ public class HundredDayTrainingDetailsController {
 			entity.setWomenAspirationalParticipants(trgOfHundredDaysProgramCh1.getWomenAspirationalParticipants());
 			entity.setOthersParticipants(trgOfHundredDaysProgramCh1.getOthersParticipants());
 			entity.setOthersAspirationalParticipants(trgOfHundredDaysProgramCh1.getOthersAspirationalParticipants());
+			entity.setIsFreeze(trgOfHundredDaysProgramCh1.getIsFreeze());
 			entity.setTrgOfHundredDaysProgramChId(trgOfHundredDaysProgramCh1.getTrgOfHundredDaysProgramChId());
 			String startarr[]=trgOfHundredDaysProgramCh1.getTrgStartDate().toString().substring(0,10).split("-");
 			entity.setDemoStartDate(startarr[2]+"-"+startarr[1]+"-"+startarr[0]);
@@ -129,6 +130,7 @@ public class HundredDayTrainingDetailsController {
 			entity.setWomenParticipants(null);
 			entity.setWomenAspirationalParticipants(null);
 			entity.setOthersParticipants(null);
+			entity.setIsFreeze(false);
 			entity.setOthersAspirationalParticipants(null);
 			model.addAttribute("UPDATE_OR_SAVE", "save"); 
 		}
