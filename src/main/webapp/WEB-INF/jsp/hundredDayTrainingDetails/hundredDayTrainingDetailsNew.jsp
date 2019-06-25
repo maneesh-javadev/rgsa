@@ -14,14 +14,19 @@
 
 <script type="text/javascript" src="${pageContext.request.contextPath}/resources/plugins/datepicker/js/bootstrap-datetimepicker.min.js"></script>
 <script type="text/javascript">
+var startDate = '${HUN_DAY_TRAINING.trgStartDate}';
 $('document').ready(function(){
+	if(startDate != null && startDate != undefined){
+		$('#mainDivId').show();
+	}
 	getTotal();
+	
 });
 
-$(function () {
-    
+$(function () {   
     $("#bstartDate").datetimepicker({
 		format: 'dd-mm-yyyy',
+		daysOfWeekDisabled: [0,2,3,4,5,6],
 		startView : 'month',
 		endDate: '+100d',
         autoclose: true,
@@ -48,6 +53,7 @@ function fetchEndDate(){
 		 $('#endDate').val(f.getDate() + '-' + monthNames[f.getMonth()] + '-'+ f.getFullYear());
 	 }
 	 
+	 fetchDataFromBack();
 }
 function getTotal(){
 	var total=0;
@@ -94,6 +100,13 @@ function isNumber(evt) {
     }
     return true;
 }
+
+function fetchDataFromBack(){
+	$('#msgId').val('fetch'); 
+	document.trainingDetailHundredDay.method = "post";
+	document.trainingDetailHundredDay.action = "fetchTrainingDetails.html?<csrf:token uri='fetchTrainingDetails.html'/>";
+	document.trainingDetailHundredDay.submit();
+};
 
 function freezeUnfreeze(msg){
 	 if(msg == 'freeze') {
@@ -174,7 +187,8 @@ function freezeUnfreeze(msg){
 										</div>
 									</div> -->
 								</div>
-
+								<!-- DIV STARTS FROM HERE -->
+								<div id="mainDivId" style="display: none;">
 								<div class="row clearfix">
 									<div class="col-sm-4">
 										<label for="NoOfTrainingConducted"> Number of training
@@ -237,9 +251,7 @@ function freezeUnfreeze(msg){
 										</tbody>
 									</table>
 								</div>
-							</div>
-						</div>
-						<div class="form-group text-right" style="padding-bottom: 5px;">
+								<div class="form-group text-right" style="padding-bottom: 5px;">
 							<button type="submit" class="btn bg-green waves-effect">
 								<c:choose>
 									<c:when test="${UPDATE_OR_SAVE eq 'update'}">UPDATE</c:when>
@@ -269,6 +281,10 @@ function freezeUnfreeze(msg){
 								class="btn bg-orange waves-effect">CLOSE</button>
 							&nbsp;
 						</div>
+						</div>
+							</div>
+						</div>
+						
 						<!-- hidden fields -->
 						<input type="hidden" name="trgOfHundredDaysProgramChId"
 							value="${HUN_DAY_TRAINING.trgOfHundredDaysProgramChId}" />
