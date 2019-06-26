@@ -1,6 +1,8 @@
 package gov.in.rgsa.webServices;
 
 import java.math.BigInteger;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -10,6 +12,8 @@ import org.springframework.stereotype.Service;
 
 import gov.in.rgsa.dao.CommonRepository;
 import gov.in.rgsa.dto.ERRepresentativeHundredDayProg;
+import gov.in.rgsa.dto.ERRepresentativeHundredDayProgLastWeekWise;
+import gov.in.rgsa.dto.ERRepresentativeHundredDayProgStateWise;
 import gov.in.rgsa.dto.StatewiseNoOfParticipants;
 import gov.in.rgsa.entity.FetchPlanStatusCount;
 
@@ -70,17 +74,55 @@ public class WebserviceServiceImpl implements WebserviceService {
 	}
 	
 	@Override
-	public List<ERRepresentativeHundredDayProg> fetchERRepresentativeHundredDayProg(String fin_year) {
+	public List<ERRepresentativeHundredDayProg> fetchERRepresentativeHundredDayProg(String fin_year,String stDate,String endDate) {
 		List<ERRepresentativeHundredDayProg> erRepresentativeHundredDayProg=null;
 		try {
 		Map<String, Object> params=new HashMap<>();
-		params.put("fin_year",fin_year);
-		erRepresentativeHundredDayProg= commonRepository.findAll("ER_Representative_Hundred_Day_Prog", params);
+		
+		if(stDate!=null && endDate!=null)
+		{
+			 Date dstDate=new SimpleDateFormat("dd-MM-yyyy").parse(stDate);
+			 Date dendDate=new SimpleDateFormat("dd-MM-yyyy").parse(endDate);
+			
+			params.put("stDate",dstDate);	
+			params.put("endDate",dendDate);	
+			erRepresentativeHundredDayProg= commonRepository.findAll("ER_Representative_Hundred_Day_Prog_DATE_WISE", params);
+		}else {
+			params.put("fin_year",fin_year);
+			erRepresentativeHundredDayProg= commonRepository.findAll("ER_Representative_Hundred_Day_Prog", params);
+		}
+		
 		
 		}catch(Exception e) {
 			e.printStackTrace();
 		}
 		return erRepresentativeHundredDayProg;
 	}
+
+
+
+	@Override
+	public List<ERRepresentativeHundredDayProgLastWeekWise> fetchERRepresentativeHundredDayProgLASTWEEKWISE() {
+		return  commonRepository.findAll("ER_Representative_Hundred_Day_Prog_LAST_WEEK_WISE", null);
+	}
+	
+	@Override
+	public List<ERRepresentativeHundredDayProgStateWise> fetchERRepresentativeHundredDayProgStateWise(String fin_year,String stDate,String endDate) {
+		List<ERRepresentativeHundredDayProgStateWise> erRepresentativeHundredDayProg=null;
+		try {
+		Map<String, Object> params=new HashMap<>();
+		 Date dstDate=new SimpleDateFormat("dd-MM-yyyy").parse(stDate);
+			 Date dendDate=new SimpleDateFormat("dd-MM-yyyy").parse(endDate);
+			
+			params.put("stDate",dstDate);	
+			params.put("endDate",dendDate);	
+			erRepresentativeHundredDayProg= commonRepository.findAll("ER_Representative_Hundred_Day_Prog_State_Wise", params);
+		
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+		return erRepresentativeHundredDayProg;
+	}
+
 
 }

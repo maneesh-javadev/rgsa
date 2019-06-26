@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import gov.in.rgsa.entity.TrgDetailsOfHundredDaysProgram;
 import gov.in.rgsa.entity.TrgOfHundredDaysProgramCh1;
 import gov.in.rgsa.model.HundredDayTrainingDetailModel;
 import gov.in.rgsa.service.HundredDayTrainingDetailsService;

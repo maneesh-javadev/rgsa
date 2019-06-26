@@ -67,7 +67,7 @@ public class DevQuirksInterceptor extends HandlerInterceptorAdapter {
         Users user = commonRepository.find(Users.class, userMap);
         FacadeModel facadeModel = new FacadeModel();
         facadeModel.setLoginId(user.getUserName());
-        facadeModel.setPassword(user.getPassword());
+        facadeModel.setPassword(user.getUserPassword() );
         UserPreference facadeServiceUser =facadeService.findUser(facadeModel);
         setPreference(facadeServiceUser);
         logger.info("Using account: " + userPreference.getUserName());

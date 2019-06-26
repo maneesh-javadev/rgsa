@@ -9,32 +9,23 @@ import javax.persistence.NamedNativeQuery;
 @Entity
 
 @NamedNativeQueries({
-@NamedNativeQuery(name="ER_Representative_Hundred_Day_Prog",
+@NamedNativeQuery(name="ER_Representative_Hundred_Day_Prog_State_Wise",
 query=//" select cast(row_number() over() as integer) id,"+ 
-	"select cast(coalesce(sum(sc),0)+coalesce(sum(st),0)+coalesce(sum(woman),0)+coalesce(sum(others),0) as integer) total_ER_trained ," + 
-	" cast(coalesce(sum(woman),0)as integer)woman_ER_trained, cast(coalesce(sum(sc),0)as integer)sc_ER_trained, cast(coalesce(sum(st),0)as integer)st_ER_trained," + 
-	" cast(coalesce(sum(sc_aspirational),0)+coalesce(sum(st_aspirational),0)+coalesce(sum(woman_aspirational),0)+coalesce(sum(others_aspirational),0)as integer) total_aspirational_trained "+ 
-	" from rgsa.trg_of_hundred_days_program_ch1  td inner join rgsa.fin_year  fy  on td.year_id =fy.year_id " + 
-	" where   fy.finyear = :fin_year"
-,resultClass=ERRepresentativeHundredDayProg.class),
-
-@NamedNativeQuery(name="ER_Representative_Hundred_Day_Prog_DATE_WISE",
-query=//" select cast(row_number() over() as integer) id,"+ 
-	"	  select cast(coalesce(sum(sc),0)+coalesce(sum(st),0)+coalesce(sum(woman),0)+coalesce(sum(others),0) as integer) total_ER_trained ," + 
-	"	 cast(coalesce(sum(woman),0)as integer)woman_ER_trained, cast(coalesce(sum(sc),0)as integer)sc_ER_trained, cast(coalesce(sum(st),0)as integer)st_ER_trained," + 
+	"	  select trim(s.state_name_english)state_name_english,cast(coalesce(sum(sc),0)+coalesce(sum(st),0)+coalesce(sum(woman),0)+coalesce(sum(others),0) as integer) total_ER_trained ," + 
+	"	 cast(coalesce(sum(woman),0)as integer)woman_ER_trained, cast(coalesce(sum(sc),0)as integer)sc_ER_trained, cast(coalesce(sum(st),0)as integer)st_ER_trained, " + 
 	"	 cast(coalesce(sum(sc_aspirational),0)+coalesce(sum(st_aspirational),0)+coalesce(sum(woman_aspirational),0)+coalesce(sum(others_aspirational),0)as integer)   total_aspirational_trained " + 
-	"	  from   rgsa.trg_of_hundred_days_program_ch1 where trg_st_date>=:stDate and trg_end_date<=:endDate"
-,resultClass=ERRepresentativeHundredDayProg.class)
+	"  			from lgd.state s left join rgsa.trg_of_hundred_days_program_ch1 td on td.state_code=s.state_code and trg_st_date>=:stDate and trg_end_date<=:endDate "+ 
+	"  			where   s.isactive=true group by   s.state_name_english order by s.state_name_english "
+,resultClass=ERRepresentativeHundredDayProgStateWise.class)
 
 })
-public class ERRepresentativeHundredDayProg {
+public class ERRepresentativeHundredDayProgStateWise {
 	
-	/*
-	 * @Id
-	 * 
-	 * @Column(name="id") private Integer id;
-	 */
 	@Id
+	@Column(name="state_name_english")
+	private String stateNameEnglish;
+	
+	
 	@Column(name="total_ER_Trained")
 	private Integer totalERTrained;
 	
@@ -95,6 +86,14 @@ public class ERRepresentativeHundredDayProg {
 
 	public void setTotalADTrained(Integer totalADTrained) {
 		this.totalADTrained = totalADTrained;
+	}
+
+	public String getStateNameEnglish() {
+		return stateNameEnglish;
+	}
+
+	public void setStateNameEnglish(String stateNameEnglish) {
+		this.stateNameEnglish = stateNameEnglish;
 	}
 	
 	
