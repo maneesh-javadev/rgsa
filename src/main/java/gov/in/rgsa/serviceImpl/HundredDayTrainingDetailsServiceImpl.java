@@ -1,10 +1,7 @@
 package gov.in.rgsa.serviceImpl;
 
-import java.text.DateFormat;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -15,9 +12,8 @@ import org.springframework.stereotype.Service;
 
 import gov.in.rgsa.dao.CommonRepository;
 import gov.in.rgsa.entity.TrgDetailsOfHundredDaysProgram;
-import gov.in.rgsa.entity.TrgOfHundredDaysProgram;
 import gov.in.rgsa.entity.TrgOfHundredDaysProgramCh1;
-import gov.in.rgsa.model.HundredDayTrainingDetailModel;
+import gov.in.rgsa.entity.TrgOfHundredDaysProgramCh2;
 import gov.in.rgsa.service.HundredDayTrainingDetailsService;
 import gov.in.rgsa.user.preference.UserPreference;
 
@@ -31,7 +27,7 @@ public class HundredDayTrainingDetailsServiceImpl implements HundredDayTrainingD
 	private UserPreference userPreference;
 	
 	@Override
-	public void saveDeatils(TrgOfHundredDaysProgramCh1 entity) {
+	public void saveDeatils(TrgOfHundredDaysProgramCh2 entity) {
 		entity = setBasicFieldsInObject(entity);
 		/*
 		 * List<TrgDetailsOfHundredDaysProgram>
@@ -40,7 +36,7 @@ public class HundredDayTrainingDetailsServiceImpl implements HundredDayTrainingD
 		 * detail.setTrgOfHundredDaysProgram(entity); }
 		 * entity.setTrgDetailsOfHundredDaysProgram(details);
 		 */
-		if (entity.getTrgOfHundredDaysProgramChId() != null) {
+		if (entity.getTrgOfHundredDaysProgramCh2Id() != null) {
 			dao.update(entity);
 		} else {
 			dao.save(entity);
@@ -48,32 +44,32 @@ public class HundredDayTrainingDetailsServiceImpl implements HundredDayTrainingD
 		 
 	}
 
-	private TrgOfHundredDaysProgramCh1 setBasicFieldsInObject(TrgOfHundredDaysProgramCh1 entity) {
-		try {
+	private TrgOfHundredDaysProgramCh2 setBasicFieldsInObject(TrgOfHundredDaysProgramCh2 entity) {
+		/* try { */
 		  entity.setStateCode(userPreference.getStateCode());
 		  entity.setUserType(userPreference.getUserType());
 		  entity.setYearId(userPreference.getFinYearId());
 		  entity.setCreatedBy(userPreference.getUserId());
-		 // Date dateStart = new Date(entity.getDemoStartDate());
-		  DateFormat date= new SimpleDateFormat("dd-MM-yyyy");
-		  Date sdate;
-		 
-			sdate = date.parse(entity.getDemoStartDate());
-		 Date edate=date.parse(entity.getDemoEndDate());
-		  entity.setTrgStartDate(sdate);
-		  entity.setTrgEndDate(edate);
+			/*
+			 * // Date dateStart = new Date(entity.getDemoStartDate()); DateFormat date= new
+			 * SimpleDateFormat("dd-MM-yyyy"); Date sdate;
+			 * 
+			 * sdate = date.parse(entity.getDemoStartDate()); Date
+			 * edate=date.parse(entity.getDemoEndDate()); entity.setTrgStartDate(sdate);
+			 * entity.setTrgEndDate(edate);
+			 */
 			if (entity.getMsg().equalsIgnoreCase("freeze")) {
 				entity.setIsFreeze(true);
 			} else {
 				entity.setIsFreeze(false);
 			}
-			if (entity.getTrgOfHundredDaysProgramChId() != null) {
+			if (entity.getTrgOfHundredDaysProgramCh2Id() != null) {
 				entity.setLastUpdatedBy(userPreference.getUserId());
 			}
-		}catch (ParseException e) {
+		/*}catch (ParseException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
-			}
+			}*/
 		return entity;
 	}
 

@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import gov.in.rgsa.entity.TrgOfHundredDaysProgramCh1;
+import gov.in.rgsa.entity.TrgOfHundredDaysProgramCh2;
 import gov.in.rgsa.model.HundredDayTrainingDetailModel;
 import gov.in.rgsa.service.HundredDayTrainingDetailsService;
 import gov.in.rgsa.service.TrainingActivityService;
@@ -23,7 +24,8 @@ import gov.in.rgsa.utils.Message;
 public class HundredDayTrainingDetailsController {
 
 	public static final String HUNDRED_DAY_DETAIL="hundredDayTrainingDetail";
-	private static final String REDIRECT_HUNDRED_DAY_DETAIL = "redirect:trainingDetailHundredDay.html"; 
+	private static final String REDIRECT_HUNDRED_DAY_DETAIL = "redirect:trainingDetailHundredDay.html";
+	private static final String NEW_HUNDRED_DAY_DETAILS = "newHundredDayTrainingDetails"; 
 	
 	@Autowired
 	private HundredDayTrainingDetailsService hundredDayTrainingDetailsService; 
@@ -67,8 +69,14 @@ public class HundredDayTrainingDetailsController {
 		return  HUNDRED_DAY_DETAIL;
 	}
 	
+	@GetMapping(value = "trainingDetailHundredDayNew")
+	private String getHundredDayTrainingDetailsNew(@ModelAttribute("HUN_DAY_TRAINING") HundredDayTrainingDetailModel form , Model model) {
+		System.err.println(".................i am in new get controller brother......");
+		return NEW_HUNDRED_DAY_DETAILS;
+	}
+	
 	@PostMapping(value = "trainingDetailHundredDay")
-	private String postHundredDayTrainingDetails(@ModelAttribute("HUN_DAY_TRAINING") TrgOfHundredDaysProgramCh1 entity , RedirectAttributes redirect,Model model) {
+	private String postHundredDayTrainingDetails(@ModelAttribute("HUN_DAY_TRAINING") TrgOfHundredDaysProgramCh2 entity , RedirectAttributes redirect,Model model) {
 		System.err.println(".................i am in post controller brother......");
 		
 			hundredDayTrainingDetailsService.saveDeatils(entity);
@@ -135,4 +143,6 @@ public class HundredDayTrainingDetailsController {
 		}
 		return  HUNDRED_DAY_DETAIL;
 	}
+	
+	
 }
