@@ -24,7 +24,7 @@ import gov.in.rgsa.utils.Message;
 public class HundredDayTrainingDetailsController {
 
 	public static final String HUNDRED_DAY_DETAIL = "hundredDayTrainingDetail";
-	private static final String REDIRECT_HUNDRED_DAY_DETAIL = "redirect:trainingDetailHundredDayNew.html";
+	private static final String REDIRECT_HUNDRED_DAY_DETAIL = "redirect:trainingDetailHundredDay.html";
 	private static final String NEW_HUNDRED_DAY_DETAILS = "newHundredDayTrainingDetails";
 
 	@Autowired
@@ -80,7 +80,7 @@ public class HundredDayTrainingDetailsController {
 	 * "save"); } return HUNDRED_DAY_DETAIL; }
 	 */
 
-	@GetMapping(value = "trainingDetailHundredDayNew")
+	@GetMapping(value = "trainingDetailHundredDay")
 	private String getHundredDayTrainingDetailsNew(@ModelAttribute("HUN_DAY_TRAINING") TrgOfHundredDaysProgramCh2 entity, Model model) {
 		System.err.println(".................i am in new get controller brother......");
 		String byDefaultDate = "03-06-2019";
