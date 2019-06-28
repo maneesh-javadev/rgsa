@@ -3,6 +3,21 @@
 
 <script type="text/javascript" src="${pageContext.request.contextPath}/resources/plugins/datepicker/js/bootstrap-datetimepicker.min.js"></script>
 <script>
+var startDate = '${HUN_DAY_TRAINING.demoDate}';
+$('document').ready(function(){
+	if(startDate != ''){
+		$('#mainDivId').show();
+	}
+	calMaleSar();
+	calFemaleSar();
+	calOtherErMale();
+	calOtherErFemale();
+	calFunMale();
+	calFunFemale();
+	calGrandTotalFields()
+	
+});
+
 	$(function() {
 		$("#bstartDate").datetimepicker({
 			format : 'dd-mm-yyyy',
@@ -16,7 +31,61 @@
 		});
 	});
 	
+function calMaleSar(){
+	$('#totalMaleSarpanch').val(+$('#sarpanchMaleScId').val() + +$('#sarpanchMaleStId').val() + +$('#sarpanchMaleOthersId').val());
+	calGrandTotalFields()
+}
 	
+function calFemaleSar(){
+	$('#totalFemaleSarpanch').val(+$('#sarpanchFemaleScId').val() + +$('#sarpanchFemaleStId').val() + +$('#sarpanchFemaleOthersId').val());	
+	calGrandTotalFields()
+}
+	
+function calOtherErMale(){
+	$('#totalMaleOtherEr').val(+$('#otherErMaleScId').val() + +$('#otherErMaleStId').val() + +$('#otherErMaleOthersId').val());
+	calGrandTotalFields()
+}
+
+function calOtherErFemale(){
+	$('#totalFemaleOtherEr').val(+$('#otherErFemaleScId').val() + +$('#otherErFemaleStId').val() + +$('#otherErFemaleOthersId').val());
+	calGrandTotalFields()
+}
+
+function calFunMale(){
+	$('#totalMaleFunctionaries').val(+$('#functionariedMaleScId').val() + +$('#functionariedMaleStId').val() + +$('#functionariedMaleOthersId').val());
+	calGrandTotalFields()
+}
+
+function calFunFemale(){
+	$('#totalFemaleFunctionaries').val(+$('#functionariedFemaleScId').val() + +$('#functionariedFemaleStId').val() + +$('#functionariedFemaleOthersId').val());
+	calGrandTotalFields()
+}
+
+function calGrandTotalFields(){
+	$('#totalMaleId').val(+$('#totalMaleSarpanch').val() + +$('#totalMaleOtherEr').val() + +$('#totalMaleFunctionaries').val());
+	$('#totalFemaleId').val(+$('#totalFemaleSarpanch').val() + +$('#totalFemaleOtherEr').val() + +$('#totalFemaleFunctionaries').val());
+	$('#totalParticipantsId').val(+$('#totalMaleId').val() + +$('#totalFemaleId').val());
+}
+
+function fetchDataByDate(){
+	$('#msgId').val('fetch'); 
+	document.trainingDetailHundredDay.method = "post";
+	document.trainingDetailHundredDay.action = "trainingDetailHundredDay.html?<csrf:token uri='trainingDetailHundredDay.html'/>";
+	document.trainingDetailHundredDay.submit();
+}
+
+function freezeUnfreeze(msg){
+	 if(msg == 'freeze') {
+		 $('#isFreezeId').val(true) ;
+		 $('#msgId').val('freeze') 
+	 }else{
+		  $('#isFreezeId').val(false);
+	 	$('#msgId').val('unfreeze') ;
+	 }
+	document.trainingDetailHundredDay.method = "post";
+	document.trainingDetailHundredDay.action = "trainingDetailHundredDay.html?<csrf:token uri='trainingDetailHundredDay.html'/>";
+	document.trainingDetailHundredDay.submit();
+}
 </script>
 <section class="content">
 	<div class="container-fluid">
@@ -40,33 +109,18 @@
 									<label for="trainingStartDate"> Training Start Date :</label>
 								</div>
 								<div class="col-xs-4">
-									<c:choose>
-										<c:when test="${HUN_DAY_TRAINING.isFreeze}">
-											<div class="" id="">
-												<div class="form-group">
-													<div class="form-line">
-														<form:input path="" class="form-control" id="startDate"
-															onchange="fetchEndDate();"
-															readonly="${HUN_DAY_TRAINING.isFreeze}" />
-													</div>
-												</div>
-											</div>
-										</c:when>
-										<c:otherwise>
-											<div class="form-line">
-												<div class="input-group date datepicker" id="bstartDate">
-													<form:input path="" class="form-control" id="startDate"
-														onchange="fetchEndDate();"
-														readonly="${HUN_DAY_TRAINING.isFreeze}" />
-													<span class="input-group-addon"><span
-														class="glyphicon glyphicon-calendar"></span></span>
-												</div>
-											</div>
-										</c:otherwise>
-									</c:choose>
+									<div class="form-line">
+										<div class="input-group date datepicker" id="bstartDate">
+											<form:input path="demoDate" class="form-control" id="startDate"
+												onchange="fetchDataByDate();"
+												readonly="${HUN_DAY_TRAINING.isFreeze}" />
+											<span class="input-group-addon"><span
+												class="glyphicon glyphicon-calendar"></span></span>
+										</div>
+									</div>
 								</div>
 							</div>
-
+						<div id="mainDivId" style="display: none;">
 							<div class="row clearfix">
 								<div class="col-sm-3">
 									<label for="NoOfTrainingConducted"> Number of training
@@ -75,7 +129,7 @@
 								<div class="col-sm-4">
 									<div class="form-group">
 										<div class="form-line">
-											<form:input path="" id="noOfTrainingConductedId"
+											<form:input path="noOfTrainingConducted" id="noOfTrainingConductedId"
 												class="form-control Align-Right"
 												onkeypress="return isNumber(event)"
 												readonly="${HUN_DAY_TRAINING.isFreeze}" />
@@ -108,39 +162,39 @@
 									<tbody>
 										<tr>
 											<td><div align="center"><strong>SC</strong></div></td>
-											<td><input type="text" class="form-control" id="sarpanchMaleScId"/></td>
-											<td><input type="text" class="form-control" id="sarpanchFemaleScId"/></td>
-											<td><input type="text" class="form-control" id="otherErMaleScId"/></td>
-											<td><input type="text" class="form-control" id="otherErFemaleScId"/></td>
-											<td><input type="text" class="form-control" id="functionariedMaleScId"/></td>
-											<td><input type="text" class="form-control" id="functionariedFemaleScId"/></td>
+											<td><form:input path="erSarMaleSc"  class="form-control" id="sarpanchMaleScId" onkeyup="calMaleSar()" readonly="${HUN_DAY_TRAINING.isFreeze}" /></td>
+											<td><form:input path="erSarFemaleSc" class="form-control" id="sarpanchFemaleScId" onkeyup="calFemaleSar()" readonly="${HUN_DAY_TRAINING.isFreeze}" /></td>
+											<td><form:input path="erOtherMaleSc" class="form-control" id="otherErMaleScId" onkeyup="calOtherErMale()" readonly="${HUN_DAY_TRAINING.isFreeze}" /></td>
+											<td><form:input path="erOtherFemaleSc" class="form-control" id="otherErFemaleScId" onkeyup="calOtherErFemale()" readonly="${HUN_DAY_TRAINING.isFreeze}" /></td>
+											<td><form:input path="funMaleSc" class="form-control" id="functionariedMaleScId" onkeyup="calFunMale()" readonly="${HUN_DAY_TRAINING.isFreeze}" /></td>
+											<td><form:input path="funFemaleSc" class="form-control" id="functionariedFemaleScId" onkeyup="calFunFemale()" readonly="${HUN_DAY_TRAINING.isFreeze}" /></td>
 										</tr>
 										<tr>
 											<td><div align="center"><strong>ST</strong></div></td>
-											<td><input type="text" class="form-control" id="sarpanchMaleStId"/></td>
-											<td><input type="text" class="form-control" id="sarpanchFemaleStId"/></td>
-											<td><input type="text" class="form-control" id="otherErMaleStId"/></td>
-											<td><input type="text" class="form-control" id="otherErFemaleStId"/></td>
-											<td><input type="text" class="form-control" id="functionariedMaleStId"/></td>
-											<td><input type="text" class="form-control" id="functionariedFemaleStId"/></td>
+											<td><form:input path="erSarMaleSt" class="form-control" id="sarpanchMaleStId" onkeyup="calMaleSar()" readonly="${HUN_DAY_TRAINING.isFreeze}" /></td>
+											<td><form:input path="erSarFemaleSt" class="form-control" id="sarpanchFemaleStId" onkeyup="calFemaleSar()" readonly="${HUN_DAY_TRAINING.isFreeze}" /></td>
+											<td><form:input path="erOtherMaleSt" class="form-control" id="otherErMaleStId" onkeyup="calOtherErMale()" readonly="${HUN_DAY_TRAINING.isFreeze}" /></td>
+											<td><form:input path="erOtherFemaleSt" class="form-control" id="otherErFemaleStId" onkeyup="calOtherErFemale()" readonly="${HUN_DAY_TRAINING.isFreeze}" /></td>
+											<td><form:input path="funMaleSt" class="form-control" id="functionariedMaleStId" onkeyup="calFunMale()" readonly="${HUN_DAY_TRAINING.isFreeze}" /></td>
+											<td><form:input path="funFemaleSt" class="form-control" id="functionariedFemaleStId" onkeyup="calFunFemale()" readonly="${HUN_DAY_TRAINING.isFreeze}" /></td>
 										</tr>
 										<tr>
 											<td><div align="center"><strong>Others</strong></div></td>
-											<td><input type="text" class="form-control" id="sarpanchMaleOthersId"/></td>
-											<td><input type="text" class="form-control" id="sarpanchFemaleOthersId"/></td>
-											<td><input type="text" class="form-control" id="otherErMaleOthersId"/></td>
-											<td><input type="text" class="form-control" id="otherErFemaleOthersId"/></td>
-											<td><input type="text" class="form-control" id="functionariedMaleOthersId"/></td>
-											<td><input type="text" class="form-control" id="functionariedFemaleStId"/></td>
+											<td><form:input path="erSarMaleOthers" class="form-control" id="sarpanchMaleOthersId" onkeyup="calMaleSar()" readonly="${HUN_DAY_TRAINING.isFreeze}" /></td>
+											<td><form:input path="erSarFemaleOthers" class="form-control" id="sarpanchFemaleOthersId" onkeyup="calFemaleSar()" readonly="${HUN_DAY_TRAINING.isFreeze}" /></td>
+											<td><form:input path="erOtherMaleOthers" class="form-control" id="otherErMaleOthersId" onkeyup="calOtherErMale()" readonly="${HUN_DAY_TRAINING.isFreeze}" /></td>
+											<td><form:input path="erOtherFemaleOthers" class="form-control" id="otherErFemaleOthersId" onkeyup="calOtherErFemale()" readonly="${HUN_DAY_TRAINING.isFreeze}" /></td>
+											<td><form:input path="funMaleOthers" class="form-control" id="functionariedMaleOthersId" onkeyup="calFunMale()" readonly="${HUN_DAY_TRAINING.isFreeze}" /></td>
+											<td><form:input path="funFemaleOthers" class="form-control" id="functionariedFemaleOthersId" onkeyup="calFunFemale()" readonly="${HUN_DAY_TRAINING.isFreeze}" /></td>
 										</tr>
 										<tr>
 											<td><div align="center"><strong>Total</strong></div></td>
-											<td><input type="text" class="form-control" disabled="disabled" id="totalMaleSarpanch"/></td>
-											<td><input type="text" class="form-control" disabled="disabled" id="totalFemaleSarpanch"/></td>
-											<td><input type="text" class="form-control" disabled="disabled" id="totalMaleOtherEr"/></td>
-											<td><input type="text" class="form-control" disabled="disabled" id="totalFemaleOtherEr"/></td>
-											<td><input type="text" class="form-control" disabled="disabled" id="totalMaleFunctionaries"/></td>
-											<td><input type="text" class="form-control" disabled="disabled" id="totalFemaleFunctionaries"/></td>
+											<td><input type="text" class="form-control" disabled="disabled" id="totalMaleSarpanch" onchange="calGrandTotalFields()"/></td>
+											<td><input type="text" class="form-control" disabled="disabled" id="totalFemaleSarpanch" onchange="calGrandTotalFields()"/></td>
+											<td><input type="text" class="form-control" disabled="disabled" id="totalMaleOtherEr" onchange="calGrandTotalFields()"/></td>
+											<td><input type="text" class="form-control" disabled="disabled" id="totalFemaleOtherEr" onchange="calGrandTotalFields()"/></td>
+											<td><input type="text" class="form-control" disabled="disabled" id="totalMaleFunctionaries" onchange="calGrandTotalFields()"/></td>
+											<td><input type="text" class="form-control" disabled="disabled" id="totalFemaleFunctionaries" onchange="calGrandTotalFields()"/></td>
 										</tr>
 									</tbody>
 								</table>
@@ -189,15 +243,68 @@
 								</div>
 							</div>
 							<div class="text-right">
-								<button type="button" class="btn bg-green waves-effect" onclick="setAndSaveDetails()" >SAVE</button>
-								<button type="button" class="btn bg-blue waves-effect">FREEZE</button>
-								<button type="button" onclick="onClear(this)"
-								class="btn bg-light-blue waves-effect" disabled="disabled">CLEAR</button>
+								<c:choose>
+									<c:when test="${HUN_DAY_TRAINING.isFreeze}">
+										<button type="submit" class="btn bg-green waves-effect"
+											disabled="disabled">
+											<c:choose>
+												<c:when test="${UPDATE_OR_SAVE eq 'update'}">UPDATE</c:when>
+												<c:otherwise>SAVE</c:otherwise>
+											</c:choose>
+										</button>
+									</c:when>
+									<c:otherwise>
+										<button type="submit" class="btn bg-green waves-effect">
+											<c:choose>
+												<c:when test="${UPDATE_OR_SAVE eq 'update'}">UPDATE</c:when>
+												<c:otherwise>SAVE</c:otherwise>
+											</c:choose>
+										</button>
+									</c:otherwise>
+								</c:choose>
+
+								<c:choose>
+									<c:when test="${HUN_DAY_TRAINING.isFreeze eq true}">
+										<button type="button" onclick="freezeUnfreeze('unfreeze')"
+											class="btn bg-blue waves-effect">UNFREEZE</button>
+									</c:when>
+									<c:otherwise>
+										<c:if test="${UPDATE_OR_SAVE eq 'update'}">
+											<button type="button" onclick="freezeUnfreeze('freeze')"
+												class="btn bg-blue waves-effect">FREEZE</button>
+										</c:if>
+										<c:if test="${UPDATE_OR_SAVE eq 'save'}">
+											<button type="button" onclick="freezeUnfreeze('freeze')"
+												class="btn bg-blue waves-effect" disabled="disabled">FREEZE</button>
+										</c:if>
+									</c:otherwise>
+								</c:choose>
+
+								<c:choose>
+									<c:when test="${HUN_DAY_TRAINING.isFreeze}">
+										<button type="button" onclick="onClear(this)"
+											class="btn bg-light-blue waves-effect" disabled="disabled">CLEAR</button>
+									</c:when>
+									<c:otherwise>
+										<button type="button" onclick="onClear(this)"
+											class="btn bg-light-blue waves-effect">CLEAR</button>
+									</c:otherwise>
+								</c:choose>
+
+
 								<button type="button"
-								onclick="onClose('home.html?<csrf:token uri='home.html'/>')"
-								class="btn bg-orange waves-effect">CLOSE</button>
+									onclick="onClose('home.html?<csrf:token uri='home.html'/>')"
+									class="btn bg-orange waves-effect">CLOSE</button>
+								&nbsp;
 							</div>
+							 </div> 
 						</div>
+						
+						<!-- hidden fields -->
+						<input type="hidden" name="trgOfHundredDaysProgramCh2Id" value="${HUN_DAY_TRAINING.trgOfHundredDaysProgramCh2Id}" />
+						<input type="hidden" name="isFreeze" id="isFreezeId" value="${HUN_DAY_TRAINING.isFreeze}" />
+						<input type="hidden" name="msg" id="msgId" value="" />
+						<!--  -->
 					</form:form>
 				</div>
 			</div>

@@ -1,7 +1,10 @@
 package gov.in.rgsa.serviceImpl;
 
+import java.text.DateFormat;
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -45,19 +48,19 @@ public class HundredDayTrainingDetailsServiceImpl implements HundredDayTrainingD
 	}
 
 	private TrgOfHundredDaysProgramCh2 setBasicFieldsInObject(TrgOfHundredDaysProgramCh2 entity) {
-		/* try { */
+		
 		  entity.setStateCode(userPreference.getStateCode());
 		  entity.setUserType(userPreference.getUserType());
 		  entity.setYearId(userPreference.getFinYearId());
 		  entity.setCreatedBy(userPreference.getUserId());
-			/*
-			 * // Date dateStart = new Date(entity.getDemoStartDate()); DateFormat date= new
-			 * SimpleDateFormat("dd-MM-yyyy"); Date sdate;
-			 * 
-			 * sdate = date.parse(entity.getDemoStartDate()); Date
-			 * edate=date.parse(entity.getDemoEndDate()); entity.setTrgStartDate(sdate);
-			 * entity.setTrgEndDate(edate);
-			 */
+		  Date originalDate = null;
+		  DateFormat date = new SimpleDateFormat("dd-MM-yyyy");
+		  try {
+				originalDate = date.parse(entity.getDemoDate());
+			} catch (ParseException e) {
+				e.printStackTrace();
+			}
+		  entity.setTrgDate(originalDate);
 			if (entity.getMsg().equalsIgnoreCase("freeze")) {
 				entity.setIsFreeze(true);
 			} else {
@@ -74,14 +77,14 @@ public class HundredDayTrainingDetailsServiceImpl implements HundredDayTrainingD
 	}
 
 	@Override
-	public TrgOfHundredDaysProgramCh1 fetchTrgOfHundredDaysProgram() {
+	public TrgOfHundredDaysProgramCh2 fetchLatestData() {
 		Map<String, Object> param=new HashMap<String, Object>();
-		List<TrgOfHundredDaysProgramCh1> trgOfHundredDaysProgramCh1=new ArrayList<TrgOfHundredDaysProgramCh1>(); 
+		List<TrgOfHundredDaysProgramCh2> trgOfHundredDaysProgramCh2=new ArrayList<TrgOfHundredDaysProgramCh2>(); 
 		param.put("stateCode", userPreference.getStateCode());
 		param.put("yearId", userPreference.getFinYearId());
-		trgOfHundredDaysProgramCh1=dao.findAll("FETCH_TRG_OF_100_CH_DAYS", param);
-		if(CollectionUtils.isNotEmpty(trgOfHundredDaysProgramCh1)) {
-			return trgOfHundredDaysProgramCh1.get(0);
+		trgOfHundredDaysProgramCh2=dao.findAll("FETCH_TRG_OF_100_LATEST", param);
+		if(CollectionUtils.isNotEmpty(trgOfHundredDaysProgramCh2)) {
+			return trgOfHundredDaysProgramCh2.get(0);
 		}else {
 			return null;
 		}
@@ -95,19 +98,26 @@ public class HundredDayTrainingDetailsServiceImpl implements HundredDayTrainingD
 	}
 
 	@Override
-	public TrgOfHundredDaysProgramCh1 fetchTrgOfHundredDaysProgramByDate(TrgOfHundredDaysProgramCh1 form) {
+	public TrgOfHundredDaysProgramCh2 fetchTrgOfHundredDaysProgramByDate(TrgOfHundredDaysProgramCh2 form) {
 		Map<String, Object> param=new HashMap<String, Object>();
-		List<TrgOfHundredDaysProgramCh1> trgOfHundredDaysProgramCh1=new ArrayList<TrgOfHundredDaysProgramCh1>(); 
+		List<TrgOfHundredDaysProgramCh2> trgOfHundredDaysProgramCh2=new ArrayList<TrgOfHundredDaysProgramCh2>(); 
 		param.put("stateCode", userPreference.getStateCode());
 		param.put("yearId", userPreference.getFinYearId());
-		param.put("startDate", form.getTrgStartDate());
-		//param.put("EndDate", form.getTrgEndDate());
-		trgOfHundredDaysProgramCh1 = dao.findAll("FETCH_TRG_OF_100_CH_DAYS_BY_DATE_RANGE", param);
-		if(CollectionUtils.isNotEmpty(trgOfHundredDaysProgramCh1)) {
-			return trgOfHundredDaysProgramCh1.get(0);
+		param.put("trgDate", form.getTrgDate());
+		trgOfHundredDaysProgramCh2 = dao.findAll("FETCH_TRG_100_DAYS_CH2", param);
+		if(CollectionUtils.isNotEmpty(trgOfHundredDaysProgramCh2)) {
+			return trgOfHundredDaysProgramCh2.get(0);
 		}else {
 			return null;
 		}
 	}
+
+	@Override
+	public TrgOfHundredDaysProgramCh1 fetchTrgOfHundredDaysProgram() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	
 	
 }

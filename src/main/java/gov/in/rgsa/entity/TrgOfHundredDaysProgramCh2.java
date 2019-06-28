@@ -7,6 +7,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
@@ -15,6 +17,11 @@ import org.hibernate.annotations.UpdateTimestamp;
 
 @Entity
 @Table(name="trg_of_hundred_days_program_ch2",schema="rgsa")
+@NamedQueries({
+	@NamedQuery(name="FETCH_TRG_OF_100_LATEST",query="from TrgOfHundredDaysProgramCh2 where stateCode=:stateCode and yearId=:yearId order by trgDate desc"),
+	@NamedQuery(name="FETCH_TRG_100_DAYS_CH2",query="from TrgOfHundredDaysProgramCh2 where stateCode=:stateCode and yearId=:yearId and trgDate=:trgDate")
+})
+
 public class TrgOfHundredDaysProgramCh2 {
 
 	@Id
