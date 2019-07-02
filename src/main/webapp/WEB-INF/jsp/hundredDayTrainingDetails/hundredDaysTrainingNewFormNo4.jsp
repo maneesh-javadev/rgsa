@@ -94,7 +94,7 @@ function freezeUnfreeze(msg){
 				<div class="card">
 					<div class="header">
 						<h2>
-							<spring:message code="Training Detail" htmlEscape="true" />
+							<%-- <spring:message code="Training Detail" htmlEscape="true" /> --%>Training Details
 						</h2>
 					</div>
 					<form:form method="post" id="trainingDetailId"
@@ -105,7 +105,7 @@ function freezeUnfreeze(msg){
 							value="<csrf:token-value uri="trainingDetailHundredDay.html"/>" />
 						<div class="body">
 							<div class="row clearfix">
-								<div class="col-sm-2">
+								<div class="col-sm-3">
 									<label for="trainingStartDate"> Training Start Date :</label>
 								</div>
 								<div class="col-xs-4">
@@ -123,7 +123,7 @@ function freezeUnfreeze(msg){
 						<div id="mainDivId" style="display: none;">
 							<div class="row clearfix">
 								<div class="col-sm-3">
-									<label for="NoOfTrainingConducted"> Number of training
+									<label for="NoOfTrainingConducted"> Number of trainings
 										Conducted :</label>
 								</div>
 								<div class="col-sm-4">
@@ -132,7 +132,7 @@ function freezeUnfreeze(msg){
 											<form:input path="noOfTrainingConducted" id="noOfTrainingConductedId"
 												class="form-control Align-Right"
 												onkeypress="return isNumber(event)"
-												readonly="${HUN_DAY_TRAINING.isFreeze}" />
+												readonly="${HUN_DAY_TRAINING.isFreeze}" required="true"/>
 										</div>
 									</div>
 								</div>
@@ -143,11 +143,11 @@ function freezeUnfreeze(msg){
 									<thead>
 										<tr>
 											<th rowspan="3" style="padding-bottom: 4%;"><div align="center"><strong>Participants category</strong></div></th>
-											<th colspan="4"><div align="center"><strong>Elected Representative</strong></div></th>
+											<th colspan="4"><div align="center"><strong>Elected Representatives</strong></div></th>
 											<th colspan="2" rowspan="2" style="padding-bottom: 2%;"><div align="center"><strong>Functionaries & other stakeholders</strong></div></th>
 										</tr>
 										<tr>
-											<th colspan="2"><div align="center"><strong>Sarpanchs</strong></div></th>
+											<th colspan="2"><div align="center"><strong>Sarpanch</strong></div></th>
 											<th colspan="2"><div align="center"><strong>Other ERs</strong></div></th>
 										</tr>
 										<tr>
@@ -162,39 +162,39 @@ function freezeUnfreeze(msg){
 									<tbody>
 										<tr>
 											<td><div align="center"><strong>SC</strong></div></td>
-											<td><form:input path="erSarMaleSc"  class="form-control" id="sarpanchMaleScId" onkeyup="calMaleSar()" readonly="${HUN_DAY_TRAINING.isFreeze}" /></td>
-											<td><form:input path="erSarFemaleSc" class="form-control" id="sarpanchFemaleScId" onkeyup="calFemaleSar()" readonly="${HUN_DAY_TRAINING.isFreeze}" /></td>
-											<td><form:input path="erOtherMaleSc" class="form-control" id="otherErMaleScId" onkeyup="calOtherErMale()" readonly="${HUN_DAY_TRAINING.isFreeze}" /></td>
-											<td><form:input path="erOtherFemaleSc" class="form-control" id="otherErFemaleScId" onkeyup="calOtherErFemale()" readonly="${HUN_DAY_TRAINING.isFreeze}" /></td>
-											<td><form:input path="funMaleSc" class="form-control" id="functionariedMaleScId" onkeyup="calFunMale()" readonly="${HUN_DAY_TRAINING.isFreeze}" /></td>
-											<td><form:input path="funFemaleSc" class="form-control" id="functionariedFemaleScId" onkeyup="calFunFemale()" readonly="${HUN_DAY_TRAINING.isFreeze}" /></td>
+											<td><form:input path="erSarMaleSc"  class="form-control Align-Right" id="sarpanchMaleScId" onkeyup="calMaleSar()" readonly="${HUN_DAY_TRAINING.isFreeze}"/></td>
+											<td><form:input path="erSarFemaleSc" class="form-control Align-Right" id="sarpanchFemaleScId" onkeyup="calFemaleSar()" readonly="${HUN_DAY_TRAINING.isFreeze}" /></td>
+											<td><form:input path="erOtherMaleSc" class="form-control Align-Right" id="otherErMaleScId" onkeyup="calOtherErMale()" readonly="${HUN_DAY_TRAINING.isFreeze}" /></td>
+											<td><form:input path="erOtherFemaleSc" class="form-control Align-Right" id="otherErFemaleScId" onkeyup="calOtherErFemale()" readonly="${HUN_DAY_TRAINING.isFreeze}" /></td>
+											<td><form:input path="funMaleSc" class="form-control Align-Right" id="functionariedMaleScId" onkeyup="calFunMale()" readonly="${HUN_DAY_TRAINING.isFreeze}" /></td>
+											<td><form:input path="funFemaleSc" class="form-control Align-Right" id="functionariedFemaleScId" onkeyup="calFunFemale()" readonly="${HUN_DAY_TRAINING.isFreeze}" /></td>
 										</tr>
 										<tr>
 											<td><div align="center"><strong>ST</strong></div></td>
-											<td><form:input path="erSarMaleSt" class="form-control" id="sarpanchMaleStId" onkeyup="calMaleSar()" readonly="${HUN_DAY_TRAINING.isFreeze}" /></td>
-											<td><form:input path="erSarFemaleSt" class="form-control" id="sarpanchFemaleStId" onkeyup="calFemaleSar()" readonly="${HUN_DAY_TRAINING.isFreeze}" /></td>
-											<td><form:input path="erOtherMaleSt" class="form-control" id="otherErMaleStId" onkeyup="calOtherErMale()" readonly="${HUN_DAY_TRAINING.isFreeze}" /></td>
-											<td><form:input path="erOtherFemaleSt" class="form-control" id="otherErFemaleStId" onkeyup="calOtherErFemale()" readonly="${HUN_DAY_TRAINING.isFreeze}" /></td>
-											<td><form:input path="funMaleSt" class="form-control" id="functionariedMaleStId" onkeyup="calFunMale()" readonly="${HUN_DAY_TRAINING.isFreeze}" /></td>
-											<td><form:input path="funFemaleSt" class="form-control" id="functionariedFemaleStId" onkeyup="calFunFemale()" readonly="${HUN_DAY_TRAINING.isFreeze}" /></td>
+											<td><form:input path="erSarMaleSt" class="form-control Align-Right" id="sarpanchMaleStId" onkeyup="calMaleSar()" readonly="${HUN_DAY_TRAINING.isFreeze}"/></td>
+											<td><form:input path="erSarFemaleSt" class="form-control Align-Right" id="sarpanchFemaleStId" onkeyup="calFemaleSar()" readonly="${HUN_DAY_TRAINING.isFreeze}" /></td>
+											<td><form:input path="erOtherMaleSt" class="form-control Align-Right" id="otherErMaleStId" onkeyup="calOtherErMale()" readonly="${HUN_DAY_TRAINING.isFreeze}" /></td>
+											<td><form:input path="erOtherFemaleSt" class="form-control Align-Right" id="otherErFemaleStId" onkeyup="calOtherErFemale()" readonly="${HUN_DAY_TRAINING.isFreeze}" /></td>
+											<td><form:input path="funMaleSt" class="form-control Align-Right" id="functionariedMaleStId" onkeyup="calFunMale()" readonly="${HUN_DAY_TRAINING.isFreeze}" /></td>
+											<td><form:input path="funFemaleSt" class="form-control Align-Right" id="functionariedFemaleStId" onkeyup="calFunFemale()" readonly="${HUN_DAY_TRAINING.isFreeze}" /></td>
 										</tr>
 										<tr>
 											<td><div align="center"><strong>Others</strong></div></td>
-											<td><form:input path="erSarMaleOthers" class="form-control" id="sarpanchMaleOthersId" onkeyup="calMaleSar()" readonly="${HUN_DAY_TRAINING.isFreeze}" /></td>
-											<td><form:input path="erSarFemaleOthers" class="form-control" id="sarpanchFemaleOthersId" onkeyup="calFemaleSar()" readonly="${HUN_DAY_TRAINING.isFreeze}" /></td>
-											<td><form:input path="erOtherMaleOthers" class="form-control" id="otherErMaleOthersId" onkeyup="calOtherErMale()" readonly="${HUN_DAY_TRAINING.isFreeze}" /></td>
-											<td><form:input path="erOtherFemaleOthers" class="form-control" id="otherErFemaleOthersId" onkeyup="calOtherErFemale()" readonly="${HUN_DAY_TRAINING.isFreeze}" /></td>
-											<td><form:input path="funMaleOthers" class="form-control" id="functionariedMaleOthersId" onkeyup="calFunMale()" readonly="${HUN_DAY_TRAINING.isFreeze}" /></td>
-											<td><form:input path="funFemaleOthers" class="form-control" id="functionariedFemaleOthersId" onkeyup="calFunFemale()" readonly="${HUN_DAY_TRAINING.isFreeze}" /></td>
+											<td><form:input path="erSarMaleOthers" class="form-control Align-Right" id="sarpanchMaleOthersId" onkeyup="calMaleSar()" readonly="${HUN_DAY_TRAINING.isFreeze}" /></td>
+											<td><form:input path="erSarFemaleOthers" class="form-control Align-Right" id="sarpanchFemaleOthersId" onkeyup="calFemaleSar()" readonly="${HUN_DAY_TRAINING.isFreeze}" /></td>
+											<td><form:input path="erOtherMaleOthers" class="form-control Align-Right" id="otherErMaleOthersId" onkeyup="calOtherErMale()" readonly="${HUN_DAY_TRAINING.isFreeze}" /></td>
+											<td><form:input path="erOtherFemaleOthers" class="form-control Align-Right" id="otherErFemaleOthersId" onkeyup="calOtherErFemale()" readonly="${HUN_DAY_TRAINING.isFreeze}" /></td>
+											<td><form:input path="funMaleOthers" class="form-control Align-Right" id="functionariedMaleOthersId" onkeyup="calFunMale()" readonly="${HUN_DAY_TRAINING.isFreeze}" /></td>
+											<td><form:input path="funFemaleOthers" class="form-control Align-Right " id="functionariedFemaleOthersId" onkeyup="calFunFemale()" readonly="${HUN_DAY_TRAINING.isFreeze}" /></td>
 										</tr>
 										<tr>
 											<td><div align="center"><strong>Total</strong></div></td>
-											<td><input type="text" class="form-control" disabled="disabled" id="totalMaleSarpanch" onchange="calGrandTotalFields()"/></td>
-											<td><input type="text" class="form-control" disabled="disabled" id="totalFemaleSarpanch" onchange="calGrandTotalFields()"/></td>
-											<td><input type="text" class="form-control" disabled="disabled" id="totalMaleOtherEr" onchange="calGrandTotalFields()"/></td>
-											<td><input type="text" class="form-control" disabled="disabled" id="totalFemaleOtherEr" onchange="calGrandTotalFields()"/></td>
-											<td><input type="text" class="form-control" disabled="disabled" id="totalMaleFunctionaries" onchange="calGrandTotalFields()"/></td>
-											<td><input type="text" class="form-control" disabled="disabled" id="totalFemaleFunctionaries" onchange="calGrandTotalFields()"/></td>
+											<td><input type="text" class="form-control Align-Right" disabled="disabled" id="totalMaleSarpanch" onchange="calGrandTotalFields()"/></td>
+											<td><input type="text" class="form-control Align-Right" disabled="disabled" id="totalFemaleSarpanch" onchange="calGrandTotalFields()"/></td>
+											<td><input type="text" class="form-control Align-Right" disabled="disabled" id="totalMaleOtherEr" onchange="calGrandTotalFields()"/></td>
+											<td><input type="text" class="form-control Align-Right" disabled="disabled" id="totalFemaleOtherEr" onchange="calGrandTotalFields()"/></td>
+											<td><input type="text" class="form-control Align-Right" disabled="disabled" id="totalMaleFunctionaries" onchange="calGrandTotalFields()"/></td>
+											<td><input type="text" class="form-control Align-Right" disabled="disabled" id="totalFemaleFunctionaries" onchange="calGrandTotalFields()"/></td>
 										</tr>
 									</tbody>
 								</table>
@@ -311,3 +311,7 @@ function freezeUnfreeze(msg){
 		</div>
 	</div>
 </section>
+<style>
+.Align-Right{
+			text-align: right;
+}</style>
