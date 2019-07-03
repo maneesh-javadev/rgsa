@@ -128,6 +128,30 @@ public class HundredDayTrainingDetailsController {
 			entity.setFunFemaleOthers(detail.getFunFemaleOthers());
 			entity.setIsFreeze(detail.getIsFreeze());
 			entity.setTrgOfHundredDaysProgramCh2Id(detail.getTrgOfHundredDaysProgramCh2Id());
+			
+			entity.setNoOfTrainingConductedAspDistrict(detail.getNoOfTrainingConductedAspDistrict());
+			
+			entity.setErSarMaleScAspDist(detail.getErSarMaleScAspDist());
+			entity.setErSarMaleStAspDist(detail.getErSarMaleStAspDist());
+			entity.setErSarMaleOthersAspDist(detail.getErSarMaleOthersAspDist());
+			entity.setErSarFemaleScAspDist(detail.getErSarFemaleScAspDist());
+			entity.setErSarFemaleStAspDist(detail.getErSarFemaleStAspDist());
+			entity.setErSarFemaleOthersAspDist(detail.getErSarFemaleOthersAspDist());
+			
+			entity.setErOtherMaleScAspDist(detail.getErOtherMaleScAspDist());
+			entity.setErOtherMaleStAspDist(detail.getErOtherMaleStAspDist());
+			entity.setErOtherMaleOthersAspDist(detail.getErOtherMaleOthersAspDist());
+			entity.setErOtherFemaleScAspDist(detail.getErOtherFemaleScAspDist());
+			entity.setErOtherFemaleStAspDist(detail.getErOtherFemaleStAspDist());
+			entity.setErOtherFemaleOthersAspDist(detail.getErOtherFemaleOthersAspDist());
+			
+			entity.setFunMaleScAspDist(detail.getFunMaleScAspDist());
+			entity.setFunMaleStAspDist(detail.getFunMaleStAspDist());
+			entity.setFunMaleOthersAspDist(detail.getFunMaleOthersAspDist());
+			entity.setFunFemaleScAspDist(detail.getFunFemaleScAspDist());
+			entity.setFunFemaleStAspDist(detail.getFunFemaleStAspDist());
+			entity.setFunFemaleOthersAspDist(detail.getFunFemaleOthersAspDist());
+			entity.setIsFreeze(detail.getIsFreeze());
 			model.addAttribute("UPDATE_OR_SAVE", "update");
 		} else {
 			entity.setNoOfTrainingConducted(null);
@@ -153,6 +177,29 @@ public class HundredDayTrainingDetailsController {
 			entity.setFunFemaleOthers(null);
 			entity.setIsFreeze(false);
 			entity.setTrgOfHundredDaysProgramCh2Id(null);
+			
+			entity.setNoOfTrainingConductedAspDistrict(null);
+			
+			entity.setErSarMaleScAspDist(null);
+			entity.setErSarMaleStAspDist(null);
+			entity.setErSarMaleOthersAspDist(null);
+			entity.setErSarFemaleScAspDist(null);
+			entity.setErSarFemaleStAspDist(null);
+			entity.setErSarFemaleOthersAspDist(null);
+			
+			entity.setErOtherMaleScAspDist(null);
+			entity.setErOtherMaleStAspDist(null);
+			entity.setErOtherMaleOthersAspDist(null);
+			entity.setErOtherFemaleScAspDist(null);
+			entity.setErOtherFemaleStAspDist(null);
+			entity.setErOtherFemaleOthersAspDist(null);
+			
+			entity.setFunMaleScAspDist(null);
+			entity.setFunMaleStAspDist(null);
+			entity.setFunMaleOthersAspDist(null);
+			entity.setFunFemaleScAspDist(null);
+			entity.setFunFemaleStAspDist(null);
+			entity.setFunFemaleOthersAspDist(null);
 			model.addAttribute("UPDATE_OR_SAVE", "save");
 		}
 

@@ -120,7 +120,64 @@ public class TrgOfHundredDaysProgramCh2 {
 	
 	@Transient
 	private String demoDate;
-
+	
+	@Column(name="trg_conducted_in_asp_district")
+	private Integer noOfTrainingConductedAspDistrict;
+	
+	@Column(name="er_sar_m_sc_asp_dist")
+	private Integer erSarMaleScAspDist;
+	
+	@Column(name="er_sar_m_st_asp_dist")
+	private Integer erSarMaleStAspDist;
+	
+	@Column(name="er_sar_m_ot_asp_dist")
+	private Integer erSarMaleOthersAspDist;
+	
+	@Column(name="er_sar_f_sc_asp_dist")
+	private Integer erSarFemaleScAspDist;
+	
+	@Column(name="er_sar_f_st_asp_dist")
+	private Integer erSarFemaleStAspDist;
+	
+	@Column(name="er_sar_f_ot_asp_dist")
+	private Integer erSarFemaleOthersAspDist;
+	
+	@Column(name="er_oth_m_sc_asp_dist")
+	private Integer erOtherMaleScAspDist;
+	
+	@Column(name="er_oth_m_st_asp_dist")
+	private Integer erOtherMaleStAspDist;
+	
+	@Column(name="er_oth_m_ot_asp_dist")
+	private Integer erOtherMaleOthersAspDist;
+	
+	@Column(name="er_oth_f_sc_asp_dist")
+	private Integer erOtherFemaleScAspDist;
+	
+	@Column(name="er_oth_f_st_asp_dist")
+	private Integer erOtherFemaleStAspDist;
+	
+	@Column(name="er_oth_f_ot_asp_dist")
+	private Integer erOtherFemaleOthersAspDist;
+	
+	@Column(name="fun_m_sc_asp_dist")
+	private Integer funMaleScAspDist;
+	
+	@Column(name="fun_m_st_asp_dist")
+	private Integer funMaleStAspDist;
+	
+	@Column(name="fun_m_ot_asp_dist")
+	private Integer funMaleOthersAspDist;
+	
+	@Column(name="fun_f_sc_asp_dist")
+	private Integer funFemaleScAspDist;
+	
+	@Column(name="fun_f_st_asp_dist")
+	private Integer funFemaleStAspDist;
+	
+	@Column(name="fun_f_ot_asp_dist")
+	private Integer funFemaleOthersAspDist;
+	
 	public Long getTrgOfHundredDaysProgramCh2Id() {
 		return trgOfHundredDaysProgramCh2Id;
 	}
@@ -367,5 +424,157 @@ public class TrgOfHundredDaysProgramCh2 {
 
 	public void setDemoDate(String demoDate) {
 		this.demoDate = demoDate;
+	}
+
+	public Integer getNoOfTrainingConductedAspDistrict() {
+		return noOfTrainingConductedAspDistrict;
+	}
+
+	public void setNoOfTrainingConductedAspDistrict(Integer noOfTrainingConductedAspDistrict) {
+		this.noOfTrainingConductedAspDistrict = noOfTrainingConductedAspDistrict;
+	}
+
+	public Integer getErSarMaleScAspDist() {
+		return erSarMaleScAspDist;
+	}
+
+	public void setErSarMaleScAspDist(Integer erSarMaleScAspDist) {
+		this.erSarMaleScAspDist = erSarMaleScAspDist;
+	}
+
+	public Integer getErSarMaleStAspDist() {
+		return erSarMaleStAspDist;
+	}
+
+	public void setErSarMaleStAspDist(Integer erSarMaleStAspDist) {
+		this.erSarMaleStAspDist = erSarMaleStAspDist;
+	}
+
+	public Integer getErSarMaleOthersAspDist() {
+		return erSarMaleOthersAspDist;
+	}
+
+	public void setErSarMaleOthersAspDist(Integer erSarMaleOthersAspDist) {
+		this.erSarMaleOthersAspDist = erSarMaleOthersAspDist;
+	}
+
+	public Integer getErSarFemaleScAspDist() {
+		return erSarFemaleScAspDist;
+	}
+
+	public void setErSarFemaleScAspDist(Integer erSarFemaleScAspDist) {
+		this.erSarFemaleScAspDist = erSarFemaleScAspDist;
+	}
+
+	public Integer getErSarFemaleStAspDist() {
+		return erSarFemaleStAspDist;
+	}
+
+	public void setErSarFemaleStAspDist(Integer erSarFemaleStAspDist) {
+		this.erSarFemaleStAspDist = erSarFemaleStAspDist;
+	}
+
+	public Integer getErSarFemaleOthersAspDist() {
+		return erSarFemaleOthersAspDist;
+	}
+
+	public void setErSarFemaleOthersAspDist(Integer erSarFemaleOthersAspDist) {
+		this.erSarFemaleOthersAspDist = erSarFemaleOthersAspDist;
+	}
+
+	public Integer getErOtherMaleScAspDist() {
+		return erOtherMaleScAspDist;
+	}
+
+	public void setErOtherMaleScAspDist(Integer erOtherMaleScAspDist) {
+		this.erOtherMaleScAspDist = erOtherMaleScAspDist;
+	}
+
+	public Integer getErOtherMaleStAspDist() {
+		return erOtherMaleStAspDist;
+	}
+
+	public void setErOtherMaleStAspDist(Integer erOtherMaleStAspDist) {
+		this.erOtherMaleStAspDist = erOtherMaleStAspDist;
+	}
+
+	public Integer getErOtherMaleOthersAspDist() {
+		return erOtherMaleOthersAspDist;
+	}
+
+	public void setErOtherMaleOthersAspDist(Integer erOtherMaleOthersAspDist) {
+		this.erOtherMaleOthersAspDist = erOtherMaleOthersAspDist;
+	}
+
+	public Integer getErOtherFemaleScAspDist() {
+		return erOtherFemaleScAspDist;
+	}
+
+	public void setErOtherFemaleScAspDist(Integer erOtherFemaleScAspDist) {
+		this.erOtherFemaleScAspDist = erOtherFemaleScAspDist;
+	}
+
+	public Integer getErOtherFemaleStAspDist() {
+		return erOtherFemaleStAspDist;
+	}
+
+	public void setErOtherFemaleStAspDist(Integer erOtherFemaleStAspDist) {
+		this.erOtherFemaleStAspDist = erOtherFemaleStAspDist;
+	}
+
+	public Integer getErOtherFemaleOthersAspDist() {
+		return erOtherFemaleOthersAspDist;
+	}
+
+	public void setErOtherFemaleOthersAspDist(Integer erOtherFemaleOthersAspDist) {
+		this.erOtherFemaleOthersAspDist = erOtherFemaleOthersAspDist;
+	}
+
+	public Integer getFunMaleScAspDist() {
+		return funMaleScAspDist;
+	}
+
+	public void setFunMaleScAspDist(Integer funMaleScAspDist) {
+		this.funMaleScAspDist = funMaleScAspDist;
+	}
+
+	public Integer getFunMaleStAspDist() {
+		return funMaleStAspDist;
+	}
+
+	public void setFunMaleStAspDist(Integer funMaleStAspDist) {
+		this.funMaleStAspDist = funMaleStAspDist;
+	}
+
+	public Integer getFunMaleOthersAspDist() {
+		return funMaleOthersAspDist;
+	}
+
+	public void setFunMaleOthersAspDist(Integer funMaleOthersAspDist) {
+		this.funMaleOthersAspDist = funMaleOthersAspDist;
+	}
+
+	public Integer getFunFemaleScAspDist() {
+		return funFemaleScAspDist;
+	}
+
+	public void setFunFemaleScAspDist(Integer funFemaleScAspDist) {
+		this.funFemaleScAspDist = funFemaleScAspDist;
+	}
+
+	public Integer getFunFemaleStAspDist() {
+		return funFemaleStAspDist;
+	}
+
+	public void setFunFemaleStAspDist(Integer funFemaleStAspDist) {
+		this.funFemaleStAspDist = funFemaleStAspDist;
+	}
+
+	public Integer getFunFemaleOthersAspDist() {
+		return funFemaleOthersAspDist;
+	}
+
+	public void setFunFemaleOthersAspDist(Integer funFemaleOthersAspDist) {
+		this.funFemaleOthersAspDist = funFemaleOthersAspDist;
 	}
 }
