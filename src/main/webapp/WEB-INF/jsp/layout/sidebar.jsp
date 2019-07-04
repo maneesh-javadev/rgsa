@@ -279,7 +279,7 @@
 function changeFinYear(){
 	var finYearId=$('#finYearDropDownId').val();
 	document.changeFinYearForm.method = "post";
-	document.changeFinYearForm.action = "demoUrl.html?<csrf:token uri='demoUrl.html'/>&finYearId="+finYearId;
+	document.changeFinYearForm.action = "changeFinYear.html?<csrf:token uri='changeFinYear.html'/>&finYearId="+finYearId;
 	document.changeFinYearForm.submit();
 }
 </script>
