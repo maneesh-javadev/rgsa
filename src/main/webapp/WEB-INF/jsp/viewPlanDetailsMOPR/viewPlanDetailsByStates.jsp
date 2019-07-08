@@ -31,6 +31,17 @@ toggleSubComponent=function(id,flag){
      }
 	
 };
+
+toggleInstInfraAndPanchayatBhawan=function(id,msg){
+	 if($('#'+ msg +'Collapse'+ id).css('display') == 'none'){
+    	$('#'+msg+'Collapse'+id).show();
+    	$('#'+msg+'Expand'+id).hide();
+    }else{
+    	$('#'+msg+'Collapse'+id).hide();
+    	$('#'+msg+'Expand'+id).show();
+    }
+	 $('.'+msg).slideToggle();
+}
 </script>
 </head>
 <body>
@@ -41,7 +52,7 @@ toggleSubComponent=function(id,flag){
 				<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
 					<div class="card">
 						<div class="header">
-							<h2>Plan Forwarded by State (${stateName})</h2>
+							<h2>Plan Forwarded by State (${stateName}) ---------------> ${totalNewBuildingStateInstInfra}</h2>
 							<c:set var="buttonStatus" value="false" />
 							<c:if test="${sessionScope['scopedTarget.userPreference'].planStatus eq 2}">
 							<c:set var="buttonStatus" value="true" />
@@ -98,7 +109,31 @@ toggleSubComponent=function(id,flag){
 										<c:set var="t_fund" value="0"/>
 										<c:set var="t_unit" value="0"/>
 										<tbody>
-										
+											<!-- declaration of variables -->
+												<c:set var="totalNewBuildingStateInstInfra" value="0"/>
+												<c:set var="totalCarryForwardStateInstInfra" value="0"/>
+												
+												<c:set var="totalNewBuildingMoprInstInfra" value="0"/>
+												<c:set var="totalCarryForwardMoprInstInfra" value="0"/>
+												
+												<c:set var="totalUnitNewBuildingStateInstInfra" value="0"/>
+												<c:set var="totalUnitCarryForwardStateInstInfra" value="0"/>
+												
+												<c:set var="totalUnitNewBuildingMoprInstInfra" value="0"/>
+												<c:set var="totalUnitCarryForwardMoprInstInfra" value="0"/>
+												
+												<c:set var="totalNewBuildingStatePanchayat" value="0"/> 
+												<c:set var="totalCarryForwardStatePacnhayat" value="0"/>
+												
+												<c:set var="totalNewBuildingMoprPanchayat" value="0"/>
+												<c:set var="totalCarryForwardMoprPacnhayat" value="0"/>
+												
+												<c:set var="totalUnitNewBuildingStatePanchayat" value="0"/>
+												<c:set var="totalUnitCarryForwardStatePacnhayat" value="0"/>
+												
+												<c:set var="totalUnitNewBuildingMoprPanchayat" value="0"/>
+												<c:set var="totalUnitCarryForwardMoprPacnhayat" value="0"/>
+											<!--  -->
 										<c:forEach items="${planComponentsFunds}" var="pc" varStatus="pcindex">
 										  	<c:if test="${pc.eType eq 'C'}">
 										  			<c:set var="moprDiff" value="bg-test" />
@@ -184,10 +219,75 @@ toggleSubComponent=function(id,flag){
 										  			<c:if test="${psc.amountProposed gt psc.amountProposedMOPR}">
 														<c:set var="moprDiff" value="bg-warning" />
 													</c:if>
+													
+													<c:if test="${psc.subcomponentsId eq 8 or psc.subcomponentsId eq 9}">
+														<c:if test="${psc.amountProposed>0}">
+															<c:set var="totalNewBuildingStateInstInfra" value="${totalNewBuildingStateInstInfra + psc.amountProposed}"/>
+														</c:if>
+														<c:if test="${psc.amountProposedMOPR>0}">
+															<c:set var="totalNewBuildingMoprInstInfra" value="${totalNewBuildingMoprInstInfra + psc.amountProposedMOPR}"/>
+														</c:if>
+														<c:if test="${psc.noOfUnits>0}">
+															<c:set var="totalUnitNewBuildingStateInstInfra" value="${totalUnitNewBuildingStateInstInfra + psc.noOfUnits}"/>
+														</c:if>
+														<c:if test="${psc.noOfUnitsMOPR>0}">
+															<c:set var="totalUnitNewBuildingMoprInstInfra" value="${totalUnitNewBuildingMoprInstInfra + psc.noOfUnitsMOPR}"/>
+														</c:if>
+													</c:if>
+													
+													<c:if test="${psc.subcomponentsId eq 23 or psc.subcomponentsId eq 24}">
+														<c:if test="${psc.amountProposed>0}">
+															<c:set var="totalCarryForwardStateInstInfra" value="${totalCarryForwardStateInstInfra + psc.amountProposed}"/>
+														</c:if>
+														<c:if test="${psc.amountProposedMOPR>0}">
+															<c:set var="totalCarryForwardMoprInstInfra" value="${totalCarryForwardMoprInstInfra + psc.amountProposedMOPR}"/>
+														</c:if>
+														
+														<c:if test="${psc.noOfUnits>0}">
+															<c:set var="totalUnitCarryForwardStateInstInfra" value="${totalUnitCarryForwardStateInstInfra + psc.noOfUnits}"/>
+														</c:if>
+														<c:if test="${psc.noOfUnitsMOPR>0}">
+															<c:set var="totalUnitCarryForwardMoprInstInfra" value="${totalUnitCarryForwardMoprInstInfra + psc.noOfUnitsMOPR}"/>
+														</c:if>
+													</c:if>
+													
+													<c:if test="${psc.subcomponentsId eq 12 or psc.subcomponentsId eq 13 or psc.subcomponentsId eq 14}">
+														<c:if test="${psc.amountProposed>0}">
+															<c:set var="totalNewBuildingStatePanchayat" value="${totalNewBuildingStatePanchayat + psc.amountProposed}"/>
+														</c:if>
+														<c:if test="${psc.amountProposedMOPR>0}">
+															<c:set var="totalNewBuildingMoprPanchayat" value="${totalNewBuildingMoprPanchayat + psc.amountProposedMOPR}"/>
+														</c:if>
+														
+														<c:if test="${psc.noOfUnits>0}">
+															<c:set var="totalUnitNewBuildingStatePanchayat" value="${totalUnitNewBuildingStatePanchayat + psc.noOfUnits}"/>
+														</c:if>
+														<c:if test="${psc.noOfUnitsMOPR>0}">
+															<c:set var="totalUnitNewBuildingMoprPanchayat" value="${totalUnitNewBuildingMoprPanchayat + psc.noOfUnitsMOPR}"/>
+														</c:if>
+													</c:if>
+													
+													<c:if test="${psc.subcomponentsId eq 20 or psc.subcomponentsId eq 21 or psc.subcomponentsId eq 22}">
+														<c:if test="${psc.amountProposed>0}">
+															<c:set var="totalCarryForwardStatePacnhayat" value="${totalCarryForwardStatePacnhayat + psc.amountProposed}"/>
+														</c:if>
+														<c:if test="${psc.amountProposedMOPR>0}">
+															<c:set var="totalCarryForwardMoprPacnhayat" value="${totalCarryForwardMoprPacnhayat + psc.amountProposedMOPR}"/>
+														</c:if>
+														
+														<c:if test="${psc.noOfUnits>0}">
+															<c:set var="totalUnitCarryForwardStatePacnhayat" value="${totalUnitCarryForwardStatePacnhayat + psc.noOfUnits}"/>
+														</c:if>
+														<c:if test="${psc.noOfUnitsMOPR>0}">
+															<c:set var="totalUnitCarryForwardMoprPacnhayat" value="${totalUnitCarryForwardMoprPacnhayat + psc.noOfUnitsMOPR}"/>
+														</c:if>
+													</c:if>
+													
 													<c:set var="moprDiffUnit" value="bg-test" />
 										  			<c:if test="${pc.noOfUnits ne pc.noOfUnitsMOPR and pc.noOfUnitsMOPR != null }">
 														<c:set var="moprDiffUnit" value="bg-warning" />
 													</c:if>
+													<c:if test="${psc.componentsId ne 2 and psc.componentsId ne 3 }">		
 														<tr class="slide${pc.componentsId}"  style="display: none;">
 															<td></td>
 															<td >&#${96+pscindex})</td>
@@ -195,7 +295,7 @@ toggleSubComponent=function(id,flag){
 															<td >${psc.eName}</td>
 															<td></td>
 																<td align="right">
-																	<fmt:formatNumber type = "number"      maxFractionDigits = "3" value = "${psc.amountProposed}" />		
+																	<fmt:formatNumber type = "number"      maxFractionDigits = "3" value = "${psc.amountProposed}" />	
 																</td>
 																<td align="right" style="padding-right:20px">${psc.noOfUnits}</td>
 																<td align="right" class="${moprDiff }">
@@ -215,11 +315,8 @@ toggleSubComponent=function(id,flag){
 																	<c:set var="t_fund_cec" value="${t_fund_cec+psc.amountProposedCEC}" />
 																	<c:set var="t_unit_cec" value="${t_unit_cec+psc.noOfUnitsCEC}"/>
 																</c:if>
-																
-													
-																
-															
 														</tr>
+														</c:if>
 													</c:if>
 												</c:forEach>
 												<c:set var="moprDiff" value="bg-test" />
@@ -230,6 +327,204 @@ toggleSubComponent=function(id,flag){
 										  			<c:if test="${pc.noOfUnits ne pc.noOfUnitsMOPR and pc.noOfUnitsMOPR != null }">
 														<c:set var="moprDiffUnit" value="bg-warning" />
 													</c:if>
+													
+													<!-- for institutional infra modification -->
+														<c:if test="${pc.componentsId eq 2}">
+															<tr class="slide${pc.componentsId}"  style="display: none;">
+																	<td></td>
+																	<td>
+																		<div id="newBuildingInstituteInfraExpand${pc.componentsId}"
+																		onclick="toggleInstInfraAndPanchayatBhawan(${pc.componentsId},'newBuildingInstituteInfra')">
+																		<i class="fa fa-plus-circle" aria-hidden="true"></i>
+																		</div>
+																		
+																		<div id="newBuildingInstituteInfraCollapse${pc.componentsId}"
+																		onclick="toggleInstInfraAndPanchayatBhawan(${pc.componentsId},'newBuildingInstituteInfra')" style="display: none;">
+																		<i class="fa fa-minus-circle" aria-hidden="true"></i>
+																		</div>
+																	</td>
+																	<td><strong>New Building</strong></td>
+																	<td></td>
+																	<td align="right"><fmt:formatNumber type="number" maxFractionDigits="3" value="${totalNewBuildingStateInstInfra}" /></td>
+																	<td align="right" style="padding-right:20px"><b><c:out value="${totalUnitNewBuildingStateInstInfra}"/></b> </td>
+																	<td align="right" class="${moprDiff }"><fmt:formatNumber type="number" maxFractionDigits="3" value="${totalNewBuildingMoprInstInfra}" /></td>
+																	<td align="right" style="padding-right:20px"><b><c:out value="${totalUnitNewBuildingMoprInstInfra}"/></b> </td>
+																</tr>
+
+														<c:forEach items="${planComponentsFunds}" var="innerData">
+														<c:if
+															test="${innerData.eType eq 'S' and pc.componentsId eq 2}"></c:if>
+														<c:if
+															test="${innerData.subcomponentsId eq 8 or innerData.subcomponentsId eq 9}">
+															<tr class="newBuildingInstituteInfra"
+																style="display: none;">
+																<td></td>
+																<td></td>
+																<td>${innerData.eName}</td>
+																<td></td>
+																<td align="right"><fmt:formatNumber type="number"
+																		maxFractionDigits="3"
+																		value="${innerData.amountProposed}" /></td>
+																<td align="right" style="padding-right: 20px"><b><c:out
+																			value="${innerData.noOfUnits}" /></b></td>
+																<td align="right"><fmt:formatNumber type="number"
+																		maxFractionDigits="3"
+																		value="${innerData.amountProposedMOPR}" /></td>
+																<td align="right" style="padding-right: 20px"><b><c:out
+																			value="${innerData.noOfUnitsMOPR}" /></b></td>
+															</tr>
+														</c:if>
+													</c:forEach>
+													
+													<!-- carry forward institutional infra -->
+													
+													<tr class="slide${pc.componentsId}"  style="display: none;">
+																	<td></td>
+																	<td>
+																		<div id="carryForwardInstituteInfraExpand${pc.componentsId}"
+																		onclick="toggleInstInfraAndPanchayatBhawan(${pc.componentsId},'carryForwardInstituteInfra')">
+																		<i class="fa fa-plus-circle" aria-hidden="true"></i>
+																		</div>
+																		
+																		<div id="carryForwardInstituteInfraCollapse${pc.componentsId}"
+																		onclick="toggleInstInfraAndPanchayatBhawan(${pc.componentsId},'carryForwardInstituteInfra')" style="display: none;">
+																		<i class="fa fa-minus-circle" aria-hidden="true"></i>
+																		</div>
+																	</td>
+																	<td><strong>Carry Forward</strong></td>
+																	<td></td>
+																	<td align="right"><fmt:formatNumber type="number" maxFractionDigits="3" value="${totalCarryForwardStateInstInfra}" /></td>
+																	<td align="right" style="padding-right:20px"><b><c:out value="${totalUnitCarryForwardStateInstInfra}"/></b> </td>
+																	<td align="right" class="${moprDiff }"><fmt:formatNumber type="number" maxFractionDigits="3" value="${totalCarryForwardMoprInstInfra}" /></td>
+																	<td align="right" style="padding-right:20px"><b><c:out value="${totalUnitCarryForwardMoprInstInfra}"/></b> </td>
+																</tr>
+
+													<c:forEach items="${planComponentsFunds}" var="innerData">
+														<c:if
+															test="${innerData.eType eq 'S' and pc.componentsId eq 2}"></c:if>
+														<c:if
+															test="${innerData.subcomponentsId eq 23 or innerData.subcomponentsId eq 24}">
+															<tr class="carryForwardInstituteInfra"
+																style="display: none;">
+																<td></td>
+																<td></td>
+																<td>${innerData.eName}</td>
+																<td></td>
+																<td align="right"><fmt:formatNumber type="number"
+																		maxFractionDigits="3"
+																		value="${innerData.amountProposed}" /></td>
+																<td align="right" style="padding-right: 20px"><b><c:out
+																			value="${innerData.noOfUnits}" /></b></td>
+																<td align="right"><fmt:formatNumber type="number"
+																		maxFractionDigits="3"
+																		value="${innerData.amountProposedMOPR}" /></td>
+																<td align="right" style="padding-right: 20px"><b><c:out
+																			value="${innerData.noOfUnitsMOPR}" /></b></td>
+															</tr>
+														</c:if>
+													</c:forEach>
+										</c:if>
+													<!--  -->
+													
+													
+													<!-- panchayat bhawan bifurcation in new building and carry forward -->
+														<c:if test="${pc.componentsId eq 3}">
+															<tr class="slide${pc.componentsId}"  style="display: none;">
+																	<td></td>
+																	<td>
+																		<div id="newBuildingPanchayatBhawanExpand${pc.componentsId}"
+																		onclick="toggleInstInfraAndPanchayatBhawan(${pc.componentsId},'newBuildingPanchayatBhawan')">
+																		<i class="fa fa-plus-circle" aria-hidden="true"></i>
+																		</div>
+																		
+																		<div id="newBuildingPanchayatBhawanCollapse${pc.componentsId}"
+																		onclick="toggleInstInfraAndPanchayatBhawan(${pc.componentsId},'newBuildingPanchayatBhawan')" style="display: none;">
+																		<i class="fa fa-minus-circle" aria-hidden="true"></i>
+																		</div>
+																	</td>
+																	<td><strong>New Building</strong></td>
+																	<td></td>
+																	<td align="right"><fmt:formatNumber type="number" maxFractionDigits="3" value="${totalNewBuildingStatePanchayat}" /></td>
+																	<td align="right" style="padding-right:20px"><b><c:out value="${totalUnitNewBuildingStatePanchayat}"/></b> </td>
+																	<td align="right"  class="${moprDiff }"><fmt:formatNumber type="number" maxFractionDigits="3" value="${totalNewBuildingMoprPanchayat}" /></td>
+																	<td align="right" style="padding-right:20px"><b><c:out value="${totalUnitNewBuildingMoprPanchayat}"/></b> </td>
+																</tr>
+																
+																	<c:forEach items="${planComponentsFunds}" var="innerData">
+															<c:if
+																test="${innerData.eType eq 'S' and pc.componentsId eq 3}"></c:if>
+															<c:if
+																test="${innerData.subcomponentsId eq 12 or innerData.subcomponentsId eq 13 or innerData.subcomponentsId eq 14}">
+																<tr class="newBuildingPanchayatBhawan"
+																	style="display: none;">
+																	<td></td>
+																	<td></td>
+																	<td>${innerData.eName}</td>
+																	<td></td>
+																	<td align="right"><fmt:formatNumber type="number"
+																			maxFractionDigits="3"
+																			value="${innerData.amountProposed}" /></td>
+																	<td align="right" style="padding-right: 20px"><b><c:out
+																				value="${innerData.noOfUnits}" /></b></td>
+																	<td align="right"><fmt:formatNumber type="number"
+																			maxFractionDigits="3"
+																			value="${innerData.amountProposedMOPR}" /></td>
+																	<td align="right" style="padding-right: 20px"><b><c:out
+																				value="${innerData.noOfUnitsMOPR}" /></b></td>
+																</tr>
+															</c:if>
+														</c:forEach>
+														
+														<!-- carry forward entry -->
+															<tr class="slide${pc.componentsId}"  style="display: none;">
+																	<td></td>
+																	<td>
+																		<div id="carryForwardPanchayatBhawanExpand${pc.componentsId}"
+																		onclick="toggleInstInfraAndPanchayatBhawan(${pc.componentsId},'carryForwardPanchayatBhawan')">
+																		<i class="fa fa-plus-circle" aria-hidden="true"></i>
+																		</div>
+																		
+																		<div id="carryForwardPanchayatBhawanCollapse${pc.componentsId}"
+																		onclick="toggleInstInfraAndPanchayatBhawan(${pc.componentsId},'carryForwardPanchayatBhawan')" style="display: none;">
+																		<i class="fa fa-minus-circle" aria-hidden="true"></i>
+																		</div>
+																	</td>
+																	<td><strong>Carry Forward</strong></td>
+																	<td></td>
+																	<td align="right"><fmt:formatNumber type="number" maxFractionDigits="3" value="${totalCarryForwardStatePacnhayat}" /></td>
+																	<td align="right" style="padding-right:20px"><b><c:out value="${totalUnitCarryForwardStatePacnhayat}"/></b> </td>
+																	<td align="right"  class="${moprDiff }"><fmt:formatNumber type="number" maxFractionDigits="3" value="${totalCarryForwardMoprPacnhayat}" /></td>
+																	<td align="right" style="padding-right:20px"><b><c:out value="${totalUnitCarryForwardMoprPacnhayat}"/></b> </td>
+																</tr>
+																
+																	<c:forEach items="${planComponentsFunds}" var="innerData">
+															<c:if
+																test="${innerData.eType eq 'S' and pc.componentsId eq 3}"></c:if>
+															<c:if
+																test="${innerData.subcomponentsId eq 20 or innerData.subcomponentsId eq 21 or innerData.subcomponentsId eq 22}">
+																<tr class="carryForwardPanchayatBhawan"
+																	style="display: none;">
+																	<td></td>
+																	<td></td>
+																	<td>${innerData.eName}</td>
+																	<td></td>
+																	<td align="right"><fmt:formatNumber type="number"
+																			maxFractionDigits="3"
+																			value="${innerData.amountProposed}" /></td>
+																	<td align="right" style="padding-right: 20px"><b><c:out
+																				value="${innerData.noOfUnits}" /></b></td>
+																	<td align="right"><fmt:formatNumber type="number"
+																			maxFractionDigits="3"
+																			value="${innerData.amountProposedMOPR}" /></td>
+																	<td align="right" style="padding-right: 20px"><b><c:out
+																				value="${innerData.noOfUnitsMOPR}" /></b></td>
+																</tr>
+															</c:if>
+														</c:forEach>
+														<!--  -->
+														</c:if>
+													<!--  -->
+													
 											<c:if test="${pscindex eq 0 and pc.componentsId ne 11 and pc.componentsId ne 12}">
 													<tr class="slidex${pc.componentsId}"  style="display: none;">
 															<td></td>
