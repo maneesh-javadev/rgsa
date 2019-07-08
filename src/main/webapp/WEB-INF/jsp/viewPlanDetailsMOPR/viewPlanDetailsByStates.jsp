@@ -28,6 +28,23 @@ toggleSubComponent=function(id,flag){
      }else{
      	$("#collapseRow"+id).hide();
      	$("#expendRow"+id).show();
+     	if(id==2){
+     		 $('.newBuildingInstituteInfra').hide();
+     		$('.carryForwardInstituteInfra').hide();
+     		$('#newBuildingInstituteInfraCollapse'+id).hide();
+        	$('#newBuildingInstituteInfraExpand'+id).show();
+     		$('#carryForwardInstituteInfraCollapse'+id).hide();
+        	$('#carryForwardInstituteInfraExpand'+id).show();
+     	}
+     	
+     	if(id==3){
+     		$('.newBuildingPanchayatBhawan').hide();
+     		$('.carryForwardPanchayatBhawan').hide();
+     		$('#newBuildingPanchayatBhawanCollapse'+id).hide();
+        	$('#newBuildingPanchayatBhawanExpand'+id).show();
+     		$('#carryForwardPanchayatBhawanCollapse'+id).hide();
+        	$('#carryForwardPanchayatBhawanExpand'+id).show();
+     	}
      }
 	
 };

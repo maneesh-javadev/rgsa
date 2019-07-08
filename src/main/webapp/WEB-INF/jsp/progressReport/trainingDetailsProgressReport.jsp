@@ -36,19 +36,17 @@
 						
 						<div class="row" >
 							<div class="form-group">
-							<div class="col-lg-2"></div>
-								<label for="QuaterDuration" class="col-sm-3"><spring:message code="Label.QuaterDuration" htmlEscape="true" /></label>
-								<div class="col-lg-4">
+							<!-- <div class="col-lg-2" align="left"></div> -->
+								<label for="QuaterDuration" class="col-sm-2" style="margin-left: 15px;"><spring:message code="Label.QuaterDuration" htmlEscape="true" />  :</label>
+								<div class="col-lg-3">
 									
-									<select id="qtrId" name="qtrId" onchange="get_quater_wise_data(this.value)" required="required">
+									<select id="qtrId" class="form-control" name="qtrId" onchange="get_quater_wise_data(this.value)" required="required">
 										<option value="0">Select Quarter Duration</option>
 										
 										<c:forEach items="${quarterDuration}" var="duration">
 											<option  value="${duration.qtrId}" >${duration.qtrDuration}</option>
 										</c:forEach>
 									</select>
-									
-									
 								</div>
 							</div>
 						</div>	 
