@@ -52,7 +52,7 @@ toggleInstInfraAndPanchayatBhawan=function(id,msg){
 				<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
 					<div class="card">
 						<div class="header">
-							<h2>Plan Forwarded by State (${stateName}) ---------------> ${totalNewBuildingStateInstInfra}</h2>
+							<h2>Plan Forwarded by State (${stateName})</h2>
 							<c:set var="buttonStatus" value="false" />
 							<c:if test="${sessionScope['scopedTarget.userPreference'].planStatus eq 2}">
 							<c:set var="buttonStatus" value="true" />
