@@ -2,6 +2,7 @@ package gov.in.rgsa.webServices;
 
 import java.math.BigInteger;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -14,6 +15,7 @@ import gov.in.rgsa.dao.CommonRepository;
 import gov.in.rgsa.dto.ERRepresentativeHundredDayProg;
 import gov.in.rgsa.dto.ERRepresentativeHundredDayProgLastWeekWise;
 import gov.in.rgsa.dto.ERRepresentativeHundredDayProgStateWise;
+import gov.in.rgsa.dto.HundredDaysWebServiceDTO;
 import gov.in.rgsa.dto.StatewiseNoOfParticipants;
 import gov.in.rgsa.entity.FetchPlanStatusCount;
 
@@ -122,6 +124,20 @@ public class WebserviceServiceImpl implements WebserviceService {
 			e.printStackTrace();
 		}
 		return erRepresentativeHundredDayProg;
+	}
+
+
+
+	@Override
+	public List<HundredDaysWebServiceDTO> fetchHundredDayWSData(String fieldType) {
+		List<HundredDaysWebServiceDTO> detail=new ArrayList<HundredDaysWebServiceDTO>();
+		
+		if(fieldType.equalsIgnoreCase("A")) {
+			detail = commonRepository.findAll("FETCH_ALL_STATE_DATA", null);
+		}else {
+			detail = commonRepository.findAll("STATEWISE_DATA_FOR_ALL_FIELDS", null);
+		}
+		return detail;
 	}
 
 

@@ -202,22 +202,18 @@ function allPolicies(id) {
 				<div class="container-fluid">
 
 				<div class="row main-contentBody ">
-					<h5 class="text-center">
-						If you need any further information or Assistance, Please feel free to contact us
-					</h5>
-					<div class="text-center">
-						<h5>
-							<i class="fa fa-envelope fa-1x" aria-hidden="true"></i> <a href="mailto:emailid">EMAILID[at]rgsa[dot]gov[dot]in</a>
-						</h5>
-						<h5>
-							<i class="fa fa-phone-square fa-1x" aria-hidden="true"></i> <span class="englishLang">Helpdesk</span>: 011-00000000, 011-00000000
-						</h5>
-					</div>
+						<blockquote style="color: black;"><i class="fa fa-university fa-1x" aria-hidden="true"></i><strong> Address : </strong><span>Ministry of Panchayati Raj Government of
+													India 11th Floor, J.P. Building, Kasturba Gandhi Marg, 
+													Connaught Place, New Delhi - 110001</span></blockquote> 
+													
+						<blockquote style="color: black;"><i class="fa fa-envelope fa-1x" aria-hidden="true"></i> <strong>Email ID : </strong><span>mis-rgsa@gov.in</span></blockquote> 							
+						<blockquote style="color: black;"><i class="fa fa-phone-square fa-1x" aria-hidden="true"></i> <strong>Helpdesk : </strong><span>011-24305484</span></blockquote>
+					
 				</div>
 				</div>
 			</div>
 			<div class="modal-footer">
-				<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+				<button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
 			</div>
 		</div>
 

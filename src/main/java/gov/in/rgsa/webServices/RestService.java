@@ -25,6 +25,7 @@ import org.springframework.web.context.support.WebApplicationContextUtils;
 import gov.in.rgsa.dto.ERRepresentativeHundredDayProg;
 import gov.in.rgsa.dto.ERRepresentativeHundredDayProgLastWeekWise;
 import gov.in.rgsa.dto.ERRepresentativeHundredDayProgStateWise;
+import gov.in.rgsa.dto.HundredDaysWebServiceDTO;
 import gov.in.rgsa.dto.StatewiseNoOfParticipants;
 import gov.in.rgsa.entity.FetchPlanStatusCount;
 
@@ -44,6 +45,14 @@ public class RestService {
 		response.setHeader("Access-Control-Allow-Headers", request.getHeader("Access-Control-Request-Headers"));
 		response.setHeader("Access-Control-Allow-Methods", request.getHeader("Access-Control-Request-Method"));	
 		return webserviceService.fetchNoOfParticipantsIndia(finYear);
+	}
+	
+	@GetMapping("/webService/fetchHundredDayWSData/{fieldType}")
+	public List<HundredDaysWebServiceDTO> fetchHundredDayWSData(@PathVariable String fieldType,HttpServletResponse response,HttpServletRequest request) {
+		response.setHeader("Access-Control-Allow-Origin", "*");
+		response.setHeader("Access-Control-Allow-Headers", request.getHeader("Access-Control-Request-Headers"));
+		response.setHeader("Access-Control-Allow-Methods", request.getHeader("Access-Control-Request-Method"));	
+		return webserviceService.fetchHundredDayWSData(fieldType);
 	}
 	
 	

@@ -19,8 +19,8 @@ toggleSubComponent=function(id,flag){
      	$("#expendRow"+id).show();
      	
      	if(id==2){
-    		 $('.newBuildingInstituteInfra').slideToggle();
-    		$('.carryForwardInstituteInfra').slideToggle();
+    		 $('.newBuildingInstituteInfra').hide();
+    		$('.carryForwardInstituteInfra').hide();
     		$('#newBuildingInstituteInfraCollapse'+id).hide();
        	$('#newBuildingInstituteInfraExpand'+id).show();
     		$('#carryForwardInstituteInfraCollapse'+id).hide();
@@ -28,8 +28,8 @@ toggleSubComponent=function(id,flag){
     	}
     	
     	if(id==3){
-    		$('.newBuildingPanchayatBhawan').slideToggle();
-    		$('.carryForwardPanchayatBhawan').slideToggle();
+    		$('.newBuildingPanchayatBhawan').hide();
+    		$('.carryForwardPanchayatBhawan').hide();
     		$('#newBuildingPanchayatBhawanCollapse'+id).hide();
        	$('#newBuildingPanchayatBhawanExpand'+id).show();
     		$('#carryForwardPanchayatBhawanCollapse'+id).hide();
