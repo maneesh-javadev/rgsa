@@ -132,7 +132,7 @@ public class WebserviceServiceImpl implements WebserviceService {
 	public List<HundredDaysWebServiceDTO> fetchHundredDayWSData(String fieldType) {
 		List<HundredDaysWebServiceDTO> detail=new ArrayList<HundredDaysWebServiceDTO>();
 		
-		if(fieldType.equalsIgnoreCase("A")) {
+		if(fieldType.equalsIgnoreCase("fetchAll")) {
 			detail = commonRepository.findAll("FETCH_ALL_STATE_DATA", null);
 		}else {
 			detail = commonRepository.findAll("STATEWISE_DATA_FOR_ALL_FIELDS", null);
