@@ -25,9 +25,9 @@ $('document').ready(function(){
 			endDate : '+100d',
 			autoclose : true,
 			minView : 'month',
-			startDate : '03/06/2019',
+			startDate : '01/06/2019',
 			pickerPosition : "bottom-left",
-			endDate : '11/09/2019'
+			endDate : '08/09/2019'
 		});
 	});
 	
