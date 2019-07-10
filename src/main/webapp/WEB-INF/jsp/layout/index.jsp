@@ -486,6 +486,9 @@
 																	<td align="right"><strong><fmt:formatNumber
 																				type="number" maxFractionDigits="3"
 																				value="${totalNewBuildingInstInfra}" /></strong></td>
+																	<td align="right"><strong><fmt:formatNumber
+																				type="number" maxFractionDigits="3"
+																				value="${totalUnitNewBuildingInstInfra}" /></strong></td>			
 																</tr>
 
 													<c:forEach
@@ -516,6 +519,7 @@
 										 						</td>
 										 						<td><strong>Carry Forward</strong></td>
 										 						<td align="right"><strong><fmt:formatNumber type = "number"      maxFractionDigits = "3" value = "${totalCarryForwardInstInfra}" /></strong></td>
+										 						<td align="right"><strong><fmt:formatNumber type = "number"      maxFractionDigits = "3" value = "${totalUnitCarryForwardInstInfra}" /></strong></td>
 													</tr>
 													
 													<c:forEach
