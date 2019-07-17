@@ -309,6 +309,7 @@ function openModel(index , detailId){
 	 $('#BifurcationModal').modal('show');
 	 $('#detailsListsIndexId').val(index);
 	// abc(index);
+	 (detailId == undefined || detailId == '') ? detailId = 0 : detailId = detailId;
 	 voteViaAjax(detailId,index);
 }
 
