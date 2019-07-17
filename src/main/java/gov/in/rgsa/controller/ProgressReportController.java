@@ -5,12 +5,17 @@ import gov.in.rgsa.dto.GramPanchayatProgressReportDTO;
 import gov.in.rgsa.dto.InstitutionalInfraProgressReportDTO;
 import gov.in.rgsa.dto.SubcomponentwiseQuaterBalance;
 import gov.in.rgsa.entity.*;
+import gov.in.rgsa.outbound.MsgReply;
 import gov.in.rgsa.service.*;
 import gov.in.rgsa.user.preference.UserPreference;
 import gov.in.rgsa.utils.FileNodeUtils;
 import gov.in.rgsa.utils.Message;
 import org.apache.commons.collections.CollectionUtils;
+import org.codehaus.jettison.json.JSONObject;
+import org.owasp.esapi.util.CollectionsUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.configurationprocessor.json.JSONArray;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -1841,15 +1846,57 @@ public class ProgressReportController {
     }
     
     
-    @RequestMapping(value = "trainingProgressReportGETData",method = { RequestMethod.GET, RequestMethod.POST })
+    @SuppressWarnings("unchecked")
+	@RequestMapping(value = "trainingProgressReportGETData",method = { RequestMethod.GET, RequestMethod.POST })
     public String trainingProgressReportGETData(@ModelAttribute("QPR_TRAINING_DETAILS") QuarterTrainings quarterTrainings, Model model, RedirectAttributes redirectAttributes) {
     	Integer qtrId=quarterTrainings.getQtrId();
+    	
     	Map<String,Object> data =progressReportService.fetchTrainingDetailsCEC(qtrId);
     	model.addAttribute("fetchTrainingCEC",data.get("fetchTrainingCEC"));
     	model.addAttribute("fetchTrainingDetailsListCEC",data.get("fetchTrainingDetailsListCEC"));
+    	List alist=new ArrayList();
+    	model.addAttribute("TARGET_GROUP_MASTER", trainingActivityService.targetGroupMastersList());
+    	List<TargetGroupMaster> list=trainingActivityService.targetGroupMastersList();
+    	System.out.println(list.size());
+    	Map<Object,Object> map=new LinkedHashMap();
+    	for(TargetGroupMaster obj: list) {
+    		map.put(obj.getTargetGroupMasterId(),obj.getTargetGroupMasterName());
+    		//alist.add(jsObj); 
+    	}
+    	JSONObject jsObj = new JSONObject(map);
+    	model.addAttribute("test", jsObj);
     	List<QuarterTrainings> quarterTrainingsList=(List<QuarterTrainings>)data.get("quarterTrainings");
     	if(quarterTrainingsList!=null && !quarterTrainingsList.isEmpty()) {
     		quarterTrainings=quarterTrainingsList.get(0);
+    		List<QuarterTrainingsDetails> details = new ArrayList<QuarterTrainingsDetails>();
+    		details=quarterTrainings.getQuarterTrainingsDetailsList();
+    		for(QuarterTrainingsDetails detail : details) {
+    			if(CollectionUtils.isNotEmpty(detail.getQprTrainingBreakup())) {
+    				int total_participants=0;
+    				List<QprTrainingBreakup> trainingBreakUpList=detail.getQprTrainingBreakup();
+    				for(QprTrainingBreakup breakUp : trainingBreakUpList) {
+    					if(breakUp.getScMales() != null) {
+    						total_participants += breakUp.getScMales();
+    					}
+    					if(breakUp.getScFemales() != null) {
+    						total_participants += breakUp.getScFemales();
+    					}
+    					if(breakUp.getStMales() != null) {
+    						total_participants += breakUp.getStMales();
+    					}
+    					if(breakUp.getStFemales() != null) {
+    						total_participants += breakUp.getStFemales();
+    					}
+    					if(breakUp.getOthersMales() != null) {
+    						total_participants += breakUp.getOthersMales();
+    					}
+    					if(breakUp.getOthersFemales() != null) {
+    						total_participants += breakUp.getOthersFemales();
+    					}
+    				}
+    				detail.setTotalParticipantsEnter(total_participants);
+    			}
+    		}
     	}else {
     		 quarterTrainings=new QuarterTrainings();
     		 quarterTrainings.setQtrId(qtrId);
@@ -1872,9 +1919,25 @@ public class ProgressReportController {
          return TRAINING_DETAILS_PROGRESS_REPORT;
     }
     
+    @ResponseBody
+    @PostMapping(value = "fetchTrainingBreakUpData", produces= MediaType.APPLICATION_JSON_VALUE)
+    public Map<String, Object> fetchTrainingBreakUpData(@RequestParam(value = "detailId" , required = false) Integer detailId){
+    	System.out.println("In Java side function fetch training breakup data.");
+    	List<QprTrainingBreakup> breakUpList= new ArrayList<QprTrainingBreakup>();
+    	breakUpList = progressReportService.fetchTrainingBreakUpData(detailId);
+    	Map<String, Object> result=new HashMap<String, Object>();
+    	result.put("breakUpData", breakUpList);
+    	return result;
+    }
+    
     @RequestMapping(value = "savetrainingProgressReport", method = RequestMethod.POST)
     public String savetrainingProgressReport(@ModelAttribute("QPR_TRAINING_DETAILS") QuarterTrainings quarterTrainings, Model model, RedirectAttributes redirectAttributes) {
-    	progressReportService.savetrainingProgressReport(quarterTrainings);
+    	 
+    	if(quarterTrainings.getMsg().equalsIgnoreCase("modalSave")) {
+    		 progressReportService.savetrainingBreakUpData(quarterTrainings);
+    	}else {
+    		 progressReportService.savetrainingProgressReport(quarterTrainings);
+    	}
     	 redirectAttributes.addAttribute("isError", "Data save successfully");
     	 redirectAttributes.addAttribute("qtrId",quarterTrainings.getQtrId());
          return REDIRECT_TRAINING_DETAILS_PROGRESS_REPORT;

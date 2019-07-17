@@ -14,6 +14,7 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
@@ -61,6 +62,12 @@ public class QuarterTrainings {
 	@OneToMany(fetch=FetchType.EAGER,cascade=CascadeType.ALL,mappedBy="quarterTrainings")
 	private List<QuarterTrainingsDetails> quarterTrainingsDetailsList;
 
+	@Transient
+	private String msg;
+	
+	@Transient
+	private Integer detailsListsIndex;
+	
 	public Integer getQprTrainingsId() {
 		return qprTrainingsId;
 	}
@@ -140,7 +147,21 @@ public class QuarterTrainings {
 	public void setQuarterTrainingsDetailsList(List<QuarterTrainingsDetails> quarterTrainingsDetailsList) {
 		this.quarterTrainingsDetailsList = quarterTrainingsDetailsList;
 	}
-	
-	
+
+	public String getMsg() {
+		return msg;
+	}
+
+	public void setMsg(String msg) {
+		this.msg = msg;
+	}
+
+	public Integer getDetailsListsIndex() {
+		return detailsListsIndex;
+	}
+
+	public void setDetailsListsIndex(Integer detailsListsIndex) {
+		this.detailsListsIndex = detailsListsIndex;
+	}
 
 }

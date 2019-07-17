@@ -958,6 +958,28 @@ public class ProgressReportServiceImpl implements ProgressReportService {
 			return plan.getPlanCode();
 		}
 	}
+
+	@Override
+	public List<QprTrainingBreakup> fetchTrainingBreakUpData(int qprTrainingsDetailsId) {
+		Map<String,Object> map=new HashMap();
+		map.put("qprTrainingsDetailsId", qprTrainingsDetailsId);
+		return commonRepository.findAll("FETCH_BREAK_UP_BY_QPR_TRAINING_DETAIL_ID", map);
+	}
+
+	@Override
+	public void savetrainingBreakUpData(QuarterTrainings quarterTrainings) {
+		int index = quarterTrainings.getDetailsListsIndex();
+		List<QprTrainingBreakup> breakUpList=quarterTrainings.getQuarterTrainingsDetailsList().get(index).getQprTrainingBreakup();
+		for(QprTrainingBreakup data : breakUpList) {
+			data.setQuarterTrainingsDetails(quarterTrainings.getQuarterTrainingsDetailsList().get(index));
+			if(data.getQprTrainingBreakupId() == null) {
+				 commonRepository.save(data);
+			}else {
+				 commonRepository.update(data);
+			}
+		}
+		
+	}
     
 
 }

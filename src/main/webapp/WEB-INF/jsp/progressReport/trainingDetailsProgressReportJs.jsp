@@ -34,8 +34,9 @@ loadSubElement=function(instInfraStatusId,index){
 	
 };
 
-function save_data()
+function save_data(msg)
 {
+	$('#msgId').val(msg);
 	document.quarterTrainings.method = "post";
 	document.quarterTrainings.action = "savetrainingProgressReport.html?<csrf:token uri='savetrainingProgressReport.html'/>";
 	document.quarterTrainings.submit();
