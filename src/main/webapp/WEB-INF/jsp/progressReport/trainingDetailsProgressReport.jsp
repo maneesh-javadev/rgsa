@@ -1,6 +1,6 @@
 <%@include file="../taglib/taglib.jsp"%>
 <%@include file="../progressReport/trainingDetailsProgressReportJs.jsp"%>
-<!-- <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script> -->
+<script type="text/javascript" src="src/main/resources/static/plugins/jquery/jquery.min.js"></script>
 <style>
 .padding_left_local {
    padding-left: 85px !important;
