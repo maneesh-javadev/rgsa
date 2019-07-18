@@ -1,7 +1,11 @@
 package gov.in.rgsa.webServices;
 
 
+import java.util.List;
+
 import javax.servlet.ServletContext;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
@@ -12,23 +16,86 @@ import javax.ws.rs.core.Response;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
-import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.context.support.WebApplicationContextUtils;
 
+import gov.in.rgsa.dto.ERRepresentativeHundredDayProg;
+import gov.in.rgsa.dto.ERRepresentativeHundredDayProgLastWeekWise;
+import gov.in.rgsa.dto.ERRepresentativeHundredDayProgStateWise;
+import gov.in.rgsa.dto.HundredDaysWebServiceDTO;
+import gov.in.rgsa.dto.StatewiseNoOfParticipants;
 import gov.in.rgsa.entity.FetchPlanStatusCount;
 
 
 
+@CrossOrigin(origins = "*", allowedHeaders = "*")
+@RestController
 
-
-@Controller
-@Path("/rgsaWebService")
 public class RestService {
 	
 	@Autowired
 	private WebserviceService webserviceService;
 	
+	@GetMapping("/webService/noOfParticipantsAllIndia/{finYear}")
+	public Integer noOfParticipantsAllIndia(@PathVariable String finYear,HttpServletResponse response,HttpServletRequest request) {
+		response.setHeader("Access-Control-Allow-Origin", "*");
+		response.setHeader("Access-Control-Allow-Headers", request.getHeader("Access-Control-Request-Headers"));
+		response.setHeader("Access-Control-Allow-Methods", request.getHeader("Access-Control-Request-Method"));	
+		return webserviceService.fetchNoOfParticipantsIndia(finYear);
+	}
 	
+	@GetMapping("/webService/fetchHundredDayWSData/{fieldType}")
+	public List<HundredDaysWebServiceDTO> fetchHundredDayWSData(@PathVariable String fieldType,HttpServletResponse response,HttpServletRequest request) {
+		response.setHeader("Access-Control-Allow-Origin", "*");
+		response.setHeader("Access-Control-Allow-Headers", request.getHeader("Access-Control-Request-Headers"));
+		response.setHeader("Access-Control-Allow-Methods", request.getHeader("Access-Control-Request-Method"));	
+		return webserviceService.fetchHundredDayWSData(fieldType);
+	}
+	
+	
+	@GetMapping("/webService/noOfParticipantsStatewise/{finYear}")
+	public List<StatewiseNoOfParticipants> noOfParticipantsStatewise(@PathVariable String finYear,HttpServletResponse response,HttpServletRequest request) {
+		response.setHeader("Access-Control-Allow-Origin", "*");
+		response.setHeader("Access-Control-Allow-Headers", request.getHeader("Access-Control-Request-Headers"));
+		response.setHeader("Access-Control-Allow-Methods", request.getHeader("Access-Control-Request-Method"));	
+		return webserviceService.fetchNoOfParticipantsStateWise(finYear);
+	}
+	
+	
+	@GetMapping("/webService/totalERRepresentativeDetails/{finYear}")
+	public List<ERRepresentativeHundredDayProg> totalERRepresentativeDetails(@PathVariable String finYear,HttpServletResponse response,HttpServletRequest request) {
+		response.setHeader("Access-Control-Allow-Origin", "*");
+		response.setHeader("Access-Control-Allow-Headers", request.getHeader("Access-Control-Request-Headers"));
+		response.setHeader("Access-Control-Allow-Methods", request.getHeader("Access-Control-Request-Method"));	
+		return webserviceService.fetchERRepresentativeHundredDayProg(finYear,null,null);
+	}
+	
+	@GetMapping("/webService/totalERRepresentativeDetailsDateWise/{stDate}/{endDate}")
+	public List<ERRepresentativeHundredDayProg> totalERRepresentativeDetailsDateWise(@PathVariable String stDate,@PathVariable String endDate,HttpServletResponse response,HttpServletRequest request) {
+		response.setHeader("Access-Control-Allow-Origin", "*");
+		response.setHeader("Access-Control-Allow-Headers", request.getHeader("Access-Control-Request-Headers"));
+		response.setHeader("Access-Control-Allow-Methods", request.getHeader("Access-Control-Request-Method"));	
+		return webserviceService.fetchERRepresentativeHundredDayProg(null,stDate,endDate);
+	}
+	
+	@GetMapping("/webService/totalERRepresentativeDetailsStateWise/{stDate}/{endDate}")
+	public List<ERRepresentativeHundredDayProgStateWise> totalERRepresentativeDetailsStateWise(@PathVariable String stDate,@PathVariable String endDate,HttpServletResponse response,HttpServletRequest request) {
+		response.setHeader("Access-Control-Allow-Origin", "*");
+		response.setHeader("Access-Control-Allow-Headers", request.getHeader("Access-Control-Request-Headers"));
+		response.setHeader("Access-Control-Allow-Methods", request.getHeader("Access-Control-Request-Method"));	
+		return webserviceService.fetchERRepresentativeHundredDayProgStateWise(null, stDate, endDate);
+	}
+	
+	@GetMapping("/webService/totalERRepresentativeDetailsLastWeekWise")
+	public List<ERRepresentativeHundredDayProgLastWeekWise> totalERRepresentativeDetailsLastWeekWise(HttpServletResponse response,HttpServletRequest request) {
+		response.setHeader("Access-Control-Allow-Origin", "*");
+		response.setHeader("Access-Control-Allow-Headers", request.getHeader("Access-Control-Request-Headers"));
+		response.setHeader("Access-Control-Allow-Methods", request.getHeader("Access-Control-Request-Method"));	
+		return webserviceService.fetchERRepresentativeHundredDayProgLASTWEEKWISE();
+	}
 
 	
 	@GET

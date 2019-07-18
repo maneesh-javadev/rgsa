@@ -67,7 +67,7 @@ public class DevQuirksInterceptor extends HandlerInterceptorAdapter {
         Users user = commonRepository.find(Users.class, userMap);
         FacadeModel facadeModel = new FacadeModel();
         facadeModel.setLoginId(user.getUserName());
-        facadeModel.setPassword(user.getPassword());
+        facadeModel.setPassword(user.getUserPassword() );
         UserPreference facadeServiceUser =facadeService.findUser(facadeModel);
         setPreference(facadeServiceUser);
         logger.info("Using account: " + userPreference.getUserName());
@@ -86,6 +86,7 @@ public class DevQuirksInterceptor extends HandlerInterceptorAdapter {
 
 
     private void setPreference(UserPreference passedUserPreference) {
+		/* userPreference.setIsNodalFilled(true); */
         userPreference.setUserId(passedUserPreference.getUserId());
         userPreference.setUserName(passedUserPreference.getUserName());
         userPreference.setFinYear(passedUserPreference.getFinYear());

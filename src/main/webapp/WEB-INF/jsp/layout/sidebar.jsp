@@ -14,9 +14,17 @@
                    	</div>
                     <div class="name" data-toggle="dropdown" aria-haspopup="true" 
                     		aria-expanded="false">Financial Year : 
-                    		<esapi:encodeForHTMLAttribute>${sessionScope['scopedTarget.userPreference'].finYear}</esapi:encodeForHTMLAttribute>
+                    		<esapi:encodeForHTMLAttribute>${sessionScope['scopedTarget.userPreference'].finYear}</esapi:encodeForHTMLAttribute>&nbsp;
+                    		<c:choose>
+                    			<c:when test="${sessionScope['scopedTarget.userPreference'].isNodalFilled}">
+                    				<i class="fa fa-pencil-square-o" aria-hidden="true" data-toggle="modal" data-target="#aashish"></i>
+                    			</c:when>
+                    			<c:otherwise>
+                    				<i class="fa fa-pencil-square-o" aria-hidden="true" data-toggle="modal" data-target=""></i>
+                    			</c:otherwise>
+                    		</c:choose>
                     		
-                    </div>
+				</div>
                </div>
            </div>
            <!-- #User Info -->
@@ -25,18 +33,34 @@
                <ul class="list">
                    <!-- <li class="header">Menu</li> -->
                    <li class="active">
-                       <a href="home.html">
+                   <c:choose>
+                   	<c:when test="${sessionScope['scopedTarget.userPreference'].isNodalFilled}"><a href="home.html">
                            <i class="fa fa-home"></i> Home
-                       </a>
+                       </a></c:when>
+                   	<c:otherwise><a href="">
+                           <i class="fa fa-home"></i> Home
+                       </a></c:otherwise>
+                   </c:choose>
                    </li>
                    <c:forEach items="${sessionScope['scopedTarget.userPreference'].menus}" var="itm">
 						
 						<c:choose>
 						  <c:when test="${itm.parent eq 0 and !empty itm.formName}">
-						  	<li>
-		                       <a href="${itm.formName}?menuId=${itm.menuId}&<csrf:token uri='${itm.formName}'/>">
-		                           <i class="fa ${itm.icon} "></i>   ${itm.resourceId}
-		                       </a>
+						  	<li><c:choose>
+									<c:when
+										test="${sessionScope['scopedTarget.userPreference'].isNodalFilled}">
+										<a
+											href="${itm.formName}?menuId=${itm.menuId}&<csrf:token uri='${itm.formName}'/>">
+											<i class="fa ${itm.icon} "></i> ${itm.resourceId}
+										</a>
+									</c:when>
+									<c:otherwise>
+										<a
+											href="">
+											<i class="fa ${itm.icon} "></i> ${itm.resourceId}
+										</a>
+									</c:otherwise>
+								</c:choose> 
 				            </li>
 						  </c:when>
 						  <c:otherwise>
@@ -47,16 +71,27 @@
 								     <i class="fa ${itm.icon}"></i>   ${itm.resourceId}
 								  </a>
 								  <ul class="ml-menu">
-								  	<c:forEach items="${sessionScope['scopedTarget.userPreference'].menus}" var="itm2" varStatus="status"> 
-						       			<c:if test="${itm.menuId eq itm2.parent}">
-					               			<li>
-					               			<a href="${itm2.formName}?menuId=${itm2.menuId}&<csrf:token uri='${itm2.formName}'/>">
-					               				 <i class="fa ${itm2.icon}"></i>  ${itm2.resourceId}
-					               			</a>
-					               			</li>
-						           		</c:if> 
-					           		</c:forEach> 
-						 		  </ul>
+											<c:forEach
+												items="${sessionScope['scopedTarget.userPreference'].menus}"
+												var="itm2" varStatus="status">
+												<c:if test="${itm.menuId eq itm2.parent}">
+													<li><c:choose>
+															<c:when
+																test="${sessionScope['scopedTarget.userPreference'].isNodalFilled}">
+																<a
+																	href="${itm2.formName}?menuId=${itm2.menuId}&<csrf:token uri='${itm2.formName}'/>">
+																	<i class="fa ${itm2.icon}"></i> ${itm2.resourceId}
+																</a>
+															</c:when>
+															<c:otherwise>
+																<a href=""> <i class="fa ${itm2.icon}"></i>
+																	${itm2.resourceId}
+																</a>
+															</c:otherwise>
+														</c:choose></li>
+												</c:if>
+											</c:forEach>
+										</ul>
 								</li>
 						  	   </c:when>
 						  	</c:choose> 
@@ -187,4 +222,64 @@
            </div>
        </aside>
        <!-- #END# Right Sidebar -->
-   </section>
+       <div class="body">
+		<div class="modal fade" id="aashish" tabindex="-1"
+			role="dialog" aria-labelledby="exampleModalCenterTitle"
+			aria-hidden="true">
+			<div class="modal-dialog modal-dialog-centered" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<div align="center"><h5 class="modal-title" id="exampleModalCenterTitle">Select Financial Year</h5></div>
+						<button type="button" class="close" data-dismiss="modal"
+							aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+					<div class="modal-body">
+						<div class="row clearfix">
+							<div class="form-group">
+								<div class="col-lg-4">
+									&nbsp;&nbsp;<label for="FinYear"><strong>Financial Year :</strong></label>
+								</div>
+								<div align="center" class="col-lg-4">
+									<select class="form-control" id="finYearDropDownId">
+										<option value="0">Select Financial Year</option>
+										<c:forEach items="${sessionScope['scopedTarget.userPreference'].finYearList}" var="finYearList">
+											<option value="${finYearList.yearId}">${finYearList.finYear}</option>										
+										</c:forEach>
+										<!-- <option value="1">2018-19</option>
+										<option value="2">2019-20</option> -->
+									</select>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="modal-footer">
+					<form:form id="formId" name="changeFinYearForm">
+					<div class="text-right">
+						<button type="button" class="btn btn-secondary"
+							data-dismiss="modal">Close</button>
+						<button type="button" class="btn btn-primary" onclick="changeFinYear()">Save
+							changes</button></div>
+							</form:form>
+					</div>
+				</div>
+			</div>
+		</div>
+		<input type="hidden" id="finYearId" value="" />
+	</div>
+</section>
+<script>
+/* function setVal(){
+	var finYearId=$('#finYearDropDownId').val()
+	$('#finYearId').val(finYearId);
+	$('#achorId').action("","demoUrl.html?<csrf:token uri='demoUrl.html'/>&finYearId="+finYearId);
+} */
+
+function changeFinYear(){
+	var finYearId=$('#finYearDropDownId').val();
+	document.changeFinYearForm.method = "post";
+	document.changeFinYearForm.action = "changeFinYear.html?<csrf:token uri='changeFinYear.html'/>&finYearId="+finYearId;
+	document.changeFinYearForm.submit();
+}
+</script>

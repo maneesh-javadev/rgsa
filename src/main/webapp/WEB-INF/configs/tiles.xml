@@ -814,9 +814,20 @@
 			value="/WEB-INF/jsp/progressReport/trainingDetailsProgressReport.jsp" />
 </definition>
 
-<definition name="viewreportmopr" extends="base.definition.admin">
+     <definition name="viewreportmopr" extends="base.definition.admin">
 		<put-attribute name="title" value="View Report Mopr" />
 		<put-attribute name="body" value="/WEB-INF/jsp/viewMoprReport/viewMoprReportAjax.jsp" />
+		</definition>
+<definition name="hundredDayTrainingDetail" extends="base.definition.admin">
+	<put-attribute name="title" value="hundred Day Training Detail" />
+	<put-attribute name="body"
+		value="/WEB-INF/jsp/hundredDayTrainingDetails/hundredDayTrainingDetailsNew.jsp" />
+</definition>
+
+<definition name="newHundredDayTrainingDetails" extends="base.definition.admin">
+	<put-attribute name="title" value="hundred Day Training Detail" />
+	<put-attribute name="body"
+		value="/WEB-INF/jsp/hundredDayTrainingDetails/hundredDaysTrainingNewFormNo5.jsp" />
 </definition>
 
 </tiles-definitions>

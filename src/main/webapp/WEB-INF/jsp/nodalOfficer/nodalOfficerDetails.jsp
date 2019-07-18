@@ -53,7 +53,8 @@ function ValidateEmail()
 					<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
 						<div class="card">
 							<div class="header">
-							<h2>Nodal Officer Details</h2>
+							<h2>Nodal Officer Details <c:if test="${not sessionScope['scopedTarget.userPreference'].isNodalFilled}"><span style="color: red">( * Please fill this form to continue further ahead.)</span></c:if>
+							</h2>
 							
 							</div>
 							<form action="nodalOfficerDetailsSave.html" modelAttribute="SAVE_NODAL_DETAILS" method="POST" id ="myForm">
@@ -164,7 +165,7 @@ function ValidateEmail()
 				  <!-- <div class="panel panel-default"> -->
                        <div class="panel-heading">
                           <h4 class="panel-title">
-                           DAC  Nodal Officer 
+                           FAC  Nodal Officer 
                           </h4>
                          </div>
                     

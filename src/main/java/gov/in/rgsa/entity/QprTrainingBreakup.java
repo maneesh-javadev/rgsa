@@ -2,31 +2,48 @@ package gov.in.rgsa.entity;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
 @Entity
 @Table(name="qpr_training_breakup",schema="rgsa")
+@NamedQuery(name="FETCH_BREAK_UP_BY_QPR_TRAINING_DETAIL_ID",query="from QprTrainingBreakup where quarterTrainingsDetails.qprTrainingsDetailsId=:qprTrainingsDetailsId order by qprTrainingBreakupId")
 public class QprTrainingBreakup {
 	
 	@Id
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	@Column(name="qpr_training_breakup_id")
 	private Integer qprTrainingBreakupId;
 	
-	@Column(name="training_id")
-	private Integer trainingId;
+	@ManyToOne
+	@JoinColumn(name="qpr_trainings_details_id")
+	private QuarterTrainingsDetails quarterTrainingsDetails;
 	
-	@Column(name="target_group_id")
-	private Integer targetGroupId;
+	@Column(name="target_group_master_id")
+	private Integer targetGroupMasterId;
 	
-	@Column(name="sc")
-	private Integer SC;
+	@Column(name="sc_males")
+	private Integer scMales;
 	
-	@Column(name="st")
-	private Integer ST;
+	@Column(name="sc_females")
+	private Integer scFemales;
 	
-	@Column(name="other")
-	private Integer other;
+	@Column(name="st_males")
+	private Integer stMales;
+	
+	@Column(name="st_females")
+	private Integer stFemales;
+	
+	@Column(name="others_males")
+	private Integer othersMales;
+	
+	@Column(name="others_females")
+	private Integer othersFemales;
 
 	public Integer getQprTrainingBreakupId() {
 		return qprTrainingBreakupId;
@@ -36,46 +53,68 @@ public class QprTrainingBreakup {
 		this.qprTrainingBreakupId = qprTrainingBreakupId;
 	}
 
-	public Integer getTrainingId() {
-		return trainingId;
+	public Integer getTargetGroupMasterId() {
+		return targetGroupMasterId;
 	}
 
-	public void setTrainingId(Integer trainingId) {
-		this.trainingId = trainingId;
+	public void setTargetGroupMasterId(Integer targetGroupMasterId) {
+		this.targetGroupMasterId = targetGroupMasterId;
 	}
 
-	public Integer getTargetGroupId() {
-		return targetGroupId;
+	public Integer getScMales() {
+		return scMales;
 	}
 
-	public void setTargetGroupId(Integer targetGroupId) {
-		this.targetGroupId = targetGroupId;
+	public void setScMales(Integer scMales) {
+		this.scMales = scMales;
 	}
 
-	public Integer getSC() {
-		return SC;
+	public Integer getScFemales() {
+		return scFemales;
 	}
 
-	public void setSC(Integer sC) {
-		SC = sC;
+	public void setScFemales(Integer scFemales) {
+		this.scFemales = scFemales;
 	}
 
-	public Integer getST() {
-		return ST;
+	public Integer getStMales() {
+		return stMales;
 	}
 
-	public void setST(Integer sT) {
-		ST = sT;
+	public void setStMales(Integer stMales) {
+		this.stMales = stMales;
 	}
 
-	public Integer getOther() {
-		return other;
+	public Integer getStFemales() {
+		return stFemales;
 	}
 
-	public void setOther(Integer other) {
-		this.other = other;
+	public void setStFemales(Integer stFemales) {
+		this.stFemales = stFemales;
 	}
-	
-	
+
+	public Integer getOthersMales() {
+		return othersMales;
+	}
+
+	public void setOthersMales(Integer othersMales) {
+		this.othersMales = othersMales;
+	}
+
+	public Integer getOthersFemales() {
+		return othersFemales;
+	}
+
+	public void setOthersFemales(Integer othersFemales) {
+		this.othersFemales = othersFemales;
+	}
+
+	public QuarterTrainingsDetails getQuarterTrainingsDetails() {
+		return quarterTrainingsDetails;
+	}
+
+	public void setQuarterTrainingsDetails(QuarterTrainingsDetails quarterTrainingsDetails) {
+		this.quarterTrainingsDetails = quarterTrainingsDetails;
+	}
 
 }

@@ -327,7 +327,7 @@ function saveSubmit(){
 																		id="fundIdState_${count.index}"><strong>${state_detail.fundsName}</strong></div>
 
 																<input type="text" oninput="validity.valid||(value='');"
-																onKeyPress="if(this.value.length==7) return false;"
+																onKeyPress="if(this.value.length==8) return false;"
 																min="0" id="fundId_${count.index}"
 																name="innovativeActivityDetails[${count.index}].fundsName"
 																value="${innovativeAcitivityList[0].innovativeActivityDetails[count.index].fundsName}"
@@ -343,7 +343,7 @@ function saveSubmit(){
 																		id="fundIdState_${count.index}"><strong>${state_detail.fundsName}</strong></div>
 
 																<input type="text" oninput="validity.valid||(value='');"
-																onKeyPress="if(this.value.length==7) return false;"
+																onKeyPress="if(this.value.length==8) return false;"
 																min="0" id="fundId_${count.index}"
 																name="innovativeActivityDetails[${count.index}].fundsName"
 																onkeyup="this.value=this.value.replace(/[^0-9]/g,''); onloadChangeColor()"

@@ -202,22 +202,31 @@ function allPolicies(id) {
 				<div class="container-fluid">
 
 				<div class="row main-contentBody ">
-					<h5 class="text-center">
-						If you need any further information or Assistance, Please feel free to contact us
-					</h5>
-					<div class="text-center">
-						<h5>
-							<i class="fa fa-envelope fa-1x" aria-hidden="true"></i> <a href="mailto:emailid">EMAILID[at]rgsa[dot]gov[dot]in</a>
-						</h5>
-						<h5>
-							<i class="fa fa-phone-square fa-1x" aria-hidden="true"></i> <span class="englishLang">Helpdesk</span>: 011-00000000, 011-00000000
-						</h5>
-					</div>
+				<!-- <dl>
+				<dt><i class="fa fa-university fa-1x" aria-hidden="true"></i><u> Address</u></dt>
+				<dd style="margin-left: 40px;">Ministry of Panchayati Raj Government of
+					 India 11th Floor, J.P. Building, Kasturba Gandhi Marg, 
+					 Connaught Place, New Delhi - 110001</dd>
+				 <dt><i class="fa fa-envelope fa-1x" aria-hidden="true"></i><u>Email ID : </u></dt>
+				<dd style="margin-left: 40px;">mis-rgsa@gov.in</dd>
+				<dt><i class="fa fa-phone-square fa-1x" aria-hidden="true"></i> </i><u>Helpdesk : </u></dt>
+				<dd style="margin-left: 40px;">011-24305484</dd>
+				
+				</dl> -->
+				
+				
+						<p style="color: black;"><i class="fa fa-university fa-1x" aria-hidden="true"></i><strong style="font-size: 16px;"> Address : </strong><span>Ministry of Panchayati Raj Government of
+													India 11th Floor, J.P. Building, Kasturba Gandhi Marg, 
+													Connaught Place, New Delhi - 110001</span></p> 
+													
+						<p style="color: black;"><i class="fa fa-envelope fa-1x" aria-hidden="true"></i> <strong style="font-size: 16px;">Email ID : </strong><span>mis-rgsa@gov.in</span></p> 							
+						<p style="color: black;"><i class="fa fa-phone-square fa-1x" aria-hidden="true"></i> <strong style="font-size: 16px;">Helpdesk : </strong><span>011-24305484</span></p>
+					
 				</div>
 				</div>
 			</div>
 			<div class="modal-footer">
-				<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+				<button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
 			</div>
 		</div>
 

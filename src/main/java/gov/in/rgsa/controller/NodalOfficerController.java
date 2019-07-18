@@ -10,6 +10,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import gov.in.rgsa.entity.NodalOfficerDetails;
 import gov.in.rgsa.service.NodalOfficerService;
+import gov.in.rgsa.user.preference.UserPreference;
 import gov.in.rgsa.utils.Message;
 
 @Controller
@@ -17,6 +18,9 @@ public class NodalOfficerController {
 	
 	@Autowired
 	private NodalOfficerService officerService;
+	
+	@Autowired
+	private UserPreference _userPreference;
 
 	private static final String NODAL_OFFICER = "nodalOfficerDetails";
 	private static final String REDIRECT_NODAL_OFFICER = "redirect:nodalOfficer.html";
@@ -26,6 +30,8 @@ public class NodalOfficerController {
 	{
 		nodalOfficerDetails =officerService.getNodalOfficerDetails();
 		model.addAttribute("nodalOfficerDetails",nodalOfficerDetails);
+		if(nodalOfficerDetails != null)
+			_userPreference.setIsNodalFilled(true);
 		return NODAL_OFFICER;
 	}
 	

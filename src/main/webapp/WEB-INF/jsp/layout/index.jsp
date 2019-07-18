@@ -33,9 +33,38 @@
 			     }else{
 			     	$("#collapseRow"+id).hide();
 			     	$("#expendRow"+id).show();
+			     	
+			     	if(id==2){
+		     		    $('.newBuildingInstituteInfra').hide();
+			     		$('.carryForwardInstituteInfra').hide();
+			     		$('#newBuildingInstituteInfraCollapse'+id).hide();
+			        	$('#newBuildingInstituteInfraExpand'+id).show();
+			     		$('#carryForwardInstituteInfraCollapse'+id).hide();
+			        	$('#carryForwardInstituteInfraExpand'+id).show();
+			     	}
+			     	
+			     	if(id==3){
+			     		$('.newBuildingPanchayatBhawan').hide();
+			     		$('.carryForwardPanchayatBhawan').hide();
+			     		$('#newBuildingPanchayatBhawanCollapse'+id).hide();
+			        	$('#newBuildingPanchayatBhawanExpand'+id).show();
+			     		$('#carryForwardPanchayatBhawanCollapse'+id).hide();
+			        	$('#carryForwardPanchayatBhawanExpand'+id).show();
+			     	}
 			     }
 				
 			};
+			
+			toggleInstInfraAndPanchayatBhawan=function(id,msg){
+				 if($('#'+ msg +'Collapse'+ id).css('display') == 'none'){
+			     	$('#'+msg+'Collapse'+id).show();
+			     	$('#'+msg+'Expand'+id).hide();
+			     }else{
+			     	$('#'+msg+'Collapse'+id).hide();
+			     	$('#'+msg+'Expand'+id).show();
+			     }
+				 $('.'+msg).slideToggle();
+			}
 		</script>
 	
 		<style type="text/css">
@@ -357,11 +386,69 @@
 													</tr>
 												
 												<c:set var="pscindex" value="0"/> 
+												<c:set var="totalNewBuildingInstInfra" value="0"/>
+												<c:set var="totalCarryForwardInstInfra" value="0"/>
+												<c:set var="totalNewBuildingPanchayat" value="0"/>
+												<c:set var="totalCarryForwardPacnhayat" value="0"/>
 												
-												<c:forEach items="${sessionScope['scopedTarget.userPreference'].statePlanComponentsFunds}" var="psc" >
+												<c:set var="totalUnitNewBuildingInstInfra" value="0"/>
+												<c:set var="totalUnitCarryForwardInstInfra" value="0"/>
+												<c:set var="totalUnitNewBuildingPanchayat" value="0"/>
+												<c:set var="totalUnitCarryForwardPacnhayat" value="0"/>
+												
+												<c:forEach items="${sessionScope['scopedTarget.userPreference'].statePlanComponentsFunds}" var="fundTotal">
+													<c:if test="${fundTotal.eType eq 'S' and pc.componentsId==fundTotal.componentsId }">
+													<c:if test="${fundTotal.subcomponentsId eq 8 or fundTotal.subcomponentsId eq 9}">
+														<c:if test="${fundTotal.amountProposed>0}">
+														<c:set var="totalNewBuildingInstInfra" value="${totalNewBuildingInstInfra + fundTotal.amountProposed}"/>
+														</c:if>
+													</c:if>
+													<c:if test="${fundTotal.subcomponentsId eq 23 or fundTotal.subcomponentsId eq 24}">
+													<c:if test="${fundTotal.amountProposed>0}">
+														<c:set var="totalCarryForwardInstInfra" value="${totalCarryForwardInstInfra + fundTotal.amountProposed}"/>
+														</c:if>
+													</c:if>
+													<c:if test="${fundTotal.subcomponentsId eq 12 or fundTotal.subcomponentsId eq 13 or fundTotal.subcomponentsId eq 14}">
+													<c:if test="${fundTotal.amountProposed>0}">
+														<c:set var="totalNewBuildingPanchayat" value="${totalNewBuildingPanchayat + fundTotal.amountProposed}"/>
+														</c:if>
+													</c:if>
+													<c:if test="${fundTotal.subcomponentsId eq 20 or fundTotal.subcomponentsId eq 21 or fundTotal.subcomponentsId eq 22}">
+													<c:if test="${fundTotal.amountProposed>0}">
+														<c:set var="totalCarryForwardPacnhayat" value="${totalCarryForwardPacnhayat + fundTotal.amountProposed}"/>
+														</c:if>
+													</c:if>
+													
+													
+													<c:if test="${fundTotal.subcomponentsId eq 8 or fundTotal.subcomponentsId eq 9}">
+														<c:if test="${fundTotal.noOfUnits>0}">
+														<c:set var="totalUnitNewBuildingInstInfra" value="${totalUnitNewBuildingInstInfra + fundTotal.noOfUnits}"/>
+														</c:if>
+													</c:if>
+													<c:if test="${fundTotal.subcomponentsId eq 23 or fundTotal.subcomponentsId eq 24}">
+													<c:if test="${fundTotal.noOfUnits>0}">
+														<c:set var="totalUnitCarryForwardInstInfra" value="${totalUnitCarryForwardInstInfra + fundTotal.noOfUnits}"/>
+														</c:if>
+													</c:if>
+													<c:if test="${fundTotal.subcomponentsId eq 12 or fundTotal.subcomponentsId eq 13 or fundTotal.subcomponentsId eq 14}">
+													<c:if test="${fundTotal.noOfUnits>0}">
+														<c:set var="totalUnitNewBuildingPanchayat" value="${totalUnitNewBuildingPanchayat + fundTotal.noOfUnits}"/>
+														</c:if>
+													</c:if>
+													<c:if test="${fundTotal.subcomponentsId eq 20 or fundTotal.subcomponentsId eq 21 or fundTotal.subcomponentsId eq 22}">
+													<c:if test="${fundTotal.noOfUnits>0}">
+														<c:set var="totalUnitCarryForwardPacnhayat" value="${totalUnitCarryForwardPacnhayat + fundTotal.noOfUnits}"/>
+														</c:if>
+													</c:if>
+													</c:if>
+												</c:forEach>
+												
+												<c:forEach items="${sessionScope['scopedTarget.userPreference'].statePlanComponentsFunds}" var="psc" varStatus="index">
+													
 													<c:if test="${psc.eType eq 'S' and pc.componentsId==psc.componentsId }">
-													<c:set var="pscindex" value="${pscindex+1}"/> 
-															
+													
+													<c:set var="pscindex" value="${pscindex+1}"/>
+														<c:if test="${psc.componentsId ne 2 and psc.componentsId ne 3 }">	
 														<tr class="slide${pc.componentsId}"  style="display: none;">
 															<td></td>
 															<td >&#${96+pscindex})</td>
@@ -373,11 +460,169 @@
 																</c:if>
 															</td>
 															<td align="right" style="padding-right:20px">${psc.noOfUnits}</td>
-															
-															
 														</tr>
+														</c:if>
 													</c:if>
 												</c:forEach>
+												
+												<c:if test="${pc.componentsId eq 2}">
+													<tr class="slide${pc.componentsId}"
+																	style="display: none;">
+																	<td></td>
+																	<td align="center">
+																		<div
+																			id="newBuildingInstituteInfraExpand${pc.componentsId}"
+																			onclick="toggleInstInfraAndPanchayatBhawan(${pc.componentsId},'newBuildingInstituteInfra')">
+																			<i class="fa fa-plus-circle" aria-hidden="true"></i>
+																		</div>
+																		<div
+																			id="newBuildingInstituteInfraCollapse${pc.componentsId}"
+																			onclick="toggleInstInfraAndPanchayatBhawan(${pc.componentsId},'newBuildingInstituteInfra')"
+																			style="display: none;">
+																			<i class="fa fa-minus-circle" aria-hidden="true"></i>
+																		</div>
+																	</td>
+																	<td><strong>New Building</strong></td>
+																	<td align="right"><strong><fmt:formatNumber
+																				type="number" maxFractionDigits="3"
+																				value="${totalNewBuildingInstInfra}" /></strong></td>
+																	<td align="right"><strong><fmt:formatNumber
+																				type="number" maxFractionDigits="3"
+																				value="${totalUnitNewBuildingInstInfra}" /></strong></td>			
+																</tr>
+
+													<c:forEach
+														items="${sessionScope['scopedTarget.userPreference'].statePlanComponentsFunds}"
+														var="innerData">
+														<%-- <c:if test="${pc.componentsId == innerData.componentsId}"> --%>
+															<c:if test="${innerData.subcomponentsId eq 8 or innerData.subcomponentsId eq 9}">
+																<tr class="newBuildingInstituteInfra" style="display: none;">
+																	<td></td>
+																	<td></td>
+																	<td>${innerData.eName}</td>
+																	<td align="right"><c:if
+																			test="${innerData.amountProposed>0}">
+																			<fmt:formatNumber type="number" maxFractionDigits="3"
+																				value="${innerData.amountProposed}" />
+																		</c:if></td>
+																	<td align="right" style="padding-right: 20px">${innerData.noOfUnits}</td>
+																</tr>
+															<%-- </c:if> --%>
+														</c:if>
+													</c:forEach>
+													
+													<tr class="slide${pc.componentsId}" style="display: none;">
+															<td></td>
+																<td align="center">
+																	<div id="carryForwardInstituteInfraExpand${pc.componentsId}" onclick="toggleInstInfraAndPanchayatBhawan('${pc.componentsId}','carryForwardInstituteInfra')"><i class="fa fa-plus-circle" aria-hidden="true"></i></div>
+																	<div id="carryForwardInstituteInfraCollapse${pc.componentsId}" onclick="toggleInstInfraAndPanchayatBhawan('${pc.componentsId}','carryForwardInstituteInfra')" style="display:none;"><i class="fa fa-minus-circle" aria-hidden="true"></i></div>
+										 						</td>
+										 						<td><strong>Carry Forward</strong></td>
+										 						<td align="right"><strong><fmt:formatNumber type = "number"      maxFractionDigits = "3" value = "${totalCarryForwardInstInfra}" /></strong></td>
+										 						<td align="right"><strong><fmt:formatNumber type = "number"      maxFractionDigits = "3" value = "${totalUnitCarryForwardInstInfra}" /></strong></td>
+													</tr>
+													
+													<c:forEach
+														items="${sessionScope['scopedTarget.userPreference'].statePlanComponentsFunds}"
+														var="innerData">
+														<%-- <c:if test="${pc.componentsId == innerData.componentsId}"> --%>
+															<c:if test="${innerData.subcomponentsId eq 23 or innerData.subcomponentsId eq 24}">
+																<tr class="carryForwardInstituteInfra" style="display: none;">
+																	<td></td>
+																	<td></td>
+																	<td>${innerData.eName}</td>
+																	<td align="right"><c:if
+																			test="${innerData.amountProposed>0}">
+																			<fmt:formatNumber type="number" maxFractionDigits="3"
+																				value="${innerData.amountProposed}" />
+																		</c:if></td>
+																	<td align="right" style="padding-right: 20px">${innerData.noOfUnits}</td>
+																</tr>
+															<%-- </c:if> --%>
+														</c:if>
+													</c:forEach>
+
+												</c:if>
+												
+												<c:if test="${pc.componentsId eq 3}">
+													<tr class="slide${pc.componentsId}"
+																	style="display: none;">
+																	<td></td>
+																	<td align="center">
+																		<div
+																			id="newBuildingPanchayatBhawanExpand${pc.componentsId}"
+																			onclick="toggleInstInfraAndPanchayatBhawan(${pc.componentsId},'newBuildingPanchayatBhawan')">
+																			<i class="fa fa-plus-circle" aria-hidden="true"></i>
+																		</div>
+																		<div
+																			id="newBuildingPanchayatBhawanCollapse${pc.componentsId}"
+																			onclick="toggleInstInfraAndPanchayatBhawan(${pc.componentsId},'newBuildingPanchayatBhawan')"
+																			style="display: none;">
+																			<i class="fa fa-minus-circle" aria-hidden="true"></i>
+																		</div>
+																	</td>
+																	<td><strong>New Building</strong></td>
+																	<td align="right"><strong><fmt:formatNumber
+																				type="number" maxFractionDigits="3"
+																				value="${totalNewBuildingPanchayat}" /></strong></td>
+																	<td align="right"><strong><fmt:formatNumber
+																				type="number" maxFractionDigits="3"
+																				value="${totalUnitNewBuildingPanchayat}" /></strong></td>			
+																</tr>
+
+													<c:forEach
+														items="${sessionScope['scopedTarget.userPreference'].statePlanComponentsFunds}"
+														var="innerData">
+														<%-- <c:if test="${pc.componentsId == innerData.componentsId}"> --%>
+															<c:if test="${innerData.subcomponentsId eq 12 or innerData.subcomponentsId eq 13 or innerData.subcomponentsId eq 14}">
+																<tr class="newBuildingPanchayatBhawan" style="display: none;">
+																	<td></td>
+																	<td></td>
+																	<td>${innerData.eName}</td>
+																	<td align="right"><c:if
+																			test="${innerData.amountProposed>0}">
+																			<fmt:formatNumber type="number" maxFractionDigits="3"
+																				value="${innerData.amountProposed}" />
+																		</c:if></td>
+																	<td align="right" style="padding-right: 20px">${innerData.noOfUnits}</td>
+																</tr>
+															<%-- </c:if> --%>
+														</c:if>
+													</c:forEach>
+													
+													<tr class="slide${pc.componentsId}" style="display: none;">
+															<td></td>
+																<td align="center">
+																	<div id="carryForwardPanchayatBhawanExpand${pc.componentsId}" onclick="toggleInstInfraAndPanchayatBhawan('${pc.componentsId}','carryForwardPanchayatBhawan')"><i class="fa fa-plus-circle" aria-hidden="true"></i></div>
+																	<div id="carryForwardPanchayatBhawanCollapse${pc.componentsId}" onclick="toggleInstInfraAndPanchayatBhawan('${pc.componentsId}','carryForwardPanchayatBhawan')" style="display:none;"><i class="fa fa-minus-circle" aria-hidden="true"></i></div>
+										 						</td>
+										 						<td><strong>Carry Forward</strong></td>
+										 						<td align="right"><strong><fmt:formatNumber type = "number"      maxFractionDigits = "3" value = "${totalCarryForwardPacnhayat}" /></strong></td>
+										 						<td align="right"><strong><fmt:formatNumber type = "number"      maxFractionDigits = "3" value = "${totalUnitCarryForwardPacnhayat}" /></strong></td>
+													</tr>
+													
+													<c:forEach
+														items="${sessionScope['scopedTarget.userPreference'].statePlanComponentsFunds}"
+														var="innerData">
+														<%-- <c:if test="${pc.componentsId == innerData.componentsId}"> --%>
+															<c:if test="${innerData.subcomponentsId eq 20 or innerData.subcomponentsId eq 21 or innerData.subcomponentsId eq 22}">
+																<tr class="carryForwardPanchayatBhawan" style="display: none;">
+																	<td></td>
+																	<td></td>
+																	<td>${innerData.eName}</td>
+																	<td align="right"><c:if
+																			test="${innerData.amountProposed>0}">
+																			<fmt:formatNumber type="number" maxFractionDigits="3"
+																				value="${innerData.amountProposed}" />
+																		</c:if></td>
+																	<td align="right" style="padding-right: 20px">${innerData.noOfUnits}</td>
+																</tr>
+															<%-- </c:if> --%>
+														</c:if>
+													</c:forEach>
+
+												</c:if>
+												
 												<c:if test="${pscindex eq 0 and pc.componentsId ne 11 and pc.componentsId ne 12}">
 													<tr class="slidex${pc.componentsId}"  style="display: none;">
 															<td></td>
@@ -444,7 +689,7 @@
 								<c:if test="${sessionScope['scopedTarget.userPreference'].userType eq 'S'}">
 									<!-- <button data-ng-click="exportData()">Download Consolidated Report</button> -->
 									<c:if test="${buttonStatus}">
-								    <input type="button" class="btn bg-light-blue" data-ng-click="forwardPlan(true)" value="Forward Plan"></c:if>
+								    <input type="button" class="btn bg-light-blue" data-ng-click="forwardPlan(true)" value="Forward Plan" /></c:if>
 								</c:if>
 								</div>
 							</div>

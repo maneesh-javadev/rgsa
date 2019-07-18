@@ -115,4 +115,8 @@ public interface ProgressReportService {
      
      // newly added function to get plan code
       public int getCurrentPlanCode();
+
+	public List<QprTrainingBreakup> fetchTrainingBreakUpData(int qprTrainingBreakupId);
+
+	public void savetrainingBreakUpData(QuarterTrainings quarterTrainings);
 }

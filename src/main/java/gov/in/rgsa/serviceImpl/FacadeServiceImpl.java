@@ -91,9 +91,10 @@ public class FacadeServiceImpl implements FacadeService {
 		
 		
 		List<PlanComponents> components= commonRepository.findAll("PLAN_COMPONENTS_LIST", null);
-		
+		List<FinYear> finYearList = commonRepository.findAll("FETCH_ALL_FIN_YEAR",null);
 		parameter.put("userType", user.getUserType());
 		List<StatePlanComponentsFunds> componentsFunds= commonRepository.findAll("STATE_PLAN_FUNDS", parameter);
+		
 		for(StatePlanComponentsFunds obj : componentsFunds) {
 			logger.debug("component id-->"+obj.getComponentsId()+" ");
 			logger.debug("sub component id-->"+obj.getSubcomponentsId()+" ");
@@ -130,6 +131,7 @@ public class FacadeServiceImpl implements FacadeService {
 		_preference.setPlanComponents(components);
 		_preference.setStatePlanComponentsFunds(componentsFunds);
 		_preference.setPlansAreFreezed(plansAreFreezed);
+		_preference.setFinYearList(finYearList);
 		if(!CollectionUtils.isEmpty(planList)) {
 		_preference.setPlanCode(planList.get(0).getPlanCode());
 		_preference.setPlanStatus(planList.get(0).getPlanStatusId());
@@ -315,6 +317,26 @@ public class FacadeServiceImpl implements FacadeService {
 	@Override
 	public List<StatePlanComponentsFunds> fetchFundDetailsByUserType(Map<String, Object> parameter ){
 		return commonRepository.findAll("STATE_PLAN_FUNDS", parameter);
+	}
+
+	@Override
+	public UserPreference changeAccToNewFinYearId(UserPreference _userPreference, String finYearId) {
+		String newFinYear=null;
+		_userPreference.setFinYearId(Integer.parseInt(finYearId));
+		for(FinYear finyear : _userPreference.getFinYearList()) {
+			if(finyear.getYearId() == Integer.parseInt(finYearId)) {
+				newFinYear = finyear.getFinYear();
+			}
+				
+		}
+		_userPreference.setFinYear(newFinYear);
+		Map<String, Object> parameter = new HashMap<String, Object>();
+		parameter.put("yearId",_userPreference.getFinYearId());
+		parameter.put("stateCode", _userPreference.getStateCode());
+		parameter.put("userType", _userPreference.getUserType());
+		List<StatePlanComponentsFunds> componentsFunds= commonRepository.findAll("STATE_PLAN_FUNDS", parameter);
+		_userPreference.setStatePlanComponentsFunds(componentsFunds);
+		return _userPreference;
 	}
 	
 }

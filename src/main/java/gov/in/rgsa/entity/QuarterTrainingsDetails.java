@@ -1,5 +1,7 @@
 package gov.in.rgsa.entity;
 
+import java.util.List;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -9,6 +11,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
@@ -16,6 +19,7 @@ import javax.persistence.Transient;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name="qpr_trainings_details",schema="rgsa")
@@ -43,6 +47,13 @@ public class QuarterTrainingsDetails {
 	
 	@Transient
 	private MultipartFile file;
+	
+	@JsonIgnore
+	@OneToMany(fetch=FetchType.EAGER,cascade=CascadeType.ALL,mappedBy="quarterTrainingsDetails")
+	private List<QprTrainingBreakup> qprTrainingBreakup;
+	
+	@Transient
+	private Integer totalParticipantsEnter = 0;
 
 	public Integer getQprTrainingsDetailsId() {
 		return qprTrainingsDetailsId;
@@ -92,6 +103,22 @@ public class QuarterTrainingsDetails {
 
 	public void setFile(MultipartFile file) {
 		this.file = file;
+	}
+
+	public List<QprTrainingBreakup> getQprTrainingBreakup() {
+		return qprTrainingBreakup;
+	}
+
+	public void setQprTrainingBreakup(List<QprTrainingBreakup> qprTrainingBreakup) {
+		this.qprTrainingBreakup = qprTrainingBreakup;
+	}
+
+	public Integer getTotalParticipantsEnter() {
+		return totalParticipantsEnter;
+	}
+
+	public void setTotalParticipantsEnter(Integer totalParticipantsEnter) {
+		this.totalParticipantsEnter = totalParticipantsEnter;
 	}
 	
 	

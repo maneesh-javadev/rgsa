@@ -1,7 +1,14 @@
 <%@include file="../taglib/taglib.jsp"%>
-
+<c:set var="districtEnable" value="false"/>
 <c:set var="blockEnable" value="false"/>
-<c:if test="${STATE_CODE ne 11 and STATE_CODE ne 14 and STATE_CODE ne 25 and STATE_CODE ne 26 and STATE_CODE ne 30 and STATE_CODE ne 31}">
+<c:set var="gpEnable" value="false"/>
+<c:if test="${STATE_CODE ne 13 and STATE_CODE ne 15 and STATE_CODE ne 17 and STATE_CODE ne 34}">
+<c:set var="districtEnable" value="true" />
+</c:if>
+<c:if test="${STATE_CODE ne 13 and STATE_CODE ne 15 and STATE_CODE ne 17}">
+<c:set var="gpEnable" value="true" />
+</c:if>
+<c:if test="${STATE_CODE ne 11 and STATE_CODE ne 14 and STATE_CODE ne 25 and STATE_CODE ne 26 and STATE_CODE ne 30 and STATE_CODE ne 31 and STATE_CODE ne 13 and STATE_CODE ne 15 and STATE_CODE ne 17}">
 <c:set var="blockEnable" value="true"/>
 </c:if>
 <html>
@@ -547,20 +554,19 @@ $( document ).ready(function() {
 				}
 			
 			
-				data9_gp=$_checkEmptyObject_value($("#data9_gp").val());
-				/* if(data9_gp>0)
-				{ */
+					data9_gp=$_checkEmptyObject_value($("#data9_gp").val()) + $_checkEmptyObject_value($("#data15_gp").val());
 						data27_gp=$_checkEmptyObject_value($("#data27_gp").val());	
 					if(data9_gp>0 && data27_gp > data9_gp){
-						alert("Value Should be less than Gram Panchayat");
+						alert("Value Should be less than the total Gram Panchayat and VDCs if it is present.");
 						$("#data27_gp").val(' ');
 					}
 					
 					
 					else{
 						if(data27_gp>0 && $(this).attr('id')=="data27_gp"){
-							var BAL_NUMB=parseInt($("#data9_gp").val())-parseInt($("#data27_gp").val());
-							if(BAL_NUMB!= NaN){
+							var BAL_NUMB=data9_gp-parseInt($("#data27_gp").val());
+							/* var BAL_NUMB=parseInt($("#data9_gp").val())-parseInt($("#data27_gp").val()); */
+							if(BAL_NUMB !== NaN){
 								$("#data27_bp").parent('div').addClass('focused');
 								$("#data27_bp").val(BAL_NUMB);
 							}
@@ -569,16 +575,18 @@ $( document ).ready(function() {
 						
 					}
 				
-					data9_gp=$_checkEmptyObject_value($("#data9_gp").val());
+					data9_gp=$_checkEmptyObject_value($("#data9_gp").val()) + $_checkEmptyObject_value($("#data15_gp").val());
 					data27_bp=$_checkEmptyObject_value($("#data27_bp").val());	
 					if(data9_gp>0 && data27_bp>data9_gp){
-						alert("Value Should be less than Gram Panchayat");
+						alert("Value Should be less than the total Gram Panchayat and VDCs if it is present.");
 						$("#data27_bp").val(' ');
 					}
 					else{
 						if(data27_bp>0 && $(this).attr('id')=="data27_bp"){
-						var BAL_NUMB=parseInt($("#data9_gp").val()) -parseInt($("#data27_bp").val());
-						if(BAL_NUMB!= NaN){
+						/* var BAL_NUMB=parseInt($("#data9_gp").val()) -parseInt($("#data27_bp").val()); */
+						var BAL_NUMB=data9_gp -parseInt($("#data27_bp").val());
+						if(BAL_NUMB !== NaN){
+							$("#data27_gp").parent('div').addClass('focused');
 							$("#data27_gp").val(BAL_NUMB);
 						}
 					}
@@ -612,7 +620,7 @@ $( document ).ready(function() {
 			
 					/* Added by Ajit */	
 					
-			        data9_gp=$_checkEmptyObject_value($("#data27_gp").val());
+			        data9_gp=$_checkEmptyObject_value($("#data27_gp").val()); //here data9_gp denotes total panchayat with bhawans 
 					/* if(data27_gp>0)
 					{ */
 							data45_gp=$_checkEmptyObject_value($("#data45_gp").val());	
@@ -623,7 +631,7 @@ $( document ).ready(function() {
 						
 						
 						else{
-							if(data45_gp>0){
+							if(data45_gp>0 && $(this).attr('id')=="data45_gp"){
 								var BAL_NUMB=parseInt($("#data27_gp").val())-parseInt($("#data45_gp").val());
 								if(BAL_NUMB!= NaN){
 									$("#data45_bp").parent('div').addClass('focused');
@@ -641,7 +649,7 @@ $( document ).ready(function() {
 							$("#data45_bp").val(' ');
 						}
 						else{
-							if(data45_bp>0){
+							if(data45_bp>0 && $(this).attr('id')=="data45_bp"){
 							var BAL_NUMB=parseInt($("#data27_gp").val()) -parseInt($("#data45_bp").val());
 							if(BAL_NUMB!= NaN){
 								$("#data45_gp").parent('div').addClass('focused');
@@ -678,7 +686,7 @@ $( document ).ready(function() {
 					
 					
 					else{
-						if(data30_gp>0){
+						if(data30_gp>0 && $(this).attr('id')=="data30_gp"){
 							var BAL_NUMB=parseInt($("#data27_gp").val())-parseInt($("#data30_gp").val());
 							if(BAL_NUMB!= NaN){
 								$("#data30_bp").parent('div').addClass('focused');
@@ -696,7 +704,7 @@ $( document ).ready(function() {
 						$("#data30_bp").val(' ');
 					}
 					else{
-						if(data30_bp>0){
+						if(data30_bp>0 && $(this).attr('id')=="data30_bp"){
 						var BAL_NUMB=parseInt($("#data27_gp").val()) -parseInt($("#data30_bp").val());
 						if(BAL_NUMB!= NaN){
 							$("#data30_gp").parent('div').addClass('focused');
@@ -731,7 +739,7 @@ $( document ).ready(function() {
 					
 					
 					else{
-						if(data31_gp>0){
+						if(data31_gp>0 && $(this).attr('id')=="data31_gp"){
 							var BAL_NUMB=parseInt($("#data27_gp").val())-parseInt($("#data31_gp").val());
 							if(BAL_NUMB!= NaN){
 								$("#data31_bp").parent('div').addClass('focused');
@@ -749,7 +757,7 @@ $( document ).ready(function() {
 						$("#data31_bp").val(' ');
 					}
 					else{
-						if(data31_bp>0){
+						if(data31_bp>0 && $(this).attr('id')=="data31_bp"){
 						var BAL_NUMB=parseInt($("#data27_gp").val()) -parseInt($("#data31_bp").val());
 						if(BAL_NUMB!= NaN){
 							$("#data31_gp").parent('div').addClass('focused');
@@ -1588,14 +1596,22 @@ var errorFlag=false;
 			                                <div class="col-sm-4">
 			                                    <div class="form-group form-float">&nbsp;&nbsp;&nbsp;
 			                                        <div class="form-line">
-			                                            <form:input  min="0" maxlength="10" path="data[${field.basicInfoDefinationDetailsId}_dp]" cssClass="form-control validate"/> &nbsp;&nbsp;&nbsp;
+			                                        <%-- <c:choose> --%>
+			                                        	<%-- <c:when test="${districtEnable}"> --%>
+			                                        	<form:input  min="0" maxlength="10" path="data[${field.basicInfoDefinationDetailsId}_dp]" cssClass="form-control validate" disabled="${not districtEnable and field.basicInfoDefinationDetailsId ne 11}"/> &nbsp;&nbsp;&nbsp;
+			                                        	<%-- </c:when> --%>
+			                                       <%--  </c:choose> --%>
 			                                            <label class="form-label">
 			                                            <c:choose>
 			                                            <c:when test="${field.basicInfoDefinationDetailsId eq 11}">
 			                                            Number of Aspirational Districts
 			                                            </c:when>
-			                                            <c:otherwise>
+			                                            <c:when test="${districtEnable}">
 			                                            District Panchayat
+			                                            </c:when>
+			                                            <c:otherwise>
+			                                            <div style="color: red">
+			                                            District Panchayat not applicable</div>
 			                                            </c:otherwise>
 			                                            </c:choose>
 			                                            
@@ -1685,7 +1701,12 @@ var errorFlag=false;
 			                                        </c:when>
 			                                        <c:otherwise>
 						                                        <c:choose>
-						                                        
+						                                        	<c:when test="${field.basicInfoDefinationDetailsId eq 11}">
+							                                         <form:input  min="0" maxlength="10" path="data[${field.basicInfoDefinationDetailsId}_bp]" cssClass="form-control validate"/> &nbsp;&nbsp;&nbsp;
+			                                         				<label class="form-label">
+							                                         Number of Blocks under Aspirational Districts
+							                                          </label>
+							                                         </c:when>
 							                                         <c:when test="${field.basicInfoDefinationDetailsId eq 27}">
 							                                         <form:input  min="0" maxlength="10" path="data[${field.basicInfoDefinationDetailsId}_bp]" cssClass="form-control validate"/> &nbsp;&nbsp;&nbsp;
 			                                         				<label class="form-label">
@@ -1753,36 +1774,48 @@ var errorFlag=false;
 				                                <div class="col-sm-4">
 				                                     <div class="form-group form-float">&nbsp;&nbsp;&nbsp;
 				                                        <div class="form-line">
-				                                            <form:input min="0" maxlength="10" path="data[${field.basicInfoDefinationDetailsId}_gp]" cssClass="form-control validate"/>&nbsp;&nbsp;&nbsp;
+				                                            <form:input min="0" maxlength="10" path="data[${field.basicInfoDefinationDetailsId}_gp]" cssClass="form-control validate" disabled="${field.basicInfoDefinationDetailsId ne 11 and field.basicInfoDefinationDetailsId ne 27 && field.basicInfoDefinationDetailsId ne 15  && field.basicInfoDefinationDetailsId ne 48 
+				                                            && field.basicInfoDefinationDetailsId ne 33	  && field.basicInfoDefinationDetailsId ne 30 
+				                                            && field.basicInfoDefinationDetailsId ne 31 && field.basicInfoDefinationDetailsId ne 45    && field.basicInfoDefinationDetailsId ne 32 and not gpEnable}"/>&nbsp;&nbsp;&nbsp;
 				                                            <label class="form-label">
-				                                             <c:if test="${field.basicInfoDefinationDetailsId eq 11}">
+				                                            <c:choose>
+				                                             <c:when test="${field.basicInfoDefinationDetailsId eq 11}">
 				                                            Number of GPs under Aspirational Districts
-				                                            </c:if>
-				                                            <c:if test="${field.basicInfoDefinationDetailsId eq 27}">
+				                                            </c:when>
+				                                            <c:when test="${field.basicInfoDefinationDetailsId eq 27 }">
 				                                            Gram Panchayat with Bhawan
-				                                            </c:if>
-				                                            <c:if test="${field.basicInfoDefinationDetailsId eq 15}">
+				                                            </c:when>
+				                                            <c:when test="${field.basicInfoDefinationDetailsId eq 15}">
 				                                            Number of VDCs
-				                                            </c:if>
-				                                            <c:if test="${field.basicInfoDefinationDetailsId eq 48}">
+				                                            </c:when>
+				                                            <c:when test="${field.basicInfoDefinationDetailsId eq 48}">
 				                                           	Gram Panchayats with CSCs
-				                                            </c:if>
-				                                             <c:if test="${field.basicInfoDefinationDetailsId eq 33}">
+				                                            </c:when>
+				                                             <c:when test="${field.basicInfoDefinationDetailsId eq 33}">
 				                                           Panchayat Secy or equivalent
-				                                            </c:if>
-				                                            <c:if test="${field.basicInfoDefinationDetailsId eq 30}">
+				                                            </c:when>
+				                                            <c:when test="${field.basicInfoDefinationDetailsId eq 30}">
 				                                           GP Bhawan with computer
-				                                            </c:if>
-				                                             <c:if test="${field.basicInfoDefinationDetailsId eq 31}">
+				                                            </c:when>
+				                                             <c:when test="${field.basicInfoDefinationDetailsId eq 31}">
 				                                           GP Bhawan with internet connectivity
-				                                            </c:if>
-				                                             <c:if test="${field.basicInfoDefinationDetailsId eq 45}">
+				                                            </c:when>
+				                                             <c:when test="${field.basicInfoDefinationDetailsId eq 45}">
 				                                           GP Bhawan with toilet facility
-				                                            </c:if>
-				                                            <c:if test="${field.basicInfoDefinationDetailsId ne 27 && field.basicInfoDefinationDetailsId ne 15 
-				                                            && field.basicInfoDefinationDetailsId ne 48 && field.basicInfoDefinationDetailsId ne 11 && field.basicInfoDefinationDetailsId ne 33 && field.basicInfoDefinationDetailsId ne 30 && field.basicInfoDefinationDetailsId ne 31 && field.basicInfoDefinationDetailsId ne 45}">
+				                                            </c:when>
+				                                              <c:when test="${field.basicInfoDefinationDetailsId eq 32}">
+				                                           			GP Bhawan with Electricity
+				                                            </c:when>
+				                                            
+				                                            <c:when test="${field.basicInfoDefinationDetailsId ne 27 && field.basicInfoDefinationDetailsId ne 15  && field.basicInfoDefinationDetailsId ne 48 
+				                                            && field.basicInfoDefinationDetailsId ne 11 && field.basicInfoDefinationDetailsId ne 33	  && field.basicInfoDefinationDetailsId ne 30 
+				                                            && field.basicInfoDefinationDetailsId ne 31 && field.basicInfoDefinationDetailsId ne 45    && field.basicInfoDefinationDetailsId ne 32 and gpEnable}">
 				                                            Gram Panchayat
-				                                            </c:if>
+				                                            </c:when>
+				                                            <c:when test="${not gpEnable}">
+				                                            	<div style="color: red;">Gram Panchayat not applicable</div>
+				                                            </c:when>
+				                                            </c:choose>
 				                                            </label>
 				                                        </div>
 				                                    </div>

@@ -879,6 +879,9 @@ public class ProgressReportServiceImpl implements ProgressReportService {
 
         FileNodeUtils uploadReport = null;
         MultipartFile multipartFile = null;
+        int index;
+        if(quarterTrainings.getDetailsListsIndex() != null)
+        	 index = quarterTrainings.getDetailsListsIndex();
 
         try {
 
@@ -900,7 +903,7 @@ public class ProgressReportServiceImpl implements ProgressReportService {
 
             for (QuarterTrainingsDetails obj : quarterTrainings.getQuarterTrainingsDetailsList()) {
                 obj.setQuarterTrainings(quarterTrainings);
-                if (obj.getExpenditureIncurred() != null ) {
+                //if (obj.getExpenditureIncurred() != null ) {
                     multipartFile = obj.getFile();
                     if (multipartFile.getSize() > 0) {
                         uploadReport = attemptUpload(obj.getFileNode(), multipartFile, uploadPath, quarterTrainings.getQtrId(), "QPR Training Detail");
@@ -914,8 +917,16 @@ public class ProgressReportServiceImpl implements ProgressReportService {
                     	}
                         
                     }
+                    
+                    if(obj.getQprTrainingBreakup() != null) {
+                    	List<QprTrainingBreakup> breakUpList=obj.getQprTrainingBreakup();
+                    	 for(QprTrainingBreakup data : breakUpList) {
+               			  data.setQuarterTrainingsDetails(obj);
+       			  		}
+                    	 obj.setQprTrainingBreakup(breakUpList);
+                    }
                     updateQuarterTrainingsDetailsList.add(obj);
-                }
+              //  }
             }
 
             for (QuarterTrainingsDetails obj : updateQuarterTrainingsDetailsList) {
@@ -929,13 +940,21 @@ public class ProgressReportServiceImpl implements ProgressReportService {
                 }
 
             }
+            
+           // int index = quarterTrainings.getDetailsListsIndex();
+            //List<QprTrainingBreakup> breakUpList=quarterTrainings.getQuarterTrainingsDetailsList().get(index).getQprTrainingBreakup();
+			/*
+			 * for(QprTrainingBreakup data : breakUpList) {
+			 * data.setQuarterTrainingsDetails(quarterTrainings.
+			 * getQuarterTrainingsDetailsList().get(index));
+			 * if(data.getQprTrainingBreakupId() == null) { commonRepository.save(data);
+			 * }else { commonRepository.update(data); } }
+			 */
 
 
             if (quarterTrainings.getQprTrainingsId() == null) {
             	quarterTrainings.setQuarterTrainingsDetailsList(updateQuarterTrainingsDetailsList);
                 commonRepository.save(quarterTrainings);
-
-
             }
 
             this.saveQprWiseFundData(userPreference.getStateCode(), userPreference.getFinYearId(), quarterTrainings.getQtrId(), 1);
@@ -957,6 +976,29 @@ public class ProgressReportServiceImpl implements ProgressReportService {
 		}else {
 			return plan.getPlanCode();
 		}
+	}
+
+	@Override
+	public List<QprTrainingBreakup> fetchTrainingBreakUpData(int qprTrainingsDetailsId) {
+		Map<String,Object> map=new HashMap();
+		map.put("qprTrainingsDetailsId", qprTrainingsDetailsId);
+		return commonRepository.findAll("FETCH_BREAK_UP_BY_QPR_TRAINING_DETAIL_ID", map);
+	}
+
+	@Override
+	public void savetrainingBreakUpData(QuarterTrainings quarterTrainings) {
+		savetrainingProgressReport(quarterTrainings);
+		
+		/*
+		 * int index = quarterTrainings.getDetailsListsIndex(); List<QprTrainingBreakup>
+		 * breakUpList=quarterTrainings.getQuarterTrainingsDetailsList().get(index).
+		 * getQprTrainingBreakup(); for(QprTrainingBreakup data : breakUpList) {
+		 * data.setQuarterTrainingsDetails(quarterTrainings.
+		 * getQuarterTrainingsDetailsList().get(index));
+		 * if(data.getQprTrainingBreakupId() == null) { commonRepository.save(data);
+		 * }else { commonRepository.update(data); } }
+		 */
+		
 	}
     
 

@@ -30,5 +30,7 @@ public interface FacadeService {
 	public List<StatePlanComponentsFunds> fetchFundDetailsByUserType(Map<String, Object> parameter );
 	
 	public boolean populateFundbyUserType(String componentIds);
-		
+
+	public UserPreference changeAccToNewFinYearId(UserPreference _userPreference, String finYearId);
+
 }

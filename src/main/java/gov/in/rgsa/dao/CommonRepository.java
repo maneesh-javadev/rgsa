@@ -32,4 +32,5 @@ public interface CommonRepository {
 
 	<T> List<T> findAllByCondition(Class<T> resultClass, Map<String, Object> params);
 	
+	<T> T findByNativeQuery(String nativeQuery, Map<String, Object> params);
 }

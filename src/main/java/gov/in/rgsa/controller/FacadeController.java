@@ -2,7 +2,6 @@ package gov.in.rgsa.controller;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.ResourceBundle;
 
 import javax.persistence.NoResultException;
 import javax.servlet.http.HttpSession;
@@ -18,6 +17,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -27,6 +27,7 @@ import gov.in.rgsa.entity.StatewiseEntitiesCount;
 import gov.in.rgsa.exception.RGSAException;
 import gov.in.rgsa.model.BasicInfoModel;
 import gov.in.rgsa.model.FacadeModel;
+import gov.in.rgsa.service.EGovernanceSupportService;
 import gov.in.rgsa.service.FacadeService;
 import gov.in.rgsa.service.FileUploadService;
 import gov.in.rgsa.service.NodalOfficerService;
@@ -35,7 +36,6 @@ import gov.in.rgsa.serviceImpl.FacadeServiceImpl;
 import gov.in.rgsa.user.preference.UserPreference;
 import gov.in.rgsa.utils.Message;
 import gov.in.rgsa.validater.CaptchaValidator;
-import gov.in.rgsa.service.EGovernanceSupportService;
 /**
  *
  * @author ANJIT
@@ -131,6 +131,8 @@ public class FacadeController {
 			nodalOfficerDetails =officerService.getNodalOfficerDetails();
 			if(nodalOfficerDetails==null && _userPreference.getUserType().equalsIgnoreCase("S")){
 				return REDIRECT_NODAL_OFFICER;
+			}else {
+				_userPreference.setIsNodalFilled(true);
 			}
 			
 			return HOME_VIEW;
@@ -181,7 +183,7 @@ public class FacadeController {
 		_userPreference.setPlanCode(userPreference.getPlanCode());
 		_userPreference.setPlanStatus(userPreference.getPlanStatus());
 		_userPreference.setPlanVersion(userPreference.getPlanVersion());
-		
+		_userPreference.setFinYearList(userPreference.getFinYearList());
 		_userPreference.setStatePlanComponentsFunds(userPreference.getStatePlanComponentsFunds());
 		_userPreference.setPlansAreFreezed(userPreference.isPlansAreFreezed());
 		_userPreference.setCountPlanSubmittedByState(userPreference.getCountPlanSubmittedByState());
@@ -202,11 +204,21 @@ public class FacadeController {
 		}
 	}
 	
+	@ResponseBody
 	@RequestMapping(value="/forwardPlans",method=RequestMethod.POST)
-	private String forwardPlans(RedirectAttributes re) {
-		service.forwardPlans();
-		re.addFlashAttribute(Message.SUCCESS_KEY, Message.SAVE_SUCCESS);
-		return HOME_VIEW;
+	private Map<String, Object> forwardPlans(RedirectAttributes re) {
+		Map<String, Object> param=new HashMap<String, Object>();
+		NodalOfficerDetails nodalDetails = officerService.getNodalOfficerDetails();
+		if(nodalDetails != null) {
+			service.forwardPlans();
+			param.put("result", "S");
+			re.addFlashAttribute(Message.SUCCESS_KEY, Message.SAVE_SUCCESS);
+		}else {
+			param.put("result", "N");
+			re.addFlashAttribute(Message.ERROR_KEY,"Please fill the Nodal Officer's deatils first before forwarding plan.");
+		}
+		
+		return param;
 	}
 	
 	
@@ -231,6 +243,13 @@ public class FacadeController {
 	@RequestMapping(value="fetchStatewiseEntitiesCount", method=RequestMethod.GET)
 	private StatewiseEntitiesCount fetchStatewiseEntitiesCount() {
 		return fileUploadService.getDataFromJsonFile();
+	}
+	
+	@RequestMapping(value="changeFinYear", method=RequestMethod.POST)
+	private String changeFinYear(@RequestParam(value = "finYearId" ,required = false) String finYearId,@ModelAttribute("FACADE_MODEL") FacadeModel form, Model model, RedirectAttributes re) {
+		System.out.println(">>>>>>>>i am in. " + _userPreference.getUserName() +" ");
+		_userPreference=service.changeAccToNewFinYearId(_userPreference,finYearId);
+		return home(form,model,re);
 	}
 	
 }
