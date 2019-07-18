@@ -55,4 +55,12 @@ public class ViewReportAtMoprController {
 		System.out.println("i am in ....>>>>>>>>");
 		return getMoprReport(viewReportModel , model );
 	}
+	
+	@GetMapping(value = "viewReportMoprAjax")
+	private String getMoprReportAjax(Model model) {
+		model.addAttribute("FIN_YEAR_LIST", viewReportAtMoprService.getFinYearList());
+		return MOPR_REPORT;
+	}
+	
+	
 }

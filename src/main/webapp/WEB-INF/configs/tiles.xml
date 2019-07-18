@@ -816,7 +816,7 @@
 
 <definition name="viewreportmopr" extends="base.definition.admin">
 		<put-attribute name="title" value="View Report Mopr" />
-		<put-attribute name="body" value="/WEB-INF/jsp/viewMoprReport/viewMoprReport.jsp" />
+		<put-attribute name="body" value="/WEB-INF/jsp/viewMoprReport/viewMoprReportAjax.jsp" />
 </definition>
 
 </tiles-definitions>
