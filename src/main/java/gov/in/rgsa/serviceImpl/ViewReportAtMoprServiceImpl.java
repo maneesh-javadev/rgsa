@@ -17,7 +17,7 @@ public class ViewReportAtMoprServiceImpl implements ViewReportAtMoprService {
 	
 	@Override
 	public List<FinYear> getFinYearList() {
-		return dao.findAll("FETCH_ALL_FIN_YEARS", null);
+		return dao.findAll("FETCH_ALL_FIN_YEAR", null);
 	}
 
 }

@@ -3,14 +3,18 @@
 	src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.22/pdfmake.min.js"></script>
 <script type="text/javascript"
 	src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.4.1/html2canvas.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.3/jspdf.min.js"></script>	
 <script>
 	$(document).ready(function() {
-		$('#finYearDropDownId').val('${VIEW_REPORT_MODEL.finYearId}');
+		$('#finYearSelectId').val('${VIEW_REPORT_MODEL.finYearId}');
 		$('#stateDropDownId').val('${VIEW_REPORT_MODEL.stateCode}')
 		showStateDropDown();
 		showDemoGraphAndAnnualOption();
 		if ('${VIEW_REPORT_MODEL.isDemoGraphic}' == 'true') {
-			alert('demographic is true.');
+			$('#demoGraphicBlock').show();
+			$('#annualPlanBlock').hide();
+			$('#demoGraphicId').attr("checked", true);
+			$('#annualActionPlanId').attr("checked", false);
 		}
 
 		if ('${VIEW_REPORT_MODEL.isAnnualPlan}' == 'true') {
@@ -36,12 +40,14 @@
 
 	function expandAll(msg) {
 		if (msg == 'expand') {
+			$('.mainTrId').css("background-color","#d9edf7");
 			$(".expand-all").slideToggle();
 			$("#collapseButtonId").show();
 			$("#expandButtonId").hide();
 			$(".collapseRowAll").show();
 			$(".expendRowAll").hide();
 		} else {
+			$('.mainTrId').css("background-color","white ");
 			$(".expand-all").slideToggle();
 			$("#collapseButtonId").hide();
 			$("#expandButtonId").show();
@@ -51,7 +57,7 @@
 	}
 
 	function showStateDropDown() {
-		$('#finYearDropDownId').val() > 0 ? $('#stateDropDownBlock').show()
+		$('#finYearSelectId').val() > 0 ? $('#stateDropDownBlock').show()
 				: $('#stateDropDownBlock').hide();
 	}
 	function submitToPost() {
@@ -85,18 +91,24 @@
 	}
 
 	function exportToPdf(id) {
-		 html2canvas($('#'+id)[0], {
-			 onrendered: function (canvas) {
-			 var data = canvas.toDataURL();
-		 	var docDefinition = {
-		 	content: [{
-			 image: data,
-			 width: 500,
-		 	}]
-		 };
-		 	pdfMake.createPdf(docDefinition).download(id+"_"+$('#stateDropDownId').val()+".pdf");
-		 }
-		 }); 
+		 var finYear = $('#finYearSelectId').find('option:selected').text();
+		 var stateName = $('#stateDropDownId').find('option:selected').text();
+		 var header = (id == 'annualPlanBlockPrint') ? 'Annual action plan '+ finYear + ' - ' + $.trim(stateName): 'Demographic profile and other information';
+		 var sTable =$('#'+id).html();
+		 var style = "<style>";
+		 	style = style + "table,th,td{border: solid 1px black;border-collapse: collapse;}";
+	        style = style + "thead {color : white; background-color: #9071bf;";
+	        style = style + "</style>";
+         var win = window.open('', '', 'height=700,width=700');
+         win.document.write('<html><head>');
+         win.document.write('<title style="text-align:center; font-size : 50px">'+header+'</title>');  
+         win.document.write(style); 
+         win.document.write('</head>');
+         win.document.write('<body>');
+         win.document.write(sTable);         
+         win.document.write('</body></html>');
+       	 win.document.close(); 	
+       	 win.print();    
 	}
 </script>
 <section class="content">
@@ -105,7 +117,7 @@
 			<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
 				<div class="card">
 					<div class="header">
-						<h3>&nbsp;&nbsp; Report</h3>
+						<h3 style="padding-top: 25px;">&nbsp;&nbsp; Demographic profile and Annual action plan Report</h3>
 					</div>
 					<br />
 					<form:form method="post" name="viewReportAtMopr" action=""
@@ -118,7 +130,7 @@
 							<div class="col-sm-4">
 								<form:select class="form-control"
 									onchange="showStateDropDown();submitToPost()"
-									id="finYearDropDownId" path="finYearId">
+									id="finYearSelectId" path="finYearId">
 									<option value="0">Select fin year</option>
 									<c:forEach items="${FIN_YEAR_LIST}" var="finYear">
 										<option value="${finYear.yearId}">${finYear.finYear}</option>
@@ -167,7 +179,8 @@
 								Demographic block is under Development</div>
 							<div id="annualPlanBlock" style="display: none;">
 								<hr />
-								<table class="table table-hover dashboard-task-infos"
+								<div id="annualPlanBlockPrint">
+								<table class="table table-hover table-bordered dashboard-task-infos"
 									id="annualReportTable">
 
 									<thead>
@@ -207,7 +220,7 @@
 													test="${pc.noOfUnitsMOPR ne pc.noOfUnitsCEC and pc.noOfUnitsCEC != null }">
 													<c:set var="cecDiffUnit" value="bg-info" />
 												</c:if>
-												<tr>
+												<tr class="mainTrId">
 													<td align="center" id="plusId${pc.componentsId}"><c:if
 															test="${pc.componentsId ne 11 and pc.componentsId ne 12}">
 															<div id="expendRow${pc.componentsId}"
@@ -370,7 +383,7 @@
 																<fmt:formatNumber type="number" maxFractionDigits="3"
 																	value="${pc.addtionalRequirementCEC}" />
 															</p></td>
-														<td></td>
+														<!-- <td></td> -->
 													</tr>
 												</c:if>
 												<c:if test="${pc.componentsId==10}">
@@ -431,6 +444,7 @@
 										</tr>
 									</tbody>
 								</table>
+								</div>
 								<div class="text-right">
 									<button type="button" class="btn bg-green waves-effect"
 										onclick="expandAll('expand')" id="expandButtonId">Expand
@@ -439,7 +453,7 @@
 										onclick="expandAll('collapse')" id="collapseButtonId"
 										style="display: none;">Collapse All</button>
 									<button type="button" class="btn bg-red waves-effect"
-										id="exportButtonId" onclick="exportToPdf('annualReportTable')">Export
+										id="exportButtonId" onclick="exportToPdf('annualPlanBlockPrint')">Export
 										File</button>
 								</div>
 							</div>

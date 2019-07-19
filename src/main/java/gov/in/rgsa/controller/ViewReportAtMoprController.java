@@ -9,6 +9,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import gov.in.rgsa.model.ViewReportAtMoprModel;
 import gov.in.rgsa.service.FacadeService;
@@ -56,11 +58,20 @@ public class ViewReportAtMoprController {
 		return getMoprReport(viewReportModel , model );
 	}
 	
-	@GetMapping(value = "viewReportMoprAjax")
-	private String getMoprReportAjax(Model model) {
-		model.addAttribute("FIN_YEAR_LIST", viewReportAtMoprService.getFinYearList());
-		return MOPR_REPORT;
-	}
-	
+	/*
+	 * @GetMapping(value = "viewReportMoprAjax") private String
+	 * getMoprReportAjax(@ModelAttribute(name = "VIEW_REPORT_MODEL")
+	 * ViewReportAtMoprModel viewReportModel,Model model) {
+	 * model.addAttribute("FIN_YEAR_LIST",
+	 * viewReportAtMoprService.getFinYearList()); return MOPR_REPORT; }
+	 * 
+	 * @ResponseBody
+	 * 
+	 * @PostMapping(value = "fetchStateList") private Map<String,Object>
+	 * getMoprReportAjax(@RequestParam(value = "finYear",required = false) Integer
+	 * finYear) { Map<String, Object> response=new HashMap<String,Object>();
+	 * response.put("StateList",moprService.getStateListApprovedbyCEC(finYear));
+	 * return response; }
+	 */
 	
 }
