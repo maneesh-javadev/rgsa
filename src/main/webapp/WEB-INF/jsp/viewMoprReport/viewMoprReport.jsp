@@ -1,15 +1,13 @@
 <%@include file="../taglib/taglib.jsp"%>
-<script type="text/javascript"
-	src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.22/pdfmake.min.js"></script>
-<script type="text/javascript"
-	src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.4.1/html2canvas.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.3/jspdf.min.js"></script>	
 <script>
 	$(document).ready(function() {
 		$('#finYearSelectId').val('${VIEW_REPORT_MODEL.finYearId}');
-		$('#stateDropDownId').val('${VIEW_REPORT_MODEL.stateCode}')
-		showStateDropDown();
-		showDemoGraphAndAnnualOption();
+		$('#stateDropDownId').val('${VIEW_REPORT_MODEL.stateCode}');
+		var finYear=$('#finYearSelectId').val();
+		var stateCode=$('#stateDropDownId').val();
+		(finYear > 0) ? $('#stateDropDownBlock').show() : $('#stateDropDownBlock').hide() ;
+		(stateCode > 0) ? $('#optionChoosingBlock').show() : $('#optionChoosingBlock').hide() ;
+		//showDemoGraphAndAnnualOption();
 		if ('${VIEW_REPORT_MODEL.isDemoGraphic}' == 'true') {
 			$('#demoGraphicBlock').show();
 			$('#annualPlanBlock').hide();
@@ -59,16 +57,23 @@
 	function showStateDropDown() {
 		$('#finYearSelectId').val() > 0 ? $('#stateDropDownBlock').show()
 				: $('#stateDropDownBlock').hide();
+		$('#stateDropDownId').val(0)
+		$('#demoGraphicId').attr("checked", false);
+		$('#annualActionPlanId').attr("checked", false);
+		$('#demoGraphicBlock').hide();
+		$('#annualPlanBlock').hide();
 	}
 	function submitToPost() {
 		document.viewReportAtMopr.method = "post";
 		document.viewReportAtMopr.action = "viewReportMopr.html?<csrf:token uri='viewReportMopr.html'/>";
 		document.viewReportAtMopr.submit();
 	}
-	function showDemoGraphAndAnnualOption(val) {
-		$('#stateDropDownId').val() > 0 ? $('#optionChoosingBlock').show() : $(
-				'#optionChoosingBlock').hide();
-
+	function showDemoGraphAndAnnualOption() {
+		$('#stateDropDownId').val() > 0 ? $('#optionChoosingBlock').show() : $('#optionChoosingBlock').hide();
+		$('#demoGraphicId').attr("checked", false);
+		$('#annualActionPlanId').attr("checked", false);
+		$('#demoGraphicBlock').hide();
+		$('#annualPlanBlock').hide();
 	}
 
 	function showTableContent(msg) {
@@ -96,9 +101,9 @@
 		 var header = (id == 'annualPlanBlockPrint') ? 'Annual action plan '+ finYear + ' - ' + $.trim(stateName): 'Demographic profile and other information';
 		 var sTable =$('#'+id).html();
 		 var style = "<style>";
-		 	style = style + "table,th,td{border: solid 1px black;border-collapse: collapse;}";
-	        style = style + "thead {color : white; background-color: #9071bf;";
-	        style = style + "</style>";
+		 	 style = style + "table,th,td{border: solid 1px black;border-collapse: collapse;}";
+	         style = style + "thead {color : white; background-color: #9071bf;";
+	         style = style + "</style>";
          var win = window.open('', '', 'height=700,width=700');
          win.document.write('<html><head>');
          win.document.write('<title style="text-align:center; font-size : 50px">'+header+'</title>');  
@@ -176,7 +181,9 @@
 						</div>
 						<div class="body">
 							<div id="demoGraphicBlock" style="display: none;">
-								Demographic block is under Development</div>
+								Demographic block is under Development
+							</div>
+								
 							<div id="annualPlanBlock" style="display: none;">
 								<hr />
 								<div id="annualPlanBlockPrint">
@@ -196,6 +203,27 @@
 									<c:set var="t_fund" value="0" />
 									<c:set var="t_unit" value="0" />
 									<tbody>
+									
+									<!-- declaration of variables -->
+												<c:set var="totalNewBuildingStateInstInfra" value="0"/>
+												<c:set var="totalCarryForwardStateInstInfra" value="0"/>
+												
+												<c:set var="totalNewBuildingMoprInstInfra" value="0"/>
+												<c:set var="totalCarryForwardMoprInstInfra" value="0"/>
+												
+												<c:set var="totalNewBuildingCecInstInfra" value="0"/>
+												<c:set var="totalCarryForwardCecInstInfra" value="0"/>
+												
+												<c:set var="totalNewBuildingStatePanchayat" value="0"/> 
+												<c:set var="totalCarryForwardStatePacnhayat" value="0"/>
+												
+												<c:set var="totalNewBuildingMoprPanchayat" value="0"/>
+												<c:set var="totalCarryForwardMoprPacnhayat" value="0"/>
+												
+												<c:set var="totalNewBuildingCecPanchayat" value="0"/>
+												<c:set var="totalCarryForwardCecPacnhayat" value="0"/>
+												
+											<!--  -->
 
 										<c:forEach items="${planComponentsFunds}" var="pc"
 											varStatus="pcindex">
@@ -296,28 +324,30 @@
 															test="${psc.noOfUnitsMOPR ne psc.noOfUnitsCEC and psc.noOfUnitsCEC != null }">
 															<c:set var="cecDiffUnit" value="bg-info" />
 														</c:if>
-														<tr class="slide${pc.componentsId} expand-all"
-															style="display: none;">
-															<td></td>
-															<td>&#${96+pscindex})</td>
-
-															<td>${psc.eName}</td>
-															<td align="center"><fmt:formatNumber type="number"
-																	maxFractionDigits="3" value="${psc.amountProposed}" />
-															</td>
-															<td align="center" class="${moprDiff }"><fmt:formatNumber
-																	type="number" maxFractionDigits="3"
-																	value="${psc.amountProposedMOPR}" /></td>
-															<c:set var="cecDiff" value="bg-test" />
-															<c:if
-																test="${psc.amountProposedMOPR gt psc.amountProposedCEC}">
-																<c:set var="cecDiff" value="bg-danger" />
-															</c:if>
-
-															<td align="center" class="${cecDiff}"><fmt:formatNumber
-																	type="number" maxFractionDigits="3"
-																	value="${psc.amountProposedCEC}" /></td>
-														</tr>
+														<c:if test="${psc.componentsId ne 2 and psc.componentsId ne 3 }">	
+															<tr class="slide${pc.componentsId} expand-all"
+																style="display: none;">
+																<td></td>
+																<td>&#${96+pscindex})</td>
+	
+																<td>${psc.eName}</td>
+																<td align="center"><fmt:formatNumber type="number"
+																		maxFractionDigits="3" value="${psc.amountProposed}" />
+																</td>
+																<td align="center" class="${moprDiff }"><fmt:formatNumber
+																		type="number" maxFractionDigits="3"
+																		value="${psc.amountProposedMOPR}" /></td>
+																<c:set var="cecDiff" value="bg-test" />
+																<c:if
+																	test="${psc.amountProposedMOPR gt psc.amountProposedCEC}">
+																	<c:set var="cecDiff" value="bg-danger" />
+																</c:if>
+	
+																<td align="center" class="${cecDiff}"><fmt:formatNumber
+																		type="number" maxFractionDigits="3"
+																		value="${psc.amountProposedCEC}" /></td>
+															</tr>
+														</c:if>
 													</c:if>
 												</c:forEach>
 												<c:set var="moprDiff" value="bg-test" />
