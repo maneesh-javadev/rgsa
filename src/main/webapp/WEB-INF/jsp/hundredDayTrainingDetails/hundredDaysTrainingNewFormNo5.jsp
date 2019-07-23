@@ -114,6 +114,15 @@ function freezeUnfreeze(msg){
 	document.trainingDetailHundredDay.action = "trainingDetailHundredDay.html?<csrf:token uri='trainingDetailHundredDay.html'/>";
 	document.trainingDetailHundredDay.submit();
 }
+
+function isNumber(evt) {
+    evt = (evt) ? evt : window.event;
+    var charCode = (evt.which) ? evt.which : evt.keyCode;
+    if (charCode > 31 && (charCode < 48 || charCode > 57)) {
+        return false;
+    }
+    return true;
+}
 </script>
 <section class="content">
 	<div class="container-fluid">
@@ -206,30 +215,30 @@ function freezeUnfreeze(msg){
 									<tbody>
 										<tr>
 											<td><div align="center"><strong>SC</strong></div></td>
-											<td><form:input path="erSarMaleSc"  class="form-control Align-Right" id="sarpanchMaleScId" onkeyup="calMaleSar();validateAsprirationalData()" readonly="${HUN_DAY_TRAINING.isFreeze}"/></td>
-											<td><form:input path="erSarFemaleSc" class="form-control Align-Right" id="sarpanchFemaleScId" onkeyup="calFemaleSar();validateAsprirationalData()" readonly="${HUN_DAY_TRAINING.isFreeze}" /></td>
-											<td><form:input path="erOtherMaleSc" class="form-control Align-Right" id="otherErMaleScId" onkeyup="calOtherErMale();validateAsprirationalData()" readonly="${HUN_DAY_TRAINING.isFreeze}" /></td>
-											<td><form:input path="erOtherFemaleSc" class="form-control Align-Right" id="otherErFemaleScId" onkeyup="calOtherErFemale();validateAsprirationalData()" readonly="${HUN_DAY_TRAINING.isFreeze}" /></td>
-											<td><form:input path="funMaleSc" class="form-control Align-Right" id="functionariedMaleScId" onkeyup="calFunMale();validateAsprirationalData()" readonly="${HUN_DAY_TRAINING.isFreeze}" /></td>
-											<td><form:input path="funFemaleSc" class="form-control Align-Right" id="functionariedFemaleScId" onkeyup="calFunFemale();validateAsprirationalData()" readonly="${HUN_DAY_TRAINING.isFreeze}" /></td>
+											<td><form:input path="erSarMaleSc"  class="form-control Align-Right" id="sarpanchMaleScId" onkeyup="calMaleSar();validateAsprirationalData()" onkeypress="return isNumber(event)" readonly="${HUN_DAY_TRAINING.isFreeze}"/></td>
+											<td><form:input path="erSarFemaleSc" class="form-control Align-Right" id="sarpanchFemaleScId" onkeyup="calFemaleSar();validateAsprirationalData()" onkeypress="return isNumber(event)" readonly="${HUN_DAY_TRAINING.isFreeze}" /></td>
+											<td><form:input path="erOtherMaleSc" class="form-control Align-Right" id="otherErMaleScId" onkeyup="calOtherErMale();validateAsprirationalData()" onkeypress="return isNumber(event)" readonly="${HUN_DAY_TRAINING.isFreeze}" /></td>
+											<td><form:input path="erOtherFemaleSc" class="form-control Align-Right" id="otherErFemaleScId" onkeyup="calOtherErFemale();validateAsprirationalData()" onkeypress="return isNumber(event)" readonly="${HUN_DAY_TRAINING.isFreeze}" /></td>
+											<td><form:input path="funMaleSc" class="form-control Align-Right" id="functionariedMaleScId" onkeyup="calFunMale();validateAsprirationalData()" onkeypress="return isNumber(event)" readonly="${HUN_DAY_TRAINING.isFreeze}" /></td>
+											<td><form:input path="funFemaleSc" class="form-control Align-Right" id="functionariedFemaleScId" onkeyup="calFunFemale();validateAsprirationalData()" onkeypress="return isNumber(event)" readonly="${HUN_DAY_TRAINING.isFreeze}" /></td>
 										</tr>
 										<tr>
 											<td><div align="center"><strong>ST</strong></div></td>
-											<td><form:input path="erSarMaleSt" class="form-control Align-Right" id="sarpanchMaleStId" onkeyup="calMaleSar();validateAsprirationalData()" readonly="${HUN_DAY_TRAINING.isFreeze}"/></td>
-											<td><form:input path="erSarFemaleSt" class="form-control Align-Right" id="sarpanchFemaleStId" onkeyup="calFemaleSar();validateAsprirationalData()" readonly="${HUN_DAY_TRAINING.isFreeze}" /></td>
-											<td><form:input path="erOtherMaleSt" class="form-control Align-Right" id="otherErMaleStId" onkeyup="calOtherErMale();validateAsprirationalData()" readonly="${HUN_DAY_TRAINING.isFreeze}" /></td>
-											<td><form:input path="erOtherFemaleSt" class="form-control Align-Right" id="otherErFemaleStId" onkeyup="calOtherErFemale();validateAsprirationalData()" readonly="${HUN_DAY_TRAINING.isFreeze}" /></td>
-											<td><form:input path="funMaleSt" class="form-control Align-Right" id="functionariedMaleStId" onkeyup="calFunMale();validateAsprirationalData()" readonly="${HUN_DAY_TRAINING.isFreeze}" /></td>
-											<td><form:input path="funFemaleSt" class="form-control Align-Right" id="functionariedFemaleStId" onkeyup="calFunFemale();validateAsprirationalData()" readonly="${HUN_DAY_TRAINING.isFreeze}" /></td>
+											<td><form:input path="erSarMaleSt" class="form-control Align-Right" id="sarpanchMaleStId" onkeyup="calMaleSar();validateAsprirationalData()" onkeypress="return isNumber(event)" readonly="${HUN_DAY_TRAINING.isFreeze}"/></td>
+											<td><form:input path="erSarFemaleSt" class="form-control Align-Right" id="sarpanchFemaleStId" onkeyup="calFemaleSar();validateAsprirationalData()" onkeypress="return isNumber(event)" readonly="${HUN_DAY_TRAINING.isFreeze}" /></td>
+											<td><form:input path="erOtherMaleSt" class="form-control Align-Right" id="otherErMaleStId" onkeyup="calOtherErMale();validateAsprirationalData()" onkeypress="return isNumber(event)" readonly="${HUN_DAY_TRAINING.isFreeze}" /></td>
+											<td><form:input path="erOtherFemaleSt" class="form-control Align-Right" id="otherErFemaleStId" onkeyup="calOtherErFemale();validateAsprirationalData()" onkeypress="return isNumber(event)" readonly="${HUN_DAY_TRAINING.isFreeze}" /></td>
+											<td><form:input path="funMaleSt" class="form-control Align-Right" id="functionariedMaleStId" onkeyup="calFunMale();validateAsprirationalData()" onkeypress="return isNumber(event)" readonly="${HUN_DAY_TRAINING.isFreeze}" /></td>
+											<td><form:input path="funFemaleSt" class="form-control Align-Right" id="functionariedFemaleStId" onkeyup="calFunFemale();validateAsprirationalData()" onkeypress="return isNumber(event)" readonly="${HUN_DAY_TRAINING.isFreeze}" /></td>
 										</tr>
 										<tr>
 											<td><div align="center"><strong>Others</strong></div></td>
-											<td><form:input path="erSarMaleOthers" class="form-control Align-Right" id="sarpanchMaleOthersId" onkeyup="calMaleSar();validateAsprirationalData()" readonly="${HUN_DAY_TRAINING.isFreeze}" /></td>
-											<td><form:input path="erSarFemaleOthers" class="form-control Align-Right" id="sarpanchFemaleOthersId" onkeyup="calFemaleSar();validateAsprirationalData()" readonly="${HUN_DAY_TRAINING.isFreeze}" /></td>
-											<td><form:input path="erOtherMaleOthers" class="form-control Align-Right" id="otherErMaleOthersId" onkeyup="calOtherErMale();validateAsprirationalData()" readonly="${HUN_DAY_TRAINING.isFreeze}" /></td>
-											<td><form:input path="erOtherFemaleOthers" class="form-control Align-Right" id="otherErFemaleOthersId" onkeyup="calOtherErFemale();validateAsprirationalData()" readonly="${HUN_DAY_TRAINING.isFreeze}" /></td>
+											<td><form:input path="erSarMaleOthers" class="form-control Align-Right" id="sarpanchMaleOthersId" onkeyup="calMaleSar();validateAsprirationalData()" onkeypress="return isNumber(event)" readonly="${HUN_DAY_TRAINING.isFreeze}" /></td>
+											<td><form:input path="erSarFemaleOthers" class="form-control Align-Right" id="sarpanchFemaleOthersId" onkeyup="calFemaleSar();validateAsprirationalData()" onkeypress="return isNumber(event)" readonly="${HUN_DAY_TRAINING.isFreeze}" /></td>
+											<td><form:input path="erOtherMaleOthers" class="form-control Align-Right" id="otherErMaleOthersId" onkeyup="calOtherErMale();validateAsprirationalData()" onkeypress="return isNumber(event)" readonly="${HUN_DAY_TRAINING.isFreeze}" /></td>
+											<td><form:input path="erOtherFemaleOthers" class="form-control Align-Right" id="otherErFemaleOthersId" onkeyup="calOtherErFemale();validateAsprirationalData()" onkeypress="return isNumber(event)" readonly="${HUN_DAY_TRAINING.isFreeze}" /></td>
 											<td><form:input path="funMaleOthers" class="form-control Align-Right" id="functionariedMaleOthersId" onkeyup="calFunMale();validateAsprirationalData()" readonly="${HUN_DAY_TRAINING.isFreeze}" /></td>
-											<td><form:input path="funFemaleOthers" class="form-control Align-Right " id="functionariedFemaleOthersId" onkeyup="calFunFemale();validateAsprirationalData()" readonly="${HUN_DAY_TRAINING.isFreeze}" /></td>
+											<td><form:input path="funFemaleOthers" class="form-control Align-Right " id="functionariedFemaleOthersId" onkeyup="calFunFemale();validateAsprirationalData()" onkeypress="return isNumber(event)" readonly="${HUN_DAY_TRAINING.isFreeze}" /></td>
 										</tr>
 										<tr>
 											<td><div align="center"><strong>Total</strong></div></td>

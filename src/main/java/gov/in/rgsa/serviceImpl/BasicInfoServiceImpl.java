@@ -8,6 +8,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import org.apache.commons.collections.CollectionUtils;
+import org.owasp.esapi.util.CollectionsUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -167,11 +168,16 @@ public class BasicInfoServiceImpl implements BasicInfoService {
 				Map<String, Object> param = new HashMap<String, Object>();
 				param.put("basicInfoId",basicInfoId);
 				List<BasicInfoDetails> basicInfoDtls  = dao.findAll("FIND_BASIC_INFO_DETAILS", param);
-				if(basicInfoDtls.get(0).getDefinationValue() == null) {
-					return "modify";
+				if(!CollectionUtils.isEmpty(basicInfoDtls)) {
+					if(basicInfoDtls.get(0).getDefinationValue() == null) {
+						return "modify";
+					}else {
+						return "dataFound";
+					}
 				}else {
-					return "dataFound";
+					return "modify";
 				}
+				
 			}else {
 				return "create";
 			}
