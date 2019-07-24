@@ -8,7 +8,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "fin_year", schema = "rgsa")
-@NamedQuery(name="FETCH_ALL_FIN_YEAR",query="from FinYear order by yearId desc")
+@NamedQuery(name="FETCH_ALL_FIN_YEAR", query="FROM FinYear ORDER BY yearId DESC")
 public class FinYear {
 
 	@Id

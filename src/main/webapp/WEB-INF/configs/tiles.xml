@@ -814,6 +814,10 @@
 			value="/WEB-INF/jsp/progressReport/trainingDetailsProgressReport.jsp" />
 </definition>
 
+     <definition name="viewreportmopr" extends="base.definition.admin">
+		<put-attribute name="title" value="View Report Mopr" />
+		<put-attribute name="body" value="/WEB-INF/jsp/viewMoprReport/viewMoprReport.jsp" />
+		</definition>
 <definition name="hundredDayTrainingDetail" extends="base.definition.admin">
 	<put-attribute name="title" value="hundred Day Training Detail" />
 	<put-attribute name="body"
