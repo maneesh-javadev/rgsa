@@ -1,6 +1,7 @@
 package gov.in.rgsa.controller;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import gov.in.rgsa.dto.DemographicProfileDataDto;
 import gov.in.rgsa.model.ViewReportAtMoprModel;
 import gov.in.rgsa.service.FacadeService;
 import gov.in.rgsa.service.MOPRService;
@@ -48,6 +50,11 @@ public class ViewReportAtMoprController {
 			parameter.put("yearId", userPreference.getFinYearId());
 			parameter.put("userType","C");
 			model.addAttribute("planComponentsFunds", facadeService.fetchFundDetailsByUserType(parameter));
+		}
+		
+		if(viewReportModel.getIsDemoGraphic()) {
+			List<DemographicProfileDataDto> demographicData=viewReportAtMoprService.fetchDemographicData(viewReportModel);
+			model.addAttribute("DEMO_GRAPHIC_DATA", demographicData);
 		}
 		return MOPR_REPORT;
 	}

@@ -32,9 +32,38 @@
 		} else {
 			$("#collapseRow" + id).hide();
 			$("#expendRow" + id).show();
+			
+			if(id==2){
+	    		 $('.newBuildingInstituteInfra').hide();
+	    		$('.carryForwardInstituteInfra').hide();
+	    		$('#newBuildingInstituteInfraCollapse'+id).hide();
+	       	$('#newBuildingInstituteInfraExpand'+id).show();
+	    		$('#carryForwardInstituteInfraCollapse'+id).hide();
+	       	$('#carryForwardInstituteInfraExpand'+id).show();
+	    	}
+	    	
+	    	if(id==3){
+	    		$('.newBuildingPanchayatBhawan').hide();
+	    		$('.carryForwardPanchayatBhawan').hide();
+	    		$('#newBuildingPanchayatBhawanCollapse'+id).hide();
+	       	$('#newBuildingPanchayatBhawanExpand'+id).show();
+	    		$('#carryForwardPanchayatBhawanCollapse'+id).hide();
+	       	$('#carryForwardPanchayatBhawanExpand'+id).show();
+	    	}
 		}
 
 	};
+	
+	toggleInstInfraAndPanchayatBhawan=function(id,msg){
+		 if($('#'+ msg +'Collapse'+ id).css('display') == 'none'){
+	   	$('#'+msg+'Collapse'+id).show();
+	   	$('#'+msg+'Expand'+id).hide();
+	   }else{
+	   	$('#'+msg+'Collapse'+id).hide();
+	   	$('#'+msg+'Expand'+id).show();
+	   }
+		 $('.'+msg).slideToggle();
+	}
 
 	function expandAll(msg) {
 		if (msg == 'expand') {
@@ -44,6 +73,22 @@
 			$("#expandButtonId").hide();
 			$(".collapseRowAll").show();
 			$(".expendRowAll").hide();
+			
+			$('.newBuildingInstituteInfra').show();
+	    	$('.carryForwardInstituteInfra').show();
+	    	
+	    	$('#newBuildingInstituteInfraCollapse2').show();
+	       	$('#newBuildingInstituteInfraExpand2').hide();
+    		$('#carryForwardInstituteInfraCollapse2').show();
+	       	$('#carryForwardInstituteInfraExpand2').hide();
+
+	       	$('.newBuildingPanchayatBhawan').show();
+    		$('.carryForwardPanchayatBhawan').show();
+	       	
+	       	$('#newBuildingPanchayatBhawanCollapse3').show();
+	       	$('#newBuildingPanchayatBhawanExpand3').hide();
+    		$('#carryForwardPanchayatBhawanCollapse3').show();
+	       	$('#carryForwardPanchayatBhawanExpand3').hide();
 		} else {
 			$('.mainTrId').css("background-color","white ");
 			$(".expand-all").slideToggle();
@@ -51,6 +96,21 @@
 			$("#expandButtonId").show();
 			$(".collapseRowAll").hide();
 			$(".expendRowAll").show();
+			$('.newBuildingInstituteInfra').hide();
+	    	$('.carryForwardInstituteInfra').hide();
+	    	
+	    	$('#newBuildingInstituteInfraCollapse2').hide();
+	       	$('#newBuildingInstituteInfraExpand2').show();
+    		$('#carryForwardInstituteInfraCollapse2').hide();
+	       	$('#carryForwardInstituteInfraExpand2').show();
+	       	
+	    	$('.newBuildingPanchayatBhawan').hide();
+    		$('.carryForwardPanchayatBhawan').hide();
+	       	
+	       	$('#newBuildingPanchayatBhawanCollapse3').hide();
+	       	$('#newBuildingPanchayatBhawanExpand3').show();
+    		$('#carryForwardPanchayatBhawanCollapse3').hide();
+	       	$('#carryForwardPanchayatBhawanExpand3').show();
 		}
 	}
 
@@ -98,15 +158,21 @@
 	function exportToPdf(id) {
 		 var finYear = $('#finYearSelectId').find('option:selected').text();
 		 var stateName = $('#stateDropDownId').find('option:selected').text();
-		 var header = (id == 'annualPlanBlockPrint') ? 'Annual action plan '+ finYear + ' - ' + $.trim(stateName): 'Demographic profile and other information';
+		 var header = (id == 'annualPlanBlockPrint') ? 'Annual action plan '+ finYear + ' - ' + $.trim(stateName): 'Demographic profile and other information '+ finYear + ' - ' + $.trim(stateName);
 		 var sTable =$('#'+id).html();
 		 var style = "<style>";
+		 if(id == 'annualPlanBlockPrint'){
 		 	 style = style + "table,th,td{border: solid 1px black;border-collapse: collapse;}";
 	         style = style + "thead {color : white; background-color: #9071bf;";
 	         style = style + "</style>";
+		 }else{
+			 style = style + " table , td, th {border: solid 1px grey;border-collapse: collapse;}";
+			 //style = style + "title {font-size : 80px;}";
+			 style = style + "</style>";
+		 }
          var win = window.open('', '', 'height=700,width=700');
          win.document.write('<html><head>');
-         win.document.write('<title style="text-align:center; font-size : 50px">'+header+'</title>');  
+         win.document.write('<title>'+header+'</title>');  
          win.document.write(style); 
          win.document.write('</head>');
          win.document.write('<body>');
@@ -181,7 +247,100 @@
 						</div>
 						<div class="body">
 							<div id="demoGraphicBlock" style="display: none;">
-								Demographic block is under Development
+								<hr />
+								<div id="demoGraphicBlockPrint">
+									<table class="table table-hover table-bordered dashboard-task-infos" id="demoTable">
+										<thead style="background-color: #9071bf; color: white;">
+											<tr>
+												<th class="demoTh"><div align="center">Sr.No</div></th>
+												<th class="demoTh"><div align="center">Particulars</div></th>
+												<th colspan="3" class="demoTh"><div align="center">Details</div></th>
+											</tr>
+										</thead>
+										<tbody>
+										<c:forEach items="${DEMO_GRAPHIC_DATA}" var="demoData" varStatus="index">
+										<tr class="trMainDemo">
+											
+											<c:if test="${demoData.noOfFields eq 1}">
+												<td align="center" class="demoTd"><b>${index.count}</b></td>
+												<td align="center" class="demoTd"><b>${demoData.particular} </b></td>
+												<td colspan="3" align="center" class="demoTd">${demoData.details}</td>
+											</c:if>
+											
+											<c:if test="${demoData.noOfFields ne 1}">
+												<td align="center" class="demoTd"><b>${index.count}</b></td>
+												<td align="center" class="demoTd"><b>${demoData.particular}</b></td>
+												<c:if test="${demoData.id eq 9 or demoData.id eq 13 or demoData.id eq 14}">
+													<td colspan="3" class="demoTd">
+														<table class="table table-hover" style= "margin: 0px ;" class="demoInnerTable">
+															<thead>
+																<tr class="innerSubDemoTr">
+																	<th align="center" class="demoInnerTh">Gram Panchayat</th>
+																	<th align="center" class="demoInnerTh">Block Panchayat</th>
+																	<th align="center" class="demoInnerTh">District Panchayat</th>
+																</tr>
+															</thead>
+																
+															<tbody>
+															<tr class="innerSubDemoTr">
+																	<td align="center" class="demoInnerTd">${demoData.gpData}</td>
+																	<td align="center" class="demoInnerTd">${demoData.bpData}</td>
+																	<td align="center" class="demoInnerTd">${demoData.dpData}</td>
+																</tr>
+															</tbody>
+														</table>
+													</td>	
+												</c:if>
+												<c:if test="${demoData.id eq 16}">
+													<td colspan="3" class="demoTd" class="demoTd">
+														<table class="table table-hover" style="margin: 0px ;" class="demoInnerTable">
+															 <thead> 
+																<tr class="innerSubDemoTr">
+																	<th><div align="center" class="demoInnerTh" >GPs per Block</div></th>
+																	<th><div align="center" class="demoInnerTh">Blocks per District</div></th>
+																</tr>
+															</thead> 
+															<tbody>
+															<tr class="innerSubDemoTr">
+																	<td align="center" class="demoInnerTd">${demoData.gpData}</td>
+																	<td align="center" class="demoInnerTd">${demoData.bpData}</td>
+																</tr>
+															</tbody>
+														</table>
+													</td>	
+												</c:if>
+												
+												<c:if test="${demoData.id eq 25}">
+													<td colspan="3" class="demoTd innerTdTable">
+														<table class="table table-hover" style="margin: 0px ;" class="demoInnerTable">
+															<thead>
+																<tr class="innerSubDemoTr">
+																	<th><div align="center" class="demoInnerTh">GP level</div></th>
+																	<th><div align="center" class="demoInnerTh">Block level</div></th>
+																	<th><div align="center" class="demoInnerTh">District level</div></th>
+																</tr>
+															</thead>
+															<tbody>
+																<tr class="innerSubDemoTr">
+																	<td align="center" class="demoInnerTd">${demoData.gpData}</td>
+																	<td align="center" class="demoInnerTd">${demoData.bpData}</td>
+																	<td align="center" class="demoInnerTd">${demoData.dpData}</td>
+																</tr>
+															</tbody>
+														</table>
+													</td>
+												</c:if>
+											</c:if>
+										</tr>
+										</c:forEach>
+										</tbody>
+									</table>
+								</div>
+								<div class="text-right">
+									<button type="button" class="btn bg-red waves-effect"
+										id="exportButtonId" onclick="exportToPdf('demoGraphicBlockPrint')">Export
+										File</button>
+								</div>
 							</div>
 								
 							<div id="annualPlanBlock" style="display: none;">
@@ -190,7 +349,7 @@
 								<table class="table table-hover table-bordered dashboard-task-infos"
 									id="annualReportTable">
 
-									<thead>
+									<thead style="background-color: #9071bf; color: white;">
 										<tr>
 											<th rowspan="2" width="5%"></th>
 											<th rowspan="2" width="5%">Sr.No</th>
@@ -324,7 +483,75 @@
 															test="${psc.noOfUnitsMOPR ne psc.noOfUnitsCEC and psc.noOfUnitsCEC != null }">
 															<c:set var="cecDiffUnit" value="bg-info" />
 														</c:if>
-														<c:if test="${psc.componentsId ne 2 and psc.componentsId ne 3 }">	
+
+															<c:if
+																test="${psc.subcomponentsId eq 8 or psc.subcomponentsId eq 9}">
+																<c:if test="${psc.amountProposed>0}">
+																	<c:set var="totalNewBuildingStateInstInfra"
+																		value="${totalNewBuildingStateInstInfra + psc.amountProposed}" />
+																</c:if>
+																<c:if test="${psc.amountProposedMOPR>0}">
+																	<c:set var="totalNewBuildingMoprInstInfra"
+																		value="${totalNewBuildingMoprInstInfra + psc.amountProposedMOPR}" />
+																</c:if>
+																<c:if test="${psc.amountProposedCEC>0}">
+																	<c:set var="totalNewBuildingCecInstInfra"
+																		value="${totalNewBuildingCecInstInfra + psc.amountProposedCEC}" />
+																</c:if>
+															</c:if>
+
+															<c:if
+																test="${psc.subcomponentsId eq 23 or psc.subcomponentsId eq 24}">
+																<c:if test="${psc.amountProposed>0}">
+																	<c:set var="totalCarryForwardStateInstInfra"
+																		value="${totalCarryForwardStateInstInfra + psc.amountProposed}" />
+																</c:if>
+																<c:if test="${psc.amountProposedMOPR>0}">
+																	<c:set var="totalCarryForwardMoprInstInfra"
+																		value="${totalCarryForwardMoprInstInfra + psc.amountProposedMOPR}" />
+																</c:if>
+
+																<c:if test="${psc.amountProposedCEC>0}">
+																	<c:set var="totalCarryForwardCecInstInfra"
+																		value="${totalCarryForwardCecInstInfra + psc.amountProposedCEC}" />
+																</c:if>
+															</c:if>
+															
+															<c:if
+																test="${psc.subcomponentsId eq 12 or psc.subcomponentsId eq 13 or psc.subcomponentsId eq 14}">
+																<c:if test="${psc.amountProposed>0}">
+																	<c:set var="totalNewBuildingStatePanchayat"
+																		value="${totalNewBuildingStatePanchayat + psc.amountProposed}" />
+																</c:if>
+																<c:if test="${psc.amountProposedMOPR>0}">
+																	<c:set var="totalNewBuildingMoprPanchayat"
+																		value="${totalNewBuildingMoprPanchayat + psc.amountProposedMOPR}" />
+																</c:if>
+																<c:if test="${psc.amountProposedCEC>0}">
+																	<c:set var="totalNewBuildingCecPanchayat"
+																		value="${totalNewBuildingCecPanchayat + psc.amountProposedCEC}" />
+																</c:if>
+															</c:if>
+
+															<c:if
+																test="${psc.subcomponentsId eq 20 or psc.subcomponentsId eq 21 or psc.subcomponentsId eq 22}">
+																<c:if test="${psc.amountProposed>0}">
+																	<c:set var="totalCarryForwardStatePacnhayat"
+																		value="${totalCarryForwardStatePacnhayat + psc.amountProposed}" />
+																</c:if>
+																<c:if test="${psc.amountProposedMOPR>0}">
+																	<c:set var="totalCarryForwardMoprPacnhayat"
+																		value="${totalCarryForwardMoprPacnhayat + psc.amountProposedMOPR}" />
+																</c:if>
+																<c:if test="${psc.amountProposedCEC>0}">
+																	<c:set var="totalCarryForwardCecPacnhayat"
+																		value="${totalCarryForwardCecPacnhayat + psc.amountProposedCEC}" />
+																</c:if>
+															</c:if>
+
+
+
+															<c:if test="${psc.componentsId ne 2 and psc.componentsId ne 3 }">	
 															<tr class="slide${pc.componentsId} expand-all"
 																style="display: none;">
 																<td></td>
@@ -350,7 +577,286 @@
 														</c:if>
 													</c:if>
 												</c:forEach>
-												<c:set var="moprDiff" value="bg-test" />
+
+													<!-- for institutional infra modification -->
+													<c:if test="${pc.componentsId eq 2}">
+														<tr class="slide${pc.componentsId} expand-all" style="display: none;">
+															<td></td>
+															<td>
+																<div
+																	id="newBuildingInstituteInfraExpand${pc.componentsId}"
+																	onclick="toggleInstInfraAndPanchayatBhawan(${pc.componentsId},'newBuildingInstituteInfra')">
+																	<i class="fa fa-plus-circle" aria-hidden="true"></i>
+																</div>
+
+																<div
+																	id="newBuildingInstituteInfraCollapse${pc.componentsId}"
+																	onclick="toggleInstInfraAndPanchayatBhawan(${pc.componentsId},'newBuildingInstituteInfra')"
+																	style="display: none;">
+																	<i class="fa fa-minus-circle" aria-hidden="true"></i>
+																</div>
+															</td>
+															<td><strong>New Building</strong></td>
+															<!-- <td></td> -->
+															<td align="center"><fmt:formatNumber type="number"
+																	maxFractionDigits="3"
+																	value="${totalNewBuildingStateInstInfra}" /></td>
+															<%-- <td align="right" style="padding-right: 20px"><b><c:out
+																		value="${totalUnitNewBuildingStateInstInfra}" /></b></td> --%>
+															<td align="center" class="${moprDiff }"><fmt:formatNumber
+																	type="number" maxFractionDigits="3"
+																	value="${totalNewBuildingMoprInstInfra}" /></td>
+															<%-- <td align="right" style="padding-right: 20px"><b><c:out
+																		value="${totalUnitNewBuildingMoprInstInfra}" /></b></td> --%>
+															<td align="center" class="${cecDiff }"><fmt:formatNumber
+																	type="number" maxFractionDigits="3"
+																	value="${totalNewBuildingCecInstInfra}" /></td>
+															<%-- <td align="right" style="padding-right: 20px"
+																class="${cecDiff }"><b><c:out
+																		value="${totalUnitNewBuildingCecInstInfra}" /></b></td> --%>
+														</tr>
+
+														<c:forEach items="${planComponentsFunds}" var="innerData">
+															<c:if
+																test="${innerData.eType eq 'S' and pc.componentsId eq 2}"></c:if>
+															<c:if
+																test="${innerData.subcomponentsId eq 8 or innerData.subcomponentsId eq 9}">
+																<tr class="newBuildingInstituteInfra"
+																	style="display: none;">
+																	<td></td>
+																	<td></td>
+																	<td>${innerData.eName}</td>
+																	<!-- <td></td> -->
+																	<td align="center"><fmt:formatNumber type="number"
+																			maxFractionDigits="3"
+																			value="${innerData.amountProposed}" /></td>
+																	<%-- <td align="right" style="padding-right: 20px"><b><c:out
+																				value="${innerData.noOfUnits}" /></b></td> --%>
+																	<td align="center"><fmt:formatNumber type="number"
+																			maxFractionDigits="3"
+																			value="${innerData.amountProposedMOPR}" /></td>
+																	<%-- <td align="right" style="padding-right: 20px"><b><c:out
+																				value="${innerData.noOfUnitsMOPR}" /></b></td> --%>
+																	<td align="center"><fmt:formatNumber type="number"
+																			maxFractionDigits="3"
+																			value="${innerData.amountProposedCEC}" /></td>
+																	<%-- <td align="right" style="padding-right: 20px"><b><c:out
+																				value="${innerData.noOfUnitsCEC}" /></b></td> --%>
+																</tr>
+															</c:if>
+														</c:forEach>
+
+														<!-- carry forward institutional infra -->
+
+														<tr class="slide${pc.componentsId} expand-all" style="display: none;">
+															<td></td>
+															<td>
+																<div
+																	id="carryForwardInstituteInfraExpand${pc.componentsId}"
+																	onclick="toggleInstInfraAndPanchayatBhawan(${pc.componentsId},'carryForwardInstituteInfra')">
+																	<i class="fa fa-plus-circle" aria-hidden="true"></i>
+																</div>
+
+																<div
+																	id="carryForwardInstituteInfraCollapse${pc.componentsId}"
+																	onclick="toggleInstInfraAndPanchayatBhawan(${pc.componentsId},'carryForwardInstituteInfra')"
+																	style="display: none;">
+																	<i class="fa fa-minus-circle" aria-hidden="true"></i>
+																</div>
+															</td>
+															<td><strong>Carry Forward</strong></td>
+														<!-- 	<td></td> -->
+															<td align="center"><fmt:formatNumber type="number"
+																	maxFractionDigits="3"
+																	value="${totalCarryForwardStateInstInfra}" /></td>
+															<%-- <td align="right" style="padding-right: 20px"><b><c:out
+																		value="${totalUnitCarryForwardStateInstInfra}" /></b></td> --%>
+															<td align="center" class="${moprDiff }"><fmt:formatNumber
+																	type="number" maxFractionDigits="3"
+																	value="${totalCarryForwardMoprInstInfra}" /></td>
+															<%-- <td align="right" style="padding-right: 20px"><b><c:out
+																		value="${totalUnitCarryForwardMoprInstInfra}" /></b></td> --%>
+															<td align="center" class="${cecDiff }"><fmt:formatNumber
+																	type="number" maxFractionDigits="3"
+																	value="${totalCarryForwardCecInstInfra}" /></td>
+															<%-- <td align="right" style="padding-right: 20px"
+																class="${cecDiff }"><b><c:out
+																		value="${totalUnitCarryForwardCecInstInfra}" /></b></td> --%>
+														</tr>
+
+														<c:forEach items="${planComponentsFunds}" var="innerData">
+															<c:if
+																test="${innerData.eType eq 'S' and pc.componentsId eq 2}"></c:if>
+															<c:if
+																test="${innerData.subcomponentsId eq 23 or innerData.subcomponentsId eq 24}">
+																<tr class="carryForwardInstituteInfra"
+																	style="display: none;">
+																	<td></td>
+																	<td></td>
+																	<td>${innerData.eName}</td>
+																	<!-- <td></td> -->
+																	<td align="center"><fmt:formatNumber type="number"
+																			maxFractionDigits="3"
+																			value="${innerData.amountProposed}" /></td>
+																	<%-- <td align="right" style="padding-right: 20px"><b><c:out
+																				value="${innerData.noOfUnits}" /></b></td> --%>
+																	<td align="center"><fmt:formatNumber type="number"
+																			maxFractionDigits="3"
+																			value="${innerData.amountProposedMOPR}" /></td>
+																	<%-- <td align="right" style="padding-right: 20px"><b><c:out
+																				value="${innerData.noOfUnitsMOPR}" /></b></td> --%>
+																	<td align="center"><fmt:formatNumber type="number"
+																			maxFractionDigits="3"
+																			value="${innerData.amountProposedCEC}" /></td>
+																	<%-- <td align="right" style="padding-right: 20px"><b><c:out
+																				value="${innerData.noOfUnitsCEC}" /></b></td> --%>
+																</tr>
+															</c:if>
+														</c:forEach>
+													</c:if>
+													<!--  -->
+
+
+													<!-- panchayat bhawan bifurcation in new building and carry forward -->
+													<c:if test="${pc.componentsId eq 3}">
+														<tr class="slide${pc.componentsId} expand-all" style="display: none;">
+															<td></td>
+															<td>
+																<div
+																	id="newBuildingPanchayatBhawanExpand${pc.componentsId}"
+																	onclick="toggleInstInfraAndPanchayatBhawan(${pc.componentsId},'newBuildingPanchayatBhawan')">
+																	<i class="fa fa-plus-circle" aria-hidden="true"></i>
+																</div>
+
+																<div
+																	id="newBuildingPanchayatBhawanCollapse${pc.componentsId}"
+																	onclick="toggleInstInfraAndPanchayatBhawan(${pc.componentsId},'newBuildingPanchayatBhawan')"
+																	style="display: none;">
+																	<i class="fa fa-minus-circle" aria-hidden="true"></i>
+																</div>
+															</td>
+															<td><strong>New Building</strong></td>
+															<!-- <td></td> -->
+															<td align="center"><fmt:formatNumber type="number"
+																	maxFractionDigits="3"
+																	value="${totalNewBuildingStatePanchayat}" /></td>
+															<%-- <td align="right" style="padding-right: 20px"><b><c:out
+																		value="${totalUnitNewBuildingStatePanchayat}" /></b></td> --%>
+															<td align="center" class="${moprDiff }"><fmt:formatNumber
+																	type="number" maxFractionDigits="3"
+																	value="${totalNewBuildingMoprPanchayat}" /></td>
+															<%-- <td align="right" style="padding-right: 20px"><b><c:out
+																		value="${totalUnitNewBuildingMoprPanchayat}" /></b></td> --%>
+															<td align="center" class="${cecDiff }"><fmt:formatNumber
+																	type="number" maxFractionDigits="3"
+																	value="${totalNewBuildingCecPanchayat}" /></td>
+															<%-- <td align="right" style="padding-right: 20px"
+																class="${cecDiff }"><b><c:out
+																		value="${totalUnitNewBuildingCecPanchayat}" /></b></td> --%>
+														</tr>
+
+														<c:forEach items="${planComponentsFunds}" var="innerData">
+															<c:if
+																test="${innerData.eType eq 'S' and pc.componentsId eq 3}"></c:if>
+															<c:if
+																test="${innerData.subcomponentsId eq 12 or innerData.subcomponentsId eq 13 or innerData.subcomponentsId eq 14}">
+																<tr class="newBuildingPanchayatBhawan"
+																	style="display: none;">
+																	<td></td>
+																	<td></td>
+																	<td>${innerData.eName}</td>
+																	<!-- <td></td> -->
+																	<td align="center"><fmt:formatNumber type="number"
+																			maxFractionDigits="3"
+																			value="${innerData.amountProposed}" /></td>
+																	<%-- <td align="right" style="padding-right: 20px"><b><c:out
+																				value="${innerData.noOfUnits}" /></b></td> --%>
+																	<td align="center"><fmt:formatNumber type="number"
+																			maxFractionDigits="3"
+																			value="${innerData.amountProposedMOPR}" /></td>
+																	<%-- <td align="right" style="padding-right: 20px"><b><c:out
+																				value="${innerData.noOfUnitsMOPR}" /></b></td> --%>
+																	<td align="center"><fmt:formatNumber type="number"
+																			maxFractionDigits="3"
+																			value="${innerData.amountProposedCEC}" /></td>
+																	<%-- <td align="right" style="padding-right: 20px"><b><c:out
+																				value="${innerData.noOfUnitsCEC}" /></b></td> --%>
+																</tr>
+															</c:if>
+														</c:forEach>
+
+														<!-- carry forward entry -->
+														<tr class="slide${pc.componentsId} expand-all" style="display: none;">
+															<td></td>
+															<td>
+																<div
+																	id="carryForwardPanchayatBhawanExpand${pc.componentsId}"
+																	onclick="toggleInstInfraAndPanchayatBhawan(${pc.componentsId},'carryForwardPanchayatBhawan')">
+																	<i class="fa fa-plus-circle" aria-hidden="true"></i>
+																</div>
+
+																<div
+																	id="carryForwardPanchayatBhawanCollapse${pc.componentsId}"
+																	onclick="toggleInstInfraAndPanchayatBhawan(${pc.componentsId},'carryForwardPanchayatBhawan')"
+																	style="display: none;">
+																	<i class="fa fa-minus-circle" aria-hidden="true"></i>
+																</div>
+															</td>
+															<td><strong>Carry Forward</strong></td>
+															<!-- <td></td> -->
+															<td align="center"><fmt:formatNumber type="number"
+																	maxFractionDigits="3"
+																	value="${totalCarryForwardStatePacnhayat}" /></td>
+															<%-- <td align="right" style="padding-right: 20px"><b><c:out
+																		value="${totalUnitCarryForwardStatePacnhayat}" /></b></td> --%>
+															<td align="center" class="${moprDiff }"><fmt:formatNumber
+																	type="number" maxFractionDigits="3"
+																	value="${totalCarryForwardMoprPacnhayat}" /></td>
+															<%-- <td align="right" style="padding-right: 20px"><b><c:out
+																		value="${totalUnitCarryForwardMoprPacnhayat}" /></b></td> --%>
+															<td align="center" class="${cecDiff }"><fmt:formatNumber
+																	type="number" maxFractionDigits="3"
+																	value="${totalCarryForwardCecPacnhayat}" /></td>
+															<%-- <td align="right" style="padding-right: 20px"
+																class="${cecDiff }"><b><c:out
+																		value="${totalUnitCarryForwardCecPacnhayat}" /></b></td> --%>
+														</tr>
+
+														<c:forEach items="${planComponentsFunds}" var="innerData">
+															<c:if
+																test="${innerData.eType eq 'S' and pc.componentsId eq 3}"></c:if>
+															<c:if
+																test="${innerData.subcomponentsId eq 20 or innerData.subcomponentsId eq 21 or innerData.subcomponentsId eq 22}">
+																<tr class="carryForwardPanchayatBhawan"
+																	style="display: none;">
+																	<td></td>
+																	<td></td>
+																	<td>${innerData.eName}</td>
+																	<!-- <td></td> -->
+																	<td align="center"><fmt:formatNumber type="number"
+																			maxFractionDigits="3"
+																			value="${innerData.amountProposed}" /></td>
+																	<%-- <td align="right" style="padding-right: 20px"><b><c:out
+																				value="${innerData.noOfUnits}" /></b></td> --%>
+																	<td align="center"><fmt:formatNumber type="number"
+																			maxFractionDigits="3"
+																			value="${innerData.amountProposedMOPR}" /></td>
+																	<%-- <td align="right" style="padding-right: 20px"><b><c:out
+																				value="${innerData.noOfUnitsMOPR}" /></b></td> --%>
+																	<td align="center"><fmt:formatNumber type="number"
+																			maxFractionDigits="3"
+																			value="${innerData.amountProposedCEC}" /></td>
+																	<%-- <td align="right" style="padding-right: 20px"><b><c:out
+																				value="${innerData.noOfUnitsCEC}" /></b></td> --%>
+																</tr>
+															</c:if>
+														</c:forEach>
+														<!--  -->
+													</c:if>
+													<!--  -->
+
+
+													<c:set var="moprDiff" value="bg-test" />
 												<c:if test="${pc.amountProposed gt pc.amountProposedMOPR}">
 													<c:set var="moprDiff" value="bg-warning" />
 												</c:if>
