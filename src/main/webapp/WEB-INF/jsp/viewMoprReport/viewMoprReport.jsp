@@ -7,7 +7,6 @@
 		var stateCode=$('#stateDropDownId').val();
 		(finYear > 0) ? $('#stateDropDownBlock').show() : $('#stateDropDownBlock').hide() ;
 		(stateCode > 0) ? $('#optionChoosingBlock').show() : $('#optionChoosingBlock').hide() ;
-		//showDemoGraphAndAnnualOption();
 		if ('${VIEW_REPORT_MODEL.isDemoGraphic}' == 'true') {
 			$('#demoGraphicBlock').show();
 			$('#annualPlanBlock').hide();
@@ -167,7 +166,6 @@
 	         style = style + "</style>";
 		 }else{
 			 style = style + " table , td, th {border: solid 1px grey;border-collapse: collapse;}";
-			 //style = style + "title {font-size : 80px;}";
 			 style = style + "</style>";
 		 }
          var win = window.open('', '', 'height=700,width=700');
@@ -188,7 +186,8 @@
 			<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
 				<div class="card">
 					<div class="header">
-						<h3 style="padding-top: 25px;">&nbsp;&nbsp; Demographic profile and Annual action plan Report</h3>
+						<h3 style="padding-top: 25px;">&nbsp;&nbsp; Demographic
+							profile and Annual action plan Report</h3>
 					</div>
 					<br />
 					<form:form method="post" name="viewReportAtMopr" action=""
@@ -229,7 +228,7 @@
 						<br />
 
 						<div class="row" id="optionChoosingBlock">
-							<div class="col-sm-2" >
+							<div class="col-sm-2">
 								<label for="DemoGraphicProfile">&nbsp;&nbsp;Demographic
 									Profile : </label>
 							</div>
@@ -249,7 +248,9 @@
 							<div id="demoGraphicBlock" style="display: none;">
 								<hr />
 								<div id="demoGraphicBlockPrint">
-									<table class="table table-hover table-bordered dashboard-task-infos" id="demoTable">
+									<table
+										class="table table-hover table-bordered dashboard-task-infos"
+										id="demoTable">
 										<thead style="background-color: #9071bf; color: white;">
 											<tr>
 												<th class="demoTh"><div align="center">Sr.No</div></th>
@@ -258,231 +259,249 @@
 											</tr>
 										</thead>
 										<tbody>
-										<c:forEach items="${DEMO_GRAPHIC_DATA}" var="demoData" varStatus="index">
-										<tr class="trMainDemo">
-											
-											<c:if test="${demoData.noOfFields eq 1}">
-												<td align="center" class="demoTd"><b>${index.count}</b></td>
-												<td align="center" class="demoTd"><b>${demoData.particular} </b></td>
-												<td colspan="3" align="center" class="demoTd">${demoData.details}</td>
-											</c:if>
-											
-											<c:if test="${demoData.noOfFields ne 1}">
-												<td align="center" class="demoTd"><b>${index.count}</b></td>
-												<td align="center" class="demoTd"><b>${demoData.particular}</b></td>
-												<c:if test="${demoData.id eq 9 or demoData.id eq 13 or demoData.id eq 14}">
-													<td colspan="3" class="demoTd">
-														<table class="table table-hover" style= "margin: 0px ;" class="demoInnerTable">
-															<thead>
-																<tr class="innerSubDemoTr">
-																	<th align="center" class="demoInnerTh">Gram Panchayat</th>
-																	<th align="center" class="demoInnerTh">Block Panchayat</th>
-																	<th align="center" class="demoInnerTh">District Panchayat</th>
-																</tr>
-															</thead>
-																
-															<tbody>
-															<tr class="innerSubDemoTr">
-																	<td align="center" class="demoInnerTd">${demoData.gpData}</td>
-																	<td align="center" class="demoInnerTd">${demoData.bpData}</td>
-																	<td align="center" class="demoInnerTd">${demoData.dpData}</td>
-																</tr>
-															</tbody>
-														</table>
-													</td>	
-												</c:if>
-												<c:if test="${demoData.id eq 16}">
-													<td colspan="3" class="demoTd" class="demoTd">
-														<table class="table table-hover" style="margin: 0px ;" class="demoInnerTable">
-															 <thead> 
-																<tr class="innerSubDemoTr">
-																	<th><div align="center" class="demoInnerTh" >GPs per Block</div></th>
-																	<th><div align="center" class="demoInnerTh">Blocks per District</div></th>
-																</tr>
-															</thead> 
-															<tbody>
-															<tr class="innerSubDemoTr">
-																	<td align="center" class="demoInnerTd">${demoData.gpData}</td>
-																	<td align="center" class="demoInnerTd">${demoData.bpData}</td>
-																</tr>
-															</tbody>
-														</table>
-													</td>	
-												</c:if>
-												
-												<c:if test="${demoData.id eq 25}">
-													<td colspan="3" class="demoTd innerTdTable">
-														<table class="table table-hover" style="margin: 0px ;" class="demoInnerTable">
-															<thead>
-																<tr class="innerSubDemoTr">
-																	<th><div align="center" class="demoInnerTh">GP level</div></th>
-																	<th><div align="center" class="demoInnerTh">Block level</div></th>
-																	<th><div align="center" class="demoInnerTh">District level</div></th>
-																</tr>
-															</thead>
-															<tbody>
-																<tr class="innerSubDemoTr">
-																	<td align="center" class="demoInnerTd">${demoData.gpData}</td>
-																	<td align="center" class="demoInnerTd">${demoData.bpData}</td>
-																	<td align="center" class="demoInnerTd">${demoData.dpData}</td>
-																</tr>
-															</tbody>
-														</table>
-													</td>
-												</c:if>
-											</c:if>
-										</tr>
-										</c:forEach>
+											<c:forEach items="${DEMO_GRAPHIC_DATA}" var="demoData"
+												varStatus="index">
+												<tr class="trMainDemo">
+
+													<c:if test="${demoData.noOfFields eq 1}">
+														<td align="center" class="demoTd"><b>${index.count}</b></td>
+														<td align="center" class="demoTd"><b>${demoData.particular}
+														</b></td>
+														<td colspan="3" align="center" class="demoTd">${demoData.details}</td>
+													</c:if>
+
+													<c:if test="${demoData.noOfFields ne 1}">
+														<td align="center" class="demoTd"><b>${index.count}</b></td>
+														<td align="center" class="demoTd"><b>${demoData.particular}</b></td>
+														<c:if
+															test="${demoData.id eq 9 or demoData.id eq 13 or demoData.id eq 14}">
+															<td colspan="3" class="demoTd" style="padding: 0px;">
+																<table class="table table-hover" style="margin: 0px;"
+																	class="demoInnerTable">
+																	<thead>
+																		<tr class="innerSubDemoTr">
+																			<th align="center" class="demoInnerTh">Gram
+																				Panchayat</th>
+																			<th align="center" class="demoInnerTh">Block
+																				Panchayat</th>
+																			<th align="center" class="demoInnerTh">District
+																				Panchayat</th>
+																		</tr>
+																	</thead>
+
+																	<tbody>
+																		<tr class="innerSubDemoTr">
+																			<td align="center" class="demoInnerTd">${demoData.gpData}</td>
+																			<td align="center" class="demoInnerTd">${demoData.bpData}</td>
+																			<td align="center" class="demoInnerTd">${demoData.dpData}</td>
+																		</tr>
+																	</tbody>
+																</table>
+															</td>
+														</c:if>
+														<c:if test="${demoData.id eq 16}">
+															<td colspan="3" class="demoTd" class="demoTd"
+																style="padding: 0px;">
+																<table class="table table-hover" style="margin: 0px;"
+																	class="demoInnerTable">
+																	<thead>
+																		<tr class="innerSubDemoTr">
+																			<th><div align="center" class="demoInnerTh">GPs
+																					per Block</div></th>
+																			<th><div align="center" class="demoInnerTh">Blocks
+																					per District</div></th>
+																		</tr>
+																	</thead>
+																	<tbody>
+																		<tr class="innerSubDemoTr">
+																			<td align="center" class="demoInnerTd">${demoData.gpData}</td>
+																			<td align="center" class="demoInnerTd">${demoData.bpData}</td>
+																		</tr>
+																	</tbody>
+																</table>
+															</td>
+														</c:if>
+
+														<c:if test="${demoData.id eq 25}">
+															<td colspan="3" class="demoTd innerTdTable"
+																style="padding: 0px;">
+																<table class="table table-hover" style="margin: 0px;"
+																	class="demoInnerTable">
+																	<thead>
+																		<tr class="innerSubDemoTr">
+																			<th><div align="center" class="demoInnerTh">GP
+																					level</div></th>
+																			<th><div align="center" class="demoInnerTh">Block
+																					level</div></th>
+																			<th><div align="center" class="demoInnerTh">District
+																					level</div></th>
+																		</tr>
+																	</thead>
+																	<tbody>
+																		<tr class="innerSubDemoTr">
+																			<td align="center" class="demoInnerTd">${demoData.gpData}</td>
+																			<td align="center" class="demoInnerTd">${demoData.bpData}</td>
+																			<td align="center" class="demoInnerTd">${demoData.dpData}</td>
+																		</tr>
+																	</tbody>
+																</table>
+															</td>
+														</c:if>
+													</c:if>
+												</tr>
+											</c:forEach>
 										</tbody>
 									</table>
 								</div>
 								<div class="text-right">
 									<button type="button" class="btn bg-red waves-effect"
-										id="exportButtonId" onclick="exportToPdf('demoGraphicBlockPrint')">Export
+										id="exportButtonId"
+										onclick="exportToPdf('demoGraphicBlockPrint')">Export
 										File</button>
 								</div>
 							</div>
-								
+
 							<div id="annualPlanBlock" style="display: none;">
 								<hr />
 								<div id="annualPlanBlockPrint">
-								<table class="table table-hover table-bordered dashboard-task-infos"
-									id="annualReportTable">
+									<table
+										class="table table-hover table-bordered dashboard-task-infos"
+										id="annualReportTable">
 
-									<thead style="background-color: #9071bf; color: white;">
-										<tr>
-											<th rowspan="2" width="5%"></th>
-											<th rowspan="2" width="5%">Sr.No</th>
-											<th rowspan="2" width="22%">Components</th>
-											<td align="center"><b> Amount State Proposed</b></td>
-											<td align="center"><b>Amount Ministry Recomended</b></td>
-											<td align="center"><b>Amount CEC Approved</b></td>
-										</tr>
-									</thead>
-									<c:set var="t_fund" value="0" />
-									<c:set var="t_unit" value="0" />
-									<tbody>
-									
-									<!-- declaration of variables -->
-												<c:set var="totalNewBuildingStateInstInfra" value="0"/>
-												<c:set var="totalCarryForwardStateInstInfra" value="0"/>
-												
-												<c:set var="totalNewBuildingMoprInstInfra" value="0"/>
-												<c:set var="totalCarryForwardMoprInstInfra" value="0"/>
-												
-												<c:set var="totalNewBuildingCecInstInfra" value="0"/>
-												<c:set var="totalCarryForwardCecInstInfra" value="0"/>
-												
-												<c:set var="totalNewBuildingStatePanchayat" value="0"/> 
-												<c:set var="totalCarryForwardStatePacnhayat" value="0"/>
-												
-												<c:set var="totalNewBuildingMoprPanchayat" value="0"/>
-												<c:set var="totalCarryForwardMoprPacnhayat" value="0"/>
-												
-												<c:set var="totalNewBuildingCecPanchayat" value="0"/>
-												<c:set var="totalCarryForwardCecPacnhayat" value="0"/>
-												
+										<thead style="background-color: #9071bf; color: white;">
+											<tr>
+												<th rowspan="2" width="5%"></th>
+												<th rowspan="2" width="5%">Sr.No</th>
+												<th rowspan="2" width="22%">Components</th>
+												<td align="center"><b> Amount State Proposed</b></td>
+												<td align="center"><b>Amount Ministry Recomended</b></td>
+												<td align="center"><b>Amount CEC Approved</b></td>
+											</tr>
+										</thead>
+										<c:set var="t_fund" value="0" />
+										<c:set var="t_unit" value="0" />
+										<tbody>
+
+											<!-- declaration of variables -->
+											<c:set var="totalNewBuildingStateInstInfra" value="0" />
+											<c:set var="totalCarryForwardStateInstInfra" value="0" />
+
+											<c:set var="totalNewBuildingMoprInstInfra" value="0" />
+											<c:set var="totalCarryForwardMoprInstInfra" value="0" />
+
+											<c:set var="totalNewBuildingCecInstInfra" value="0" />
+											<c:set var="totalCarryForwardCecInstInfra" value="0" />
+
+											<c:set var="totalNewBuildingStatePanchayat" value="0" />
+											<c:set var="totalCarryForwardStatePacnhayat" value="0" />
+
+											<c:set var="totalNewBuildingMoprPanchayat" value="0" />
+											<c:set var="totalCarryForwardMoprPacnhayat" value="0" />
+
+											<c:set var="totalNewBuildingCecPanchayat" value="0" />
+											<c:set var="totalCarryForwardCecPacnhayat" value="0" />
+
 											<!--  -->
 
-										<c:forEach items="${planComponentsFunds}" var="pc"
-											varStatus="pcindex">
-											<c:if test="${pc.eType eq 'C'}">
-												<c:set var="moprDiff" value="bg-test" />
-												<c:if
-													test="${pc.amountProposed+pc.addtionalRequirement ne pc.amountProposedMOPR+pc.addtionalRequirementMOPR and pc.amountProposedMOPR != null }">
-													<c:set var="moprDiff" value="bg-warning" />
-												</c:if>
-												<c:set var="moprDiffUnit" value="bg-test" />
-												<c:if
-													test="${pc.noOfUnits ne pc.noOfUnitsMOPR and pc.noOfUnitsMOPR != null }">
-													<c:set var="moprDiffUnit" value="bg-warning" />
-												</c:if>
-												<c:set var="cecDiff" value="bg-test" />
-												<c:if
-													test="${pc.amountProposedMOPR+pc.addtionalRequirementMOPR ne pc.amountProposedCEC+pc.addtionalRequirementCEC and pc.amountProposedCEC != null }">
-													<c:set var="cecDiff" value="bg-info" />
-												</c:if>
-												<c:set var="cecDiffUnit" value="bg-test" />
-												<c:if
-													test="${pc.noOfUnitsMOPR ne pc.noOfUnitsCEC and pc.noOfUnitsCEC != null }">
-													<c:set var="cecDiffUnit" value="bg-info" />
-												</c:if>
-												<tr class="mainTrId">
-													<td align="center" id="plusId${pc.componentsId}"><c:if
-															test="${pc.componentsId ne 11 and pc.componentsId ne 12}">
-															<div id="expendRow${pc.componentsId}"
-																class="expendRowAll"
-																onclick="toggleSubComponent('${pc.componentsId}',true)">
-																<i class="fa fa-plus-circle" aria-hidden="true"></i>
-															</div>
-															<div id="collapseRow${pc.componentsId}"
-																class="collapseRowAll"
-																onclick="toggleSubComponent('${pc.componentsId}',false)"
-																style="display: none;">
-																<i class="fa fa-minus-circle" aria-hidden="true"></i>
-															</div>
-														</c:if></td>
-													<td><b>${pcindex.count}</b></td>
-													<td><b>${pc.eName}</b></td>
-
-													<td align="center"><c:if
-															test="${(pc.amountProposed+pc.addtionalRequirement)>0}">
-															<b><fmt:formatNumber type="number"
-																	maxFractionDigits="3"
-																	value="${pc.amountProposed+pc.addtionalRequirement}" /></b>
-														</c:if></td>
-													<td align="center" class="${moprDiff}"><c:if
-															test="${(pc.amountProposedMOPR+pc.addtionalRequirementMOPR)>0}">
-															<b><fmt:formatNumber type="number"
-																	maxFractionDigits="3"
-																	value="${pc.amountProposedMOPR+pc.addtionalRequirementMOPR}" /></b>
-														</c:if></td>
-													<td align="center" class="${cecDiff}"><c:if
-															test="${(pc.amountProposedCEC+pc.addtionalRequirementCEC)>0}">
-															<b><fmt:formatNumber type="number"
-																	maxFractionDigits="3"
-																	value="${pc.amountProposedCEC+pc.addtionalRequirementCEC}" /></b>
-														</c:if></td>
-
-													<c:set var="t_fund"
-														value="${t_fund+pc.amountProposed+pc.addtionalRequirement}" />
-													<c:set var="t_unit" value="${t_unit+pc.noOfUnits}" />
-													<c:set var="t_fund_mopr"
-														value="${t_fund_mopr+pc.amountProposedMOPR+pc.addtionalRequirementMOPR}" />
-													<c:set var="t_unit_mopr"
-														value="${t_unit_mopr+pc.noOfUnitsMOPR}" />
-													<c:set var="t_fund_cec"
-														value="${t_fund_cec+pc.amountProposedCEC+pc.addtionalRequirementCEC}" />
-													<c:set var="t_unit_cec"
-														value="${t_unit_cec+pc.noOfUnitsCEC}" />
-												</tr>
-
-												<c:set var="pscindex" value="0" />
-
-												<c:forEach items="${planComponentsFunds}" var="psc">
+											<c:forEach items="${planComponentsFunds}" var="pc"
+												varStatus="pcindex">
+												<c:if test="${pc.eType eq 'C'}">
+													<c:set var="moprDiff" value="bg-test" />
 													<c:if
-														test="${psc.eType eq 'S' and pc.componentsId==psc.componentsId }">
-														<c:set var="pscindex" value="${pscindex+1}" />
-														<c:set var="moprDiff" value="bg-test" />
+														test="${pc.amountProposed+pc.addtionalRequirement ne pc.amountProposedMOPR+pc.addtionalRequirementMOPR and pc.amountProposedMOPR != null }">
+														<c:set var="moprDiff" value="bg-warning" />
+													</c:if>
+													<c:set var="moprDiffUnit" value="bg-test" />
+													<c:if
+														test="${pc.noOfUnits ne pc.noOfUnitsMOPR and pc.noOfUnitsMOPR != null }">
+														<c:set var="moprDiffUnit" value="bg-warning" />
+													</c:if>
+													<c:set var="cecDiff" value="bg-test" />
+													<c:if
+														test="${pc.amountProposedMOPR+pc.addtionalRequirementMOPR ne pc.amountProposedCEC+pc.addtionalRequirementCEC and pc.amountProposedCEC != null }">
+														<c:set var="cecDiff" value="bg-info" />
+													</c:if>
+													<c:set var="cecDiffUnit" value="bg-test" />
+													<c:if
+														test="${pc.noOfUnitsMOPR ne pc.noOfUnitsCEC and pc.noOfUnitsCEC != null }">
+														<c:set var="cecDiffUnit" value="bg-info" />
+													</c:if>
+													<tr class="mainTrId">
+														<td align="center" id="plusId${pc.componentsId}"><c:if
+																test="${pc.componentsId ne 11 and pc.componentsId ne 12}">
+																<div id="expendRow${pc.componentsId}"
+																	class="expendRowAll"
+																	onclick="toggleSubComponent('${pc.componentsId}',true)">
+																	<i class="fa fa-plus-circle" aria-hidden="true"></i>
+																</div>
+																<div id="collapseRow${pc.componentsId}"
+																	class="collapseRowAll"
+																	onclick="toggleSubComponent('${pc.componentsId}',false)"
+																	style="display: none;">
+																	<i class="fa fa-minus-circle" aria-hidden="true"></i>
+																</div>
+															</c:if></td>
+														<td><b>${pcindex.count}</b></td>
+														<td><b>${pc.eName}</b></td>
+
+														<td align="center"><c:if
+																test="${(pc.amountProposed+pc.addtionalRequirement)>0}">
+																<b><fmt:formatNumber type="number"
+																		maxFractionDigits="3"
+																		value="${pc.amountProposed+pc.addtionalRequirement}" /></b>
+															</c:if></td>
+														<td align="center" class="${moprDiff}"><c:if
+																test="${(pc.amountProposedMOPR+pc.addtionalRequirementMOPR)>0}">
+																<b><fmt:formatNumber type="number"
+																		maxFractionDigits="3"
+																		value="${pc.amountProposedMOPR+pc.addtionalRequirementMOPR}" /></b>
+															</c:if></td>
+														<td align="center" class="${cecDiff}"><c:if
+																test="${(pc.amountProposedCEC+pc.addtionalRequirementCEC)>0}">
+																<b><fmt:formatNumber type="number"
+																		maxFractionDigits="3"
+																		value="${pc.amountProposedCEC+pc.addtionalRequirementCEC}" /></b>
+															</c:if></td>
+
+														<c:set var="t_fund"
+															value="${t_fund+pc.amountProposed+pc.addtionalRequirement}" />
+														<c:set var="t_unit" value="${t_unit+pc.noOfUnits}" />
+														<c:set var="t_fund_mopr"
+															value="${t_fund_mopr+pc.amountProposedMOPR+pc.addtionalRequirementMOPR}" />
+														<c:set var="t_unit_mopr"
+															value="${t_unit_mopr+pc.noOfUnitsMOPR}" />
+														<c:set var="t_fund_cec"
+															value="${t_fund_cec+pc.amountProposedCEC+pc.addtionalRequirementCEC}" />
+														<c:set var="t_unit_cec"
+															value="${t_unit_cec+pc.noOfUnitsCEC}" />
+													</tr>
+
+													<c:set var="pscindex" value="0" />
+
+													<c:forEach items="${planComponentsFunds}" var="psc">
 														<c:if
-															test="${psc.amountProposed gt psc.amountProposedMOPR}">
-															<c:set var="moprDiff" value="bg-warning" />
-														</c:if>
-														<c:set var="moprDiffUnit" value="bg-test" />
-														<c:if
-															test="${psc.noOfUnits ne psc.noOfUnitsMOPR and psc.noOfUnitsMOPR != null }">
-															<c:set var="moprDiffUnit" value="bg-warning" />
-														</c:if>
-														<c:set var="cecDiff" value="bg-test" />
-														<c:if
-															test="${psc.amountProposedMOPR+psc.addtionalRequirementMOPR ne psc.amountProposedCEC+psc.addtionalRequirementCEC and psc.amountProposedCEC != null }">
-															<c:set var="cecDiff" value="bg-info" />
-														</c:if>
-														<c:set var="cecDiffUnit" value="bg-test" />
-														<c:if
-															test="${psc.noOfUnitsMOPR ne psc.noOfUnitsCEC and psc.noOfUnitsCEC != null }">
-															<c:set var="cecDiffUnit" value="bg-info" />
-														</c:if>
+															test="${psc.eType eq 'S' and pc.componentsId==psc.componentsId }">
+															<c:set var="pscindex" value="${pscindex+1}" />
+															<c:set var="moprDiff" value="bg-test" />
+															<c:if
+																test="${psc.amountProposed gt psc.amountProposedMOPR}">
+																<c:set var="moprDiff" value="bg-warning" />
+															</c:if>
+															<c:set var="moprDiffUnit" value="bg-test" />
+															<c:if
+																test="${psc.noOfUnits ne psc.noOfUnitsMOPR and psc.noOfUnitsMOPR != null }">
+																<c:set var="moprDiffUnit" value="bg-warning" />
+															</c:if>
+															<c:set var="cecDiff" value="bg-test" />
+															<c:if
+																test="${psc.amountProposedMOPR+psc.addtionalRequirementMOPR ne psc.amountProposedCEC+psc.addtionalRequirementCEC and psc.amountProposedCEC != null }">
+																<c:set var="cecDiff" value="bg-info" />
+															</c:if>
+															<c:set var="cecDiffUnit" value="bg-test" />
+															<c:if
+																test="${psc.noOfUnitsMOPR ne psc.noOfUnitsCEC and psc.noOfUnitsCEC != null }">
+																<c:set var="cecDiffUnit" value="bg-info" />
+															</c:if>
 
 															<c:if
 																test="${psc.subcomponentsId eq 8 or psc.subcomponentsId eq 9}">
@@ -516,7 +535,7 @@
 																		value="${totalCarryForwardCecInstInfra + psc.amountProposedCEC}" />
 																</c:if>
 															</c:if>
-															
+
 															<c:if
 																test="${psc.subcomponentsId eq 12 or psc.subcomponentsId eq 13 or psc.subcomponentsId eq 14}">
 																<c:if test="${psc.amountProposed>0}">
@@ -551,36 +570,38 @@
 
 
 
-															<c:if test="${psc.componentsId ne 2 and psc.componentsId ne 3 }">	
-															<tr class="slide${pc.componentsId} expand-all"
-																style="display: none;">
-																<td></td>
-																<td>&#${96+pscindex})</td>
-	
-																<td>${psc.eName}</td>
-																<td align="center"><fmt:formatNumber type="number"
-																		maxFractionDigits="3" value="${psc.amountProposed}" />
-																</td>
-																<td align="center" class="${moprDiff }"><fmt:formatNumber
-																		type="number" maxFractionDigits="3"
-																		value="${psc.amountProposedMOPR}" /></td>
-																<c:set var="cecDiff" value="bg-test" />
-																<c:if
-																	test="${psc.amountProposedMOPR gt psc.amountProposedCEC}">
-																	<c:set var="cecDiff" value="bg-danger" />
-																</c:if>
-	
-																<td align="center" class="${cecDiff}"><fmt:formatNumber
-																		type="number" maxFractionDigits="3"
-																		value="${psc.amountProposedCEC}" /></td>
-															</tr>
+															<c:if
+																test="${psc.componentsId ne 2 and psc.componentsId ne 3 }">
+																<tr class="slide${pc.componentsId} expand-all"
+																	style="display: none;">
+																	<td></td>
+																	<td>&#${96+pscindex})</td>
+
+																	<td>${psc.eName}</td>
+																	<td align="center"><fmt:formatNumber type="number"
+																			maxFractionDigits="3" value="${psc.amountProposed}" />
+																	</td>
+																	<td align="center" class="${moprDiff }"><fmt:formatNumber
+																			type="number" maxFractionDigits="3"
+																			value="${psc.amountProposedMOPR}" /></td>
+																	<c:set var="cecDiff" value="bg-test" />
+																	<c:if
+																		test="${psc.amountProposedMOPR gt psc.amountProposedCEC}">
+																		<c:set var="cecDiff" value="bg-danger" />
+																	</c:if>
+
+																	<td align="center" class="${cecDiff}"><fmt:formatNumber
+																			type="number" maxFractionDigits="3"
+																			value="${psc.amountProposedCEC}" /></td>
+																</tr>
+															</c:if>
 														</c:if>
-													</c:if>
-												</c:forEach>
+													</c:forEach>
 
 													<!-- for institutional infra modification -->
 													<c:if test="${pc.componentsId eq 2}">
-														<tr class="slide${pc.componentsId} expand-all" style="display: none;">
+														<tr class="slide${pc.componentsId} expand-all"
+															style="display: none;">
 															<td></td>
 															<td>
 																<div
@@ -648,7 +669,8 @@
 
 														<!-- carry forward institutional infra -->
 
-														<tr class="slide${pc.componentsId} expand-all" style="display: none;">
+														<tr class="slide${pc.componentsId} expand-all"
+															style="display: none;">
 															<td></td>
 															<td>
 																<div
@@ -665,7 +687,7 @@
 																</div>
 															</td>
 															<td><strong>Carry Forward</strong></td>
-														<!-- 	<td></td> -->
+															<!-- 	<td></td> -->
 															<td align="center"><fmt:formatNumber type="number"
 																	maxFractionDigits="3"
 																	value="${totalCarryForwardStateInstInfra}" /></td>
@@ -719,7 +741,8 @@
 
 													<!-- panchayat bhawan bifurcation in new building and carry forward -->
 													<c:if test="${pc.componentsId eq 3}">
-														<tr class="slide${pc.componentsId} expand-all" style="display: none;">
+														<tr class="slide${pc.componentsId} expand-all"
+															style="display: none;">
 															<td></td>
 															<td>
 																<div
@@ -786,7 +809,8 @@
 														</c:forEach>
 
 														<!-- carry forward entry -->
-														<tr class="slide${pc.componentsId} expand-all" style="display: none;">
+														<tr class="slide${pc.componentsId} expand-all"
+															style="display: none;">
 															<td></td>
 															<td>
 																<div
@@ -857,129 +881,129 @@
 
 
 													<c:set var="moprDiff" value="bg-test" />
-												<c:if test="${pc.amountProposed gt pc.amountProposedMOPR}">
-													<c:set var="moprDiff" value="bg-warning" />
-												</c:if>
-												<c:set var="moprDiffUnit" value="bg-test" />
-												<c:if
-													test="${pc.noOfUnits ne pc.noOfUnitsMOPR and pc.noOfUnitsMOPR != null }">
-													<c:set var="moprDiffUnit" value="bg-warning" />
-												</c:if>
-												<c:set var="cecDiff" value="bg-test" />
-												<c:if
-													test="${pc.amountProposedMOPR+pc.addtionalRequirementMOPR ne pc.amountProposedCEC+pc.addtionalRequirementCEC and pc.amountProposedCEC != null }">
-													<c:set var="cecDiff" value="bg-info" />
-												</c:if>
-												<c:set var="cecDiffUnit" value="bg-test" />
-												<c:if
-													test="${pc.noOfUnitsMOPR ne pc.noOfUnitsCEC and pc.noOfUnitsCEC != null }">
-													<c:set var="cecDiffUnit" value="bg-info" />
-												</c:if>
-												<c:if
-													test="${pscindex eq 0 and pc.componentsId ne 11 and pc.componentsId ne 12}">
-													<tr class="slidex${pc.componentsId} expand-all"
-														style="display: none;">
-														<td></td>
-														<td></td>
-														<td>${pc.eName}</td>
-														<td align="center"><c:if
-																test="${pc.amountProposed>0}">
-																<fmt:formatNumber type="number" maxFractionDigits="3"
-																	value="${pc.amountProposed}" />
-															</c:if></td>
-														<td align="center" class="${moprDiff}"><c:if
-																test="${pc.amountProposedMOPR>0}">
-																<fmt:formatNumber type="number" maxFractionDigits="3"
-																	value="${pc.amountProposedMOPR}" />
-															</c:if></td>
-														<td align="center" class="${cecDiff}"><c:if
-																test="${pc.amountProposedCEC>0}">
-																<fmt:formatNumber type="number" maxFractionDigits="3"
-																	value="${pc.amountProposedCEC}" />
-															</c:if></td>
-													</tr>
-												</c:if>
-												<c:if
-													test="${pc.componentsId ne 11 and pc.componentsId ne 12}">
-													<tr class="slidex${pc.componentsId} expand-all"
-														style="display: none;">
-														<td></td>
-														<td></td>
+													<c:if test="${pc.amountProposed gt pc.amountProposedMOPR}">
+														<c:set var="moprDiff" value="bg-warning" />
+													</c:if>
+													<c:set var="moprDiffUnit" value="bg-test" />
+													<c:if
+														test="${pc.noOfUnits ne pc.noOfUnitsMOPR and pc.noOfUnitsMOPR != null }">
+														<c:set var="moprDiffUnit" value="bg-warning" />
+													</c:if>
+													<c:set var="cecDiff" value="bg-test" />
+													<c:if
+														test="${pc.amountProposedMOPR+pc.addtionalRequirementMOPR ne pc.amountProposedCEC+pc.addtionalRequirementCEC and pc.amountProposedCEC != null }">
+														<c:set var="cecDiff" value="bg-info" />
+													</c:if>
+													<c:set var="cecDiffUnit" value="bg-test" />
+													<c:if
+														test="${pc.noOfUnitsMOPR ne pc.noOfUnitsCEC and pc.noOfUnitsCEC != null }">
+														<c:set var="cecDiffUnit" value="bg-info" />
+													</c:if>
+													<c:if
+														test="${pscindex eq 0 and pc.componentsId ne 11 and pc.componentsId ne 12}">
+														<tr class="slidex${pc.componentsId} expand-all"
+															style="display: none;">
+															<td></td>
+															<td></td>
+															<td>${pc.eName}</td>
+															<td align="center"><c:if
+																	test="${pc.amountProposed>0}">
+																	<fmt:formatNumber type="number" maxFractionDigits="3"
+																		value="${pc.amountProposed}" />
+																</c:if></td>
+															<td align="center" class="${moprDiff}"><c:if
+																	test="${pc.amountProposedMOPR>0}">
+																	<fmt:formatNumber type="number" maxFractionDigits="3"
+																		value="${pc.amountProposedMOPR}" />
+																</c:if></td>
+															<td align="center" class="${cecDiff}"><c:if
+																	test="${pc.amountProposedCEC>0}">
+																	<fmt:formatNumber type="number" maxFractionDigits="3"
+																		value="${pc.amountProposedCEC}" />
+																</c:if></td>
+														</tr>
+													</c:if>
+													<c:if
+														test="${pc.componentsId ne 11 and pc.componentsId ne 12}">
+														<tr class="slidex${pc.componentsId} expand-all"
+															style="display: none;">
+															<td></td>
+															<td></td>
 
-														<td style="color: #0d1d92c9">Additional Requirement</td>
-														<td><p align="center">
-																<fmt:formatNumber type="number" maxFractionDigits="3"
-																	value="${pc.addtionalRequirement}" />
-															</p></td>
-														<td><p align="center">
-																<fmt:formatNumber type="number" maxFractionDigits="3"
-																	value="${pc.addtionalRequirementMOPR}" />
-															</p></td>
-														<td><p align="center">
-																<fmt:formatNumber type="number" maxFractionDigits="3"
-																	value="${pc.addtionalRequirementCEC}" />
-															</p></td>
-														<!-- <td></td> -->
-													</tr>
+															<td style="color: #0d1d92c9">Additional Requirement</td>
+															<td><p align="center">
+																	<fmt:formatNumber type="number" maxFractionDigits="3"
+																		value="${pc.addtionalRequirement}" />
+																</p></td>
+															<td><p align="center">
+																	<fmt:formatNumber type="number" maxFractionDigits="3"
+																		value="${pc.addtionalRequirementMOPR}" />
+																</p></td>
+															<td><p align="center">
+																	<fmt:formatNumber type="number" maxFractionDigits="3"
+																		value="${pc.addtionalRequirementCEC}" />
+																</p></td>
+															<!-- <td></td> -->
+														</tr>
+													</c:if>
+													<c:if test="${pc.componentsId==10}">
+														<tr class="table_th">
+															<th colspan="10"></th>
+														</tr>
+														<tr class="table_th">
+															<th></th>
+															<th></th>
+															<th>Sub-Total</th>
+															<th><p align="center">
+																	<c:if test="${t_fund>0}">
+																		<fmt:formatNumber type="number" maxFractionDigits="3"
+																			value="${t_fund}" />
+																	</c:if>
+																</p></th>
+															<th><p align="center">
+																	<c:if test="${t_fund_mopr>0}">
+																		<fmt:formatNumber type="number" maxFractionDigits="3"
+																			value="${t_fund_mopr}" />
+																	</c:if>
+																</p></th>
+															<th><p align="center">
+																	<c:if test="${t_fund_cec>0}">
+																		<fmt:formatNumber type="number" maxFractionDigits="3"
+																			value="${t_fund_cec}" />
+																	</c:if>
+																</p></th>
+														</tr>
+													</c:if>
 												</c:if>
-												<c:if test="${pc.componentsId==10}">
-													<tr class="table_th">
-														<th colspan="10"></th>
-													</tr>
-													<tr class="table_th">
-														<th></th>
-														<th></th>
-														<th>Sub-Total</th>
-														<th><p align="center">
-																<c:if test="${t_fund>0}">
-																	<fmt:formatNumber type="number" maxFractionDigits="3"
-																		value="${t_fund}" />
-																</c:if>
-															</p></th>
-														<th><p align="center">
-																<c:if test="${t_fund_mopr>0}">
-																	<fmt:formatNumber type="number" maxFractionDigits="3"
-																		value="${t_fund_mopr}" />
-																</c:if>
-															</p></th>
-														<th><p align="center">
-																<c:if test="${t_fund_cec>0}">
-																	<fmt:formatNumber type="number" maxFractionDigits="3"
-																		value="${t_fund_cec}" />
-																</c:if>
-															</p></th>
-													</tr>
-												</c:if>
-											</c:if>
-										</c:forEach>
-										<tr class="table_th">
-											<th colspan="10"></th>
-										</tr>
-										<tr class="table_th">
-											<th></th>
-											<th></th>
-											<th>Total</th>
-											<th><p align="center">
-													<c:if test="${t_fund>0}">
-														<fmt:formatNumber type="number" maxFractionDigits="3"
-															value="${t_fund}" />
-													</c:if>
-												</p></th>
-											<th><p align="center">
-													<c:if test="${t_fund_mopr>0}">
-														<fmt:formatNumber type="number" maxFractionDigits="3"
-															value="${t_fund_mopr}" />
-													</c:if>
-												</p></th>
-											<th><p align="center">
-													<c:if test="${t_fund_cec>0}">
-														<fmt:formatNumber type="number" maxFractionDigits="3"
-															value="${t_fund_cec}" />
-													</c:if>
-												</p></th>
-										</tr>
-									</tbody>
-								</table>
+											</c:forEach>
+											<tr class="table_th">
+												<th colspan="10"></th>
+											</tr>
+											<tr class="table_th">
+												<th></th>
+												<th></th>
+												<th>Total</th>
+												<th><p align="center">
+														<c:if test="${t_fund>0}">
+															<fmt:formatNumber type="number" maxFractionDigits="3"
+																value="${t_fund}" />
+														</c:if>
+													</p></th>
+												<th><p align="center">
+														<c:if test="${t_fund_mopr>0}">
+															<fmt:formatNumber type="number" maxFractionDigits="3"
+																value="${t_fund_mopr}" />
+														</c:if>
+													</p></th>
+												<th><p align="center">
+														<c:if test="${t_fund_cec>0}">
+															<fmt:formatNumber type="number" maxFractionDigits="3"
+																value="${t_fund_cec}" />
+														</c:if>
+													</p></th>
+											</tr>
+										</tbody>
+									</table>
 								</div>
 								<div class="text-right">
 									<button type="button" class="btn bg-green waves-effect"
@@ -989,7 +1013,8 @@
 										onclick="expandAll('collapse')" id="collapseButtonId"
 										style="display: none;">Collapse All</button>
 									<button type="button" class="btn bg-red waves-effect"
-										id="exportButtonId" onclick="exportToPdf('annualPlanBlockPrint')">Export
+										id="exportButtonId"
+										onclick="exportToPdf('annualPlanBlockPrint')">Export
 										File</button>
 								</div>
 							</div>
