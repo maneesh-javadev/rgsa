@@ -35,6 +35,7 @@ import gov.in.rgsa.entity.FetchPlanStatusCount;
 @RestController
 
 public class RestService {
+	int total = 0;
 	
 	@Autowired
 	private WebserviceService webserviceService;
@@ -94,7 +95,18 @@ public class RestService {
 		response.setHeader("Access-Control-Allow-Origin", "*");
 		response.setHeader("Access-Control-Allow-Headers", request.getHeader("Access-Control-Request-Headers"));
 		response.setHeader("Access-Control-Allow-Methods", request.getHeader("Access-Control-Request-Method"));	
-		return webserviceService.fetchERRepresentativeHundredDayProgLASTWEEKWISE();
+		List<ERRepresentativeHundredDayProgLastWeekWise> list = webserviceService.fetchERRepresentativeHundredDayProgLASTWEEKWISE();
+		list.forEach( obj -> {
+			if(obj.getTotalERTrained() != 0) {
+				total = obj.getTotalERTrained();
+			}
+			
+			if(obj.getTotalERTrained() == 0) {
+				obj.setTotalERTrained(total);
+			}
+		});
+		
+		return list;
 	}
 
 	
