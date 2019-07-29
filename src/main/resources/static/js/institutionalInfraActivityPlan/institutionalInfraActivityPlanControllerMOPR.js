@@ -192,11 +192,18 @@ publicModule.controller("institutionalInfraActivityPlanController", [ '$scope', 
 					}
 				}
 				
-				if(index!=null && totalOfFunds>20000000){
+				/*if(index!=null && totalOfFunds>20000000){
 					totalOfFunds=totalOfFunds-$scope.institutionalInfraActivityPlanDetailsNBDistrict[index].fundProposed;
 					$scope.institutionalInfraActivityPlanDetailsNBDistrict[index].fundProposed=null;
 					toastr.error("Fund proposed in case of DPRC should be less than or equal to 2 crore");
+				}*/
+				
+				if(index!=null && $scope.institutionalInfraActivityPlanDetailsNBDistrict[index].fundProposed > 20000000){
+					totalOfFunds=totalOfFunds-$scope.institutionalInfraActivityPlanDetailsNBDistrict[index].fundProposed;
+					$scope.institutionalInfraActivityPlanDetailsNBDistrict[index].fundProposed=null;
+					toastr.error("Fund proposed for single DPRC should be less than or equal to 20000000");
 				}
+				
 			$scope.totalWithoutAddRequirementsNBD = totalOfFunds;
 			if($scope.institutionalInfraActivityPlan.additionalRequirementNBD != null && $scope.institutionalInfraActivityPlan.additionalRequirementNBD != undefined){
 				addiReq=parseInt($scope.institutionalInfraActivityPlan.additionalRequirementNBD);

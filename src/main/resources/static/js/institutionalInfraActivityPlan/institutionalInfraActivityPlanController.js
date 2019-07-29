@@ -469,6 +469,7 @@ function create_state_row_CF(rindex,name,id){
 		if(typeId==2){
 			var totalOfFunds = 0;
 			var totalOfFundsReq=0;
+			//var totalDistrictSelected = $scope.dprcDistrictNB.length;
 			var addiReq=0;
 				for (var i = 0; i < $scope.institutionalInfraActivityPlanDetailsNBDistrict.length; i++) {
 					if(  $scope.institutionalInfraActivityPlanDetailsNBDistrict[i].fundProposed!= null && $scope.institutionalInfraActivityPlanDetailsNBDistrict[i].fundProposed!= undefined && $scope.institutionalInfraActivityPlanDetailsNBDistrict[i].fundProposed!= ""){
@@ -476,10 +477,16 @@ function create_state_row_CF(rindex,name,id){
 					}
 				}
 				
-				if(index!=null && totalOfFunds>20000000){
+				/*if(index!=null && totalOfFunds>20000000 * totalDistrictSelected){
 					totalOfFunds=totalOfFunds-$scope.institutionalInfraActivityPlanDetailsNBDistrict[index].fundProposed;
 					$scope.institutionalInfraActivityPlanDetailsNBDistrict[index].fundProposed=null;
-					toastr.error("Fund proposed in case of DPRC should be less than or equal to 2 crore");
+					toastr.error("Fund proposed in case of DPRC should be less than or equal to " + (20000000 * totalDistrictSelected));
+				}*/
+				
+				if(index!=null && $scope.institutionalInfraActivityPlanDetailsNBDistrict[index].fundProposed > 20000000){
+					totalOfFunds=totalOfFunds-$scope.institutionalInfraActivityPlanDetailsNBDistrict[index].fundProposed;
+					$scope.institutionalInfraActivityPlanDetailsNBDistrict[index].fundProposed=null;
+					toastr.error("Fund proposed for single DPRC should be less than or equal to 20000000");
 				}
 			$scope.totalWithoutAddRequirementsNBD = totalOfFunds;
 			if($scope.institutionalInfraActivityPlan.additionalRequirementNBD != null && $scope.institutionalInfraActivityPlan.additionalRequirementNBD != undefined){
