@@ -57,6 +57,11 @@ text-align: right;
 table.dataTable thead > tr > th, table.dataTable thead > tr > td {
      padding-right: 0px !important; 
 }
+
+.ex {
+	margin-right: 0px;
+    margin-bottom: 10px;
+}
 </style>
 <section class="content" ng-controller="trainingDetailController">
 	<div class="container-fluid">
@@ -72,7 +77,7 @@ table.dataTable thead > tr > th, table.dataTable thead > tr > td {
 							
 								
 								<div ng-show="isbtnAddTraining" class="form-group text-right" >
-									<button ng-click="toAddNew()" ng-disabled="training.isFreeze" class="btn bg-green waves-effect">ADD TRAININGS</button>
+									<button ng-click="toAddNew()" ng-disabled="training.isFreeze" class="btn bg-green waves-effect"  style="margin-right: 10px; margin-top: 5px;">ADD TRAININGS</button>
 									
 									
 								</div>
@@ -80,7 +85,7 @@ table.dataTable thead > tr > th, table.dataTable thead > tr > td {
 						<div ng-show="isShowRecodVisible">
 							
 							<div class="records">
-								<div class="">
+								<div class="table-responsive">
 									<table id="trainingActivityTblId"
 										class="table table-hover dashboard-task-infos">
 										<thead>
@@ -136,7 +141,7 @@ table.dataTable thead > tr > th, table.dataTable thead > tr > td {
 							</div>
 							<br>
 							
-								<div class="row clearfix">
+								<div class="row clearfix ex">
 									<div class="col-sm-6">
 									</div>
 									<div class="col-sm-2">
@@ -148,7 +153,7 @@ table.dataTable thead > tr > th, table.dataTable thead > tr > td {
 											style="text-align: right;">
 									</div>
 								</div>
-								<div class="row clearfix">
+								<div class="row clearfix ex">
 									<div class="col-sm-6">
 									</div>
 									<div class="col-sm-2">
@@ -160,7 +165,7 @@ table.dataTable thead > tr > th, table.dataTable thead > tr > td {
 											style="text-align: right;">
 									</div>
 								</div>
-								<div class="row clearfix">
+								<div class="row clearfix ex">
 									<div class="col-sm-6">
 									</div>
 									<div class="col-sm-2">
@@ -172,7 +177,7 @@ table.dataTable thead > tr > th, table.dataTable thead > tr > td {
 									
 									</div>
 								</div>
-								<div class="row clearfix">
+								<div class="row clearfix ex">
 									<div class="col-sm-6">
 									</div>
 									<div class="col-sm-2">
@@ -353,5 +358,4 @@ table.dataTable thead > tr > th, table.dataTable thead > tr > td {
 		</div>
 	</div>
 </section>
-
 </html>

@@ -59,50 +59,41 @@ public class EGovernanceSupportServiceImpl implements EGovernanceSupportService 
 				eGovSupportActivity.setStatus(false);
 				eGovSupportActivity.setCreatedBy(userPreference.getUserId());
 				eGovSupportActivity.setCreatedOn(new Date());
-
+				
 				commonRepository.update(eGovSupportActivity);
 			}
 		}
 }
 
 	private void saveEGovSupportActivitysForState(EGovSupportActivity eGovSupportActivity) {
-		List<EGovSupportActivityDetails> egovDetails = eGovSupportActivity.geteGovSupportActivityDetails();
-		if (eGovSupportActivity.geteGovSupportActivityId() == null || eGovSupportActivity.geteGovSupportActivityId() == 0) {
-			eGovSupportActivity.setStateCode(userPreference.getStateCode());
-			eGovSupportActivity.setyearId(userPreference.getFinYearId());
-			eGovSupportActivity.setUserType(userPreference.getUserType().charAt(0));
-			eGovSupportActivity.setCreatedBy(userPreference.getUserId());
-			eGovSupportActivity.setCreatedOn(new Date());
-			eGovSupportActivity.setStatus(false);
-			eGovSupportActivity.setLastUpdatedOn(new Date());
-			eGovSupportActivity.setLastUpdatedBy(userPreference.getUserId());
-			commonRepository.save(eGovSupportActivity);
-			for (EGovSupportActivityDetails eGovActivityDetails : egovDetails) {
-				if (egovDetails != null) {
-					eGovActivityDetails.seteGovSupportActivity(eGovSupportActivity);
-					commonRepository.save(eGovActivityDetails);
-				}
-			}
-		} else {
-
-			eGovSupportActivity.seteGovSupportActivityId(eGovSupportActivity.geteGovSupportActivityId());
-			eGovSupportActivity.setLastUpdatedOn(new Date());
-			eGovSupportActivity.setLastUpdatedBy(userPreference.getUserId());
-			eGovSupportActivity.setStatus(false);
-			eGovSupportActivity.setCreatedBy(userPreference.getUserId());
-			eGovSupportActivity.setCreatedOn(new Date());
-			eGovSupportActivity.setStateCode(userPreference.getStateCode());
-			eGovSupportActivity.setYearId(userPreference.getFinYearId());
-			eGovSupportActivity.setVersionNo(1);
-			commonRepository.update(eGovSupportActivity);
-			for (EGovSupportActivityDetails eGovActivityDetails : egovDetails) {
-
-				eGovActivityDetails.seteGovSupportActivity(eGovSupportActivity);
-				commonRepository.update(eGovActivityDetails);
-
-			}
+		eGovSupportActivity.setStateCode(userPreference.getStateCode());
+		eGovSupportActivity.setyearId(userPreference.getFinYearId());
+		eGovSupportActivity.setUserType(userPreference.getUserType().charAt(0));
+		eGovSupportActivity.setCreatedBy(userPreference.getUserId());
+		eGovSupportActivity.setCreatedOn(new Date());
+		eGovSupportActivity.setStatus(false);
+		eGovSupportActivity.setLastUpdatedOn(new Date());
+		eGovSupportActivity.setLastUpdatedBy(userPreference.getUserId());
+		if(eGovSupportActivity.getAdditionalRequirementSpmu() == null) {
+			eGovSupportActivity.setAdditionalRequirementSpmu(0);
 		}
-
+		
+		if(eGovSupportActivity.getAdditionalRequirementDpmu() == null) {
+			eGovSupportActivity.setAdditionalRequirementDpmu(0);
+		}
+		
+		// setting main table object in details
+		List<EGovSupportActivityDetails> egovDetails = eGovSupportActivity.geteGovSupportActivityDetails();
+		for (EGovSupportActivityDetails eGovActivityDetails : egovDetails) {
+			eGovActivityDetails.seteGovSupportActivity(eGovSupportActivity);
+		}
+		
+		if (eGovSupportActivity.geteGovSupportActivityId() == null) {
+			commonRepository.save(eGovSupportActivity);
+		} else {
+			commonRepository.update(eGovSupportActivity);
+		}
+		 
 	}
 
 	private void saveEGovSupportActivitysForMOPR(EGovSupportActivity eGovSupportActivity) {

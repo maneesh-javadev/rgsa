@@ -134,9 +134,6 @@ function calculateGrandTotal() {
 		if($('#additionalRequirementSpmuId').val() > 0.25 * $('#total_fund_spmu').val()){
 			alert("SPMU additional Requirement should be less than or equal to 25% of SPMU total Fund :" +  0.25 * $('#total_fund_spmu').val());
 			$('#additionalRequirementSpmuId').val('');
-			$('#grandTotalId').val('');
-		}else{
-			$('#grandTotalId').val(+$('#additionalRequirementDpmuId').val() + +$("#total_fund_dpmu").val() + +$('#additionalRequirementSpmuId').val() + +$("#total_fund_spmu").val());
 		}
 	}
 	
@@ -144,11 +141,9 @@ function calculateGrandTotal() {
 		if($('#additionalRequirementDpmuId').val() > 0.25 * $('#total_fund_dpmu').val()){
 			alert("DPMU additional Requirement should be less than or equal to 25% of DPMU total Fund :" + +  0.25 * $('#total_fund_dpmu').val());
 			$('#additionalRequirementDpmuId').val('');
-			$('#grandTotalId').val('');
-		}else{							
-			$('#grandTotalId').val(+$('#additionalRequirementDpmuId').val() + +$("#total_fund_dpmu").val() + +$('#additionalRequirementSpmuId').val() + +$("#total_fund_spmu").val());
 		}
 	}
+	$('#grandTotalId').val(+$('#additionalRequirementDpmuId').val() + +$("#total_fund_dpmu").val() + +$('#additionalRequirementSpmuId').val() + +$("#total_fund_spmu").val());
 };
 
 function validateDistricts(){

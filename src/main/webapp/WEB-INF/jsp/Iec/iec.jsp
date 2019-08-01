@@ -1,9 +1,7 @@
 <%@include file="../taglib/taglib.jsp" %>
 <html>
-<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/plugins/multiselect/slimselect.min.css"
-      type="text/css"/>
-<script type="text/javascript"
-        src="${pageContext.request.contextPath}/resources/plugins/multiselect/slimselect.min.js"></script>
+<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/plugins/multiselect/slimselect.min.css" type="text/css"/>
+<script type="text/javascript" src="${pageContext.request.contextPath}/resources/plugins/multiselect/slimselect.min.js"></script>
 <style>
     .form-group .form-control.normalbox {
         border: 1px solid #ccc;

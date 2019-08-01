@@ -296,5 +296,7 @@
 <style>
 .ex1 {
   margin-left: -26px;
+  margin-bottom: 10px;
+  padding-right: 0px;
 }
 </style>
