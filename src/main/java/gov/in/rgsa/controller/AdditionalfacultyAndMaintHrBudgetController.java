@@ -19,7 +19,6 @@ import org.springframework.web.servlet.support.RequestContextUtils;
 
 import gov.in.rgsa.entity.District;
 import gov.in.rgsa.entity.Domains;
-import gov.in.rgsa.entity.EGovSupportActivityDetails;
 import gov.in.rgsa.entity.InstitueInfraHrActivity;
 import gov.in.rgsa.entity.InstitueInfraHrActivityDetails;
 import gov.in.rgsa.entity.InstituteInfraHrActivityType;
@@ -148,7 +147,13 @@ public class AdditionalfacultyAndMaintHrBudgetController {
       	else {
       		flag= false;
       	}
-	      model.addAttribute("Plan_Status", flag);
+        
+        // just to allow few states for filling the form again we have to change this after the work is done
+        if(userPreference.getStateCode() == 5 || userPreference.getStateCode() == 9 || userPreference.getStateCode() == 36) {
+        	 flag =true;
+        }
+	    
+        model.addAttribute("Plan_Status", flag);
 		model.addAttribute("USER_TYPE", userPreference.getUserType());
 		model.addAttribute("DISTRICTS_IN_STATE", lgdService.getAllDistrictBasedOnState(userPreference.getStateCode()).size());
 //---------------------------------- code for cec ----------------------------------------------	
