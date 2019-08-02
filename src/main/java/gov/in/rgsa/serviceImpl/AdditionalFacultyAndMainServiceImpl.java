@@ -62,21 +62,14 @@ public class AdditionalFacultyAndMainServiceImpl implements AdditionalFacultyAnd
 		
 		if(additionalFactultyAndMaintModel.getInstituteInfraHrActivityId() == null || additionalFactultyAndMaintModel.getInstituteInfraHrActivityId() == 0)
 		{
-			for(TIWiseProposedDomainExperts domainExpert : tIWiseProposedDomainExperts)
-			{
-				if(domainExpert != null)
+			if(!tIWiseProposedDomainExperts.isEmpty()) {
+				for(TIWiseProposedDomainExperts domainExpert : tIWiseProposedDomainExperts)
 				{
-					if(domainExpert.getDomainId() < 4)
-					{
+					if(domainExpert != null)
 						domainExpert.setInstitueInfraHrActivity(institueInfraHrActivity);
-					}
-					else
-					{
-						domainExpert.setDistrictCode(additionalFactultyAndMaintModel.getDistrictCode());
-						domainExpert.setInstitueInfraHrActivity(institueInfraHrActivity);
-					}
-					}
+				}
 			}
+			
 			institueInfraHrActivity.settIWiseProposedDomainExperts(tIWiseProposedDomainExperts);
 			institueInfraHrActivity.setAdditionalRequirementSprc(additionalFactultyAndMaintModel.getAdditionalRequirementSprc());
 			institueInfraHrActivity.setAdditionalRequirementDprc(additionalFactultyAndMaintModel.getAdditionalRequirementDprc());
@@ -85,7 +78,6 @@ public class AdditionalFacultyAndMainServiceImpl implements AdditionalFacultyAnd
 		{
 			if(details != null)
 			{
-				
 				details.setInstituteInfraHrActivityId(institueInfraHrActivity.getInstituteInfraHrActivityId());
 				commonRepository.save(details);
 			}
@@ -99,22 +91,16 @@ public class AdditionalFacultyAndMainServiceImpl implements AdditionalFacultyAnd
 			if(userPreference.getUserType().equalsIgnoreCase("M") && previousRecordUserType.equalsIgnoreCase("S")){
 					commonRepository.save(institueInfraHrActivity);
 					institueInfraHrActivity.setUserType(userPreference.getUserType());
-					for(TIWiseProposedDomainExperts domainExpert : tIWiseProposedDomainExperts)
-					{
-						if(domainExpert != null)
+					if(!tIWiseProposedDomainExperts.isEmpty()) {
+						for(TIWiseProposedDomainExperts domainExpert : tIWiseProposedDomainExperts)
 						{
-							if(domainExpert.getDomainId() < 4)
-							{
+							if(domainExpert != null) {
+								domainExpert.setTiWiseProposedDomainExpertsId(null);
 								domainExpert.setInstitueInfraHrActivity(institueInfraHrActivity);
 							}
-							else
-							{
-								domainExpert.setDistrictCode(additionalFactultyAndMaintModel.getDistrictCode());
-								domainExpert.setInstitueInfraHrActivity(institueInfraHrActivity);
-							}
-							domainExpert.setTiWiseProposedDomainExpertsId(null);
-							}
+						}
 					}
+					
 					institueInfraHrActivity.settIWiseProposedDomainExperts(tIWiseProposedDomainExperts);
 					institueInfraHrActivity.setAdditionalRequirementSprc(additionalFactultyAndMaintModel.getAdditionalRequirementSprc());
 					institueInfraHrActivity.setAdditionalRequirementDprc(additionalFactultyAndMaintModel.getAdditionalRequirementDprc());
@@ -126,19 +112,11 @@ public class AdditionalFacultyAndMainServiceImpl implements AdditionalFacultyAnd
 						commonRepository.save(details);
 					}
 			}else{
-				for(TIWiseProposedDomainExperts domainExpert : tIWiseProposedDomainExperts)
-				{
-					if(domainExpert != null)
+				if(!tIWiseProposedDomainExperts.isEmpty()) {
+					for(TIWiseProposedDomainExperts domainExpert : tIWiseProposedDomainExperts)
 					{
-						if(domainExpert.getDomainId() < 4)
-						{
+						if(domainExpert != null)
 							domainExpert.setInstitueInfraHrActivity(institueInfraHrActivity);
-						}
-						else
-						{
-							domainExpert.setDistrictCode(additionalFactultyAndMaintModel.getDistrictCode());
-							domainExpert.setInstitueInfraHrActivity(institueInfraHrActivity);
-						}
 					}
 				}
 				institueInfraHrActivity.settIWiseProposedDomainExperts(tIWiseProposedDomainExperts);

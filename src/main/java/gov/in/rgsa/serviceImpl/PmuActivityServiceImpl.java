@@ -99,9 +99,6 @@ public class PmuActivityServiceImpl implements PmuActivityService {
 				}
 				List<PmuWiseProposedDomainExperts> proposedDomainExperts = pmuActivity.getPmuWiseProposedDomainExperts();
 				for(PmuWiseProposedDomainExperts experts : proposedDomainExperts) {
-					if(experts.getDomainId() > 3){
-						experts.setDistrictId(pmuActivity.getSetDistrictIdPmuWise());
-					}
 					experts.setPmuActivityDomain(pmuActivity);
 				}
 				pmuActivity.setLastUpdateBy(userPreference.getUserId());
@@ -168,9 +165,6 @@ public class PmuActivityServiceImpl implements PmuActivityService {
 		}
 		List<PmuWiseProposedDomainExperts> proposedDomainExperts = pmuActivity.getPmuWiseProposedDomainExperts();
 		for(PmuWiseProposedDomainExperts experts : proposedDomainExperts) {
-			if(experts.getDomainId() > 3 ){
-				experts.setDistrictId(pmuActivity.getSetDistrictIdPmuWise());
-			}
 			experts.setPmuActivityDomain(pmuActivity);
 			/*if(experts.getNoOfExperts() != null)*/
 			/*if(experts.getDomainId() != null)

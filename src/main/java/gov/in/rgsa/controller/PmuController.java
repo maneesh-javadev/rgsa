@@ -86,10 +86,12 @@ public class PmuController {
 		if(!CollectionUtils.isEmpty(pmuActivitiesList)) {
 			List<PmuWiseProposedDomainExperts> proposedDomainExpertsList = pmuActivitiesList.get(0).getPmuWiseProposedDomainExperts();
 			if(proposedDomainExpertsList != null && !proposedDomainExpertsList.isEmpty())
-			Collections.sort(proposedDomainExpertsList, Comparator.comparing(PmuWiseProposedDomainExperts::getPmuWiseProposedDomainExpertsId));
-			pmuActivitiesList.get(0).setSetDistrictIdPmuWise(proposedDomainExpertsList.get(3).getDistrictId());
+				proposedDomainExpertsList.sort((o1,o2) -> o1.getPmuWiseProposedDomainExpertsId() - o2.getPmuWiseProposedDomainExpertsId());
+			//Collections.sort(proposedDomainExpertsList, Comparator.comparing(PmuWiseProposedDomainExperts::getPmuWiseProposedDomainExpertsId));
+			//pmuActivitiesList.get(0).setSetDistrictIdPmuWise(proposedDomainExpertsList.get(3).getDistrictId());
 			model.addAttribute("pmuActivity", pmuActivitiesList.get(0));
 			model.addAttribute("pmuWiseDomainList", proposedDomainExpertsList);
+			pmuActivity.setPmuWiseProposedDomainExperts(proposedDomainExpertsList);
 			model.addAttribute("initial_status", false);
 		
 		}else{

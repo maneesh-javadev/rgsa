@@ -1,5 +1,6 @@
 <%@include file="../taglib/taglib.jsp"%>
 <script type="text/javascript">
+var domain_list = '${LIST_OF_PMU_DOMAINS}';
 $(document).ready(function() {
 	
 	 calculateTotalFundSpmu();
@@ -92,11 +93,14 @@ function calculateValue(obj)
 
 function calculateValueAcDomain(obj){
 	var rowCountSprc=$('#tbodySprcId tr').length;
+	var rowCountDprc=$('#tbodyDprcId tr').length * domain_list.split(',').length / 2;
 	var noOfDomainSprc=0;
 	var noOfDomainDprc=0;
 	for(var i=0;i<rowCountSprc;i++){
 		noOfDomainSprc += Number($('#noOfFaculty_'+i).val()) ;
-		noOfDomainDprc += Number($('#noOfExperts_'+(i+3)).val());
+	}
+	for(var i=0;i<rowCountDprc;i++){
+		noOfDomainDprc += Number($('#noOfExperts_'+(i)).val());
 	}
 	
 	if($('#noOfUnits_0').val() < noOfDomainSprc){
@@ -114,6 +118,7 @@ function calculateValueAcDomain(obj){
 
 function validationOnSubmit(){
 	var rowCountSprc=$('#tbodySprcId tr').length;
+	var rowCountDprc=$('#tbodyDprcId tr').length * domain_list.split(',').length / 2;
 	var flag= true;
 	
 	if(($('#total_fund_spmu').val() == 0 || $('#total_fund_spmu').val() == null) && ($('#total_fund_dpmu').val() == 0 || $('#total_fund_dpmu').val() == null)){
@@ -139,17 +144,18 @@ function validationOnSubmit(){
 			}
 			}
 		}
+	
 	  if($('#noOfUnits_3').val() == "" || $('#noOfUnits_3').val() == null){
-		for(var i=0;i<rowCountSprc;i++){
-		if($('#noOfExperts_'+(i+3)).val() != "" || $('#noOfExperts_'+(i+3)).val() != ""){
+		for(var i=0;i<rowCountDprc;i++){
+		if($('#noOfExperts_'+(i)).val() != "" || $('#noOfExperts_'+(i)).val() != ""){
 			flag=false;
 		}else{
 			break;
 		}
 		}
 	}else{
-		for(var i=0;i<rowCountSprc;i++){
-		if($('#noOfExperts_'+(i+3)).val() == "" || $('#noOfExperts_'+(i+3)).val() == ""){
+		for(var i=0;i<rowCountDprc;i++){
+		if($('#noOfExperts_'+(i)).val() == "" || $('#noOfExperts_'+(i)).val() == ""){
 			flag=false;
 		}else{
 			break;
@@ -402,7 +408,7 @@ function calculateTotalFundDpmu() {
 											</div>
 										</div>
 										<div id="myModal2" class="modal fade" role="dialog">
-											<div class="modal-dialog">
+											<div class="modal-dialog modal-lg">
 												<!-- Modal content-->
 												<div class="modal-content">
 													<div class="modal-header">
@@ -422,7 +428,7 @@ function calculateTotalFundDpmu() {
 																</div>
 															</div>
 														</div>
-														<div class="row">
+													<%-- 	<div class="row">
 															<div class="form-group">
 																<label for="Dprc" class="col-sm-3"><spring:message code="Label.District" htmlEscape="true" /></label>
 																<div class="col-sm-5">
@@ -441,12 +447,42 @@ function calculateTotalFundDpmu() {
 																	</select>
 																</div>
 															</div>
-														</div>
+														</div> --%>
 														<div class="row clearfix">
 															<div class="body">
 																<div class="table-responsive">
-																	<table class="table table-bordered">
-																		<thead>
+																	<table class="table table-hover">
+																		<thead style="background-color: #b39ad8;color: #2f2b2bf2;display: table;width: 100%;">
+																			<tr>
+																				<th><div align="center">District Name</div></th>
+																				<c:forEach items="${LIST_OF_PMU_DOMAINS}" var="DOMAINS">
+																					<c:if test="${DOMAINS.pmuType.pmuTypeId eq 2}">
+																						<th><div align="center">${DOMAINS.pmuDomainName}</div></th>
+																					</c:if>
+																				</c:forEach>
+																			</tr>
+																		</thead>
+																		<tbody style="display: block;overflow-x: auto;height: 500px;" id="tbodyDprcId">
+																			<c:set var="dprcIndex" value="0" scope="page" />
+																			<c:forEach items="${LIST_OF_DISTRICT}" var="DISTRICT" varStatus="index">
+																			<tr>
+																				<td style="width: 234px;"><div align="center"><strong>${DISTRICT[1]}</strong></div></td>
+																				<c:forEach items="${LIST_OF_PMU_DOMAINS}" var="DOMAINS">
+																					<c:if test="${DOMAINS.pmuType.pmuTypeId eq 2}">
+																						<td><form:input path="pmuWiseProposedDomainExperts[${dprcIndex + 3}].noOfExperts" class="active12 form-control Align-Right" id="noOfExperts_${dprcIndex}" onkeypress="return isNumber(event)"  onkeyup="calculateValueAcDomain(${dprcIndex})"/></td>
+																						<!-- hidden fields  -->
+																							<input type="hidden" name="pmuWiseProposedDomainExperts[${dprcIndex + 3}].domainId" value="${DOMAINS.pmuDomainId}">
+																							<input type="hidden" name="pmuWiseProposedDomainExperts[${dprcIndex + 3}].districtId" value="${DISTRICT[0]}">
+																							<input type="hidden" name="pmuWiseProposedDomainExperts[${dprcIndex + 3}].pmuWiseProposedDomainExpertsId" value="${pmuActivity.pmuWiseProposedDomainExperts[dprcIndex + 3].pmuWiseProposedDomainExpertsId}">
+																						<!-- hidden fields ends here  -->
+																						<c:set var="dprcIndex" value="${dprcIndex + 1}" scope="page"></c:set>
+																					</c:if>
+																				</c:forEach>
+																			</tr>
+																		</c:forEach>
+																		</tbody>
+																	
+																		<%-- <thead>
 																			<tr>
 																				<th><div align="center"><spring:message code="Label.Domain" htmlEscape="true" /></div></th>
 																				<th><div align="center"><spring:message code="Label.NoOfExperts" htmlEscape="true" /></div></th>
@@ -465,7 +501,7 @@ function calculateTotalFundDpmu() {
 																				</c:if>
 																				<c:set var="temp" value="${temp+1}" scope="page" />
 																			</c:forEach>
-																		</tbody>
+																		</tbody> --%>
 																	</table>
 																</div>
 															</div>
