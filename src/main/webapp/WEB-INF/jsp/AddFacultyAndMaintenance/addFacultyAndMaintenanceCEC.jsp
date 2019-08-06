@@ -756,7 +756,8 @@ function calculateTotalFundDprc() {
 																						<!-- hidden fields  -->
 																							<input type="hidden" name="tIWiseProposedDomainExperts[${dprcIndex + 3}].domainId" value="${DOMAINS.domainId}">
 																							<input type="hidden" name="tIWiseProposedDomainExperts[${dprcIndex + 3}].districtCode" value="${DISTRICT.districtCode}">
-																							<input type="hidden" name="tIWiseProposedDomainExperts[${dprcIndex + 3}].tiWiseProposedDomainExpertsId" value="${institueInfraHrActivity.tIWiseProposedDomainExperts[dprcIndex + 3].tiWiseProposedDomainExpertsId}">
+																							<form:hidden path="tIWiseProposedDomainExperts[${dprcIndex + 3}].tiWiseProposedDomainExpertsId" />
+																							<%-- <input type="hidden" name="tIWiseProposedDomainExperts[${dprcIndex + 3}].tiWiseProposedDomainExpertsId" value="${institueInfraHrActivity.tIWiseProposedDomainExperts[dprcIndex + 3].tiWiseProposedDomainExpertsId}"> --%>
 																						<!-- hidden fields ends here  -->
 																						<c:set var="dprcIndex" value="${dprcIndex + 1}" scope="page"></c:set>
 																					</c:if>

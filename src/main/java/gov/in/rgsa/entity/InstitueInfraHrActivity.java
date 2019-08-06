@@ -69,7 +69,7 @@ public class InstitueInfraHrActivity {
 	@Column(name="no_of_districts_supported")
 	private Integer districtsSupported;
 	
-	@OneToMany(mappedBy="institueInfraHrActivity",cascade=CascadeType.ALL)
+	@OneToMany(mappedBy="institueInfraHrActivity",cascade= CascadeType.ALL)
 	@LazyCollection(LazyCollectionOption.FALSE)
 	private List<TIWiseProposedDomainExperts> tIWiseProposedDomainExperts;
 	

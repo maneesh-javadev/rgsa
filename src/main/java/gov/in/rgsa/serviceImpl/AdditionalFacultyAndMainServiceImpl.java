@@ -88,8 +88,16 @@ public class AdditionalFacultyAndMainServiceImpl implements AdditionalFacultyAnd
 		{
 			institueInfraHrActivity.setAdditionalRequirementSprc(additionalFactultyAndMaintModel.getAdditionalRequirementSprc());
 			institueInfraHrActivity.setAdditionalRequirementDprc(additionalFactultyAndMaintModel.getAdditionalRequirementDprc());
+			if(additionalFactultyAndMaintModel.getDbFileName().equals("freeze"))
+			{
+				institueInfraHrActivity.setIsFreeze(true);
+				institueInfraHrActivity.setInstituteInfraHrActivityId(additionalFactultyAndMaintModel.getInstituteInfraHrActivityId());
+			}
+			else if(additionalFactultyAndMaintModel.getDbFileName().equals("unfreeze")){
+				institueInfraHrActivity.setIsFreeze(false);
+				institueInfraHrActivity.setInstituteInfraHrActivityId(additionalFactultyAndMaintModel.getInstituteInfraHrActivityId());
+			}
 			if(userPreference.getUserType().equalsIgnoreCase("M") && previousRecordUserType.equalsIgnoreCase("S")){
-					commonRepository.save(institueInfraHrActivity);
 					institueInfraHrActivity.setUserType(userPreference.getUserType());
 					if(!tIWiseProposedDomainExperts.isEmpty()) {
 						for(TIWiseProposedDomainExperts domainExpert : tIWiseProposedDomainExperts)
@@ -112,6 +120,7 @@ public class AdditionalFacultyAndMainServiceImpl implements AdditionalFacultyAnd
 						commonRepository.save(details);
 					}
 			}else{
+				institueInfraHrActivity.setInstituteInfraHrActivityId(additionalFactultyAndMaintModel.getInstituteInfraHrActivityId());
 				if(!tIWiseProposedDomainExperts.isEmpty()) {
 					for(TIWiseProposedDomainExperts domainExpert : tIWiseProposedDomainExperts)
 					{
@@ -120,10 +129,7 @@ public class AdditionalFacultyAndMainServiceImpl implements AdditionalFacultyAnd
 					}
 				}
 				institueInfraHrActivity.settIWiseProposedDomainExperts(tIWiseProposedDomainExperts);
-				institueInfraHrActivity.setInstituteInfraHrActivityId(additionalFactultyAndMaintModel.getInstituteInfraHrActivityId());
 				commonRepository.update(institueInfraHrActivity);
-				
-				
 				
 				for(InstitueInfraHrActivityDetails details: institueInfraHrActivityDetails)
 				{
@@ -131,21 +137,6 @@ public class AdditionalFacultyAndMainServiceImpl implements AdditionalFacultyAnd
 					commonRepository.update(details);
 				}
 			}
-			
-			
-			
-			if(additionalFactultyAndMaintModel.getDbFileName().equals("freeze"))
-			{
-				institueInfraHrActivity.setIsFreeze(true);
-				institueInfraHrActivity.setInstituteInfraHrActivityId(additionalFactultyAndMaintModel.getInstituteInfraHrActivityId());
-				commonRepository.update(institueInfraHrActivity);
-			}
-			else if(additionalFactultyAndMaintModel.getDbFileName().equals("unfreeze")){
-				institueInfraHrActivity.setIsFreeze(false);
-				institueInfraHrActivity.setInstituteInfraHrActivityId(additionalFactultyAndMaintModel.getInstituteInfraHrActivityId());
-				commonRepository.update(institueInfraHrActivity);
-			}
-			
 		}
 		
 		if(additionalFactultyAndMaintModel.getDbFileName().equals("freeze"))
