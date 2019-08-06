@@ -2,7 +2,7 @@
 <script type="text/javascript"
 	src="${pageContext.request.contextPath}/resources/plugins/angular/angular.min.js"></script>
 <script>
-
+var domain_list = '${LIST_OF_DOMAINS}';
 $('document').ready(function(){
 	calculateTotalFundSprc();
  	calculateTotalFundDprc();
@@ -39,7 +39,7 @@ function isNumber(evt) {
 
 function validateMonth(obj)
 {
-	if( +$('#noOfMonths_'+obj).val() == 0 || +$('#noOfMonths_'+obj).val() > 12){
+	if( +$('#noOfMonths_'+obj).val() < 0 || +$('#noOfMonths_'+obj).val() > 12){
 		alert("Months should be less than 12 or greater than 0 !");
 		$('#noOfMonths_'+obj).val('');
 	}
@@ -123,7 +123,7 @@ function onLoadChangeColor(){
 	for(var j=0;j < rowModal1 ;j++){
 		+$("#noOfFacultyState_"+j).text() > +$("#noOfFaculty_"+j).val() ? $("#noOfFacultyState_"+j).css('color','red') : $("#noOfFacultyState_"+j).css('color','#00cc00');
 	}
-	for(var j=3 ; j < rowModal2 + 3 ; j++){
+	for(var j=0 ; j < rowModal2; j++){
 		+$("#noOfExpertState_"+j).text() > +$("#noOfExpert_"+j).val() ? $("#noOfExpertState_"+j).css('color','red') : $("#noOfExpertState_"+j).css('color','#00cc00');
 	} 
 }
@@ -131,11 +131,14 @@ function onLoadChangeColor(){
 /* this function validates the value in fill domain detail with the outer number of unit field. */
 function domainValidation(obj){
 	var rowCountSprc=$('#tbodySprcId tr').length;
+	var rowCountDprc=$('#modal2Tbody tr').length * domain_list.split(',').length / 2;
 	var noOfDomainSprc=0;
 	var noOfDomainDprc=0;
 	for(var i=0;i<rowCountSprc;i++){
 		noOfDomainSprc += Number($('#noOfFaculty_'+i).val()) ;
-		noOfDomainDprc += Number($('#noOfExpert_'+(i+3)).val());
+	}
+	for(var i=0;i<rowCountDprc;i++){
+		noOfDomainDprc += Number($('#noOfExpert_'+(i)).val());
 	}
 	if(!isNaN(obj)){
 	if($('#noOfUnits_0').val() < noOfDomainSprc){
@@ -149,7 +152,7 @@ function domainValidation(obj){
 			var result= confirm("If you change Number of units you have to fill domain details.");
 			if(result){
 			if($('#noOfUnits_0').val() < noOfDomainSprc){
-				alert('No of units in SPRC should not exceed the sum of domain detail '+ noOfDomainSprc + 'please fill the domain details again.');
+				alert('No of units in SPRC should not exceed the sum of domain detail :'+ noOfDomainSprc + ' please fill the domain details again.');
 				emptyDomainDetails('sprc',rowCountSprc);
 			}
 			}else{
@@ -162,8 +165,8 @@ function domainValidation(obj){
 		var result= confirm("If you change Number of units you have to fill domain details.");
 		if(result){
 		if($('#noOfUnits_3').val() < noOfDomainDprc){
-			alert('No of units in DPRC should not exceed the sum of domain detail '+ noOfDomainSprc + 'please fill the domain details again.');
-			emptyDomainDetails('dprc',rowCountSprc);
+			alert('No of units in DPRC should not exceed the sum of domain detail :'+ noOfDomainDprc + ' please fill the domain details again.');
+			emptyDomainDetails('dprc',rowCountDprc);
 		}
 		}else{
 			if($('#noOfUnits_3').val() < noOfDomainSprc){
@@ -182,7 +185,7 @@ function emptyDomainDetails(level,count){
 			$('#noOfFaculty_'+i).val('');
 		}
 	}else{
-		for(var i=3;i<count + 3;i++){
+		for(var i=0;i<count + 3;i++){
 			$('#noOfExpert_'+i).val('');
 		}
 	}
@@ -190,6 +193,7 @@ function emptyDomainDetails(level,count){
 
 function validationOnSubmit(){
 	var rowCountSprc=$('#tbodySprcId tr').length;
+	var rowCountDprc=$('#modal2Tbody tr').length * domain_list.split(',').length / 2;
 	var flag= true;
 	
 	if($('#noOfUnits_0').val() == "" || $('#noOfUnits_0').val() == null){
@@ -210,21 +214,21 @@ function validationOnSubmit(){
 			}
 		}
 	if($('#noOfUnits_3').val() == "" || $('#noOfUnits_3').val() == null){
-		for(var i=0;i<rowCountSprc;i++){
-		if($('#noOfExpert_'+(i+3)).val() != "" || $('#noOfExpert_'+(i+3)).val() != 0){
-			flag=false;
-			break;
-		}
-		}
+		for(var i=0;i<rowCountDprc;i++){
+			if($('#noOfExpert_'+(i)).val() != ""|| $('#noOfExpert_'+(i)).val() != 0){
+				flag=false;
+				break;
+			}
+			}
 	}else{
-		for(var i=0;i<rowCountSprc;i++){
-		if($('#noOfExpert_'+(i+3)).val() == "" || $('#noOfExpert_'+(i+3)).val() == 0){
-			flag=false;
-		}else{
-			flag=true;
-			break;
-		}
-		}
+		for(var i=0;i<rowCountDprc;i++){
+			if($('#noOfExpert_'+(i)).val() == "" || $('#noOfExpert_'+(i)).val() == 0){
+				flag=false;
+			}else{
+				flag=true;
+				break;
+			}
+			}
 	}
 	
 	if(+$('#activedropdown').val() == 0 && $('#total_fund_dprc').val() != ""){
@@ -416,13 +420,13 @@ function calculateTotalFundDprc() {
 
 														<c:choose>
 															<c:when test="${index.index eq 0 }">
-																<td><button type="button"
+																<td><button type="button" style="margin-top: 18px;"
 																		class="btn btn-primary btn-lg" data-toggle="modal"
 																		data-target="#myModal">Fill Domain Details</button></td>
 															</c:when>
 
 															<c:when test="${index.index eq 3}">
-																<td><button type="button"
+																<td><button type="button" style="margin-top: 18px;"
 																		class="btn btn-primary btn-lg" data-toggle="modal"
 																		data-target="#myModal2">Fill Domain Details</button></td>
 															</c:when>
@@ -519,13 +523,13 @@ function calculateTotalFundDprc() {
 
 														<c:choose>
 															<c:when test="${index.index eq 0 }">
-																<td><button type="button"
+																<td><button type="button" style="margin-top: 18px;"
 																		class="btn btn-primary btn-lg" data-toggle="modal"
 																		data-target="#myModal">Fill Domain Details</button></td>
 															</c:when>
 
 															<c:when test="${index.index eq 3}">
-																<td><button type="button"
+																<td><button type="button" style="margin-top: 18px;"
 																		class="btn btn-primary btn-lg" data-toggle="modal"
 																		data-target="#myModal2">Fill Domain Details</button></td>
 															</c:when>
@@ -677,7 +681,7 @@ function calculateTotalFundDprc() {
 										</div>
 
 										<div id="myModal2" class="modal fade" role="dialog">
-											<div class="modal-dialog">
+											<div class="modal-dialog modal-lg">
 
 												<!-- Modal content-->
 												<div class="modal-content">
@@ -702,7 +706,7 @@ function calculateTotalFundDprc() {
 																</div>
 															</div>
 														</div>
-														<div class="row">
+														<%-- <div class="row">
 															<div class="form-group">
 																<label for="Dprc" class="col-sm-3"><spring:message
 																		code="Label.District" htmlEscape="true" /></label>
@@ -714,25 +718,53 @@ function calculateTotalFundDprc() {
 																		style="font-weight: bold; margin-left: -12px;">${SELECTED_DISTRICT_IN_STATE.districtNameEnglish}</div>
 																</div>
 															</div>
-														</div>
+														</div> --%>
 														<div class="row clearfix">
 															<div class="body">
 																<div class="table-responsive">
-																	<table class="table table-bordered">
-																		<thead>
+																	<table class="table table-hover">
+																		<thead style="background-color: #b39ad8;color: #2f2b2bf2;display: table;width: 100%;">
 																			<tr>
-																				<th><div align="center">
-																						<spring:message code="Label.Domain"
-																							htmlEscape="true" />
-																					</div></th>
-																				<th><div align="center">
-																						<spring:message code="Label.NoOfExperts"
-																							htmlEscape="true" />
-																					</div></th>
+																				<th><div align="center">District Name</div></th>
+																				<c:forEach items="${LIST_OF_DOMAINS}" var="DOMAINS">
+																					<c:if
+																						test="${DOMAINS.trainingInstitueType.trainingInstitueTypeId eq 4}">
+																						<th><div align="center">${DOMAINS.domainName}</div></th>
+																					</c:if>
+																				</c:forEach>
 																			</tr>
 																		</thead>
-																		<tbody id="modal2Tbody">
-																			<c:set var="index" value="0" scope="page" />
+																		<tbody id="modal2Tbody" style="display: block;overflow-x: auto;height: 500px;">
+																		<c:set var="dprcIndex" value="0" scope="page" />
+																			<c:forEach items="${LIST_OF_DISTRICT}" var="DISTRICT" varStatus="index">
+																			<tr>
+																				<td style="width: 234px;"><div align="center"><strong>${DISTRICT.districtNameEnglish}</strong></div></td>
+																				<c:forEach items="${LIST_OF_DOMAINS}" var="DOMAINS">
+																					<c:if test="${DOMAINS.trainingInstitueType.trainingInstitueTypeId eq 4}">
+																						<td>
+																						<c:choose>
+																							<c:when test="${not empty tIWiseProposedDomainExpertsState[dprcIndex + 3].noOfExperts}">
+																								<div align="center" id="noOfExpertState_${dprcIndex}">${tIWiseProposedDomainExpertsState[dprcIndex + 3].noOfExperts}</div>
+																								<form:input path="tIWiseProposedDomainExperts[${dprcIndex + 3}].noOfExperts" class="active12 form-control Align-Right" id="noOfExpert_${dprcIndex}" onkeypress="return isNumber(event)"  onkeyup="onLoadChangeColor();domainValidation(${dprcIndex})" />
+																							</c:when>
+																							<c:otherwise>
+																								<div align="center" id="noOfExpertState_${dprcIndex}">${tIWiseProposedDomainExpertsState[dprcIndex + 3].noOfExperts}</div>
+																								<form:input path="tIWiseProposedDomainExperts[${dprcIndex + 3}].noOfExperts" style="margin-top: 18px;" class="active12 form-control Align-Right" id="noOfExpert_${dprcIndex}" onkeypress="return isNumber(event)" onkeyup="onLoadChangeColor();domainValidation(${dprcIndex})" />
+																							</c:otherwise>
+																						</c:choose>
+																						</td>
+																						<!-- hidden fields  -->
+																							<input type="hidden" name="tIWiseProposedDomainExperts[${dprcIndex + 3}].domainId" value="${DOMAINS.domainId}">
+																							<input type="hidden" name="tIWiseProposedDomainExperts[${dprcIndex + 3}].districtCode" value="${DISTRICT.districtCode}">
+																							<input type="hidden" name="tIWiseProposedDomainExperts[${dprcIndex + 3}].tiWiseProposedDomainExpertsId" value="${institueInfraHrActivity.tIWiseProposedDomainExperts[dprcIndex + 3].tiWiseProposedDomainExpertsId}">
+																						<!-- hidden fields ends here  -->
+																						<c:set var="dprcIndex" value="${dprcIndex + 1}" scope="page"></c:set>
+																					</c:if>
+																				</c:forEach>
+																			</tr>
+																		</c:forEach>
+																			
+																			<%-- <c:set var="index" value="0" scope="page" />
 																			<c:forEach items="${LIST_OF_DOMAINS}" var="DOMAINS">
 																				<c:if
 																					test="${DOMAINS.trainingInstitueType.trainingInstitueTypeId eq 4}">
@@ -754,7 +786,7 @@ function calculateTotalFundDprc() {
 																					</tr>
 																				</c:if>
 																				<c:set var="index" value="${index+1}" scope="page" />
-																			</c:forEach>
+																			</c:forEach> --%>
 																		</tbody>
 																	</table>
 																</div>
@@ -945,7 +977,7 @@ function calculateTotalFundDprc() {
 												<!-- SPRC LOOP ENDS -->
 												
 												<!-- DPRC LOOP BEGINS -->
-												<c:forEach items="${LIST_OF_ACTIVITY_HR_TYPE}" var="ACTIVITY" varStatus="index" begin="0" end="2">
+												<c:forEach items="${LIST_OF_ACTIVITY_HR_TYPE}" var="ACTIVITY" varStatus="index" begin="3" end="5">
 														<tr>
 															<td><div align="center">
 																	<strong>${ACTIVITY.trainingInstitueType.trainingInstitueTypeName}</strong>
@@ -1090,7 +1122,7 @@ function calculateTotalFundDprc() {
 										</div>
 
 										<div id="myModal4" class="modal fade" role="dialog">
-											<div class="modal-dialog">
+											<div class="modal-dialog modal-lg">
 
 												<!-- Modal content-->
 												<div class="modal-content">
@@ -1115,7 +1147,7 @@ function calculateTotalFundDprc() {
 																</div>
 															</div>
 														</div>
-														<div class="row">
+														<%-- <div class="row">
 															<div class="form-group">
 																<label for="Dprc" class="col-sm-3"><spring:message
 																		code="Label.District" htmlEscape="true" /></label>
@@ -1124,25 +1156,46 @@ function calculateTotalFundDprc() {
 																		${SELECTED_DISTRICT_IN_MOPR.districtNameEnglish}</strong>
 																</div>
 															</div>
-														</div>
+														</div> --%>
 														<div class="row clearfix">
 															<div class="body">
 																<div class="table-responsive">
-																	<table class="table table-bordered">
-																		<thead>
+																	<table class="table table-hover">
+																		<thead
+																			style="background-color: #b39ad8; color: #2f2b2bf2; display: table; width: 100%;">
 																			<tr>
-																				<th><div align="center">
-																						<spring:message code="Label.Domain"
-																							htmlEscape="true" />
-																					</div></th>
-																				<th><div align="center">
-																						<spring:message code="Label.NoOfExperts"
-																							htmlEscape="true" />
-																					</div></th>
+																				<th><div align="center">District Name</div></th>
+																				<c:forEach items="${LIST_OF_DOMAINS}" var="DOMAINS">
+																					<c:if
+																						test="${DOMAINS.trainingInstitueType.trainingInstitueTypeId eq 4}">
+																						<th><div align="center">${DOMAINS.domainName}</div></th>
+																					</c:if>
+																				</c:forEach>
 																			</tr>
 																		</thead>
-																		<tbody>
-																			<c:set var="temp" value="0" scope="page" />
+																		<tbody style="display: block;overflow-x: auto;height: 500px;">
+																			<c:set var="dprcIndex" value="0" scope="page" />
+																			<c:forEach items="${LIST_OF_DISTRICT}" var="DISTRICT"
+																				varStatus="index">
+																				<tr>
+																					<td style="width: 234px;"><div align="center">
+																							<strong>${DISTRICT.districtNameEnglish}</strong>
+																						</div></td>
+																					<c:forEach items="${LIST_OF_DOMAINS}" var="DOMAINS">
+																						<c:if test="${DOMAINS.trainingInstitueType.trainingInstitueTypeId eq 4}">
+																							<c:choose>
+																								<c:when test="${DOMAINS.domainId eq 4}"><td style="width: 207px;"><div align="center">${tIWiseProposedDomainExpertsMopr[dprcIndex+3].noOfExperts }</div></td></c:when>
+																								<c:when test="${DOMAINS.domainId eq 5}"><td style="width: 159px;"><div align="center">${tIWiseProposedDomainExpertsMopr[dprcIndex+3].noOfExperts }</div></td></c:when>
+																								<c:when test="${DOMAINS.domainId eq 6}"><td style="width: 210px;"><div align="center">${tIWiseProposedDomainExpertsMopr[dprcIndex+3].noOfExperts }</div></td></c:when>
+																							</c:choose>
+																							
+																							<c:set var="dprcIndex" value="${dprcIndex + 1}"
+																								scope="page"></c:set>
+																						</c:if>
+																					</c:forEach>
+																				</tr>
+																			</c:forEach>
+																			<%-- <c:set var="temp" value="0" scope="page" />
 																			<c:forEach items="${LIST_OF_DOMAINS}" var="DOMAINS">
 																				<c:if
 																					test="${DOMAINS.trainingInstitueType.trainingInstitueTypeId eq 4}">
@@ -1152,7 +1205,7 @@ function calculateTotalFundDprc() {
 																					</tr>
 																				</c:if>
 																				<c:set var="temp" value="${temp+1}" scope="page" />
-																			</c:forEach>
+																			</c:forEach> --%>
 																		</tbody>
 																	</table>
 																</div>

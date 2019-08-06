@@ -119,8 +119,8 @@ public class PmuActivityServiceImpl implements PmuActivityService {
 
 	 public void savePmuActivityDetailsForMinistry(PmuActivity pmuActivity)
 	 {
-		 pmuActivity.setPmuActivityId(null);
-		 pmuActivity.setCreatedBy(userPreference.getUserId());
+		 	pmuActivity.setPmuActivityId(null);
+		 	pmuActivity.setCreatedBy(userPreference.getUserId());
 			pmuActivity.setIsFreeze(false);
 			pmuActivity.setLastUpdateBy(userPreference.getUserId());
 			pmuActivity.setStateCode(userPreference.getStateCode());
@@ -132,15 +132,11 @@ public class PmuActivityServiceImpl implements PmuActivityService {
 			List<PmuActivityDetails> pmuActivityDetails = pmuActivity.getPmuActivityDetails();
 			for(PmuActivityDetails activityDetails : pmuActivityDetails) {
 				activityDetails.setPmuDetailsId(null);
-				
 				activityDetails.setPmuActivity(pmuActivity);
 			}
 			List<PmuWiseProposedDomainExperts> proposedDomainExperts = pmuActivity.getPmuWiseProposedDomainExperts();
 			for(PmuWiseProposedDomainExperts experts : proposedDomainExperts) {
 				experts.setPmuWiseProposedDomainExpertsId(null);
-				if(experts.getDomainId() > 3){
-					experts.setDistrictId(pmuActivity.getSetDistrictIdPmuWise());
-				}
 				experts.setPmuActivityDomain(pmuActivity);
 			}
 			commonRepository.update(pmuActivity);

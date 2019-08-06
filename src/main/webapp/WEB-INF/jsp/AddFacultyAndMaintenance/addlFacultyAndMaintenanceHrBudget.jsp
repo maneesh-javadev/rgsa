@@ -102,7 +102,7 @@ function emptyDomainDetails(level,count){
 			$('#noOfFaculty_'+i).val('');
 		}
 	}else{
-		for(var i=3;i<count;i++){
+		for(var i=0;i<count;i++){
 			$('#noOfExpert_'+i).val('');
 		}
 	}
