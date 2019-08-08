@@ -20,6 +20,8 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 import org.hibernate.annotations.UpdateTimestamp;
 
 
@@ -48,6 +50,10 @@ public class PmuProgress {
 	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name="qtr_id")
 	private QuarterDuration quarterDuration;
+	
+	@OneToMany(cascade = CascadeType.ALL,mappedBy = "pmuProgress")
+	@LazyCollection(LazyCollectionOption.FALSE)
+	private List<QprPmuWiseProposedDomainExperts> qprPmuWiseProposedDomainExperts;
 	
 	@OneToMany(cascade=CascadeType.ALL,mappedBy="pmuProgress",fetch=FetchType.EAGER)
 	private List<PmuProgressDetails> pmuProgressDetails;
@@ -186,6 +192,14 @@ public class PmuProgress {
 
 	public void setOrigin(String origin) {
 		this.origin = origin;
+	}
+
+	public List<QprPmuWiseProposedDomainExperts> getQprPmuWiseProposedDomainExperts() {
+		return qprPmuWiseProposedDomainExperts;
+	}
+
+	public void setQprPmuWiseProposedDomainExperts(List<QprPmuWiseProposedDomainExperts> qprPmuWiseProposedDomainExperts) {
+		this.qprPmuWiseProposedDomainExperts = qprPmuWiseProposedDomainExperts;
 	}
 	
 }

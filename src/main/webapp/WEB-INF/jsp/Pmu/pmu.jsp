@@ -91,7 +91,7 @@ function calculateValue(obj)
 	
 	}
 
-function calculateValueAcDomain(obj){
+function calculateValueAcDomain(index){
 	var rowCountSprc=$('#tbodySprcId tr').length;
 	var rowCountDprc=$('#tbodyDprcId tr').length * domain_list.split(',').length / 2;
 	var noOfDomainSprc=0;
@@ -103,7 +103,7 @@ function calculateValueAcDomain(obj){
 		noOfDomainDprc += Number($('#noOfExperts_'+(i)).val());
 	}
 	
-	if($('#noOfUnits_0').val() < noOfDomainSprc){
+	/* if($('#noOfUnits_0').val() < noOfDomainSprc){
 		alert('Total domains experts should be equal to or less than '+ $('#noOfUnits_0').val());
 		$('#noOfFaculty_'+obj).val('');
 		
@@ -112,8 +112,58 @@ function calculateValueAcDomain(obj){
 		alert('Total domains experts should be equal to or less than '+ $('#noOfUnits_3').val());
 		$('#noOfExperts_'+obj).val('');
 		
-	}
+	} */
+	 
+	 if(!isNaN(index)){
+			if($('#noOfUnits_0').val() < noOfDomainSprc){
+				alert('Total domains experts should be equal to or less than '+ $('#noOfUnits_0').val());
+				$('#noOfFaculty_'+index).val('');
+			}else if($('#noOfUnits_3').val() < noOfDomainDprc){
+				alert('Total domains experts should be equal to or less than '+ $('#noOfUnits_3').val());
+				$('#noOfExperts_'+index).val('');
+			}
+			}else{ if(index == 'noOfUnits_0' && noOfDomainSprc != 0){
+					var result= confirm("If you change Number of units you have to fill domain details.");
+					if(result){
+					if($('#noOfUnits_0').val() < noOfDomainSprc){
+						alert('No of units in SPRC should not exceed the sum of domain detail :'+ noOfDomainSprc + ' please fill the domain details again.');
+						emptyDomainDetails('spmu',rowCountSprc);
+					}
+					}else{
+						if($('#noOfUnits_0').val() < noOfDomainSprc){
+							alert('No of units in SPRC should not exceed the sum of domain detail '+ noOfDomainSprc );
+							$('#noOfUnits_0').val('');
+						}
+					}
+			}else if(index == 'noOfUnits_3' && noOfDomainDprc != 0){
+				var result= confirm("If you change Number of units you have to fill domain details.");
+				if(result){
+				if($('#noOfUnits_3').val() < noOfDomainDprc){
+					alert('No of units in DPRC should not exceed the sum of domain detail :'+ noOfDomainDprc + ' please fill the domain details again.');
+					emptyDomainDetails('dpmu',rowCountDprc);
+				}
+				}else{
+					if($('#noOfUnits_3').val() < noOfDomainSprc){
+						alert('No of units in DPRC should not exceed the sum of domain detail '+ noOfDomainDprc );
+						$('#noOfUnits_3').val('');
+					}
+				}
+			  }
+			} 
 	
+}
+
+/* this function used in domainValidation function */
+function emptyDomainDetails(level,count){
+	if(level == 'spmu'){
+		for(var i=0;i<count;i++){
+			$('#noOfFaculty_'+i).val('');
+		}
+	}else{
+		for(var i=0;i<count;i++){
+			$('#noOfExperts_'+i).val('');
+		}
+	}
 }
 
 function validationOnSubmit(){
@@ -244,7 +294,7 @@ function calculateTotalFundDpmu() {
 											<tr>
 												<td><div align="center"><strong>${ACTIVITY.pmuType.pmuTypeName}</strong></div></td>
 												<td><div align="center"><strong>${ACTIVITY.pmuActivityName}</strong></div></td>
-												<td><input value="${pmuActivity.pmuActivityDetails[srl.index].noOfUnits}"	name="pmuActivityDetails[${srl.index}].noOfUnits" min="1" maxlength="3"  onkeypress="return isNumber(event)" oninput="validity.valid||(value='');"	type="text" class="active12 form-control" id="noOfUnits_${srl.index}" onkeyup="calculate(${srl.index}); calculateValue(${srl.index})" style="text-align:right;"/></td>
+												<td><input value="${pmuActivity.pmuActivityDetails[srl.index].noOfUnits}"	name="pmuActivityDetails[${srl.index}].noOfUnits" min="1" maxlength="3"  onkeypress="return isNumber(event)" oninput="validity.valid||(value='');"	type="text" class="active12 form-control" id="noOfUnits_${srl.index}" onkeyup="calculate(${srl.index}); calculateValue(${srl.index})" style="text-align:right;" onchange="calculateValueAcDomain('noOfUnits_${srl.index}')"/></td>
 												<td><input value="${pmuActivity.pmuActivityDetails[srl.index].unitCost}"	name="pmuActivityDetails[${srl.index}].unitCost" min="1" maxlength="7"  onkeypress="return isNumber(event)" oninput="validity.valid||(value='');" type="text" class="active12 form-control"	id="unitCost_${srl.index}" onkeyup="calculate(${srl.index});" style="text-align:right;"/></td>
 												<td><input value="${pmuActivity.pmuActivityDetails[srl.index].noOfMonths}" 	name="pmuActivityDetails[${srl.index}].noOfMonths" min="1"  onkeypress="return isNumber(event)" oninput="validity.valid||(value='');"	type="text" class="active12 form-control" id="noOfMonths_${srl.index}" onkeyup="calculate(${srl.index});" style="text-align:right;"/></td>
 												<c:set var="totalFundToCalc" value="${pmuActivity.pmuActivityDetails[srl.index].fund}"></c:set>

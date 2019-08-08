@@ -771,11 +771,18 @@ public class ProgressReportController {
         } else {
             quarterId = 0;
         }
-
+        
+        List<Domains> domains=new ArrayList<>();
+        List<District> districtName=new ArrayList<>();
         List<StateAllocation> stateAllocation = new ArrayList<>();
         List<QuaterWiseFund> totalQuatorWiseFund = new ArrayList<>();
+        domains=additionalFacultyAndMainService.fetchDomains();
+        districtName=lgdService.getAllDistrictBasedOnState(userPreference.getStateCode());
         List<InstitueInfraHrActivity> institueInfraHrActivityApproved = additionalFacultyAndMainService.fetchApprovedInstituteHrActivity();
         stateAllocation = progressReportService.fetchStateAllocationData(14, installmentNo,progressReportService.getCurrentPlanCode());
+        model.addAttribute("LIST_OF_DOMAINS", domains);
+        model.addAttribute("LIST_OF_DOMAINS_LENGTH", domains.size()/2);
+        model.addAttribute("LIST_OF_DISTRICT", districtName);
         model.addAttribute("QUATER_DETAILS", progressReportService.getQuarterDurations());
         if (quarterId == 3 || quarterId == 4) {
             totalQuatorWiseFund = progressReportService.fetchTotalQuaterWiseFundData(userPreference.getStateCode(), 14);
@@ -798,7 +805,7 @@ public class ProgressReportController {
                 }
 
             }
-
+            
             // list to get total number of unit in all quator except current one
             List<AdditionalFacultyProgressDetail> detailForTotalNoOfUnit = new ArrayList<>();
             List<AdditionalFacultyProgressDetail> hrSprcDprcReportDetailOfRestQuater = additionalFacultyAndMainService.getAdditionalFacultyProgressBasedOnActIdAndQtrId(institueInfraHrActivityApproved.get(0).getInstituteInfraHrActivityId(),
@@ -816,12 +823,18 @@ public class ProgressReportController {
             AdditionalFacultyProgress qprAdditionalFaculty = progressReportService.fetchAdditionalFacultyProgress(institueInfraHrActivityApproved.get(0).getInstituteInfraHrActivityId(), quarterId);
             if (qprAdditionalFaculty != null) {
                 Collections.sort(qprAdditionalFaculty.getAdditionalFacultyProgressDetail(), (o1, o2) -> o1.getQprInstInfraHrDetailsId() - o2.getQprInstInfraHrDetailsId());
+                Collections.sort(qprAdditionalFaculty.getQprTiWiseDomainExpert(), (o1, o2) -> o1.getQprTiWiseProposedDomainExpertsId()- o2.getQprTiWiseProposedDomainExpertsId());
+                additionalFacultyProgress.setQprTiWiseDomainExpert(qprAdditionalFaculty.getQprTiWiseDomainExpert());
                 model.addAttribute("QPR_ACTIVITY", qprAdditionalFaculty);
             } else {
-                if (additionalFacultyProgress.getAdditionalFacultyProgressDetail() != null)
-                    additionalFacultyProgress.getAdditionalFacultyProgressDetail().clear();
+                if (additionalFacultyProgress.getAdditionalFacultyProgressDetail() != null) {
+                	additionalFacultyProgress.getAdditionalFacultyProgressDetail().clear();
+                }
+                if (additionalFacultyProgress.getQprTiWiseDomainExpert() != null) {
+                	additionalFacultyProgress.getQprTiWiseDomainExpert().clear();
+                }   	
             }
-
+            
             /* used to get previous data stored which is then use to validate the expenditure incurred */
 
             List<QuaterWiseFund> quaterWiseFund = new ArrayList<>();
@@ -955,9 +968,13 @@ public class ProgressReportController {
 
         List<StateAllocation> stateAllocation = new ArrayList<>();
         List<QuaterWiseFund> totalQuatorWiseFund = new ArrayList<>();
+        List<PmuDomain> domainList = pmuActivityService.fetchPmuDomains();
         List<PmuActivity> pmuCecApprovedActivities = pmuActivityService.fetchApprovedPmu();
         stateAllocation = progressReportService.fetchStateAllocationData(12, installmentNo,progressReportService.getCurrentPlanCode());
         model.addAttribute("QUATER_DETAILS", progressReportService.getQuarterDurations());
+        model.addAttribute("LIST_OF_PMU_DOMAINS", domainList);
+        model.addAttribute("LIST_OF_PMU_DOMAINS_LIST", domainList.size()/2);
+        model.addAttribute("LIST_OF_DISTRICT", pmuActivityService.fetchDistrictName());
         if (quarterId == 3 || quarterId == 4) {
             stateAllocation.add(progressReportService.fetchStateAllocationData(12, 1,progressReportService.getCurrentPlanCode()).get(0)); // total fund allocated in first quator
             totalQuatorWiseFund = progressReportService.fetchTotalQuaterWiseFundData(userPreference.getStateCode(), 12);
@@ -989,10 +1006,15 @@ public class ProgressReportController {
             if (pmuProgressActivity != null) {
                 Collections.sort(pmuProgressActivity.getPmuProgressDetails(),
                         (o1, o2) -> o1.getQprPmuDetailsId() - o2.getQprPmuDetailsId());
+                pmuProgressActivity.getQprPmuWiseProposedDomainExperts().sort((o1,o2) -> o1.getQprPmuWiseProposedDomainExpertsId() -o2.getQprPmuWiseProposedDomainExpertsId());
+                pmuProgress.setQprPmuWiseProposedDomainExperts(pmuProgressActivity.getQprPmuWiseProposedDomainExperts());
                 model.addAttribute("PMU_PROGRESS", pmuProgressActivity);
             } else {
                 if (pmuProgress.getPmuProgressDetails() != null) {
                     pmuProgress.getPmuProgressDetails().clear();
+                }
+                if (pmuProgress.getQprPmuWiseProposedDomainExperts() != null) {
+                    pmuProgress.getQprPmuWiseProposedDomainExperts().clear();
                 }
             }
 

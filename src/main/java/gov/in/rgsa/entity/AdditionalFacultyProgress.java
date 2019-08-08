@@ -19,6 +19,8 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 import org.hibernate.annotations.UpdateTimestamp;
 
 @Entity
@@ -39,7 +41,6 @@ public class AdditionalFacultyProgress {
 	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name="institue_infra_hr_activity_id")
 	private InstitueInfraHrActivity institueInfraHrActivity;
-
 	
 	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name="qtr_id")
@@ -47,6 +48,10 @@ public class AdditionalFacultyProgress {
 	
 	@OneToMany(cascade=CascadeType.ALL,mappedBy="additionalFacultyProgress",fetch=FetchType.EAGER)
 	private List<AdditionalFacultyProgressDetail> additionalFacultyProgressDetail;
+	
+	@OneToMany(cascade = CascadeType.ALL,mappedBy = "additionalFacultyProgress")
+	@LazyCollection(LazyCollectionOption.FALSE)
+	private List<QprTiWiseDomainExpert> qprTiWiseDomainExpert; 
 
 	@Column(name="additional_req_sprc")
 	private Integer additionalReqSprc;
@@ -193,6 +198,14 @@ public class AdditionalFacultyProgress {
 
 	public void setAdditionalReqDprc(Integer additionalReqDprc) {
 		this.additionalReqDprc = additionalReqDprc;
+	}
+
+	public List<QprTiWiseDomainExpert> getQprTiWiseDomainExpert() {
+		return qprTiWiseDomainExpert;
+	}
+
+	public void setQprTiWiseDomainExpert(List<QprTiWiseDomainExpert> qprTiWiseDomainExpert) {
+		this.qprTiWiseDomainExpert = qprTiWiseDomainExpert;
 	}
 	
 	

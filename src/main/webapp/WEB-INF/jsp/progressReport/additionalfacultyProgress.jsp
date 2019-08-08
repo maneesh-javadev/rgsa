@@ -11,6 +11,7 @@ var total_fund_used_qtr_1_2_sprc = '${TOTAL_SPRC_FUND_USED_IN_QTR_1_AND_2}';
 var total_fund_used_qtr_1_2_dprc = '${TOTAL_DPRC_FUND_USED_IN_QTR_1_AND_2}';
 var total_add_req_sprc_filled = '${TOTAL_ADD_REQ_SPRC}';
 var total_add_req_dprc_filled = '${TOTAL_ADD_REQ_DPRC}';
+var domain_list = '${LIST_OF_DOMAINS}';
 
 $(document).ready(function() {
 	$('#quaterDropDownId').val(quater_id);
@@ -148,7 +149,75 @@ function calTotalExpenditure(){
 	}
 	$('#totalExpenditureId').val(total_expenditure + +$('#additionalReqSprcId').val() + +$('#additionalReqDprcId').val());
 }
+
+function domainValidation(index){
+	var rowCountSprc=$('#sprcModalTbody tr').length;
+	var rowCountDprc=$('#dprcModalTbody tr').length * domain_list.split(',').length / 2;
+	var noOfDomainSprc=0;
+	var noOfDomainDprc=0;
+	for(var i=0;i<rowCountSprc;i++){
+		noOfDomainSprc += Number($('#noOfExpertsSprc_'+i).val()) ;
+	}
+	for(var i=0;i<rowCountDprc;i++){
+		noOfDomainDprc += Number($('#noOfExpertsDprc_'+(i)).val());
+	}
+	
+	if(!isNaN(index)){
+		if($('#noOfUnitCompleted_0').val() < noOfDomainSprc){
+			alert('Total domains experts should be equal to or less than '+ $('#noOfUnitCompleted_0').val());
+			$('#noOfExpertsSprc_'+index).val('');
+		}else if($('#noOfUnitCompleted_3').val() < noOfDomainDprc){
+			alert('Total domains experts should be equal to or less than '+ $('#noOfUnitCompleted_3').val());
+			$('#noOfExpertsDprc_'+index).val('');
+		}
+		}else{ if(index == 'noOfUnitCompleted_0' && noOfDomainSprc != 0){
+				var result= confirm("If you change Number of units you have to fill domain details.");
+				if(result){
+				if($('#noOfUnitCompleted_0').val() < noOfDomainSprc){
+					alert('No of units in SPRC should not exceed the sum of domain detail :'+ noOfDomainSprc + ' please fill the domain details again.');
+					emptyDomainDetails('sprc',rowCountSprc);
+				}
+				}else{
+					if($('#noOfUnitCompleted_0').val() < noOfDomainSprc){
+						alert('No of units in SPRC should not exceed the sum of domain detail '+ noOfDomainSprc );
+						$('#noOfUnitCompleted_0').val('');
+					}
+				}
+		}else if(index == 'noOfUnitCompleted_3' && noOfDomainDprc != 0){
+			var result= confirm("If you change Number of units you have to fill domain details.");
+			if(result){
+			if($('#noOfUnitCompleted_3').val() < noOfDomainDprc){
+				alert('No of units in DPRC should not exceed the sum of domain detail :'+ noOfDomainDprc + ' please fill the domain details again.');
+				emptyDomainDetails('dprc',rowCountDprc);
+			}
+			}else{
+				if($('#noOfUnitCompleted_3').val() < noOfDomainSprc){
+					alert('No of units in DPRC should not exceed the sum of domain detail '+ noOfDomainDprc );
+					$('#noOfUnitCompleted_3').val('');
+				}
+			}
+		  }
+		}
+}
+
+/* this function used in domainValidation function */
+function emptyDomainDetails(level,count){
+	if(level == 'sprc'){
+		for(var i=0;i<count;i++){
+			$('#noOfExpertsSprc_'+i).val('');
+		}
+	}else{
+		for(var i=0;i<count;i++){
+			$('#noOfExpertsDprc_'+i).val('');
+		}
+	}
+}
 </script>
+<style>
+.Align-Right{
+	text-align: right;
+	}
+</style>
 <section class="content" > 
 	<div class="container-fluid">
 		<div class="row clearfix">
@@ -222,8 +291,23 @@ function calTotalExpenditure(){
 										<c:choose>
 											<c:when test="${not empty QPR_ACTIVITY}">
 												<td><c:if test="${count.index ne 2 and count.index ne 5}">
-													<input name="additionalFacultyProgressDetail[${count.index}].noOfUnitsFilled" id="noOfUnitCompleted_${count.index}" type="text" style="text-align: right;" class="form-control validate"  value="${QPR_ACTIVITY.additionalFacultyProgressDetail[count.index].noOfUnitsFilled}" onkeyup="validateNoOfUnits(${count.index})"/>
-								 				</c:if></td>
+													<input name="additionalFacultyProgressDetail[${count.index}].noOfUnitsFilled" id="noOfUnitCompleted_${count.index}" type="text" style="text-align: right;" class="form-control validate"  value="${QPR_ACTIVITY.additionalFacultyProgressDetail[count.index].noOfUnitsFilled}" onkeyup="validateNoOfUnits(${count.index})" onchange="domainValidation('noOfUnitCompleted_${count.index}')"/>
+																<c:choose>
+																	<c:when test="${count.index eq 0 }">
+																		<div align="right" style="margin-top: 5px"><button type="button"
+																				class="btn btn-primary btn-lg" data-toggle="modal"
+																				data-target="#myModal">Fill Domain Details</button></div>
+																	</c:when>
+
+																	<c:when test="${count.index eq 3}">
+																		<div align="right" style="margin-top: 5px"><button type="button"
+																				class="btn btn-primary btn-lg" data-toggle="modal"
+																				data-target="#myModal2">Fill Domain Details</button></div>
+																	</c:when>
+																	<c:otherwise>
+																	</c:otherwise>
+																</c:choose>
+															</c:if></td>
 									 				<td><input name="additionalFacultyProgressDetail[${count.index}].expenditureIncurred" id="expenditureIncurred_${count.index}" type="text" style="text-align: right;" class="form-control validate" value="${QPR_ACTIVITY.additionalFacultyProgressDetail[count.index].expenditureIncurred }" onkeyup="validateFundByAllocatedFund(${count.index});validateWithCorrespondingFund(${count.index});isNoOfUnitAndExpInurredFilled(${count.index});calTotalExpenditure()"/></td>
 											</c:when>
 											<c:otherwise>
@@ -238,14 +322,14 @@ function calTotalExpenditure(){
 								</c:forEach>
 									<tr>
 										<th colspan="2"><div align="center">Additional Requirement SPRC</div></th>
-										<th colspan="2"><div align="center" id="additionalReqSprcStateId">${CEC_APPROVED_ACTIVITY.additionalRequirementSprc }</div></th>
+										<td colspan="2"><div align="center" id="additionalReqSprcStateId">${CEC_APPROVED_ACTIVITY.additionalRequirementSprc }</div></td>
 										<td></td>
 										<td><input type="text" name="additionalReqSprc" id="additionalReqSprcId" style="text-align: right;" value="${QPR_ACTIVITY.additionalReqSprc}" class="form-control validate" onkeyup="validateAddReq('sprc');calTotalExpenditure()"></td>
 									</tr>
 									
 									<tr>
 										<th colspan="2"><div align="center">Additional Requirement DPRC</div></th>
-										<th colspan="2"><div align="center" id="additionalReqDprcStateId">${CEC_APPROVED_ACTIVITY.additionalRequirementDprc }</div></th>
+										<td colspan="2"><div align="center" id="additionalReqDprcStateId">${CEC_APPROVED_ACTIVITY.additionalRequirementDprc }</div></td>
 										<td></td>
 										<td><input type="text" name="additionalReqDprc" id="additionalReqDprcId" style="text-align: right;" value="${QPR_ACTIVITY.additionalReqDprc}" class="form-control validate" onkeyup="validateAddReq('dprc');calTotalExpenditure()"></td>
 									</tr>
@@ -260,6 +344,149 @@ function calTotalExpenditure(){
 									</tr>
 									</tbody>
 						</table>
+						<!-- MODAL SPRC -->
+							<div id="myModal" class="modal fade" role="dialog">
+									<div class="modal-dialog">
+
+										<!-- Modal content-->
+										<div class="modal-content">
+											<div class="modal-header">
+												<button type="button" class="close" data-dismiss="modal">&times;</button>
+											</div>
+											<div class="modal-body">
+												<div class="row">
+													<div class="form-group">
+														<label for="sprcModal" class="col-sm-3">Institute Type
+															:</label>
+														<div class="col-sm-5">
+															<!-- <select> -->
+															<c:forEach items="${LIST_OF_DOMAINS}" var="DOMAINS"
+																begin="1" end="1">
+																<c:if
+																	test="${DOMAINS.trainingInstitueType.trainingInstitueTypeId eq 2}">
+																	<p class="text-justify">
+																		<strong>
+																			${DOMAINS.trainingInstitueType.trainingInstitueTypeName}</strong>
+																	</p>
+																</c:if>
+															</c:forEach>
+														</div>
+													</div>
+												</div>
+												<div class="row clearfix">
+													<div class="body">
+														<div class="table-responsive">
+															<table class="table table-hover">
+																<thead style="background-color: #b39ad8;color: #2f2b2bf2;">
+																	<tr>
+																		<th><div align="center">Domain</div></th>
+																		<th><div align="center">No.of Experts</div></th>
+																	</tr>
+																</thead>
+																<tbody id="sprcModalTbody">
+																<c:set var="temp" value="0" scope="page" />
+																	<c:forEach items="${LIST_OF_DOMAINS}" var="DOMAINS">
+																		<c:if test="${DOMAINS.trainingInstitueType.trainingInstitueTypeId eq 2 }">
+																			<tr>
+																				<th><div align="center">${DOMAINS.domainName}</div>
+																					<input type="hidden"
+																					name="qprTiWiseDomainExpert[${temp}].domainId"
+																					value="${DOMAINS.domainId}"></th>
+																				<td><form:input path="qprTiWiseDomainExpert[${temp}].noOfExperts" id="noOfExpertsSprc_${temp}" class="form-control validate Align-Right" onkeyup="domainValidation(${temp})"/></td>
+																			</tr>
+																			<form:hidden path="qprTiWiseDomainExpert[${temp}].qprTiWiseProposedDomainExpertsId"/>
+																			<c:set var="temp" value="${temp+1}" scope="page" />
+																		</c:if>
+																	</c:forEach>
+																</tbody>
+															</table>
+														</div>
+													</div>
+												</div>
+											</div>
+											<div class="modal-footer">
+												<button type="button" class="btn btn-danger"
+													data-dismiss="modal">Close</button>
+											</div>
+										</div>
+									</div>
+								</div>
+						<!-- MODAL SPRC ENDS HERE -->
+						
+						<!-- MODAL DPRC -->
+						<div id="myModal2" class="modal fade" role="dialog">
+									<div class="modal-dialog modal-lg">
+
+										<!-- Modal content-->
+										<div class="modal-content">
+											<div class="modal-header">
+												<button type="button" class="close" data-dismiss="modal">&times;</button>
+											</div>
+											<div class="modal-body">
+												<div class="row">
+													<div class="form-group">
+														<label for="sprc" class="col-sm-3">Institute Type
+															:</label>
+														<div class="col-sm-5">
+															<c:forEach items="${LIST_OF_DOMAINS}" var="DOMAINS"
+																begin="1" end="3">
+																<c:if
+																	test="${DOMAINS.trainingInstitueType.trainingInstitueTypeId eq 4}">
+																	<p class="text-justify">
+																		<strong>${DOMAINS.trainingInstitueType.trainingInstitueTypeName}</strong>
+																	</p>
+																</c:if>
+															</c:forEach>
+														</div>
+													</div>
+												</div>
+												<div class="row clearfix">
+													<div class="body">
+														<div class="table-responsive">
+															<table class="table table-hover">
+																<thead style="background-color: #b39ad8;color: #2f2b2bf2;display: table;width: 100%;">
+																	<tr>
+																		<th><div align="center">District Name</div></th>
+																		<c:forEach items="${LIST_OF_DOMAINS}" var="DOMAINS">
+																			<c:if test="${DOMAINS.trainingInstitueType.trainingInstitueTypeId eq 4}">
+																				<th><div align="center">${DOMAINS.domainName}</div></th>
+																			</c:if>
+																		</c:forEach>
+																	</tr>
+																</thead>
+																<tbody style="display: block;overflow-x: auto;height: 500px;" id="dprcModalTbody">
+																	<c:set var="dprcIndex" value="0" scope="page" />	
+																		<c:forEach items="${LIST_OF_DISTRICT}" var="DISTRICT">
+																			<tr>
+																				<td style="width: 234px;"><div align="center"><strong>${DISTRICT.districtNameEnglish}</strong></div></td>
+																				<c:forEach items="${LIST_OF_DOMAINS}" var="DOMAINS">
+																					<c:if test="${DOMAINS.trainingInstitueType.trainingInstitueTypeId eq 4}">
+																						<td><form:input path="qprTiWiseDomainExpert[${dprcIndex+LIST_OF_DOMAINS_LENGTH}].noOfExperts" class="form-control Align-Right validate" onkeyup="domainValidation(${dprcIndex})" id="noOfExpertsDprc_${dprcIndex}" /></td>
+																					<!-- hidden fields  -->
+																							<input type="hidden" name="qprTiWiseDomainExpert[${dprcIndex + LIST_OF_DOMAINS_LENGTH}].domainId" value="${DOMAINS.domainId}">
+																							<input type="hidden" name="qprTiWiseDomainExpert[${dprcIndex + LIST_OF_DOMAINS_LENGTH}].districtCode" value="${DISTRICT.districtCode}">
+																							<form:hidden path="qprTiWiseDomainExpert[${dprcIndex + LIST_OF_DOMAINS_LENGTH}].qprTiWiseProposedDomainExpertsId"/>
+																					<!-- hidden fields ends here  -->
+																					<c:set var="dprcIndex" value="${dprcIndex + 1}" scope="page"></c:set>
+																					</c:if>
+																				</c:forEach>
+																			</tr>
+																		</c:forEach>
+																</tbody>
+															</table>
+														</div>
+													</div>
+												</div>
+											</div>
+											<div class="modal-footer">
+												<button type="button" class="btn btn-danger"
+													data-dismiss="modal">Close</button>
+											</div>
+										</div>
+
+									</div>
+								</div>
+						<!-- MODAL SPRC ENDS HERE -->
 							<div class="text-right">
 								<button type="submit" onclick="saveAndGetDataQtrRprt('save')" class="btn bg-green waves-effect">SAVE</button>
 								<button type="button" onclick="onClear(this)" class="btn bg-light-blue waves-effect">CLEAR</button>

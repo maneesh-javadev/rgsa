@@ -1,5 +1,7 @@
 package gov.in.rgsa.serviceImpl;
 
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.log;
+
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -40,6 +42,7 @@ public class HundredDayTrainingDetailsServiceImpl implements HundredDayTrainingD
 		 * detail.setTrgOfHundredDaysProgram(entity); }
 		 * entity.setTrgDetailsOfHundredDaysProgram(details);
 		 */
+		System.err.println("State Code ---->" + entity.getStateCode() + " ## last updated by ------>" + entity.getLastUpdatedBy() );
 		if (entity.getTrgOfHundredDaysProgramCh2Id() != null) {
 			dao.update(entity);
 		} else {

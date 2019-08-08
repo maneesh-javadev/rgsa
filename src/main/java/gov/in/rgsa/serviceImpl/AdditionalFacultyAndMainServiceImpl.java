@@ -32,6 +32,7 @@ public class AdditionalFacultyAndMainServiceImpl implements AdditionalFacultyAnd
 	@Autowired
 	private CommonRepository  commonRepository;
 	
+	
 	@Autowired
 	private UserPreference userPreference;
 	
@@ -140,7 +141,7 @@ public class AdditionalFacultyAndMainServiceImpl implements AdditionalFacultyAnd
 		}
 		
 		if(additionalFactultyAndMaintModel.getDbFileName().equals("freeze"))
-		{
+		{ 
 			facadeService.populateStateFunds("14");
 		}
 		

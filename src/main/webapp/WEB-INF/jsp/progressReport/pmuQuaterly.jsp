@@ -7,6 +7,7 @@ if(quater_id > 2){
 	var fund_allocated_in_pre_qtr = '${FUND_ALLOCATED_BY_STATE_PREVIOUS}';
 	var fund_used_in_qtr_1_and_2 = '${TOTAL_FUND_USED_IN_QTR_1_AND_2}';
 }
+let domain_list = '${LIST_OF_PMU_DOMAINS}';
 
 $('document').ready(function(){
 	$('#quaterDropDownId').val(quater_id);
@@ -102,7 +103,87 @@ function calTotalExpenditure(){
 	}
 	$('#totalExpenditureId').val(total_expenditure);
 }
+
+function calculateValueAcDomain(index){
+	var rowCountSprc=$('#tbodySprcId tr').length;
+	var rowCountDprc=$('#tbodyDprcId tr').length * domain_list.split(',').length / 2;
+	var noOfDomainSprc=0;
+	var noOfDomainDprc=0;
+	for(var i=0;i<rowCountSprc;i++){
+		noOfDomainSprc += Number($('#noOfExpertsSprc_'+i).val()) ;
+	}
+	for(var i=0;i<rowCountDprc;i++){
+		noOfDomainDprc += Number($('#noOfExpertsDprc_'+(i)).val());
+	}
+	
+	/* if($('#noOfUnitCompleted_0').val() < noOfDomainSprc){
+		alert('Total domains experts should be equal to or less than '+ $('#noOfUnitCompleted_0').val());
+		$('#noOfExpertsSprc_'+obj).val('');
+		
+	}
+	 if($('#noOfUnitCompleted_3').val() < noOfDomainDprc){
+		alert('Total domains experts should be equal to or less than '+ $('#noOfUnitCompleted_3').val());
+		$('#noOfExpertsDprc_'+obj).val('');
+		
+	} */
+	 
+	 if(!isNaN(index)){
+			if($('#noOfUnitCompleted_0').val() < noOfDomainSprc){
+				alert('Total domains experts should be equal to or less than '+ $('#noOfUnitCompleted_0').val());
+				$('#noOfExpertsSprc_'+index).val('');
+			}else if($('#noOfUnitCompleted_3').val() < noOfDomainDprc){
+				alert('Total domains experts should be equal to or less than '+ $('#noOfUnitCompleted_3').val());
+				$('#noOfExpertsDprc_'+index).val('');
+			}
+			}else{ if(index == 'noOfUnitCompleted_0' && noOfDomainSprc != 0){
+					var result= confirm("If you change Number of units you have to fill domain details.");
+					if(result){
+					if($('#noOfUnitCompleted_0').val() < noOfDomainSprc){
+						alert('No of units in SPRC should not exceed the sum of domain detail :'+ noOfDomainSprc + ' please fill the domain details again.');
+						emptyDomainDetails('spmu',rowCountSprc);
+					}
+					}else{
+						if($('#noOfUnitCompleted_0').val() < noOfDomainSprc){
+							alert('No of units in SPRC should not exceed the sum of domain detail '+ noOfDomainSprc );
+							$('#noOfUnitCompleted_0').val('');
+						}
+					}
+			}else if(index == 'noOfUnitCompleted_3' && noOfDomainDprc != 0){
+				var result= confirm("If you change Number of units you have to fill domain details.");
+				if(result){
+				if($('#noOfUnitCompleted_3').val() < noOfDomainDprc){
+					alert('No of units in DPRC should not exceed the sum of domain detail :'+ noOfDomainDprc + ' please fill the domain details again.');
+					emptyDomainDetails('dpmu',rowCountDprc);
+				}
+				}else{
+					if($('#noOfUnitCompleted_3').val() < noOfDomainSprc){
+						alert('No of units in DPRC should not exceed the sum of domain detail '+ noOfDomainDprc );
+						$('#noOfUnitCompleted_3').val('');
+					}
+				}
+			  }
+			} 
+	
+}
+
+/* this function used in domainValidation function */
+function emptyDomainDetails(level,count){
+	if(level == 'spmu'){
+		for(var i=0;i<count;i++){
+			$('#noOfExpertsSprc_'+i).val('');
+		}
+	}else{
+		for(var i=0;i<count;i++){
+			$('#noOfExpertsDprc_'+i).val('');
+		}
+	}
+}
 </script>
+<style>
+.align-right{
+		text-align: right;
+		}
+</style>
 <section class="content">
 	<div class="container-fluid">
 		<div class="row clearfix">
@@ -183,7 +264,18 @@ function calTotalExpenditure(){
 																type="text" style="text-align: right;"
 																class="form-control validate" id="noOfUnitCompleted_${count.index}"
 																onkeyup="validateNoOfUnits(${count.index});"
-																value="${PMU_PROGRESS.pmuProgressDetails[count.index].noOfUnitsFilled}" required="required"/></td>
+																value="${PMU_PROGRESS.pmuProgressDetails[count.index].noOfUnitsFilled}" required="required" onchange="calculateValueAcDomain('noOfUnitCompleted_${count.index}')"/>
+															<c:if test="${count.index eq 0}">
+																<div align="right" style="margin-top: 5px"><button type="button"
+																	 class="btn btn-primary btn-lg" data-toggle="modal"
+																	 data-target="#myModal">Fill Domain Details</button></div>
+															</c:if>
+															<c:if test="${count.index eq 3}">
+																<div align="right" style="margin-top: 5px"><button type="button"
+																	 class="btn btn-primary btn-lg" data-toggle="modal"
+																	 data-target="#myModal2">Fill Domain Details</button></div>
+															</c:if>
+															</td>
 															<td><input
 																name="pmuProgressDetails[${count.index}].expenditureIncurred"
 																type="text" style="text-align: right;"
@@ -201,7 +293,21 @@ function calTotalExpenditure(){
 																type="text" style="text-align: right;"
 																id="noOfUnitCompleted_${count.index}"
 																onkeyup="validateNoOfUnits(${count.index});"
-																class="form-control validate" required="required"/></td>
+																class="form-control validate" required="required" onchange="calculateValueAcDomain('noOfUnitCompleted_${count.index}')" />
+																
+															<c:if test="${count.index eq 0}">
+																<div align="right" style="margin-top: 5px">
+																	<button type="button" class="btn btn-primary btn-lg"
+																		data-toggle="modal" data-target="#myModal">Fill
+																		Domain Details</button>
+																</div>
+															</c:if> <c:if test="${count.index eq 3}">
+																<div align="right" style="margin-top: 5px">
+																	<button type="button" class="btn btn-primary btn-lg"
+																		data-toggle="modal" data-target="#myModal2">Fill
+																		Domain Details</button>
+																</div>
+															</c:if></td>
 															<td><input
 																name="pmuProgressDetails[${count.index}].expenditureIncurred"
 																type="text" style="text-align: right;"
@@ -221,6 +327,137 @@ function calTotalExpenditure(){
 										</tr>
 										</tbody>
 									</table>
+									
+									<!-- SPMU MODAL-->
+											<div id="myModal" class="modal fade" role="dialog">
+											<div class="modal-dialog">
+												<!-- Modal content-->
+												<div class="modal-content">
+													<div class="modal-header">
+														<button type="button" class="close" data-dismiss="modal">&times;</button>
+													</div>
+													<div class="modal-body">
+														<div class="row">
+															<div class="form-group">
+																<label for="spmu" class="col-sm-3"><spring:message code="Label.InstituteType" htmlEscape="true" /></label>
+																<div class="col-sm-5">
+																	<c:forEach items="${LIST_OF_PMU_DOMAINS}" var="DOMAINS" begin="1" end="1">
+																		<c:if	test="${DOMAINS.pmuType.pmuTypeId eq 1}">
+																			<p class="text-justify"><strong>${DOMAINS.pmuType.pmuTypeName}</strong></p>
+																		</c:if>
+																	</c:forEach>
+																</div>
+															</div>
+														</div>
+														<div class="row clearfix">
+		
+															<div class="body">
+																<div class="table-responsive">
+																	<table class="table table-bordered">
+																		<thead style="background-color: #b39ad8;color: #2f2b2bf2;">
+																			<tr>
+																				<th><div align="center"><spring:message code="Label.Domain" htmlEscape="true" /></div></th>
+																				<th><div align="center"><spring:message code="Label.NoOfExperts" htmlEscape="true" /></div></th>
+																			</tr>
+																		</thead>
+																		<tbody id="tbodySprcId">
+																		<c:set var="temp" value="0" scope="page" />
+																			<c:forEach items="${LIST_OF_PMU_DOMAINS}" var="DOMAINS">
+																				<c:if	test="${DOMAINS.pmuType.pmuTypeId eq 1 }">
+																					<tr>
+																						<th><div align="center">${DOMAINS.pmuDomainName}</div>
+																						<td><form:input path="qprPmuWiseProposedDomainExperts[${temp}].noOfExperts" class="align-right validate form-control" id="noOfExpertsSprc_${temp}" onkeyup="calculateValueAcDomain(${temp})"/></td>
+																					</tr>
+																					<!-- Hidden fields -->
+																						<form:hidden path="qprPmuWiseProposedDomainExperts[${temp}].qprPmuWiseProposedDomainExpertsId" />
+																						<input type="hidden" name="qprPmuWiseProposedDomainExperts[${temp}].domainId" value="${DOMAINS.pmuDomainId}">
+																					<!-- Hidden Fields Ends Here -->
+																				</c:if>
+																				<c:set var="temp" value="${temp+1}" scope="page" />
+																			</c:forEach>
+																		</tbody>
+																	</table>
+																</div>
+															</div>
+														</div>
+													</div>
+													<div class="modal-footer">
+														<!-- <button type="button" class="btn btn-success">Save</button> -->
+														<button type="button" class="btn btn-danger"
+															data-dismiss="modal"><spring:message code="Label.CLOSE" htmlEscape="true" /></button>
+													</div>
+												</div>
+		
+											</div>
+										</div>									
+									<!-- SPMU MODAL ENDS HERE -->
+									
+									<!-- DPMU MODAL -->
+										<div id="myModal2" class="modal fade" role="dialog">
+											<div class="modal-dialog modal-lg">
+												<!-- Modal content-->
+												<div class="modal-content">
+													<div class="modal-header">
+														<button type="button" class="close" data-dismiss="modal">&times;</button>
+													</div>
+													<div class="modal-body">
+														<div class="row">
+															<div class="form-group">
+																<label for="dprc" class="col-sm-3"><spring:message code="Label.InstituteType" htmlEscape="true" /></label>
+																<div class="col-sm-5">
+																	<c:forEach items="${LIST_OF_PMU_DOMAINS}" var="DOMAINS"	begin="1" end="3">
+																		<c:if test="${DOMAINS.pmuType.pmuTypeId eq 2}">
+																			<p class="text-justify"><strong>${DOMAINS.pmuType.pmuTypeName}</strong></p>
+																		</c:if>
+																	</c:forEach>
+																</div>
+															</div>
+														</div>
+														<div class="row clearfix">
+															<div class="body">
+																<div class="table-responsive">
+																	<table class="table table-hover">
+																		<thead style="background-color: #b39ad8;color: #2f2b2bf2;display: table;width: 100%;">
+																			<tr>
+																				<th><div align="center">District Name</div></th>
+																				<c:forEach items="${LIST_OF_PMU_DOMAINS}" var="DOMAINS">
+																					<c:if test="${DOMAINS.pmuType.pmuTypeId eq 2}">
+																						<th><div align="center">${DOMAINS.pmuDomainName}</div></th>
+																					</c:if>
+																				</c:forEach>
+																			</tr>
+																		</thead>
+																		<tbody style="display: block;overflow-x: auto;height: 500px;" id="tbodyDprcId">
+																			<c:set var="dprcIndex" value="0" scope="page" />	
+																			<c:forEach items="${LIST_OF_DISTRICT}" var="DISTRICT" varStatus="index">
+																			<tr>
+																				<td style="width: 234px;"><div align="center"><strong>${DISTRICT[1]}</strong></div></td>
+																				<c:forEach items="${LIST_OF_PMU_DOMAINS}" var="DOMAINS">
+																					<c:if test="${DOMAINS.pmuType.pmuTypeId eq 2}">
+																						<td><form:input path="qprPmuWiseProposedDomainExperts[${dprcIndex + LIST_OF_PMU_DOMAINS_LIST}].noOfExperts" class="align-right validate form-control" id="noOfExpertsDprc_${dprcIndex}" onkeyup="calculateValueAcDomain(${dprcIndex})" /></td>
+																						<!-- Hidden Fields -->
+																							<input type="hidden" name="qprPmuWiseProposedDomainExperts[${dprcIndex + LIST_OF_PMU_DOMAINS_LIST}].domainId" value="${DOMAINS.pmuDomainId}">
+																							<input type="hidden" name="qprPmuWiseProposedDomainExperts[${dprcIndex + LIST_OF_PMU_DOMAINS_LIST}].districtId" value="${DISTRICT[0]}">
+																							<form:hidden path="qprPmuWiseProposedDomainExperts[${dprcIndex + LIST_OF_PMU_DOMAINS_LIST}].qprPmuWiseProposedDomainExpertsId" />
+																						<!-- Hidden Fields Ends Here -->	
+																						<c:set var="dprcIndex" value="${dprcIndex + 1}" scope="page"></c:set>			
+																					</c:if>
+																				</c:forEach>
+																			</tr>
+																		</c:forEach>
+																		</tbody>
+																	</table>
+																</div>
+															</div>
+														</div>
+													</div>
+													<div class="modal-footer">
+														<button type="button" class="btn btn-danger" data-dismiss="modal"><spring:message code="Label.CLOSE" htmlEscape="true" /></button>
+													</div>
+												</div>
+											</div>
+										</div>
+									<!-- DPMU MODAL ENDS HERE -->
 									<div class="text-right">
 											<button type="button" onclick="saveAndGetDataQtrRprt('save')" id="saveButtn"
 												class="btn bg-green waves-effect">SAVE</button>

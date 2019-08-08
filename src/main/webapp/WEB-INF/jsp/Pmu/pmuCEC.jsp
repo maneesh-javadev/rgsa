@@ -117,7 +117,7 @@ function onLoadChangeColor(){
 	}
 }
 
-function calculateValueAcDomain(obj){
+function calculateValueAcDomain(index){
 	var rowCountSprc=$('#tbodySprcId tr').length;
 	var rowCountDprc=$('#modal2Tbody tr').length * domain_list.split(',').length / 2;
 	var noOfDomainSprc=0;
@@ -129,7 +129,7 @@ function calculateValueAcDomain(obj){
 		noOfDomainDprc += Number($('#noOfFacultyDpmu_'+(i)).val());
 	}
 	
-	if($('#noOfUnits_0').val() < noOfDomainSprc){
+	/* if($('#noOfUnits_0').val() < noOfDomainSprc){
 		alert('Total domains experts should be equal to or less than '+ $('#noOfUnits_0').val());
 		$('#noOfFaculty_'+obj).val('');
 		
@@ -138,8 +138,58 @@ function calculateValueAcDomain(obj){
 		alert('Total domains experts should be equal to or less than '+ $('#noOfUnits_3').val());
 		$('#noOfFacultyDpmu_'+obj).val('');
 		
-	}
+	} */
 	
+	 
+	 if(!isNaN(index)){
+			if($('#noOfUnits_0').val() < noOfDomainSprc){
+				alert('Total domains experts should be equal to or less than '+ $('#noOfUnits_0').val());
+				$('#noOfFaculty_'+index).val('');
+			}else if($('#noOfUnits_3').val() < noOfDomainDprc){
+				alert('Total domains experts should be equal to or less than '+ $('#noOfUnits_3').val());
+				$('#noOfFacultyDpmu_'+index).val('');
+			}
+			}else{ if(index == 'noOfUnits_0' && noOfDomainSprc != 0){
+					var result= confirm("If you change Number of units you have to fill domain details.");
+					if(result){
+					if($('#noOfUnits_0').val() < noOfDomainSprc){
+						alert('No of units in SPRC should not exceed the sum of domain detail :'+ noOfDomainSprc + ' please fill the domain details again.');
+						emptyDomainDetails('spmu',rowCountSprc);
+					}
+					}else{
+						if($('#noOfUnits_0').val() < noOfDomainSprc){
+							alert('No of units in SPRC should not exceed the sum of domain detail '+ noOfDomainSprc );
+							$('#noOfUnits_0').val('');
+						}
+					}
+			}else if(index == 'noOfUnits_3' && noOfDomainDprc != 0){
+				var result= confirm("If you change Number of units you have to fill domain details.");
+				if(result){
+				if($('#noOfUnits_3').val() < noOfDomainDprc){
+					alert('No of units in DPRC should not exceed the sum of domain detail :'+ noOfDomainDprc + ' please fill the domain details again.');
+					emptyDomainDetails('dpmu',rowCountDprc);
+				}
+				}else{
+					if($('#noOfUnits_3').val() < noOfDomainSprc){
+						alert('No of units in DPRC should not exceed the sum of domain detail '+ noOfDomainDprc );
+						$('#noOfUnits_3').val('');
+					}
+				}
+			  }
+			} 
+}
+
+/* this function used in domainValidation function */
+function emptyDomainDetails(level,count){
+	if(level == 'spmu'){
+		for(var i=0;i<count;i++){
+			$('#noOfFaculty_'+i).val('');
+		}
+	}else{
+		for(var i=0;i<count;i++){
+			$('#noOfFacultyDpmu_'+i).val('');
+		}
+	}
 }
 
 function validationOnSubmit(){
@@ -398,6 +448,7 @@ function calculateTotalFundDpmu() {
 															oninput="validity.valid||(value='');" type="text"
 															class="active12 form-control" id="noOfUnits_${srl.index}"
 															onkeyup="onLoadChangeColor();calculate(${srl.index})"
+															onchange="calculateValueAcDomain('noOfUnits_${srl.index}')"
 															style="text-align: right;" required="required"/></td>
 														<td>
 														<div align="center" id="unitCostState_${srl.index}">${pmuActivityState.pmuActivityDetails[srl.index].unitCost}</div>

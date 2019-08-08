@@ -689,7 +689,7 @@
 								<c:if test="${sessionScope['scopedTarget.userPreference'].userType eq 'S'}">
 									<!-- <button data-ng-click="exportData()">Download Consolidated Report</button> -->
 									<c:if test="${buttonStatus}">
-								    <input type="button" class="btn bg-light-blue" data-ng-click="forwardPlan(true)" value="Forward Plan" disabled="disabled"/></c:if>
+								    <input type="button" class="btn bg-light-blue" data-ng-click="forwardPlan(true)" value="Forward Plan"/></c:if>
 								</c:if>
 								</div>
 							</div>

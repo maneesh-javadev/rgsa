@@ -184,16 +184,23 @@ public class ProgressReportServiceImpl implements ProgressReportService {
     @Override
     public void saveAdditionalFacultyProgress(AdditionalFacultyProgress additionalFacultyProgress) {
         List<AdditionalFacultyProgressDetail> additionalFacultyProgressDetail = additionalFacultyProgress.getAdditionalFacultyProgressDetail();
+        List<QprTiWiseDomainExpert> qprTiWiseDomainExpert=additionalFacultyProgress.getQprTiWiseDomainExpert();
         additionalFacultyProgress.setLastUpdatedBy(userPreference.getUserId());
         additionalFacultyProgress.setCreatedBy(userPreference.getUserId());
         additionalFacultyProgress.setQuarterDuration(additionalFacultyProgress.getQuarterDuration());
-
+        
         for (AdditionalFacultyProgressDetail Details : additionalFacultyProgressDetail) {
             if (Details != null) {
                 Details.setAdditionalFacultyProgress(additionalFacultyProgress);
             }
         }
-
+        
+        qprTiWiseDomainExpert.forEach( obj -> {
+        	if(obj != null)
+        		obj.setAdditionalFacultyProgress(additionalFacultyProgress);
+        });
+        
+        additionalFacultyProgress.setQprTiWiseDomainExpert(qprTiWiseDomainExpert);
         if (additionalFacultyProgress.getQprInstInfraHrId() == null) {
             commonRepository.save(additionalFacultyProgress);
         } else {
@@ -272,24 +279,24 @@ public class ProgressReportServiceImpl implements ProgressReportService {
     public void savePmu(PmuProgress pmuProgress) {
 
         List<PmuProgressDetails> pmuProgressDetails = pmuProgress.getPmuProgressDetails();
+        List<QprPmuWiseProposedDomainExperts> qprPmuWiseProposedDomainExperts = pmuProgress.getQprPmuWiseProposedDomainExperts();
         pmuProgress.setLastUpdatedBy(userPreference.getUserId());
         pmuProgress.setCreatedBy(userPreference.getUserId());
-        if (pmuProgress.getQprPmuId() == null) {
-            pmuProgress.setQuarterDuration(pmuProgress.getQuarterDuration());
-
-            for (PmuProgressDetails Details : pmuProgressDetails) {
-                if (Details != null) {
-                    Details.setPmuProgress(pmuProgress);
-                }
+        pmuProgress.setQuarterDuration(pmuProgress.getQuarterDuration());
+        for (PmuProgressDetails Details : pmuProgressDetails) {
+            if (Details != null) {
+                Details.setPmuProgress(pmuProgress);
             }
+        }
+        
+        qprPmuWiseProposedDomainExperts.forEach(obj ->{
+        	obj.setPmuProgress(pmuProgress);
+        });
+        
+        pmuProgress.setQprPmuWiseProposedDomainExperts(qprPmuWiseProposedDomainExperts);
+        if (pmuProgress.getQprPmuId() == null) {
             commonRepository.save(pmuProgress);
         } else {
-            pmuProgress.setQuarterDuration(pmuProgress.getQuarterDuration());
-            for (PmuProgressDetails Details : pmuProgressDetails) {
-                if (Details != null) {
-                    Details.setPmuProgress(pmuProgress);
-                }
-            }
             commonRepository.update(pmuProgress);
         }
 
