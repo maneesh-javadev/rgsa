@@ -313,7 +313,26 @@ function emptyDomainDetails(level,count){
 											<c:otherwise>
 												<td><c:if test="${count.index ne 2 and count.index ne 5}">
 													<input name="additionalFacultyProgressDetail[${count.index}].noOfUnitsFilled" id="noOfUnitCompleted_${count.index}" type="text" style="text-align: right;" class="form-control validate" onkeyup="validateNoOfUnits(${count.index})" />
-								 				</c:if></td>
+																<c:choose>
+																	<c:when test="${count.index eq 0 }">
+																		<div align="right" style="margin-top: 5px">
+																			<button type="button" class="btn btn-primary btn-lg"
+																				data-toggle="modal" data-target="#myModal">Fill
+																				Domain Details</button>
+																		</div>
+																	</c:when>
+
+																	<c:when test="${count.index eq 3}">
+																		<div align="right" style="margin-top: 5px">
+																			<button type="button" class="btn btn-primary btn-lg"
+																				data-toggle="modal" data-target="#myModal2">Fill
+																				Domain Details</button>
+																		</div>
+																	</c:when>
+																	<c:otherwise>
+																	</c:otherwise>
+																</c:choose>
+															</c:if></td>
 									 				<td><input name="additionalFacultyProgressDetail[${count.index}].expenditureIncurred" id="expenditureIncurred_${count.index}" type="text" style="text-align: right;" class="form-control validate" onkeyup="validateFundByAllocatedFund(${count.index});validateWithCorrespondingFund(${count.index});isNoOfUnitAndExpInurredFilled(${count.index});calTotalExpenditure()"></td>
 											</c:otherwise>
 										</c:choose>
