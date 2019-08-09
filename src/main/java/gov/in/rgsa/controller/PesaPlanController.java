@@ -49,8 +49,11 @@ public class PesaPlanController {
 	private ActionPlanService actionPlanService;
 	
 	@RequestMapping(value = "pesaPlan", method = RequestMethod.GET)
-	private String administrativeTechSupportStaff(@ModelAttribute("BASIC_INFO_MODEL") BasicInfoModel basicInfoModel, Model model,@RequestParam(value = "menuId") int menuId,RedirectAttributes redirectAttributes) {
-		userPreference.setMenuId(menuId);
+	private String administrativeTechSupportStaff(@ModelAttribute("BASIC_INFO_MODEL") BasicInfoModel basicInfoModel, Model model,RedirectAttributes redirectAttributes) {
+		/*
+		 * userPreference.setMenuId(menuId); ,@RequestParam(value = "menuId") int
+		 * menuId, this line commented for forward plan button
+		 */
 		String status = basicInfoService.fillFirstBasicInfo();
 		if(status.equals("create")) {
 			redirectAttributes.addFlashAttribute(Message.EXCEPTION_KEY, "Please fill the Basic Info Details first");

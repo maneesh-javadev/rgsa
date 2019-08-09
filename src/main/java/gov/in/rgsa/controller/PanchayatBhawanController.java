@@ -52,10 +52,13 @@ public class PanchayatBhawanController {
 	BasicInfoService basicInfoService;
 
 	@RequestMapping(value="panchayatbhawan",method = RequestMethod.GET)
-	public String panchayatBhawanGet(@RequestParam(value = "menuId") int menuId ,RedirectAttributes redirectAttributes,Model model)
+	public String panchayatBhawanGet(RedirectAttributes redirectAttributes,Model model)
 	{
 		System.out.println("panchayatbhawan...>!");
-		userPreference.setMenuId(menuId);
+		/*
+		 * userPreference.setMenuId(menuId); @RequestParam(value = "menuId") int menuId
+		 * , this line is commented for forward plan button as menu id in side bar jsp is used but we dont want it
+		 */
 		model.addAttribute("STATE_CODE", userPreference.getStateCode());
 		if(userPreference.getUserType().equalsIgnoreCase("C")){
 		return PANCHAYAT_BHAWAN_CEC;

@@ -51,7 +51,7 @@ public class DistanceLearningFacilityController {
 	public String userType=null;
 
 	@RequestMapping(value="distancelearningfacility",method=RequestMethod.GET)
-	private String distanceLearningGet(@RequestParam(value = "menuId") int menuId ,Model model,RedirectAttributes redirectAttributes)
+	private String distanceLearningGet(Model model,RedirectAttributes redirectAttributes)
 	{
 		String status = basicInfoService.fillFirstBasicInfo();
 		if(status.equals("create")) {
@@ -74,7 +74,10 @@ public class DistanceLearningFacilityController {
       		flag= false;
       	}
 	      model.addAttribute("Plan_Status", flag);
-		userPreference.setMenuId(menuId);
+		/*
+		 * userPreference.setMenuId(menuId);@RequestParam(value = "menuId") int menuId ,
+		 *  this line is commented for forward plan button as menu id in side bar jsp is used but we dont want it
+		 */
 		this.userType ='S'+"";
 		return DISTANCE_LEARNING;
 	}

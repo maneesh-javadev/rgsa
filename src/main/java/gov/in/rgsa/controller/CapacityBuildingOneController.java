@@ -58,9 +58,13 @@ public class CapacityBuildingOneController {
 	BasicInfoService basicInfoService;
 	
 	@RequestMapping(value="capacitybuild",method=RequestMethod.GET)
-	private String capacityBuildingGet(@RequestParam(value = "menuId") int menuId , Model model,RedirectAttributes redirectAttributes)
+	private String capacityBuildingGet(Model model,RedirectAttributes redirectAttributes)
 	{
-		userPreference.setMenuId(menuId);
+		/*
+		 * userPreference.setMenuId(menuId); commented becoz it is stopping the url
+		 * during forward plan @RequestParam(value = "menuId") int menuId , paste this
+		 * in the argument is used in future
+		 */
 		
 		String status = basicInfoService.fillFirstBasicInfo();
 		if(status.equals("create")) {
