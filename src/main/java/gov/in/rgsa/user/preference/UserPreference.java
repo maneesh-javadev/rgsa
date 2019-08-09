@@ -7,6 +7,7 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.stereotype.Component;
 
+import gov.in.rgsa.dto.IsFreezeStatusDto;
 import gov.in.rgsa.entity.ActionPlanStatus;
 import gov.in.rgsa.entity.FinYear;
 import gov.in.rgsa.entity.MenuProfile;
@@ -39,6 +40,8 @@ public class UserPreference {
 	private List<PlanComponents> planComponents;
 	
 	private List<StatePlanComponentsFunds> statePlanComponentsFunds;
+	
+	private List<IsFreezeStatusDto> isFreezeStatusList;
 	
 	private long countPlanSubmittedByState;
 	
@@ -250,5 +253,14 @@ public class UserPreference {
 	public void setIsNodalFilled(Boolean isNodalFilled) {
 		this.isNodalFilled = isNodalFilled;
 	}
+
+	public List<IsFreezeStatusDto> getIsFreezeStatusList() {
+		return isFreezeStatusList;
+	}
+
+	public void setIsFreezeStatusList(List<IsFreezeStatusDto> isFreezeStatusList) {
+		this.isFreezeStatusList = isFreezeStatusList;
+	}
+	
 	
 }

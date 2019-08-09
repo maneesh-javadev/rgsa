@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import gov.in.rgsa.dao.CommonRepository;
+import gov.in.rgsa.dto.IsFreezeStatusDto;
 import gov.in.rgsa.entity.ActionPlanStatus;
 import gov.in.rgsa.entity.FinYear;
 import gov.in.rgsa.entity.MenuProfile;
@@ -85,7 +86,7 @@ public class FacadeServiceImpl implements FacadeService {
 		Map<String, Object> parameter = new HashMap<String, Object>();
 		parameter.put("yearId",finYear.getYearId());
 		parameter.put("stateCode", user.getStateId());
-		
+		List<IsFreezeStatusDto> isFreezeStatusDto = commonRepository.findAll("FETCH_FORMS_FREEZE_STATUS", parameter);
 		
 		Boolean plansAreFreezed = checkForFreezeStatus(parameter);
 		
@@ -139,6 +140,7 @@ public class FacadeServiceImpl implements FacadeService {
 		}
 		_preference.setCountPlanSubmittedByState(planDetailsService.countPlanSubmittedByState("M"));
 		_preference.setCountPlanSubmittedByMOPR(planDetailsService.countPlanSubmittedByState("C"));
+		_preference.setIsFreezeStatusList(isFreezeStatusDto);
 		return _preference;
 	}
 
@@ -337,6 +339,13 @@ public class FacadeServiceImpl implements FacadeService {
 		List<StatePlanComponentsFunds> componentsFunds= commonRepository.findAll("STATE_PLAN_FUNDS", parameter);
 		_userPreference.setStatePlanComponentsFunds(componentsFunds);
 		return _userPreference;
+	}
+
+	public List<IsFreezeStatusDto> fetchFormsIsFreezeStatus() {
+		Map<String, Object> parameter = new HashMap<String, Object>();
+		parameter.put("stateCode", userPreference.getStateCode());
+		parameter.put("yearId", userPreference.getFinYearId());
+		return commonRepository.findAll("FETCH_FORMS_FREEZE_STATUS", parameter);
 	}
 	
 }

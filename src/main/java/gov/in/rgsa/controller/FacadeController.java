@@ -95,6 +95,7 @@ public class FacadeController {
 		parameter.put("yearId",_userPreference.getFinYearId());
 		parameter.put("stateCode", _userPreference.getStateCode());
 		model.addAttribute("statePlanComponentsFunds", facadeServiceImpl.getPlanSubComponents());
+		_userPreference.setIsFreezeStatusList(facadeServiceImpl.fetchFormsIsFreezeStatus());
 		Boolean plansAreFreezed = facadeServiceImpl.checkForFreezeStatus(parameter);
 		_userPreference.setPlansAreFreezed(plansAreFreezed);
 		NodalOfficerDetails nodalOfficerDetails = null;
@@ -115,7 +116,8 @@ public class FacadeController {
 	@RequestMapping(value = "login", method = RequestMethod.POST)
 	public String login(@ModelAttribute("FACADE_MODEL") FacadeModel form, Model model,HttpSession httpSession, RedirectAttributes re) {
 		try {
-			CaptchaValidator captchaValidator = new CaptchaValidator();			boolean messageFlag = captchaValidator.validateCaptcha(httpSession, form.getCaptchaAnswer());
+			CaptchaValidator captchaValidator = new CaptchaValidator();	
+			boolean messageFlag = captchaValidator.validateCaptcha(httpSession, form.getCaptchaAnswer());
 			if (isCaptcha  && !messageFlag ) {
 				re.addFlashAttribute(Message.CAPCHA_ERROR_KEY, "You Have Entered Wrong Captcha");
 				return REDIRECT_INDEX_VIEW;
@@ -179,7 +181,7 @@ public class FacadeController {
 		_userPreference.setFinYear(userPreference.getFinYear());
 		_userPreference.setActivityPlanStatus(userPreference.getActivityPlanStatus());
 		_userPreference.setPlanComponents((userPreference.getPlanComponents()));
-		
+		_userPreference.setIsFreezeStatusList(userPreference.getIsFreezeStatusList());
 		_userPreference.setPlanCode(userPreference.getPlanCode());
 		_userPreference.setPlanStatus(userPreference.getPlanStatus());
 		_userPreference.setPlanVersion(userPreference.getPlanVersion());
