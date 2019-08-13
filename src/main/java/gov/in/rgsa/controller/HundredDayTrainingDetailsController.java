@@ -5,6 +5,8 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -18,6 +20,7 @@ import gov.in.rgsa.entity.TrgOfHundredDaysProgramCh2;
 import gov.in.rgsa.model.HundredDayTrainingDetailModel;
 import gov.in.rgsa.service.HundredDayTrainingDetailsService;
 import gov.in.rgsa.service.TrainingActivityService;
+import gov.in.rgsa.user.preference.UserPreference;
 import gov.in.rgsa.utils.Message;
 
 @Controller
@@ -26,12 +29,16 @@ public class HundredDayTrainingDetailsController {
 	public static final String HUNDRED_DAY_DETAIL = "hundredDayTrainingDetail";
 	private static final String REDIRECT_HUNDRED_DAY_DETAIL = "redirect:trainingDetailHundredDay.html";
 	private static final String NEW_HUNDRED_DAY_DETAILS = "newHundredDayTrainingDetails";
+	public static final String REDIRECT_INDEX_VIEW = "redirect:index.html";
 
 	@Autowired
 	private HundredDayTrainingDetailsService hundredDayTrainingDetailsService;
 
 	@Autowired
 	private TrainingActivityService trainingActivityService;
+	
+	@Autowired
+	private UserPreference userPreference;
 
 	/*
 	 * @GetMapping(value = "trainingDetailHundredDay") private String
@@ -212,8 +219,15 @@ public class HundredDayTrainingDetailsController {
 
 	@PostMapping(value = "trainingDetailHundredDay")
 	private String postHundredDayTrainingDetails(@ModelAttribute("HUN_DAY_TRAINING") TrgOfHundredDaysProgramCh2 entity,
-			RedirectAttributes redirect, Model model) {
+			RedirectAttributes redirect, Model model,HttpSession session) {
 		System.err.println(".................i am in post controller brother......");
+		if(userPreference.getStateCode()==null || userPreference.getFinYearId()==null || userPreference.getUserId()==null ) {
+			session.invalidate();
+			redirect.addFlashAttribute(Message.SUCCESS_KEY, "Successfully logout");
+			return REDIRECT_INDEX_VIEW;
+		}
+		
+		
 		if(entity.getMsg().equalsIgnoreCase("fetch")) {
 			return getHundredDayTrainingDetailsNew(entity , model);
 		}else {
