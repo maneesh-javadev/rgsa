@@ -9,53 +9,45 @@ import org.hibernate.annotations.NamedNativeQuery;
 
 @Entity
 @NamedNativeQueries({
-	@NamedNativeQuery(name="FETCH_ALL_STATE_DATA",query="SELECT\r\n" + 
-			"ROW_NUMBER () OVER () as s_no, \r\n" + 
-			"null as state_code ,\r\n" + 
-			"null as state_name_english ,\r\n" + 
-			"(select (COALESCE(subtable.total_female_sar_sc,0) + COALESCE(subtable.total_male_sar_sc,0) + COALESCE(subtable.total_female_sar_st,0) + \r\n" + 
-			"COALESCE(subtable.total_male_sar_st,0) + COALESCE(subtable.total_female_sar_oth,0) + COALESCE(subtable.total_male_sar_oth ,0) +\r\n" + 
-			"COALESCE(subtable.total_male_oth_sc ,0) + COALESCE(subtable.total_female_oth_sc ,0) + COALESCE(subtable.total_female_oth_st ,0) + \r\n" + 
-			"COALESCE(subtable.total_male_oth_st  ,0) + COALESCE(subtable.total_male_oth_ot ,0) + COALESCE(subtable.total_female_oth_ot ,0) ) as total_er_rep\r\n" + 
-			"from (select sum(er_sar_f_sc) as total_female_sar_sc,sum(er_sar_m_sc) as total_male_sar_sc , sum(er_sar_f_st) as total_female_sar_st ,\r\n" + 
-			"sum(er_sar_m_st) as total_male_sar_st ,sum(er_sar_f_ot) as total_female_sar_oth , sum(er_sar_m_ot) as total_male_sar_oth ,\r\n" + 
-			"sum(er_oth_m_sc) as total_male_oth_sc ,sum(er_oth_f_sc) as total_female_oth_sc , sum(er_oth_m_st) as total_male_oth_st ,\r\n" + 
-			"sum(er_oth_f_st) as total_female_oth_st ,sum(er_oth_m_ot) as total_male_oth_ot , sum(er_oth_f_ot) as total_female_oth_ot\r\n" + 
-			"from rgsa.trg_of_hundred_days_program_ch2) subtable),\r\n" + 
-			"\r\n" + 
-			"(select (COALESCE(subtable.total_female_sar_sc,0) + COALESCE(subtable.total_female_sar_st,0) + COALESCE(subtable.total_female_sar_oth,0) \r\n" + 
-			"+ COALESCE(subtable.total_female_oth_sc ,0) + COALESCE(subtable.total_female_oth_st ,0) \r\n" + 
-			"+ COALESCE(subtable.total_female_oth_ot ,0) ) as total_women_er_rep\r\n" + 
-			"from (select sum(er_sar_f_sc) as total_female_sar_sc, sum(er_sar_f_st) as total_female_sar_st ,\r\n" + 
-			"sum(er_sar_f_ot) as total_female_sar_oth ,\r\n" + 
-			"sum(er_oth_f_sc) as total_female_oth_sc , \r\n" + 
-			"sum(er_oth_f_st) as total_female_oth_st ,sum(er_oth_f_ot) as total_female_oth_ot\r\n" + 
-			"from rgsa.trg_of_hundred_days_program_ch2) subtable) ,\r\n" + 
-			"\r\n" + 
-			"(select (COALESCE(subtable.total_female_sar_sc,0) + COALESCE(subtable.total_male_sar_sc,0) +\r\n" + 
-			"COALESCE(subtable.total_male_oth_sc ,0) + COALESCE(subtable.total_female_oth_sc ,0)) as total_sc_er_rep\r\n" + 
-			"from (select sum(er_sar_f_sc) as total_female_sar_sc,sum(er_sar_m_sc) as total_male_sar_sc,\r\n" + 
-			"sum(er_oth_m_sc) as total_male_oth_sc ,sum(er_oth_f_sc) as total_female_oth_sc\r\n" + 
-			"  from rgsa.trg_of_hundred_days_program_ch2) subtable) ,\r\n" + 
-			"\r\n" + 
-			"(select (COALESCE(subtable.total_female_sar_st,0) + COALESCE(subtable.total_male_sar_st,0) +\r\n" + 
-			"COALESCE(subtable.total_male_oth_st ,0) + COALESCE(subtable.total_female_oth_st ,0)) as total_st_er_rep\r\n" + 
-			"from (select sum(er_sar_f_st) as total_female_sar_st,sum(er_sar_m_st) as total_male_sar_st,\r\n" + 
-			"sum(er_oth_m_st) as total_male_oth_st ,sum(er_oth_f_st) as total_female_oth_st\r\n" + 
-			"from rgsa.trg_of_hundred_days_program_ch2) subtable) ,\r\n" + 
-			"  \r\n" + 
-			"(select sum(er_in_aspirational_district)  from rgsa.trg_of_hundred_days_program_ch2) as total_er_in_aspirational_district,\r\n" + 
-			"\r\n" + 
-			"(select sum(fun_in_aspirational_district)  from rgsa.trg_of_hundred_days_program_ch2) as total_fun_in_aspirational_district,\r\n" + 
-			"\r\n" + 
-			"(select sum(no_of_training_conducted)  from rgsa.trg_of_hundred_days_program_ch2) as total_no_of_training_conducted,\r\n" + 
-			"\r\n" + 
-			"(select sum(trg_conducted_in_asp_district)  from rgsa.trg_of_hundred_days_program_ch2) as total_trg_conducted_in_asp_district\r\n" + 
-			"\r\n" + 
-			"FROM rgsa.trg_of_hundred_days_program_ch2 LIMIT 1",resultClass = HundredDaysWebServiceDTO.class),
+	@NamedNativeQuery(name="FETCH_ALL_STATE_DATA",query="SELECT \r\n" + 
+			"			ROW_NUMBER () OVER () as s_no,   \r\n" + 
+			"			null as state_code , \r\n" + 
+			"			null as state_name_english , \r\n" + 
+			"			(select (COALESCE(subtable.total_female_sar_sc,0) + COALESCE(subtable.total_male_sar_sc,0) + COALESCE(subtable.total_female_sar_st,0) +   \r\n" + 
+			"			COALESCE(subtable.total_male_sar_st,0) + COALESCE(subtable.total_female_sar_oth,0) + COALESCE(subtable.total_male_sar_oth ,0) +  \r\n" + 
+			"			COALESCE(subtable.total_male_oth_sc ,0) + COALESCE(subtable.total_female_oth_sc ,0) + COALESCE(subtable.total_female_oth_st ,0) +  \r\n" + 
+			"			COALESCE(subtable.total_male_oth_st  ,0) + COALESCE(subtable.total_male_oth_ot ,0) + COALESCE(subtable.total_female_oth_ot ,0) ) as total_er_rep  \r\n" + 
+			"			from (select sum(er_sar_f_sc) as total_female_sar_sc,sum(er_sar_m_sc) as total_male_sar_sc , sum(er_sar_f_st) as total_female_sar_st , \r\n" + 
+			"			sum(er_sar_m_st) as total_male_sar_st ,sum(er_sar_f_ot) as total_female_sar_oth , sum(er_sar_m_ot) as total_male_sar_oth , \r\n" + 
+			"			sum(er_oth_m_sc) as total_male_oth_sc ,sum(er_oth_f_sc) as total_female_oth_sc , sum(er_oth_m_st) as total_male_oth_st , \r\n" + 
+			"			sum(er_oth_f_st) as total_female_oth_st ,sum(er_oth_m_ot) as total_male_oth_ot , sum(er_oth_f_ot) as total_female_oth_ot \r\n" + 
+			"			from rgsa.trg_of_hundred_days_program_ch2 where trg_of_hundred_days_program_ch2.is_freeze) subtable), \r\n" + 
+			"			(select (COALESCE(subtable.total_female_sar_sc,0) + COALESCE(subtable.total_female_sar_st,0) + COALESCE(subtable.total_female_sar_oth,0) \r\n" + 
+			"			+ COALESCE(subtable.total_female_oth_sc ,0) + COALESCE(subtable.total_female_oth_st ,0) \r\n" + 
+			"			+ COALESCE(subtable.total_female_oth_ot ,0) ) as total_women_er_rep \r\n" + 
+			"			from (select sum(er_sar_f_sc) as total_female_sar_sc, sum(er_sar_f_st) as total_female_sar_st ,  \r\n" + 
+			"			sum(er_sar_f_ot) as total_female_sar_oth , \r\n" + 
+			"			sum(er_oth_f_sc) as total_female_oth_sc ,  \r\n" + 
+			"			sum(er_oth_f_st) as total_female_oth_st ,sum(er_oth_f_ot) as total_female_oth_ot  \r\n" + 
+			"			from rgsa.trg_of_hundred_days_program_ch2 where trg_of_hundred_days_program_ch2.is_freeze) subtable) ,   \r\n" + 
+			"			(select (COALESCE(subtable.total_female_sar_sc,0) + COALESCE(subtable.total_male_sar_sc,0) +  \r\n" + 
+			"			COALESCE(subtable.total_male_oth_sc ,0) + COALESCE(subtable.total_female_oth_sc ,0)) as total_sc_er_rep  \r\n" + 
+			"			from (select sum(er_sar_f_sc) as total_female_sar_sc,sum(er_sar_m_sc) as total_male_sar_sc,  \r\n" + 
+			"			sum(er_oth_m_sc) as total_male_oth_sc ,sum(er_oth_f_sc) as total_female_oth_sc  \r\n" + 
+			"			  from rgsa.trg_of_hundred_days_program_ch2 where trg_of_hundred_days_program_ch2.is_freeze) subtable) , \r\n" + 
+			"			(select (COALESCE(subtable.total_female_sar_st,0) + COALESCE(subtable.total_male_sar_st,0) + \r\n" + 
+			"			COALESCE(subtable.total_male_oth_st ,0) + COALESCE(subtable.total_female_oth_st ,0)) as total_st_er_rep  \r\n" + 
+			"			from (select sum(er_sar_f_st) as total_female_sar_st,sum(er_sar_m_st) as total_male_sar_st,  \r\n" + 
+			"			sum(er_oth_m_st) as total_male_oth_st ,sum(er_oth_f_st) as total_female_oth_st  \r\n" + 
+			"			from rgsa.trg_of_hundred_days_program_ch2 where trg_of_hundred_days_program_ch2.is_freeze) subtable) , \r\n" + 
+			"			(select sum(er_in_aspirational_district)  from rgsa.trg_of_hundred_days_program_ch2 where trg_of_hundred_days_program_ch2.is_freeze) as total_er_in_aspirational_district, \r\n" + 
+			"			(select sum(fun_in_aspirational_district)  from rgsa.trg_of_hundred_days_program_ch2 where trg_of_hundred_days_program_ch2.is_freeze) as total_fun_in_aspirational_district, \r\n" + 
+			"			(select sum(no_of_training_conducted)  from rgsa.trg_of_hundred_days_program_ch2 where trg_of_hundred_days_program_ch2.is_freeze) as total_no_of_training_conducted, \r\n" + 
+			"			(select sum(trg_conducted_in_asp_district)  from rgsa.trg_of_hundred_days_program_ch2 where trg_of_hundred_days_program_ch2.is_freeze) as total_trg_conducted_in_asp_district \r\n" + 
+			"			FROM rgsa.trg_of_hundred_days_program_ch2 LIMIT 1",resultClass = HundredDaysWebServiceDTO.class),
 	@NamedNativeQuery(name="STATEWISE_DATA_FOR_ALL_FIELDS",query="select ROW_NUMBER () OVER () as s_no,s.state_code,s.state_name_english,COALESCE(sum(ch.er_sar_f_sc),0) + COALESCE(sum(ch.er_sar_m_sc),0) + COALESCE(sum(ch.er_sar_f_st),0) + COALESCE(sum(ch.er_sar_m_st),0) + COALESCE(sum(ch.er_sar_f_ot),0) + COALESCE( sum(ch.er_sar_m_ot),0) + COALESCE(sum(ch.er_oth_m_sc),0) + COALESCE(sum(ch.er_oth_f_sc),0) + COALESCE( sum(ch.er_oth_m_st),0) + COALESCE( sum(ch.er_oth_f_st),0) + COALESCE(sum(ch.er_oth_m_ot),0) + COALESCE( sum(ch.er_oth_f_ot),0) as total_er_rep,COALESCE(sum(ch.er_sar_f_sc),0) + COALESCE(sum(ch.er_sar_f_st),0) + COALESCE(sum(ch.er_sar_f_ot),0)  + COALESCE(sum(ch.er_oth_f_sc),0) + COALESCE( sum(ch.er_oth_f_st),0) + COALESCE( sum(ch.er_oth_f_ot),0) as total_women_er_rep ,COALESCE(sum(ch.er_sar_f_sc),0) + COALESCE(sum(ch.er_sar_m_sc),0) + COALESCE(sum(ch.er_oth_m_sc),0) + COALESCE(sum(ch.er_oth_f_sc),0) as total_sc_er_rep,COALESCE(sum(ch.er_sar_f_st),0) + COALESCE(sum(ch.er_sar_m_st),0) + COALESCE( sum(ch.er_oth_m_st),0) + COALESCE( sum(ch.er_oth_f_st),0) as total_st_er_rep,COALESCE(sum(er_in_aspirational_district),0) as total_er_in_aspirational_district,COALESCE(sum(fun_in_aspirational_district),0) as total_fun_in_aspirational_district,COALESCE(sum(no_of_training_conducted),0) as total_no_of_training_conducted,\r\n" + 
 			"COALESCE(sum(trg_conducted_in_asp_district),0) as total_trg_conducted_in_asp_district\r\n" + 
-			"from rgsa.trg_of_hundred_days_program_ch2 ch right join lgd.state s on ch.state_code=s.state_code where s.isactive group by s.state_name_english, s.state_code order by s.state_name_english",resultClass = HundredDaysWebServiceDTO.class)
+			"from rgsa.trg_of_hundred_days_program_ch2 ch right join lgd.state s on ch.state_code=s.state_code and ch.is_freeze where s.isactive group by s.state_name_english, s.state_code order by s.state_name_english",resultClass = HundredDaysWebServiceDTO.class)
 })
 public class HundredDaysWebServiceDTO {
 

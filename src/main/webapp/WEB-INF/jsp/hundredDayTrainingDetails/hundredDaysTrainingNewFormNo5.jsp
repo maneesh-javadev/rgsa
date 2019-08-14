@@ -106,13 +106,16 @@ function freezeUnfreeze(msg){
 	 if(msg == 'freeze') {
 		 $('#isFreezeId').val(true) ;
 		 $('#msgId').val('freeze') 
-	 }else{
+		 var flag = confirm('After freeze you would not be able to edit the data for this date. Are you still want to continue?');
+	 }/* else{
 		  $('#isFreezeId').val(false);
 	 	$('#msgId').val('unfreeze') ;
+	 } */
+	 if(flag){
+		 document.trainingDetailHundredDay.method = "post";
+		 document.trainingDetailHundredDay.action = "trainingDetailHundredDay.html?<csrf:token uri='trainingDetailHundredDay.html'/>";
+		 document.trainingDetailHundredDay.submit(); 
 	 }
-	document.trainingDetailHundredDay.method = "post";
-	document.trainingDetailHundredDay.action = "trainingDetailHundredDay.html?<csrf:token uri='trainingDetailHundredDay.html'/>";
-	document.trainingDetailHundredDay.submit();
 }
 
 function isNumber(evt) {
@@ -122,6 +125,10 @@ function isNumber(evt) {
         return false;
     }
     return true;
+}
+
+function alertMsg(){
+	alert('Only freezed data will show on GPDP portal.');
 }
 </script>
 <section class="content">
@@ -341,16 +348,16 @@ function isNumber(evt) {
 							<div class="text-right">
 								<c:choose>
 									<c:when test="${HUN_DAY_TRAINING.isFreeze}">
-										<button type="submit" class="btn bg-green waves-effect"
-											disabled="disabled">
+										<%-- <button type="submit" class="btn bg-green waves-effect"
+											disabled="disabled" onclick="alertMsg()">
 											<c:choose>
 												<c:when test="${UPDATE_OR_SAVE eq 'update'}">UPDATE</c:when>
 												<c:otherwise>SAVE</c:otherwise>
 											</c:choose>
-										</button>
+										</button> --%>
 									</c:when>
 									<c:otherwise>
-										<button type="submit" class="btn bg-green waves-effect">
+										<button type="submit" class="btn bg-green waves-effect" onclick="alertMsg()">
 											<c:choose>
 												<c:when test="${UPDATE_OR_SAVE eq 'update'}">UPDATE</c:when>
 												<c:otherwise>SAVE</c:otherwise>
@@ -359,27 +366,27 @@ function isNumber(evt) {
 									</c:otherwise>
 								</c:choose>
 
-								<c:choose>
+								<%-- <c:choose>
 									<c:when test="${HUN_DAY_TRAINING.isFreeze eq true}">
 										<button type="button" onclick="freezeUnfreeze('unfreeze')"
 											class="btn bg-blue waves-effect">UNFREEZE</button>
 									</c:when>
-									<c:otherwise>
-										<c:if test="${UPDATE_OR_SAVE eq 'update'}">
+									<c:otherwise> --%>
+										<c:if test="${UPDATE_OR_SAVE eq 'update' and not HUN_DAY_TRAINING.isFreeze}">
 											<button type="button" onclick="freezeUnfreeze('freeze')"
 												class="btn bg-blue waves-effect">FREEZE</button>
 										</c:if>
-										<c:if test="${UPDATE_OR_SAVE eq 'save'}">
+										<c:if test="${UPDATE_OR_SAVE eq 'save' and not HUN_DAY_TRAINING.isFreeze}">
 											<button type="button" onclick="freezeUnfreeze('freeze')"
 												class="btn bg-blue waves-effect" disabled="disabled">FREEZE</button>
 										</c:if>
-									</c:otherwise>
-								</c:choose>
+									<%-- </c:otherwise>
+								</c:choose> --%>
 
 								<c:choose>
 									<c:when test="${HUN_DAY_TRAINING.isFreeze}">
-										<button type="button" onclick="onClear(this)"
-											class="btn bg-light-blue waves-effect" disabled="disabled">CLEAR</button>
+										<!-- <button type="button" onclick="onClear(this)"
+											class="btn bg-light-blue waves-effect" disabled="disabled">CLEAR</button> -->
 									</c:when>
 									<c:otherwise>
 										<button type="button" onclick="onClear(this)"
