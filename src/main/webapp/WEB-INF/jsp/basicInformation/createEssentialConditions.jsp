@@ -137,7 +137,7 @@ var $_checkEmptyObject = function(obj) {
                         <div class="header">
                             <h2>INFORMATION REGARDING FULFILMENT OF ESSENTIAL CONDITIONS</h2>
                         </div>
-                         <form:form action="essentialConditions.html" class="form-inline" modelAttribute="BASIC_INFO_MODEL" method="POST">
+                         <form:form action="essentialConditions.html" class="form-inline" modelAttribute="BASIC_INFO_MODEL" method="POST" onsubmit="disablingSave()">
                          <form:hidden path="basicInfoDefinationId" value="${BESIC_DEFINATION.basicInfoDefinationId}"/>
                         <div class="body">
                           	<c:set var="sNo" value="1"/>
@@ -288,7 +288,7 @@ var $_checkEmptyObject = function(obj) {
 	                              <c:set var="sNo" value="${sNo+1}"/>
                            </c:forEach> 
                              <div class="form-group text-right">
-                                	<button type="submit" class="btn bg-green waves-effect">SAVE</button>
+                                	<button type="submit" class="btn bg-green waves-effect save-button">SAVE</button>
                                 	<button type="button" onclick="onClear(this)" class="btn bg-light-blue waves-effect">CLEAR</button>
                                 	<button type="button" onclick="onClose('home.html?<csrf:token uri='home.html'/>')"  class="btn bg-orange waves-effect">CLOSE</button>
                                </div>

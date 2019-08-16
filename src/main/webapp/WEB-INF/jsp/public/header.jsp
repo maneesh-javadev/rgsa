@@ -146,9 +146,7 @@
 								</div>
 								<div class="form-group">
 									<img src="captchaImage" width="200px" id="img_Capatcha" />
-									<a href="#" onclick="javascript:refreshCaptcha()" class="pull-right">
-										<i class="fa fa-refresh"></i>
-									</a>
+									 <i class="fa fa-refresh pull-right" onclick="refreshCaptcha()"></i>
 								</div>
 								<div class="form-group has-feedback">
 									<label class="control-label">Captcha Answer</label>
@@ -163,7 +161,7 @@
 								<!-- <input type="checkbox" value="rememberme" id="rememberme">Remember me <br/><br/><a href="#">Forgot your password?</a> -->
 							</div>
 							<div class="modal-footer">
-								<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+								<button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
 							</div>
 						</div>
 					</div>

@@ -86,6 +86,7 @@ public class FacadeController {
 	public String welcome(Model model, RedirectAttributes re) {
 		// model.addAttribute("FIN_YEARS", commonService.findAllFinYear());
 		 model.addAttribute("FACADE_MODEL", new FacadeModel()); 
+		 model.addAttribute("visitorCount",service.findVisitorCount()); 
 		 return INDEX_VIEW;
 	}
 

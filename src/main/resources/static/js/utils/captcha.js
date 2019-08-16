@@ -1,8 +1,6 @@
   function refreshCaptcha()
   {
-	  
-  	var img = document.getElementById('img_Capatcha');
-      img.src="captchaImage?Id=" + Math.random();
+	  $('#img_Capatcha').attr('src', 'captchaImage?cache=' + new Date().getTime());
       $('#captchaAnswer').val('');
       $('#captchaAnswer').focus();
  }

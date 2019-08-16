@@ -285,7 +285,7 @@ function calculateTotalFundDprc() {
 					</div>
 					<form:form method="post" name="additionalFacultyAndMain"
 						action="addFacultyAndMaintenanceHrBudget.html"
-						modelAttribute="ADDITIONAL_FACULTY_MAINT_MODEL" onsubmit="return validationOnSubmit()">
+						modelAttribute="ADDITIONAL_FACULTY_MAINT_MODEL" onsubmit="return validationOnSubmit();disablingSave()">
 						<input type="hidden" name="<csrf:token-name/>"
 							value="<csrf:token-value uri="addFacultyAndMaintenanceHrBudget.html" />" />
 						<div class="body">
@@ -710,7 +710,7 @@ function calculateTotalFundDprc() {
 							 <div class="col-lg-8 text-right">
 							<c:if test="${ISFREEZE eq false}">
 							<c:if test="${Plan_Status eq true}">
-								<button type="submit" class="btn bg-green waves-effect" id="save">
+								<button type="submit" class="btn bg-green waves-effect save-button" id="save">
 									<spring:message code="Label.SAVE" htmlEscape="true" />
 								</button>
 								<c:choose>

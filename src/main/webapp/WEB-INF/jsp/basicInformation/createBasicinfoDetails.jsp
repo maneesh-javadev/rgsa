@@ -1,4 +1,4 @@
-<%@include file="../taglib/taglib.jsp"%>
+<%@include file="../taglib/taglib.jsp"%>	
 <c:set var="districtEnable" value="false"/>
 <c:set var="blockEnable" value="false"/>
 <c:set var="gpEnable" value="false"/>
@@ -1527,7 +1527,7 @@ var errorFlag=false;
                             <h4> Basic Information</h4>
                         </div>
                     
-                         <form:form action="basicinfo.html" class="form-inline" modelAttribute="BASIC_INFO_MODEL" id="basicInfo" method="POST">
+                         <form:form action="basicinfo.html" class="form-inline" modelAttribute="BASIC_INFO_MODEL" id="basicInfo" method="POST" onsubmit="disablingSave()">
                          <form:hidden path="basicInfoDefinationId" value="${BESIC_DEFINATION.basicInfoDefinationId}"/>
                           	<c:set var="sNo" value="0"/>
                           	<input type="hidden" id="stateCode" value="${STATE_CODE}" />
@@ -2100,7 +2100,7 @@ var errorFlag=false;
 							 <div class="body">
                              <div class="form-group text-right">
                             	 
-                                	<button type="submit" class="btn bg-green waves-effect" onclick="return removeDisabledAttr('S')">SAVE
+                                	<button type="submit" class="btn bg-green waves-effect save-button" onclick="return removeDisabledAttr('S')">SAVE
                                 	</button>
                                 	<button type="submit" class="btn bg-green waves-effect" onclick="return removeDisabledAttr('F')">FREEZE</button>
                               

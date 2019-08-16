@@ -78,7 +78,7 @@
 				<div class="col-lg-8">
 					<p class="text-left">Content on this website is updated by field level agencies and managed by the <a href="http://www.panchayat.gov.in/" target="_blank"> Ministry of Panchayati Raj (MoPR)</a>, Government of India
 						<br>Site is technically designed, hosted and maintained by <a href="http://www.nic.in/" target="_blank">National Informatics Centre (NIC)</a>
-						<br /> <span class="font11">Total visitors till now</span> : <span class="count whitefont customCounter font11">${visitorCount }</span>
+						<br /> <span class="font11">Total visitors till now</span> : <span class="count whitefont customCounter font11">${visitorCount}</span>
 					</p>
 				</div>
 				<div class="col-lg-4 text-center">

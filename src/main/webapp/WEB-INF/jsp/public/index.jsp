@@ -375,3 +375,5 @@
 		src="${pageContext.request.contextPath}/resources/js/index/index-service.js"></script>
 	<script type="text/javascript"
 		src="${pageContext.request.contextPath}/resources/js/index/index-model.js"></script>
+		<script type="text/javascript"
+		src="${pageContext.request.contextPath}/resources/js/utils/captcha.js"></script>

@@ -68,3 +68,11 @@ function showCancelMessage() {
         }
     });
 }
+
+function disablingSave(){
+	$('.save-button').attr('disabled','disabled');
+}
+
+$('document').ready(function(){
+	$('.save-button').removeAttr('disabled');
+});

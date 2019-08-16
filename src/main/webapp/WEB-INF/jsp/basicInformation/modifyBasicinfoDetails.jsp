@@ -1487,7 +1487,7 @@ var errorFlag=false;
                             <h4> Basic Information</h4>
                         </div>
                     
-                         <form:form action="updateBasicInfoDetails.html" id="basicInfo" modelAttribute="BASIC_INFO_MODEL" method="POST">
+                         <form:form action="updateBasicInfoDetails.html" id="basicInfo" modelAttribute="BASIC_INFO_MODEL" method="POST" onsubmit="disablingSave()">
                         <form:hidden path="basicInfoDefinationId" value="${BESIC_DEFINATION.basicInfoDefinationId}"/>
                          <form:hidden path="basicInfoId" value="${basicinfoId}"/>
                          <form:hidden path="status" id="status" value="${status}"/>
@@ -2067,7 +2067,7 @@ var errorFlag=false;
 							 <div class="body">
                              <div class="form-group text-right">
                             	 <c:if test="${status eq 'S'}">
-                                	<button type="submit" class="btn bg-green waves-effect" onclick="return removeDisabledAttr('S')">SAVE
+                                	<button type="submit" class="btn bg-green waves-effect save-button" onclick="return removeDisabledAttr('S')">SAVE
                                 	</button>
                                 	<button type="submit" class="btn bg-green waves-effect" onclick="return removeDisabledAttr('F')">FREEZE</button>
                                 </c:if>
