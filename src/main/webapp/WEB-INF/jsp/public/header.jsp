@@ -79,7 +79,7 @@
 								</a>
 							</li>
 							<li>
-								<a href="${pageContext.request.contextPath}/resources/dashboard/index.html" target="_blank" style="  color: red; font-weight: bold;">
+								<a href="${pageContext.request.contextPath}/resources/dashboard/index.html" target="_blank" style="  color: #736a6a; font-weight: bold;">
 									<span class="fa fa-globe"></span>&nbsp;&nbsp;Dashboard
 								</a>
 							</li>

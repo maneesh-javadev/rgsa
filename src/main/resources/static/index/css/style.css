@@ -1143,7 +1143,7 @@ li.even_inner {
     display:block;
     position:relative;
     z-index:120; 
-	background-color: #000;
+	background-color: #3b1576;
     background-attachment: fixed;
     background-size: cover;
 }
@@ -2313,7 +2313,7 @@ ul.time-post li.time{
 ================================ */
 
 footer{
-	background:#000000;
+	background:#3b1576;
 }
 #sub-footer{
 /*	border-top: 1px solid #ddd;*/
