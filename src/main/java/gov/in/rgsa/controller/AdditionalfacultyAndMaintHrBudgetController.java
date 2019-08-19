@@ -147,11 +147,6 @@ public class AdditionalfacultyAndMaintHrBudgetController {
       	else {
       		flag= false;
       	}
-        
-        // just to allow few states for filling the form again we have to change this after the work is done
-        if(userPreference.getStateCode() == 5 || userPreference.getStateCode() == 9 || userPreference.getStateCode() == 36) {
-        	 flag =true;
-        }
 	    
         model.addAttribute("Plan_Status", flag);
 		model.addAttribute("USER_TYPE", userPreference.getUserType());
