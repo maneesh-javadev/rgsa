@@ -96,7 +96,7 @@ public class FacadeController {
 		parameter.put("yearId",_userPreference.getFinYearId());
 		parameter.put("stateCode", _userPreference.getStateCode());
 		model.addAttribute("statePlanComponentsFunds", facadeServiceImpl.getPlanSubComponents());
-		_userPreference.setIsFreezeStatusList(facadeServiceImpl.fetchFormsIsFreezeStatus());
+		_userPreference.setIsFreezeStatusList(facadeServiceImpl.fetchFormsIsFreezeStatus(null));
 		Boolean plansAreFreezed = facadeServiceImpl.checkForFreezeStatus(parameter);
 		_userPreference.setPlansAreFreezed(plansAreFreezed);
 		NodalOfficerDetails nodalOfficerDetails = null;

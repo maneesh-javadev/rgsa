@@ -28,6 +28,7 @@ import gov.in.rgsa.service.PlanDetailsService;
 import gov.in.rgsa.service.SatcomFacilityService;
 import gov.in.rgsa.service.TrainingActivityService;
 import gov.in.rgsa.service.TrainingInstitutionService;
+import gov.in.rgsa.serviceImpl.FacadeServiceImpl;
 import gov.in.rgsa.user.preference.UserPreference;
 
 @Controller
@@ -108,6 +109,7 @@ public class PlanDetailsController {
 		parameter.put("stateCode", stateCode);
 		parameter.put("yearId", userPreference.getFinYearId());
 		parameter.put("userType", userPreference.getUserType());
+		model.addAttribute("IS_FREEZE_STATUS_LIST", facadeService.fetchFormsIsFreezeStatus(stateCode));
 		model.addAttribute("planComponentsFunds", facadeService.fetchFundDetailsByUserType(parameter));
 		return userPage;
 	}

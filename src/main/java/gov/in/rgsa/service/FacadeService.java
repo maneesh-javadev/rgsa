@@ -3,6 +3,7 @@ package gov.in.rgsa.service;
 import java.util.List;
 import java.util.Map;
 
+import gov.in.rgsa.dto.IsFreezeStatusDto;
 import gov.in.rgsa.entity.PlanSubcomponents;
 import gov.in.rgsa.entity.StatePlanComponentsFunds;
 import gov.in.rgsa.model.FacadeModel;
@@ -32,5 +33,7 @@ public interface FacadeService {
 	public boolean populateFundbyUserType(String componentIds);
 
 	public UserPreference changeAccToNewFinYearId(UserPreference _userPreference, String finYearId);
+	
+	public List<IsFreezeStatusDto> fetchFormsIsFreezeStatus(Integer stateCode);
 
 }

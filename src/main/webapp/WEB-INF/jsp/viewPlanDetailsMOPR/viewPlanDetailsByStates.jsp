@@ -828,10 +828,75 @@ toggleInstInfraAndPanchayatBhawan=function(id,msg){
 									</table>
 								</div>
 							</div> --%>
+							<c:set var="forwardPlanStatus" value="true" scope="page"></c:set>
+									<c:forEach items="${IS_FREEZE_STATUS_LIST}" var="KAR98">
+										<c:if test="${not empty KAR98.ministryIsFreeze and not KAR98.ministryIsFreeze}">
+											<c:set var="forwardPlanStatus" value="false"></c:set>
+										</c:if>
+									</c:forEach>
+									
 							<c:if test="${buttonStatus}">
-							<input type="button" class="btn bg-green waves-effect" data-ng-click="forwardPlan(${sessionScope['scopedTarget.userPreference'].plansAreFreezed})" value="Forward Plan To CEC">
+							<%-- <c:if test="${sessionScope['scopedTarget.userPreference'].userType eq 'M'}"> --%>
+										<!-- <button data-ng-click="exportData()">Download Consolidated Report</button> -->
+										<c:if test="${buttonStatus}">
+											<c:choose>
+												<c:when test="${not forwardPlanStatus}"><input type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal" value="Forward Plan To CEC"/></c:when>
+												<c:when test="${forwardPlanStatus}"><input type="button" class="btn bg-light-blue" data-ng-click="forwardPlan(${forwardPlanStatus})" value="Forward Plan To CEC"/></c:when>
+												<c:otherwise>something goes wrong during calculation</c:otherwise>
+											</c:choose>
+										</c:if>	
+									<%-- </c:if> --%>
+							<%-- <input type="button" class="btn bg-green waves-effect" data-ng-click="forwardPlan(${sessionScope['scopedTarget.userPreference'].plansAreFreezed})" value="Forward Plan To CEC"> --%>
 							<input type="button" style="float: right;" class="btn bg-red waves-effect" data-ng-click="" value="Revert Plan To ${stateName}">
 							</c:if>
+							
+							<div id="myModal" class="modal fade" role="dialog">
+									<div class="modal-dialog modal-lg">
+										<!-- Modal content-->
+										<div class="modal-content">
+											<div class="modal-header">
+												<h4>Status of All Action Plan Forms</h4>
+												<button type="button" class="close" data-dismiss="modal">&times;</button>
+											</div>
+											<div class="modal-body">
+												<div class="table-responsive">
+													<table class="table table-hover">
+														<thead style="background-color: #b39ad8;color: #2f2b2bf2;">
+															<tr>
+															<th><div align="center">S.No.</div></th>
+															<th><div align="center">Form Name</div></th>
+															<th><div align="center">Status</div></th>
+															<th><div align="center">Go to form</div></th>
+															</tr>
+														</thead>
+														<tbody>
+															<c:forEach items="${IS_FREEZE_STATUS_LIST}" var="KAR98">
+																<tr>
+																	<td><div align="center"><strong>${KAR98.componentId}.</strong></div></td>
+																	<td><div align="center"><strong>${KAR98.componentName}</strong></div></td>
+																	<td>
+																		<c:choose>
+																			<c:when test="${not empty KAR98.ministryIsFreeze and KAR98.ministryIsFreeze}"><div align="center" style="color: green;font-weight: bold;">Form Freezed</div></c:when>
+																			<c:when test="${not empty KAR98.ministryIsFreeze and not KAR98.ministryIsFreeze}"><div align="center" style="color: red;font-weight: bold;">Form Not Freezed</div></c:when>
+																			<c:otherwise><div align="center" style="color: orange;font-weight: bold;">Form Not filled</div></c:otherwise>
+																		</c:choose>
+																	</td>
+																	<td><div align="center"><span><a href="${KAR98.ministryLink}?<csrf:token uri='${KAR98.ministryLink}'/>"><i class="fa fa-pencil-square-o fa-lg edit-color" aria-hidden="true"></i></a></span></div></td>
+																</tr>
+															</c:forEach>
+														</tbody>
+													</table>
+												</div>
+											</div>
+											<div class="modal-footer">
+											<div align="left" style="color: red"><sup>*</sup> In order to forward plan you have to <b><u><i>freeze</u></b> all the forms which are filled.</div>
+												<button type="button" class="btn btn-danger"
+													data-dismiss="modal">Close</button>
+											</div>
+										</div>
+
+									</div>
+								</div>
 						</div>
 					</div>
 				</div>

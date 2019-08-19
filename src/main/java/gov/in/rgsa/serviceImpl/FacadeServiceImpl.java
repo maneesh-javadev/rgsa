@@ -341,9 +341,14 @@ public class FacadeServiceImpl implements FacadeService {
 		return _userPreference;
 	}
 
-	public List<IsFreezeStatusDto> fetchFormsIsFreezeStatus() {
+	@Override
+	public List<IsFreezeStatusDto> fetchFormsIsFreezeStatus(Integer stateCode) {
 		Map<String, Object> parameter = new HashMap<String, Object>();
-		parameter.put("stateCode", userPreference.getStateCode());
+		if(stateCode == null) {
+			parameter.put("stateCode", userPreference.getStateCode());
+		}else {
+			parameter.put("stateCode", stateCode);
+		}
 		parameter.put("yearId", userPreference.getFinYearId());
 		return commonRepository.findAll("FETCH_FORMS_FREEZE_STATUS", parameter);
 	}
