@@ -236,7 +236,7 @@ function changeColor(){
 					<form:form method="POST" id="incomeEnhancementId"
 						name="incomeEnhancement" class="form-inline"
 						action="incomeEnhancementAdd.html"
-						modelAttribute="Income_Enhancement" enctype="multipart/form-data">
+						modelAttribute="Income_Enhancement" enctype="multipart/form-data" onsubmit="disablingSave()">
 						<input type="hidden" name="<csrf:token-name/>"
 							value="<csrf:token-value uri="incomeEnhancementAdd.html"/>" />
 						<div class="body">
@@ -576,7 +576,7 @@ function changeColor(){
 									<div class="col-md-8 text-right">
 										<button type="button" id="saveButtn"
 											onclick="$('input,select').prop('disabled', false);saveSubmit();"
-											class="btn bg-green waves-effect">SAVE</button>
+											class="btn bg-green waves-effect save-button">SAVE</button>
 										<c:choose>
 										<c:when test="${initial_status}"><button type="button" id="frzButtn" onclick="toFreeze();"
 											class="btn bg-green waves-effect" disabled="disabled">FREEZE</button></c:when>

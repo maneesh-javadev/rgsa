@@ -10,6 +10,7 @@ publicModule.controller("adminTechSupportSaffController",['$scope','adminTechSup
 	
 	fetchOnLoad();
 	function fetchOnLoad(){
+		$scope.btn_disabled=false;
 		adminTechSupportSaffService.getPostTypeMaster().then(function(response){
 			$scope.postTypes = response.data.postType;
 			$scope.levels = response.data.level;
@@ -50,6 +51,7 @@ publicModule.controller("adminTechSupportSaffController",['$scope','adminTechSup
 	}
 	
 	$scope.saveData=function(status){
+		$scope.btn_disabled=true;
 		$scope.adminTechStaffObject.status=status;
 		adminTechSupportSaffService.saveData($scope.adminTechStaffObject).then(function(response){
 			fetchOnLoad();

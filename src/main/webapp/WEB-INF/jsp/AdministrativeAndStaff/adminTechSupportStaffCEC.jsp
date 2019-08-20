@@ -139,7 +139,7 @@ function validateUnitCost(index){
 					<form:form method="post" name="administrativeTechnicalSupport"
 						action="adminTechSupportStaffCEC.html"
 						modelAttribute="ADMIN_TECH_SUPPORT_STAFFCEC"
-						onsubmit="return validatingTotalProposedFund()">
+						onsubmit="return validatingTotalProposedFund();disablingSave()">
 						<input type="hidden" name="<csrf:token-name/>"
 							value="<csrf:token-value uri="adminTechSupportStaffCEC.html" />" />
 
@@ -362,7 +362,7 @@ function validateUnitCost(index){
 										<%-- <c:if test="${administrativeTechnicalSupport.status eq S || empty eGovActivity.status}"> --%>
 										<c:if test="${ISFREEZE ne 'F'}">
 
-											<button type="submit" class="btn bg-green waves-effect"
+											<button type="submit" class="btn bg-green waves-effect save-button"
 												id="saveId" onclick="validateMonth(${count});">SAVE</button>
 											<c:choose>
 												<c:when test="${initial_status}">

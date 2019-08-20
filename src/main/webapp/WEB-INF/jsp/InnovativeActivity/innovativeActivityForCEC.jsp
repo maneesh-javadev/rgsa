@@ -252,7 +252,7 @@ function saveSubmit(){
 					<form:form method="POST" id="innovativeActivityId"
 						name="innovativeActivity" class="form-inline"
 						action="innovativeActivityDetails.html"
-						modelAttribute="INNOVATIVE_ACTIVITY" enctype="multipart/form-data">
+						modelAttribute="INNOVATIVE_ACTIVITY" enctype="multipart/form-data" onsubmit="disablingSave()">
 						<input type="hidden" name="<csrf:token-name/>"
 							value="<csrf:token-value uri="innovativeActivity.html"/>" />
 
@@ -496,7 +496,7 @@ function saveSubmit(){
 											</c:if>
 											<c:if test="${innovativeAcitivityList[0].isFreeze == false}">
 												<button type="button" id="save"
-													class="btn bg-green waves-effect" onclick="saveSubmit();">
+													class="btn bg-green waves-effect save-button" onclick="saveSubmit();">
 													<spring:message text="SAVE" htmlEscape="true" />
 												</button>
 												<button type="button" id="freeze"

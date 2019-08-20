@@ -300,7 +300,7 @@ function validateYear(index){
 						<h2><spring:message  text="Innovative Activity" htmlEscape="true" /></h2>
 					</div>
 					<div class="body">
-					<form:form method="POST" id="innovativeActivityId" name="innovativeActivity" class="form-inline" action="innovativeActivityDetails.html" modelAttribute="INNOVATIVE_ACTIVITY" enctype="multipart/form-data" >
+					<form:form method="POST" id="innovativeActivityId" name="innovativeActivity" class="form-inline" action="innovativeActivityDetails.html" modelAttribute="INNOVATIVE_ACTIVITY" enctype="multipart/form-data" onsubmit="disablingSave()">
 						<div align="right">
 						<c:if test = "${fn:containsIgnoreCase(userTypeSwitch, 'S')}">
 						<c:if test="${innovativeAcitivityList[0].isFreeze == false}">
@@ -506,7 +506,7 @@ function validateYear(index){
 							</button>
 						</c:if>		
 						<c:if test="${innovativeAcitivityList[0].isFreeze == false}">
-							<button type="button" id="save" onclick="validate(); saveSubmit();" class="btn bg-green waves-effect">
+							<button type="button" id="save" onclick="validate(); saveSubmit();" class="btn bg-green waves-effect save-button">
 								<spring:message text="SAVE" htmlEscape="true" />
 							</button>
 							

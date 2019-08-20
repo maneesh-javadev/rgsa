@@ -136,7 +136,7 @@ function validatingTotalProposedFund(){
 					<form:form method="post" name="adminFinancialDataCell"
 						action="adminAndFinancialDataCell.html"
 						modelAttribute="ADMIN_FIN_DATA_CELL"
-						onsubmit="return validatingTotalProposedFund()">
+						onsubmit="return validatingTotalProposedFund();disablingSave()">
 						<input type="hidden" name="<csrf:token-name/>"
 							value="<csrf:token-value uri="adminAndFinancialDataCell.html" />" />
 						
@@ -323,7 +323,7 @@ function validatingTotalProposedFund(){
 									<div class=" col-md-8 text-right">
 										<input type="hidden" id="isFreeze" name="isFreeze">
 										<c:if test="${IS_FREEZE eq false or empty IS_FREEZE}">
-											<button type="submit" class="btn bg-green waves-effect"
+											<button type="submit" class="btn bg-green waves-effect save-button"
 												id="saveId">
 												<spring:message code="Label.SAVE" text="Save"
 													htmlEscape="true" />

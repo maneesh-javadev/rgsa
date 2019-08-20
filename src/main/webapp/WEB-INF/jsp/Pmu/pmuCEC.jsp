@@ -216,6 +216,7 @@ function validationOnSubmit(){
 			if($('#noOfFaculty_'+i).val() == "" || $('#noOfFaculty_'+i).val() == ""){
 				flag=false;
 			}else{
+				flag=true;
 				break;
 			}
 			}
@@ -234,6 +235,7 @@ function validationOnSubmit(){
 		if($('#noOfExperts_'+(i)).val() == "" || $('#noOfExperts_'+(i)).val() == ""){
 			flag=false;
 		}else{
+			flag=true;
 			break;
 		}
 		}

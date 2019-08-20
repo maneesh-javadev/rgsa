@@ -228,7 +228,7 @@ table#mytable tbody tr td {
 							</div>
 						<div class="form-group text-right">
 						 <c:if test="${Plan_Status eq true}"> 
-							<button data-ng-click="saveData('S')" data-ng-disabled="adminTechStaffObject.status == 'F'" type="button" class="btn bg-green waves-effect"><spring:message code="SAVE" htmlEscape="true" /></button>
+							<button data-ng-click="saveData('S')" data-ng-disabled="adminTechStaffObject.status == 'F' || btn_disabled" type="button" class="btn bg-green waves-effect"><spring:message code="SAVE" htmlEscape="true" /></button>
 							<button data-ng-click="saveData('U')" data-ng-if='adminTechStaffObject.status == "F"' type="button" class="btn bg-green waves-effect">UNFREEZE</button>
 							<button data-ng-click="saveData('F')" data-ng-if='adminTechStaffObject.status == "S" || adminTechStaffObject.status == "U"' type="button" class="btn bg-green waves-effect">FREEZE</button>
 							<button data-ng-click="onClear()" type="button" data-ng-disabled="adminTechStaffObject.status == 'F'" class="btn bg-light-blue waves-effect"><spring:message code="Label.CLEAR" htmlEscape="true" /></button>

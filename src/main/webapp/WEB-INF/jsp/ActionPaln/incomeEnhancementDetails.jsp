@@ -412,7 +412,7 @@ select option:first-child{
 						<form:form method="POST" id="incomeEnhancementId"
 							name="incomeEnhancement" class="form-inline"
 							action="incomeEnhancementAdd.html"
-							modelAttribute="Income_Enhancement" enctype="multipart/form-data">
+							modelAttribute="Income_Enhancement" enctype="multipart/form-data" onsubmit="disablingSave()">
 							<input type="hidden" name="<csrf:token-name/>"
 								value="<csrf:token-value uri="incomeEnhancementAdd.html"/>" />
 							<div class="table-responsive" id="records">
@@ -866,7 +866,7 @@ select option:first-child{
 										<c:if test="${Plan_Status eq true}">
 											<button type="button" id="saveButtn"  
 												onclick="$('input,select').prop('disabled', false);saveSubmit();"
-												class="btn bg-green waves-effect">SAVE</button>
+												class="btn bg-green waves-effect save-button">SAVE</button>
 											<c:if test="${dbActivitiesList.isFreeze != undefined}">
 												<button type="button" id="frzButtn" onclick="toFreeze();"
 													class="btn bg-green waves-effect">FREEZE</button>
