@@ -71,7 +71,13 @@ public class FacadeServiceImpl implements FacadeService {
 			throw new RGSAException("Your login Id has been deactivated");
 		}
 		
-
+		UserPreference _preference = new UserPreference();
+		_preference.setUserId(user.getUserId());
+		_preference.setUserName(user.getUserName());
+		_preference.setUserType(user.getUserType());
+		_preference.setStateCode(user.getStateId());
+		_preference.setDistrictcode(user.getDistrictcode());
+		
 		Map<String, Object> menuParam = new HashMap<String, Object>();
 		menuParam.put("active", true);
 		if (user.getUserType().equalsIgnoreCase("J") || user.getUserType().equalsIgnoreCase("G"))
@@ -119,12 +125,6 @@ public class FacadeServiceImpl implements FacadeService {
 		//param.put("planStatusId", 1);
 		List<Plan> planList = commonRepository.findAll("SHOW_HIDE_BUTTON_PLAN_STATUS",param);
 		
-		UserPreference _preference = new UserPreference();
-		_preference.setUserId(user.getUserId());
-		_preference.setUserName(user.getUserName());
-		_preference.setUserType(user.getUserType());
-		_preference.setStateCode(user.getStateId());
-		_preference.setDistrictcode(user.getDistrictcode());
 		_preference.setMenus(menus);
 		_preference.setFinYearId(finYear.getYearId());
 		_preference.setFinYear(finYear.getFinYear());

@@ -1535,7 +1535,7 @@ var errorFlag=false;
 		                                            	<div class="col-sm-6">
 		                                        			<div class="form-group">
 		                                            			<div class="form-line">
-		                                               				 <form:input   min="0" path="data[${field.basicInfoDefinationDetailsId}_state]" maxlength="10" class="form-control validate" onkeyup="validateTotalPopulation(this.value)" placeholder="Please enter ${field.labelName} "/>
+		                                               				 <form:input   min="0" path="data[${field.basicInfoDefinationDetailsId}_state]" maxlength="10" class="form-control validate" onkeyup="validateTotalPopulation(this.value)" placeholder="Please enter ${field.labelName} " />
 		                                           				 </div>
 		                                            		</div>
 		                                           		</div>

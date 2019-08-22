@@ -249,7 +249,7 @@
 										<br>
 									</div>
 								<div class="col-md-8 text-right ex1">
-									<button ng-click="saveTrainingActivityCecDetails()" data-ng-disabled="isFreezeOrUnfreeze" 
+									<button data-ng-click="saveTrainingActivityCecDetails()" data-ng-disabled="isFreezeOrUnfreeze || btn_disabled" 
 										type="button" class="btn bg-green waves-effect">
 										<spring:message code="Label.SAVE" htmlEscape="true" />
 									</button>

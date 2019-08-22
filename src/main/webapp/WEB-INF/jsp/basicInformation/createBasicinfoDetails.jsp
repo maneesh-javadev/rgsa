@@ -284,7 +284,10 @@ $( document ).ready(function() {
 			$("#percentage_20").val(women_percent.toFixed(2));
 		}
 		
-	}
+	}/* else{
+		alert('Fill total population of state first.');
+		$('#data2_state').focus();
+	} */
 	
 	$("#data16_gp,#data16_bp").attr("disabled",true);
 	
@@ -1572,7 +1575,7 @@ var errorFlag=false;
 		                                            	<div class="col-sm-6">
 		                                        			<div class="form-group">
 		                                            			<div class="form-line">
-		                                               				 <form:input   min="0" path="data[${field.basicInfoDefinationDetailsId} ]" maxlength="10" class="form-control validate" onkeyup="validateTotalPopulation(this.value)" placeholder="Please enter ${field.labelName} "/>
+		                                               				 <form:input   min="0" path="data[${field.basicInfoDefinationDetailsId}_state]" maxlength="10" class="form-control validate" onkeyup="validateTotalPopulation(this.value)" placeholder="Please enter ${field.labelName} "/>
 		                                           				 </div>
 		                                            		</div>
 		                                           		</div>

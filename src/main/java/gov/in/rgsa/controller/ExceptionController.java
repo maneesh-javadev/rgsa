@@ -1,5 +1,9 @@
 package gov.in.rgsa.controller;
 
+import java.util.List;
+
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
@@ -7,8 +11,10 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import gov.in.rgsa.entity.ErrorLog;
 import gov.in.rgsa.exception.CustomExceptionHandler;
 import gov.in.rgsa.exception.RGSAException;
+import gov.in.rgsa.service.CommonService;
 import gov.in.rgsa.user.preference.UserPreference;
 import gov.in.rgsa.utils.CommonConstant;
 import gov.in.rgsa.utils.Message;
@@ -23,15 +29,19 @@ public class ExceptionController {
 
 	@Autowired
 	private CustomExceptionHandler exceptionHandler;
+	
+	@Autowired
+	private CommonService commonService;
 
 	@ExceptionHandler(RGSAException.class)
-	public String customException(RGSAException e, Model model, RedirectAttributes re) {
+	public String customException(RGSAException e, Model model, RedirectAttributes re,HttpServletRequest request) {
 
 		try {
+			System.err.println(request.getRequestURL()+" <----> "+request.getRequestURI()+" <----> "+ userPreference.getStateCode());
 			e.printStackTrace();
 			String couse = exceptionHandler.findCouse(e);
 			re.addFlashAttribute(Message.EXCEPTION_KEY, couse);
-
+			List<ErrorLog> errorLog =commonService.saveErrorLog(e,request);
 			if (StringUtils.isEmpty(couse))
 				return VIEW_ERROR;
 			if (userPreference.getUserId() != null)
@@ -46,14 +56,13 @@ public class ExceptionController {
 	}
 
 	@ExceptionHandler(RuntimeException.class)
-	public String exception(RuntimeException e, Model model, RedirectAttributes re) {
+	public String exception(RuntimeException e, Model model, RedirectAttributes re,HttpServletRequest request) {
 
 		try {
-
-			e.printStackTrace();
+			System.err.println(request.getRequestURL()+" <----> "+request.getRequestURI() +" <----> "+ userPreference.getStateCode());
 			String couse = exceptionHandler.findCouse(e);
 			re.addFlashAttribute(Message.EXCEPTION_KEY, couse);
-
+			List<ErrorLog> errorLog =commonService.saveErrorLog(e,request);
 			if (StringUtils.isEmpty(couse))
 				return VIEW_ERROR;
 			if (userPreference.getUserId() != null)

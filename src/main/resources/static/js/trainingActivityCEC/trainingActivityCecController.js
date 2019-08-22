@@ -20,6 +20,7 @@ trgModuleCEC.controller("trainingActivityCEC",['$scope','trgActivityCecService',
 	
 	fetchOnLoad();
 	function fetchOnLoad(){
+		$scope.btn_disabled=false;
 		trgActivityCecService.getActivityList().then(function(response){
 			//For MOPR
 			$scope.cbmasters = response.data.cbMasters;
@@ -192,6 +193,7 @@ trgModuleCEC.controller("trainingActivityCEC",['$scope','trgActivityCecService',
 	}
 	//saving details
 	$scope.saveTrainingActivityCecDetails=function(){
+		$scope.btn_disabled=true;
 		$scope.cecData.isFreeze=false;
 		trgActivityCecService.saveCapacityBuildingCEC($scope.cecData).then(function(response){
 			fetchOnLoad();

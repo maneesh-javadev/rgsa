@@ -11,7 +11,7 @@ publicModule.controller("capacityBuildingController", [ '$scope', "capacityBuild
 	fetchCBMastersAndCapacityBuildingData();
 	
 	function fetchCBMastersAndCapacityBuildingData(){
-		
+		$scope.btn_disabled=false;
 		capacityBuildingService.fetchCBMastersAndCapacityBuildingData().then(function(response){
 			console.log(response.data);
 			$scope.cbmasters = response.data.cbMasters;
@@ -124,6 +124,7 @@ publicModule.controller("capacityBuildingController", [ '$scope', "capacityBuild
 	
 	$scope.saveCapacityBuildingActivityAndDetails=function(){
 		console.log($scope.capacityBuilding);
+		$scope.btn_disabled=true;
 		$scope.capacityBuilding.isFreeze = false;
 		if($scope.capacityBuilding.capacityBuildingActivityDetails.isApproved == null){
 			$scope.capacityBuilding.capacityBuildingActivityDetails.isApproved = false;
