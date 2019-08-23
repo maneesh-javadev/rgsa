@@ -11,7 +11,7 @@ import gov.in.rgsa.entity.MenuProfile;
 public interface CommonService {
 
 	public List<FinYear> findAllFinYear();
-	public List<ErrorLog> saveErrorLog(RuntimeException err ,HttpServletRequest request);
+	public Long saveErrorLog(RuntimeException err ,HttpServletRequest request);
 	public FinYear findFinYearById(Integer finYearId);
 	public FinYear findActiveFinYear();
 	public List<MenuProfile> findMenuByParentId(Integer parentId);

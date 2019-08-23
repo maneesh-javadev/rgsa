@@ -7842,11 +7842,15 @@ fieldset[disabled] .form-control {
   margin: 5% auto; }
   .four-zero-four .four-zero-four-container .error-code {
     font-size: 160px; }
+    .five-zero-zero .five-zero-zero-container .error-id {
+    font-size: 50px; 
+    font-family: monospace;}
   .four-zero-four .four-zero-four-container .error-message {
-    font-size: 26px;
+    font-size: 67px;
     color: #333;
     font-weight: bold;
-    margin-top: -40px; }
+    margin-top: -40px;
+    font-family: cursive; }
   .four-zero-four .four-zero-four-container .button-place {
     margin-top: 32px; }
 
@@ -7857,11 +7861,16 @@ fieldset[disabled] .form-control {
   margin: 5% auto; }
   .five-zero-zero .five-zero-zero-container .error-code {
     font-size: 160px; }
+   .five-zero-zero .five-zero-zero-container .error-id {
+    font-size: 50px;
+    font-family: monospace; }  
+    
   .five-zero-zero .five-zero-zero-container .error-message {
-    font-size: 27px;
+    font-size: 67px;
     color: #333;
     font-weight: bold;
-    margin-top: -40px; }
+    margin-top: -40px; 
+    font-family: cursive;}
   .five-zero-zero .five-zero-zero-container .button-place {
     margin-top: 32px; }
 

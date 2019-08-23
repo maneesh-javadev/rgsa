@@ -7,6 +7,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.CreationTimestamp;
@@ -14,6 +15,7 @@ import org.hibernate.annotations.GeneratorType;
 
 @Entity
 @Table(name="error_logs",schema="rgsa")
+@NamedQuery(name="FETCH_ERROR_LOG",query="from ErrorLog where stateCode=:stateCode and ipAddress=:ipAddress and requestUri=:requestURI order by errorLogTime desc")
 public class ErrorLog {
 	
 	@Id

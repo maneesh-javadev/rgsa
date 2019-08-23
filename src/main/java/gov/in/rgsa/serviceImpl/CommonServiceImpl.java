@@ -62,7 +62,7 @@ public class CommonServiceImpl implements CommonService {
 	}
 
 	@Override
-	public List<ErrorLog> saveErrorLog(RuntimeException err,HttpServletRequest request) {
+	public Long saveErrorLog(RuntimeException err,HttpServletRequest request) {
 		ErrorLog errorLog = new ErrorLog();
 		errorLog.setStateCode(user.getStateCode());
 		errorLog.setUserId(user.getUserId());
@@ -75,7 +75,7 @@ public class CommonServiceImpl implements CommonService {
 		String error = errors.toString();
 		errorLog.setErrorDescription(error);
 		dao.save(errorLog);
-		return null;
+		return errorLog.getErrorLogId();
 	}
 
 }

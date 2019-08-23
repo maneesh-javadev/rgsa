@@ -829,6 +829,12 @@
 	<put-attribute name="body"
 		value="/WEB-INF/jsp/hundredDayTrainingDetails/hundredDaysTrainingNewFormNo5.jsp" />
 </definition>
+	
+<definition name="errorPage" extends="base.definition.withoutSidBar">
+	<put-attribute name="title" value="error Page" />
+	<put-attribute name="body"
+		value="/WEB-INF/jsp/error/500.jsp" />
+</definition>
 
 </tiles-definitions>
 

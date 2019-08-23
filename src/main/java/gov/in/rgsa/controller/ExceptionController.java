@@ -22,7 +22,7 @@ import gov.in.rgsa.utils.Message;
 @ControllerAdvice
 public class ExceptionController {
 
-	private static final String VIEW_ERROR = "error/500";
+	private static final String VIEW_ERROR = "errorPage";
 
 	@Autowired
 	private UserPreference userPreference;
@@ -41,7 +41,8 @@ public class ExceptionController {
 			e.printStackTrace();
 			String couse = exceptionHandler.findCouse(e);
 			re.addFlashAttribute(Message.EXCEPTION_KEY, couse);
-			List<ErrorLog> errorLog =commonService.saveErrorLog(e,request);
+			Long errorLogId =commonService.saveErrorLog(e,request);
+			model.addAttribute("ERROR_ID", errorLogId);
 			if (StringUtils.isEmpty(couse))
 				return VIEW_ERROR;
 			if (userPreference.getUserId() != null)
@@ -62,7 +63,8 @@ public class ExceptionController {
 			System.err.println(request.getRequestURL()+" <----> "+request.getRequestURI() +" <----> "+ userPreference.getStateCode());
 			String couse = exceptionHandler.findCouse(e);
 			re.addFlashAttribute(Message.EXCEPTION_KEY, couse);
-			List<ErrorLog> errorLog =commonService.saveErrorLog(e,request);
+			Long errorLogId =commonService.saveErrorLog(e,request);
+			model.addAttribute("ERROR_ID", errorLogId);
 			if (StringUtils.isEmpty(couse))
 				return VIEW_ERROR;
 			if (userPreference.getUserId() != null)
