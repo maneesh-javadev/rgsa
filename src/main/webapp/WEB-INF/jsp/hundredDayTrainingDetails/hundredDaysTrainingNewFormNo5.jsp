@@ -4,6 +4,13 @@
 <script type="text/javascript" src="${pageContext.request.contextPath}/resources/plugins/datepicker/js/bootstrap-datetimepicker.min.js"></script>
 <script>
 var startDate = '${HUN_DAY_TRAINING.demoDate}';
+var currentDate = Date.now();
+currentDate = new Date(currentDate);
+var dd = currentDate.getDate();
+var mm = currentDate.getMonth() + 1;
+var yy = currentDate.getFullYear();
+
+currentDate = dd + '/' + mm + '/'+ yy; 
 $('document').ready(function(){
 	if(startDate != ''){
 		$('#mainDivId').show();
@@ -22,12 +29,12 @@ $('document').ready(function(){
 		$("#bstartDate").datetimepicker({
 			format : 'dd-mm-yyyy',
 			startView : 'month',
-			endDate : '+100d',
+			//endDate : '+100d',
 			autoclose : true,
 			minView : 'month',
-			startDate : '01/06/2019',
+			startDate : '01/04/2019',
 			pickerPosition : "bottom-left",
-			endDate : '08/09/2019'
+			endDate : currentDate
 		});
 	});
 	
