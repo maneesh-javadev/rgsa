@@ -65,7 +65,7 @@ src:url('fonts/jackfrost.otf') format('opentype');
                        <li class="dropdown"><a href="#language" class="dropdown-toggle" data-toggle="dropdown"><span class="fa fa-language"></span>&nbsp;&nbsp;Language <span class="caret"></span></a>
 					   <ul class="dropdown-menu"><li><a href="#" onClick="javascript:changeLanguage('hi')">हिंदी</a></li><li><a href="#" onClick="javascript:changeLanguage('en')">English</a></li></ul></li>
                       <li class="active"><a data-toggle="modal" data-target="#login"><span class="glyphicon glyphicon-log-in"></span>&nbsp;&nbsp;Login</a></li>
-					  <li><a href="${pageContext.request.contextPath}/resources/dashboard/index.html" target="_blank" style="  color: red; font-weight: bold;"><span class="fa fa-globe"></span>&nbsp;&nbsp;Dashboard</a></li>
+					  <li><a href="${pageContext.request.contextPath}/resources/dashboard/index.htm" target="_blank" style="  color: red; font-weight: bold;"><span class="fa fa-globe"></span>&nbsp;&nbsp;Dashboard</a></li>
                     </ul>
                 </div>
             

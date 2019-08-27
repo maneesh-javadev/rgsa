@@ -1,1 +1,0 @@
-This is auto deployment directory, please don't put any file in here. 
