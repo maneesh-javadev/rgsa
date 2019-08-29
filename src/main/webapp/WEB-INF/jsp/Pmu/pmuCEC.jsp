@@ -5,7 +5,7 @@ $('document').ready(function(){
 	/* calTotalFundMOPR();
 	calTotalFundState(); */
 	calculateTotalFundSpmu();
-	calculateTotalFundDpmu();
+	//calculateTotalFundDpmu();
 	onLoadChangeColor();
 		
 		var myBoolean = document.getElementById("isFreeze").value;
@@ -70,12 +70,12 @@ function calculate(obj){
 		alert("Months should be greater than 0!");
 		$("#noOfMonths_"+obj).val('');
 	}
-	$("#fund_"+obj).val(+$("#noOfUnits_"+obj).val() * +$("#unitCost_"+obj).val() * +$("#noOfMonths_"+obj).val()); 
+	//$("#fund_"+obj).val(+$("#noOfUnits_"+obj).val() * +$("#unitCost_"+obj).val() * +$("#noOfMonths_"+obj).val()); 
 	calculateTotalFundSpmu();
-	calculateTotalFundDpmu();
+	//calculateTotalFundDpmu();
 }
 
-function totalfunds(){
+/* function totalfunds(){
 	
 	if($("#total_fund_spmu").val() == "" && $("#total_fund_dpmu").val() != ""){
 		$("#grandtotal").val( +$("#total_fund_spmu").val() + + $("#total_fund_dpmu").val());
@@ -87,7 +87,7 @@ function totalfunds(){
 		$("#grandtotal").val( +$("#total_fund_spmu").val() + + $("#total_fund_dpmu").val());
 	}
     
-}
+} */
 function toFreeze(){
 	 $("input").prop('disabled', false);
 	document.pmuController.method = "post";
@@ -101,33 +101,33 @@ function onLoadChangeColor(){
 	var rowModal2 = $('#modal2Tbody tr').length;
  	for(var i=0;i<rowCount;i++){
 		+$("#noOfUnitsState_"+i).text() > +$("#noOfUnits_"+i).val() ? $("#noOfUnitsState_"+i).css('color','red') : $("#noOfUnitsState_"+i).css('color','#00cc00');
-		+$("#unitCostState_"+i).text() > +$("#unitCost_"+i).val() ? $("#unitCostState_"+i).css('color','red') : $("#unitCostState_"+i).css('color','#00cc00');
+		//+$("#unitCostState_"+i).text() > +$("#unitCost_"+i).val() ? $("#unitCostState_"+i).css('color','red') : $("#unitCostState_"+i).css('color','#00cc00');
 		+$("#fundState_"+i).text() > +$("#fund_"+i).val() ? $("#fundState_"+i).css('color','red') : $("#fundState_"+i).css('color','#00cc00');
 		+$("#noOfMonthsState_"+i).text() > +$("#noOfMonths_"+i).val() ? $("#noOfMonthsState_"+i).css('color','red') : $("#noOfMonthsState_"+i).css('color','#00cc00');
 	}
 	+$("#total_fund_spmu_state").text() > +$("#total_fund_spmu").val() ? $("#total_fund_spmu_state").css('color','red') : $("#total_fund_spmu_state").css('color','#00cc00');
-	+$("#total_fund_dpmu_state").text() > +$("#total_fund_dpmu").val() ? $("#total_fund_dpmu_state").css('color','red') : $("#total_fund_dpmu_state").css('color','#00cc00');
-	+$("#totalFundIdState").text() > +$("#grandtotal").val() ? $("#totalFundIdState").css('color','red') : $("#totalFundIdState").css('color','#00cc00');
+	//+$("#total_fund_dpmu_state").text() > +$("#total_fund_dpmu").val() ? $("#total_fund_dpmu_state").css('color','red') : $("#total_fund_dpmu_state").css('color','#00cc00');
+	//+$("#totalFundIdState").text() > +$("#grandtotal").val() ? $("#totalFundIdState").css('color','red') : $("#totalFundIdState").css('color','#00cc00');
 	
 	for(var j=0;j < rowModal1 ;j++){
 		+$("#noOfFacultyState_"+j).text() > +$("#noOfFaculty_"+j).val() ? $("#noOfFacultyState_"+j).css('color','red') : $("#noOfFacultyState_"+j).css('color','#00cc00');
 	}
-	for(var j=0 ; j < rowModal2; j++){
+	/* for(var j=0 ; j < rowModal2; j++){
 		+$("#noOfFacultyDpmuState_"+j).text() > +$("#noOfFacultyDpmu_"+j).val() ? $("#noOfFacultyDpmuState_"+j).css('color','red') : $("#noOfFacultyDpmuState_"+j).css('color','#00cc00');
-	}
+	} */
 }
 
 function calculateValueAcDomain(index){
 	var rowCountSprc=$('#tbodySprcId tr').length;
-	var rowCountDprc=$('#modal2Tbody tr').length * domain_list.split(',').length / 2;
+	//var rowCountDprc=$('#modal2Tbody tr').length * domain_list.split(',').length / 2;
 	var noOfDomainSprc=0;
 	var noOfDomainDprc=0;
 	for(var i=0;i<rowCountSprc;i++){
 		noOfDomainSprc += Number($('#noOfFaculty_'+i).val()) ;
 	}
-	for(var i=0;i<rowCountDprc;i++){
+	/* for(var i=0;i<rowCountDprc;i++){
 		noOfDomainDprc += Number($('#noOfFacultyDpmu_'+(i)).val());
-	}
+	} */
 	
 	/* if($('#noOfUnits_0').val() < noOfDomainSprc){
 		alert('Total domains experts should be equal to or less than '+ $('#noOfUnits_0').val());
@@ -194,14 +194,19 @@ function emptyDomainDetails(level,count){
 
 function validationOnSubmit(){
 	var rowCountSprc=$('#tbodySprcId tr').length;
-	var rowCountDprc=$('#tbodyDprcId tr').length * domain_list.split(',').length / 2;
+	//var rowCountDprc=$('#tbodyDprcId tr').length * domain_list.split(',').length / 2;
 	var flag= true;
 	
-	if(($('#total_fund_spmu').val() == 0 || $('#total_fund_spmu').val() == null) && ($('#total_fund_dpmu').val() == 0 || $('#total_fund_dpmu').val() == null)){
+	/* if(($('#total_fund_spmu').val() == 0 || $('#total_fund_spmu').val() == null) && ($('#total_fund_dpmu').val() == 0 || $('#total_fund_dpmu').val() == null)){
 		alert('Blank form cannot be save or freeze.');
 		flag=false;
+	} */
+	
+	
+	if($('#total_fund_spmu').val() == 0 || $('#total_fund_spmu').val() == ''){
+		alert('Blank form cannot be save or freeze.');
+		return false;
 	}
-		
 	
 	if($('#noOfUnits_0').val() == "" || $('#noOfUnits_0').val() == null){
 		for(var i=0;i<rowCountSprc;i++){
@@ -222,7 +227,7 @@ function validationOnSubmit(){
 			}
 		}
 	
-	  if($('#noOfUnits_3').val() == "" || $('#noOfUnits_3').val() == null){
+	 /*  if($('#noOfUnits_3').val() == "" || $('#noOfUnits_3').val() == null){
 		for(var i=0;i<rowCountDprc;i++){
 		if($('#noOfExperts_'+(i)).val() != "" || $('#noOfExperts_'+(i)).val() != ""){
 			flag=false;
@@ -239,14 +244,20 @@ function validationOnSubmit(){
 			break;
 		}
 		}
-	}
+	} */
 	
 	if(+$('#activedropdown').val() == 0 && $('#noOfUnits_3').val() != ""){
 		alert("please select district in domain detail of DPRC.");
 		return flag=false;
 	}  
 	  
-	if(($('#noOfUnits_3').val() == "" || $('#noOfUnits_0').val() == "") && flag == false){
+	/* if(($('#noOfUnits_3').val() == "" || $('#noOfUnits_0').val() == "") && flag == false){
+		alert("Fill the number of units first.");
+	}else if(!flag){
+		alert("Fill the domain details first.");
+	} */
+	
+	if($('#noOfUnits_0').val() == "" && flag == false){
 		alert("Fill the number of units first.");
 	}else if(!flag){
 		alert("Fill the domain details first.");
@@ -263,10 +274,10 @@ function calculateTotalFundSpmu() {
 		}
 	}
 	$("#total_fund_spmu").val(+total_spmu_fund); 
-	totalfunds();
+	//totalfunds();
 };
 
-function calculateTotalFundDpmu() {
+/* function calculateTotalFundDpmu() {
 	var count = $("#countDpmuId").val();
 	var total_dpmu_fund = 0;
 	for (var i = 0; i < count; i++) {
@@ -276,7 +287,16 @@ function calculateTotalFundDpmu() {
 	}
 	$("#total_fund_dpmu").val(total_dpmu_fund); 
 	totalfunds();
-};
+}; */
+
+function validateFund(index){
+	if($("#fund_"+index).val() != ''){
+		if($("#noOfUnits_"+index).val() == '' || $("#noOfMonths_"+index).val() == ''){
+			alert('Please fill number of units and number of months first.');
+			$("#fund_"+index).val('');
+		}  
+	}
+}
 </script>
 <section class="content">
 	<div class="container-fluid">
@@ -299,7 +319,7 @@ function calculateTotalFundDpmu() {
 							<div role="tabpanel" class="container tab-pane active" id="state"
 								style="width: auto;">
 								<form:form method="post" name="pmuController"
-									action="addUpdatePmu.html" modelAttribute="PMU_ACTIVITY">
+									action="addUpdatePmu.html" modelAttribute="PMU_ACTIVITY" onsubmit=" return validationOnSubmit()">
 									<input type="hidden" name="<csrf:token-name/>"
 										value="<csrf:token-value uri="addPmuActivity.html" />" />
 											<div class="table-responsive">
@@ -318,10 +338,10 @@ function calculateTotalFundDpmu() {
 														<spring:message code="Label.NoOfUnits" htmlEscape="true" />
 														<br>(A)
 													</div></th>
-												<th><div align="center">
+												<%-- <th><div align="center">
 														<spring:message code="Label.UnitCost" htmlEscape="true" />
 														<br>(B)
-													</div></th>
+													</div></th> --%>
 												<th><div align="center">
 														<spring:message code="Label.NoOfMonths" htmlEscape="true" />
 														<br>(C)
@@ -363,8 +383,8 @@ function calculateTotalFundDpmu() {
 															oninput="validity.valid||(value='');" type="text"
 															class="active12 form-control" id="noOfUnits_${srl.index}"
 															onkeyup="onLoadChangeColor();calculate(${srl.index})"
-															style="text-align: right;" required="required"/></td>
-														<td>
+															style="text-align: right;" /></td>
+														<%-- <td>
 														<div align="center" id="unitCostState_${srl.index}">${pmuActivityState.pmuActivityDetails[srl.index].unitCost}</div>
 														<input
 															value="${pmuActivity.pmuActivityDetails[srl.index].unitCost}"
@@ -373,7 +393,7 @@ function calculateTotalFundDpmu() {
 															oninput="validity.valid||(value='');" type="text"
 															class="active12 form-control" id="unitCost_${srl.index}"
 															onkeyup="calculate(${srl.index});onLoadChangeColor()"
-															style="text-align: right;" required="required"/></td>
+															style="text-align: right;" required="required"/></td> --%>
 														<td>
 														<div align="center" id="noOfMonthsState_${srl.index}">${pmuActivityState.pmuActivityDetails[srl.index].noOfMonths}</div>
 														<input
@@ -381,17 +401,17 @@ function calculateTotalFundDpmu() {
 															name="pmuActivityDetails[${srl.index}].noOfMonths"  type="text" min="1"
 															class="active12 form-control" onkeyup="calculate(${srl.index});onLoadChangeColor()"
 															oninput="validity.valid||(value='');" onkeypress="return isNumber(event)"
-															id="noOfMonths_${srl.index}" style="text-align: right;" required="required"/></td>
+															id="noOfMonths_${srl.index}" style="text-align: right;"/></td>
 														<c:set var="totalFundToCalc"
 															value="${pmuActivity.pmuActivityDetails[srl.index].fund}"></c:set>
 														<td>
 														<div align="center" id="fundState_${srl.index}">${pmuActivityState.pmuActivityDetails[srl.index].fund}</div>
 														<input
 															value="${pmuActivity.pmuActivityDetails[srl.index].fund}"
-															readonly="readonly"
 															name="pmuActivityDetails[${srl.index}].fund"
 															onkeypress="return isNumber(event)"
 															onchange="onLoadChangeColor()"
+															onkeyup="calculate(${srl.index});validateFund(${srl.index});"
 															oninput="validity.valid||(value='');" type="text" min="1"
 															class="active12 form-control txtCal" id="fund_${srl.index}"
 															style="text-align: right;" /></td>
@@ -430,7 +450,7 @@ function calculateTotalFundDpmu() {
 												<!-- SPMU LOOP ENDS HERE -->
 												
 												<!-- DPMU LOOP STARTS -->
-												<c:forEach items="${LIST_OF_ACTIVITY_PMU_TYPE}" var="ACTIVITY" varStatus="srl" begin="3" end="5">
+												<%-- <c:forEach items="${LIST_OF_ACTIVITY_PMU_TYPE}" var="ACTIVITY" varStatus="srl" begin="3" end="5">
 													<input type="hidden" name="pmuActivityDetails[${srl.index}].pmuActivityTypeId" value="${ACTIVITY.pmuActivityTypeId}">
 													<input type="hidden" name="pmuActivityDetails[${srl.index}].pmuDetailsId" value="${pmuActivity.pmuActivityDetails[srl.index].pmuDetailsId}">
 													<input	type="hidden" name="pmuActivityDetails[${srl.index}].pmuActivityType.pmuActivityTypeId"	value="${ACTIVITY.pmuActivityTypeId}" />
@@ -514,9 +534,9 @@ function calculateTotalFundDpmu() {
 														value="" disabled="disabled" onchange="onLoadChangeColor()"></td>
 													<td></td>
 													<td></td>
-												</tr>
+												</tr> --%>
 												<!-- DPMU LOOP ENDS HERE -->
-												<tr>
+												<%-- <tr>
 													<th colspan="5"><label><spring:message
 																code="Label.TotalAmountProposed" htmlEscape="true" /></label></th>
 													<td>
@@ -526,7 +546,7 @@ function calculateTotalFundDpmu() {
 														value="${totalFundToCalc}" disabled="disabled" onchange="onLoadChangeColor()"></td>
 													<td></td>
 													<td></td>
-												</tr>
+												</tr> --%>
 											</tbody>
 										</table>
 
@@ -613,7 +633,7 @@ function calculateTotalFundDpmu() {
 											</div>
 										</div>
 
-										<div id="myModal2" class="modal fade" role="dialog">
+										<%-- <div id="myModal2" class="modal fade" role="dialog">
 											<div class="modal-dialog modal-lg">
 												<!-- Modal content-->
 												<div class="modal-content">
@@ -638,7 +658,7 @@ function calculateTotalFundDpmu() {
 																</div>
 															</div>
 														</div>
-														<%-- <div class="row">
+														<div class="row">
 															<div class="form-group">
 																<label for="Dprc" class="col-sm-3"><spring:message
 																		code="Label.District" htmlEscape="true" /></label>
@@ -647,7 +667,7 @@ function calculateTotalFundDpmu() {
 																<input type="hidden" id="districtCodeStateId" name="setDistrictIdPmuWise" value="${DISTRICT_DETAILS_STATE.districtCode}">
 																</div>
 															</div>
-														</div> --%>
+														</div>
 														<div class="row clearfix">
 															<div class="body">
 																<div class="table-responsive">
@@ -693,7 +713,7 @@ function calculateTotalFundDpmu() {
 																			</tr>
 																		</c:forEach>
 																			
-																			<%-- <c:set var="temp" value="0" scope="page" />
+																			<c:set var="temp" value="0" scope="page" />
 																			<c:forEach items="${LIST_OF_PMU_DOMAINS}"
 																				var="DOMAINS">
 																				<c:if test="${DOMAINS.pmuType.pmuTypeId eq 2}">
@@ -717,7 +737,7 @@ function calculateTotalFundDpmu() {
 																					</tr>
 																				</c:if>
 																				<c:set var="temp" value="${temp+1}" scope="page" />
-																			</c:forEach> --%>
+																			</c:forEach>
 																		</tbody>
 																	</table>
 																</div>
@@ -732,7 +752,7 @@ function calculateTotalFundDpmu() {
 													</div>
 												</div>
 											</div>
-										</div>
+										</div> --%>
 									</div>
 									<div class="row clearfix">
 									<div class="col-md-4">
@@ -765,7 +785,7 @@ function calculateTotalFundDpmu() {
 									<input type="hidden" id="isFreeze" name="isFreeze" value="${pmuActivity.isFreeze}">
 									<input type="hidden" name="userType" value="${pmuActivity.userType}" />
 									<input type="hidden" id="countSpmuId" value="${countSpmu}">
-									<input type="hidden" id="countDpmuId" value="${countDpmu}">
+									<%-- <input type="hidden" id="countDpmuId" value="${countDpmu}"> --%>
 									
 								</form:form>
 							</div>
@@ -788,10 +808,10 @@ function calculateTotalFundDpmu() {
 														<spring:message code="Label.NoOfUnits" htmlEscape="true" />
 														<br>(A)
 													</div></th>
-												<th><div align="center">
+												<%-- <th><div align="center">
 														<spring:message code="Label.UnitCost" htmlEscape="true" />
 														<br>(B)
-													</div></th>
+													</div></th> --%>
 												<th><div align="center">
 														<spring:message code="Label.NoOfMonths" htmlEscape="true" />
 														<br>(C)
@@ -819,7 +839,7 @@ function calculateTotalFundDpmu() {
 												<td><div align="center"><strong>${ACTIVITY.pmuType.pmuTypeName}</strong></div></td>
 												<td><div align="center"><strong>${ACTIVITY.pmuActivityName}</strong></div></td>
 												<td><div align="center">${pmuActivityMOPR.pmuActivityDetails[srl.index].noOfUnits}</div></td>
-												<td><div align="center"> ${pmuActivityMOPR.pmuActivityDetails[srl.index].unitCost }</div></td>
+												<%-- <td><div align="center"> ${pmuActivityMOPR.pmuActivityDetails[srl.index].unitCost }</div></td> --%>
 												<td><div align="center">${pmuActivityMOPR.pmuActivityDetails[srl.index].noOfMonths}</div></td>
 												<td><div align="center" id="fundMOPR_${srl.index}">${pmuActivityMOPR.pmuActivityDetails[srl.index].fund}</div></td>
 													<c:choose>
@@ -852,7 +872,7 @@ function calculateTotalFundDpmu() {
 												</tr>
 											<!-- SPMU LOOP ENDS -->
 											<!-- DPMU LOOP STARTS -->
-											<c:forEach items="${LIST_OF_ACTIVITY_PMU_TYPE}" var="ACTIVITY" varStatus="srl" begin="3" end="5">
+											<%-- <c:forEach items="${LIST_OF_ACTIVITY_PMU_TYPE}" var="ACTIVITY" varStatus="srl" begin="3" end="5">
 											<tr>
 												<td><div align="center"><strong>${ACTIVITY.pmuType.pmuTypeName}</strong></div></td>
 												<td><div align="center"><strong>${ACTIVITY.pmuActivityName}</strong></div></td>
@@ -880,20 +900,20 @@ function calculateTotalFundDpmu() {
 														   </c:otherwise>
 													</c:choose>
 												</td>
-										   		<td><div align="center">${pmuActivityMOPR.pmuActivityDetails[srl.index].remarks}</div><%-- <textarea name="pmuActivityDetails[${count}].remarks" rows="3" class="form-control" cols="5"><c:out value="${pmuActivity.pmuActivityDetails[count].remarks}"></c:out></textarea> --%></td>
+										   		<td><div align="center">${pmuActivityMOPR.pmuActivityDetails[srl.index].remarks}</div><textarea name="pmuActivityDetails[${count}].remarks" rows="3" class="form-control" cols="5"><c:out value="${pmuActivity.pmuActivityDetails[count].remarks}"></c:out></textarea></td>
 												</tr>
 											</c:forEach>
 											<tr>
 											<th colspan="5"><label>Total DPMU Fund</label></th>
 													<td><div align="center">${DPMU_TOTAL_MOPR}</div></td>
 														<td colspan="4"></td>
-												</tr>
+												</tr> --%>
 												<!-- DPMU LOOP ENDS -->
-											<tr>
+											<%-- <tr>
 											<th colspan="5"><label><spring:message code="Label.TotalAmountProposed" htmlEscape="true" /></label></th>
 													<td><div align="center" id="totalFundIdMOPR">${DPMU_TOTAL_MOPR + SPMU_TOTAL_MOPR}</div></td>
 														<td colspan="4"></td>
-												</tr>
+												</tr> --%>
 											</tbody>
 									</table>
 									<div id="myModal3" class="modal fade" role="dialog">
@@ -953,7 +973,7 @@ function calculateTotalFundDpmu() {
 											</div>
 										</div>
 										
-										<div id="myModal4" class="modal fade" role="dialog">
+										<%-- <div id="myModal4" class="modal fade" role="dialog">
 											<div class="modal-dialog modal-lg">
 												<!-- Modal content-->
 												<div class="modal-content">
@@ -974,14 +994,14 @@ function calculateTotalFundDpmu() {
 																</div>
 															</div>
 														</div>
-														<%-- <div class="row">
+														<div class="row">
 															<div class="form-group">
 																<label for="Dprc" class="col-sm-3"><spring:message code="Label.District" htmlEscape="true" /></label>
 																<div class="col-sm-5">
 																<div align="center"><strong>${DISTRICT_DETAILS_MOPR.districtNameEnglish}</strong></div>
 																</div>
 															</div>
-														</div> --%>
+														</div>
 														<div class="row clearfix">
 															<div class="body">
 																<div class="table-responsive">
@@ -1019,7 +1039,7 @@ function calculateTotalFundDpmu() {
 																			</tr>
 																		</c:forEach>
 
-																		<%-- <c:set var="temp" value="0" scope="page" />
+																		<c:set var="temp" value="0" scope="page" />
 																			<c:forEach items="${LIST_OF_PMU_DOMAINS}" var="DOMAINS">
 																				<c:if test="${DOMAINS.pmuType.pmuTypeId eq 2}">
 																					<tr>
@@ -1028,7 +1048,7 @@ function calculateTotalFundDpmu() {
 																					</tr>
 																				</c:if>
 																				<c:set var="temp" value="${temp+1}" scope="page" />
-																			</c:forEach> --%>
+																			</c:forEach>
 																		</tbody>
 																	</table>
 																</div>
@@ -1040,7 +1060,7 @@ function calculateTotalFundDpmu() {
 													</div>
 												</div>
 											</div>
-										</div>
+										</div> --%>
 											<div class="col-md-4">
 										<button type="button"
 											onclick="onClose('viewPlanDetails.html?<csrf:token uri='viewPlanDetails.html'/>&stateCode=${STATE_CODE}')"

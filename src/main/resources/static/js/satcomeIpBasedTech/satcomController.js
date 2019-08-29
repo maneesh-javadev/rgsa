@@ -24,6 +24,7 @@ publicModule.controller("satcomController",['$scope','satcomService',function($s
 	fetchOnLoad();
 	
 	function fetchOnLoad(){
+		$scope.disable_save=false;
 		satcomService.getActivityList().then(function(response){
 			$scope.satComLevel=response.data.SATCOM_LEVEL;
 			$scope.activityList=response.data.SATCOME_ACTIVITY;
@@ -57,6 +58,7 @@ publicModule.controller("satcomController",['$scope','satcomService',function($s
 	
 	$scope.saveData=function(status){
 		$scope.satcomActivityObject.status=status;
+		$scope.disable_save=true;
 		satcomService.saveData($scope.satcomActivityObject).then(function(response){
 			if(response.data.SATCOME_ACTIVITY_DETAILS!=undefined){
 				$scope.satcomActivityObject=response.data.SATCOME_ACTIVITY_DETAILS;

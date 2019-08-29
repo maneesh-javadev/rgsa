@@ -201,7 +201,7 @@
 									<spring:message code="Label.SAVE" htmlEscape="true" />
 								</button>
 								<button type="button"
-									data-ng-show="satcomActivityObject.status != 'F'"
+									data-ng-show="satcomActivityObject.status != 'F'" data-ng-disabled="disable_save"
 									data-ng-click="saveData('S')" class="btn bg-green waves-effect">
 									<spring:message code="Label.SAVE" htmlEscape="true" />
 								</button>
@@ -536,7 +536,7 @@
 								</button>
 								<button type="button"
 									data-ng-show="satcomActivityObject.status != 'F'"
-									data-ng-click="saveData('S')" class="btn bg-green waves-effect">
+									data-ng-click="saveData('S')" data-ng-disabled="disable_save" class="btn bg-green waves-effect">
 									<spring:message code="Label.SAVE" htmlEscape="true" />
 								</button>
 								<button data-ng-show=" satcomActivityObject.status != undefined && satcomActivityObject.status != 'F' "
