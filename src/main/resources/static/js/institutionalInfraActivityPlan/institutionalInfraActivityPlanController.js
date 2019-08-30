@@ -5,9 +5,13 @@ publicModule.controller("institutionalInfraActivityPlanController", [ '$scope', 
 	
 	
 	init();
+	initialMsg();
+	
+	function initialMsg(){
+		alert('Incase of SPRC you can fill only 1 section. It could be either New building or Carry forward.');
+	};
 	
 	function init(){
-		
 		$scope.institutionalInfraActivityPlan={};
 		$scope.institutionalInfraActivityPlan.institutionalInfraActivityPlanDetails=[];
 
@@ -79,6 +83,9 @@ publicModule.controller("institutionalInfraActivityPlanController", [ '$scope', 
 					dlc=$scope.institutionalInfraActivityPlan.institutionalInfraActivityPlanDetails[i].institutionalInfraLocation;
 					isactive=$scope.institutionalInfraActivityPlan.institutionalInfraActivityPlanDetails[i].isactive;
 					if(workType=='N' && trainingInstitueTypeId==2 && isactive==true){
+						$('#sprcCarryBlock').hide();
+						$('#sprcNewBlock').show();
+						$('#newBuildingCheck').hide();
 						$scope.institutionalInfraActivityPlanDetailsNBState[$scope.nbsindex]=$scope.institutionalInfraActivityPlan.institutionalInfraActivityPlanDetails[i];
 						districtObj=find_district(dlc);
 						nbsArr.push(dlc);
@@ -96,6 +103,9 @@ publicModule.controller("institutionalInfraActivityPlanController", [ '$scope', 
 						
 						$scope.nbdindex++;
 					}else if(workType=='C' && trainingInstitueTypeId==2 && isactive==true){
+						$('#sprcCarryBlock').show();
+						$('#sprcNewBlock').hide();
+						$('#carryForwardCheck').hide();
 						$scope.institutionalInfraActivityPlanDetailsCFState[$scope.cfsindex]=$scope.institutionalInfraActivityPlan.institutionalInfraActivityPlanDetails[i];
 						districtObj=find_district(dlc);
 						cfsArr.push(dlc);
@@ -513,7 +523,7 @@ function create_state_row_CF(rindex,name,id){
 						FREL=parseInt($scope.institutionalInfraActivityPlanDetailsCFState[index].fundReleased);
 				}
 				if($scope.institutionalInfraActivityPlanDetailsCFState[index].fundUtilized != null && $scope.institutionalInfraActivityPlanDetailsCFState[index].fundUtilized != undefined){
-						FUTI=parseInt($scope.institutionalInfraActivityPlanDetailsCFState[index].fundUtilized);
+						FUTI=+$scope.institutionalInfraActivityPlanDetailsCFState[index].fundUtilized;
 				}
 					
 					if(FREL>FSAN && id!='SAN'){
@@ -521,8 +531,8 @@ function create_state_row_CF(rindex,name,id){
 						isError=true;
 					}else{
 						if(id!='SAN'){
-							if(FSAN>=FUTI){
-								FREQ=FSAN-FUTI;
+							if(FSAN>=FREL){
+								FREQ=FSAN-FREL;
 								if(FSAN>=FREQ ){
 									$scope.institutionalInfraActivityPlanDetailsCFState[index].fundRequired=FREQ;
 									
@@ -538,7 +548,7 @@ function create_state_row_CF(rindex,name,id){
 								}
 								
 							}else{
-								toastr.error("Fund Released must be greater then Fund Sanctioned");
+								toastr.error("Fund Released must not be greater then Fund Sanctioned");
 								isError=true;
 							}
 						}else{
@@ -654,7 +664,7 @@ function create_state_row_CF(rindex,name,id){
 		var totalCFS=$scope.totalWithoutAddRequirementsCFS!=null && $scope.totalWithoutAddRequirementsCFS!=undefined?$scope.totalWithoutAddRequirementsCFS:0;
 		var totalCFD=$scope.totalWithoutAddRequirementsCFD!=null && $scope.totalWithoutAddRequirementsCFD!=undefined?$scope.totalWithoutAddRequirementsCFD:0;
 		
-		$scope.grandTotal=totalNBS+totalNBD+totalCFS+totalCFD;
+		$scope.grandTotal = +totalNBS + +totalNBD + +totalCFS + +totalCFD;
 		
 	}
 	
@@ -713,6 +723,28 @@ function create_state_row_CF(rindex,name,id){
 		}
 	}
 	
-	
-	
+	 $scope.hideSectionsInSprc=function(section){
+		if(section == 'new'){
+			if($scope.institutionalInfraActivityPlanDetailsCFState.length > 0){
+				$scope.grandTotal -= $scope.institutionalInfraActivityPlanDetailsCFState[0].fundRequired;
+				$scope.institutionalInfraActivityPlanDetailsCFState.pop();
+			}
+			$('#sprcCarryBlock').hide();
+			$('#sprcNewBlock').show();
+			$('#newBuildingCheck').show();
+			$('#checkboxCarry').attr("checked", false);
+		}else{
+			if($scope.institutionalInfraActivityPlanDetailsNBState.length > 0){
+				$scope.grandTotal -= (+$scope.institutionalInfraActivityPlanDetailsNBState[0].fundProposed + +$scope.institutionalInfraActivityPlan.additionalRequirementNBS)
+				$scope.institutionalInfraActivityPlanDetailsNBState.pop();
+				$scope.institutionalInfraActivityPlan.additionalRequirementNBS='';
+				$scope.grandTotalNBS = '';
+			}
+			
+			$('#sprcNewBlock').hide();
+			$('#sprcCarryBlock').show();
+			$('#carryForwardCheck').show();
+			$('#checkboxNew').attr("checked", false);
+		}
+	}
 }]);

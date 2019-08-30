@@ -29,10 +29,10 @@ function isNumber(evt) {
 								</h2>
 							</div>
 							<form>
-								<div class="records">
+								<div class="records" id="sprcNewBlock">
 									<div class="">
-										<div  class="col-lg-12 sub_head">
-											<spring:message code="Label.NewBuilding" htmlEscape="true" />(SPRC)
+										<div  class="col-lg-12 sub_head" style="background-color: #b39ad8;color: #2f2b2bf2;">
+											<spring:message code="Label.NewBuilding" htmlEscape="true" /> (SPRC)
                            
 										</div>
 										<div class="row">
@@ -46,23 +46,27 @@ function isNumber(evt) {
 												</label>
 											</div>
 											<div class="col-lg-4">
-												<select data-ng-show="!institutionalInfraActivityPlan.isFreeze" data-ng-model="sprcDistrictNB" data-ng-change="add_row_nb(2);" required="required">
+												<select class="form-control" data-ng-show="!institutionalInfraActivityPlan.isFreeze" data-ng-model="sprcDistrictNB" data-ng-change="add_row_nb(2);hideSectionsInSprc('new')" required="required">
 													<option data-ng-repeat="district in districtList" value="{{district.districtCode}}">
 											{{district.districtNameEnglish}}
 										</option>
 												</select>
-												<select data-ng-show="institutionalInfraActivityPlan.isFreeze"  data-ng-model="sprcDistrictNB" data-ng-disabled="true">
+												<select class="form-control" data-ng-show="institutionalInfraActivityPlan.isFreeze"  data-ng-model="sprcDistrictNB" data-ng-disabled="true">
 													<option data-ng-repeat="district in districtList" value="{{district.districtCode}}">
 											{{district.districtNameEnglish}}
 										</option>
 												</select>
 											</div>
+											
+											<div class="col-lg-3" align="right" style="color: #3b1576;display: none;" id="newBuildingCheck">
+												<input type="checkbox" id="checkboxNew" class="form-check-input" data-ng-click="hideSectionsInSprc('carry')"/> : Show Carry Forward Section &nbsp;&nbsp;
+											</div>
+											
 										</div>
 										<div class="row">
 											<div class="col-lg-12 padding_top"></div>
 										</div>
-										<table id="trainingActivityTblId"
-                              class="table table-hover dashboard-task-infos">
+										<table id="trainingActivityTblId" class="table table-hover dashboard-task-infos">
 											<thead>
 												<tr>
 													<th>
@@ -113,7 +117,7 @@ function isNumber(evt) {
 														<strong>{{details.districtName}}</strong>
 													</td>
 													<td>
-														<input type="text" onkeypress="return isNumber(event)" data-ng-show="!institutionalInfraActivityPlan.isFreeze" data-ng-model="institutionalInfraActivityPlanDetailsNBState[$index].fundProposed" class="form-control" id="fundProposedId" data-ng-keyup="calculate_total_fund(1,$index,null)" maxlength="8" style="text-align:right;" required="required" autocomplete="off"/>
+														<input type="text" onkeypress="return isNumber(event)" data-ng-show="!institutionalInfraActivityPlan.isFreeze" data-ng-model="institutionalInfraActivityPlanDetailsNBState[$index].fundProposed" class="form-control" id="fundProposedId" data-ng-keyup="calculate_total_fund(1,$index,null);hideSectionsInSprc('new')" maxlength="8" style="text-align:right;" required="required" autocomplete="off"/>
 														<input type="text" data-ng-show="institutionalInfraActivityPlan.isFreeze" data-ng-model="institutionalInfraActivityPlanDetailsNBState[$index].fundProposed" class="form-control" readonly="readonly" style="text-align:right;"/>
 													</td>
 													<!-- <td><input type="text" restrict-input="{type: 'digitsOnly'}" data-ng-show="!institutionalInfraActivityPlan.isFreeze"  data-ng-model="institutionalInfraActivityPlanDetailsNB[$index].totalFund" class="form-control" id="totalFundId" data-ng-keyup="calculationDependentField(trainingInstituteTypeId)" readonly="readonly" style="text-align:right;"/><input type="text" restrict-input="{type: 'digitsOnly'}" data-ng-show="institutionalInfraActivityPlan.isFreeze" data-ng-model="institutionalInfraActivityPlanDetailsNBlInfraActivityPlanDetails[$index].totalFund" class="form-control" readonly="readonly" style="text-align:right;"/></td> -->
@@ -122,14 +126,14 @@ function isNumber(evt) {
 															<input type="checkbox" data-ng-show="institutionalInfraActivityPlan.isFreeze" data-ng-model="institutionalInfraActivityPlanDetailsNBState[$index].isApproved" disabled="disabled">
 															</td>
 															<td>
-																<textarea rows="2" data-ng-show="!institutionalInfraActivityPlan.isFreeze" data-ng-model="institutionalInfraActivityPlanDetailsNBState[$index].remarks" cols="10"></textarea>
-																<textarea rows="2" data-ng-show="institutionalInfraActivityPlan.isFreeze" data-ng-model="institutionalInfraActivityPlanDetailsNBState[$index].remarks" cols="10" readonly="readonly" autocomplete="off"></textarea>
+																<textarea rows="2" class="form-control" data-ng-show="!institutionalInfraActivityPlan.isFreeze" data-ng-model="institutionalInfraActivityPlanDetailsNBState[$index].remarks" cols="10" data-ng-keyup="hideSectionsInSprc('new')"></textarea>
+																<textarea rows="2" class="form-control" data-ng-show="institutionalInfraActivityPlan.isFreeze" data-ng-model="institutionalInfraActivityPlanDetailsNBState[$index].remarks" cols="10" readonly="readonly" autocomplete="off"></textarea>
 															</td>
 														</tr>
 													</tbody>
 													<tfoot>
 														<tr>
-															<td colspan="4">
+															<td colspan="2" style="padding-left: 9%">
 																<strong>
 																	<spring:message code="Label.SubTotal" htmlEscape="true" />(SPRC)
 																</strong>
@@ -139,18 +143,18 @@ function isNumber(evt) {
 															</td>
 														</tr>
 														<tr>
-															<td colspan="4">
+															<td colspan="2" style="padding-left: 9%">
 																<strong>
 																	<spring:message code="Label.AdditionalRequirement" htmlEscape="true" /> (SPRC)
 																</strong>
 															</td>
 															<td>
-																<input type="text" onkeypress="return isNumber(event)" class="form-control" data-ng-readonly="institutionalInfraActivityPlan.isFreeze" data-ng-model="institutionalInfraActivityPlan.additionalRequirementNBS" placeholder=" 25% of Grand Total cost " data-ng-keyup="calculate_total_fund(1,null,null)" maxlength="8" style="text-align:right;" autocomplete="off"/>
+																<input type="text" onkeypress="return isNumber(event)" class="form-control" data-ng-readonly="institutionalInfraActivityPlan.isFreeze" data-ng-model="institutionalInfraActivityPlan.additionalRequirementNBS" placeholder=" 25% of Grand Total cost " data-ng-keyup="calculate_total_fund(1,null,null);hideSectionsInSprc('new')" maxlength="8" style="text-align:right;" autocomplete="off"/>
 																<!-- <input type="text" restrict-input="{type: 'digitsOnly'}" class="form-control" data-ng-show="institutionalInfraActivityPlan.isFreeze || trainingInstituteTypeId == 4" data-ng-model="institutionalInfraActivityPlan.additionalRequirement" placeholder=" 25% of Grand Total cost " readonly="readonly" id="additionalRequirementId" style="text-align:right;"/> -->
 															</td>
 														</tr>
 														<tr>
-															<td colspan="4">
+															<td colspan="2" style="padding-left: 9%">
 																<strong>
 																	<spring:message code="Label.TotalProposedFund" htmlEscape="true" /> (SPRC)
 																</strong>
@@ -172,8 +176,8 @@ function isNumber(evt) {
 										
 										<div class="records">
 											<div class="">
-												<div  class="col-lg-12 sub_head">
-													<spring:message code="Label.NewBuilding" htmlEscape="true" />(DPRC)
+												<div  class="col-lg-12 sub_head" style="background-color: #b39ad8;color: #2f2b2bf2;">
+													<spring:message code="Label.NewBuilding" htmlEscape="true" /> (DPRC)
 												</div>
 												<div class="row">
 													<div class="col-lg-12 padding_top"></div>
@@ -186,12 +190,12 @@ function isNumber(evt) {
 														</label>
 													</div>
 													<div class="col-lg-4">
-														<select data-ng-show="!institutionalInfraActivityPlan.isFreeze" data-ng-model="dprcDistrictNB" data-ng-change="add_row_nb(4);" required="required" multiple="multiple">
+														<select class="form-control" data-ng-show="!institutionalInfraActivityPlan.isFreeze" data-ng-model="dprcDistrictNB" data-ng-change="add_row_nb(4);" required="required" multiple="multiple">
 															<option data-ng-repeat="district in districtList" value="{{district.districtCode}}">
 																{{district.districtNameEnglish}}
 															</option>
 														</select>
-														<select data-ng-show="institutionalInfraActivityPlan.isFreeze"  data-ng-model="dprcDistrictNB" disabled="disabled" multiple="multiple">
+														<select  class="form-control" data-ng-show="institutionalInfraActivityPlan.isFreeze"  data-ng-model="dprcDistrictNB" disabled="disabled" multiple="multiple">
 															<option data-ng-repeat="district in districtList" value="{{district.districtCode}}">
 																{{district.districtNameEnglish}}
 															</option>
@@ -261,14 +265,14 @@ function isNumber(evt) {
 																	<input type="checkbox" data-ng-show="institutionalInfraActivityPlan.isFreeze" data-ng-model="institutionalInfraActivityPlanDetailsNBDistrict[$index].isApproved" disabled="disabled">
 																	</td>
 																	<td>
-																		<textarea rows="2" data-ng-show="!institutionalInfraActivityPlan.isFreeze" data-ng-model="institutionalInfraActivityPlanDetailsNBDistrict[$index].remarks" cols="10" autocomplete="off"></textarea>
-																		<textarea rows="2" data-ng-show="institutionalInfraActivityPlan.isFreeze" data-ng-model="institutionalInfraActivityPlanDetailsNBDistrict[$index].remarks" cols="10" readonly="readonly"></textarea>
+																		<textarea rows="2" class="form-control"  data-ng-show="!institutionalInfraActivityPlan.isFreeze" data-ng-model="institutionalInfraActivityPlanDetailsNBDistrict[$index].remarks" cols="10" autocomplete="off"></textarea>
+																		<textarea rows="2" class="form-control"  data-ng-show="institutionalInfraActivityPlan.isFreeze" data-ng-model="institutionalInfraActivityPlanDetailsNBDistrict[$index].remarks" cols="10" readonly="readonly"></textarea>
 																	</td>
 																</tr>
 															</tbody>
 															<tfoot>
 																<tr>
-																	<td colspan="4">
+																	<td colspan="2" style="padding-left: 9%">
 																		<strong>
 																			<spring:message code="Label.SubTotal" htmlEscape="true" />(DPRC)
 																		</strong>
@@ -278,7 +282,7 @@ function isNumber(evt) {
 																	</td>
 																</tr>
 																<tr>
-																	<td colspan="4">
+																	<td colspan="2" style="padding-left: 9%">
 																		<strong>
 																			<spring:message code="Label.AdditionalRequirement" htmlEscape="true" /> (DPRC)
 																		</strong>
@@ -289,7 +293,7 @@ function isNumber(evt) {
 																	</td>
 																</tr>
 																<tr>
-																	<td colspan="4">
+																	<td colspan="2" style="padding-left: 9%">
 																		<strong>
 																			<spring:message code="Label.TotalProposedFund" htmlEscape="true" /> (DPRC)
 																		</strong>
@@ -307,10 +311,10 @@ function isNumber(evt) {
 												</div>
 												
 												
-												<div class="records">
+												<div class="records" id="sprcCarryBlock">
 													<div class="">
-														<div  class="col-lg-12 sub_head">
-															<spring:message code="Label.CarryForward" htmlEscape="true" />(SPRC)
+														<div  class="col-lg-12 sub_head" style="background-color: #b39ad8;color: #2f2b2bf2;">
+															<spring:message code="Label.CarryForward" htmlEscape="true" /> (SPRC)
 														</div>
 														<div class="row">
 															<div class="col-lg-12 padding_top"></div>
@@ -323,18 +327,24 @@ function isNumber(evt) {
 																</label>
 															</div>
 															<div class="col-lg-4">
-																<select data-ng-show="!institutionalInfraActivityPlan.isFreeze" data-ng-model="sprcDistrictCF" data-ng-change="add_row_cf(2);" required="required">
+																<select class="form-control" data-ng-show="!institutionalInfraActivityPlan.isFreeze" data-ng-model="sprcDistrictCF" data-ng-change="add_row_cf(2);hideSectionsInSprc('carry')" required="required">
 																	<option data-ng-repeat="district in districtList" value="{{district.districtCode}}">
 																		{{district.districtNameEnglish}}
 																	</option>
 																</select>
-																<select data-ng-show="institutionalInfraActivityPlan.isFreeze"  data-ng-model="sprcDistrictCF" data-ng-disabled="true">
+																<select class="form-control" data-ng-show="institutionalInfraActivityPlan.isFreeze"  data-ng-model="sprcDistrictCF" data-ng-disabled="true">
 																	<option data-ng-repeat="district in districtList" value="{{district.districtCode}}">
 																		{{district.districtNameEnglish}}
 																	</option>
 																</select>
+																</div>
+							
+																<div class="col-lg-3" align="right" style="color: #3b1576;display: none;" id="carryForwardCheck">
+																	<input type="checkbox" id="checkboxCarry" class="form-check-input"
+																		data-ng-click="hideSectionsInSprc('new')" /> : Show New 
+																	Building Section &nbsp;&nbsp;
+																</div>
 															</div>
-														</div>
 														<div class="row">
 															<div class="col-lg-12 padding_top"></div>
 														</div>
@@ -401,15 +411,15 @@ function isNumber(evt) {
 																					<strong>{{details.districtName}}</strong>
 																				</td>
 																				<td>
-																					<input type="text" data-ng-show="!institutionalInfraActivityPlan.isFreeze"  data-ng-model="institutionalInfraActivityPlanDetailsCFState[$index].fundSanctioned" class="form-control"  data-ng-keyup="calculate_total_fund(3,$index,'SAN')"  style="text-align:right;" autocomplete="off"/>
+																					<input type="text" data-ng-show="!institutionalInfraActivityPlan.isFreeze"  data-ng-model="institutionalInfraActivityPlanDetailsCFState[$index].fundSanctioned" class="form-control"  data-ng-keyup="calculate_total_fund(3,$index,'SAN')hideSectionsInSprc('carry')"  style="text-align:right;" autocomplete="off"/>
 																					<input type="text" data-ng-show="institutionalInfraActivityPlan.isFreeze" data-ng-model="institutionalInfraActivityPlanDetailsCFState[$index].fundSanctioned" class="form-control" readonly="readonly" style="text-align: right;"/>
 																				</td>
 																				<td>
-																					<input type="text" data-ng-show="!institutionalInfraActivityPlan.isFreeze"  data-ng-model="institutionalInfraActivityPlanDetailsCFState[$index].fundReleased" class="form-control"  data-ng-keyup="calculate_total_fund(3,$index,'REL')"  style="text-align:right;" autocomplete="off"/>
+																					<input type="text" data-ng-show="!institutionalInfraActivityPlan.isFreeze"  data-ng-model="institutionalInfraActivityPlanDetailsCFState[$index].fundReleased" class="form-control"  data-ng-keyup="calculate_total_fund(3,$index,'REL');hideSectionsInSprc('carry')"  style="text-align:right;" autocomplete="off"/>
 																					<input type="text" data-ng-show="institutionalInfraActivityPlan.isFreeze" data-ng-model="institutionalInfraActivityPlanDetailsCFState[$index].fundReleased" class="form-control" readonly="readonly" style="text-align:right;"/>
 																				</td>
 																				<td>
-																					<input type="text" data-ng-show="!institutionalInfraActivityPlan.isFreeze"  data-ng-model="institutionalInfraActivityPlanDetailsCFState[$index].fundUtilized" class="form-control"  data-ng-keyup="calculate_total_fund(3,$index,'UTI')"  style="text-align:right;" autocomplete="off"/>
+																					<input type="text" data-ng-show="!institutionalInfraActivityPlan.isFreeze"  data-ng-model="institutionalInfraActivityPlanDetailsCFState[$index].fundUtilized" class="form-control"  data-ng-keyup="calculate_total_fund(3,$index,'UTI');hideSectionsInSprc('carry')"  style="text-align:right;" autocomplete="off"/>
 																					<input type="text" data-ng-show="institutionalInfraActivityPlan.isFreeze" data-ng-model="institutionalInfraActivityPlanDetailsCFState[$index].fundUtilized" class="form-control" readonly="readonly" style="text-align:right;"/>
 																				</td>
 																				<td>
@@ -440,8 +450,8 @@ function isNumber(evt) {
 																		
 																		<div class="records">
 																			<div class="">
-																				<div  class="col-lg-12 sub_head">
-																					<spring:message code="Label.CarryForward" htmlEscape="true" />(DPRC)
+																				<div  class="col-lg-12 sub_head" style="background-color: #b39ad8;color: #2f2b2bf2;">
+																					<spring:message code="Label.CarryForward" htmlEscape="true" /> (DPRC)
 																				</div>
 																				<div class="row">
 																					<div class="col-lg-12 padding_top"></div>
@@ -454,12 +464,12 @@ function isNumber(evt) {
 																						</label>
 																					</div>
 																					<div class="col-lg-4">
-																						<select data-ng-show="!institutionalInfraActivityPlan.isFreeze" data-ng-model="dprcDistrictCF" data-ng-change="add_row_cf(4);" required="required" multiple="multiple">
+																						<select class="form-control" data-ng-show="!institutionalInfraActivityPlan.isFreeze" data-ng-model="dprcDistrictCF" data-ng-change="add_row_cf(4);" required="required" multiple="multiple">
 																							<option data-ng-repeat="district in districtList" value="{{district.districtCode}}">
 																								{{district.districtNameEnglish}}
 																							</option>
 																						</select>
-																						<select data-ng-show="institutionalInfraActivityPlan.isFreeze"  data-ng-model="dprcDistrictCF" disabled="disabled" multiple="multiple">
+																						<select class="form-control" data-ng-show="institutionalInfraActivityPlan.isFreeze"  data-ng-model="dprcDistrictCF" disabled="disabled" multiple="multiple">
 																							<option data-ng-repeat="district in districtList" value="{{district.districtCode}}">
 																								{{district.districtNameEnglish}}
 																							</option>
@@ -578,9 +588,9 @@ function isNumber(evt) {
 																				<table width="100%">
 																				<tfoot>
 																					<tr>
-																						<td colspan="4" width="60%">
+																						<td colspan="2" width="60%">
 																							<strong>
-																								Grand Total(New Building Total Fund(SPRC)+New Building Total Fund(DPRC)+Carry Forward Total Fund(SPRC)+Carry Forward Total Fund(DPRC))
+																								Grand Total ( New Building Total Fund (SPRC) + New Building Total Fund (DPRC) + Carry Forward Total Fund (SPRC) + Carry Forward Total Fund (DPRC))
 																							</strong>
 																						</td>
 																						<td align="right" width="40%">

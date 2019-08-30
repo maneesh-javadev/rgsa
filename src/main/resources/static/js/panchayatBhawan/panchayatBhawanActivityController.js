@@ -264,7 +264,7 @@ $scope.userType = null;
 			}else{
 				if(id!='SAN'){
 					if(FSAN>=FUTI){
-						FREQ=FSAN-FUTI;
+						FREQ=FSAN-FREL;
 						if(FSAN>=FREQ){
 							$scope.panchayatBhawanActivity.panchatayBhawanActivityDetails[index].funds=FREQ;
 							

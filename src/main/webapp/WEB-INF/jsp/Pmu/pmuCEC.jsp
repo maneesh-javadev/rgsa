@@ -579,7 +579,7 @@ function validateFund(index){
 															<div class="body">
 																<div class="table-responsive">
 																	<table class="table table-bordered">
-																		<thead>
+																		<thead style="background-color: #b39ad8;color: #2f2b2bf2">
 																			<tr>
 																				<th><div align="center">
 																						<spring:message code="Label.Domain"

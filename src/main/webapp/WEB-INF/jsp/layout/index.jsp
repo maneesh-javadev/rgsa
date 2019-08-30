@@ -698,7 +698,7 @@
 										<c:if test="${buttonStatus}">
 											<c:choose>
 												<c:when test="${not forwardPlanStatus}"><input type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal" value="Forward Plan"/></c:when>
-												<c:when test="${forwardPlanStatus}"><input type="button" class="btn bg-light-blue" data-ng-click="forwardPlan(${forwardPlanStatus})" value="Forward Plan"/></c:when>
+												<c:when test="${forwardPlanStatus}"><input type="button" class="btn bg-light-blue" data-ng-click="forwardPlan(${forwardPlanStatus})" value="Forward Plan" disabled="disabled"/></c:when>
 												<c:otherwise>something goes wrong during calculation</c:otherwise>
 											</c:choose>
 										</c:if>	
