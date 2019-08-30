@@ -74,10 +74,12 @@ publicModule.controller("institutionalInfraActivityPlanController", [ '$scope', 
 		$scope.cfdindex=0;
 		
 		institutionalInfraActivityPlanService.fetchInstitutionalInfraDataForStateAndMOPRNew().then(function(response){
-			$('#sprcCarryBlock').hide();
-			$('#sprcNewBlock').hide();
-			$('#newBuildingCheck').hide();
-			$('#carryForwardCheck').hide();
+			if($scope.institutionalInfraActivityPlan.institutionalInfraActivityPlanDetails.length > 0){
+				$('#sprcCarryBlock').hide();
+				$('#sprcNewBlock').hide();
+				$('#newBuildingCheck').hide();
+				$('#carryForwardCheck').hide();
+			}
 			$scope.institutionalInfraActivityPlan=response.data;
 			if($scope.institutionalInfraActivityPlan!=null  && $scope.institutionalInfraActivityPlan!=""){
 				$scope.institutionalInfraActivityPlan.institutionalInfraActivityPlanDetails=response.data.institutionalInfraActivityPlanDetails;
