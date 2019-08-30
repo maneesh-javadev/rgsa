@@ -74,6 +74,10 @@ publicModule.controller("institutionalInfraActivityPlanController", [ '$scope', 
 		$scope.cfdindex=0;
 		
 		institutionalInfraActivityPlanService.fetchInstitutionalInfraDataForStateAndMOPRNew().then(function(response){
+			$('#sprcCarryBlock').hide();
+			$('#sprcNewBlock').hide();
+			$('#newBuildingCheck').hide();
+			$('#carryForwardCheck').hide();
 			$scope.institutionalInfraActivityPlan=response.data;
 			if($scope.institutionalInfraActivityPlan!=null  && $scope.institutionalInfraActivityPlan!=""){
 				$scope.institutionalInfraActivityPlan.institutionalInfraActivityPlanDetails=response.data.institutionalInfraActivityPlanDetails;
@@ -83,9 +87,7 @@ publicModule.controller("institutionalInfraActivityPlanController", [ '$scope', 
 					dlc=$scope.institutionalInfraActivityPlan.institutionalInfraActivityPlanDetails[i].institutionalInfraLocation;
 					isactive=$scope.institutionalInfraActivityPlan.institutionalInfraActivityPlanDetails[i].isactive;
 					if(workType=='N' && trainingInstitueTypeId==2 && isactive==true){
-						$('#sprcCarryBlock').hide();
 						$('#sprcNewBlock').show();
-						$('#newBuildingCheck').hide();
 						$scope.institutionalInfraActivityPlanDetailsNBState[$scope.nbsindex]=$scope.institutionalInfraActivityPlan.institutionalInfraActivityPlanDetails[i];
 						districtObj=find_district(dlc);
 						nbsArr.push(dlc);
@@ -104,8 +106,6 @@ publicModule.controller("institutionalInfraActivityPlanController", [ '$scope', 
 						$scope.nbdindex++;
 					}else if(workType=='C' && trainingInstitueTypeId==2 && isactive==true){
 						$('#sprcCarryBlock').show();
-						$('#sprcNewBlock').hide();
-						$('#carryForwardCheck').hide();
 						$scope.institutionalInfraActivityPlanDetailsCFState[$scope.cfsindex]=$scope.institutionalInfraActivityPlan.institutionalInfraActivityPlanDetails[i];
 						districtObj=find_district(dlc);
 						cfsArr.push(dlc);
