@@ -316,11 +316,13 @@ $( document ).ready(function() {
 
 	
 			if(!$_checkEmptyObject(AVG_GP)){
-				var avg=AVG_GP.toFixed(2);
+				//var avg=AVG_GP.toFixed(2);
+				var avg=Math.round(AVG_GP);
 				$("#data16_gp").val(avg);
 			}
 			if(!$_checkEmptyObject(AVG_BP)){
-				var avgBp=AVG_BP.toFixed(2);
+				//var avgBp=AVG_BP.toFixed(2);
+				var avgBp=Math.round(AVG_BP);
 				$("#data16_bp").val(avgBp);
 			}
 	
@@ -366,7 +368,7 @@ $( document ).ready(function() {
 		population_3=$_checkEmptyObject_value($("#population_3").val());
 		if(data9_gp>0 && population_3>0){
 				var value = (population_3 / data9_gp).toFixed(2);
-			$("#data12_state").val(value);
+			$("#data12_state").val(Math.round(value));
 		}
 	
 		
@@ -534,11 +536,13 @@ $( document ).ready(function() {
 			} 
 
 				if(!$_checkEmptyObject(AVG_GP)){
-					var avg=AVG_GP.toFixed(2);
+					//var avg=AVG_GP.toFixed(2);
+					var avg=Math.round(AVG_GP);
 					$("#data16_gp").val(avg);
 				}
 				if(!$_checkEmptyObject(AVG_BP)){
-					var avgBp=AVG_BP.toFixed(2);
+					//var avgBp=AVG_BP.toFixed(2);
+					var avgBp=Math.round(AVG_BP);
 					$("#data16_bp").val(avgBp);
 				}
 			

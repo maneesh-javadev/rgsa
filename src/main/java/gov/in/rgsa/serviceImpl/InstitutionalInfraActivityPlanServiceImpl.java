@@ -436,5 +436,10 @@ public class InstitutionalInfraActivityPlanServiceImpl implements InstitutionalI
 	public List<InstInfraStatus> fetchALLInstInfraStatus() {
 	return commonRepository.findAll("GET_ALL_INST_INFRA_STATUS", null);
 	}
+
+	@Override
+	public void deleteRecord(Integer detailId) {
+		commonRepository.delete(InstitutionalInfraActivityPlanDetails.class, detailId);
+	}
 	
 }

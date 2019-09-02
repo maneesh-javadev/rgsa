@@ -49,4 +49,6 @@ public interface InstitutionalInfraActivityPlanService {
 	
 	public List<InstInfraStatus> fetchALLInstInfraStatus();
 
+	public void deleteRecord(Integer detailId);
+
 }

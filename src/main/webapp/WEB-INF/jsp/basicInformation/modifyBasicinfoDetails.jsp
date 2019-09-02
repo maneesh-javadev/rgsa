@@ -337,11 +337,13 @@ $( document ).ready(function() {
 		} 
 
 			if(AVG_GP!= NaN){
-				var avg=AVG_GP.toFixed(2);
+				//var avg=AVG_GP.toFixed(2);
+				var avg=Math.round(AVG_GP);
 				$("#data16_gp").val(avg);
 			}
 			if(AVG_BP!= NaN){
-				var avgBp=AVG_BP.toFixed(2);
+				//var avgBp=AVG_BP.toFixed(2);
+				var avgBp=Math.round(AVG_BP);
 				$("#data16_bp").val(avgBp);
 			}
 	
@@ -387,7 +389,7 @@ $( document ).ready(function() {
 		population_3=$_checkEmptyObject_value($("#population_3").val());
 		if(data9_gp>0 && population_3>0){
 				var value = (population_3 / data9_gp).toFixed(2);
-			$("#data12_state").val(value);
+			$("#data12_state").val(Math.round(value));
 		}
 	
 		if((stateCode != 11 && (stateCode !=14 && stateCode != 25)) && (stateCode != 26 && (stateCode != 30 && stateCode != 31))){
@@ -545,11 +547,13 @@ $( document ).ready(function() {
 			} 
 
 				if(AVG_GP!= NaN){
-					var avg=AVG_GP.toFixed(2);
+					//var avg=AVG_GP.toFixed(2);
+					var avg=Math.round(AVG_GP); 
 					$("#data16_gp").val(avg);
 				}
 				if(AVG_BP!= NaN){
-					var avgBp=AVG_BP.toFixed(2);
+					//var avgBp=AVG_BP.toFixed(2);
+					var avgBp=Math.round(AVG_BP);
 					$("#data16_bp").val(avgBp);
 				}
 			

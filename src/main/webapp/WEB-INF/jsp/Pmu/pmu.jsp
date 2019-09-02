@@ -184,6 +184,7 @@ function emptyDomainDetails(level,count){
 }
 
 function validationOnSubmit(){
+	alert('Amount proposed should not be more than 5% of the total fund of activities proposed.');
 	var rowCountSprc=$('#tbodySprcId tr').length;
 	//var rowCountDprc=$('#tbodyDprcId tr').length * domain_list.split(',').length / 2;
 	var flag= true;

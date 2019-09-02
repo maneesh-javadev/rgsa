@@ -106,6 +106,13 @@ function isNumber(evt) {
 															</strong>
 														</div>
 													</th>
+													<th>
+													 	<div align="center" data-ng-show="haveSprcNewRecord">
+															<strong>
+																<spring:message code="Delete" htmlEscape="true" />
+															</strong>
+														</div>
+													</th>
 												</tr>
 											</thead>
 											<tbody>
@@ -125,10 +132,15 @@ function isNumber(evt) {
 														<input type="checkbox" data-ng-show="!institutionalInfraActivityPlan.isFreeze" data-ng-model="institutionalInfraActivityPlanDetailsNBState[$index].isApproved">
 															<input type="checkbox" data-ng-show="institutionalInfraActivityPlan.isFreeze" data-ng-model="institutionalInfraActivityPlanDetailsNBState[$index].isApproved" disabled="disabled">
 															</td>
+															
 															<td>
 																<textarea rows="2" class="form-control" data-ng-show="!institutionalInfraActivityPlan.isFreeze" data-ng-model="institutionalInfraActivityPlanDetailsNBState[$index].remarks" cols="10" data-ng-keyup="hideSectionsInSprc('new')"></textarea>
 																<textarea rows="2" class="form-control" data-ng-show="institutionalInfraActivityPlan.isFreeze" data-ng-model="institutionalInfraActivityPlanDetailsNBState[$index].remarks" cols="10" readonly="readonly" autocomplete="off"></textarea>
 															</td>
+															<td align="center" data-ng-show="haveSprcNewRecord">
+																<i class="fa fa-trash-o fa-lg delete-color" aria-hidden="true" data-ng-click="deleteRecord(institutionalInfraActivityPlanDetailsNBState[$index].institutionalInfraActivityDetailsId)" data-ng-show="!institutionalInfraActivityPlan.isFreeze"></i>
+																<i class="fa fa-trash-o fa-lg delete-color" aria-hidden="true" data-ng-show="institutionalInfraActivityPlan.isFreeze"></i>
+														</td>
 														</tr>
 													</tbody>
 													<tfoot>
@@ -190,13 +202,13 @@ function isNumber(evt) {
 														</label>
 													</div>
 													<div class="col-lg-4">
-														<select class="form-control" data-ng-show="!institutionalInfraActivityPlan.isFreeze" data-ng-model="dprcDistrictNB" data-ng-change="add_row_nb(4);" required="required" multiple="multiple">
-															<option data-ng-repeat="district in districtList" value="{{district.districtCode}}">
+														<select class="form-control" data-ng-show="!institutionalInfraActivityPlan.isFreeze" data-ng-model="dprcDistrictNB" data-ng-change="add_row_nb(4);manageDprcDistrictListInNewAndCarry('N')" required="required" multiple="multiple">
+															<option data-ng-repeat="district in districtListNewDprc" value="{{district.districtCode}}">
 																{{district.districtNameEnglish}}
 															</option>
 														</select>
 														<select  class="form-control" data-ng-show="institutionalInfraActivityPlan.isFreeze"  data-ng-model="dprcDistrictNB" disabled="disabled" multiple="multiple">
-															<option data-ng-repeat="district in districtList" value="{{district.districtCode}}">
+															<option data-ng-repeat="district in districtListNewDprc" value="{{district.districtCode}}">
 																{{district.districtNameEnglish}}
 															</option>
 														</select>
@@ -238,6 +250,7 @@ function isNumber(evt) {
 																	</strong>
 																</div>
 															</th>
+														
 															<th>
 																<div align="center">
 																	<strong>
@@ -245,6 +258,13 @@ function isNumber(evt) {
 																	</strong>
 																</div>
 															</th>
+																 <th>
+													 	<div align="center" data-ng-show="haveDprcNewRecord">
+															<strong>
+																<spring:message code="Delete" htmlEscape="true" />
+															</strong>
+														</div>
+													</th>
 														</tr>
 													</thead>
 													<tbody>
@@ -264,9 +284,15 @@ function isNumber(evt) {
 																<input type="checkbox" data-ng-show="!institutionalInfraActivityPlan.isFreeze" data-ng-model="institutionalInfraActivityPlanDetailsNBDistrict[$index].isApproved">
 																	<input type="checkbox" data-ng-show="institutionalInfraActivityPlan.isFreeze" data-ng-model="institutionalInfraActivityPlanDetailsNBDistrict[$index].isApproved" disabled="disabled">
 																	</td>
+																	
 																	<td>
 																		<textarea rows="2" class="form-control"  data-ng-show="!institutionalInfraActivityPlan.isFreeze" data-ng-model="institutionalInfraActivityPlanDetailsNBDistrict[$index].remarks" cols="10" autocomplete="off"></textarea>
 																		<textarea rows="2" class="form-control"  data-ng-show="institutionalInfraActivityPlan.isFreeze" data-ng-model="institutionalInfraActivityPlanDetailsNBDistrict[$index].remarks" cols="10" readonly="readonly"></textarea>
+																	</td>
+																	
+																	<td  align="center" data-ng-show="haveDprcNewRecord"> 
+																	<i class="fa fa-trash-o fa-lg delete-color" aria-hidden="true" data-ng-click="deleteRecord(institutionalInfraActivityPlanDetailsNBDistrict[$index].institutionalInfraActivityDetailsId)" data-ng-show="!institutionalInfraActivityPlan.isFreeze"></i> 
+																	<i class="fa fa-trash-o fa-lg delete-color" aria-hidden="true" data-ng-show="institutionalInfraActivityPlan.isFreeze"></i> 
 																	</td>
 																</tr>
 															</tbody>
@@ -399,8 +425,14 @@ function isNumber(evt) {
 																					<br>D=A-B
 			                                    
 																					</div>
-																				</th>
-																			</tr>
+																						</th>
+																					<th><div align="center" data-ng-show="haveSprcCarryRecord">
+																						<strong> <spring:message code="Delete"
+																								htmlEscape="true" />
+																						</strong>
+																					</div></th>
+		
+																				</tr>
 																		</thead>
 																		<tbody>
 																			<tr data-ng-repeat="details in institutionalInfraActivityPlanDetailsCFState | orderBy : 'trainingInstitueType.trainingInstitueTypeId'">
@@ -426,7 +458,11 @@ function isNumber(evt) {
 																					<input type="text"  data-ng-show="!institutionalInfraActivityPlan.isFreeze" data-ng-model="institutionalInfraActivityPlanDetailsCFState[$index].fundRequired" class="form-control" readonly="readonly" style="text-align:right;"/>
 																					<input type="text"  data-ng-show="institutionalInfraActivityPlan.isFreeze" data-ng-model="institutionalInfraActivityPlanDetailsCFState[$index].fundRequired" class="form-control" readonly="readonly" style="text-align:right;"/>
 																				</td>
-																			</tr>
+																					<td align="center" data-ng-show="haveSprcCarryRecord">
+																					<i class="fa fa-trash-o fa-lg delete-color" aria-hidden="true" data-ng-show="!institutionalInfraActivityPlan.isFreeze" data-ng-click="deleteRecord(institutionalInfraActivityPlanDetailsCFState[$index]	.institutionalInfraActivityDetailsId)"></i>
+																					<i class="fa fa-trash-o fa-lg delete-color" aria-hidden="true" data-ng-show="institutionalInfraActivityPlan.isFreeze" ></i>
+																					</td>
+																				</tr>
 																		</tbody>
 																		<tfoot>
 																			<tr>
@@ -464,13 +500,13 @@ function isNumber(evt) {
 																						</label>
 																					</div>
 																					<div class="col-lg-4">
-																						<select class="form-control" data-ng-show="!institutionalInfraActivityPlan.isFreeze" data-ng-model="dprcDistrictCF" data-ng-change="add_row_cf(4);" required="required" multiple="multiple">
-																							<option data-ng-repeat="district in districtList" value="{{district.districtCode}}">
+																						<select class="form-control" data-ng-show="!institutionalInfraActivityPlan.isFreeze" data-ng-model="dprcDistrictCF" data-ng-change="add_row_cf(4);manageDprcDistrictListInNewAndCarry('C')" required="required" multiple="multiple">
+																							<option data-ng-repeat="district in districtListCarryDprc" value="{{district.districtCode}}">
 																								{{district.districtNameEnglish}}
 																							</option>
 																						</select>
 																						<select class="form-control" data-ng-show="institutionalInfraActivityPlan.isFreeze"  data-ng-model="dprcDistrictCF" disabled="disabled" multiple="multiple">
-																							<option data-ng-repeat="district in districtList" value="{{district.districtCode}}">
+																							<option data-ng-repeat="district in districtListCarryDprc" value="{{district.districtCode}}">
 																								{{district.districtNameEnglish}}
 																							</option>
 																						</select>
@@ -531,6 +567,12 @@ function isNumber(evt) {
 			                                    
 																								</div>
 																							</th>
+																							
+																						<th><div align="center" data-ng-show="haveDprcCarryRecord">
+																						<strong> <spring:message code="Delete"
+																								htmlEscape="true" />
+																						</strong>
+																					</div></th>	
 																						</tr>
 																					</thead>
 																					<tbody>
@@ -556,6 +598,10 @@ function isNumber(evt) {
 																							<td>
 																								<input type="text" data-ng-show="!institutionalInfraActivityPlan.isFreeze"  data-ng-model="institutionalInfraActivityPlanDetailsCFDistrict[$index].fundRequired" class="form-control"  readonly="readonly" style="text-align:right;"/>
 																								<input type="text" data-ng-show="institutionalInfraActivityPlan.isFreeze" data-ng-model="institutionalInfraActivityPlanDetailsCFDistrict[$index].fundRequired" class="form-control" readonly="readonly" style="text-align:right;"/>
+																							</td>
+																							<td align="center" data-ng-show="haveDprcCarryRecord">
+																							<i class="fa fa-trash-o fa-lg delete-color" aria-hidden="true" data-ng-show="!institutionalInfraActivityPlan.isFreeze" data-ng-click="deleteRecord(institutionalInfraActivityPlanDetailsCFDistrict[$index].institutionalInfraActivityDetailsId)"></i>
+																							<i class="fa fa-trash-o fa-lg delete-color" aria-hidden="true" data-ng-show="institutionalInfraActivityPlan.isFreeze" ></i>
 																							</td>
 																						</tr>
 																					</tbody>

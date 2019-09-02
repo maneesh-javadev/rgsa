@@ -21,6 +21,7 @@
         });
     });
     function validateForm() {
+    	alert('Amount proposed should not be more than 2% of the total fund of activities proposed.');
         return true;
     }
 </script>

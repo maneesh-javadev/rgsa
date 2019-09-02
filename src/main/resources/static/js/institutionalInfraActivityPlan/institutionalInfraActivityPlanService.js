@@ -43,4 +43,7 @@ publicModule.service('institutionalInfraActivityPlanService', [ '$http', functio
 		return $http.get("fetchInstitutionalInfraDataForCECNew.html?<csrf:token uri=fetchInstitutionalInfraDataForCECNew.html/>");
 	}
 	
+	this.deleteRecord = function(detailId){
+		return $http.post("deleteRecord.html?<csrf:token uri=deleteRecord.htm/>&detailId="+detailId);
+	}
 } ]);

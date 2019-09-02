@@ -83,6 +83,15 @@ public class InstitutionInfaActController {
 		institutionalInfraActivityPlanService.saveInstitutionalInfra(institutionalInfraActivityPlan,updateStatus);
 		 return institutionalInfraActivityPlan;
 	}
+	
+	@ResponseBody
+	@RequestMapping(value="deleteRecord", method=RequestMethod.POST)
+	private Map<String, Object> deleteRecord(@RequestParam(value="detailId" ,required=false) Integer detailId,RedirectAttributes re) {
+		Map<String, Object> institutionaInfraResponseMap = new HashMap<>();
+		institutionalInfraActivityPlanService.deleteRecord(detailId);
+		institutionaInfraResponseMap.put("message", Message.SUCCESS_KEY);
+		 return institutionaInfraResponseMap;
+	}
 	@ResponseBody
 	@RequestMapping(value = "saveInstitutionalInfraActivityCEC", method = RequestMethod.POST)
 	private InstitutionalInfraActivityPlan saveInstitutionalInfraActivityCEC(@RequestBody InstitutionalInfraActivityPlan institutionalInfraActivityPlan, RedirectAttributes re) {

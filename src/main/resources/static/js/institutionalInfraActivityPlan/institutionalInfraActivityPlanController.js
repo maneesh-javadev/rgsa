@@ -38,6 +38,8 @@ publicModule.controller("institutionalInfraActivityPlanController", [ '$scope', 
 		
 		institutionalInfraActivityPlanService.fetchDistrictListBasedOnState().then(function(response){
 			$scope.districtList = response.data;
+			$scope.districtListNewDprc = $scope.districtList;
+			$scope.districtListCarryDprc = $scope.districtList;
 			load_data();
 		},function(error){
 			
@@ -74,6 +76,10 @@ publicModule.controller("institutionalInfraActivityPlanController", [ '$scope', 
 		$scope.cfdindex=0;
 		
 		institutionalInfraActivityPlanService.fetchInstitutionalInfraDataForStateAndMOPRNew().then(function(response){
+			$scope.haveSprcNewRecord=false;
+			$scope.haveDprcNewRecord=false;
+			$scope.haveSprcCarryRecord=false;
+			$scope.haveDprcCarryRecord=false;
 			$scope.institutionalInfraActivityPlan=response.data;
 			if($scope.institutionalInfraActivityPlan.institutionalInfraActivityPlanDetails.length > 0){
 				$('#sprcCarryBlock').hide();
@@ -89,6 +95,7 @@ publicModule.controller("institutionalInfraActivityPlanController", [ '$scope', 
 					dlc=$scope.institutionalInfraActivityPlan.institutionalInfraActivityPlanDetails[i].institutionalInfraLocation;
 					isactive=$scope.institutionalInfraActivityPlan.institutionalInfraActivityPlanDetails[i].isactive;
 					if(workType=='N' && trainingInstitueTypeId==2 && isactive==true){
+						$scope.haveSprcNewRecord=true;
 						$('#sprcNewBlock').show();
 						$scope.institutionalInfraActivityPlanDetailsNBState[$scope.nbsindex]=$scope.institutionalInfraActivityPlan.institutionalInfraActivityPlanDetails[i];
 						districtObj=find_district(dlc);
@@ -96,6 +103,7 @@ publicModule.controller("institutionalInfraActivityPlanController", [ '$scope', 
 						$scope.institutionalInfraActivityPlanDetailsNBState[$scope.nbsindex].districtName=districtObj.districtNameEnglish;
 						$scope.nbsindex++;
 					}else if(workType=='N' && trainingInstitueTypeId==4 && isactive==true){
+						$scope.haveDprcNewRecord=true;
 						$scope.institutionalInfraActivityPlanDetailsNBDistrict[$scope.nbdindex]=$scope.institutionalInfraActivityPlan.institutionalInfraActivityPlanDetails[i];
 						districtObj=find_district(dlc);
 						nbdArr.push(dlc.toString());
@@ -107,6 +115,7 @@ publicModule.controller("institutionalInfraActivityPlanController", [ '$scope', 
 						
 						$scope.nbdindex++;
 					}else if(workType=='C' && trainingInstitueTypeId==2 && isactive==true){
+						$scope.haveSprcCarryRecord=true;
 						$('#sprcCarryBlock').show();
 						$scope.institutionalInfraActivityPlanDetailsCFState[$scope.cfsindex]=$scope.institutionalInfraActivityPlan.institutionalInfraActivityPlanDetails[i];
 						districtObj=find_district(dlc);
@@ -114,6 +123,7 @@ publicModule.controller("institutionalInfraActivityPlanController", [ '$scope', 
 						$scope.institutionalInfraActivityPlanDetailsCFState[$scope.cfsindex].districtName=districtObj.districtNameEnglish;
 						$scope.cfsindex++;
 					}else if(workType=='C' && trainingInstitueTypeId==4 && isactive==true){
+						$scope.haveDprcCarryRecord=true;
 						$scope.institutionalInfraActivityPlanDetailsCFDistrict[$scope.cfdindex]=$scope.institutionalInfraActivityPlan.institutionalInfraActivityPlanDetails[i];
 						districtObj=find_district(dlc);
 						cfdArr.push(dlc.toString());
@@ -131,21 +141,46 @@ publicModule.controller("institutionalInfraActivityPlanController", [ '$scope', 
 					
 				}
 				
-				if(nbsArr.length>0){
-					$scope.sprcDistrictNB=nbsArr.toString();
-				}
-				if(nbdArr.length>0){
-					$scope.dprcDistrictNB=nbdArr;
-				}
-				if(cfsArr.length>0){
-					$scope.sprcDistrictCF=cfsArr.toString() ;
-				}
-				if(cfdArr.length>0){
-					$scope.dprcDistrictCF=cfdArr;
+				if($scope.haveSprcNewRecord){
+					$scope.institutionalInfraActivityPlan.additionalRequirementNBS=$scope.institutionalInfraActivityPlan.additionalRequirement;
+					if(nbsArr.length>0){
+						$scope.sprcDistrictNB=nbsArr.toString();
+					}
+				}else{
+					$scope.sprcDistrictNB='';
+					$scope.institutionalInfraActivityPlan.additionalRequirementNBS='';
 				}
 				
-				$scope.institutionalInfraActivityPlan.additionalRequirementNBS=$scope.institutionalInfraActivityPlan.additionalRequirement;
-				$scope.institutionalInfraActivityPlan.additionalRequirementNBD=$scope.institutionalInfraActivityPlan.additionalRequirementDPRC;
+				if(!$scope.haveDprcNewRecord){
+					$scope.institutionalInfraActivityPlan.additionalRequirementNBD='';
+					$scope.dprcDistrictNB=[];
+				}else{
+					$scope.institutionalInfraActivityPlan.additionalRequirementNBD=$scope.institutionalInfraActivityPlan.additionalRequirementDPRC;
+					if(nbdArr.length>0){
+						$scope.dprcDistrictNB=nbdArr;
+					}
+				}
+				
+				if($scope.haveSprcCarryRecord){
+					if(cfsArr.length>0){
+						$scope.sprcDistrictCF=cfsArr.toString() ;
+					}
+				}else{
+					$scope.sprcDistrictCF='';
+				}
+				
+				if($scope.haveDprcCarryRecord){
+					if(cfdArr.length>0){
+						$scope.dprcDistrictCF=cfdArr;
+					}
+				}else{
+					$scope.dprcDistrictCF=[];
+				}
+				
+				if(!$scope.haveSprcNewRecord && !$scope.haveSprcCarryRecord){
+					$('#sprcCarryBlock').show();
+					$('#sprcNewBlock').show();
+				}
 				
 				$scope.calculate_total_fund(1,null,null);
 				$scope.calculate_total_fund(2,null,null);
@@ -544,8 +579,8 @@ function create_state_row_CF(rindex,name,id){
 									isError=true;
 								}
 								
-								if(FREL<FUTI){
-									toastr.error("Fund Utilize must be less then Fund Released ");
+								if(FSAN<FUTI){
+									toastr.error("Fund Utilize must be less then Fund Sanctioned ");
 									isError=true;
 								}
 								
@@ -619,8 +654,8 @@ function create_state_row_CF(rindex,name,id){
 								isError=true;
 							}
 							
-							if(FREL<FUTI){
-								toastr.error("Fund Utilize must be less then Fund Released ");
+							if(FSAN<FUTI){
+								toastr.error("Fund Utilize must be less then Fund Sanctioned");
 								isError=true;
 							}
 							
@@ -748,5 +783,51 @@ function create_state_row_CF(rindex,name,id){
 			$('#carryForwardCheck').show();
 			$('#checkboxNew').attr("checked", false);
 		}
+	}
+	 
+	 
+	$scope.deleteRecord = function(detailId) {
+		institutionalInfraActivityPlanService.deleteRecord(detailId).then(function(response){
+				toastr.success("Record deleted");
+				init();
+		},function(error){
+			toastr.error("Something went wrong");
+		});
+	}
+	
+	$scope.manageDprcDistrictListInNewAndCarry=function(msg){
+		if(msg=='N'){
+			if($scope.institutionalInfraActivityPlanDetailsNBDistrict.length > 0){
+				var newDistList=[];
+				for(key in $scope.institutionalInfraActivityPlanDetailsNBDistrict){
+						newDistList.push($scope.institutionalInfraActivityPlanDetailsNBDistrict[key].institutionalInfraLocation);
+				}
+				$scope.districtListCarryDprc = generateNewDistrictList($scope.districtListCarryDprc,newDistList);
+			}
+		}else{
+			if($scope.institutionalInfraActivityPlanDetailsCFDistrict.length > 0){
+				var carryDistList=[];
+				for(key in $scope.institutionalInfraActivityPlanDetailsCFDistrict){
+						carryDistList.push($scope.institutionalInfraActivityPlanDetailsCFDistrict[key].institutionalInfraLocation);
+				}
+				$scope.districtListNewDprc = generateNewDistrictList($scope.districtListNewDprc,carryDistList);;
+			}
+		}
+	}
+	
+	function generateNewDistrictList(originalDistrictList , selectedOppositeDistricts){
+		var carryList=originalDistrictList;
+		originalDistrictList=[];
+		for(key in carryList){
+			var status = false;
+			for(index in selectedOppositeDistricts){
+				if(carryList[key].districtCode == selectedOppositeDistricts[index]){
+					status = true;
+				}
+			}
+			if(!status)
+				originalDistrictList.push(carryList[key]); 
+		}
+		return originalDistrictList;
 	}
 }]);
