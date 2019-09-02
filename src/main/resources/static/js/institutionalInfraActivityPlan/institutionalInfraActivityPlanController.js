@@ -74,13 +74,13 @@ publicModule.controller("institutionalInfraActivityPlanController", [ '$scope', 
 		$scope.cfdindex=0;
 		
 		institutionalInfraActivityPlanService.fetchInstitutionalInfraDataForStateAndMOPRNew().then(function(response){
+			$scope.institutionalInfraActivityPlan=response.data;
 			if($scope.institutionalInfraActivityPlan.institutionalInfraActivityPlanDetails.length > 0){
 				$('#sprcCarryBlock').hide();
 				$('#sprcNewBlock').hide();
 				$('#newBuildingCheck').hide();
 				$('#carryForwardCheck').hide();
 			}
-			$scope.institutionalInfraActivityPlan=response.data;
 			if($scope.institutionalInfraActivityPlan!=null  && $scope.institutionalInfraActivityPlan!=""){
 				$scope.institutionalInfraActivityPlan.institutionalInfraActivityPlanDetails=response.data.institutionalInfraActivityPlanDetails;
 				for (var i = 0; i < $scope.institutionalInfraActivityPlan.institutionalInfraActivityPlanDetails.length; i++) { 
@@ -609,7 +609,7 @@ function create_state_row_CF(rindex,name,id){
 				}else{
 					if(id!='SAN'){
 						if(FSAN>=FUTI){
-							FREQ=FSAN-FUTI;
+							FREQ=FSAN-FREL;
 							if(FSAN>=FREQ ){
 								$scope.institutionalInfraActivityPlanDetailsCFDistrict[index].fundRequired=FREQ;
 								

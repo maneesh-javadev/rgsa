@@ -182,7 +182,7 @@
 							<li class="active"><a href="index.html"><i class="fa fa-home fa-onehalf"></i></a></li>
 							<li><a target="_parent" href="index.html?<csrf:token uri='index.html'/>" >Home</a></li>
 							<li><a target="_parent" href="aboutRGSA.html?<csrf:token uri='aboutRGSA.html'/>" >RGSA Framework</a></li>
-							<li><a target="_parent" href="aboutGPDP.html?<csrf:token uri='aboutGPDP.html'/>" >GPDP Guildlines</a></li>
+							<li><a target="_parent" href="aboutGPDP.html?<csrf:token uri='aboutGPDP.html'/>" >GPDP Guidelines</a></li>
 							<li><a target="_parent" href="downloadNew.html?<csrf:token uri='downloadNew.html'/>" >Downloads </a></li>
 							<li><a target="_parent"   href="manageCms.html?<csrf:token uri='manageCms.html'/>">Gallery</a></li>
 							<li><a href="#" data-toggle="modal" data-target="#contactsUs">Contact Us</a></li></ul>

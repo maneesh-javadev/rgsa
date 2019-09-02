@@ -40,7 +40,7 @@ function isNumber(evt) {
 										</div>
 										<div class="row">
 											<div class="col-lg-1"></div>
-											<div class="col-lg-4">
+											<div class="col-lg-2">
 												<label>
 													<spring:message code="Label.District" htmlEscape="true" />
 												</label>
@@ -59,7 +59,7 @@ function isNumber(evt) {
 											</div>
 											
 											<div class="col-lg-3" align="right" style="color: #3b1576;display: none;" id="newBuildingCheck">
-												<input type="checkbox" id="checkboxNew" class="form-check-input" data-ng-click="hideSectionsInSprc('carry')"/> : Show Carry Forward Section &nbsp;&nbsp;
+												<input type="checkbox" id="checkboxNew" class="form-check-input" data-ng-click="hideSectionsInSprc('carry')"/> : Want to fill Carry Forward Section instead ? &nbsp;&nbsp;
 											</div>
 											
 										</div>
@@ -184,7 +184,7 @@ function isNumber(evt) {
 												</div>
 												<div class="row">
 													<div class="col-lg-1"></div>
-													<div class="col-lg-4">
+													<div class="col-lg-2">
 														<label>
 															<spring:message code="Label.District" htmlEscape="true" />
 														</label>
@@ -321,7 +321,7 @@ function isNumber(evt) {
 														</div>
 														<div class="row">
 															<div class="col-lg-1"></div>
-															<div class="col-lg-4">
+															<div class="col-lg-2">
 																<label>
 																	<spring:message code="Label.District" htmlEscape="true" />
 																</label>
@@ -341,8 +341,7 @@ function isNumber(evt) {
 							
 																<div class="col-lg-3" align="right" style="color: #3b1576;display: none;" id="carryForwardCheck">
 																	<input type="checkbox" id="checkboxCarry" class="form-check-input"
-																		data-ng-click="hideSectionsInSprc('new')" /> : Show New 
-																	Building Section &nbsp;&nbsp;
+																		data-ng-click="hideSectionsInSprc('new')" /> : Want to fill Carry Forward Section instead ? &nbsp;&nbsp;
 																</div>
 															</div>
 														<div class="row">
@@ -371,6 +370,7 @@ function isNumber(evt) {
 																			<strong>
 																				<spring:message code="Label.fund.sanction"  htmlEscape="true" />
 																			</strong>
+																			<br> A
 																		</div>
 																	</th>
 																	<th>
@@ -378,7 +378,7 @@ function isNumber(evt) {
 																			<strong>
 																				<spring:message code="Label.fund.release"     htmlEscape="true" />
 																			</strong>
-																			<br> A
+																			<br> B
 			                                    
 																			</div>
 																		</th>
@@ -387,7 +387,7 @@ function isNumber(evt) {
 																				<strong>
 																					<spring:message code="Label.fund.utilize"   htmlEscape="true" />
 																				</strong>
-																				<br> B
+																				<br> C
 			                                    
 																				</div>
 																			</th>
@@ -396,7 +396,7 @@ function isNumber(evt) {
 																					<strong>
 																						<spring:message code="Label.fund.required"  htmlEscape="true" />
 																					</strong>
-																					<br>C=A-B
+																					<br>D=A-B
 			                                    
 																					</div>
 																				</th>
@@ -458,7 +458,7 @@ function isNumber(evt) {
 																				</div>
 																				<div class="row">
 																					<div class="col-lg-1"></div>
-																					<div class="col-lg-4">
+																					<div class="col-lg-2">
 																						<label>
 																							<spring:message code="Label.District" htmlEscape="true" />
 																						</label>
@@ -500,6 +500,7 @@ function isNumber(evt) {
 																					<div align="center">
 																						<strong>
 																							<spring:message code="Label.fund.sanction"     htmlEscape="true" />
+																							<br>A
 																						</strong>
 																					</div>
 																				</th>
@@ -508,7 +509,7 @@ function isNumber(evt) {
 																						<strong>
 																							<spring:message code="Label.fund.release" htmlEscape="true" />
 																						</strong>
-																						<br> A
+																						<br> B
 			                                    
 																						</div>
 																					</th>
@@ -517,7 +518,7 @@ function isNumber(evt) {
 																							<strong>
 																								<spring:message code="Label.fund.utilize" htmlEscape="true" />
 																							</strong>
-																							<br> B
+																							<br> C
 			                                    
 																							</div>
 																						</th>
@@ -526,7 +527,7 @@ function isNumber(evt) {
 																								<strong>
 																									<spring:message code="Label.fund.required"  htmlEscape="true" />
 																								</strong>
-																								<br>C=A-B
+																								<br>D=A-B
 			                                    
 																								</div>
 																							</th>
