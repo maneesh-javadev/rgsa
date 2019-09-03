@@ -703,7 +703,7 @@ function create_state_row_CF(rindex,name,id){
 		var totalCFS=$scope.totalWithoutAddRequirementsCFS!=null && $scope.totalWithoutAddRequirementsCFS!=undefined?$scope.totalWithoutAddRequirementsCFS:0;
 		var totalCFD=$scope.totalWithoutAddRequirementsCFD!=null && $scope.totalWithoutAddRequirementsCFD!=undefined?$scope.totalWithoutAddRequirementsCFD:0;
 		
-		$scope.grandTotal = +totalNBS + +totalNBD + +totalCFS + +totalCFD;
+		$scope.grandTotal = +((!Number.isNaN(totalNBS )) ? totalNBS : 0) + +((!Number.isNaN(totalNBD )) ? totalNBS : 0) + +((!Number.isNaN(totalCFS )) ? totalCFS : 0) + +((!Number.isNaN(totalCFD )) ? totalCFD : 0);
 		
 	}
 	
