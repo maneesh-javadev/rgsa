@@ -33,7 +33,6 @@ function isNumber(evt) {
 									<div class="">
 										<div  class="col-lg-12 sub_head" style="background-color: #b39ad8;color: #2f2b2bf2;">
 											<spring:message code="Label.NewBuilding" htmlEscape="true" /> (SPRC)
-                           
 										</div>
 										<div class="row">
 											<div class="col-lg-12 padding_top"></div>

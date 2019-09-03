@@ -14,7 +14,7 @@ publicModule.controller("institutionalInfraActivityPlanController", [ '$scope', 
 	function init(){
 		$scope.institutionalInfraActivityPlan={};
 		$scope.institutionalInfraActivityPlan.institutionalInfraActivityPlanDetails=[];
-
+		
 		$scope.institutionalInfraActivityPlanDetailsNBState=[];
 		$scope.institutionalInfraActivityPlanDetailsNBDistrict=[];
 		$scope.institutionalInfraActivityPlanDetailsCFState=[];
@@ -708,7 +708,12 @@ function create_state_row_CF(rindex,name,id){
 	
 	$scope.save_data=function(status){
 		$scope.btn_disabled=true;
-		$scope.institutionalInfraActivityPlan.institutionalInfraActivityPlanDetails=[];
+		
+		if($scope.institutionalInfraActivityPlan == ''){
+			$scope.institutionalInfraActivityPlan = {
+					institutionalInfraActivityPlanDetails : []
+			};
+		}
 		index=0;
 		$scope.institutionalInfraActivityPlan.additionalRequirement=$scope.institutionalInfraActivityPlan.additionalRequirementNBS;
 		$scope.institutionalInfraActivityPlan.additionalRequirementDPRC=$scope.institutionalInfraActivityPlan.additionalRequirementNBD;
@@ -732,16 +737,16 @@ function create_state_row_CF(rindex,name,id){
 			index++;
 		}
 		
-		var  saveStatus =false;
+		/*var  saveStatus =false;
 		if($scope.institutionalInfraActivityPlan!=null && $scope.institutionalInfraActivityPlan!=""){
 			for(let i=0;i<$scope.institutionalInfraActivityPlan.institutionalInfraActivityPlanDetails.length;i++){
 				(($scope.institutionalInfraActivityPlan.institutionalInfraActivityPlanDetails[i].fundProposed !== "" && $scope.institutionalInfraActivityPlan.institutionalInfraActivityPlanDetails[i].fundProposed != 0)
 				|| ($scope.institutionalInfraActivityPlan.institutionalInfraActivityPlanDetails[i].fundRequired!== "" && $scope.institutionalInfraActivityPlan.institutionalInfraActivityPlanDetails[i].fundRequired != 0)) 
 				? saveStatus = true : saveStatus =false;
 			}
-		}
+		}*/
 		
-		if(saveStatus){
+		/*if(saveStatus){*/
 			$scope.institutionalInfraActivityPlan.isFreeze=false;
 			if(status=='F'){
 				$scope.institutionalInfraActivityPlan.isFreeze=true;
@@ -754,10 +759,10 @@ function create_state_row_CF(rindex,name,id){
 			},function(error){
 				toastr.error("Something went wrong");
 			});
-		}else{
+		/*}else{
 			toastr.error("Fund value should not be blank or zero.");
 			init();
-		}
+		}*/
 	}
 	
 	 $scope.hideSectionsInSprc=function(section){
