@@ -182,6 +182,8 @@ publicModule.controller("institutionalInfraActivityPlanController", [ '$scope', 
 					$('#sprcNewBlock').show();
 				}
 				
+				$scope.manageDprcDistrictListInNewAndCarry('N');
+				$scope.manageDprcDistrictListInNewAndCarry('C');
 				$scope.calculate_total_fund(1,null,null);
 				$scope.calculate_total_fund(2,null,null);
 				$scope.calculate_total_fund(3,null,null);
