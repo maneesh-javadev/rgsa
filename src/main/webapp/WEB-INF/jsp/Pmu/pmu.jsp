@@ -301,10 +301,10 @@ function calculateTotalFundSpmu() {
 												<tr>
 													<th><div align="center"><spring:message code="Label.TypeOfCenter" htmlEscape="true" /></div></th>
 													<th><div align="center"><spring:message code="Label.Faculty&Staff" htmlEscape="true" /></div></th>
-													<th><div align="center"><spring:message code="Label.NoOfUnits" htmlEscape="true" /><br>(A)</div></th>
+													<th><div align="center"><spring:message code="Label.NoOfUnits" htmlEscape="true" /><br></div></th>
 													<%-- <th><div align="center"><spring:message code="Label.UnitCost" htmlEscape="true" /><br>(B)</div></th> --%>
-													<th><div align="center"><spring:message code="Label.NoOfMonths" htmlEscape="true" /><br>(C)</div></th>
-													<th><div align="center"><spring:message code="Label.Funds" htmlEscape="true" /><br>D= (A*B*C)</div></th>
+													<th><div align="center"><spring:message code="Label.NoOfMonths" htmlEscape="true" /><br></div></th>
+													<th><div align="center"><spring:message code="Label.Funds" htmlEscape="true" /><br></div></th>
 													<!-- <th><div align="center">Others Expenses</div></th>
 													<th><div align="center">Total Cost</div></th> -->
 													<th><div align="center"><spring:message code="Label.DomainDetails" htmlEscape="true" /></div></th>
