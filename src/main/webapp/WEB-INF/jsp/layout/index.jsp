@@ -343,6 +343,8 @@
 										<c:set var="t_unit" value="0"/>
 										<tbody>
 										<c:set var="buttonStatus" value="false" />
+										<c:set var="iecStatus" value="true" scope="page" />
+										<c:set var="pmuStatus" value="true" scope="page" />
 										<c:if test="${sessionScope['scopedTarget.userPreference'].planStatus eq 1 or sessionScope['scopedTarget.userPreference'].planStatus eq 3}">
 										<c:set var="buttonStatus" value="true" />
 										</c:if>
@@ -352,9 +354,13 @@
 											 	<c:if test="${pc.componentsId eq 11 or pc.componentsId eq 12}">
 												 	<c:choose>
 														<c:when test="${pc.status eq 'G'}">
+																<c:if test="${pc.componentsId eq 11}"><c:set var="iecStatus" value="true" /></c:if>
+																<c:if test="${pc.componentsId eq 12}"><c:set var="pmuStatus" value="true" /></c:if>
 																<c:set var="trStatus" value="bg-success"/>
 														</c:when>
 														<c:when test="${pc.status eq 'R'}">
+																<c:if test="${pc.componentsId eq 11}"><c:set var="iecStatus" value="false" /></c:if>
+																<c:if test="${pc.componentsId eq 12}"><c:set var="pmuStatus" value="false" /></c:if>
 																<c:set var="trStatus" value="bg-danger"/>
 														</c:when>
 													</c:choose>
@@ -697,8 +703,8 @@
 										<!-- <button data-ng-click="exportData()">Download Consolidated Report</button> -->
 										<c:if test="${buttonStatus}">
 											<c:choose>
-												<c:when test="${not forwardPlanStatus}"><input type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal" value="Forward Plan"/></c:when>
-												<c:when test="${forwardPlanStatus}"><input type="button" class="btn bg-light-blue" data-ng-click="forwardPlan(${forwardPlanStatus})" value="Forward Plan" disabled="disabled"/></c:when>
+												<c:when test="${not forwardPlanStatus or not pmuStatus or not iecStatus}"><input type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal" value="Forward Plan"/></c:when>
+												<c:when test="${forwardPlanStatus and iecStatus and pmuStatus}"><input type="button" class="btn bg-light-blue" data-ng-click="forwardPlan(${forwardPlanStatus})" value="Forward Plan"/></c:when>
 												<c:otherwise>something goes wrong during calculation</c:otherwise>
 											</c:choose>
 										</c:if>	
@@ -730,6 +736,8 @@
 																	<td><div align="center"><strong>${KAR98.componentName}</strong></div></td>
 																	<td>
 																		<c:choose>
+																		<c:when test="${not pmuStatus and KAR98.componentId eq 12}"><div align="center" style="color: red;font-weight: bold;">PMU should be 5% of total Fund</div></c:when>
+																			<c:when test="${not iecStatus and KAR98.componentId eq 11}"><div align="center" style="color: red;font-weight: bold;">IEC should be 2% of total Fund</div></c:when>
 																			<c:when test="${not empty KAR98.stateIsFreeze and KAR98.stateIsFreeze}"><div align="center" style="color: green;font-weight: bold;">Form Freezed</div></c:when>
 																			<c:when test="${not empty KAR98.stateIsFreeze and not KAR98.stateIsFreeze}"><div align="center" style="color: red;font-weight: bold;">Form Not Freezed</div></c:when>
 																			<c:otherwise><div align="center" style="color: orange;font-weight: bold;">Form Not filled</div></c:otherwise>

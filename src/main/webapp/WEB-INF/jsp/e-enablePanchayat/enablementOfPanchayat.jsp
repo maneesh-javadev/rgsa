@@ -102,7 +102,7 @@ function calculateGrandTotal(){
 												</strong>
 											</div></th>
 										<th rowspan="2"><div align="center">
-												<strong><spring:message code="Label.Funds" htmlEscape="true" />(in Rs.) <br> C = A*B
+												<strong><spring:message code="Label.Funds" htmlEscape="true" /> <br> C = A*B
 												</strong>
 											</div></th>
 											<c:if test="${fn:containsIgnoreCase(user_type, 'M')}">
