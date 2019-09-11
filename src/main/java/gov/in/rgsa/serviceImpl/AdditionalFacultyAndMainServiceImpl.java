@@ -60,6 +60,7 @@ public class AdditionalFacultyAndMainServiceImpl implements AdditionalFacultyAnd
 		institueInfraHrActivity.setLastUpdateBy(userPreference.getUserId());
 		institueInfraHrActivity.setDistrictsSupported(additionalFactultyAndMaintModel.getDistrictsSupported());
 		institueInfraHrActivity.setIsFreeze(false);
+		institueInfraHrActivity.setVersionNo(userPreference.getPlanVersion());
 		
 		if(additionalFactultyAndMaintModel.getInstituteInfraHrActivityId() == null || additionalFactultyAndMaintModel.getInstituteInfraHrActivityId() == 0)
 		{

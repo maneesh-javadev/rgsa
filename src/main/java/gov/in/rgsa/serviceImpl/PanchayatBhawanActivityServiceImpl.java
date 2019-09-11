@@ -119,6 +119,7 @@ public class PanchayatBhawanActivityServiceImpl implements PanchayatBhawanServic
 			activity.setStateCode(userPreference.getStateCode());
 			activity.setYearId(userPreference.getFinYearId());
 			activity.setCreatedBy(userPreference.getUserId());
+			activity.setVersionNo(userPreference.getPlanVersion());
 			activity.setLastUpdatedBy(userPreference.getUserId());
 			activity.setUserType(userPreference.getUserType());
 			commonRepository.save(activity);
@@ -161,6 +162,7 @@ public class PanchayatBhawanActivityServiceImpl implements PanchayatBhawanServic
 			activity.setCreatedBy(userPreference.getUserId());
 			activity.setLastUpdatedBy(userPreference.getUserId());
 			activity.setUserType(userPreference.getUserType());
+			activity.setVersionNo(userPreference.getPlanVersion());
 			commonRepository.save(activity);
 			/*commonRepository.update(activity);*/
 		}

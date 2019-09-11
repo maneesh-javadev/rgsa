@@ -104,7 +104,7 @@ public class PmuActivityServiceImpl implements PmuActivityService {
 				pmuActivity.setLastUpdateBy(userPreference.getUserId());
 				pmuActivity.setStateCode(userPreference.getStateCode());
 				pmuActivity.setUserType(userPreference.getUserType().charAt(0));
-				pmuActivity.setVersionNo(1);
+				pmuActivity.setVersionNo(userPreference.getPlanVersion());
 				pmuActivity.setYearId(userPreference.getFinYearId());
 				pmuActivity.setAdditionalRequirement(0);
 					commonRepository.update(pmuActivity);
@@ -125,7 +125,7 @@ public class PmuActivityServiceImpl implements PmuActivityService {
 			pmuActivity.setLastUpdateBy(userPreference.getUserId());
 			pmuActivity.setStateCode(userPreference.getStateCode());
 			pmuActivity.setUserType(userPreference.getUserType().charAt(0));
-			pmuActivity.setVersionNo(1);
+			pmuActivity.setVersionNo(userPreference.getPlanVersion());
 			pmuActivity.setYearId(userPreference.getFinYearId());
 			pmuActivity.setAdditionalRequirement(0);
 			
@@ -151,7 +151,7 @@ public class PmuActivityServiceImpl implements PmuActivityService {
 		pmuActivity.setLastUpdateBy(userPreference.getUserId());
 		pmuActivity.setStateCode(userPreference.getStateCode());
 		pmuActivity.setUserType(userPreference.getUserType().charAt(0));
-		pmuActivity.setVersionNo(1);
+		pmuActivity.setVersionNo(userPreference.getPlanVersion());
 		pmuActivity.setYearId(userPreference.getFinYearId());
 		pmuActivity.setAdditionalRequirement(0);
 		

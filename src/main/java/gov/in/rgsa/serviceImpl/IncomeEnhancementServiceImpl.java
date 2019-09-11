@@ -70,7 +70,7 @@ public class IncomeEnhancementServiceImpl implements IncomeEnhancementService {
 				enhancementActivity.setYearId(userPreference.getFinYearId());
 				enhancementActivity.setIsFreeze(false);
 				enhancementActivity.setUserType(userPreference.getUserType().charAt(0));
-				enhancementActivity.setVersionNo(1);
+				enhancementActivity.setVersionNo(userPreference.getPlanVersion());
 				commonRepository.update(enhancementActivity);
 			}
 		}
@@ -86,7 +86,7 @@ public class IncomeEnhancementServiceImpl implements IncomeEnhancementService {
 		enhancementActivity.setLastUpdatedBy(userPreference.getUserId());
 		enhancementActivity.setStateCode(userPreference.getStateCode());
 		enhancementActivity.setUserType(userPreference.getUserType().charAt(0));
-		enhancementActivity.setVersionNo(1);
+		enhancementActivity.setVersionNo(userPreference.getPlanVersion());
 		enhancementActivity.setYearId(userPreference.getFinYearId());
 		
 		for(IncomeEnhancementDetails details :enhancementDetailsList) {
@@ -107,7 +107,7 @@ public class IncomeEnhancementServiceImpl implements IncomeEnhancementService {
 		enhancementActivity.setLastUpdatedBy(userPreference.getUserId());
 		enhancementActivity.setStateCode(userPreference.getStateCode());
 		enhancementActivity.setUserType(userPreference.getUserType().charAt(0));
-		enhancementActivity.setVersionNo(1);
+		enhancementActivity.setVersionNo(userPreference.getPlanVersion());
 		enhancementActivity.setYearId(userPreference.getFinYearId());
 		
 		for(IncomeEnhancementDetails details :enhancementDetailsList) {

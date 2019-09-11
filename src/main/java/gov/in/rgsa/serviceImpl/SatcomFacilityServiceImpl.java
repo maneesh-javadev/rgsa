@@ -78,7 +78,7 @@ public class SatcomFacilityServiceImpl implements SatcomFacilityService{
 		if(activity.getSatcomActivityId()==null || activity.getSatcomActivityId()==0){
 			activity.setUserType(userPreference.getUserType());
 			activity.setCreatedBy(userPreference.getUserId());
-			activity.setVersionNo(1);
+			activity.setVersionNo(userPreference.getPlanVersion());
 			activity.setLastUpdatedBy(userPreference.getUserId());
 			activity.setStateCode(userPreference.getStateCode());
 			activity.setYearId(userPreference.getFinYearId());
@@ -98,7 +98,7 @@ public class SatcomFacilityServiceImpl implements SatcomFacilityService{
 		}
 		activity.setUserType(userPreference.getUserType());
 		activity.setCreatedBy(userPreference.getUserId());
-		activity.setVersionNo(1);
+		activity.setVersionNo(userPreference.getPlanVersion());
 		activity.setLastUpdatedBy(userPreference.getUserId());
 		activity.setStateCode(userPreference.getStateCode());
 		activity.setYearId(userPreference.getFinYearId());

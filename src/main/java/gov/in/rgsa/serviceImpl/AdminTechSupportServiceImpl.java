@@ -59,7 +59,7 @@ public class AdminTechSupportServiceImpl implements AdminTechSupportService{
 				technicalSupport.setStatus(technicalSupport.getStatus());
 				technicalSupport.setStateCode(userPreference.getStateCode());
 				technicalSupport.setYearId(userPreference.getFinYearId());
-				technicalSupport.setVersionNo(1);
+				technicalSupport.setVersionNo(userPreference.getPlanVersion());
 				technicalSupport.setUserType(userPreference.getUserType());
 				technicalSupport.setCreatedBy(userPreference.getUserId());
 				technicalSupport.setLastUpdatedBy(userPreference.getUserId());
@@ -94,7 +94,7 @@ public class AdminTechSupportServiceImpl implements AdminTechSupportService{
 		AdministrativeTechnicalSupport administrativeTechnicalSupport=technicalSupport;
 		administrativeTechnicalSupport.setStateCode(userPreference.getStateCode());
 		administrativeTechnicalSupport.setYearId(userPreference.getFinYearId());
-		administrativeTechnicalSupport.setVersionNo(1);
+		administrativeTechnicalSupport.setVersionNo(userPreference.getPlanVersion());
 		administrativeTechnicalSupport.setUserType(userPreference.getUserType());
 		administrativeTechnicalSupport.setCreatedBy(userPreference.getUserId());
 		administrativeTechnicalSupport.setLastUpdatedBy(userPreference.getUserId());
@@ -124,7 +124,7 @@ public class AdminTechSupportServiceImpl implements AdminTechSupportService{
 			
 			administrativeTechnicalSupport.setStateCode(userPreference.getStateCode());
 			administrativeTechnicalSupport.setYearId(userPreference.getFinYearId());
-			administrativeTechnicalSupport.setVersionNo(1);
+			administrativeTechnicalSupport.setVersionNo(userPreference.getPlanVersion());
 			administrativeTechnicalSupport.setUserType(userPreference.getUserType());
 			administrativeTechnicalSupport.setCreatedBy(userPreference.getUserId());
 			administrativeTechnicalSupport.setLastUpdatedBy(userPreference.getUserId());

@@ -86,6 +86,7 @@ public class AdminAndFinancialDataCellServiceImpl implements AdminAndFinancialDa
 		adminAndFinancialDataActivity.setUserType(userPreference.getUserType());
 		adminAndFinancialDataActivity.setCreatedBy(userPreference.getUserId());
 		adminAndFinancialDataActivity.setLastUpdatedBy(userPreference.getUserId());
+		adminAndFinancialDataActivity.setLastUpdatedBy(userPreference.getPlanVersion());
 	return 	adminAndFinancialDataActivity;
 	}
 

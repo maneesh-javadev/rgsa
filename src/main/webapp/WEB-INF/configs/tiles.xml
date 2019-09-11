@@ -828,13 +828,19 @@
 	<put-attribute name="title" value="hundred Day Training Detail" />
 	<put-attribute name="body"
 		value="/WEB-INF/jsp/hundredDayTrainingDetails/hundredDaysTrainingNewFormNo5.jsp" />
-</definition>
+</definition>  
 	
 <definition name="errorPage" extends="base.definition.withoutSidBar">
 	<put-attribute name="title" value="error Page" />
 	<put-attribute name="body"
 		value="/WEB-INF/jsp/error/500.jsp" />
 </definition>
+
+<definition name="fundSanctionVersion2" extends="base.definition.admin">
+	<put-attribute name="title" value="fund Sanction Version 2" />
+	<put-attribute name="body"
+		value="/WEB-INF/jsp/fundSanctionVersion2/fundSanctionVersion2.jsp" />
+</definition> 
 
 </tiles-definitions>
 

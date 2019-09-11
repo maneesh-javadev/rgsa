@@ -72,7 +72,6 @@ public class InstitutionalInfraActivityPlanServiceImpl implements InstitutionalI
 					setInstitutionalInfraDetailsWhileSave(institutionalInfraActivityPlan);
 					commonRepository.update(institutionalInfraActivityPlan);
 				}else{
-					
 						deleteThePreviousDPRCRecod(institutionalInfraActivityPlan);
 						setInstitutionalInfraDetailsWhileSave(institutionalInfraActivityPlan);
 						commonRepository.update(institutionalInfraActivityPlan);
@@ -148,7 +147,7 @@ public class InstitutionalInfraActivityPlanServiceImpl implements InstitutionalI
 		institutionalInfraActivityPlan.setLastUpdatedBy(userPreference.getUserId());
 		institutionalInfraActivityPlan.setStateCode(userPreference.getStateCode());
 		institutionalInfraActivityPlan.setUserType(userPreference.getUserType());
-		institutionalInfraActivityPlan.setVersionNumber(1);
+		institutionalInfraActivityPlan.setVersionNumber(userPreference.getPlanVersion());
 		institutionalInfraActivityPlan.setYearId(userPreference.getFinYearId());
 		return institutionalInfraActivityPlan;
 	}
@@ -159,7 +158,7 @@ public class InstitutionalInfraActivityPlanServiceImpl implements InstitutionalI
 		institutionalInfraActivityPlan.setLastUpdatedBy(userPreference.getUserId());
 		institutionalInfraActivityPlan.setStateCode(userPreference.getStateCode());
 		institutionalInfraActivityPlan.setUserType(userPreference.getUserType());
-		institutionalInfraActivityPlan.setVersionNumber(1);
+		institutionalInfraActivityPlan.setVersionNumber(userPreference.getPlanVersion());
 		institutionalInfraActivityPlan.setYearId(userPreference.getFinYearId());
 		return institutionalInfraActivityPlan;
 	}

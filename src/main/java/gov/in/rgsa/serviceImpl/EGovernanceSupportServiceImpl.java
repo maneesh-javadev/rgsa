@@ -55,7 +55,7 @@ public class EGovernanceSupportServiceImpl implements EGovernanceSupportService 
 				eGovSupportActivity.setLastUpdatedBy(userPreference.getUserId());
 				eGovSupportActivity.setStateCode(userPreference.getStateCode());
 				eGovSupportActivity.setYearId(userPreference.getFinYearId());
-				eGovSupportActivity.setVersionNo(1);
+				eGovSupportActivity.setVersionNo(userPreference.getPlanVersion());
 				eGovSupportActivity.setStatus(false);
 				eGovSupportActivity.setCreatedBy(userPreference.getUserId());
 				eGovSupportActivity.setCreatedOn(new Date());
@@ -73,6 +73,7 @@ public class EGovernanceSupportServiceImpl implements EGovernanceSupportService 
 		eGovSupportActivity.setCreatedOn(new Date());
 		eGovSupportActivity.setStatus(false);
 		eGovSupportActivity.setLastUpdatedOn(new Date());
+		eGovSupportActivity.setVersionNo(userPreference.getPlanVersion());
 		eGovSupportActivity.setLastUpdatedBy(userPreference.getUserId());
 		if(eGovSupportActivity.getAdditionalRequirementSpmu() == null) {
 			eGovSupportActivity.setAdditionalRequirementSpmu(0);
@@ -106,7 +107,7 @@ public class EGovernanceSupportServiceImpl implements EGovernanceSupportService 
 		eGovSupportActivity.setCreatedBy(userPreference.getUserId());
 		eGovSupportActivity.setCreatedOn(new Date());
 		eGovSupportActivity.setStatus(false);
-
+		eGovSupportActivity.setVersionNo(userPreference.getPlanVersion());
 		eGovSupportActivity.setLastUpdatedOn(new Date());
 		eGovSupportActivity.setLastUpdatedBy(userPreference.getUserId());
 		for (EGovSupportActivityDetails eGovActivityDetails : egovDetails) {
@@ -166,6 +167,7 @@ public class EGovernanceSupportServiceImpl implements EGovernanceSupportService 
 			eGovSupportActivity.setUserType(userPreference.getUserType().charAt(0));
 			eGovSupportActivity.setLastUpdatedBy(userPreference.getUserId());
 			eGovSupportActivity.setLastUpdatedOn(new Date());
+			eGovSupportActivity.setVersionNo(userPreference.getPlanVersion());
 			eGovSupportActivity.seteGovSupportActivityId(form.geteGovSupportActivityId());
 			eGovSupportActivity.setAdditionalRequirementDpmu(form.getAdditionalRequirementDpmu());
 			eGovSupportActivity.setAdditionalRequirementSpmu(form.getAdditionalRequirementSpmu());

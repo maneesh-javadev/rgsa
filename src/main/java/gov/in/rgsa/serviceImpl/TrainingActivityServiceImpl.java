@@ -122,7 +122,7 @@ public void save(TrainingActivity activity) {
 		activity.setLastUpdatedBy(userPreference.getUserId());
 		activity.setStateCode(userPreference.getStateCode());
 		activity.setYearId(userPreference.getFinYearId());
-		activity.setVersionId(1);
+		activity.setVersionId(userPreference.getPlanVersion());
 		activity.setIsFreeze(false);
 		commonRepository.update(activity);
 		
@@ -162,7 +162,7 @@ public void save(TrainingActivity activity) {
 		trainingActivity.setLastUpdatedBy(userPreference.getUserId());
 		trainingActivity.setStateCode(userPreference.getStateCode());
 		trainingActivity.setYearId(userPreference.getFinYearId());
-		trainingActivity.setVersionId(1);
+		trainingActivity.setVersionId(userPreference.getPlanVersion());
 		trainingActivity.setIsFreeze(false);
 		commonRepository.update(trainingActivity);	
 			
@@ -332,7 +332,7 @@ public void save(TrainingActivity activity) {
 		activity.setLastUpdatedBy(userPreference.getUserId());
 		activity.setStateCode(userPreference.getStateCode());
 		activity.setYearId(userPreference.getFinYearId());
-		activity.setVersionId(1);
+		activity.setVersionId(userPreference.getPlanVersion());
 		activity.setIsFreeze(false);
 		commonRepository.save(activity);
 		}
@@ -348,7 +348,7 @@ public void save(TrainingActivity activity) {
 			activity.setLastUpdatedBy(userPreference.getUserId());
 			activity.setStateCode(userPreference.getStateCode());
 			activity.setYearId(userPreference.getFinYearId());
-			activity.setVersionId(1);
+			activity.setVersionId(userPreference.getPlanVersion());
 			activity.setIsFreeze(false);
 			commonRepository.update(activity);
 		}
@@ -446,7 +446,7 @@ public void save(TrainingActivity activity) {
 				activity.setLastUpdatedBy(userPreference.getUserId());
 				activity.setStateCode(userPreference.getStateCode());
 				activity.setYearId(userPreference.getFinYearId());
-				activity.setVersionId(1);
+				activity.setVersionId(userPreference.getPlanVersion());
 				activity.setIsFreeze(false);
 				
 				
@@ -822,7 +822,7 @@ public void save(TrainingActivity activity) {
 				activity.setLastUpdatedBy(userPreference.getUserId());
 				activity.setStateCode(userPreference.getStateCode());
 				activity.setYearId(userPreference.getFinYearId());
-				activity.setVersionId(1);
+				activity.setVersionId(userPreference.getPlanVersion());
 				activity.setIsFreeze(Boolean.FALSE);
 				activity.setAdditionalRequirement(fetchTraining.getAdditionalRequirement());
 				List<TrainingActivityDetails> trainingActivityDetailsList=new ArrayList<TrainingActivityDetails>();
