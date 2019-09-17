@@ -82,6 +82,9 @@ public class TrainingActivity {
 	@Column(name="menu_id")
 	private Integer menuId;
 	
+	@Column(name="is_active")
+	private Boolean isActive;
+	
 	@Transient
 	private Integer idToEdit;
 	
@@ -218,6 +221,16 @@ public class TrainingActivity {
 	public void setIdToDelete(String idToDelete) {
 		this.idToDelete = idToDelete;
 	}
+
+	public Boolean getIsActive() {
+		return isActive;
+	}
+
+	public void setIsActive(Boolean isActive) {
+		this.isActive = isActive;
+	}
+
+	
 	
 	
 	

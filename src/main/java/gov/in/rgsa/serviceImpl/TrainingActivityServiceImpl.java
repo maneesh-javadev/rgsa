@@ -369,6 +369,7 @@ public void save(TrainingActivity activity) {
 		Map<String,Object> params = new HashMap<>();
 		params.put("yearId", userPreference.getFinYearId());
 		params.put("stateCode", userPreference.getStateCode());
+		params.put("versionId", userPreference.getPlanVersion());
 		if(userType == null){
 			params.put("userType", userPreference.getUserType().charAt(0));
 		}else{
@@ -745,6 +746,7 @@ public void save(TrainingActivity activity) {
 		Map<String,Object> params = new HashMap<>();
 		params.put("yearId", userPreference.getFinYearId());
 		params.put("stateCode", userPreference.getStateCode());
+		params.put("versionId", userPreference.getPlanVersion());
 		params.put("userType", 'S');
 		List<FetchTraining> fetchTrainingList = commonRepository.findAll("Fetch_Training", params);
 		
@@ -788,6 +790,7 @@ public void save(TrainingActivity activity) {
 			params = new HashMap<>();
 			params.put("yearId", userPreference.getFinYearId());
 			params.put("stateCode", userPreference.getStateCode());
+			params.put("versionId", userPreference.getPlanVersion());
 			params.put("userType", 'C');
 			fetchTrainingList = commonRepository.findAll("Fetch_Training", params);
 			
@@ -978,7 +981,7 @@ public void save(TrainingActivity activity) {
 	private FetchTrainingDetails findFetchTrainingDetail(Integer trainingId ,List<FetchTrainingDetails> trainingDetailList) {
 		FetchTrainingDetails fetchTrainingDetails=null;
 		for(FetchTrainingDetails obj:trainingDetailList) {
-			if(obj.getTrainingId()==trainingId) {
+			if(obj.getTrainingId().equals(trainingId)) {
 				fetchTrainingDetails=obj;
 				break;
 			}

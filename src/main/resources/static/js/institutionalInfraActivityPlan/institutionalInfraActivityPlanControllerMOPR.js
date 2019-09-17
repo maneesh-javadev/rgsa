@@ -5,7 +5,8 @@ publicModule.controller("institutionalInfraActivityPlanController", [ '$scope', 
 	
 	$scope.institutionalInfraActivityPlan={};
 	$scope.institutionalInfraActivityPlan.institutionalInfraActivityPlanDetails=[];
-
+	$scope.institutionalInfraActivityPlan.additionalRequirementNBS='';
+	$scope.institutionalInfraActivityPlan.additionalRequirementNBD='';
 	$scope.institutionalInfraActivityPlanDetailsNBState=[];
 	$scope.institutionalInfraActivityPlanDetailsNBDistrict=[];
 	$scope.institutionalInfraActivityPlanDetailsCFState=[];
@@ -67,6 +68,15 @@ publicModule.controller("institutionalInfraActivityPlanController", [ '$scope', 
 		$scope.cfdindex=0;
 		
 		institutionalInfraActivityPlanService.fetchInstitutionalInfraDataForStateAndMOPRNew().then(function(response){
+			$scope.haveSprcNewRecord=false;
+			$scope.haveDprcNewRecord=false;
+			$scope.haveSprcCarryRecord=false;
+			$scope.haveDprcCarryRecord=false;
+			$scope.institutionalInfraActivityPlan=response.data;
+			if($scope.institutionalInfraActivityPlan != '' && $scope.institutionalInfraActivityPlan.institutionalInfraActivityPlanDetails.length > 0){
+				$('#sprcCarryBlock').hide();
+				$('#sprcNewBlock').hide();
+			}
 			$scope.institutionalInfraActivityPlan=response.data;
 			$scope.institutionalInfraActivityPlan.institutionalInfraActivityPlanDetails=response.data.institutionalInfraActivityPlanDetails;
 			for (var i = 0; i < $scope.institutionalInfraActivityPlan.institutionalInfraActivityPlanDetails.length; i++) { 
@@ -77,6 +87,7 @@ publicModule.controller("institutionalInfraActivityPlanController", [ '$scope', 
 				if(workType=='N' && trainingInstitueTypeId==2 && isactive==true){
 					$scope.institutionalInfraActivityPlanDetailsNBState[$scope.nbsindex]=$scope.institutionalInfraActivityPlan.institutionalInfraActivityPlanDetails[i];
 					districtObj=find_district(dlc);
+					$('#sprcNewBlock').show();
 					$scope.institutionalInfraActivityPlanDetailsNBState[$scope.nbsindex].districtName=districtObj.districtNameEnglish;
 					$scope.nbsindex++;
 				}else if(workType=='N' && trainingInstitueTypeId==4 && isactive==true){
@@ -92,6 +103,7 @@ publicModule.controller("institutionalInfraActivityPlanController", [ '$scope', 
 				}else if(workType=='C' && trainingInstitueTypeId==2 && isactive==true){
 					$scope.institutionalInfraActivityPlanDetailsCFState[$scope.cfsindex]=$scope.institutionalInfraActivityPlan.institutionalInfraActivityPlanDetails[i];
 					districtObj=find_district(dlc);
+					$('#sprcCarryBlock').show();
 					$scope.institutionalInfraActivityPlanDetailsCFState[$scope.cfsindex].districtName=districtObj.districtNameEnglish;
 					$scope.cfsindex++;
 				}else if(workType=='C' && trainingInstitueTypeId==4 && isactive==true){
@@ -237,8 +249,8 @@ publicModule.controller("institutionalInfraActivityPlanController", [ '$scope', 
 					isError=true;
 				}else{
 					if(id!='SAN'){
-						if(FSAN>=FUTI){
-							FREQ=FSAN-FUTI;
+						if(FSAN>=FREL){
+							FREQ=FSAN-FREL;
 							if(FSAN>=FREQ ){
 								$scope.institutionalInfraActivityPlanDetailsCFState[index].fundRequired=FREQ;
 								
@@ -311,8 +323,8 @@ publicModule.controller("institutionalInfraActivityPlanController", [ '$scope', 
 					isError=true;
 				}else{
 					if(id!='SAN'){
-						if(FSAN>=FUTI){
-							FREQ=FSAN-FUTI;
+						if(FSAN>=FREL){
+							FREQ=FSAN-FREL;
 							if(FSAN>=FREQ ){
 								$scope.institutionalInfraActivityPlanDetailsCFDistrict[index].fundRequired=FREQ;
 								
@@ -378,10 +390,19 @@ publicModule.controller("institutionalInfraActivityPlanController", [ '$scope', 
 	$scope.save_data=function(status){
 		
 		$scope.btn_disabled=true;
-		$scope.institutionalInfraActivityPlan.institutionalInfraActivityPlanDetails=[];
+		if($scope.institutionalInfraActivityPlan.institutionalInfraActivityPlanDetails == undefined){
+			$scope.institutionalInfraActivityPlan = {
+					institutionalInfraActivityPlanDetails : []
+			};
+		}
 		index=0;
-		$scope.institutionalInfraActivityPlan.additionalRequirement=$scope.institutionalInfraActivityPlan.additionalRequirementNBS;
-		$scope.institutionalInfraActivityPlan.additionalRequirementDPRC=$scope.institutionalInfraActivityPlan.additionalRequirementNBD;
+		if($scope.institutionalInfraActivityPlan.additionalRequirementNBS != undefined){
+			$scope.institutionalInfraActivityPlan.additionalRequirement=$scope.institutionalInfraActivityPlan.additionalRequirementNBS;
+		}
+		if($scope.institutionalInfraActivityPlan.additionalRequirementNBD != undefined){
+			$scope.institutionalInfraActivityPlan.additionalRequirementDPRC=$scope.institutionalInfraActivityPlan.additionalRequirementNBD;
+		}
+		
 		for (var i = 0; i < $scope.institutionalInfraActivityPlanDetailsNBState.length; i++) { 
 			$scope.institutionalInfraActivityPlan.institutionalInfraActivityPlanDetails[index]=$scope.institutionalInfraActivityPlanDetailsNBState[i];
 			index++;
@@ -402,15 +423,15 @@ publicModule.controller("institutionalInfraActivityPlanController", [ '$scope', 
 			index++;
 		}
 		
-		var  saveStatus =false;
+		/*var  saveStatus =false;
 		if($scope.institutionalInfraActivityPlan!=null && $scope.institutionalInfraActivityPlan!=""){
 		for(let i=0;i<$scope.institutionalInfraActivityPlan.institutionalInfraActivityPlanDetails.length;i++){
 			(($scope.institutionalInfraActivityPlan.institutionalInfraActivityPlanDetails[i].fundProposed !== "" && $scope.institutionalInfraActivityPlan.institutionalInfraActivityPlanDetails[i].fundProposed != 0)
 			|| ($scope.institutionalInfraActivityPlan.institutionalInfraActivityPlanDetails[i].fundRequired!== "" && $scope.institutionalInfraActivityPlan.institutionalInfraActivityPlanDetails[i].fundRequired != 0)) 
 			? saveStatus = true : saveStatus =false;
 		}
-		}
-		if(saveStatus){
+		}*/
+		/*if(saveStatus){*/
 			$scope.institutionalInfraActivityPlan.isFreeze=false;
 			if(status=='F'){
 				$scope.institutionalInfraActivityPlan.isFreeze=true;
@@ -423,9 +444,9 @@ publicModule.controller("institutionalInfraActivityPlanController", [ '$scope', 
 			},function(error){
 				toastr.error("Something went wrong");
 			});	
-		}else{
+			/*}else{
 			toastr.error("Fund value should not be blank or zero.");
-		}
+		}*/
 	}
 	
 	

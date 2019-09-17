@@ -24,7 +24,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 
 @Entity
 @Table(name="cb_activity", schema = "rgsa")
-@NamedQuery(name="FETCH_CAPACITY_BUILDING",query="SELECT cb FROM CapacityBuildingActivity cb left outer join fetch cb.capacityBuildingActivityDetails cbad where cb.stateCode=:stateCode and cb.userType=:userType and cb.yearId=:yearId order by cbad.capacityBuildingActivityDetailsId asc")
+@NamedQuery(name="FETCH_CAPACITY_BUILDING",query="SELECT cb FROM CapacityBuildingActivity cb left outer join fetch cb.capacityBuildingActivityDetails cbad where cb.stateCode=:stateCode and cb.userType=:userType and cb.yearId=:yearId and cb.versionNo=:versionNo order by cbad.capacityBuildingActivityDetailsId asc")
 public class CapacityBuildingActivity {
 	
 	@Id
@@ -56,6 +56,9 @@ public class CapacityBuildingActivity {
 	
 	@Column(name="created_by")
 	private Integer createdBy;
+	
+	@Column(name="is_active")
+	private Boolean isActive;
 	
 	@CreationTimestamp
 	@Column(name="created_on",updatable=false)
@@ -162,6 +165,14 @@ public class CapacityBuildingActivity {
 
 	public void setAdditionalRequirement(Double additionalRequirement) {
 		this.additionalRequirement = additionalRequirement;
+	}
+
+	public Boolean getIsActive() {
+		return isActive;
+	}
+
+	public void setIsActive(Boolean isActive) {
+		this.isActive = isActive;
 	}
 
 }

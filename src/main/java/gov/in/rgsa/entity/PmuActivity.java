@@ -26,7 +26,7 @@ import org.hibernate.annotations.UpdateTimestamp;
  */
 @Entity
 @NamedQueries({@NamedQuery(name="FETCH_PMU_ACTIVITY",
-							query="SELECT pa FROM PmuActivity pa Left OUTER JOIN FETCH pa.pmuActivityDetails pad  where pa.stateCode =:stateCode and pa.yearId =:yearId and pa.userType =:userType order by pad.pmuDetailsId"),
+							query="SELECT pa FROM PmuActivity pa Left OUTER JOIN FETCH pa.pmuActivityDetails pad  where pa.stateCode =:stateCode and pa.yearId =:yearId and pa.userType =:userType and pa.versionNo=:versionNo order by pad.pmuDetailsId"),
 				@NamedQuery(name="PMU_FREEZ_UNFREEZE",
 							query="UPDATE PmuActivity SET  isFreeze=:isFreeze where pmuActivityId=:pmuActivityId"),
 				 @NamedQuery(name="FETCH_PMU_APPROVED_ACTIVITY" ,query="SELECT PP from PmuActivity PP RIGHT OUTER JOIN FETCH PP.pmuActivityDetails PAD where PP.yearId=:yearId and PP.userType=:userType and PP.stateCode=:stateCode ")
@@ -82,6 +82,9 @@ public class PmuActivity {
 
 	@Column(name="menu_id")
 	private Integer menuId;
+	
+	@Column(name="is_active")
+	private Boolean isActive;
 	
 	@Transient
 	private Integer setDistrictIdPmuWise;
@@ -206,6 +209,14 @@ public class PmuActivity {
 
 	public void setSetDistrictIdPmuWise(Integer setDistrictIdPmuWise) {
 		this.setDistrictIdPmuWise = setDistrictIdPmuWise;
+	}
+
+	public Boolean getIsActive() {
+		return isActive;
+	}
+
+	public void setIsActive(Boolean isActive) {
+		this.isActive = isActive;
 	}
 	
 }

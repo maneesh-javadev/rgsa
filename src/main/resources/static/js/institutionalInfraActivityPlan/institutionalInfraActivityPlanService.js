@@ -36,7 +36,7 @@ publicModule.service('institutionalInfraActivityPlanService', [ '$http', functio
 	}
 	
 	this.saveInstitutionalInfraActivityPlanDetailsMOPRCEC = function(institutionalInfraActivityPlan){
-		return $http.post("saveInstitutionalInfraActivityPlanDetailsMOPRCEC.html?<csrf:token uri=saveInstitutionalInfraActivityPlanDetailsMOPRCEC.htm/>",institutionalInfraActivityPlan);
+		return $http.post("saveInstitutionalInfraActivityPlanDetailsMOPRCEC.html?<csrf:token uri=saveInstitutionalInfraActivityPlanDetailsMOPRCEC.html/>",institutionalInfraActivityPlan);
 	}
 	
 	this.fetchInstitutionalInfraDataForCECNew=function(){

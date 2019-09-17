@@ -21,7 +21,7 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Entity
 @Table(name="panhcayat_bhawan_activity" , schema="rgsa")
-@NamedQuery(name="FETCH_PANCHAYAT_DETAILS",query="select pb from PanchatayBhawanActivity pb left outer join fetch pb.panchatayBhawanActivityDetails where pb.stateCode=:stateCode and pb.yearId=:yearId and pb.userType=:userType")
+@NamedQuery(name="FETCH_PANCHAYAT_DETAILS",query="select pb from PanchatayBhawanActivity pb left outer join fetch pb.panchatayBhawanActivityDetails where pb.stateCode=:stateCode and pb.yearId=:yearId and pb.userType=:userType and pb.versionNo=:versionNo")
 public class PanchatayBhawanActivity implements Serializable {
 	
 	/**
@@ -67,6 +67,9 @@ public class PanchatayBhawanActivity implements Serializable {
 	
 	@Column(name="status")
 	private String status;
+	
+	@Column(name="is_active")
+	private Boolean isActive;
 	
 //	@JsonManagedReference
 	@OneToMany(mappedBy="panchatayBhawanActivity",cascade=CascadeType.ALL)
@@ -168,6 +171,14 @@ public class PanchatayBhawanActivity implements Serializable {
 
 	public void setPanchatayBhawanActivityDetails(List<PanchatayBhawanActivityDetails> panchatayBhawanActivityDetails) {
 		this.panchatayBhawanActivityDetails = panchatayBhawanActivityDetails;
+	}
+
+	public Boolean getIsActive() {
+		return isActive;
+	}
+
+	public void setIsActive(Boolean isActive) {
+		this.isActive = isActive;
 	}
 	
 	

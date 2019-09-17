@@ -181,7 +181,8 @@ public class InstitutionalInfraActivityPlanServiceImpl implements InstitutionalI
 		Map<String, Object> params=new HashMap<>();
 		List<InstitutionalInfraActivityPlan> activity=new ArrayList<>();
 		params.put("stateCode", userPreference.getStateCode());
-		params.put("yearId", userPreference.getFinYearId());		
+		params.put("yearId", userPreference.getFinYearId());	
+		params.put("versionNumber", userPreference.getPlanVersion());
 		params.put("userType",(userType != null) ? userType : userPreference.getUserType());
 		activity= commonRepository.findAll("FETCH_ALL_INSTITUTIONAL_ACTIVITY", params);
 		if(userPreference.getUserType().equalsIgnoreCase("M") && CollectionUtils.isEmpty(activity)){
@@ -217,6 +218,7 @@ public class InstitutionalInfraActivityPlanServiceImpl implements InstitutionalI
 		if((userPreference.getUserType().equalsIgnoreCase("M") || userPreference.getUserType().equalsIgnoreCase("C"))  && CollectionUtils.isEmpty(details)){
 			map.put("stateCode", userPreference.getStateCode());
 			map.put("yearId", userPreference.getFinYearId());
+			map.put("versionNumber", userPreference.getPlanVersion());
 			map.put("userType", "S");
 			activity=commonRepository.findAll("FETCH_ALL_INSTITUTIONAL_ACTIVITY", map);
 			params.put("institutionalInfraActivityId", activity.get(0).getInstitutionalInfraActivityId());

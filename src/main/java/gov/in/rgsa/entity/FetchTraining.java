@@ -14,7 +14,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 
 
 @Entity
-@NamedNativeQuery(name="Fetch_Training",query="select * from rgsa.training_activity where state_code=:stateCode and year_id=:yearId and user_type=:userType ",resultClass=FetchTraining.class)
+@NamedNativeQuery(name="Fetch_Training",query="select * from rgsa.training_activity where state_code=:stateCode and year_id=:yearId and user_type=:userType and versionId=:versionId",resultClass=FetchTraining.class)
 
 public class FetchTraining {
 	

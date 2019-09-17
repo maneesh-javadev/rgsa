@@ -38,9 +38,9 @@ function isNumber(evt) {
 							 
 									
 					   
-						<div class="records">
+						<div class="records" id="sprcNewBlock">
                         <div class="">
-                           <div  class="col-lg-12 sub_head">
+                           <div  class="col-lg-12 sub_head" style="background-color: #b39ad8;color: #2f2b2bf2;">
                               <spring:message code="Label.NewBuilding" htmlEscape="true" />(SPRC)
                            </div>
                            
@@ -159,7 +159,7 @@ function isNumber(evt) {
 						
 					<div class="records">
                         <div class="">
-                           <div  class="col-lg-12 sub_head">
+                           <div  class="col-lg-12 sub_head" style="background-color: #b39ad8;color: #2f2b2bf2;">
                               <spring:message code="Label.NewBuilding" htmlEscape="true" />(DPRC)
                            </div>
                            
@@ -267,9 +267,9 @@ function isNumber(evt) {
                         </div>
                      </div>   	
 						
-					<div class="records">
+					<div class="records" id="sprcCarryBlock">
                         <div class="">
-                           <div  class="col-lg-12 sub_head">
+                           <div  class="col-lg-12 sub_head" style="background-color: #b39ad8;color: #2f2b2bf2;">
                               <spring:message code="Label.CarryForward" htmlEscape="true" />(SPRC)
                            </div>
                            <div class="row">
@@ -406,7 +406,7 @@ function isNumber(evt) {
 						
 						<div class="records">
                         	<div class="">
-	                           <div  class="col-lg-12 sub_head">
+	                           <div  class="col-lg-12 sub_head" style="background-color: #b39ad8;color: #2f2b2bf2;">
 	                              <spring:message code="Label.CarryForward" htmlEscape="true" />(DPRC)
 	                           </div>
 	                           <table id="trainingActivityTblId"

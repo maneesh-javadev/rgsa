@@ -178,6 +178,7 @@ public class PanchayatBhawanActivityServiceImpl implements PanchayatBhawanServic
 		Map<String, Object> map = new HashMap<String,Object>();
 		map.put("stateCode", userPreference.getStateCode());
 		map.put("yearId", userPreference.getFinYearId());
+		map.put("versionNo", userPreference.getPlanVersion());
 		if(userType == null){
 			map.put("userType", userPreference.getUserType());
 		}else{

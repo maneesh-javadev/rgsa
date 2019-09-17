@@ -14,7 +14,8 @@ publicModule.controller("institutionalInfraActivityPlanController", [ '$scope', 
 	function init(){
 		$scope.institutionalInfraActivityPlan={};
 		$scope.institutionalInfraActivityPlan.institutionalInfraActivityPlanDetails=[];
-		
+		//$scope.institutionalInfraActivityPlan.additionalRequirementNBS='';
+		//$scope.institutionalInfraActivityPlan.additionalRequirementNBD='';
 		$scope.institutionalInfraActivityPlanDetailsNBState=[];
 		$scope.institutionalInfraActivityPlanDetailsNBDistrict=[];
 		$scope.institutionalInfraActivityPlanDetailsCFState=[];
@@ -81,7 +82,7 @@ publicModule.controller("institutionalInfraActivityPlanController", [ '$scope', 
 			$scope.haveSprcCarryRecord=false;
 			$scope.haveDprcCarryRecord=false;
 			$scope.institutionalInfraActivityPlan=response.data;
-			if($scope.institutionalInfraActivityPlan.institutionalInfraActivityPlanDetails.length > 0){
+			if($scope.institutionalInfraActivityPlan != '' && $scope.institutionalInfraActivityPlan.institutionalInfraActivityPlanDetails.length > 0){
 				$('#sprcCarryBlock').hide();
 				$('#sprcNewBlock').hide();
 				$('#newBuildingCheck').hide();
@@ -645,7 +646,7 @@ function create_state_row_CF(rindex,name,id){
 					isError=true;
 				}else{
 					if(id!='SAN'){
-						if(FSAN>=FUTI){
+						if(FSAN>=FREL){
 							FREQ=FSAN-FREL;
 							if(FSAN>=FREQ ){
 								$scope.institutionalInfraActivityPlanDetailsCFDistrict[index].fundRequired=FREQ;
@@ -703,7 +704,7 @@ function create_state_row_CF(rindex,name,id){
 		var totalCFS=$scope.totalWithoutAddRequirementsCFS!=null && $scope.totalWithoutAddRequirementsCFS!=undefined?$scope.totalWithoutAddRequirementsCFS:0;
 		var totalCFD=$scope.totalWithoutAddRequirementsCFD!=null && $scope.totalWithoutAddRequirementsCFD!=undefined?$scope.totalWithoutAddRequirementsCFD:0;
 		
-		$scope.grandTotal = +((!Number.isNaN(totalNBS )) ? totalNBS : 0) + +((!Number.isNaN(totalNBD )) ? totalNBS : 0) + +((!Number.isNaN(totalCFS )) ? totalCFS : 0) + +((!Number.isNaN(totalCFD )) ? totalCFD : 0);
+		$scope.grandTotal = +((!Number.isNaN(totalNBS )) ? totalNBS : 0) + +((!Number.isNaN(totalNBD )) ? totalNBD : 0) + +((!Number.isNaN(totalCFS )) ? totalCFS : 0) + +((!Number.isNaN(totalCFD )) ? totalCFD : 0);
 		
 	}
 	
@@ -711,31 +712,36 @@ function create_state_row_CF(rindex,name,id){
 	$scope.save_data=function(status){
 		$scope.btn_disabled=true;
 		
-		if($scope.institutionalInfraActivityPlan == ''){
+		if($scope.institutionalInfraActivityPlan.institutionalInfraActivityPlanDetails == undefined){
 			$scope.institutionalInfraActivityPlan = {
 					institutionalInfraActivityPlanDetails : []
 			};
 		}
 		index=0;
-		$scope.institutionalInfraActivityPlan.additionalRequirement=$scope.institutionalInfraActivityPlan.additionalRequirementNBS;
-		$scope.institutionalInfraActivityPlan.additionalRequirementDPRC=$scope.institutionalInfraActivityPlan.additionalRequirementNBD;
+		if($scope.institutionalInfraActivityPlan.additionalRequirementNBS != undefined){
+			$scope.institutionalInfraActivityPlan.additionalRequirement=$scope.institutionalInfraActivityPlan.additionalRequirementNBS;
+		}
+		if($scope.institutionalInfraActivityPlan.additionalRequirementNBD != undefined){
+			$scope.institutionalInfraActivityPlan.additionalRequirementDPRC=$scope.institutionalInfraActivityPlan.additionalRequirementNBD;
+		}
+		
 		for (var i = 0; i < $scope.institutionalInfraActivityPlanDetailsNBState.length; i++) { 
-			$scope.institutionalInfraActivityPlan.institutionalInfraActivityPlanDetails[index]=$scope.institutionalInfraActivityPlanDetailsNBState[i];
+			$scope.institutionalInfraActivityPlan.institutionalInfraActivityPlanDetails.push($scope.institutionalInfraActivityPlanDetailsNBState[i]);
 			index++;
 		}
 		
 		for (var i = 0; i < $scope.institutionalInfraActivityPlanDetailsNBDistrict.length; i++) { 
-			$scope.institutionalInfraActivityPlan.institutionalInfraActivityPlanDetails[index]=$scope.institutionalInfraActivityPlanDetailsNBDistrict[i];
+			$scope.institutionalInfraActivityPlan.institutionalInfraActivityPlanDetails.push($scope.institutionalInfraActivityPlanDetailsNBDistrict[i]);
 			index++;
 		}
 		
 		for (var i = 0; i < $scope.institutionalInfraActivityPlanDetailsCFState.length; i++) { 
-			$scope.institutionalInfraActivityPlan.institutionalInfraActivityPlanDetails[index]=$scope.institutionalInfraActivityPlanDetailsCFState[i];
+			$scope.institutionalInfraActivityPlan.institutionalInfraActivityPlanDetails.push($scope.institutionalInfraActivityPlanDetailsCFState[i]);
 			index++;
 		}
 		
 		for (var i = 0; i < $scope.institutionalInfraActivityPlanDetailsCFDistrict.length; i++) { 
-			$scope.institutionalInfraActivityPlan.institutionalInfraActivityPlanDetails[index]=$scope.institutionalInfraActivityPlanDetailsCFDistrict[i];
+			$scope.institutionalInfraActivityPlan.institutionalInfraActivityPlanDetails.push($scope.institutionalInfraActivityPlanDetailsCFDistrict[i]);
 			index++;
 		}
 		

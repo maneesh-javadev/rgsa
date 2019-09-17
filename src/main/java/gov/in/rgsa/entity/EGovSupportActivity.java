@@ -16,7 +16,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name="egov_support_activity",schema="rgsa")
-@NamedQuery(name="FETCH_EGOV_ACTIVITY", query="SELECT E FROM EGovSupportActivity E where stateCode =:stateCode and yearId =:yearId and userType =:userType")
+@NamedQuery(name="FETCH_EGOV_ACTIVITY", query="SELECT E FROM EGovSupportActivity E where stateCode =:stateCode and yearId =:yearId and userType =:userType and versionNo=:versionNo")
 public class EGovSupportActivity {
 
 	@Id
@@ -57,6 +57,9 @@ public class EGovSupportActivity {
 	
 	@Column(name="is_freeze")
 	public Boolean status;
+	
+	@Column(name="is_active")
+	private Boolean isActive;
 	
 	@Column(name="no_of_districts_supported")
 	private Integer noOfDistrictSupported;
@@ -183,6 +186,14 @@ public class EGovSupportActivity {
 
 	public void setNoOfDistrictSupported(Integer noOfDistrictSupported) {
 		this.noOfDistrictSupported = noOfDistrictSupported;
+	}
+
+	public Boolean getIsActive() {
+		return isActive;
+	}
+
+	public void setIsActive(Boolean isActive) {
+		this.isActive = isActive;
 	}
 
 	/*public String getStatus() {

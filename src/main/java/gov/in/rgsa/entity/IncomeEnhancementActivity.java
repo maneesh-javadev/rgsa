@@ -27,7 +27,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 @Entity
 @Table(name="income_enhancement_activity",schema="rgsa")
 @NamedQueries({@NamedQuery(name="FETCH_ALL_INCOME_ENHNCMNT_ACTIVITY",
-						query="from IncomeEnhancementActivity where stateCode=:stateCode and yearId=:yearId and userType=:userType"),
+						query="from IncomeEnhancementActivity where stateCode=:stateCode and yearId=:yearId and userType=:userType and versionNo=:versionNo"),
 				@NamedQuery(name="UPDATE_FRZUNFREEZ_STATUS",
 					query="UPDATE IncomeEnhancementActivity SET  isFreeze=:isFreeze where incomeEnhancementId=:incomeEnhancementId"),
 				@NamedQuery(name="DELETE_INCM_ENHNCMNT_ACTIVITY",
@@ -77,6 +77,9 @@ public class IncomeEnhancementActivity {
 	
 	@Column(name="menu_id")
 	private Integer menuId;
+	
+	@Column(name="is_active")
+	private Boolean isActive;
 	
 	@Transient
 	private Integer setBlockId;
@@ -224,6 +227,14 @@ public class IncomeEnhancementActivity {
 
 	public void setIdToDelete(Integer idToDelete) {
 		this.idToDelete = idToDelete;
+	}
+
+	public Boolean getIsActive() {
+		return isActive;
+	}
+
+	public void setIsActive(Boolean isActive) {
+		this.isActive = isActive;
 	}
 	
 	

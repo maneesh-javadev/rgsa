@@ -28,7 +28,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 @Entity
 @Table(name="pesa_plan", schema = "rgsa")
 
-@NamedQuery(name="FETCH_PESA_PLAN",query="SELECT PP FROM PesaPlan PP where stateCode=:stateCode and yearId=:yearId and userType=:userType")
+@NamedQuery(name="FETCH_PESA_PLAN",query="SELECT PP FROM PesaPlan PP where stateCode=:stateCode and yearId=:yearId and userType=:userType and versionNo=:versionNo")
 public class PesaPlan {
 	
 	@Id
@@ -53,6 +53,9 @@ public class PesaPlan {
 	
 	@Column(name="is_freez")
 	private Boolean isFreez;
+	
+	@Column(name="is_active")
+	private Boolean isActive;
 	
 	@Transient
 	private List<PesaPlanDetails> pesaPlanDetails;
@@ -182,6 +185,14 @@ public class PesaPlan {
 
 	public void setMenuId(Integer menuId) {
 		this.menuId = menuId;
+	}
+
+	public Boolean getIsActive() {
+		return isActive;
+	}
+
+	public void setIsActive(Boolean isActive) {
+		this.isActive = isActive;
 	}
 	
 	

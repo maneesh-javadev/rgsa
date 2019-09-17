@@ -96,6 +96,7 @@ public class AdminAndFinancialDataCellServiceImpl implements AdminAndFinancialDa
 		List<AdminAndFinancialDataActivity> adminAndFinancialDataActivity=new ArrayList<>();
 		params.put("stateCode", userPreference.getStateCode());
 		params.put("yearId", userPreference.getFinYearId());
+		params.put("versionNo", userPreference.getPlanVersion());
 		params.put("userType",userType);
 		adminAndFinancialDataActivity = commonRepository.findAll("FETCH_ADMIN_FIN_DATA_ACTIVITY", params);
 		if(userPreference.getUserType().equals("M") && CollectionUtils.isEmpty(adminAndFinancialDataActivity)){

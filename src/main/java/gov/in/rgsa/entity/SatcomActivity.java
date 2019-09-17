@@ -70,6 +70,9 @@ public class SatcomActivity implements Serializable{
 	@Column(name="status")
 	private String status;
 	
+	@Column(name="is_active")
+	private Boolean isActive;
+	
 	@OneToMany(mappedBy="satcomActivity",cascade=CascadeType.ALL)
 	private List<SatcomActivityDetails> activityDetails;
 
@@ -167,6 +170,14 @@ public class SatcomActivity implements Serializable{
 
 	public void setActivityDetails(List<SatcomActivityDetails> activityDetails) {
 		this.activityDetails = activityDetails;
+	}
+
+	public Boolean getIsActive() {
+		return isActive;
+	}
+
+	public void setIsActive(Boolean isActive) {
+		this.isActive = isActive;
 	}
 	
 	

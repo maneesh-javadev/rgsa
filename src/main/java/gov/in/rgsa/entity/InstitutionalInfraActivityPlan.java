@@ -28,7 +28,7 @@ import org.hibernate.annotations.Where;
 @Entity
 @Table(name="institutional_infra_activity", schema = "rgsa")
 @NamedQueries({
-@NamedQuery(name="FETCH_ALL_INSTITUTIONAL_ACTIVITY",query="SELECT I FROM InstitutionalInfraActivityPlan I where stateCode =:stateCode and yearId =:yearId and userType =:userType "),
+@NamedQuery(name="FETCH_ALL_INSTITUTIONAL_ACTIVITY",query="SELECT I FROM InstitutionalInfraActivityPlan I where stateCode =:stateCode and yearId =:yearId and userType =:userType and versionNumber=:versionNumber"),
 @NamedQuery(name="UPDATE_FREEZE_UNFREEZE_STATUS_Institutional",query="UPDATE InstitutionalInfraActivityPlan SET isFreeze = :isFreeze,additionalRequirement=:additionalRequirement,additionalRequirementDPRC=:additionalRequirementDPRC  where institutionalInfraActivityId=:institutionalInfraActivityId"),
 })
 public class InstitutionalInfraActivityPlan {
@@ -72,6 +72,9 @@ public class InstitutionalInfraActivityPlan {
 	
 	@Column(name="is_freeze")
 	private Boolean isFreeze;
+	
+	@Column(name="is_active")
+	private Boolean isActive;
 	
 	@Column(name="additional_requirement_dprc")
 	private int additionalRequirementDPRC;
@@ -203,6 +206,14 @@ public class InstitutionalInfraActivityPlan {
 
 	public void setAdditionalRequirementDPRC(int additionalRequirementDPRC) {
 		this.additionalRequirementDPRC = additionalRequirementDPRC;
+	}
+
+	public Boolean getIsActive() {
+		return isActive;
+	}
+
+	public void setIsActive(Boolean isActive) {
+		this.isActive = isActive;
 	}
 	
 	

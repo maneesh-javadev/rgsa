@@ -44,6 +44,7 @@ public class CapacityBuildingServiceImpl implements CapacityBuildingService{
 		Map<String, Object> params=new HashMap<String, Object>();
 		params.put("stateCode", userPreference.getStateCode());
 		params.put("yearId", userPreference.getFinYearId());
+		params.put("versionNo", userPreference.getPlanVersion());
 		//params.put("userType", userPreference.getUserType().charAt(0));
 		//capacityBuildingActivities=commonRepository.findAll("FETCH_CAPACITY_BUILDING", params);
 	/*	if(!CollectionUtils.isEmpty(capacityBuildingActivities) && capacityBuildingActivities.size()>0){

@@ -59,6 +59,7 @@ public class PmuActivityServiceImpl implements PmuActivityService {
 		}
 		params.put("yearId", userPreference.getFinYearId());
 		params.put("stateCode", userPreference.getStateCode());
+		params.put("versionNo", userPreference.getPlanVersion());
 		pmuActivity= commonRepository.findAll("FETCH_PMU_ACTIVITY", params);
 		
 		if (userPreference.getUserType().equalsIgnoreCase("M") && pmuActivity.size() == 0) {

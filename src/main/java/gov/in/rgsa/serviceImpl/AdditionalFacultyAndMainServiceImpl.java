@@ -154,6 +154,7 @@ public class AdditionalFacultyAndMainServiceImpl implements AdditionalFacultyAnd
 		List<InstitueInfraHrActivity> activity=new ArrayList<>(); 
 		params.put("stateCode", userPreference.getStateCode());
 		params.put("yearId", userPreference.getFinYearId());
+		params.put("versionNo", userPreference.getPlanVersion());
 		if(userType != null){
 			params.put("userType", userType);
 		}else{

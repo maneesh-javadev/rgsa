@@ -59,6 +59,7 @@ public class PesaPlanServiceImpl implements PesaPlanService {
 		List<PesaPlan> pesaPlan = new ArrayList<PesaPlan>();
 		params.put("yearId", userPreference.getFinYearId());
 		params.put("stateCode", userPreference.getStateCode());
+		params.put("versionNo", userPreference.getPlanVersion());
 		if(userType == null){
 			params.put("userType", userPreference.getUserType().charAt(0));
 		}

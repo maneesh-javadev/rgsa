@@ -185,6 +185,7 @@ public AdministrativeTechnicalSupport fetchAdministrativeTechnicalSupport(final 
 	Map<String, Object> params=new HashMap<String, Object>();
 	params.put("stateCode", userPreference.getStateCode());
 	params.put("yearId", userPreference.getFinYearId());
+	params.put("versionNo", userPreference.getPlanVersion());
 	if(userType == null){
 		params.put("userType", userPreference.getUserType());
 	}else{
@@ -199,9 +200,10 @@ public AdministrativeTechnicalSupport fetchAdministrativeTechnicalSupport(final 
 	if(userPreference.getUserType().equalsIgnoreCase("M") && CollectionUtils.isEmpty(administrativeTechnicalSupport)){
 		params.put("userType", "S");
 		administrativeTechnicalSupport=commonRepository.findAll("FETCH_ADMIN_TECH_SUPPORT", params);
-		administrativeTechnicalSupport.get(0).setStatus("U");
-		if(CollectionUtils.isNotEmpty(administrativeTechnicalSupport))
-		return administrativeTechnicalSupport.get(0);
+		if(CollectionUtils.isNotEmpty(administrativeTechnicalSupport)) {
+			administrativeTechnicalSupport.get(0).setStatus("U");
+			return administrativeTechnicalSupport.get(0);
+		}
 	}
 	/*if(userPreference.getUserType().equalsIgnoreCase("C") && CollectionUtils.isEmpty(administrativeTechnicalSupport)){
 		params.put("userType", "S");

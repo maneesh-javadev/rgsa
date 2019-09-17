@@ -147,6 +147,7 @@ public class InnovativeActivityServiceImpl implements InnovativeActivityService 
 		} 
 		params.put("yearId", userPreference.getFinYearId());
 		params.put("stateCode", userPreference.getStateCode());
+		params.put("versionId", userPreference.getPlanVersion());
 		innovativeActivities = commonRepository.findAll("FETCH_INNOVATIVE_ACTIVITY", params);
 		if(!CollectionUtils.isEmpty(innovativeActivities) && innovativeActivities.size() >0) 
 		{

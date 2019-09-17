@@ -181,6 +181,7 @@ public class IecServiceImpl implements IecService {
 		params.put("stateCode", userPreference.getStateCode());
 		params.put("userType", userType);
 		params.put("yearId", userPreference.getFinYearId());
+		params.put("versionNo", userPreference.getPlanVersion());
 		return commonRepository.find(IecActivity.class, params);
 	}
 

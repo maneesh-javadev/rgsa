@@ -156,6 +156,7 @@ public class EEnablementOfPanchayatServiceImpl implements EEnablementOfPanchayat
 		}
 		params.put("yearId", userPreference.getFinYearId());
 		params.put("stateCode", userPreference.getStateCode());
+		params.put("versionNo", userPreference.getPlanVersion());
 		enablement=commonRepository.findAll("FETCH_ENABLEMENT", params);
 		
 		if(userPreference.getUserType().equalsIgnoreCase("M") && enablement.size() == 0){

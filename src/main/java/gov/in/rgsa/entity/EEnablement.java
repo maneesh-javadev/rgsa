@@ -23,7 +23,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 
 @Entity
 @Table(name="e_enablement", schema="rgsa")
-@NamedQueries({@NamedQuery(name="FETCH_ENABLEMENT", query="SELECT E FROM EEnablement E where stateCode =:stateCode and yearId =:yearId and userType =:userType")
+@NamedQueries({@NamedQuery(name="FETCH_ENABLEMENT", query="SELECT E FROM EEnablement E where stateCode =:stateCode and yearId =:yearId and userType =:userType and versionNo=:versionNo")
 ,@NamedQuery(name="GET_EENABLEMENT_APPROVED_TRAINING", 
 query="SELECT EE from EEnablement EE RIGHT OUTER JOIN FETCH EE.eEnablementDetails EED where EE.yearId=:yearId and EE.userType=:userType and EE.stateCode=:stateCode"),
 })

@@ -22,7 +22,7 @@ import org.hibernate.annotations.LazyCollectionOption;
 import org.hibernate.annotations.UpdateTimestamp;
 
 @Entity
-@NamedQueries({@NamedQuery(name="FETCH_INSTITUTE_HR_ACTIVITY",query="SELECT I FROM InstitueInfraHrActivity I where stateCode =:stateCode and yearId =:yearId and userType =:userType")
+@NamedQueries({@NamedQuery(name="FETCH_INSTITUTE_HR_ACTIVITY",query="SELECT I FROM InstitueInfraHrActivity I where stateCode =:stateCode and yearId =:yearId and userType =:userType and versionNo=:versionNo")
 ,@NamedQuery(name="FETCH_INSTITUTE_APPROVED_HR_ACTIVITY" ,query="SELECT I FROM InstitueInfraHrActivity I where stateCode =:stateCode and yearId =:yearId and userType =:userType")
 
 })
@@ -78,6 +78,9 @@ public class InstitueInfraHrActivity {
 	
 	@Column(name="additional_req_dprc")
 	public Integer additionalRequirementDprc;
+	
+	@Column(name="is_active")
+	private Boolean isActive;
 	
 
 	public Integer getInstituteInfraHrActivityId() {
@@ -191,6 +194,14 @@ public class InstitueInfraHrActivity {
 
 	public void setAdditionalRequirementDprc(Integer additionalRequirementDprc) {
 		this.additionalRequirementDprc = additionalRequirementDprc;
+	}
+
+	public Boolean getIsActive() {
+		return isActive;
+	}
+
+	public void setIsActive(Boolean isActive) {
+		this.isActive = isActive;
 	}
 
 

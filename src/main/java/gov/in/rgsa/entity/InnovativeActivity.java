@@ -27,7 +27,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 @Entity
 @Table(name="innovative_activity", schema="rgsa")
 @NamedQueries({@NamedQuery(name="FETCH_INNOVATIVE_ACTIVITY",
-query="SELECT INNO FROM InnovativeActivity INNO where stateCode=:stateCode and yearId=:yearId and userType=:userType"),
+query="SELECT INNO FROM InnovativeActivity INNO where stateCode=:stateCode and yearId=:yearId and userType=:userType and versionId=:versionId"),
 @NamedQuery(name="DELETE_INNOVATIVE_ACTIVITY",
 query="Delete FROM InnovativeActivity where innovativeActivityId=:innovativeActivityId"),
 @NamedQuery(name="FETCH_INNOVATIVE_ACTIVITY_APPROVED_ACTIVITY" ,query="SELECT IA from InnovativeActivity IA RIGHT OUTER JOIN FETCH IA.innovativeActivityDetails IAD where IA.yearId=:yearId and IA.userType=:userType and IA.stateCode=:stateCode ")
@@ -75,6 +75,9 @@ public class InnovativeActivity {
 	
 	@Column(name="is_freeze")
 	private Boolean isFreeze;
+	
+	@Column(name="is_active")
+	private Boolean isActive;
 	
 	@Transient
 	private String path;
@@ -203,6 +206,14 @@ public class InnovativeActivity {
 
 	public void setUserType(Character userType) {
 		this.userType = userType;
+	}
+
+	public Boolean getIsActive() {
+		return isActive;
+	}
+
+	public void setIsActive(Boolean isActive) {
+		this.isActive = isActive;
 	}
 	
 }

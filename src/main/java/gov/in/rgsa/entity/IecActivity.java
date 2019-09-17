@@ -61,7 +61,8 @@ public class IecActivity implements Serializable {
 	@Column(name = "user_type")
 	private String userType;
 
-
+	@Column(name="is_active")
+	private Boolean isActive;
 	
 	@Column(name = "last_updated_by")
 	private int lastUpdatedBy;
@@ -179,6 +180,14 @@ public class IecActivity implements Serializable {
 
 	public void setLastUpdatedOn(Timestamp lastUpdatedOn) {
 		this.lastUpdatedOn = lastUpdatedOn;
+	}
+
+	public Boolean getIsActive() {
+		return isActive;
+	}
+
+	public void setIsActive(Boolean isActive) {
+		this.isActive = isActive;
 	}
 
 

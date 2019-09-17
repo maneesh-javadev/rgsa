@@ -67,6 +67,9 @@ public class AdminAndFinancialDataActivity {
 	@Column(name="version_no")
 	private Integer versionNo;
 	
+	@Column(name="is_active")
+	private Boolean isActive;
+	
 	@OneToMany(cascade=CascadeType.ALL,mappedBy="adminAndFinancialDataActivity",fetch=FetchType.EAGER)
 	private List<AdminFinancialDataCellActivityDetails> adminFinancialDataCellActivityDetails;
 	
@@ -173,6 +176,14 @@ public class AdminAndFinancialDataActivity {
 	public void setAdminFinancialDataCellActivityDetails(
 			List<AdminFinancialDataCellActivityDetails> adminFinancialDataCellActivityDetails) {
 		this.adminFinancialDataCellActivityDetails = adminFinancialDataCellActivityDetails;
+	}
+
+	public Boolean getIsActive() {
+		return isActive;
+	}
+
+	public void setIsActive(Boolean isActive) {
+		this.isActive = isActive;
 	}
 	
 	
