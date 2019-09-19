@@ -1,6 +1,8 @@
 <%@include file="../taglib/taglib.jsp"%>
 <script>
-
+	function calTotalFund(index){
+		$('#totalFund_'+index).val(+$('#unspent_'+index).val() + +$('#central_'+index).val());
+	}
 </script>
 <section class="content">
 	<div class="container-fluid">
@@ -56,28 +58,26 @@
 								<thead>
 									<tr>
 										<th><div align="center"><strong>Installment</strong></div></th>
-										<th><div align="center"><strong>Total Fund Released</strong></div></th>
-										<th><div align="center"><strong>Fund released in Installment</strong></div></th>
-										<th><div align="center"><strong>Upload file</strong></div></th>
-										<th><div align="center"><strong>Freeze</strong></div></th>
+										<th><div align="center"><strong>Unspent Balance</strong></div></th>
+										<th><div align="center"><strong>Central Share</strong></div></th>
+										<th><div align="center"><strong>Total Fund</strong></div></th>
+										<th><div align="center"><strong>File Upload</strong></div></th>
 									</tr>
 								</thead>
 								<tbody>
 									<tr>
 										<td><div align="center"><strong>Installment 1.</strong></div></td>
-										<td><input type="text" class="form-control" /></td>
-										<td><input type="text" class="form-control" /></td>
+										<td><input type="text" class="form-control Align-Right" id="unspent_0" onkeyup="calTotalFund('0')"/></td>
+										<td><input type="text" class="form-control Align-Right" id="central_0" onkeyup="calTotalFund('0')"/></td>
+										<td><input type="text" class="form-control Align-Right" id="totalFund_0" disabled="disabled" /></td>
 										<td><input type="file" class="form-control" /></td>
-										<td id="lockId"><div align="center" style="color: red" ><i class="fa fa-lock" aria-hidden="true"></i></div></td>
-										<td id="unlocklockId"><div align="center" style="color: green" ><i class="fa fa-unlock" aria-hidden="true"></i></div></td>
 									</tr>
 									<tr>
 										<td><div align="center"><strong>Installment 2.</strong></div></td>
-										<td><input type="text" class="form-control" /></td>
-										<td><input type="text" class="form-control" /></td>
+										<td><input type="text" class="form-control Align-Right" id="unspent_1" onkeyup="calTotalFund('1')"/></td>
+										<td><input type="text" class="form-control Align-Right" id="central_1" onkeyup="calTotalFund('1')"/></td>
+										<td><input type="text" class="form-control Align-Right" id="totalFund_1" disabled="disabled" /></td>
 										<td><input type="file" class="form-control" /></td>
-										<td id="lockId"><div align="center" style="color: red" ><i class="fa fa-lock" aria-hidden="true"></i></div></td>
-										<td id="unlocklockId"><div align="center" style="color: green" ><i class="fa fa-unlock" aria-hidden="true"></i></div></td>
 									</tr>
 								</tbody>
 							</table>

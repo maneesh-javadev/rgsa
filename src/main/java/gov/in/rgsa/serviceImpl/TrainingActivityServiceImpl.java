@@ -769,6 +769,7 @@ public void save(TrainingActivity activity) {
 		params = new HashMap<>();
 		params.put("yearId", userPreference.getFinYearId());
 		params.put("stateCode", userPreference.getStateCode());
+		params.put("versionId", userPreference.getPlanVersion());
 		params.put("userType", 'M');
 		fetchTrainingList = commonRepository.findAll("Fetch_Training", params);
 		
