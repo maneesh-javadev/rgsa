@@ -136,8 +136,8 @@ $(document).ready(function() {
 											<form:hidden path="fundReleasedDetails[0].fileNode.status" value="${FETCHED_DATA.fundReleasedDetails[0].fileNode.status}"/>
 											<form:hidden path="fundReleasedDetails[0].fileNode.uploadName" value="${FETCHED_DATA.fundReleasedDetails[0].fileNode.uploadName}"/>
 										</td>
-										<td><form:input path="fundReleasedDetails[0].unspentBalance" class="form-control Align-Right" id="unspent_0" onkeyup="calTotalFund('0');enableSecInstallment()" value="${FETCHED_DATA.fundReleasedDetails[0].unspentBalance }" readonly="${FETCHED_DATA.fundReleasedDetails[0].isFreeze}"/></td>
-										<td><form:input path="fundReleasedDetails[0].centralShare" class="form-control Align-Right" id="central_0" onkeyup="calTotalFund('0');enableSecInstallment()" value="${FETCHED_DATA.fundReleasedDetails[0].centralShare}" readonly="${FETCHED_DATA.fundReleasedDetails[0].isFreeze}"/></td>
+										<td><form:input path="fundReleasedDetails[0].unspentBalance" class="form-control Align-Right" id="unspent_0" onkeyup="calTotalFund('0');" value="${FETCHED_DATA.fundReleasedDetails[0].unspentBalance }" readonly="${FETCHED_DATA.fundReleasedDetails[0].isFreeze}"/></td>
+										<td><form:input path="fundReleasedDetails[0].centralShare" class="form-control Align-Right" id="central_0" onkeyup="calTotalFund('0');" value="${FETCHED_DATA.fundReleasedDetails[0].centralShare}" readonly="${FETCHED_DATA.fundReleasedDetails[0].isFreeze}"/></td>
 										<td><form:input path="" class="form-control Align-Right" id="totalFund_0" disabled="true" /></td>
 										<td>
 										<c:choose>
@@ -146,12 +146,12 @@ $(document).ready(function() {
 										</c:choose>
 											
 											<c:if test="${not empty FETCHED_DATA.fundReleasedDetails[0].fileNode.fileNodeId}">
-																		<input type="button" value="Download File" class="btn bg-primary waves-effect" onclick='showImage(${FETCHED_DATA.fundReleasedDetails[0].fileNode.fileNodeId});' />
-																	</c:if>
+												<input type="button" value="Download File" class="btn bg-primary waves-effect" onclick='showImage(${FETCHED_DATA.fundReleasedDetails[0].fileNode.fileNodeId});' />
+											</c:if>
 										</td>
 										<td><div align="center">
 											<c:choose>
-												<c:when test="${FETCHED_DATA.fundReleasedDetails[0].isFreeze}"><i class="fa fa-lock fa-lg" aria-hidden="true" title="unfreeze the installment" onclick="submitToPost('unfreeze_0')" style="color: red;"></i></c:when>
+												<c:when test="${FETCHED_DATA.fundReleasedDetails[0].isFreeze}"><i class="fa fa-lock fa-lg" aria-hidden="true" title="This record is freezed" onclick="alert('This record cannot be unfreezed.')" style="color: red;"></i></c:when>
 												<c:otherwise><c:choose>
 														<c:when test="${FETCHED_DATA.fundReleasedDetails[0].unspentBalance + FETCHED_DATA.fundReleasedDetails[0].centralShare ne 0}"><i class="fa fa-unlock fa-lg" aria-hidden="true" title="freeze the installment" onclick="submitToPost('freeze_0')" style="color: #34a734"></i></c:when>
 														<c:otherwise><i class="fa fa-unlock fa-lg" aria-hidden="true" title="freeze the installment" onclick="alert('Save the information first.');" style="color: #34a734"></i></c:otherwise>
@@ -172,11 +172,11 @@ $(document).ready(function() {
 											<form:hidden path="fundReleasedDetails[1].fileNode.status" value="${FETCHED_DATA.fundReleasedDetails[1].fileNode.status}"/>
 											<form:hidden path="fundReleasedDetails[1].fileNode.uploadName" value="${FETCHED_DATA.fundReleasedDetails[1].fileNode.uploadName}"/>
 										</td>
-										<td><form:input path="fundReleasedDetails[1].unspentBalance" class="form-control Align-Right enable" id="unspent_1" onkeyup="calTotalFund('1')" value="${FETCHED_DATA.fundReleasedDetails[1].unspentBalance }" readonly="${FETCHED_DATA.fundReleasedDetails[1].isFreeze}"/></td>
-										<td><form:input path="fundReleasedDetails[1].centralShare" class="form-control Align-Right enable" id="central_1" onkeyup="calTotalFund('1')" value="${FETCHED_DATA.fundReleasedDetails[1].centralShare}" readonly="${FETCHED_DATA.fundReleasedDetails[1].isFreeze}"/></td>
+										<td><form:input path="fundReleasedDetails[1].unspentBalance" class="form-control Align-Right enable" id="unspent_1" onkeyup="calTotalFund('1')" value="${FETCHED_DATA.fundReleasedDetails[1].unspentBalance }" readonly="${FETCHED_DATA.fundReleasedDetails[1].isFreeze or empty FETCHED_DATA.fundReleasedDetails[0].isFreeze and not FETCHED_DATA.fundReleasedDetails[0].isFreeze}"/></td>
+										<td><form:input path="fundReleasedDetails[1].centralShare" class="form-control Align-Right enable" id="central_1" onkeyup="calTotalFund('1')" value="${FETCHED_DATA.fundReleasedDetails[1].centralShare}" readonly="${FETCHED_DATA.fundReleasedDetails[1].isFreeze or empty FETCHED_DATA.fundReleasedDetails[0].isFreeze and not FETCHED_DATA.fundReleasedDetails[0].isFreeze}"/></td>
 										<td><form:input path="" class="form-control Align-Right" id="totalFund_1" disabled="true" /></td>
 										<td><c:choose>
-											<c:when test="${FETCHED_DATA.fundReleasedDetails[1].isFreeze}"><input name="fundReleasedDetails[1].file" type="file" class="form-control" disabled="disabled" /></c:when>
+											<c:when test="${FETCHED_DATA.fundReleasedDetails[1].isFreeze or empty FETCHED_DATA.fundReleasedDetails[0].isFreeze and not FETCHED_DATA.fundReleasedDetails[0].isFreeze}"><input name="fundReleasedDetails[1].file" type="file" class="form-control" disabled="disabled" /></c:when>
 											<c:otherwise><input name="fundReleasedDetails[1].file" type="file" class="form-control enable" /></c:otherwise>
 										</c:choose>
 											<c:if test="${not empty FETCHED_DATA.fundReleasedDetails[1].fileNode.fileNodeId}">
@@ -186,7 +186,7 @@ $(document).ready(function() {
 										
 										<td><div align="center">
 											<c:choose>
-												<c:when test="${FETCHED_DATA.fundReleasedDetails[1].isFreeze}"><i class="fa fa-lock fa-lg" aria-hidden="true" title="unfreeze the installment" onclick="submitToPost('unfreeze_1')" style="color: red;"></i></c:when>
+												<c:when test="${FETCHED_DATA.fundReleasedDetails[1].isFreeze}"><i class="fa fa-lock fa-lg" aria-hidden="true" title="unfreeze the installment" onclick="alert('This record cannot be unfreezed.')" style="color: red;"></i></c:when>
 												<c:otherwise>
 													<c:choose>
 														<c:when test="${FETCHED_DATA.fundReleasedDetails[1].unspentBalance + FETCHED_DATA.fundReleasedDetails[1].centralShare ne 0}"><i class="fa fa-unlock fa-lg" aria-hidden="true" title="freeze the installment" onclick="submitToPost('freeze_1')" style="color: #34a734"></i></c:when>
