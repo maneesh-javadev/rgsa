@@ -175,15 +175,14 @@ toggleInstInfraAndPanchayatBhawan=function(id,msg){
 														
 														<td style="padding-left: 40px">
 														<c:if test="${buttonStatus}">
-														<%-- <c:choose>
-														<c:when test="${ pc.amountProposed != null }"> --%>
+														<c:choose>
+														<c:when test="${ pc.amountProposed != null }">
 														<b><a href="${pc.link}?menuId=0&<csrf:token uri='${pc.link}'/>"><i class="fa fa-external-link" aria-hidden="true"></i></a></b>
-														<%-- </c:when>
+														</c:when>
 														<c:otherwise>
 														<i class="fa fa-external-link" aria-hidden="true"></i>
 														</c:otherwise>
-														</c:choose> --%>
-														
+														</c:choose>
 														</c:if>
 														</td>
 														 

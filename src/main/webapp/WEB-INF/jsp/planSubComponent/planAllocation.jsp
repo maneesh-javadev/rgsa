@@ -163,7 +163,7 @@ callActionUrl=function(){
 									</th>
 									<th>
 										<div style="text-align:right;padding-right:10px;">
-											<strong>Amount Allocation({{totalAmount}})</strong>
+											<strong>Amount Allocation ({{totalAmount}})</strong>
 										</div>
 									</th>
 								</tr>

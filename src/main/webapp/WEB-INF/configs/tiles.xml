@@ -836,10 +836,10 @@
 		value="/WEB-INF/jsp/error/500.jsp" />
 </definition>
 
-<definition name="fundSanctionVersion2" extends="base.definition.admin">
+<definition name="fundReleased" extends="base.definition.admin">
 	<put-attribute name="title" value="fund Sanction Version 2" />
 	<put-attribute name="body"
-		value="/WEB-INF/jsp/fundSanctionVersion2/fundSanctionVersion2.jsp" />
+		value="/WEB-INF/jsp/fundReleased/fundReleased.jsp" />
 </definition> 
 
 </tiles-definitions>
