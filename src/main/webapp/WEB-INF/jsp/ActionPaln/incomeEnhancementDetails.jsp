@@ -42,6 +42,7 @@ $(document).ready(function() {
 		 $("input").prop('disabled', true);
 		 $("select").prop('disabled', true);
 		 $("#saveButtn").prop('disabled', true);
+		 $("#saveButtn").hide();
 		 $("#frzButtn").hide();
 		 $("#addNewRowBtn").hide();
 		 $("#unFrzButtn").show();
@@ -53,6 +54,7 @@ $(document).ready(function() {
 		 $("select").prop('disabled', false);
 		 $("#saveButtn").prop('disabled', false);
 		 $("#frzButtn").show();
+		 $("#saveButtn").show();
 		 $("#unFrzButtn").hide();
 		 $("#clearButtn").prop('disabled', false);
 	 }

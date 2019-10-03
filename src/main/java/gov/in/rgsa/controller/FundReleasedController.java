@@ -4,6 +4,7 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -65,6 +66,12 @@ public class FundReleasedController {
 					FundReleased fetchedEntity = fundReleasedService.fetchData(releaseIntallment.getPlanCode());
 					if(fetchedEntity != null) {
 						Collections.sort(fetchedEntity.getFundReleasedDetails() ,(o1,o2) -> o1.getFundReleasedDetailsId() - o2.getFundReleasedDetailsId());
+						fetchedEntity.getFundReleasedDetails().forEach(obj ->{
+							if(obj.getCentralShareDate() != null) {
+								String startarr[]=obj.getCentralShareDate().toString().substring(0,10).split("-");
+								obj.setDemoDate(startarr[2]+"-"+startarr[1]+"-"+startarr[0]);
+							}
+						});
 					}else {
 						if(fundReleased.getFundReleasedDetails() != null)
 							fundReleased.getFundReleasedDetails().clear();
@@ -101,9 +108,10 @@ public class FundReleasedController {
 				}
 			});
 			fundReleasedService.save(fundReleased);
+		}else {
+			return fundReleased(fundReleased,model,re);
 		}
-		
-		return fundReleased(fundReleased,model,re);
+		return REDIRECT_FUND_SANCTION;
 	}
 	
 	private FileNodeUtils attemptUpload(FileNode fileNode, MultipartFile multipartFile, String uploadPath, String string) {

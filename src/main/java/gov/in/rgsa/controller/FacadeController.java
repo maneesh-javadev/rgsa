@@ -213,8 +213,8 @@ public class FacadeController {
 		Map<String, Object> param=new HashMap<String, Object>();
 		NodalOfficerDetails nodalDetails = officerService.getNodalOfficerDetails();
 		if(nodalDetails != null) {
-			service.forwardPlans();
-			param.put("result", "S");
+			String result=service.forwardPlans();
+			param.put("result", result);
 			re.addFlashAttribute(Message.SUCCESS_KEY, Message.SAVE_SUCCESS);
 		}else {
 			param.put("result", "N");

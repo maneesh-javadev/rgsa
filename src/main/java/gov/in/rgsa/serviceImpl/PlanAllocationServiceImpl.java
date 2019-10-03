@@ -149,6 +149,13 @@ public class PlanAllocationServiceImpl implements PlanAllocationService{
 	public Response  savePlanAllocation(StateAllocationModal stateAllocationModal) {
 		Response response = new Response();
 		try {
+				if(stateAllocationModal.getFundReleasedDetailId() != null) {
+					Map<String, Object> params=new HashMap<String, Object>();
+					params.put("fundReleasedDetailsId",stateAllocationModal.getFundReleasedDetailId());
+					params.put("stateShare",stateAllocationModal.getStateShare());
+					commonRepository.excuteUpdate("UPDATE_STATE_SHARE", params);
+				}
+				
 				for(StateAllocation obj: stateAllocationModal.getStateAllocationList()) {
 					
 					obj.setInstallmentNo(stateAllocationModal.getInstallmentNo());
@@ -191,10 +198,10 @@ public class PlanAllocationServiceImpl implements PlanAllocationService{
 	}
 	
 	@Override
-	public Response  unfreezePlanAllocation(StateAllocationModal stateAllocationModal) {
+	public Response  unfreezePlanAllocation(StateAllocationModal stateAllocationModal,Integer installmentNo) {
 		Response response = new Response();
 		try {
-			List<StateAllocation> stateAllocationList= this.fetchStateAllocationList(stateAllocationModal.getPlanCode(), 1);	
+			List<StateAllocation> stateAllocationList= this.fetchStateAllocationList(stateAllocationModal.getPlanCode(), installmentNo);	
 			for(StateAllocation obj: stateAllocationList) {
 					obj.setStatus("U");
 					commonRepository.update(obj);

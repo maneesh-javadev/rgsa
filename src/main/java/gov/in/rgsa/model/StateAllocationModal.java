@@ -16,10 +16,14 @@ public class StateAllocationModal {
 	
 	private String status;
 	
+	private Integer stateShare;
+	
+	private Integer fundReleasedDetailId;
+	
 	private boolean isPlanAllocationNotExist;
 	
 	private List<StateAllocation> stateAllocationList;
-
+	
 	public Integer getPlanCode() {
 		return planCode;
 	}
@@ -74,6 +78,22 @@ public class StateAllocationModal {
 
 	public void setPlanAllocationNotExist(boolean isPlanAllocationNotExist) {
 		this.isPlanAllocationNotExist = isPlanAllocationNotExist;
+	}
+
+	public Integer getStateShare() {
+		return stateShare;
+	}
+
+	public void setStateShare(Integer stateShare) {
+		this.stateShare = stateShare;
+	}
+
+	public Integer getFundReleasedDetailId() {
+		return fundReleasedDetailId;
+	}
+
+	public void setFundReleasedDetailId(Integer fundReleasedDetailId) {
+		this.fundReleasedDetailId = fundReleasedDetailId;
 	}
 
 

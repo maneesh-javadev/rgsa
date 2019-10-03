@@ -25,7 +25,7 @@ public interface PlanAllocationService {
 	
 	public List<StateAllocation> fetchStateAllocationList(Integer planCode,Integer installmentNo);
 	
-	public Response  unfreezePlanAllocation(StateAllocationModal stateAllocationModal);
+	public Response  unfreezePlanAllocation(StateAllocationModal stateAllocationModal, Integer installmentNo);
 	
 	public List<StateAllocation> fetchStateAllocationListMaxINSTALLMENTNO();
 	

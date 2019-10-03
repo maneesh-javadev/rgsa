@@ -86,7 +86,7 @@ public class AdminAndFinancialDataCellServiceImpl implements AdminAndFinancialDa
 		adminAndFinancialDataActivity.setUserType(userPreference.getUserType());
 		adminAndFinancialDataActivity.setCreatedBy(userPreference.getUserId());
 		adminAndFinancialDataActivity.setLastUpdatedBy(userPreference.getUserId());
-		adminAndFinancialDataActivity.setLastUpdatedBy(userPreference.getPlanVersion());
+		adminAndFinancialDataActivity.setVersionNo(userPreference.getPlanVersion());
 	return 	adminAndFinancialDataActivity;
 	}
 
@@ -125,6 +125,7 @@ public class AdminAndFinancialDataCellServiceImpl implements AdminAndFinancialDa
 		params.put("stateCode", userPreference.getStateCode());
 		params.put("userType", "C");
 		params.put("yearId", userPreference.getFinYearId());
+		params.put("versionNo", userPreference.getPlanVersion());
 		return commonRepository.findAll("FETCH_APPROVED_ACTIVITY", params);
 	}
 

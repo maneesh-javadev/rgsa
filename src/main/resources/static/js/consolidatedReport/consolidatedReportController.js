@@ -133,6 +133,9 @@ publicModule.controller("consolidatedReportController", [ '$scope', "consolidate
 				case "N" :
 					toastr.error("Please fill Nodal Officers deatils first.");
 					break;	
+				case "A" :
+					toastr.error("Plan has been already forwarded.");
+					break;
 				default:
 					break;
 				}

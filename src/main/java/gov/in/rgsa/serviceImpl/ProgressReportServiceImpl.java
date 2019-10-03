@@ -857,6 +857,7 @@ public class ProgressReportServiceImpl implements ProgressReportService {
 			fetchTrainingDetailsList=new ArrayList<FetchTrainingDetails>();
 			params = new HashMap<>();
 			params.put("yearId", userPreference.getFinYearId());
+			params.put("versionId", userPreference.getPlanVersion());
 			params.put("stateCode", userPreference.getStateCode());
 			params.put("userType", 'C');
 			List<FetchTraining> fetchTrainingList = commonRepository.findAll("Fetch_Training", params);

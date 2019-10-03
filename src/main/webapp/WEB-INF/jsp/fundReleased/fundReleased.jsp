@@ -1,5 +1,15 @@
 <%@include file="../taglib/taglib.jsp"%>
+<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/plugins/datepicker/css/bootstrap-datetimepicker.min.css">
+
+<script type="text/javascript" src="${pageContext.request.contextPath}/resources/plugins/datepicker/js/bootstrap-datetimepicker.min.js"></script> 
 <script>
+var currentDate = Date.now();
+currentDate = new Date(currentDate);
+var dd = currentDate.getDate();
+var mm = currentDate.getMonth() + 1;
+var yy = currentDate.getFullYear();
+currentDate = dd + '/' + mm + '/'+ yy;
+
 $(document).ready(function() {
 	$('#finYearDropDownId').val('${FUND_RELEASED.finYearId}');
 	$('#approvedStateId').val('${FUND_RELEASED.stateCode}');
@@ -63,6 +73,19 @@ $(document).ready(function() {
 			$('.enable').attr("disabled", true);
 		}
 	}
+	
+	$(function() {
+		$(".bstartDate").datetimepicker({
+			format : 'dd-mm-yyyy',
+			startView : 'month',
+			//endDate : '+100d',
+			autoclose : true,
+			minView : 'month',
+			//startDate : '01/04/2019',
+			pickerPosition : "bottom-left",
+			endDate : currentDate
+		});
+	});
 </script>
 <section class="content">
 	<div class="container-fluid">
@@ -118,6 +141,7 @@ $(document).ready(function() {
 										<th><div align="center"><strong>Installment</strong></div></th>
 										<th><div align="center"><strong>Unspent Balance</strong></div></th>
 										<th><div align="center"><strong>Central Share</strong></div></th>
+										<th><div align="center"><strong>Central Share Release Date</strong></div></th>
 										<th><div align="center"><strong>Total Fund</strong></div></th>
 										<th><div align="center"><strong>File Upload</strong></div></th>
 										<th><div align="center"><strong>Freeze Installment</strong></div></th>
@@ -125,7 +149,7 @@ $(document).ready(function() {
 								</thead>
 								<tbody>
 									<tr>
-										<td><div align="center"><strong>Installment 1.</strong></div>
+										<td><div align="center"><strong>Installment 1. ${FETCHED_DATA.fundReleasedDetails[0].isFreeze}</strong></div>
 											<form:hidden path="fundReleasedDetails[0].installmentId" value="1"/>
 											<form:hidden path="fundReleasedDetails[0].fundReleasedDetailsId" value="${FETCHED_DATA.fundReleasedDetails[0].fundReleasedDetailsId}"/>
 											<form:hidden path="fundReleasedDetails[0].fileNode.fileNodeId" value="${FETCHED_DATA.fundReleasedDetails[0].fileNode.fileNodeId}"/>
@@ -135,9 +159,22 @@ $(document).ready(function() {
 											<form:hidden path="fundReleasedDetails[0].fileNode.fileSize" value="${FETCHED_DATA.fundReleasedDetails[0].fileNode.fileSize}"/>
 											<form:hidden path="fundReleasedDetails[0].fileNode.status" value="${FETCHED_DATA.fundReleasedDetails[0].fileNode.status}"/>
 											<form:hidden path="fundReleasedDetails[0].fileNode.uploadName" value="${FETCHED_DATA.fundReleasedDetails[0].fileNode.uploadName}"/>
+											<form:hidden path="fundReleasedDetails[0].isFreeze" id="isfreeze_0" value="${FETCHED_DATA.fundReleasedDetails[0].isFreeze}"/>
 										</td>
 										<td><form:input path="fundReleasedDetails[0].unspentBalance" class="form-control Align-Right" id="unspent_0" onkeyup="calTotalFund('0');" value="${FETCHED_DATA.fundReleasedDetails[0].unspentBalance }" readonly="${FETCHED_DATA.fundReleasedDetails[0].isFreeze}"/></td>
 										<td><form:input path="fundReleasedDetails[0].centralShare" class="form-control Align-Right" id="central_0" onkeyup="calTotalFund('0');" value="${FETCHED_DATA.fundReleasedDetails[0].centralShare}" readonly="${FETCHED_DATA.fundReleasedDetails[0].isFreeze}"/></td>
+										<td>
+											<c:choose>
+												<c:when test="${FETCHED_DATA.fundReleasedDetails[0].isFreeze}">
+													<div align="center">${FETCHED_DATA.fundReleasedDetails[0].demoDate} <form:hidden path="fundReleasedDetails[0].demoDate" value="${FETCHED_DATA.fundReleasedDetails[0].demoDate}"/></div>
+													</c:when>
+												<c:otherwise>
+													<div class="input-group date datepicker bstartDate" > <form:input path="fundReleasedDetails[0].demoDate" class="form-control Align-Right" id="centralShareDate_0" value="${FETCHED_DATA.fundReleasedDetails[0].demoDate}"/><span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+													</div>
+												</c:otherwise>
+											</c:choose>
+												
+										</td>
 										<td><form:input path="" class="form-control Align-Right" id="totalFund_0" disabled="true" /></td>
 										<td>
 										<c:choose>
@@ -157,11 +194,10 @@ $(document).ready(function() {
 														<c:otherwise><i class="fa fa-unlock fa-lg" aria-hidden="true" title="freeze the installment" onclick="alert('Save the information first.');" style="color: #34a734"></i></c:otherwise>
 													</c:choose></c:otherwise>
 											</c:choose>
-											<form:hidden path="fundReleasedDetails[0].isFreeze" id="isfreeze_0"/>
 										</div></td>
 									</tr>
 									<tr>
-										<td><div align="center"><strong>Installment 2.</strong></div>
+										<td><div align="center"><strong>Installment 2. ${FETCHED_DATA.fundReleasedDetails[0].isFreeze}</strong></div>
 											<form:hidden path="fundReleasedDetails[1].installmentId" value="2"/>
 											<form:hidden path="fundReleasedDetails[1].fundReleasedDetailsId" value="${FETCHED_DATA.fundReleasedDetails[1].fundReleasedDetailsId}"/>
 											<form:hidden path="fundReleasedDetails[1].fileNode.fileNodeId" value="${FETCHED_DATA.fundReleasedDetails[1].fileNode.fileNodeId}"/>
@@ -171,9 +207,23 @@ $(document).ready(function() {
 											<form:hidden path="fundReleasedDetails[1].fileNode.fileSize" value="${FETCHED_DATA.fundReleasedDetails[1].fileNode.fileSize}"/>
 											<form:hidden path="fundReleasedDetails[1].fileNode.status" value="${FETCHED_DATA.fundReleasedDetails[1].fileNode.status}"/>
 											<form:hidden path="fundReleasedDetails[1].fileNode.uploadName" value="${FETCHED_DATA.fundReleasedDetails[1].fileNode.uploadName}"/>
+											<form:hidden path="fundReleasedDetails[1].isFreeze" id="isfreeze_1" value="${FETCHED_DATA.fundReleasedDetails[1].isFreeze}"/>
 										</td>
 										<td><form:input path="fundReleasedDetails[1].unspentBalance" class="form-control Align-Right enable" id="unspent_1" onkeyup="calTotalFund('1')" value="${FETCHED_DATA.fundReleasedDetails[1].unspentBalance }" readonly="${FETCHED_DATA.fundReleasedDetails[1].isFreeze or empty FETCHED_DATA.fundReleasedDetails[0].isFreeze and not FETCHED_DATA.fundReleasedDetails[0].isFreeze}"/></td>
 										<td><form:input path="fundReleasedDetails[1].centralShare" class="form-control Align-Right enable" id="central_1" onkeyup="calTotalFund('1')" value="${FETCHED_DATA.fundReleasedDetails[1].centralShare}" readonly="${FETCHED_DATA.fundReleasedDetails[1].isFreeze or empty FETCHED_DATA.fundReleasedDetails[0].isFreeze and not FETCHED_DATA.fundReleasedDetails[0].isFreeze}"/></td>
+										<td>
+											<c:choose>
+												<c:when test="${FETCHED_DATA.fundReleasedDetails[1].isFreeze or empty FETCHED_DATA.fundReleasedDetails[0].isFreeze and not FETCHED_DATA.fundReleasedDetails[0].isFreeze}">
+													<div align="center">${FETCHED_DATA.fundReleasedDetails[1].demoDate}<form:hidden path="fundReleasedDetails[1].demoDate" value="${FETCHED_DATA.fundReleasedDetails[1].demoDate}"/></div>
+													</c:when>
+												<c:otherwise>
+													<div class="input-group date datepicker bstartDate" > <form:input path="fundReleasedDetails[1].demoDate" class="form-control Align-Right" id="centralShareDate_1"  value="${FETCHED_DATA.fundReleasedDetails[1].demoDate}" /><span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+													</div>
+												</c:otherwise>
+											</c:choose>
+										
+										</td>
+										
 										<td><form:input path="" class="form-control Align-Right" id="totalFund_1" disabled="true" /></td>
 										<td><c:choose>
 											<c:when test="${FETCHED_DATA.fundReleasedDetails[1].isFreeze or empty FETCHED_DATA.fundReleasedDetails[0].isFreeze and not FETCHED_DATA.fundReleasedDetails[0].isFreeze}"><input name="fundReleasedDetails[1].file" type="file" class="form-control" disabled="disabled" /></c:when>
@@ -194,7 +244,6 @@ $(document).ready(function() {
 													</c:choose>
 												</c:otherwise>
 											</c:choose>
-											<form:hidden path="fundReleasedDetails[1].isFreeze" id="isfreeze_1"/>
 										</div></td>
 									</tr>
 								</tbody>
@@ -231,3 +280,4 @@ $(document).ready(function() {
 			text-align: right;
 }</style>
 							
+												

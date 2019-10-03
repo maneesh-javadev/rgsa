@@ -18,7 +18,7 @@ public interface FacadeService {
 
 	public UserPreference findUser(FacadeModel model);
 
-	public void forwardPlans();
+	public String forwardPlans();
 	
 	public int findVisitorCount() ;
 	

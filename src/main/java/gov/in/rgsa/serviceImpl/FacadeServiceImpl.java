@@ -57,6 +57,14 @@ public class FacadeServiceImpl implements FacadeService {
 	
 	private static final int PLAN_STATUS_FORWARD_TO_CEC=4;
 
+	private static final String ALREADY_SAVED = "A";
+
+	private static final String DATA_SAVE = "S";
+
+	private static final String SOMETHING_WENT_WRONG = "W";
+
+	private static final String UNKNOWN_ACTION = "U";
+
 	static Logger logger = LoggerFactory.getLogger(FacadeServiceImpl.class);
 
 	@Override
@@ -158,26 +166,28 @@ public class FacadeServiceImpl implements FacadeService {
 	}
 	
 	@Override
-	public void forwardPlans() {
+	public String forwardPlans() {
 		Map<String, Object> params = new HashMap<>();
-		if(userPreference.getUserType().equalsIgnoreCase("s"))
+		if(userPreference.getUserType().equalsIgnoreCase("s")) {
 			params.put("plan_status_id", 2);
-		else if(userPreference.getUserType().equalsIgnoreCase("m")){
+		}else if(userPreference.getUserType().equalsIgnoreCase("m")){
 			params.put("plan_status_id", 4);
 		}
 		params.put("stateCode", userPreference.getStateCode());
 		params.put("yearId", userPreference.getFinYearId());
 		BigInteger count = commonRepository.find("PLAN_FORWARDED_OR_NOT", params);
 		if(count.intValue() > 0){
-			return;
+			return ALREADY_SAVED;
 		}else if(userPreference.getUserType().equalsIgnoreCase("s")){
-			handelDataForState();
+			return handelDataForState();
 		}else if (userPreference.getUserType().equalsIgnoreCase("m")){
-			handelDataForMOPR();
+			return handelDataForMOPR();
+		}else {
+			return UNKNOWN_ACTION;
 		}
 	}
 	
-	private void handelDataForMOPR(){
+	private String handelDataForMOPR(){
 		Map<String, Object> parameter = new HashMap<String, Object>();
 		parameter.put("planStatusId",2);
 		parameter.put("stateCode", userPreference.getStateCode());
@@ -192,19 +202,24 @@ public class FacadeServiceImpl implements FacadeService {
 			Plan status=new Plan();
 			PlanPK planPK=new PlanPK();
 			planPK.setPlanCode(planold.getPlanCode());
-			planPK.setPlanVersion(1);
+			planPK.setPlanVersion(userPreference.getPlanVersion());
 			planPK.setPlanStatusId(PLAN_STATUS_FORWARD_TO_CEC);
 			status.setPlanPK(planPK);
 			status.setStateCode(planold.getStateCode());
 			status.setYearId(planold.getYearId());
 			status.setIsactive(true);
 			status.setCreatedBy(userPreference.getUserId());
-			commonRepository.save(status);
+			try {
+				commonRepository.save(status);
+			}catch(Exception e) {
+				return SOMETHING_WENT_WRONG;
+			}
 		}
+		return DATA_SAVE;
 	}
 	
 	
-	private void handelDataForState(){
+	private String handelDataForState(){
 		Map<String, Object> parameter = new HashMap<String, Object>();
 		parameter.put("planStatusId",1);
 		parameter.put("stateCode", userPreference.getStateCode());
@@ -218,18 +233,20 @@ public class FacadeServiceImpl implements FacadeService {
 			Plan status=new Plan();
 			PlanPK planPK=new PlanPK();
 			planPK.setPlanCode(planold.getPlanCode());
-			planPK.setPlanVersion(1);
+			planPK.setPlanVersion(userPreference.getPlanVersion());
 			planPK.setPlanStatusId(PLAN_STATUS_SUBMITTED_TO_PD);
 			status.setPlanPK(planPK);
 			status.setStateCode(planold.getStateCode());
 			status.setYearId(planold.getYearId());
 			status.setIsactive(true);
 			status.setCreatedBy(userPreference.getUserId());
-			
-			commonRepository.save(status);
+			try {
+				commonRepository.save(status);
+			}catch(Exception e) {
+				return SOMETHING_WENT_WRONG;
+			}
 		}
-		
-		
+		return DATA_SAVE;
 	}
 	
 	@Override
