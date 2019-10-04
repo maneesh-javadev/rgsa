@@ -27,7 +27,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 @Entity
 @Table(name="income_enhancement_activity",schema="rgsa")
 @NamedQueries({@NamedQuery(name="FETCH_ALL_INCOME_ENHNCMNT_ACTIVITY",
-						query="from IncomeEnhancementActivity where stateCode=:stateCode and yearId=:yearId and userType=:userType and versionNo=:versionNo"),
+						query="from IncomeEnhancementActivity where stateCode=:stateCode and yearId=:yearId and userType=:userType and versionNo=:versionNo and isActive=true"),
 				@NamedQuery(name="UPDATE_FRZUNFREEZ_STATUS",
 					query="UPDATE IncomeEnhancementActivity SET  isFreeze=:isFreeze where incomeEnhancementId=:incomeEnhancementId"),
 				@NamedQuery(name="DELETE_INCM_ENHNCMNT_ACTIVITY",

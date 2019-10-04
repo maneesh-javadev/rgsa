@@ -63,6 +63,7 @@ public class AdminTechSupportServiceImpl implements AdminTechSupportService{
 				technicalSupport.setUserType(userPreference.getUserType());
 				technicalSupport.setCreatedBy(userPreference.getUserId());
 				technicalSupport.setLastUpdatedBy(userPreference.getUserId());
+				technicalSupport.setIsActive(Boolean.TRUE);
 				/*technicalSupport.setStatus("S");*/
 				
 				List<AdministrativeTechnicalSupportDetails> supportDetails=technicalSupport.getSupportDetails();
@@ -99,6 +100,7 @@ public class AdminTechSupportServiceImpl implements AdminTechSupportService{
 		administrativeTechnicalSupport.setCreatedBy(userPreference.getUserId());
 		administrativeTechnicalSupport.setLastUpdatedBy(userPreference.getUserId());
 		administrativeTechnicalSupport.setStatus(technicalSupport.getStatus());
+		administrativeTechnicalSupport.setIsActive(Boolean.TRUE);
 	
 
 		
@@ -128,6 +130,7 @@ public class AdminTechSupportServiceImpl implements AdminTechSupportService{
 			administrativeTechnicalSupport.setUserType(userPreference.getUserType());
 			administrativeTechnicalSupport.setCreatedBy(userPreference.getUserId());
 			administrativeTechnicalSupport.setLastUpdatedBy(userPreference.getUserId());
+			administrativeTechnicalSupport.setIsActive(Boolean.TRUE);
 /*			List<PostType> postTypes = getTypeOfPost();
 */			
 			/*int index = 0;*/
@@ -242,6 +245,7 @@ public AdministrativeTechnicalSupport fetchAdministrativeTechnicalSupport(final 
 			administrativeTechnicalSupport1.setUserType(userPreference.getUserType());
 			administrativeTechnicalSupport1.setLastUpdatedBy(userPreference.getUserId());
 			administrativeTechnicalSupport1.setVersionNo(administrativeTechnicalSupport.getVersionNo());
+			administrativeTechnicalSupport1.setIsActive(administrativeTechnicalSupport.getIsActive());
 		
 
 		if(administrativeTechnicalSupport.getDbFileName().equals("F"))

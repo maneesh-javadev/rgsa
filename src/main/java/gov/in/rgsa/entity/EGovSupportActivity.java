@@ -16,7 +16,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name="egov_support_activity",schema="rgsa")
-@NamedQuery(name="FETCH_EGOV_ACTIVITY", query="SELECT E FROM EGovSupportActivity E where stateCode =:stateCode and yearId =:yearId and userType =:userType and versionNo=:versionNo")
+@NamedQuery(name="FETCH_EGOV_ACTIVITY", query="SELECT E FROM EGovSupportActivity E where stateCode =:stateCode and yearId =:yearId and userType =:userType and versionNo=:versionNo and isActive=true")
 public class EGovSupportActivity {
 
 	@Id

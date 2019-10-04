@@ -21,8 +21,8 @@ import org.hibernate.annotations.UpdateTimestamp;
 @Entity
 @Table(name="admin_financial_data_cell_activity",schema="rgsa")
 @NamedQueries({
-	@NamedQuery(name="FETCH_APPROVED_ACTIVITY",query="from AdminAndFinancialDataActivity where userType=:userType and stateCode=:stateCode and yearId=:yearId and versionNo=:versionNo"),
-	@NamedQuery(name="FETCH_ADMIN_FIN_DATA_ACTIVITY",query="select A from AdminAndFinancialDataActivity A where stateCode=:stateCode and yearId=:yearId and userType=:userType and versionNo=:versionNo")
+	@NamedQuery(name="FETCH_APPROVED_ACTIVITY",query="from AdminAndFinancialDataActivity where userType=:userType and stateCode=:stateCode and yearId=:yearId and versionNo=:versionNo and isActive=true"),
+	@NamedQuery(name="FETCH_ADMIN_FIN_DATA_ACTIVITY",query="select A from AdminAndFinancialDataActivity A where stateCode=:stateCode and yearId=:yearId and userType=:userType and versionNo=:versionNo and isActive=true")
 })
 
 public class AdminAndFinancialDataActivity {

@@ -105,6 +105,7 @@ public class CapacityBuildingServiceImpl implements CapacityBuildingService{
 				capacityBuildingActivity.setUserType(userPreference.getUserType().charAt(0));
 				capacityBuildingActivity.setIsFreeze(false);
 				capacityBuildingActivity.setVersionNo(userPreference.getPlanVersion());
+				capacityBuildingActivity.setIsActive(true);
 
 				//commonRepository.update(capacityBuildingActivity);
 				List<CapacityBuildingActivityDetails> capacityBuildingActivityDetails = capacityBuildingActivity.getCapacityBuildingActivityDetails();
@@ -273,6 +274,7 @@ private void saveCapacityBuildingActivityAndDetailsForStateAndCec(CapacityBuildi
 		capacityBuildingActivity.setStateCode(userPreference.getStateCode());
 		capacityBuildingActivity.setUserType(userPreference.getUserType().charAt(0));
 		capacityBuildingActivity.setVersionNo(userPreference.getPlanVersion());
+		capacityBuildingActivity.setIsActive(true);
 		capacityBuildingActivity.setYearId(userPreference.getFinYearId());
 		return capacityBuildingActivity;
 	}

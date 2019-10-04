@@ -208,6 +208,7 @@ public class IecServiceImpl implements IecService {
 		iecActivity.setYearId(userPreference.getFinYearId());
 		iecActivity.setIsFreez(false);
 		iecActivity.setVersionNo(userPreference.getPlanVersion());
+		iecActivity.setIsActive(true);
 	}
 
 	private void saveForState(IecFormModel iecFormModel){

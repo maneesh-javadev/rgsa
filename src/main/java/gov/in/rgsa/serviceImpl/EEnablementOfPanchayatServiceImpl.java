@@ -68,6 +68,7 @@ public class EEnablementOfPanchayatServiceImpl implements EEnablementOfPanchayat
 					eEnablement.setStateCode(userPreference.getStateCode());
 					eEnablement.setVersionNo(userPreference.getPlanVersion());
 					eEnablement.setYearId(userPreference.getFinYearId());
+					eEnablement.setIsActive(Boolean.TRUE);
 					commonRepository.update(eEnablement);
 				
 				}
@@ -86,6 +87,7 @@ public class EEnablementOfPanchayatServiceImpl implements EEnablementOfPanchayat
 		eEnablement1.setStateCode(userPreference.getStateCode());
 		eEnablement1.setYearId(userPreference.getFinYearId());
 		eEnablement1.setVersionNo(userPreference.getPlanVersion());
+		eEnablement1.setIsActive(Boolean.TRUE);
 		eEnablement1.setUserType(userPreference.getUserType().charAt(0));
 		eEnablement1.setCreatedBy(userPreference.getUserId());
 		eEnablement1.setLastUpdatedBy(userPreference.getUserId());
@@ -115,6 +117,7 @@ public class EEnablementOfPanchayatServiceImpl implements EEnablementOfPanchayat
 			eenablement.setUserType(userPreference.getUserType().charAt(0));
 			eenablement.setLastUpdatedBy(userPreference.getUserId());
 			eenablement.setVersionNo(userPreference.getPlanVersion());
+			eenablement.setIsActive(Boolean.TRUE);
 			eenablement.setStatus("s");
 			eenablement.setLastUpdatedOn(new Date());
 			eenablement.setAdditionalRequirement(eEnablement.getAdditionalRequirement());

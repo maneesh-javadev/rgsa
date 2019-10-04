@@ -28,7 +28,7 @@ import org.hibernate.annotations.Where;
 @Entity
 @Table(name="institutional_infra_activity", schema = "rgsa")
 @NamedQueries({
-@NamedQuery(name="FETCH_ALL_INSTITUTIONAL_ACTIVITY",query="SELECT I FROM InstitutionalInfraActivityPlan I where stateCode =:stateCode and yearId =:yearId and userType =:userType and versionNumber=:versionNumber"),
+@NamedQuery(name="FETCH_ALL_INSTITUTIONAL_ACTIVITY",query="SELECT I FROM InstitutionalInfraActivityPlan I where stateCode =:stateCode and yearId =:yearId and userType =:userType and versionNumber=:versionNumber and isActive=true"),
 @NamedQuery(name="UPDATE_FREEZE_UNFREEZE_STATUS_Institutional",query="UPDATE InstitutionalInfraActivityPlan SET isFreeze = :isFreeze,additionalRequirement=:additionalRequirement,additionalRequirementDPRC=:additionalRequirementDPRC  where institutionalInfraActivityId=:institutionalInfraActivityId"),
 })
 public class InstitutionalInfraActivityPlan {

@@ -28,7 +28,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 @Entity
 @Table(name="pesa_plan", schema = "rgsa")
 
-@NamedQuery(name="FETCH_PESA_PLAN",query="SELECT PP FROM PesaPlan PP where stateCode=:stateCode and yearId=:yearId and userType=:userType and versionNo=:versionNo")
+@NamedQuery(name="FETCH_PESA_PLAN",query="SELECT PP FROM PesaPlan PP where stateCode=:stateCode and yearId=:yearId and userType=:userType and versionNo=:versionNo and isActive=true")
 public class PesaPlan {
 	
 	@Id

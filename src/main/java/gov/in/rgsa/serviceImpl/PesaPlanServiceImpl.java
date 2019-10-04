@@ -193,6 +193,7 @@ public class PesaPlanServiceImpl implements PesaPlanService {
 		pesaPlan.setStateCode(stateCode);
 		pesaPlan.setYearId(yearId);
 		pesaPlan.setVersionNo(userPreference.getPlanVersion()); // added by aashish barua on 11-09-2019
+		pesaPlan.setIsActive(Boolean.TRUE);
 		pesaPlan.setMenuId(userPreference.getMenuId());
 		pesaPlan.setUserType(userPreference.getUserType().charAt(0));
 		return pesaPlan;

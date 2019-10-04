@@ -24,7 +24,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 
 @Entity
 @Table(name="cb_activity", schema = "rgsa")
-@NamedQuery(name="FETCH_CAPACITY_BUILDING",query="SELECT cb FROM CapacityBuildingActivity cb left outer join fetch cb.capacityBuildingActivityDetails cbad where cb.stateCode=:stateCode and cb.userType=:userType and cb.yearId=:yearId and cb.versionNo=:versionNo order by cbad.capacityBuildingActivityDetailsId asc")
+@NamedQuery(name="FETCH_CAPACITY_BUILDING",query="SELECT cb FROM CapacityBuildingActivity cb left outer join fetch cb.capacityBuildingActivityDetails cbad where cb.stateCode=:stateCode and cb.userType=:userType and cb.yearId=:yearId and cb.versionNo=:versionNo and cb.isActive=true order by cbad.capacityBuildingActivityDetailsId asc")
 public class CapacityBuildingActivity {
 	
 	@Id

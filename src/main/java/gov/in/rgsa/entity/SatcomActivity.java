@@ -20,9 +20,9 @@ import org.hibernate.annotations.UpdateTimestamp;
 
 @Entity
 @Table(name="satcom_activity",schema="rgsa")
-@NamedQueries({@NamedQuery(name="FETCH_SATCOM_ACTIVITY_DETAILS",query="select sa from SatcomActivity sa  where sa.stateCode=:stateCode and sa.yearId=:yearId and sa.userType=:userType and versionNo=:versionNo"),
+@NamedQueries({@NamedQuery(name="FETCH_SATCOM_ACTIVITY_DETAILS",query="select sa from SatcomActivity sa  where sa.stateCode=:stateCode and sa.yearId=:yearId and sa.userType=:userType and versionNo=:versionNo and isActive=true"),
 @NamedQuery(name="GET_Satcom_ActivityAPPROVED_TRAINING", 
-query="SELECT SA from SatcomActivity SA RIGHT OUTER JOIN FETCH SA.activityDetails AD where SA.yearId=:yearId and SA.userType=:userType and SA.stateCode=:stateCode order by AD.satcomActivityDetailsId ")
+query="SELECT SA from SatcomActivity SA RIGHT OUTER JOIN FETCH SA.activityDetails AD where SA.yearId=:yearId and SA.userType=:userType and SA.stateCode=:stateCode and SA.isActive=true order by AD.satcomActivityDetailsId ")
 })
 public class SatcomActivity implements Serializable{
 	

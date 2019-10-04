@@ -23,9 +23,9 @@ import org.hibernate.annotations.UpdateTimestamp;
 
 @Entity
 @Table(name="e_enablement", schema="rgsa")
-@NamedQueries({@NamedQuery(name="FETCH_ENABLEMENT", query="SELECT E FROM EEnablement E where stateCode =:stateCode and yearId =:yearId and userType =:userType and versionNo=:versionNo")
+@NamedQueries({@NamedQuery(name="FETCH_ENABLEMENT", query="SELECT E FROM EEnablement E where stateCode =:stateCode and yearId =:yearId and userType =:userType and versionNo=:versionNo and isActive=true")
 ,@NamedQuery(name="GET_EENABLEMENT_APPROVED_TRAINING", 
-query="SELECT EE from EEnablement EE RIGHT OUTER JOIN FETCH EE.eEnablementDetails EED where EE.yearId=:yearId and EE.userType=:userType and EE.stateCode=:stateCode"),
+query="SELECT EE from EEnablement EE RIGHT OUTER JOIN FETCH EE.eEnablementDetails EED where EE.yearId=:yearId and EE.userType=:userType and EE.stateCode=:stateCode and EE.isActive=true"),
 })
 public class EEnablement implements Serializable{
 	private static final long serialVersionUID = 1L;
@@ -67,6 +67,9 @@ public class EEnablement implements Serializable{
 	
 	@Column(name="status")
 	private String status;
+	
+	@Column(name="is_active")
+	private Boolean isActive;
 
 
 	@OneToMany(cascade=CascadeType.ALL,mappedBy="eEnablement",fetch=FetchType.EAGER)
@@ -179,10 +182,11 @@ public class EEnablement implements Serializable{
 		this.createdOn = createdOn;
 	}
 
-	
-	
-	
-	
-	
+	public Boolean getIsActive() {
+		return isActive;
+	}
 
+	public void setIsActive(Boolean isActive) {
+		this.isActive = isActive;
+	}
 }

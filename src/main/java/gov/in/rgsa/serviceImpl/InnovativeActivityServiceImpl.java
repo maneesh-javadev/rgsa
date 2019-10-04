@@ -56,6 +56,7 @@ public class InnovativeActivityServiceImpl implements InnovativeActivityService 
 				activity.setIsFreeze(false);
 				activity.setUserType(userPreference.getUserType().charAt(0));
 				activity.setVersionId(userPreference.getPlanVersion());
+				activity.setIsActive(Boolean.TRUE);
 				commonRepository.update(activity);
 			}
 		}
@@ -74,6 +75,7 @@ public class InnovativeActivityServiceImpl implements InnovativeActivityService 
 			innocvativeActivity.setIsFreeze(false);
 			innocvativeActivity.setUserType(userPreference.getUserType().charAt(0));
 			innocvativeActivity.setVersionId(userPreference.getPlanVersion());
+			innocvativeActivity.setIsActive(Boolean.TRUE);
 			
 			for (InnovativeActivityDetails innovativeActivityDetails : innocvativeActivityDetails) {
 				if(userPreference.getUserType().equalsIgnoreCase("C")){
@@ -94,6 +96,7 @@ public class InnovativeActivityServiceImpl implements InnovativeActivityService 
 			innocvativeActivity.setIsFreeze(false);
 			innocvativeActivity.setUserType(userPreference.getUserType().charAt(0));
 			innocvativeActivity.setVersionId(userPreference.getPlanVersion());
+			innocvativeActivity.setIsActive(Boolean.TRUE);
 			
 			commonRepository.update(innocvativeActivity);
 		}
@@ -111,6 +114,7 @@ public class InnovativeActivityServiceImpl implements InnovativeActivityService 
 			innocvativeActivity.setIsFreeze(false);
 			innocvativeActivity.setUserType(userPreference.getUserType().charAt(0));
 			innocvativeActivity.setVersionId(userPreference.getPlanVersion());
+			innocvativeActivity.setIsActive(Boolean.TRUE);
 			
 			for (InnovativeActivityDetails innovativeActivityDetails : innocvativeActivityDetails) {
 				innovativeActivityDetails.setId(null);
@@ -181,6 +185,7 @@ public class InnovativeActivityServiceImpl implements InnovativeActivityService 
 			innovativeActivity.setStateCode(userPreference.getStateCode());
 			innovativeActivity.setYearId(userPreference.getFinYearId());
 			innovativeActivity.setVersionId(userPreference.getPlanVersion());
+			innovativeActivity.setIsActive(Boolean.TRUE);
 			innovativeActivity.setUserType(userPreference.getUserType().charAt(0));
 			innovativeActivity.setIsFreeze(true);
 			
@@ -193,7 +198,7 @@ public class InnovativeActivityServiceImpl implements InnovativeActivityService 
 			innovativeActivity.setIsFreeze(false);
 			innovativeActivity.setUserType(userPreference.getUserType().charAt(0));
 			innovativeActivity.setVersionId(userPreference.getPlanVersion());
-			
+			innovativeActivity.setIsActive(Boolean.TRUE);
 		}
 		
 		

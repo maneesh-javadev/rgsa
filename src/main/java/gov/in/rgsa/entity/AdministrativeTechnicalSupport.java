@@ -22,8 +22,8 @@ import org.hibernate.annotations.UpdateTimestamp;
 
 @Table(name="administrative_technical_support",schema="rgsa")
 @NamedQueries({@NamedQuery(name="GET_Admin_Technical_Support_APPROVED_TRAINING", 
-query="SELECT adm from AdministrativeTechnicalSupport adm RIGHT OUTER JOIN FETCH adm.supportDetails sd where adm.yearId=:yearId and adm.userType=:userType and adm.stateCode=:stateCode "),
-@NamedQuery(query="FROM AdministrativeTechnicalSupport adm left outer join fetch adm.supportDetails sd where adm.stateCode=:stateCode and adm.userType=:userType and adm.yearId=:yearId and adm.versionNo=:versionNo order by sd.id asc",name="FETCH_ADMIN_TECH_SUPPORT")})
+query="SELECT adm from AdministrativeTechnicalSupport adm RIGHT OUTER JOIN FETCH adm.supportDetails sd where adm.yearId=:yearId and adm.userType=:userType and adm.stateCode=:stateCode and adm.isActive=true"),
+@NamedQuery(query="FROM AdministrativeTechnicalSupport adm left outer join fetch adm.supportDetails sd where adm.stateCode=:stateCode and adm.userType=:userType and adm.yearId=:yearId and adm.versionNo=:versionNo and adm.isActive=true order by sd.id asc",name="FETCH_ADMIN_TECH_SUPPORT")})
 public class AdministrativeTechnicalSupport{
 	
 	/**

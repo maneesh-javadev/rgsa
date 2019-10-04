@@ -124,6 +124,7 @@ public void save(TrainingActivity activity) {
 		activity.setYearId(userPreference.getFinYearId());
 		activity.setVersionId(userPreference.getPlanVersion());
 		activity.setIsFreeze(false);
+		activity.setIsActive(true);
 		commonRepository.update(activity);
 		
 	}
@@ -164,6 +165,7 @@ public void save(TrainingActivity activity) {
 		trainingActivity.setYearId(userPreference.getFinYearId());
 		trainingActivity.setVersionId(userPreference.getPlanVersion());
 		trainingActivity.setIsFreeze(false);
+		trainingActivity.setIsActive(true);
 		commonRepository.update(trainingActivity);	
 			
 		
@@ -334,6 +336,7 @@ public void save(TrainingActivity activity) {
 		activity.setYearId(userPreference.getFinYearId());
 		activity.setVersionId(userPreference.getPlanVersion());
 		activity.setIsFreeze(false);
+		activity.setIsActive(true);
 		commonRepository.save(activity);
 		}
 		else
@@ -350,6 +353,7 @@ public void save(TrainingActivity activity) {
 			activity.setYearId(userPreference.getFinYearId());
 			activity.setVersionId(userPreference.getPlanVersion());
 			activity.setIsFreeze(false);
+			activity.setIsActive(true);
 			commonRepository.update(activity);
 		}
 	}
@@ -449,6 +453,7 @@ public void save(TrainingActivity activity) {
 				activity.setYearId(userPreference.getFinYearId());
 				activity.setVersionId(userPreference.getPlanVersion());
 				activity.setIsFreeze(false);
+				activity.setIsActive(true);
 				
 				
 				TrainingActivityDetails trainingActivityDetails=new TrainingActivityDetails();
@@ -828,6 +833,7 @@ public void save(TrainingActivity activity) {
 				activity.setYearId(userPreference.getFinYearId());
 				activity.setVersionId(userPreference.getPlanVersion());
 				activity.setIsFreeze(Boolean.FALSE);
+				activity.setIsActive(Boolean.TRUE);
 				activity.setAdditionalRequirement(fetchTraining.getAdditionalRequirement());
 				List<TrainingActivityDetails> trainingActivityDetailsList=new ArrayList<TrainingActivityDetails>();
 				TrainingActivityDetails trainingActivityDetails=null;

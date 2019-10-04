@@ -149,6 +149,7 @@ public class InstitutionalInfraActivityPlanServiceImpl implements InstitutionalI
 		institutionalInfraActivityPlan.setUserType(userPreference.getUserType());
 		institutionalInfraActivityPlan.setVersionNumber(userPreference.getPlanVersion());
 		institutionalInfraActivityPlan.setYearId(userPreference.getFinYearId());
+		institutionalInfraActivityPlan.setIsActive(Boolean.TRUE);
 		return institutionalInfraActivityPlan;
 	}
 	
@@ -160,6 +161,7 @@ public class InstitutionalInfraActivityPlanServiceImpl implements InstitutionalI
 		institutionalInfraActivityPlan.setUserType(userPreference.getUserType());
 		institutionalInfraActivityPlan.setVersionNumber(userPreference.getPlanVersion());
 		institutionalInfraActivityPlan.setYearId(userPreference.getFinYearId());
+		institutionalInfraActivityPlan.setIsActive(Boolean.TRUE);
 		return institutionalInfraActivityPlan;
 	}
 	

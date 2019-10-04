@@ -22,8 +22,8 @@ import org.hibernate.annotations.LazyCollectionOption;
 import org.hibernate.annotations.UpdateTimestamp;
 
 @Entity
-@NamedQueries({@NamedQuery(name="FETCH_INSTITUTE_HR_ACTIVITY",query="SELECT I FROM InstitueInfraHrActivity I where stateCode =:stateCode and yearId =:yearId and userType =:userType and versionNo=:versionNo")
-,@NamedQuery(name="FETCH_INSTITUTE_APPROVED_HR_ACTIVITY" ,query="SELECT I FROM InstitueInfraHrActivity I where stateCode =:stateCode and yearId =:yearId and userType =:userType")
+@NamedQueries({@NamedQuery(name="FETCH_INSTITUTE_HR_ACTIVITY",query="SELECT I FROM InstitueInfraHrActivity I where stateCode =:stateCode and yearId =:yearId and userType =:userType and versionNo=:versionNo and isActive=true")
+,@NamedQuery(name="FETCH_INSTITUTE_APPROVED_HR_ACTIVITY" ,query="SELECT I FROM InstitueInfraHrActivity I where stateCode =:stateCode and yearId =:yearId and userType =:userType and isActive=true")
 
 })
 

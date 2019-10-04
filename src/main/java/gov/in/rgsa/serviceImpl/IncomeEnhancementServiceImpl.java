@@ -71,6 +71,7 @@ public class IncomeEnhancementServiceImpl implements IncomeEnhancementService {
 				enhancementActivity.setIsFreeze(false);
 				enhancementActivity.setUserType(userPreference.getUserType().charAt(0));
 				enhancementActivity.setVersionNo(userPreference.getPlanVersion());
+				enhancementActivity.setIsActive(Boolean.TRUE);
 				commonRepository.update(enhancementActivity);
 			}
 		}
@@ -88,6 +89,7 @@ public class IncomeEnhancementServiceImpl implements IncomeEnhancementService {
 		enhancementActivity.setUserType(userPreference.getUserType().charAt(0));
 		enhancementActivity.setVersionNo(userPreference.getPlanVersion());
 		enhancementActivity.setYearId(userPreference.getFinYearId());
+		enhancementActivity.setIsActive(Boolean.TRUE);
 		
 		for(IncomeEnhancementDetails details :enhancementDetailsList) {
 			details.setIsActive(true);
@@ -109,6 +111,7 @@ public class IncomeEnhancementServiceImpl implements IncomeEnhancementService {
 		enhancementActivity.setUserType(userPreference.getUserType().charAt(0));
 		enhancementActivity.setVersionNo(userPreference.getPlanVersion());
 		enhancementActivity.setYearId(userPreference.getFinYearId());
+		enhancementActivity.setIsActive(Boolean.TRUE);
 		
 		for(IncomeEnhancementDetails details :enhancementDetailsList) {
 			details.setIsActive(true);
