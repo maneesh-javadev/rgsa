@@ -69,7 +69,7 @@ public class QprTrainingActivityController {
 	UserPreference userPreference;
 	
 	@RequestMapping(value="qprCapacityBuilding" , method=RequestMethod.GET)
-	public String qprGetFormCapacityBuilding(@ModelAttribute("QPR_CAPACITY_BUILDING")QprCbActivity qprCbActivity,Model model){
+	public String qprGetFormCapacityBuilding(@ModelAttribute("QPR_CAPACITY_BUILDING")QprCbActivity qprCbActivity,Model model ,RedirectAttributes redirectAttributes){
 		int quarterId = qprCbActivity.getShowQqrtrId();
 		int installmentNo = (quarterId < 3) ? 1 : 2; // installment number for qtrId 1 & 2 = 1 and 3 & 4 = 2
 		model.addAttribute("quarter_duration", progressReportService.getQuarterDurations());
@@ -79,7 +79,13 @@ public class QprTrainingActivityController {
 		if (quarterId == 3 || quarterId == 4) {
 			stateAllocation.add(progressReportService.fetchStateAllocationData(13, 1,progressReportService.getCurrentPlanCode()).get(0)); // total fund allocated in first installment
 			totalQuatorWiseFund = progressReportService.fetchTotalQuaterWiseFundData(userPreference.getStateCode(), 13);
-			model.addAttribute("TOTAL_FUND_USED_IN_QTR_1_AND_2", new ProgressReportController().calTotalFundUsedInQtr1And2(totalQuatorWiseFund));
+			double total_fund_used_in_qtr_1_2 = new ProgressReportController().calTotalFundUsedInQtr1And2(totalQuatorWiseFund);
+			if(total_fund_used_in_qtr_1_2 == 0) {
+				model.addAttribute("QTR_ID", 0);
+				model.addAttribute("QTR_ONE_TWO_FILLED", false);
+				return QPR_CAPACITY_BUILDING;
+			}
+			model.addAttribute("TOTAL_FUND_USED_IN_QTR_1_AND_2", total_fund_used_in_qtr_1_2);
 		}
 		
 		if(CollectionUtils.isNotEmpty(stateAllocation) && cbActivityApproved != null) {
@@ -123,12 +129,13 @@ public class QprTrainingActivityController {
 			}
 			/*----------------------------end here-------------------------------------------------- */
 			if(quarterId !=0) 
-				model.addAttribute("REMAINING_ADD_REQ", Integer.parseInt(progressReportService.getBalanceAdditionalReqiurment(13,quarterId)));
+				model.addAttribute("REMAINING_ADD_REQ", progressReportService.getBalanceAdditionalReqiurment(13,quarterId));
 			model.addAttribute("CB_MASTERS", cbMasters);
 			model.addAttribute("QTR_ID", quarterId);
 			model.addAttribute("FUND_ALLOCATED_BY_STATE", stateAllocation.get(0).getFundsAllocated());
 			model.addAttribute("CEC_APPROVED_ACTIVITY", cbActivityApproved);
 			model.addAttribute("SUBJECTS_LIST",trainingActivityService.subjectsList()); 
+			model.addAttribute("QTR_ONE_TWO_FILLED", true);
 			return QPR_CAPACITY_BUILDING;
 		}else {
 			return NO_FUND_ALLOCATED_JSP;
@@ -175,7 +182,7 @@ public class QprTrainingActivityController {
 		
 		if (qprCbActivity.getShowQqrtrId() == 0 || qprCbActivity.getOrigin() == null) {
 			logger.info("Reverting with new select.");
-			return  qprGetFormCapacityBuilding( qprCbActivity, model);
+			return  qprGetFormCapacityBuilding( qprCbActivity, model,redirectAttributes);
 		} else {
 			logger.info("Save procedure started");
 			List<QprCbActivityDetails> detailList = qprCbActivity.getQprCbActivityDetails();

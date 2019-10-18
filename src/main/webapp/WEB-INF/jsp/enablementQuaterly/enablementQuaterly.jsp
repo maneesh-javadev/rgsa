@@ -4,6 +4,7 @@
 <script>
 var  quator_id='${quarterId}';
 var remaining_add_req = '${REMAINING_ADD_REQ}';
+var qtr_1_2_filled='${QTR_ONE_TWO_FILLED}';
 var fund_allocated_by_state='${FUND_ALLOCATED_BY_STATE}';
 if(quator_id > 2){
 	var fund_allocated_in_pre_qtr = '${FUND_ALLOCATED_BY_STATE_PREVIOUS}';
@@ -11,6 +12,9 @@ if(quator_id > 2){
 }
 var fund_used='${FUND_USED_IN_OTHER_QUATOR}';
 $( document ).ready(function() {
+	if(qtr_1_2_filled == "false"){
+		alert('Please fill the quater 1 and 2 progress report first.');
+	}
 	$('#quaterId').val(quator_id);
 	calTotalExpenditure();
 	$(".validate").keypress(function (e) {
@@ -107,6 +111,14 @@ function calTotalExpenditure(){
 	$('#totalExpenditureId').val(total_expenditure + +$('#additionalReqId').val());
 }
 
+function FreezeAndUnfreeze(msg){
+	var componentId=5;
+	var qprActivityId=$('#qprActivityId').val();
+	var quaterId = $('#quaterId').val();
+	document.qprEnablement.method = "post";
+	document.qprEnablement.action = "freezeAndUnfreezeReport.html?<csrf:token uri='freezeAndUnfreezeReport.html'/>&componentId="+componentId+"&qprActivityId="+qprActivityId+"&quaterId="+quaterId+"&msg="+msg;
+	document.qprEnablement.submit();
+}
 </script>
 <section class="content">
 	<div class="container-fluid">
@@ -266,8 +278,8 @@ function calTotalExpenditure(){
 
 																	<input type="hidden" name="eEnablement.eEnablementId"
 															value="${Qpr_Enablement.eEnablement.eEnablementId}">
-														<input type="hidden" name="qprEEnablementId"
-															value="${Qpr_Enablement.qprEEnablementId}">
+														<%-- <input type="hidden" name="qprEEnablementId"
+															value="${Qpr_Enablement.qprEEnablementId}" id="qprActivityId"> --%>
 														<input type="hidden"
 															name="qprEnablementDetails[${count.index}].qprEEenablementDetailsId"
 															value="${EnablementDtlsList[count.index].qprEEenablementDetailsId}">
@@ -279,17 +291,17 @@ function calTotalExpenditure(){
 															<%-- <td><div align="center" id="noOfUnitCecId_${count.index}"><strong>${eEnablementReportDto[count.index].noOfUnit}</strong></div></td> --%>
 															<td><div align="center" id="fundCecId_${count.index}"><strong>${eEnablementReportDto[count.index].fund}</strong></div></td>
 
-															<td><input type="text" class="form-control Align-Right"
-																name="qprEnablementDetails[${count.index}].expenditureIncurred"
-																value="${obj.expenditureIncurred}" required="required"
+															<td><form:input class="form-control Align-Right"
+																path="qprEnablementDetails[${count.index}].expenditureIncurred"
+																value="${obj.expenditureIncurred}"
 																onkeyup="validateFundByAllocatedFund(${count.index});validateWithCorrespondingFund(${count.index});calTotalExpenditure()"
-																id="expenditureIncurred_${count.index}" required="required"></td>
+																id="expenditureIncurred_${count.index}" required="required" readonly="${Qpr_Enablement.isFreeze}" /></td>
 														</tr>
 													</c:forEach>
 													<tr>
 														<th><div align="center">Additional Requirement</div></th>
 														<th><div align="center" id="additionalReqStateId">${eEnablementsApproved.additionalRequirement }</div></th>
-														<td><input type="text" name="additionalRequirement" id="additionalReqId" value="${Qpr_Enablement.additionalRequirement}" class="form-control validate Align-Right" onkeyup="validateAddReq();calTotalExpenditure()"></td>
+														<td><form:input path="additionalRequirement" id="additionalReqId" value="${Qpr_Enablement.additionalRequirement}" class="form-control validate Align-Right" onkeyup="validateAddReq();calTotalExpenditure()" readonly="${Qpr_Enablement.isFreeze}" /></td>
 													</tr>
 
 																<tr>
@@ -327,6 +339,8 @@ function calTotalExpenditure(){
 																	<!-- ends here -->
 														<input type="hidden" name="eEnablement.eEnablementId"
 															value="${idEEnablement}">
+														<input type="hidden" name="qprEEnablementId"
+															value="${Qpr_Enablement.qprEEnablementId}" id="qprActivityId">	
 														<input type="hidden"
 															name="qprEnablementDetails[${count.index}].localBodyCode"
 															value="${localbody.localBodyCode}">
@@ -339,18 +353,18 @@ function calTotalExpenditure(){
 															</td>
 															<%-- <td><div align="center" id="noOfUnitCecId_${count.index}"><strong>${localbody.noOfUnit}</strong></div></td> --%>
 															<td><div align="center" id="fundCecId_${count.index}"><strong>${localbody.fund}</strong></div></td>
-															<td><input type="text"
+															<td><form:input
 																class="form-control Align-Right"
-																name="qprEnablementDetails[${count.index}].expenditureIncurred"
+																path="qprEnablementDetails[${count.index}].expenditureIncurred"
 																onkeyup="validateFundByAllocatedFund(${count.index});validateWithCorrespondingFund(${count.index});calTotalExpenditure()"
 																id="expenditureIncurred_${count.index}"
-																required="required"></td>
+																required="required" readonly="${Qpr_Enablement.isFreeze}" /></td>
 														</tr>
 													</c:forEach>
 													<tr>
 														<th>Additional Requirement</th>
 														<th id="additionalReqStateId"><div align="center">${eEnablementsApproved.additionalRequirement }</div></th>
-														<td><input type="text" name="additionalRequirement" id="additionalReqId" value="${Qpr_Enablement.additionalRequirement}" class="form-control validate Align-Right" onkeyup="validateAddReq();calTotalExpenditure()"></td>
+														<td><form:input path="additionalRequirement" id="additionalReqId" value="${Qpr_Enablement.additionalRequirement}" class="form-control validate Align-Right" onkeyup="validateAddReq();calTotalExpenditure()" readonly="${Qpr_Enablement.isFreeze}"/></td>
 													</tr>
 
 																<tr>
@@ -394,13 +408,17 @@ function calTotalExpenditure(){
 							<c:choose>
 								<c:when test="${not empty eEnablementReportDto}">
 									<div class="text-right">
-										<button type="submit" onclick="saveAndGetDataQtrRprt('save')" class="btn bg-green waves-effect">
-											SAVE</button>
-										<button type="button" onclick="onClear(this)"
-											class="btn bg-light-blue waves-effect">CLEAR</button>
-										<button type="button"
+										<form:button onclick="saveAndGetDataQtrRprt('save')" class="btn bg-green waves-effect" disabled="${Qpr_Enablement.isFreeze}">
+											SAVE</form:button>
+										<c:choose>
+											<c:when test="${Qpr_Enablement.isFreeze}"><form:button class="btn bg-orange waves-effect" onclick="FreezeAndUnfreeze('unfreeze')">UNFREEZE</form:button></c:when>
+											<c:otherwise><form:button class="btn bg-orange waves-effect" disabled="${DISABLE_FREEZE}" onclick="FreezeAndUnfreeze('freeze')">FREEZE</form:button></c:otherwise>
+										</c:choose>	
+										<form:button onclick="onClear(this)"
+											class="btn bg-light-blue waves-effect" disabled="${Qpr_Enablement.isFreeze}">CLEAR</form:button>
+										<form:button
 											onclick="onClose('home.html?<csrf:token uri='home.html'/>')"
-											class="btn bg-orange waves-effect">CLOSE</button>
+											class="btn bg-orange waves-effect">CLOSE</form:button>
 									</div>
 								</c:when>
 								<c:otherwise>

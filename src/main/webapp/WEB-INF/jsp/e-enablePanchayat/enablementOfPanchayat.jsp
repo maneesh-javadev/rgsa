@@ -74,7 +74,7 @@ function calculateGrandTotal(){
 							<c:otherwise><h2><spring:message code="Label.e-EnablementofPanchayats" htmlEscape="true" /></h2></c:otherwise>
 						</c:choose>
 					</div>
-					<form:form method="post" action="enablepanchayat.html" modelAttribute="ENABLEMENT_OF_PANCHAYAT_MODEL" id="myForm">
+					<form:form method="post" action="enablepanchayat.html" modelAttribute="ENABLEMENT_OF_PANCHAYAT_MODEL" id="myForm" onsubmit="disablingSave()">
 								<input type="hidden" name="<csrf:token-name/>"
 							value="<csrf:token-value uri="enablepanchayat.html" />" />
 					<div class="body">
@@ -162,7 +162,7 @@ function calculateGrandTotal(){
 						<c:if test="${Plan_Status eq true}">
 							<input type="hidden" id="status" name="status">
 							<c:if test="${enablement.status eq 's' || enablement.status eq 'u' || enablement.status == undefined}">
-								<button type="submit" onclick="setStatus('s')" class="btn bg-green waves-effect"><spring:message code="Label.SAVE" htmlEscape="true" /></button>
+								<button type="submit" onclick="setStatus('s')" class="btn bg-green waves-effect save-button"><spring:message code="Label.SAVE" htmlEscape="true" /></button>
 							</c:if>
 							<c:if test="${enablement.status != undefined}">
 							<c:if test="${enablement.status eq 's' || enablement.status eq 'u' || enablement.status == undefined}">

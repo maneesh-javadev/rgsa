@@ -46,9 +46,32 @@ public class PesaQtlServiceImpl implements PesaQtlService {
         qParams.put("userType", "C");
 
         List<QprQuartProgress> qprQuarts = commonRepository.findAll("FETCH_QPR_PESA", qParams);
+        Map<String, Object> map = new HashMap<>();
+        map.put("quarterId", quarterId);
+        map.put("pesaPlanId", qprQuarts.get(0).getPesaPlanId());
+        List<QprPesa> listExceptCurrentQtr=commonRepository.findAll("FETCH_QPR_PESA_EXCEPT_THIS_QTR_ID", map);
         Map<String, Object> response = new HashMap<>();
         List<Map<String, Object>> expList = new ArrayList<>();
-        boolean topInserted = false, isNew = true;
+        boolean topInserted = false, isNew = true , qtrOneAndTwoNotPresent=false;
+        int totalExpendIncuuredInQtr1and2=0;
+        if(!listExceptCurrentQtr.isEmpty() && quarterId >= 3) {
+        	List<QprPesaDetails> detailListExceptCurrentQtr = new ArrayList<QprPesaDetails>();
+        	for(QprPesa qPesa : listExceptCurrentQtr) {
+        		if(qPesa.getQprQuarterDetail().getQtrId() < 3) {
+        		detailListExceptCurrentQtr.addAll(qPesa.getQprPesaDetails());
+        		}
+        	}
+        	if(!detailListExceptCurrentQtr.isEmpty()) {
+        		for(QprPesaDetails detail : detailListExceptCurrentQtr) {
+        			if(detail.getExpenditureIncurred() != null) {
+        				totalExpendIncuuredInQtr1and2 += detail.getExpenditureIncurred();
+        			}
+        		}
+        	}
+        }
+        if(totalExpendIncuuredInQtr1and2 == 0 && quarterId >= 3) {
+        	qtrOneAndTwoNotPresent = true;
+        }
         for(QprQuartProgress qprQuart: qprQuarts) {
 
             if(!topInserted) {
@@ -61,6 +84,7 @@ public class PesaQtlServiceImpl implements PesaQtlService {
                 response.put("isFreeze", qprQuart.getIsFreeze()); 
                 response.put("userType", userType);
                 response.put("addReqUsed", qprQuart.getAddreqused());
+                response.put("qtrOneAndTwoNotPresent", qtrOneAndTwoNotPresent);
                 topInserted = true;
             }
             Map<String, Object> single = new HashMap<>();
@@ -157,7 +181,9 @@ public class PesaQtlServiceImpl implements PesaQtlService {
                 if(otherQprDetail.getQprPesa().getQprQuarterDetail().getQtrId() < qprQuartReply.getQuarterId())
                     amountSpent += otherQprDetail.getExpenditureIncurred();
             }
-            Double maxAllowedExpenditure = pesaPlanDetails.getFunds() - amountSpent;
+            Double maxAllowedExpenditure = 0d;
+            if(pesaPlanDetails.getFunds() != null) 
+            	maxAllowedExpenditure= pesaPlanDetails.getFunds() - amountSpent;
 
             if(exp.getQprPesaDetailsId() == -1) {
                 qprPesaDetails = new QprPesaDetails();

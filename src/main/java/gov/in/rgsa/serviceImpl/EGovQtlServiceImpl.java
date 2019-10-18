@@ -35,9 +35,34 @@ public class EGovQtlServiceImpl implements EGovQtlService {
         qParams.put("yearId", finYearId);
         qParams.put("userType", Users.getTypeForCEC());
         List<QprEGovResponse> qprEGovs = commonRepository.findAll("FETCH_QPR_EGOV_SUPPORT", qParams);
+        Map<String, Object> map = new HashMap<>();
+        map.put("quarterId", quarterId);
+        map.put("eGovSupportActivityId", qprEGovs.get(0).getEgovSupportActivityId());
+        List<QprEGov> listExceptCurrentQtr=commonRepository.findAll("FETCH_QPR_EGOV_EXCEPT_THIS_QTR_ID", map);
         Map<String, Object> response = new HashMap<>();
         List<Map<String, Object>> expList = new ArrayList<>();
-        boolean topInserted = false, isNew = true;
+        boolean topInserted = false, isNew = true , qtrOneAndTwoNotPresent=false;
+        int totalExpendIncuuredInQtr1and2=0;
+        if(!listExceptCurrentQtr.isEmpty() && quarterId >= 3) {
+        	List<QprEGovDetails> detailListExceptCurrentQtr = new ArrayList<QprEGovDetails>();
+        	for(QprEGov qEgov : listExceptCurrentQtr) {
+        		if(qEgov.getQprQuarterDetail().getQtrId() < 3) {
+        			Map<String, Object> innerMap = new HashMap<>();
+        			innerMap.put("qprEgovId", qEgov.getQprEgovId());
+        		detailListExceptCurrentQtr.addAll(commonRepository.findAll("DETAILS_BY_QPR_EGOV_ACTIVITY_ID", innerMap));
+        		}
+        	}
+        	if(!detailListExceptCurrentQtr.isEmpty()) {
+        		for(QprEGovDetails detail : detailListExceptCurrentQtr) {
+        			if(detail.getExpenditureIncurred() != null) {
+        				totalExpendIncuuredInQtr1and2 += detail.getExpenditureIncurred();
+        			}
+        		}
+        	}
+        }
+        if(totalExpendIncuuredInQtr1and2 == 0 && quarterId >= 3) {
+        	qtrOneAndTwoNotPresent = true;
+        }
         for(QprEGovResponse qprEGov: qprEGovs) {
 
             if(!topInserted) {
@@ -55,7 +80,7 @@ public class EGovQtlServiceImpl implements EGovQtlService {
                 response.put("addReqDpmuApproved", qprEGov.getAddReqDpmuApproved());
                 response.put("addReqSpmuUsed", qprEGov.getAddReqSpmuUsed());
                 response.put("addReqDpmuUsed", qprEGov.getAddReqDpmuUsed());
-
+                response.put("qtrOneAndTwoNotPresent", qtrOneAndTwoNotPresent);
                 topInserted = true;
             }
             Map<String, Object> single = new HashMap<>();

@@ -8,9 +8,11 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
 @Entity
+@NamedQuery(name="DETAILS_BY_QPR_EGOV_ACTIVITY_ID",query="from QprEGovDetails where qprEgov.qprEgovId=:qprEgovId")
 @Table(name="qpr_egov_details", schema="rgsa")
 public class QprEGovDetails
 {

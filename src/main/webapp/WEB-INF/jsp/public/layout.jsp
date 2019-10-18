@@ -220,7 +220,7 @@ function allPolicies(id) {
 													Connaught Place, New Delhi - 110001</span></p> 
 													
 						<p style="color: black;"><i class="fa fa-envelope fa-1x" aria-hidden="true"></i> <strong style="font-size: 16px;">Email ID : </strong><span>mis-rgsa@gov.in</span></p> 							
-						<p style="color: black;"><i class="fa fa-phone-square fa-1x" aria-hidden="true"></i> <strong style="font-size: 16px;">Helpdesk : </strong><span>011-24305484</span></p>
+						<p style="color: black;"><i class="fa fa-phone-square fa-1x" aria-hidden="true"></i> <strong style="font-size: 16px;">Helpdesk : </strong><span>011-24305284</span></p>
 					
 				</div>
 				</div>

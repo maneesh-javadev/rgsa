@@ -100,7 +100,8 @@ import gov.in.rgsa.outbound.QprQuartProgress;
 				resultClass = QprQuartProgress.class
 		)
 })
-public class QprPesa {
+@NamedQuery(name="FETCH_QPR_PESA_EXCEPT_THIS_QTR_ID",query="from QprPesa where pesaPlan.pesaPlanId=:pesaPlanId and qprQuarterDetail.qtrId!=:quarterId")
+public class QprPesa  implements IFreezable{
 
 
 	@Id

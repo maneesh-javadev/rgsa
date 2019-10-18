@@ -48,7 +48,11 @@ publicModule.controller("pesaPlanQController", [ '$scope', '$http',
                 if(!receivedData){
                     receivedData = null;
                 }
-                load(receivedData);
+                if(!receivedData.qtrOneAndTwoNotPresent){
+                	load(receivedData);
+                }else{
+                	toastr.error('Please fill progress report of quater 1 and 2 first.');
+                }
             }, function(error){
                 toastr.error(JSON.stringify(error, "\t"));
             }

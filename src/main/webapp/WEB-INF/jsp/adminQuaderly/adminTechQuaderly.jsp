@@ -2,6 +2,7 @@
 <script type="text/javascript"> 
 
 var quater_id = '${QTR_ID}';
+var qtr_1_2_filled='${QTR_ONE_TWO_FILLED}';
 var remaining_add_req = '${REMAINING_ADD_REQ}';
 var fund_allocated_by_state='${FUND_ALLOCATED_BY_STATE}';
 var fund_used='${FUND_USED_IN_OTHER_QUATOR}';
@@ -10,6 +11,9 @@ if(quater_id > 2){
 	var fund_used_in_qtr_1_and_2 = '${TOTAL_FUND_USED_IN_QTR_1_AND_2}';
 }
 $( document ).ready(function() {
+	if(qtr_1_2_filled == "false"){
+		alert('Please fill the quater 1 and 2 progress report first.');
+	}
 	$('#quaterDropDownId').val(quater_id);
 	showTablediv();
 	calTotalExpenditure()
@@ -111,6 +115,15 @@ function calTotalExpenditure(){
 	}
 	$('#totalExpenditureId').val(total_expenditure + +$('#additionalReqId').val());
 }
+
+function FreezeAndUnfreeze(msg){
+	var componentId=4;
+	var qprActivityId=$('#qprActivityId').val();
+	var quaterId = $('#quaterDropDownId').val();
+	document.administrativeTechnicalProgress.method = "post";
+	document.administrativeTechnicalProgress.action = "freezeAndUnfreezeReport.html?<csrf:token uri='freezeAndUnfreezeReport.html'/>&componentId="+componentId+"&qprActivityId="+qprActivityId+"&quaterId="+quaterId+"&msg="+msg;
+	document.administrativeTechnicalProgress.submit();
+}
 </script>
 <section class="content">
 	<div class="container-fluid">
@@ -182,7 +195,7 @@ function calTotalExpenditure(){
 											</c:choose>
 											<!-- ends here -->
 
-											<input type="hidden" name="atsId" value="${ADMINISTRATIVE_TECHNICAL_PROGRESS.atsId}"><!-- progress report main table id -->
+											<input type="hidden" name="atsId" id="qprActivityId" value="${ADMINISTRATIVE_TECHNICAL_PROGRESS.atsId}"><!-- progress report main table id -->
 											<input type="hidden" name="administrativeTechnicalDetailProgress[${count.index}].atsDetailsProgressId"
 												value="${ADMINISTRATIVE_TECHNICAL_PROGRESS.administrativeTechnicalDetailProgress[count.index].atsDetailsProgressId}">
 											<input type="hidden" name="administrativeTechnicalDetailProgress[${count.index}].postType.postId"
@@ -194,21 +207,21 @@ function calTotalExpenditure(){
 												<td id="noOfUnitCecId_${count.index}"><strong>${obj.noOfUnits}</strong></td>
 												<td><strong>${obj.unitCost}</strong></td>
 												<td id="fundCecId_${count.index}"><strong>${obj.funds}</strong></td>
-												<td><input type="text"
-													name="administrativeTechnicalDetailProgress[${count.index}].noOfUnitCompleted" id="noOfUnitCompleted_${count.index}"
+												<td><form:input
+													path="administrativeTechnicalDetailProgress[${count.index}].noOfUnitCompleted" id="noOfUnitCompleted_${count.index}"
 													value="${ADMINISTRATIVE_TECHNICAL_PROGRESS.administrativeTechnicalDetailProgress[count.index].noOfUnitCompleted}"
-													class="form-control validate" onkeyup="validateNoOfUnits(${count.index});"></td>
-												<td><input type="text"
-													name="administrativeTechnicalDetailProgress[${count.index}].expenditureIncurred" id="expenditureIncurred_${count.index}"
+													class="form-control validate" onkeyup="validateNoOfUnits(${count.index});" readonly="${ADMINISTRATIVE_TECHNICAL_PROGRESS.isFreeze}"/></td>
+												<td><form:input 
+													path="administrativeTechnicalDetailProgress[${count.index}].expenditureIncurred" id="expenditureIncurred_${count.index}"
 													value="${ADMINISTRATIVE_TECHNICAL_PROGRESS.administrativeTechnicalDetailProgress[count.index].expenditureIncurred}"
-													class="form-control validate" onkeyup="validateFundByAllocatedFund(${count.index});validateWithCorrespondingFund(${count.index});isNoOfUnitAndExpInurredFilled(${count.index});calTotalExpenditure()"></td>
+													class="form-control validate" onkeyup="validateFundByAllocatedFund(${count.index});validateWithCorrespondingFund(${count.index});isNoOfUnitAndExpInurredFilled(${count.index});calTotalExpenditure()" readonly="${ADMINISTRATIVE_TECHNICAL_PROGRESS.isFreeze}"/></td>
 											</tr>
 										</c:forEach>
 										<tr>
 											<th colspan="2"><div align="center">Additional Requirement</div></th>
 											<th colspan="3"><div align="center" id="additionalReqStateId">${APPROVED_ADMIN_TECH_ACT.additionalRequirement }</div></th>
 											<td colspan="2"></td>
-											<td><input type="text" name="additionalRequirement" id="additionalReqId" value="${ADMINISTRATIVE_TECHNICAL_PROGRESS.additionalRequirement}" class="form-control validate Align-Right" onkeyup="validateAddReq();calTotalExpenditure()"></td>
+											<td><form:input path="additionalRequirement" id="additionalReqId" value="${ADMINISTRATIVE_TECHNICAL_PROGRESS.additionalRequirement}" class="form-control validate Align-Right" onkeyup="validateAddReq();calTotalExpenditure()" readonly="${ADMINISTRATIVE_TECHNICAL_PROGRESS.isFreeze}" /></td>
 										</tr>
 										
 										<tr>
@@ -219,12 +232,15 @@ function calTotalExpenditure(){
 									</tbody>
 								</table>
 								<div class="text-right">
-									<button type="button" onclick="saveAndGetDataQtrRprt('save')" class="btn bg-green waves-effect">SAVE</button>
-									<button type="button" onclick="onClear(this)"
-										class="btn bg-light-blue waves-effect">CLEAR</button>
-									<button type="button"
-										onclick="onClose('home.html?<csrf:token uri='home.html'/>')"
-										class="btn bg-orange waves-effect">CLOSE</button>
+									<form:button onclick="saveAndGetDataQtrRprt('save')" class="btn bg-green waves-effect" disabled="${ADMINISTRATIVE_TECHNICAL_PROGRESS.isFreeze}">SAVE</form:button>
+									<c:choose>
+										<c:when test="${ADMINISTRATIVE_TECHNICAL_PROGRESS.isFreeze}"><form:button class="btn bg-orange waves-effect" onclick="FreezeAndUnfreeze('unfreeze')">UNFREEZE</form:button></c:when>
+										<c:otherwise><form:button class="btn bg-orange waves-effect" disabled="${DISABLE_FREEZE}" onclick="FreezeAndUnfreeze('freeze')">FREEZE</form:button></c:otherwise>
+									</c:choose>
+									
+									<button type="button" onclick="onClear(this)" class="btn bg-light-blue waves-effect" disabled="${ADMINISTRATIVE_TECHNICAL_PROGRESS.isFreeze}">CLEAR</button>
+									<button type="button" onclick="onClose('home.html?<csrf:token uri='home.html'/>')"
+										class="btn bg-red waves-effect">CLOSE</button>
 								</div>
 								</div>
 							</div>

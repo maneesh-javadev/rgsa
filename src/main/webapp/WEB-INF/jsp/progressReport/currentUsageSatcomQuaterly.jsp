@@ -2,6 +2,7 @@
 <script>
 var quator_id='${QTR_ID}';
 var remaining_add_req = '${REMAINING_ADD_REQ}';
+var qtr_1_2_filled='${QTR_ONE_TWO_FILLED}';
 var fund_allocated_by_state='${FUND_ALLOCATED_BY_STATE}';
 var fund_used='${FUND_USED_IN_OTHER_QUATOR}';
 if(quator_id > 2){
@@ -9,6 +10,9 @@ if(quator_id > 2){
 	var fund_used_in_qtr_1_and_2 = '${TOTAL_FUND_USED_IN_QTR_1_AND_2}';
 }
 $('document').ready(function() {
+	if(qtr_1_2_filled == "false"){
+		alert('Please fill the quater 1 and 2 progress report first.');
+	}
 	$('#qtrId').val(quator_id);
 	$('#qtrDropDownId').val(quator_id);
 	showTable();
@@ -112,6 +116,15 @@ function calTotalExpenditure(){
 	}
 	$('#totalExpenditureId').val(total_expenditure + +$('#additionalReqId').val());
 }
+
+function FreezeAndUnfreeze(msg){
+	var componentId=7;
+	var qprActivityId=$('#qprActivityId').val();
+	var quaterId = $('#qtrDropDownId').val();
+	document.satcomActivityProgress.method = "post";
+	document.satcomActivityProgress.action = "freezeAndUnfreezeReport.html?<csrf:token uri='freezeAndUnfreezeReport.html'/>&componentId="+componentId+"&qprActivityId="+qprActivityId+"&quaterId="+quaterId+"&msg="+msg;
+	document.satcomActivityProgress.submit();
+}
 </script>
 <section class="content">
 	<div class="container-fluid">
@@ -179,8 +192,8 @@ function calTotalExpenditure(){
 									<td id="fundCecId_${index.index}"><div align="center"><strong>${detailObjCec.funds}</strong></div></td>
 									<c:choose>
 										<c:when test="${not empty QPR_DATA_BASED_CEC_ACT_ID.satcomActivityProgressDetails }">
-											<td><input type="text" name="satcomActivityProgressDetails[${index.index}].noOfUnitCompleted" class="form-control validate" style="text-align: right;" id="noOfUnitCompleted_${index.index}" value="${QPR_DATA_BASED_CEC_ACT_ID.satcomActivityProgressDetails[index.index].noOfUnitCompleted }" onkeyup="validateNoOfUnits(${index.index});" required="required"/></td>
-											<td><input type="text" name="satcomActivityProgressDetails[${index.index}].expenditureIncurred" class="form-control validate" style="text-align: right;" value="${QPR_DATA_BASED_CEC_ACT_ID.satcomActivityProgressDetails[index.index].expenditureIncurred }" id="expenditureIncurred_${index.index}" onkeyup="validateFundByAllocatedFund(${index.index});isNoOfUnitAndExpInurredFilled(${index.index});validateWithCorrespondingFund(${index.index});calTotalExpenditure()" required="required"/></td>
+											<td><form:input path="satcomActivityProgressDetails[${index.index}].noOfUnitCompleted" class="form-control validate" style="text-align: right;" id="noOfUnitCompleted_${index.index}" value="${QPR_DATA_BASED_CEC_ACT_ID.satcomActivityProgressDetails[index.index].noOfUnitCompleted }" onkeyup="validateNoOfUnits(${index.index});" required="required" readonly="${QPR_DATA_BASED_CEC_ACT_ID.isFreeze}"/></td>
+											<td><form:input path="satcomActivityProgressDetails[${index.index}].expenditureIncurred" class="form-control validate" style="text-align: right;" value="${QPR_DATA_BASED_CEC_ACT_ID.satcomActivityProgressDetails[index.index].expenditureIncurred }" id="expenditureIncurred_${index.index}" onkeyup="validateFundByAllocatedFund(${index.index});isNoOfUnitAndExpInurredFilled(${index.index});validateWithCorrespondingFund(${index.index});calTotalExpenditure()" required="required" readonly="${QPR_DATA_BASED_CEC_ACT_ID.isFreeze}" /></td>
 										</c:when>
 										<c:otherwise>
 											<td><input type="text" name="satcomActivityProgressDetails[${index.index}].noOfUnitCompleted" class="form-control validate" style="text-align: right;" id="noOfUnitCompleted_${index.index}" onkeyup="validateNoOfUnits(${index.index});" required="required"/></td>
@@ -194,7 +207,7 @@ function calTotalExpenditure(){
 										<th colspan="2"><div align="center">Additional Requirement</div></th>
 										<th colspan="3"><div align="center" id="additionalReqStateId">${SATCOM_ACTIVITY_APPROVED.additionalRequirement }</div></th>
 										<td></td>
-										<td><input type="text" name="additionalRequirement" id="additionalReqId" value="${QPR_DATA_BASED_CEC_ACT_ID.additionalRequirement}" class="form-control validate" style="text-align: right;" onkeyup="validateAddReq();calTotalExpenditure()"></td>
+										<td><form:input path="additionalRequirement" id="additionalReqId" value="${QPR_DATA_BASED_CEC_ACT_ID.additionalRequirement}" class="form-control validate" style="text-align: right;" onkeyup="validateAddReq();calTotalExpenditure()" readonly="${QPR_DATA_BASED_CEC_ACT_ID.isFreeze}" /></td>
 									</tr>
 									
 										<tr>
@@ -210,21 +223,26 @@ function calTotalExpenditure(){
 								</tbody>
 							</table>
 								<div class="text-right">
-									<button type="button" onclick="saveAndGetDataQtrRprt('save')" class="btn bg-green waves-effect">
-										SAVE</button>
-									<button type="button" onclick="onClear(this)"
-										class="btn bg-light-blue waves-effect">CLEAR</button>
-									<button type="button"
+									<form:button onclick="saveAndGetDataQtrRprt('save')" class="btn bg-green waves-effect" disabled="${QPR_DATA_BASED_CEC_ACT_ID.isFreeze}">
+										SAVE</form:button>
+									<c:choose>
+										<c:when test="${QPR_DATA_BASED_CEC_ACT_ID.isFreeze}"><form:button class="btn bg-orange waves-effect" onclick="FreezeAndUnfreeze('unfreeze')">UNFREEZE</form:button></c:when>
+										<c:otherwise><form:button class="btn bg-orange waves-effect" disabled="${DISABLE_FREEZE}" onclick="FreezeAndUnfreeze('freeze')">FREEZE</form:button></c:otherwise>
+									</c:choose>
+									<form:button onclick="onClear(this)"
+										class="btn bg-light-blue waves-effect" disabled="${QPR_DATA_BASED_CEC_ACT_ID.isFreeze}">CLEAR</form:button>
+									<form:button
 										onclick="onClose('home.html?<csrf:token uri='home.html'/>')"
-										class="btn bg-orange waves-effect">CLOSE</button>
+										class="btn bg-orange waves-effect">CLOSE</form:button>
 								</div>
 							</div>
 						</div>
+						
 						<!--hidden fields  -->
 						<input type="hidden" id="qtrId" name="qtrIdJsp1" />
 						<input type="hidden" id="origin" name="origin" />
 						<input type="hidden" name="satcomActivity.satcomActivityId"  value="${satcomActivityId}">
-						<input type="hidden" name="satcomActivityProgressId"  value="${PROGRESS_REPORT_ACT_ID}">
+						<input type="hidden" name="satcomActivityProgressId"  value="${PROGRESS_REPORT_ACT_ID}" id="qprActivityId">
 						
 					</form:form>
 				</div>

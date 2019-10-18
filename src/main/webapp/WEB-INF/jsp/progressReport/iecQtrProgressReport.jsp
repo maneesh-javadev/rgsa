@@ -3,14 +3,17 @@
 <script>
 var quator_id='${QTR_ID}';
 var fund_allocated_by_state='${FUND_ALLOCATED_BY_STATE}';
+var qtr_1_2_filled='${QTR_ONE_TWO_FILLED}';
 var fund_used='${FUND_USED_IN_OTHER_QUATOR}';
 if(quator_id > 2){
 	var fund_allocated_in_pre_qtr = '${FUND_ALLOCATED_BY_STATE_PREVIOUS}';
 	var fund_used_in_qtr_1_and_2 = '${TOTAL_FUND_USED_IN_QTR_1_AND_2}';
 }
 $( document ).ready(function() {
+	if(qtr_1_2_filled == "false"){
+		alert('Please fill the quater 1 and 2 progress report first.');
+	}
 	$('#quaterId').val(quator_id);
-	
 	$(".validate").keypress(function (e) {
 	    //if the letter is not digit then display error and don't type anything
 	    if (e.which != 8 && e.which != 0 && (e.which < 48 || e.which > 57)) {
@@ -71,6 +74,15 @@ function validateWithCorrespondingFund(){
 		$('#expenditureIncurred').val('');
 		$('#expenditureIncurred').focus();
 	}
+}
+
+function FreezeAndUnfreeze(msg){
+		var componentid=11;
+		var qprActivityId=$('#qprActivityId').val();
+		var quaterId = $('#quaterId').val();
+		document.iecQuater.method = "post";
+		document.iecQuater.action = "freezeAndUnfreezeReport.html?<csrf:token uri='freezeAndUnfreezeReport.html'/>&componentid="+componentid+"&qprActivityId="+qprActivityId+"&quaterId="+quaterId+"&msg="+msg;
+		document.iecQuater.submit();
 }
 </script>
 <section class="content">
@@ -163,12 +175,14 @@ function validateWithCorrespondingFund(){
 									</tbody>
 								</table>
 								<!-- HIDDEN FIELDS -->
-								<input type="hidden" name="qprIecId" value="${IEC_ACTIVITY_PROGRESS.qprIecId}" />
+								<input type="hidden" name="qprIecId" value="${IEC_ACTIVITY_PROGRESS.qprIecId}" id="qprActivityId"/>
 								<input type="hidden" name="iecQuaterDetails.qprIecDetailsId" value="${IEC_ACTIVITY_PROGRESS.iecQuaterDetails.qprIecDetailsId}" />
 								
 								<div class="text-right">
 									<button type="button" onclick="saveAndGetDataQtrRprt('save')" id="saveButtn"
 										class="btn bg-green waves-effect">SAVE</button>
+									<button type="button" onclick="FreezeAndUnfreeze('freeze')"
+										class="btn bg-green waves-effect">FREEZE</button>	
 									<button type="button" onclick="onClear(this)"
 										class="btn bg-light-blue waves-effect">CLEAR</button>
 									<button type="button"

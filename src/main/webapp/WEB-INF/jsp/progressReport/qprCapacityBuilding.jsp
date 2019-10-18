@@ -2,6 +2,7 @@
 <script>
 var quater_id = '${QTR_ID}';
 var remaining_add_req = '${REMAINING_ADD_REQ}';
+var qtr_1_2_filled='${QTR_ONE_TWO_FILLED}';
 var fund_allocated_by_state='${FUND_ALLOCATED_BY_STATE}';
 var fund_used='${FUND_USED_IN_OTHER_QUATOR}';
 if(quater_id > 2){
@@ -12,6 +13,9 @@ $('document').ready(function(){
 	$('#quaterDropDownId').val(quater_id);
 	showTablediv();
 	calTotalExpenditure();
+	if(qtr_1_2_filled == "false"){
+		alert('Please fill the quater 1 and 2 progress report first.');
+	}
 });
 
 function showTablediv(){
@@ -203,6 +207,14 @@ function calTotalExpenditure(){
 												
 													<c:when test="${index.index eq 3 }">
 														<td><button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#tnaTrainingEavltionModal2">Fill Details</button></td>
+													</c:when>
+													
+													<c:when test="${index.index eq 4 }">
+														<td><button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#exposureVisitState">Fill Details</button></td>
+													</c:when>
+													
+													<c:when test="${index.index eq 5 }">
+														<td><button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#exposureVisitOutside">Fill Details</button></td>
 													</c:when>
 													
 													<c:when test="${index.index eq 6}">
@@ -577,6 +589,186 @@ function calTotalExpenditure(){
 									</div>
 								</div>
 								<!-- Modal content ends here-->
+								
+								<!-- Modal content exposure visit inside-->
+									<div id="exposureVisitState" class="modal fade" role="dialog">
+									<div class="modal-dialog modal-lg">
+										<div class="modal-content modal-lg">
+											<div class="modal-header">
+												<button type="button" class="close" data-dismiss="modal">&times;</button>
+											</div>
+											<div class="modal-body">
+												<div class="row">
+													<div class="form-group">
+														<div class="col-sm-5">
+															<p class="text-justify"><strong>&nbsp;&nbsp;Exposure visit (inside state)</strong></p>
+														</div>
+													</div>
+												</div>
+												<div class="row clearfix">
+
+													<div class="body">
+														<div class="table-responsive">
+															<table class="table table-bordered table-hover">
+																<thead>
+																	<tr>
+																		<th rowspan="3" style="padding-bottom: 4%;"><div align="center"><strong>Participants category</strong></div></th>
+																		<th colspan="4"><div align="center"><strong>Elected Representatives</strong></div></th>
+																		<th colspan="2" rowspan="2" style="padding-bottom: 2%;"><div align="center"><strong>Functionaries & other stakeholders</strong></div></th>
+																	</tr>
+																	<tr>
+																		<th colspan="2"><div align="center"><strong>Sarpanch</strong></div></th>
+																		<th colspan="2"><div align="center"><strong>Other ERs</strong></div></th>
+																	</tr>
+																	<tr>
+																		<th><div align="center"><strong>Male</strong></div></th>
+																		<th><div align="center"><strong>Female</strong></div></th>
+																		<th><div align="center"><strong>Male</strong></div></th>
+																		<th><div align="center"><strong>Female</strong></div></th>
+																		<th><div align="center"><strong>Male</strong></div></th>
+																		<th><div align="center"><strong>Female</strong></div></th>
+																	</tr>
+																</thead>
+																<tbody>
+																	<tr>
+																		<td><div align="center"><strong>SC</strong></div></td>
+																		<td><form:input path=""  class="form-control Align-Right" id="sarpanchMaleScId" onkeyup="" onkeypress="return isNumber(event)" /></td>
+																		<td><form:input path="" class="form-control Align-Right" id="sarpanchFemaleScId" onkeyup="" onkeypress="return isNumber(event)"  /></td>
+																		<td><form:input path="" class="form-control Align-Right" id="otherErMaleScId" onkeyup="" onkeypress="return isNumber(event)"  /></td>
+																		<td><form:input path="" class="form-control Align-Right" id="otherErFemaleScId" onkeyup="" onkeypress="return isNumber(event)"  /></td>
+																		<td><form:input path="" class="form-control Align-Right" id="functionariedMaleScId" onkeyup="" onkeypress="return isNumber(event)"  /></td>
+																		<td><form:input path="" class="form-control Align-Right" id="functionariedFemaleScId" onkeyup="" onkeypress="return isNumber(event)"  /></td>
+																	</tr>
+																	<tr>
+																		<td><div align="center"><strong>ST</strong></div></td>
+																		<td><form:input path="" class="form-control Align-Right" id="sarpanchMaleStId" onkeyup="" onkeypress="return isNumber(event)" /></td>
+																		<td><form:input path="" class="form-control Align-Right" id="sarpanchFemaleStId" onkeyup="" onkeypress="return isNumber(event)"  /></td>
+																		<td><form:input path="" class="form-control Align-Right" id="otherErMaleStId" onkeyup="" onkeypress="return isNumber(event)"  /></td>
+																		<td><form:input path="" class="form-control Align-Right" id="otherErFemaleStId" onkeyup="" onkeypress="return isNumber(event)"  /></td>
+																		<td><form:input path="" class="form-control Align-Right" id="functionariedMaleStId" onkeyup="" onkeypress="return isNumber(event)"  /></td>
+																		<td><form:input path="" class="form-control Align-Right" id="functionariedFemaleStId" onkeyup="" onkeypress="return isNumber(event)"  /></td>
+																	</tr>
+																	<tr>
+																		<td><div align="center"><strong>Others</strong></div></td>
+																		<td><form:input path="" class="form-control Align-Right" id="sarpanchMaleOthersId" onkeyup="" onkeypress="return isNumber(event)"  /></td>
+																		<td><form:input path="" class="form-control Align-Right" id="sarpanchFemaleOthersId" onkeyup="" onkeypress="return isNumber(event)"  /></td>
+																		<td><form:input path="" class="form-control Align-Right" id="otherErMaleOthersId" onkeyup="" onkeypress="return isNumber(event)"  /></td>
+																		<td><form:input path="" class="form-control Align-Right" id="otherErFemaleOthersId" onkeyup="" onkeypress="return isNumber(event)"  /></td>
+																		<td><form:input path="" class="form-control Align-Right" id="functionariedMaleOthersId" onkeyup="" onkeypress="return isNumber(event)"/></td>
+																		<td><form:input path="" class="form-control Align-Right " id="functionariedFemaleOthersId" onkeyup="" onkeypress="return isNumber(event)"  /></td>
+																	</tr>
+																	<tr>
+																		<td><div align="center"><strong>Total</strong></div></td>
+																		<td><input type="text" class="form-control Align-Right" disabled="disabled" id="totalMaleSarpanch" /></td>
+																		<td><input type="text" class="form-control Align-Right" disabled="disabled" id="totalFemaleSarpanch" /></td>
+																		<td><input type="text" class="form-control Align-Right" disabled="disabled" id="totalMaleOtherEr" /></td>
+																		<td><input type="text" class="form-control Align-Right" disabled="disabled" id="totalFemaleOtherEr" /></td>
+																		<td><input type="text" class="form-control Align-Right" disabled="disabled" id="totalMaleFunctionaries" /></td>
+																		<td><input type="text" class="form-control Align-Right" disabled="disabled" id="totalFemaleFunctionaries" /></td>
+																	</tr>
+																</tbody>
+															</table>
+														</div>
+													</div>
+												</div>
+											</div>
+											<div class="modal-footer">
+												<button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+											</div>
+										</div>
+									</div>
+								</div>
+								<!-- Modal content ends here-->
+								
+								<!-- Modal content exposure visit outside-->
+									<div id="exposureVisitOutside" class="modal fade" role="dialog">
+									<div class="modal-dialog modal-lg">
+										<div class="modal-content modal-lg">
+											<div class="modal-header">
+												<button type="button" class="close" data-dismiss="modal">&times;</button>
+											</div>
+											<div class="modal-body">
+												<div class="row">
+													<div class="form-group">
+														<div class="col-sm-5">
+																<p class="text-justify"><strong>&bnsp;&bnsp;Exposure visit (outside state)</strong></p>
+														</div>
+													</div>
+												</div>
+												<div class="row clearfix">
+
+													<div class="body">
+														<div class="table-responsive">
+															<table class="table table-bordered table-hover">
+																<thead>
+																	<tr>
+																		<th rowspan="3" style="padding-bottom: 4%;"><div align="center"><strong>Participants category</strong></div></th>
+																		<th colspan="4"><div align="center"><strong>Elected Representatives</strong></div></th>
+																		<th colspan="2" rowspan="2" style="padding-bottom: 2%;"><div align="center"><strong>Functionaries & other stakeholders</strong></div></th>
+																	</tr>
+																	<tr>
+																		<th colspan="2"><div align="center"><strong>Sarpanch</strong></div></th>
+																		<th colspan="2"><div align="center"><strong>Other ERs</strong></div></th>
+																	</tr>
+																	<tr>
+																		<th><div align="center"><strong>Male</strong></div></th>
+																		<th><div align="center"><strong>Female</strong></div></th>
+																		<th><div align="center"><strong>Male</strong></div></th>
+																		<th><div align="center"><strong>Female</strong></div></th>
+																		<th><div align="center"><strong>Male</strong></div></th>
+																		<th><div align="center"><strong>Female</strong></div></th>
+																	</tr>
+																</thead>
+																<tbody>
+																	<tr>
+																		<td><div align="center"><strong>SC</strong></div></td>
+																		<td><form:input path=""  class="form-control Align-Right" id="sarpanchMaleScId" onkeyup="" onkeypress="return isNumber(event)" /></td>
+																		<td><form:input path="" class="form-control Align-Right" id="sarpanchFemaleScId" onkeyup="" onkeypress="return isNumber(event)"  /></td>
+																		<td><form:input path="" class="form-control Align-Right" id="otherErMaleScId" onkeyup="" onkeypress="return isNumber(event)"  /></td>
+																		<td><form:input path="" class="form-control Align-Right" id="otherErFemaleScId" onkeyup="" onkeypress="return isNumber(event)"  /></td>
+																		<td><form:input path="" class="form-control Align-Right" id="functionariedMaleScId" onkeyup="" onkeypress="return isNumber(event)"  /></td>
+																		<td><form:input path="" class="form-control Align-Right" id="functionariedFemaleScId" onkeyup="" onkeypress="return isNumber(event)"  /></td>
+																	</tr>
+																	<tr>
+																		<td><div align="center"><strong>ST</strong></div></td>
+																		<td><form:input path="" class="form-control Align-Right" id="sarpanchMaleStId" onkeyup="" onkeypress="return isNumber(event)" /></td>
+																		<td><form:input path="" class="form-control Align-Right" id="sarpanchFemaleStId" onkeyup="" onkeypress="return isNumber(event)"  /></td>
+																		<td><form:input path="" class="form-control Align-Right" id="otherErMaleStId" onkeyup="" onkeypress="return isNumber(event)"  /></td>
+																		<td><form:input path="" class="form-control Align-Right" id="otherErFemaleStId" onkeyup="" onkeypress="return isNumber(event)"  /></td>
+																		<td><form:input path="" class="form-control Align-Right" id="functionariedMaleStId" onkeyup="" onkeypress="return isNumber(event)"  /></td>
+																		<td><form:input path="" class="form-control Align-Right" id="functionariedFemaleStId" onkeyup="" onkeypress="return isNumber(event)"  /></td>
+																	</tr>
+																	<tr>
+																		<td><div align="center"><strong>Others</strong></div></td>
+																		<td><form:input path="" class="form-control Align-Right" id="sarpanchMaleOthersId" onkeyup="" onkeypress="return isNumber(event)"  /></td>
+																		<td><form:input path="" class="form-control Align-Right" id="sarpanchFemaleOthersId" onkeyup="" onkeypress="return isNumber(event)"  /></td>
+																		<td><form:input path="" class="form-control Align-Right" id="otherErMaleOthersId" onkeyup="" onkeypress="return isNumber(event)"  /></td>
+																		<td><form:input path="" class="form-control Align-Right" id="otherErFemaleOthersId" onkeyup="" onkeypress="return isNumber(event)"  /></td>
+																		<td><form:input path="" class="form-control Align-Right" id="functionariedMaleOthersId" onkeyup=""  /></td>
+																		<td><form:input path="" class="form-control Align-Right " id="functionariedFemaleOthersId" onkeyup="" onkeypress="return isNumber(event)"  /></td>
+																	</tr>
+																	<tr>
+																		<td><div align="center"><strong>Total</strong></div></td>
+																		<td><input type="text" class="form-control Align-Right" disabled="disabled" id="totalMaleSarpanch" /></td>
+																		<td><input type="text" class="form-control Align-Right" disabled="disabled" id="totalFemaleSarpanch" /></td>
+																		<td><input type="text" class="form-control Align-Right" disabled="disabled" id="totalMaleOtherEr" /></td>
+																		<td><input type="text" class="form-control Align-Right" disabled="disabled" id="totalFemaleOtherEr" /></td>
+																		<td><input type="text" class="form-control Align-Right" disabled="disabled" id="totalMaleFunctionaries" /></td>
+																		<td><input type="text" class="form-control Align-Right" disabled="disabled" id="totalFemaleFunctionaries" /></td>
+																	</tr>
+																</tbody>
+															</table>
+														</div>
+													</div>
+												</div>
+											</div>
+											<div class="modal-footer">
+												<button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+											</div>
+										</div>
+									</div>
+								</div>
+								<!-- Modal content ends here-->
 							</div>
 							
 							<div class="form-group text-right ex1" style="margin-bottom: 5px;">
@@ -584,7 +776,7 @@ function calTotalExpenditure(){
 								<button type="button" data-ng-click="onClear(this)" class="btn bg-light-blue waves-effect">
 									<spring:message code="Label.CLEAR" htmlEscape="true" />
 								</button>
-								<button type="button" onclick="onClose('home.html?<csrf:token uri='home.html'/>')" class="btn bg-orange waves-effect">
+								<button type="button" onclick="onClose('home.html?<csrf:token uri='home.html'/>')" class="btn bg-red waves-effect">
 									<spring:message code="Label.CLOSE" htmlEscape="true" />
 								</button>
 							</div><br />

@@ -30,7 +30,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 	@NamedQuery(name="FETCH_INNOVATIVE__REPORT_BASED_ID", query="Select IA from QprInnovativeActivity IA where IA.innovativeActivity.innovativeActivityId=:innovativeActivityId"),
 	@NamedQuery(name="FETCH_INNOVATIVE_QPR_ACT_BY_QTR_ID_AND_ACT_ID",query="from QprInnovativeActivity where innovativeActivity.innovativeActivityId=:innovativeActivityId and quarterDuration.qtrId!=:quarterId")
 	})
-	public class QprInnovativeActivity {
+	public class QprInnovativeActivity  implements IFreezable{
 
 
 		@Id

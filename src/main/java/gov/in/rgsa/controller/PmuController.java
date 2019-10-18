@@ -102,10 +102,6 @@ public class PmuController {
 			model.addAttribute("pmuActivityMOPR", pmuActivityMOPR.get(0));
 			model.addAttribute("pmuWiseDomainListState", pmuActivityState.get(0).getPmuWiseProposedDomainExperts());
 			model.addAttribute("pmuWiseDomainListMOPR", pmuActivityMOPR.get(0).getPmuWiseProposedDomainExperts());
-			model.addAttribute("DISTRICT_DETAILS_STATE", lgdservice.getDistrictDetails(userPreference.getStateCode(),
-					pmuActivityState.get(0).getPmuWiseProposedDomainExperts().get(3).getDistrictId()));
-			model.addAttribute("DISTRICT_DETAILS_MOPR", lgdservice.getDistrictDetails(userPreference.getStateCode(),
-					pmuActivityMOPR.get(0).getPmuWiseProposedDomainExperts().get(3).getDistrictId()));
 			Map<String, Object> params = calTotalOfSpmuAndDpmu(pmuActivityState);
 			if (!params.isEmpty()) {
 				model.addAttribute("SPMU_TOTAL_STATE", params.get("spmu_total"));// spmu total for state tab in cec

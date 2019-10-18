@@ -67,7 +67,8 @@ planAllocation.controller("planAllocationController",['$scope','planAllocationSe
 				$scope.fundReleasedDetailId = response.data.fundReleasedDetailId;
 				$scope.calTotalFund();
 			}else{
-				toastr.error('Installment '+$scope.installmentNo + "is not released yet.");
+				$scope.showPlanAllocationBlock=false;
+				toastr.error('Installment '+$scope.installmentNo + " is not released yet.");
 			}
 		});
 	}

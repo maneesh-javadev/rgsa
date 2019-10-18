@@ -2,6 +2,7 @@
 <script type="text/javascript">
 var quater_id = '${QTR_ID}';
 var fund_allocated_by_state='${FUND_ALLOCATED_BY_STATE}';
+var qtr_1_2_filled='${QTR_ONE_TWO_FILLED}';
 var fund_used='${FUND_USED_IN_OTHER_QUATOR}';
 if(quater_id > 2){
 	var fund_allocated_in_pre_qtr = '${FUND_ALLOCATED_BY_STATE_PREVIOUS}';
@@ -10,6 +11,9 @@ if(quater_id > 2){
 let domain_list = '${LIST_OF_PMU_DOMAINS}';
 
 $('document').ready(function(){
+	if(qtr_1_2_filled == "false"){
+		alert('Please fill the quater 1 and 2 progress report first.');
+	}
 	$('#quaterDropDownId').val(quater_id);
 	showTablediv();
 	calTotalExpenditure();
@@ -178,6 +182,15 @@ function emptyDomainDetails(level,count){
 		}
 	}
 }
+
+function FreezeAndUnfreeze(msg){
+	var componentId=12;
+	var qprActivityId=$('#qprActivityId').val();
+	var quaterId = $('#quaterDropDownId').val();
+	document.pmuProgress.method = "post";
+	document.pmuProgress.action = "freezeAndUnfreezeReport.html?<csrf:token uri='freezeAndUnfreezeReport.html'/>&componentId="+componentId+"&qprActivityId="+qprActivityId+"&quaterId="+quaterId+"&msg="+msg;
+	document.pmuProgress.submit();
+}
 </script>
 <style>
 .align-right{
@@ -259,11 +272,10 @@ function emptyDomainDetails(level,count){
 													<td><div id="fundCecId_${count.index}" align="center"><strong>${obj.fund}</strong></div></td>
 													<c:choose>
 														<c:when test="${not empty PMU_PROGRESS}">
-															<td><input
-																name="pmuProgressDetails[${count.index}].noOfUnitsFilled"
-																type="text" style="text-align: right;"
+															<td><form:input
+																path="pmuProgressDetails[${count.index}].noOfUnitsFilled" style="text-align: right;"
 																class="form-control validate" id="noOfUnitCompleted_${count.index}"
-																onkeyup="validateNoOfUnits(${count.index});"
+																onkeyup="validateNoOfUnits(${count.index});" readonly="${PMU_PROGRESS.isFreeze}"
 																value="${PMU_PROGRESS.pmuProgressDetails[count.index].noOfUnitsFilled}" required="required" onchange="calculateValueAcDomain('noOfUnitCompleted_${count.index}')"/>
 															<c:if test="${count.index eq 0}">
 																<div align="right" style="margin-top: 5px"><button type="button"
@@ -276,12 +288,12 @@ function emptyDomainDetails(level,count){
 																	 data-target="#myModal2">Fill Domain Details</button></div>
 															</c:if>
 															</td>
-															<td><input
-																name="pmuProgressDetails[${count.index}].expenditureIncurred"
-																type="text" style="text-align: right;"
+															<td><form:input
+																path="pmuProgressDetails[${count.index}].expenditureIncurred"
+																style="text-align: right;"
 																class="form-control validate" id="expenditureIncurred_${count.index}"
 																onkeyup="validateFundByAllocatedFund(${count.index});validateWithCorrespondingFund(${count.index});isNoOfUnitAndExpInurredFilled(${count.index});calTotalExpenditure()"
-																value="${PMU_PROGRESS.pmuProgressDetails[count.index].expenditureIncurred}" required="required"></td>
+																value="${PMU_PROGRESS.pmuProgressDetails[count.index].expenditureIncurred}" required="required" readonly="${PMU_PROGRESS.isFreeze}" /></td>
 
 															<input type="hidden"
 																name="pmuProgressDetails[${count.index}].qprPmuDetailsId"
@@ -366,7 +378,7 @@ function emptyDomainDetails(level,count){
 																				<c:if	test="${DOMAINS.pmuType.pmuTypeId eq 1 }">
 																					<tr>
 																						<th><div align="center">${DOMAINS.pmuDomainName}</div>
-																						<td><form:input path="qprPmuWiseProposedDomainExperts[${temp}].noOfExperts" class="align-right validate form-control" id="noOfExpertsSprc_${temp}" onkeyup="calculateValueAcDomain(${temp})"/></td>
+																						<td><form:input path="qprPmuWiseProposedDomainExperts[${temp}].noOfExperts" class="align-right validate form-control" id="noOfExpertsSprc_${temp}" onkeyup="calculateValueAcDomain(${temp})" readonly="${PMU_PROGRESS.isFreeze}"/></td>
 																					</tr>
 																					<!-- Hidden fields -->
 																						<form:hidden path="qprPmuWiseProposedDomainExperts[${temp}].qprPmuWiseProposedDomainExpertsId" />
@@ -434,7 +446,7 @@ function emptyDomainDetails(level,count){
 																				<td style="width: 234px;"><div align="center"><strong>${DISTRICT[1]}</strong></div></td>
 																				<c:forEach items="${LIST_OF_PMU_DOMAINS}" var="DOMAINS">
 																					<c:if test="${DOMAINS.pmuType.pmuTypeId eq 2}">
-																						<td><form:input path="qprPmuWiseProposedDomainExperts[${dprcIndex + LIST_OF_PMU_DOMAINS_LIST}].noOfExperts" class="align-right validate form-control" id="noOfExpertsDprc_${dprcIndex}" onkeyup="calculateValueAcDomain(${dprcIndex})" /></td>
+																						<td><form:input path="qprPmuWiseProposedDomainExperts[${dprcIndex + LIST_OF_PMU_DOMAINS_LIST}].noOfExperts" class="align-right validate form-control" id="noOfExpertsDprc_${dprcIndex}" onkeyup="calculateValueAcDomain(${dprcIndex})" readonly="${PMU_PROGRESS.isFreeze}"/></td>
 																						<!-- Hidden Fields -->
 																							<input type="hidden" name="qprPmuWiseProposedDomainExperts[${dprcIndex + LIST_OF_PMU_DOMAINS_LIST}].domainId" value="${DOMAINS.pmuDomainId}">
 																							<input type="hidden" name="qprPmuWiseProposedDomainExperts[${dprcIndex + LIST_OF_PMU_DOMAINS_LIST}].districtId" value="${DISTRICT[0]}">
@@ -459,18 +471,29 @@ function emptyDomainDetails(level,count){
 										</div>
 									<!-- DPMU MODAL ENDS HERE -->
 									<div class="text-right">
-											<button type="button" onclick="saveAndGetDataQtrRprt('save')" id="saveButtn"
-												class="btn bg-green waves-effect">SAVE</button>
-											<button type="button" onclick="onClear(this)"
-												class="btn bg-light-blue waves-effect">CLEAR</button>
-											<button type="button"
+										<form:button onclick="saveAndGetDataQtrRprt('save')" id="saveButtn"
+													class="btn bg-green waves-effect" disabled="${PMU_PROGRESS.isFreeze}">SAVE</form:button>
+										<c:choose>
+											<c:when test="${PMU_PROGRESS.isFreeze}">
+												<form:button class="btn bg-orange waves-effect"
+													onclick="FreezeAndUnfreeze('unfreeze')">UNFREEZE</form:button>
+											</c:when>
+											<c:otherwise>
+												<form:button class="btn bg-orange waves-effect"
+													disabled="${DISABLE_FREEZE}"
+													onclick="FreezeAndUnfreeze('freeze')">FREEZE</form:button>
+											</c:otherwise>
+										</c:choose>
+										<form:button onclick="onClear(this)"
+												class="btn bg-light-blue waves-effect" disabled="${PMU_PROGRESS.isFreeze}">CLEAR</form:button>
+											<form:button
 												onclick="onClose('home.html?<csrf:token uri='home.html'/>')"
-												class="btn bg-orange waves-effect">CLOSE</button>
+												class="btn bg-red waves-effect">CLOSE</form:button>
 										</div>
 									</div>
 							<!-- hidden field -->
 							<input type="hidden" name="pmuActivity.pmuActivityId" value="${CEC_APPROVED_ACTIVITY.pmuActivityId}" />
-							<input type="hidden" name="qprPmuId" value="${PMU_PROGRESS.qprPmuId}" />
+							<input type="hidden" name="qprPmuId" value="${PMU_PROGRESS.qprPmuId}" id="qprActivityId"/>
 							<input type="hidden" id="origin" name="origin" />
 							<input type="hidden" id="quaterTransient" name="qtrIdJsp6" value='${qtrIdJsp6}' />
 						</form:form>

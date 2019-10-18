@@ -27,7 +27,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 @NamedQuery(name="FETCH_IEC__REPORT_BASED_ID", query="Select IQ from IecQuater IQ where IQ.iecActivity.id=:id"),
 @NamedQuery(name="FETCH_IEC_QPR_ACT_BY_QTR_ID_AND_ACT_ID",query="from IecQuater where iecActivity.id=:id and quarterDuration.qtrId !=:quarterId"),
 })
-public class IecQuater {
+public class IecQuater  implements IFreezable{
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -25,9 +25,9 @@ function calculateFund(obj){
 
 
 function calculateTotalFund(){
-	var count = 9;
+	var rowCount = $('#tbody tr').length - 3;
 	var grand_total=0;
-	for(var i=0;i<count; i++){
+	for(var i=0;i<rowCount; i++){
 		grand_total += +document.getElementById("fundId_"+i).value;
 	}
 	var totalFund =document.getElementById("total_fund").value=grand_total;
@@ -178,7 +178,7 @@ function validateUnitCost(index){
 
 											</tr>
 										</thead>
-										<tbody id=tbody>
+										<tbody id="tbody">
 											<c:forEach items="${postType}" var="post" varStatus="index">
 												<input type="hidden"
 													name="supportDetails[${index.index}].id"
@@ -270,7 +270,7 @@ function validateUnitCost(index){
 
 
 													</c:choose>
-
+													
 
 
 
@@ -293,7 +293,7 @@ function validateUnitCost(index){
 														<strong><spring:message code="Label.TotalCost"
 																htmlEscape="true" /></strong>
 													</div></td>
-												<td colspan="3"></td>
+												<td colspan="5"></td>
 												<td><div align="center" id="TotalCostIdState">${TotalStateFund}</div>
 
 													<input type="text" class="form-control Align-Right"
@@ -305,7 +305,7 @@ function validateUnitCost(index){
 														<strong><spring:message
 																code="Label.AdditionalRequirement" htmlEscape="true" /></strong>
 													</div></td>
-												<td colspan="3"></td>
+												<td colspan="5"></td>
 												<td><div align="center"
 														id="additionalRequirementIdState">${technicalSupportForState.additionalRequirement}</div>
 													
@@ -339,7 +339,7 @@ function validateUnitCost(index){
 														<strong><spring:message
 																code="Label.TotalProposedFund" htmlEscape="true" /></strong>
 													</div></td>
-												<td colspan="3"></td>
+												<td colspan="5"></td>
 												<td><div align="center" id="GrandTotalIdState">${technicalSupportForState.additionalRequirement+TotalStateFund}</div>
 													<input type="text" class="form-control Align-Right"
 													readonly="readonly" id="GrandTotalId" style="text-align: right;"/></td>
@@ -347,6 +347,10 @@ function validateUnitCost(index){
 										</tbody>
 									</table>
 								</div>
+								
+								<form:hidden path="isActive" value="${technicalSupport.isActive}"/>
+								<form:hidden path="versionNo" value="${technicalSupport.versionNo}"/>
+								
 								<div class="row clearfix">
 									<div class="col-md-4">
 										<button type="button"

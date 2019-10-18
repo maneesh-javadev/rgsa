@@ -104,7 +104,8 @@ public class AdminAndFinancialDataCellController {
 				 
 				
 			 }
-		 long totalOfFundWithAdditionalRequirement = totalOfFund + andFinancialDataActivityForState.get(0).getAdditionalRequirement();
+			int addReqState =(andFinancialDataActivityForState.get(0).getAdditionalRequirement() != null) ? andFinancialDataActivityForState.get(0).getAdditionalRequirement() : 0 ;
+				long totalOfFundWithAdditionalRequirement = totalOfFund + addReqState;
 				
 			 for(int i= 0 ; i<activityDetailsForMopr.size(); i++)
 			 {

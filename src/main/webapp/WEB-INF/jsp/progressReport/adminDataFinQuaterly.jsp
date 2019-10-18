@@ -2,6 +2,7 @@
 <script>
 var quater_id = '${QTR_ID}';
 var remaining_add_req = '${REMAINING_ADD_REQ}';
+var qtr_1_2_filled='${QTR_ONE_TWO_FILLED}';
 var fund_allocated_by_state='${FUND_ALLOCATED_BY_STATE}';
 var fund_used='${FUND_USED_IN_OTHER_QUATOR}';
 if(quater_id > 2){
@@ -10,6 +11,9 @@ if(quater_id > 2){
 }
 
 $(document).ready(function() {
+	if(qtr_1_2_filled == "false"){
+		alert('Please fill the quater 1 and 2 progress report first.');
+	}
 	$('#quaterDropDownId').val(quater_id);
 	showTablediv();
 	calTotalExpenditure();
@@ -49,7 +53,7 @@ function validateNoOfUnits(index){
 }
 
 function validateFundByAllocatedFund(obj){
-	var noOfRows=$("#tbodyId tr").length-1;
+	var noOfRows=$("#tbodyId tr").length-2;
 	var fund_allocated_by_state_local = +fund_allocated_by_state;
 	var fund_used_local= +fund_used;
 	var total=0;
@@ -108,6 +112,15 @@ function calTotalExpenditure(){
 		}
 	}
 	$('#totalExpenditureId').val(total_expenditure + +$('#additionalReqId').val());
+}
+
+function FreezeAndUnfreeze(msg){
+	var componentId=8;
+	var qprActivityId=$('#qprActivityId').val();
+	var quaterId = $('#quaterDropDownId').val();
+	document.qprAdminAndFinancialDataActivity.method = "post";
+	document.qprAdminAndFinancialDataActivity.action = "freezeAndUnfreezeReport.html?<csrf:token uri='freezeAndUnfreezeReport.html'/>&componentId="+componentId+"&qprActivityId="+qprActivityId+"&quaterId="+quaterId+"&msg="+msg;
+	document.qprAdminAndFinancialDataActivity.submit();
 }
 </script>
 <section class="content">
@@ -207,35 +220,35 @@ function calTotalExpenditure(){
 											<c:choose>
 												<c:when test="${not empty ADMIN_FIN_CELL_QPR_ACT}">
 												<!-- hidden field on condition  -->
-													<input type="hidden" name="qprAfpId" value="${ADMIN_FIN_CELL_QPR_ACT.qprAfpId}" />
+													<input type="hidden" name="qprAfpId" value="${ADMIN_FIN_CELL_QPR_ACT.qprAfpId}" id="qprActivityId"/>
 													<input type="hidden" name="qprAdminAndFinancialDataActivityDetails[${index.index}].qprAfpDetailsId" value="${ADMIN_FIN_CELL_QPR_ACT.qprAdminAndFinancialDataActivityDetails[index.index].qprAfpDetailsId}" />
 												<!-- hidden field ends here -->
-													<td><input type="text" maxlength="7"
+													<td><form:input maxlength="7"
 														class="form-control expnditureId"
 														id="noOfUnitCompleted_${index.index}"
-														name="qprAdminAndFinancialDataActivityDetails[${index.index}].noOfUnitsFilled"
+														path="qprAdminAndFinancialDataActivityDetails[${index.index}].noOfUnitsFilled"
 														value="${ADMIN_FIN_CELL_QPR_ACT.qprAdminAndFinancialDataActivityDetails[index.index].noOfUnitsFilled}"
-														onkeyup="this.value=this.value.replace(/[^0-9]/g,'');validateNoOfUnits(${index.index});" required="required" /></td>
+														onkeyup="this.value=this.value.replace(/[^0-9]/g,'');validateNoOfUnits(${index.index});" required="required" style="text-align: right;" readonly="${ADMIN_FIN_CELL_QPR_ACT.isFreeze}"/></td>
 
-													<td><input type="text" maxlength="7"
+													<td><form:input maxlength="7"
 														class="form-control expnditureId"
-														name="qprAdminAndFinancialDataActivityDetails[${index.index}].expenditureIncurred"
+														path="qprAdminAndFinancialDataActivityDetails[${index.index}].expenditureIncurred"
 														id="expenditureIncurred_${index.index}" required="required"
 														value="${ADMIN_FIN_CELL_QPR_ACT.qprAdminAndFinancialDataActivityDetails[index.index].expenditureIncurred}"
-														onkeyup="this.value=this.value.replace(/[^0-9]/g,'');validateFundByAllocatedFund(${index.index});validateWithCorrespondingFund(${index.index});isNoOfUnitAndExpInurredFilled(${index.index});calTotalExpenditure()" /></td>
+														onkeyup="this.value=this.value.replace(/[^0-9]/g,'');validateFundByAllocatedFund(${index.index});validateWithCorrespondingFund(${index.index});isNoOfUnitAndExpInurredFilled(${index.index});calTotalExpenditure()" style="text-align: right;" readonly="${ADMIN_FIN_CELL_QPR_ACT.isFreeze}"/></td>
 												</c:when>
 												<c:otherwise>
-													<td><input type="text" maxlength="7"
+													<td><form:input maxlength="7"
 														class="form-control expnditureId"
 														id="noOfUnitCompleted_${index.index}" required="required"
-														name="qprAdminAndFinancialDataActivityDetails[${index.index}].noOfUnitsFilled"
-														onkeyup="this.value=this.value.replace(/[^0-9]/g,'');validateNoOfUnits(${index.index});" /></td>
+														path="qprAdminAndFinancialDataActivityDetails[${index.index}].noOfUnitsFilled"
+														onkeyup="this.value=this.value.replace(/[^0-9]/g,'');validateNoOfUnits(${index.index});" style="text-align: right;"/></td>
 
-													<td><input type="text" maxlength="7"
+													<td><form:input maxlength="7"
 														class="form-control expnditureId"
-														name="qprAdminAndFinancialDataActivityDetails[${index.index}].expenditureIncurred"
+														path="qprAdminAndFinancialDataActivityDetails[${index.index}].expenditureIncurred"
 														id="expenditureIncurred_${index.index}" required="required"
-														onkeyup="this.value=this.value.replace(/[^0-9]/g,'');validateFundByAllocatedFund(${index.index});validateWithCorrespondingFund(${index.index});isNoOfUnitAndExpInurredFilled(${index.index});calTotalExpenditure()" /></td>
+														onkeyup="this.value=this.value.replace(/[^0-9]/g,'');validateFundByAllocatedFund(${index.index});validateWithCorrespondingFund(${index.index});isNoOfUnitAndExpInurredFilled(${index.index});calTotalExpenditure()" style="text-align: right;"/></td>
 												</c:otherwise>
 											</c:choose>
 											</tr>
@@ -243,26 +256,46 @@ function calTotalExpenditure(){
 										<tr>
 											<th colspan="2"><div align="center">Additional Requirement</div></th>
 											<th colspan="4"><div align="center" id="additionalReqStateId">${CEC_APPROVED_ACTIVITY.additionalRequirement }</div></th>
-											<td><input type="text" name="additionalRequirement" id="additionalReqId" value="${ADMIN_FIN_CELL_QPR_ACT.additionalRequirement}" class="form-control validate Align-Right" onkeyup="validateAddReq();calTotalExpenditure()"></td>
+											<td><form:input path="additionalRequirement" id="additionalReqId" value="${ADMIN_FIN_CELL_QPR_ACT.additionalRequirement}" class="form-control validate Align-Right" onkeyup="validateAddReq();calTotalExpenditure()" style="text-align: right;" readonly="${ADMIN_FIN_CELL_QPR_ACT.isFreeze}"/></td>
 										</tr>
 										
 										<tr>
 											<th colspan="2"><div align="center">Total Expenditure Incurred</div></th>
 											<td colspan="4"></td>
-											<td><input type="text" id="totalExpenditureId"  class="form-control validate Align-Right" disabled="disabled" /></td>
+											<td><input type="text" id="totalExpenditureId"  class="form-control validate Align-Right" disabled="disabled" style="text-align: right;"/></td>
 										</tr>
 									</tbody>
 								</table>
 								<br>
 							</div>
 							<div class="form-group text-right" style="padding-right: 10px;">
-								<button type="button" onclick="saveAndGetDataQtrRprt('save')" id="saveButtn"
-									class="btn bg-green waves-effect">SAVE</button>
-								<button type="button" id="clearButtn" onclick="onClear(this)"
-									class="btn bg-light-blue waves-effect">CLEAR</button>
+								<c:choose>
+									<c:when test="${ADMIN_FIN_CELL_QPR_ACT.isFreeze}">
+										<button type="button" onclick="saveAndGetDataQtrRprt('save')" id="saveButtn" disabled="disabled"
+												class="btn bg-green waves-effect">SAVE</button>
+										<button type="button" onclick="FreezeAndUnfreeze('unfreeze')"
+													class="btn bg-orange waves-effect">UNFREEZE</button>
+										<button type="button" id="clearButtn" onclick="onClear(this)"
+											class="btn bg-light-blue waves-effect" disabled="disabled">CLEAR</button>					
+									</c:when>
+									<c:otherwise>
+										<button type="button" onclick="saveAndGetDataQtrRprt('save')" id="saveButtn"
+												class="btn bg-green waves-effect">SAVE</button>
+										<c:choose>
+											<c:when test="${DISABLE_FREEZE}">
+												<button type="button" onclick="" disabled="disabled"
+													class="btn bg-orange waves-effect">FREEZE</button>
+												</c:when>
+											<c:otherwise><button type="button" onclick="FreezeAndUnfreeze('freeze')"
+													class="btn bg-orange waves-effect">FREEZE</button></c:otherwise>
+										</c:choose>
+										<button type="button" id="clearButtn" onclick="onClear(this)"
+											class="btn bg-light-blue waves-effect">CLEAR</button>
+										</c:otherwise>
+								</c:choose>
 								<button type="button"
 									onclick="onClose('home.html?<csrf:token uri='home.html'/>')"
-									class="btn bg-orange waves-effect">CLOSE</button>
+									class="btn bg-red waves-effect">CLOSE</button>
 							</div>
 						</div>
 						<br />
@@ -276,4 +309,3 @@ function calTotalExpenditure(){
 		</div>
 	</div>
 </section>
-

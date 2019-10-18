@@ -34,7 +34,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 @NamedQuery(name="QPR_INCM_ENHNCMNT_REPORT_BASED_ON_QUARTER", query="Select QIE from QprIncomeEnhancement QIE where QIE.quarterDuration.qtrId=:quarterId and QIE.incomeEnhancementActivity.incomeEnhancementId=:incomeEnhancementId"),
 @NamedQuery(name="FETCH_INCOME_ENHANCE_QPR_ACT_BY_QTR_ID_AND_ACT_ID",query = "from QprIncomeEnhancement where incomeEnhancementActivity.incomeEnhancementId=:incomeEnhancementId and quarterDuration.qtrId!=:quarterId"),
 })
-public class QprIncomeEnhancement {
+public class QprIncomeEnhancement  implements IFreezable{
 	
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)

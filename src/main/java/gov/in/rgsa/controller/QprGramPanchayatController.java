@@ -59,7 +59,7 @@ public class QprGramPanchayatController {
 	
 	
 	@RequestMapping(value="panchayatBhawanQuaterlyReport",method = RequestMethod.GET)
-	public String getQprgGramPanchayat(@ModelAttribute("QPR_PANCHAYAT_BHAWAN") QprPanchayatBhawan qprPanchayatBhawan ,Model model,HttpServletResponse httpResponse, RedirectAttributes redirectAttributes)
+	public String getQprgGramPanchayat(@ModelAttribute("QPR_PANCHAYAT_BHAWAN") QprPanchayatBhawan qprPanchayatBhawan ,Model model,RedirectAttributes redirectAttributes)
 	{
 		
 		 List<StateAllocation> stateAllocationList = planAllocationService.fetchStateAllocationListMaxINSTALLMENTNO();

@@ -32,7 +32,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 @NamedQuery(name="FETCH_SATCOM_progress_report_BASED_ID", query="Select SAP from SatcomActivityProgress SAP  where SAP.satcomActivity.satcomActivityId=:satcomActivityId")
 })
 
-public class SatcomActivityProgress implements Serializable{
+public class SatcomActivityProgress implements Serializable , IFreezable{
 	
 	/**
 	 * Rajeev
@@ -67,7 +67,7 @@ public class SatcomActivityProgress implements Serializable{
 	private Timestamp lastUpdatedOn;
 	
 	@Column(name="is_freeze")
-	private String status;
+	private Boolean isFreeze;
 	
 	@Column(name="additional_requirement")
 	private Integer additionalRequirement;
@@ -137,14 +137,7 @@ public class SatcomActivityProgress implements Serializable{
 	public void setLastUpdatedOn(Timestamp lastUpdatedOn) {
 		this.lastUpdatedOn = lastUpdatedOn;
 	}
-
-	public String getStatus() {
-		return status;
-	}
-
-	public void setStatus(String status) {
-		this.status = status;
-	}
+	
 
 	public List<SatcomActivityProgressDetails> getSatcomActivityProgressDetails() {
 		return satcomActivityProgressDetails;
@@ -180,6 +173,14 @@ public class SatcomActivityProgress implements Serializable{
 
 	public void setAdditionalRequirement(Integer additionalRequirement) {
 		this.additionalRequirement = additionalRequirement;
+	}
+
+	public Boolean getIsFreeze() {
+		return isFreeze;
+	}
+
+	public void setIsFreeze(Boolean isFreeze) {
+		this.isFreeze = isFreeze;
 	}
 	
 }

@@ -33,7 +33,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 @NamedQuery(name="UPDATE_QPRCBACtivity_FRZUNFREEZ_STATUS", query="UPDATE QprCbActivity SET  isFreeze=:isFreeze where qpCbActivityId=:qpCbActivityId"),
 @NamedQuery(name="QPR_CAPACITY_BUILDING_REPORT_BASED_ON_QUARTER", query="Select QCA from QprCbActivity QCA where  QCA.capacityBuildingActivity.stateCode=:stateCode AND  QCA.capacityBuildingActivity.yearId=:yearId AND QCA.quarterDuration.qtrId=:quarterId AND capacityBuildingActivity.cbActivityId=:cbActivityId")
 })
-public class QprCbActivity {
+public class QprCbActivity  implements IFreezable{
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)

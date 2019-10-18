@@ -102,8 +102,8 @@ public class PlanAllocationController {
 	/* new function created by aashish barua when the plan allocation changes due to new fund released form */
 	
 	@ResponseBody
-	@RequestMapping(value="fetchFundReleased",method=RequestMethod.GET,produces = "application/JSON")
-	private Map<String, Object> fetchFundReleased(@RequestParam(value="installmentNo") Integer installmentNo){
+	@RequestMapping(value="fetchFundReleased",method=RequestMethod.GET)
+	private Map<String, Object> fetchFundReleased(@RequestParam(value="installmentNo", required = false) Integer installmentNo){
 		Map<String, Object> map=new HashMap<>();
 		FundReleasedDetails fundReleasedDetail = fundReleasedService.fetchFundReleasedDetailByInstallmentNo(installmentNo);
 		Map<String, Object> parameter = new HashMap<String, Object>();

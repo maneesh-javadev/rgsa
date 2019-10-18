@@ -29,7 +29,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 	@NamedQuery(name="QPR_ADMIN_FINANCIALDATA_ACTIVITY_REPORT_BASED_ON_QUARTER", query="from QprAdminAndFinancialDataActivity where adminAndFinancialDataActivity.adminFinancialDataActivityId=:activityId and quarterDuration.qtrId=:quarterId")
 })
 
-public class QprAdminAndFinancialDataActivity {
+public class QprAdminAndFinancialDataActivity  implements IFreezable{
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)

@@ -25,7 +25,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 	@NamedQuery(name="FETCH_ADMIN_FIN_DATA_ACTIVITY",query="select A from AdminAndFinancialDataActivity A where stateCode=:stateCode and yearId=:yearId and userType=:userType and versionNo=:versionNo and isActive=true")
 })
 
-public class AdminAndFinancialDataActivity {
+public class AdminAndFinancialDataActivity implements IFreezable{
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)

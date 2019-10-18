@@ -2,6 +2,7 @@
 <script type="text/javascript">
 var quater_id = '${QTR_ID}';
 var remaining_add_req = '${REMAINING_ADD_REQ}';
+var qtr_1_2_filled='${QTR_ONE_TWO_FILLED}';
 var fund_allocated_by_state='${FUND_ALLOCATED_BY_STATE}';
 var fund_used='${FUND_USED_IN_OTHER_QUATOR}';
 if(quater_id > 2){
@@ -9,6 +10,9 @@ if(quater_id > 2){
 	var fund_used_in_qtr_1_and_2 = '${TOTAL_FUND_USED_IN_QTR_1_AND_2}';
 }
 $(document).ready(function() {
+	if(qtr_1_2_filled == "false"){
+		alert('Please fill the quater 1 and 2 progress report first.');
+	}
 	$('#quaterDropDownId').val(quater_id);
 	showTablediv();
 	calTotalExpenditure();
@@ -80,6 +84,15 @@ function calTotalExpenditure(){
 		}
 	}
 	$('#totalExpenditureId').val(total_expenditure + +$('#additionalReqId').val());
+}
+
+function FreezeAndUnfreeze(msg){
+	var componentId=10;
+	var qprActivityId=$('#qprActivityId').val();
+	var quaterId = $('#quaterDropDownId').val();
+	document.incomeEnhancement.method = "post";
+	document.incomeEnhancement.action = "freezeAndUnfreezeReport.html?<csrf:token uri='freezeAndUnfreezeReport.html'/>&componentId="+componentId+"&qprActivityId="+qprActivityId+"&quaterId="+quaterId+"&msg="+msg;
+	document.incomeEnhancement.submit();
 }
 </script>
 <section class="content">
@@ -163,12 +176,12 @@ function calTotalExpenditure(){
 										<td> <div align="center">
 											<c:choose>
 												<c:when test="${not empty QPR_ENHANCEMENT}">
-													<input type="text" maxlength="8"
+													<form:input maxlength="8"
 														class="form-control expnditureId"
 														id="expenditureIncurred_${index.index}"
 														onkeyup="this.value=this.value.replace(/[^0-9]/g,'');validateFundByAllocatedFund(${index.index});validateWithCorrespondingFund(${index.index});calTotalExpenditure()"
-														name="qprIncomeEnhancementDetails[${index.index}].expenditureIncurred"
-														value="${QPR_ENHANCEMENT.qprIncomeEnhancementDetails[index.index].expenditureIncurred}" style="text-align: right;" />
+														path="qprIncomeEnhancementDetails[${index.index}].expenditureIncurred"
+														value="${QPR_ENHANCEMENT.qprIncomeEnhancementDetails[index.index].expenditureIncurred}" style="text-align: right;" readonly="${QPR_ENHANCEMENT.isFreeze}"/>
 												</c:when>
 												<c:otherwise>
 													<input type="text" maxlength="8"
@@ -184,7 +197,7 @@ function calTotalExpenditure(){
 										<tr>
 											<th colspan="2"><div align="center">Additional Requirement</div></th>
 											<th colspan="2"><div align="center" id="additionalReqStateId">${CEC_APPROVED_ACTIVITY.additionalRequirement }</div></th>
-											<td><div align="center"><input type="text" name="additionalRequirement" id="additionalReqId" style="text-align: right;" value="${QPR_ENHANCEMENT.additionalRequirement}" class="form-control validate Align-Right" onkeyup="validateAddReq();calTotalExpenditure()"></div></td>
+											<td><div align="center"><form:input path="additionalRequirement" id="additionalReqId" style="text-align: right;" value="${QPR_ENHANCEMENT.additionalRequirement}" class="form-control validate Align-Right" onkeyup="validateAddReq();calTotalExpenditure()" readonly="${QPR_ENHANCEMENT.isFreeze}" /></div></td>
 										</tr>
 										<tr>
 											<th colspan="2"><div align="center">Total Expenditure Incurred</div></th>
@@ -195,20 +208,24 @@ function calTotalExpenditure(){
 								</table>
 							</div>
 								<div class="form-group text-right">
-									<button type="button" id="saveButtn"
-										class="btn bg-green waves-effect" onclick="saveAndGetDataQtrRprt('save')">SAVE</button>
-									<button type="button" id="clearButtn" onclick="onClear(this)"
-										class="btn bg-light-blue waves-effect">CLEAR</button>
+									<form:button id="saveButtn"
+										class="btn bg-green waves-effect" onclick="saveAndGetDataQtrRprt('save')" disabled="${QPR_ENHANCEMENT.isFreeze}">SAVE</form:button>
+									<c:choose>
+										<c:when test="${QPR_ENHANCEMENT.isFreeze}"><form:button class="btn bg-orange waves-effect" onclick="FreezeAndUnfreeze('unfreeze')">UNFREEZE</form:button></c:when>
+										<c:otherwise><form:button class="btn bg-orange waves-effect" disabled="${DISABLE_FREEZE}" onclick="FreezeAndUnfreeze('freeze')">FREEZE</form:button></c:otherwise>
+									</c:choose>	
+									<form:button id="clearButtn" onclick="onClear(this)"
+										class="btn bg-light-blue waves-effect" disabled="${QPR_ENHANCEMENT.isFreeze}">CLEAR</form:button>
 									<button type="button"
 										onclick="onClose('home.html?<csrf:token uri='home.html'/>')"
-										class="btn bg-orange waves-effect">CLOSE</button>
+										class="btn bg-red waves-effect">CLOSE</button>
 								</div>
 							</div>
 						</div>
 						
 						<!-- HIDDEN FIELDS -->
 						<input type="hidden" name="incomeEnhancementActivity.incomeEnhancementId" value="${CEC_APPROVED_ACTIVITY.incomeEnhancementId}" />
-						<input type="hidden" name="qprIncomeEnhancementId" value="${QPR_ENHANCEMENT.qprIncomeEnhancementId}" />
+						<input type="hidden" name="qprIncomeEnhancementId" id="qprActivityId" value="${QPR_ENHANCEMENT.qprIncomeEnhancementId}" />
 						<input type="hidden" name="qprPmuId" value="${QPR_ENHANCEMENT.qprIncomeEnhancementId}" />
 						<input type="hidden" id="quaterTransient" name="showQqrtrId" />
 						<input type="hidden" id="origin" name="origin" />

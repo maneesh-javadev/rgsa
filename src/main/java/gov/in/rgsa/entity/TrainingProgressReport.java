@@ -30,10 +30,10 @@ import org.hibernate.annotations.UpdateTimestamp;
 @Table(name="training_progress_report" , schema="rgsa")
 @NamedQueries({
 	@NamedQuery(name="TRAINING_REPORT_BASED_ON_QUARTER", query="Select TPR from TrainingProgressReport TPR RIGHT OUTER JOIN FETCH TPR.trainingDetailsProgressReportList TDPR where (TDPR.trainingActivityDetails.trainingActivityDetailsId IN (:acivityDetailsId)) AND TPR.trainingActivity.trainingActivityId=:activityId AND TDPR.quarterDuration.qtrId=:quarterId"),
-	@NamedQuery(name="TRAINING_REPORT_BASED_ID", query="Select TPR from TrainingProgressReport TPR  where TPR.trainingActivity.trainingActivityId=:activityId")
+	@NamedQuery(name="TRAINING_REPORT_BASED_ID", query="Select TPR from TrainingProgressReport TPR  where TPR.trainingActivity.trainingActivityId=:activityId"),
 })
 		
-public class TrainingProgressReport {
+public class TrainingProgressReport  implements IFreezable{
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)

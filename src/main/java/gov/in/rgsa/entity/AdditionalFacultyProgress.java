@@ -29,7 +29,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 @NamedQuery(name="FETCH_Additional_Facult_progress_report_BASED_ID", query="Select AFP from AdditionalFacultyProgress AFP  where AFP.institueInfraHrActivity.instituteInfraHrActivityId=:instituteInfraHrActivityId"),
 @NamedQuery(name="FETCH_HR_SUPPORT_ACT_QTR_ID_AND_ACT_ID",query="from AdditionalFacultyProgress where institueInfraHrActivity.instituteInfraHrActivityId=:instituteInfraHrActivityId and quarterDuration.qtrId !=:quarterId")
 })
-public class AdditionalFacultyProgress {
+public class AdditionalFacultyProgress  implements IFreezable{
 
 	
 

@@ -26,7 +26,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 @NamedQuery(name="FETCH_QPR_INST_ACTIVITY_DEPEND_ON_QUATOR",query ="SELECT Q FROM QprInstitutionalInfrastructure Q WHERE Q.qtrId=:quatorId and Q.institutionalInfraActivivtyId=:activityId"),
 @NamedQuery(name="UPDATE_QPR_INST_ACTIVITY_DEPEND_ON_QUATOR",query="UPDATE QprInstitutionalInfrastructure SET additionalRequirement=:additionalRequirement,additionalRequirementDPRC=:additionalRequirementDPRC  where qprInstInfraId=:qprInstInfraId"),
 })
-public class QprInstitutionalInfrastructure {
+public class QprInstitutionalInfrastructure  implements IFreezable{
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)

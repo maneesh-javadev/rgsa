@@ -2,6 +2,7 @@
 <script>
 var quater_id = '${QTR_ID}';
 var remaining_add_req = '${REMAINING_ADD_REQ}';
+var qtr_1_2_filled='${QTR_ONE_TWO_FILLED}';
 var fund_allocated_by_state='${FUND_ALLOCATED_BY_STATE}';
 var fund_used='${FUND_USED_IN_OTHER_QUATOR}';
 if(quater_id > 2){
@@ -9,6 +10,9 @@ if(quater_id > 2){
 	var fund_used_in_qtr_1_and_2 = '${TOTAL_FUND_USED_IN_QTR_1_AND_2}';
 }
 $('document').ready(function(){
+	if(qtr_1_2_filled == "false"){
+		alert('Please fill the quater 1 and 2 progress report first.');
+	}
 	$('#quaterDropDownId').val(quater_id);
 	showTablediv();
 	calTotalExpenditure();
@@ -91,6 +95,15 @@ function calTotalExpenditure(){
 	}
 	$('#totalExpenditureId').val(total_expenditure + +$('#additionalReqId').val());
 }
+
+function FreezeAndUnfreeze(msg){
+	var componentId=9;
+	var qprActivityId=$('#qprActivityId').val();
+	var quaterId = $('#quaterDropDownId').val();
+	document.innovativeActivity.method = "post";
+	document.innovativeActivity.action = "freezeAndUnfreezeReport.html?<csrf:token uri='freezeAndUnfreezeReport.html'/>&componentId="+componentId+"&qprActivityId="+qprActivityId+"&quaterId="+quaterId+"&msg="+msg;
+	document.innovativeActivity.submit();
+}
 </script>
 <section class="content">
 	<div class="container-fluid">
@@ -159,7 +172,7 @@ function calTotalExpenditure(){
 													<td><div align="center">
 													<c:choose>
 														<c:when test="${not empty QPR_INNOVATIVE_ACTIVITY}">
-															<input type="text" class="form-control validate Align-Right" name="qprInnovativeActivityDetails[${index.index}].expenditureIncurred" id="expenditureIncurred_${index.index}" value="${QPR_INNOVATIVE_ACTIVITY.qprInnovativeActivityDetails[index.index].expenditureIncurred}" onkeyup="validateFundByAllocatedFund(${index.index});validateWithCorrespondingFund(${index.index });calTotalExpenditure()" />
+															<form:input class="form-control validate Align-Right" path="qprInnovativeActivityDetails[${index.index}].expenditureIncurred" id="expenditureIncurred_${index.index}" value="${QPR_INNOVATIVE_ACTIVITY.qprInnovativeActivityDetails[index.index].expenditureIncurred}" onkeyup="validateFundByAllocatedFund(${index.index});validateWithCorrespondingFund(${index.index });calTotalExpenditure()" readonly="${QPR_INNOVATIVE_ACTIVITY.isFreeze}"/>
 														</c:when>
 														<c:otherwise>
 															<input type="text" class="form-control validate Align-Right" name="qprInnovativeActivityDetails[${index.index}].expenditureIncurred" id="expenditureIncurred_${index.index}" onkeyup="validateFundByAllocatedFund(${index.index});validateWithCorrespondingFund(${index.index});calTotalExpenditure()"/>
@@ -174,7 +187,7 @@ function calTotalExpenditure(){
 												<th><div align="center">Additional Requirement</div></th>
 												<th><div align="center" id="additionalReqStateId">${CEC_APPROVED_ACTIVITY.additioinalRequirements}</div></th>
 												<td></td>
-												<td><div align="center"><input type="text" name="additioinalRequirements" id="additionalReqId" value="${QPR_INNOVATIVE_ACTIVITY.additioinalRequirements}" class="form-control validate Align-Right" onkeyup="validateAddReq();calTotalExpenditure()" /></div></td>
+												<td><div align="center"><form:input path="additioinalRequirements" id="additionalReqId" value="${QPR_INNOVATIVE_ACTIVITY.additioinalRequirements}" class="form-control validate Align-Right" onkeyup="validateAddReq();calTotalExpenditure()" readonly="${QPR_INNOVATIVE_ACTIVITY.isFreeze}"/></div></td>
 											</tr>
 											<tr>
 											<th colspan="2"><div align="center">Total Expenditure Incurred</div></th>
@@ -185,20 +198,31 @@ function calTotalExpenditure(){
 										</table>
 									</div>
 									<div class="form-group text-right" style="padding-right: 10px;">
-										<button type="button" onclick="saveAndGetDataQtrRprt('save')" id="saveButtn"
-											class="btn bg-green waves-effect">SAVE</button>
-										<button type="button" id="clearButtn" onclick="onClear(this)"
-											class="btn bg-light-blue waves-effect">CLEAR</button>
-										<button type="button"
+										<form:button onclick="saveAndGetDataQtrRprt('save')" id="saveButtn"
+											class="btn bg-green waves-effect" disabled="${QPR_INNOVATIVE_ACTIVITY.isFreeze}">SAVE</form:button>
+										<c:choose>
+											<c:when test="${QPR_INNOVATIVE_ACTIVITY.isFreeze}">
+												<form:button class="btn bg-orange waves-effect"
+													onclick="FreezeAndUnfreeze('unfreeze')">UNFREEZE</form:button>
+											</c:when>
+											<c:otherwise>
+												<form:button class="btn bg-orange waves-effect"
+													disabled="${DISABLE_FREEZE}"
+													onclick="FreezeAndUnfreeze('freeze')">FREEZE</form:button>
+											</c:otherwise>
+										</c:choose>	
+										<form:button id="clearButtn" onclick="onClear(this)"
+											class="btn bg-light-blue waves-effect" disabled="${QPR_INNOVATIVE_ACTIVITY.isFreeze}">CLEAR</form:button>
+										<form:button
 											onclick="onClose('home.html?<csrf:token uri='home.html'/>')"
-											class="btn bg-orange waves-effect">CLOSE</button>
+											class="btn bg-red waves-effect">CLOSE</form:button>
 									</div>
 								</div>
 							</div>
 							<!-- HIDDEN FIELDS -->
 							<input type="hidden" id="quaterTransient" name="qtrId" />
 							<input type="hidden" id="origin" name="origin" />
-							<input type="hidden" name="qprIaId" value="${QPR_INNOVATIVE_ACTIVITY.qprIaId}" />
+							<input type="hidden" name="qprIaId" value="${QPR_INNOVATIVE_ACTIVITY.qprIaId}" id="qprActivityId"/>
 							<input type="hidden" name="innovativeActivity.innovativeActivityId" value="${CEC_APPROVED_ACTIVITY.innovativeActivityId}" />
 						</form:form>
 					</div>

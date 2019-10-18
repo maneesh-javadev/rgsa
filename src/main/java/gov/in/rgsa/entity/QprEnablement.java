@@ -28,7 +28,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 @NamedQuery(name="FETCH_QPR_ENABLEMENT_REPORT_BASED_ID", query="Select  QE from QprEnablement QE  where QE.eEnablement.eEnablementId=:eEnablementId"),
 @NamedQuery(name="FETCH_ENABLEMENT_QPR_ACT_BY_QTR_ID_AND_ACT_ID",query="from QprEnablement where eEnablement.eEnablementId=:eEnablementId and quarterDuration.qtrId!=:quarterId"),
 })
-public class QprEnablement {
+public class QprEnablement  implements IFreezable{
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -71,6 +71,9 @@ public class QprEnablement {
 	@Column(name="menu_id")
 	private Integer menuId;
 	
+	@Column(name="is_freez")
+	private Boolean isFreeze;
+	
 	@Transient
 	private Integer districtId;
 	
@@ -88,8 +91,6 @@ public class QprEnablement {
 	public void setQprEEnablementId(Integer qprEEnablementId) {
 		this.qprEEnablementId = qprEEnablementId;
 	}
-
-	
 
 	public Integer getAdditionalRequirement() {
 		return additionalRequirement;
@@ -190,6 +191,14 @@ public class QprEnablement {
 
 	public void setOrigin(String origin) {
 		this.origin = origin;
+	}
+
+	public Boolean getIsFreeze() {
+		return isFreeze;
+	}
+
+	public void setIsFreeze(Boolean isFreeze) {
+		this.isFreeze = isFreeze;
 	}
 
 	

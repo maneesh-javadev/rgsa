@@ -1008,6 +1008,131 @@ public class ProgressReportServiceImpl implements ProgressReportService {
 		 */
 		
 	}
+	
+	
+
+	@Override
+	public void freezeAndUnfreezeReport(Integer componentId, Integer activityId, Integer quaterId, String msg) {
+		boolean isFreeze = (msg.equalsIgnoreCase("freeze")) ? true : false;
+		switch(componentId) {
+		case 1 :
+			TrainingProgressReport  trainingProgressReport= commonRepository.find(TrainingProgressReport.class, activityId);
+			if(trainingProgressReport != null) {
+				trainingProgressReport.setIsFreeze(isFreeze);
+				commonRepository.update(trainingProgressReport);
+			}
+			break;
+		case 2 :
+			QprInstitutionalInfrastructure  qprInstitutionalInfrastructure= commonRepository.find(QprInstitutionalInfrastructure.class, activityId);
+			if(qprInstitutionalInfrastructure != null) {
+				qprInstitutionalInfrastructure.setIsFreeze(isFreeze);
+				commonRepository.update(qprInstitutionalInfrastructure);
+			}
+			break;
+		case 3 : 
+			QprPanchayatBhawan  qprPanchayatBhawan= commonRepository.find(QprPanchayatBhawan.class, activityId);
+			if(qprPanchayatBhawan != null) {
+				qprPanchayatBhawan.setIsFreeze(isFreeze);
+				commonRepository.update(qprPanchayatBhawan);
+			}
+			break;
+		case 4 :
+			AdministrativeTechnicalProgress  administrativeTechnicalProgress= commonRepository.find(AdministrativeTechnicalProgress.class, activityId);
+			if(administrativeTechnicalProgress != null) {
+				administrativeTechnicalProgress.setIsFreeze(isFreeze);
+				commonRepository.update(administrativeTechnicalProgress);
+			}
+			break;
+		case 5 :
+			QprEnablement  qprEnablement= commonRepository.find(QprEnablement.class, activityId);
+			if(qprEnablement != null) {
+				qprEnablement.setIsFreeze(isFreeze);
+				commonRepository.update(qprEnablement);
+			}
+			break;
+		case 6 : 
+			QprPesa  qprPesa= commonRepository.find(QprPesa.class, activityId);
+			if(qprPesa != null) {
+				qprPesa.setIsFreeze(isFreeze);
+				commonRepository.update(qprPesa);
+			}
+			break;
+		case 7 :
+			SatcomActivityProgress  satcomActivityProgress= commonRepository.find(SatcomActivityProgress.class, activityId);
+			if(satcomActivityProgress != null) {
+				satcomActivityProgress.setIsFreeze(isFreeze);
+				commonRepository.update(satcomActivityProgress);
+			}
+			break;
+		case 8 :
+			QprAdminAndFinancialDataActivity  qprAdminAndFinancialDataActivity= commonRepository.find(QprAdminAndFinancialDataActivity.class, activityId);
+			if(qprAdminAndFinancialDataActivity != null) {
+				qprAdminAndFinancialDataActivity.setIsFreeze(isFreeze);
+				commonRepository.update(qprAdminAndFinancialDataActivity);
+			}
+			break;
+		case 9 :
+			QprInnovativeActivity  qprInnovativeActivity= commonRepository.find(QprInnovativeActivity.class, activityId);
+			if(qprInnovativeActivity != null) {
+				qprInnovativeActivity.setIsFreeze(isFreeze);
+				commonRepository.update(qprInnovativeActivity);
+			}
+			break;
+		case 10 :
+			QprIncomeEnhancement  qprIncomeEnhancement= commonRepository.find(QprIncomeEnhancement.class, activityId);
+			if(qprIncomeEnhancement != null) {
+				qprIncomeEnhancement.setIsFreeze(isFreeze);
+				commonRepository.update(qprIncomeEnhancement);
+			}
+			break;
+		case 11 :
+			IecQuater  iecQuater= commonRepository.find(IecQuater.class, activityId);
+			if(iecQuater != null) {
+				iecQuater.setIsFreeze(isFreeze);
+				commonRepository.update(iecQuater);
+			}
+			break;
+		case 12 :
+			PmuProgress  pmuProgress= commonRepository.find(PmuProgress.class, activityId);
+			if(pmuProgress != null) {
+				pmuProgress.setIsFreeze(isFreeze);
+				commonRepository.update(pmuProgress);
+			}
+			break;	
+		case 13 :
+			QprCbActivity  qprCbActivity= commonRepository.find(QprCbActivity.class, activityId);
+			if(qprCbActivity != null) {
+				qprCbActivity.setIsFreeze(isFreeze);
+				commonRepository.update(qprCbActivity);
+			}
+			break;
+		case 14 :
+			AdditionalFacultyProgress  additionalFacultyProgress= commonRepository.find(AdditionalFacultyProgress.class, activityId);
+			if(additionalFacultyProgress != null) {
+				additionalFacultyProgress.setIsFreeze(isFreeze);
+				commonRepository.update(additionalFacultyProgress);
+			}
+			break;
+		case 15 : 
+			QprEGov  qprEGov= commonRepository.find(QprEGov.class, activityId);
+			if(qprEGov != null) {
+				qprEGov.setIsFreeze(isFreeze);
+				commonRepository.update(qprEGov);
+			}
+			break;
+		}
+ 	}
+
+	@Override
+	public <T extends IFreezable> void freezeAndUnfreezeReport(Class<T> clazz, Integer qprActivityId, Boolean isFreeze) {
+		T  entity= commonRepository.find(clazz, qprActivityId);
+		if(entity != null) {
+			entity.setIsFreeze(isFreeze);
+			commonRepository.update(entity);
+		}
+		
+		
+	}
     
 
 }

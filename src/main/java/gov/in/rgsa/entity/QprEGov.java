@@ -9,6 +9,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedNativeQueries;
 import javax.persistence.NamedNativeQuery;
+import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import java.sql.Timestamp;
 
@@ -95,9 +96,10 @@ import gov.in.rgsa.outbound.QprEGovResponse;
             "WHERE esa.user_type = :userType AND esa.state_code=:stateCode and esa.year_id=:yearId  " +
             "ORDER BY \"egovPostLevelId\", \"egovPostLevelName\", \"egovPostID\"", resultClass=QprEGovResponse.class)
 })
+@NamedQuery(name="FETCH_QPR_EGOV_EXCEPT_THIS_QTR_ID",query="from QprEGov where egovSupportActivity.eGovSupportActivityId=:eGovSupportActivityId and qprQuarterDetail.qtrId!=:quarterId")
 @Entity
 @Table(name="qpr_egov", schema="rgsa")
-public class QprEGov
+public class QprEGov  implements IFreezable
 {
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)

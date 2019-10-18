@@ -119,4 +119,8 @@ public interface ProgressReportService {
 	public List<QprTrainingBreakup> fetchTrainingBreakUpData(int qprTrainingBreakupId);
 
 	public void savetrainingBreakUpData(QuarterTrainings quarterTrainings);
+
+	public void freezeAndUnfreezeReport(Integer componentId, Integer activityId, Integer quaterId, String msg);
+
+	public <T extends IFreezable> void freezeAndUnfreezeReport(Class<T> clazz, Integer qprActivityId, Boolean isFreeze);
 }

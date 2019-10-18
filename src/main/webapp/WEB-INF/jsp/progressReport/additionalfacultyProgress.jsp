@@ -12,8 +12,12 @@ var total_fund_used_qtr_1_2_dprc = '${TOTAL_DPRC_FUND_USED_IN_QTR_1_AND_2}';
 var total_add_req_sprc_filled = '${TOTAL_ADD_REQ_SPRC}';
 var total_add_req_dprc_filled = '${TOTAL_ADD_REQ_DPRC}';
 var domain_list = '${LIST_OF_DOMAINS}';
+var qtr_1_2_filled='${QTR_ONE_TWO_FILLED}';
 
 $(document).ready(function() {
+	if(qtr_1_2_filled == "false"){
+		alert('Please fill the quater 1 and 2 progress report first.');
+	}
 	$('#quaterDropDownId').val(quater_id);
 	showTablediv();
 	calTotalExpenditure();
@@ -212,6 +216,15 @@ function emptyDomainDetails(level,count){
 		}
 	}
 }
+
+function FreezeAndUnfreeze(msg){
+	var componentId=14;
+	var qprActivityId=$('#qprActivityId').val();
+	var quaterId = $('#quaterDropDownId').val();
+	document.additionalFacultyProgress.method = "post";
+	document.additionalFacultyProgress.action = "freezeAndUnfreezeReport.html?<csrf:token uri='freezeAndUnfreezeReport.html'/>&componentId="+componentId+"&qprActivityId="+qprActivityId+"&quaterId="+quaterId+"&msg="+msg;
+	document.additionalFacultyProgress.submit();
+}
 </script>
 <style>
 .Align-Right{
@@ -280,7 +293,7 @@ function emptyDomainDetails(level,count){
 									<!-- ends here -->
 										
 									<input type="hidden" name="institueInfraHrActivity.instituteInfraHrActivityId" value="${CEC_APPROVED_ACTIVITY.instituteInfraHrActivityId}" /> 
-						 	 		<input type="hidden" name="qprInstInfraHrId"  value="${QPR_ACTIVITY.qprInstInfraHrId}" />
+						 	 		<input type="hidden" name="qprInstInfraHrId"  value="${QPR_ACTIVITY.qprInstInfraHrId}" id="qprActivityId"/>
 						 	 		<input type="hidden" name="additionalFacultyProgressDetail[${count.index}].instituteInfraHrActivityType.instituteInfraHrActivityTypeId" value="${approvedActDetail.instituteInfraHrActivityType.instituteInfraHrActivityTypeId}" />
 							 		<input type="hidden" name="additionalFacultyProgressDetail[${count.index}].qprInstInfraHrDetailsId" value="${QPR_ACTIVITY.additionalFacultyProgressDetail[count.index].qprInstInfraHrDetailsId}" />
 									<tr>
@@ -291,7 +304,7 @@ function emptyDomainDetails(level,count){
 										<c:choose>
 											<c:when test="${not empty QPR_ACTIVITY}">
 												<td><c:if test="${count.index ne 2 and count.index ne 5}">
-													<input name="additionalFacultyProgressDetail[${count.index}].noOfUnitsFilled" id="noOfUnitCompleted_${count.index}" type="text" style="text-align: right;" class="form-control validate"  value="${QPR_ACTIVITY.additionalFacultyProgressDetail[count.index].noOfUnitsFilled}" onkeyup="validateNoOfUnits(${count.index})" onchange="domainValidation('noOfUnitCompleted_${count.index}')"/>
+													<form:input path="additionalFacultyProgressDetail[${count.index}].noOfUnitsFilled" id="noOfUnitCompleted_${count.index}" style="text-align: right;" class="form-control validate"  value="${QPR_ACTIVITY.additionalFacultyProgressDetail[count.index].noOfUnitsFilled}" onkeyup="validateNoOfUnits(${count.index})" onchange="domainValidation('noOfUnitCompleted_${count.index}')" readonly="${QPR_ACTIVITY.isFreeze}"/>
 																<c:choose>
 																	<c:when test="${count.index eq 0 }">
 																		<div align="right" style="margin-top: 5px"><button type="button"
@@ -308,7 +321,7 @@ function emptyDomainDetails(level,count){
 																	</c:otherwise>
 																</c:choose>
 															</c:if></td>
-									 				<td><input name="additionalFacultyProgressDetail[${count.index}].expenditureIncurred" id="expenditureIncurred_${count.index}" type="text" style="text-align: right;" class="form-control validate" value="${QPR_ACTIVITY.additionalFacultyProgressDetail[count.index].expenditureIncurred }" onkeyup="validateFundByAllocatedFund(${count.index});validateWithCorrespondingFund(${count.index});isNoOfUnitAndExpInurredFilled(${count.index});calTotalExpenditure()"/></td>
+									 				<td><form:input path="additionalFacultyProgressDetail[${count.index}].expenditureIncurred" id="expenditureIncurred_${count.index}" style="text-align: right;" class="form-control validate" value="${QPR_ACTIVITY.additionalFacultyProgressDetail[count.index].expenditureIncurred }" onkeyup="validateFundByAllocatedFund(${count.index});validateWithCorrespondingFund(${count.index});isNoOfUnitAndExpInurredFilled(${count.index});calTotalExpenditure()" readonly="${QPR_ACTIVITY.isFreeze}"/></td>
 											</c:when>
 											<c:otherwise>
 												<td><c:if test="${count.index ne 2 and count.index ne 5}">
@@ -343,14 +356,14 @@ function emptyDomainDetails(level,count){
 										<th colspan="2"><div align="center">Additional Requirement SPRC</div></th>
 										<td colspan="2"><div align="center" id="additionalReqSprcStateId">${CEC_APPROVED_ACTIVITY.additionalRequirementSprc }</div></td>
 										<td></td>
-										<td><input type="text" name="additionalReqSprc" id="additionalReqSprcId" style="text-align: right;" value="${QPR_ACTIVITY.additionalReqSprc}" class="form-control validate" onkeyup="validateAddReq('sprc');calTotalExpenditure()"></td>
+										<td><form:input path="additionalReqSprc" id="additionalReqSprcId" style="text-align: right;" value="${QPR_ACTIVITY.additionalReqSprc}" class="form-control validate" onkeyup="validateAddReq('sprc');calTotalExpenditure()" readonly="${QPR_ACTIVITY.isFreeze}"/></td>
 									</tr>
 									
 									<tr>
 										<th colspan="2"><div align="center">Additional Requirement DPRC</div></th>
 										<td colspan="2"><div align="center" id="additionalReqDprcStateId">${CEC_APPROVED_ACTIVITY.additionalRequirementDprc }</div></td>
 										<td></td>
-										<td><input type="text" name="additionalReqDprc" id="additionalReqDprcId" style="text-align: right;" value="${QPR_ACTIVITY.additionalReqDprc}" class="form-control validate" onkeyup="validateAddReq('dprc');calTotalExpenditure()"></td>
+										<td><form:input path="additionalReqDprc" id="additionalReqDprcId" style="text-align: right;" value="${QPR_ACTIVITY.additionalReqDprc}" class="form-control validate" onkeyup="validateAddReq('dprc');calTotalExpenditure()" readonly="${QPR_ACTIVITY.isFreeze}"/></td>
 									</tr>
 
 									<tr>
@@ -411,7 +424,7 @@ function emptyDomainDetails(level,count){
 																					<input type="hidden"
 																					name="qprTiWiseDomainExpert[${temp}].domainId"
 																					value="${DOMAINS.domainId}"></th>
-																				<td><form:input path="qprTiWiseDomainExpert[${temp}].noOfExperts" id="noOfExpertsSprc_${temp}" class="form-control validate Align-Right" onkeyup="domainValidation(${temp})"/></td>
+																				<td><form:input path="qprTiWiseDomainExpert[${temp}].noOfExperts" id="noOfExpertsSprc_${temp}" class="form-control validate Align-Right" onkeyup="domainValidation(${temp})" readonly="${QPR_ACTIVITY.isFreeze}"/></td>
 																			</tr>
 																			<form:hidden path="qprTiWiseDomainExpert[${temp}].qprTiWiseProposedDomainExpertsId"/>
 																			<c:set var="temp" value="${temp+1}" scope="page" />
@@ -480,7 +493,7 @@ function emptyDomainDetails(level,count){
 																				<td style="width: 234px;"><div align="center"><strong>${DISTRICT.districtNameEnglish}</strong></div></td>
 																				<c:forEach items="${LIST_OF_DOMAINS}" var="DOMAINS">
 																					<c:if test="${DOMAINS.trainingInstitueType.trainingInstitueTypeId eq 4}">
-																						<td><form:input path="qprTiWiseDomainExpert[${dprcIndex+LIST_OF_DOMAINS_LENGTH}].noOfExperts" class="form-control Align-Right validate" onkeyup="domainValidation(${dprcIndex})" id="noOfExpertsDprc_${dprcIndex}" /></td>
+																						<td><form:input path="qprTiWiseDomainExpert[${dprcIndex+LIST_OF_DOMAINS_LENGTH}].noOfExperts" class="form-control Align-Right validate" onkeyup="domainValidation(${dprcIndex})" id="noOfExpertsDprc_${dprcIndex}" readonly="${QPR_ACTIVITY.isFreeze}"/></td>
 																					<!-- hidden fields  -->
 																							<input type="hidden" name="qprTiWiseDomainExpert[${dprcIndex + LIST_OF_DOMAINS_LENGTH}].domainId" value="${DOMAINS.domainId}">
 																							<input type="hidden" name="qprTiWiseDomainExpert[${dprcIndex + LIST_OF_DOMAINS_LENGTH}].districtCode" value="${DISTRICT.districtCode}">
@@ -507,9 +520,29 @@ function emptyDomainDetails(level,count){
 								</div>
 						<!-- MODAL SPRC ENDS HERE -->
 							<div class="text-right">
-								<button type="submit" onclick="saveAndGetDataQtrRprt('save')" class="btn bg-green waves-effect">SAVE</button>
-								<button type="button" onclick="onClear(this)" class="btn bg-light-blue waves-effect">CLEAR</button>
-								<button type="button" onclick="onClose('home.html?<csrf:token uri='home.html'/>')" class="btn bg-orange waves-effect">CLOSE</button>
+								<c:choose>
+									<c:when test="${QPR_ACTIVITY.isFreeze}">
+										<button type="submit" onclick="saveAndGetDataQtrRprt('save')" class="btn bg-green waves-effect" disabled="disabled">SAVE</button>
+										<button type="button" onclick="FreezeAndUnfreeze('unfreeze')"  class="btn bg-orange waves-effect">UNFREEZE</button>
+										<button type="button" onclick="onClear(this)" class="btn bg-light-blue waves-effect" disabled="disabled">CLEAR</button>
+									</c:when>
+									<c:otherwise>
+										<button type="submit" onclick="saveAndGetDataQtrRprt('save')" class="btn bg-green waves-effect">SAVE</button>
+										<c:choose>
+											<c:when test="${DISABLE_FREEZE}">
+												<button type="button" onclick="" disabled="disabled"
+													class="btn bg-orange waves-effect">FREEZE</button>
+											</c:when>
+											<c:otherwise><button type="button" onclick="FreezeAndUnfreeze('freeze')"
+													class="btn bg-orange waves-effect">FREEZE</button></c:otherwise>
+										</c:choose>
+										<button type="button" onclick="onClear(this)" class="btn bg-light-blue waves-effect">CLEAR</button>
+									</c:otherwise>
+								</c:choose>
+							
+							
+								
+								<button type="button" onclick="onClose('home.html?<csrf:token uri='home.html'/>')" class="btn bg-red waves-effect">CLOSE</button>
 							</div>
 						</div>
 						</div>

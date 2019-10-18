@@ -18,7 +18,7 @@ import javax.persistence.Transient;
 @Entity
 @Table(name="qpr_panhcayat_bhawan",schema="rgsa")
 @NamedQuery(name="FETCH_ACTIVITY_DEPEND_ON_QUATOR",query="SELECT Q FROM QprPanchayatBhawan Q WHERE qtrId=:quatorId AND panchayatBhawanActivityId=:panchayatBhawanActivityId AND activityId=:activityId ")
-public class QprPanchayatBhawan {
+public class QprPanchayatBhawan  implements IFreezable{
 
 	
 	@Id
