@@ -46,6 +46,9 @@ public class State implements Serializable {
 	@Column(name = "state_or_ut")
 	private String stateOrUt;
 
+	@Column(name = "isactive")
+	private Boolean isactive;
+
 	public int getStateCode() {
 		return stateCode;
 	}
@@ -112,5 +115,13 @@ public class State implements Serializable {
 	public String toString() {
 		return "State [stateCode=" + stateCode + ", stateNameEnglish="
 				+ stateNameEnglish + "]";
+	}
+
+	public Boolean getIsactive() {
+		return isactive;
+	}
+
+	public void setIsactive(Boolean isactive) {
+		this.isactive = isactive;
 	}
 }
