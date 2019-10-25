@@ -105,26 +105,26 @@ function freezeAndUnfreeze(obj){
 function onLoadChangeColor(){
 	var rowCount = $('#tbodyMainTableId tr').length - 3; /* minus 3 is done because length is counting additional requirement, total fund and grand total and we dont need it*/
 	var rowModal1 =  $('#tbodySprcId tr').length;
-	var rowModal2 = $('#modal2Tbody tr').length;
+	var rowModal2 = $('#modal2Tbody tr').length * domain_list.split(',').length / 2;
  	for(var i=0;i<rowCount;i++){
-		+$("#noOfMonthsState_"+i).text() > +$("#noOfMonths_"+i).val() ? $("#noOfMonthsState_"+i).css('color','red') : $("#noOfMonthsState_"+i).css('color','#00cc00');
-		+$("#noOfUnitsState_"+i).text() > +$("#noOfUnits_"+i).val() ? $("#noOfUnitsState_"+i).css('color','red') : $("#noOfUnitsState_"+i).css('color','#00cc00');
+		+$("#noOfMonthsMopr_"+i).text() > +$("#noOfMonths_"+i).val() ? $("#noOfMonthsMopr_"+i).css('color','red') : $("#noOfMonthsMopr_"+i).css('color','#00cc00');
+		+$("#noOfUnitsMopr_"+i).text() > +$("#noOfUnits_"+i).val() ? $("#noOfUnitsMopr_"+i).css('color','red') : $("#noOfUnitsMopr_"+i).css('color','#00cc00');
 		if($("#fund"+i).val() == undefined){
 			$("#fund"+i).val(0);
 		}
-		+$("#fundState_"+i).text() > +$("#fund_"+i).val() ? $("#fundState_"+i).css('color','red') : $("#fundState_"+i).css('color','#00cc00');
+		+$("#fundMopr_"+i).text() > +$("#fund_"+i).val() ? $("#fundMopr_"+i).css('color','red') : $("#fundMopr_"+i).css('color','#00cc00');
 	}
 	+$("#total_fund_sprc_state").text() > +$("#total_fund_sprc").val() ? $("#total_fund_sprc_state").css('color','red') : $("#total_fund_sprc_state").css('color','#00cc00');
 	+$("#total_fund_dprc_state").text() > +$("#total_fund_dprc").val() ? $("#total_fund_dprc_state").css('color','red') : $("#total_fund_dprc_state").css('color','#00cc00');
-	+$("#additionalRequirementSprcStateId").text() > +$("#additionalRequirementSprcId").val() ? $("#additionalRequirementSprcStateId").css('color','red') : $("#additionalRequirementSprcStateId").css('color','#00cc00');
-	+$("#additionalRequirementDprcStateId").text() > +$("#additionalRequirementDprcId").val() ? $("#additionalRequirementDprcStateId").css('color','red') : $("#additionalRequirementDprcStateId").css('color','#00cc00');
-	+$("#grandTotalState").text() > +$("#grandTotalId").val() ? $("#grandTotalState").css('color','red') : $("#grandTotalState").css('color','#00cc00');
+	+$("#additionalRequirementSprcMoprId").text() > +$("#additionalRequirementSprcId").val() ? $("#additionalRequirementSprcMoprId").css('color','red') : $("#additionalRequirementSprcMoprId").css('color','#00cc00');
+	+$("#additionalRequirementDprcMoprId").text() > +$("#additionalRequirementDprcId").val() ? $("#additionalRequirementDprcMoprId").css('color','red') : $("#additionalRequirementDprcMoprId").css('color','#00cc00');
+	+$("#grandTotalMopr").text() > +$("#grandTotalId").val() ? $("#grandTotalMopr").css('color','red') : $("#grandTotalMopr").css('color','#00cc00');
 	
 	for(var j=0;j < rowModal1 ;j++){
-		+$("#noOfFacultyState_"+j).text() > +$("#noOfFaculty_"+j).val() ? $("#noOfFacultyState_"+j).css('color','red') : $("#noOfFacultyState_"+j).css('color','#00cc00');
+		+$("#noOfFacultyMopr_"+j).text() > +$("#noOfFaculty_"+j).val() ? $("#noOfFacultyMopr_"+j).css('color','red') : $("#noOfFacultyMopr_"+j).css('color','#00cc00');
 	}
 	for(var j=0 ; j < rowModal2; j++){
-		+$("#noOfExpertState_"+j).text() > +$("#noOfExpert_"+j).val() ? $("#noOfExpertState_"+j).css('color','red') : $("#noOfExpertState_"+j).css('color','#00cc00');
+		+$("#noOfExpertMopr_"+j).text() > +$("#noOfExpert_"+j).val() ? $("#noOfExpertMopr_"+j).css('color','red') : $("#noOfExpertMopr_"+j).css('color','#00cc00');
 	} 
 }
 
@@ -315,7 +315,7 @@ function calculateTotalFundDprc() {
 
 							<div class="tab-content">
 								<div role="tabpanel" class="container tab-pane active"
-									id="state" style="width: auto;">
+									id="MOPR" style="width: auto;">
 									<div class="row clearfix">
 										<div class="form-group">
 											<div class="col-sm-4">
@@ -326,11 +326,11 @@ function calculateTotalFundDprc() {
 
 											<div class="col-sm-2">
 												<div align="center">
-													<strong>${institueInfraHrActivityState.districtsSupported}</strong>
+													<strong>${institueInfraHrActivityMopr.districtsSupported}</strong>
 												</div>
 												<form:hidden id="districtSupportedId"
 													path="districtsSupported"
-													value="${institueInfraHrActivityState.districtsSupported}" />
+													value="${institueInfraHrActivityMopr.districtsSupported}" />
 											</div>
 										</div>
 									</div>
@@ -385,7 +385,7 @@ function calculateTotalFundDprc() {
 															</div></td>
 
 														<td>
-															<div align="center" id="noOfUnitsState_${index.index}">${institueInfraHrActivityDetailsState[index.index].noOfUnits}</div>
+															<div align="center" id="noOfUnitsMopr_${index.index}">${institueInfraHrActivityDetailsMopr[index.index].noOfUnits}</div>
 															<c:if test="${index.index ne 2 and index.index ne 5}">
 															<form:input
 																path="institueInfraHrActivityDetails[${index.index}].noOfUnits"
@@ -399,7 +399,7 @@ function calculateTotalFundDprc() {
 
 														<td>
 														<c:if test="${index.index ne 2 and index.index ne 5}">
-																<div align="center" id="noOfMonthsState_${index.index}">${institueInfraHrActivityDetailsState[index.index].noOfMonths}</div>
+																<div align="center" id="noOfMonthsMopr_${index.index}">${institueInfraHrActivityDetailsMopr[index.index].noOfMonths}</div>
 																<form:input
 																	path="institueInfraHrActivityDetails[${index.index}].noOfMonths"
 																	onkeypress="return isNumber(event)"
@@ -409,7 +409,7 @@ function calculateTotalFundDprc() {
 														</td>
 
 														<td>
-															<div align="center" id="fundState_${index.index}">${institueInfraHrActivityDetailsState[index.index].fund}</div>
+															<div align="center" id="fundMopr_${index.index}">${institueInfraHrActivityDetailsMopr[index.index].fund}</div>
 															<form:input
 																path="institueInfraHrActivityDetails[${index.index}].fund"
 																readonly="" type="text"
@@ -447,7 +447,7 @@ function calculateTotalFundDprc() {
 														</div></td>
 													<td colspan="3"></td>
 													<td>
-													<div align="center" id="total_fund_sprc_state">${SPRC_TOTAL_STATE}</div>
+													<div align="center" id="total_fund_sprc_state">${SPRC_TOTAL_MOPR}</div>
 													<input type="text"
 														class="form-control Align-Right" id="total_fund_sprc"
 														disabled="disabled" /></td>
@@ -459,12 +459,12 @@ function calculateTotalFundDprc() {
 														</div></td>
 													<td colspan="3"></td>
 													<td>
-													<div align="center" id="additionalRequirementSprcStateId">${institueInfraHrActivityState.additionalRequirementSprc}</div>
+													<div align="center" id="additionalRequirementSprcMoprId">${institueInfraHrActivityMopr.additionalRequirementSprc}</div>
 													<form:input path="additionalRequirementSprc"
 															type="text" onkeypress="return isNumber(event)"
 															class="active12 form-control Align-Right"
 															id="additionalRequirementSprcId"
-															onkeyup="calculateGrandTotal()" /></td>
+															onkeyup="calculateGrandTotal();onLoadChangeColor()" /></td>
 												</tr>
 												<!-- SPRC LOOP ENDS HERE -->
 												
@@ -488,7 +488,7 @@ function calculateTotalFundDprc() {
 															</div></td>
 
 														<td>
-															<div align="center" id="noOfUnitsState_${index.index}">${institueInfraHrActivityDetailsState[index.index].noOfUnits}</div>
+															<div align="center" id="noOfUnitsMopr_${index.index}">${institueInfraHrActivityDetailsMopr[index.index].noOfUnits}</div>
 															<c:if test="${index.index ne 2 and index.index ne 5}">
 															<form:input
 																path="institueInfraHrActivityDetails[${index.index}].noOfUnits"
@@ -502,7 +502,7 @@ function calculateTotalFundDprc() {
 
 														<td>
 														<c:if test="${index.index ne 2 and index.index ne 5}">
-																<div align="center" id="noOfMonthsState_${index.index}">${institueInfraHrActivityDetailsState[index.index].noOfMonths}</div>
+																<div align="center" id="noOfMonthsMopr_${index.index}">${institueInfraHrActivityDetailsMopr[index.index].noOfMonths}</div>
 																<form:input
 																	path="institueInfraHrActivityDetails[${index.index}].noOfMonths"
 																	onkeypress="return isNumber(event)"
@@ -512,7 +512,7 @@ function calculateTotalFundDprc() {
 														</td>
 
 														<td>
-															<div align="center" id="fundState_${index.index}">${institueInfraHrActivityDetailsState[index.index].fund}</div>
+															<div align="center" id="fundMopr_${index.index}">${institueInfraHrActivityDetailsMopr[index.index].fund}</div>
 															<form:input
 																path="institueInfraHrActivityDetails[${index.index}].fund"
 																readonly="" type="text"
@@ -550,7 +550,7 @@ function calculateTotalFundDprc() {
 														</div></td>
 													<td colspan="3"></td>
 													<td>
-													<div align="center" id="total_fund_dprc_state">${DPRC_TOTAL_STATE}</div>
+													<div align="center" id="total_fund_dprc_state">${DPRC_TOTAL_MOPR}</div>
 													<input type="text"
 														class="form-control Align-Right" id="total_fund_dprc"
 														disabled="disabled" /></td>
@@ -562,12 +562,12 @@ function calculateTotalFundDprc() {
 														</div></td>
 													<td colspan="3"></td>
 													<td>
-													<div align="center" id="additionalRequirementDprcStateId">${institueInfraHrActivityState.additionalRequirementDprc}</div>
+													<div align="center" id="additionalRequirementDprcMoprId">${institueInfraHrActivityMopr.additionalRequirementDprc}</div>
 													<form:input path="additionalRequirementDprc"
 															type="text" onkeypress="return isNumber(event)"
 															class="active12 form-control Align-Right"
 															id="additionalRequirementDprcId"
-															onkeyup="calculateGrandTotal()" /></td>
+															onkeyup="calculateGrandTotal();onLoadChangeColor()" /></td>
 												</tr>
 												<!-- DPRC LOOP ENDS -->
 												<tr>
@@ -577,7 +577,7 @@ function calculateTotalFundDprc() {
 														</div></td>
 													<td colspan="3"></td>
 													<td>
-														<div align="center" id="grandTotalState">${institueInfraHrActivityState.additionalRequirementDprc + DPRC_TOTAL_STATE+ institueInfraHrActivityState.additionalRequirementSprc + SPRC_TOTAL_STATE}</div>
+														<div align="center" id="grandTotalMopr">${institueInfraHrActivityMopr.additionalRequirementDprc + SPRC_TOTAL_MOPR+ institueInfraHrActivityMopr.additionalRequirementSprc + DPRC_TOTAL_MOPR}</div>
 														<form:input path="grand_total" type="text"
 															class="active12 form-control Align-Right" id="grandTotalId"
 															onchange="validatingAdditionalRequirement(${index.index});onLoadChangeColor()"
@@ -655,7 +655,7 @@ function calculateTotalFundDprc() {
 																							value="${DOMAINS.domainId}"></th>
 																							
 																						<td>
-																						<div align="center" id="noOfFacultyState_${temp}">${tIWiseProposedDomainExpertsState[temp].noOfExperts}</div>
+																						<div align="center" id="noOfFacultyMopr_${temp}">${tIWiseProposedDomainExpertsMopr[temp].noOfExperts}</div>
 																						<form:input
 																							path="tIWiseProposedDomainExperts[${temp}].noOfExperts"
 																							onkeyup="onLoadChangeColor();domainValidation(${temp})"
@@ -743,12 +743,12 @@ function calculateTotalFundDprc() {
 																					<c:if test="${DOMAINS.trainingInstitueType.trainingInstitueTypeId eq 4}">
 																						<td>
 																						<c:choose>
-																							<c:when test="${not empty tIWiseProposedDomainExpertsState[dprcIndex + 3].noOfExperts}">
-																								<div align="center" id="noOfExpertState_${dprcIndex}">${tIWiseProposedDomainExpertsState[dprcIndex + 3].noOfExperts}</div>
+																							<c:when test="${not empty tIWiseProposedDomainExpertsMopr[dprcIndex + 3].noOfExperts}">
+																								<div align="center" id="noOfExpertMopr_${dprcIndex}">${tIWiseProposedDomainExpertsMopr[dprcIndex + 3].noOfExperts}</div>
 																								<form:input path="tIWiseProposedDomainExperts[${dprcIndex + 3}].noOfExperts" class="active12 form-control Align-Right" id="noOfExpert_${dprcIndex}" onkeypress="return isNumber(event)"  onkeyup="onLoadChangeColor();domainValidation(${dprcIndex})" />
 																							</c:when>
 																							<c:otherwise>
-																								<div align="center" id="noOfExpertState_${dprcIndex}">${tIWiseProposedDomainExpertsState[dprcIndex + 3].noOfExperts}</div>
+																								<div align="center" id="noOfExpertMopr_${dprcIndex}">${tIWiseProposedDomainExpertsMopr[dprcIndex + 3].noOfExperts}</div>
 																								<form:input path="tIWiseProposedDomainExperts[${dprcIndex + 3}].noOfExperts" style="margin-top: 18px;" class="active12 form-control Align-Right" id="noOfExpert_${dprcIndex}" onkeypress="return isNumber(event)" onkeyup="onLoadChangeColor();domainValidation(${dprcIndex})" />
 																							</c:otherwise>
 																						</c:choose>
@@ -778,7 +778,7 @@ function calculateTotalFundDprc() {
 																							value="${DOMAINS.domainId}"></th>
 																							
 																						<td>
-																						<div align="center" id="noOfExpertState_${index}">${tIWiseProposedDomainExpertsState[index].noOfExperts}</div>
+																						<div align="center" id="noOfExpertMopr_${index}">${tIWiseProposedDomainExpertsState[index].noOfExperts}</div>
 																						<form:input
 																							path="tIWiseProposedDomainExperts[${index}].noOfExperts"
 																							onkeyup="onLoadChangeColor();domainValidation(${index})"
@@ -858,7 +858,7 @@ function calculateTotalFundDprc() {
 								</div>
 
 
-								<div class="container tab-pane fade" id="MOPR"
+								<div class="container tab-pane fade" id="state"
 									style="width: auto;">
 									<div class="row clearfix">
 										<div class="form-group">
@@ -870,7 +870,7 @@ function calculateTotalFundDprc() {
 
 											<div class="col-sm-2">
 												<div align="center">
-													<strong>${institueInfraHrActivityMopr.districtsSupported}</strong>
+													<strong>${institueInfraHrActivityState.districtsSupported}</strong>
 												</div>
 											</div>
 										</div>
@@ -900,9 +900,9 @@ function calculateTotalFundDprc() {
 															<spring:message code="Label.DomainDetails"
 																htmlEscape="true" />
 														</div></th>
-													<th><div align="center">
+													<%-- <th><div align="center">
 															<spring:message code="Label.IsApproved" htmlEscape="true" />
-														</div></th>
+														</div></th> --%>
 													<th><div align="center">
 															<spring:message code="Label.Remarks" htmlEscape="true" />
 														</div></th>
@@ -921,11 +921,11 @@ function calculateTotalFundDprc() {
 																	<strong>${ACTIVITY.instituteInfraHrActivityName}</strong>
 																</div></td>
 
-															<td><div align="center">${institueInfraHrActivityDetailsMopr[index.index].noOfUnits}</div></td>
+															<td><div align="center">${institueInfraHrActivityDetailsState[index.index].noOfUnits}</div></td>
 
-															<td><div align="center">${institueInfraHrActivityDetailsMopr[index.index].noOfMonths}</div></td>
+															<td><div align="center">${institueInfraHrActivityDetailsState[index.index].noOfMonths}</div></td>
 
-															<td><div align="center">${institueInfraHrActivityDetailsMopr[index.index].fund}</div></td>
+															<td><div align="center">${institueInfraHrActivityDetailsState[index.index].fund}</div></td>
 
 															<c:choose>
 																<c:when test="${index.index eq 0 }">
@@ -943,7 +943,7 @@ function calculateTotalFundDprc() {
 																	<td></td>
 																</c:otherwise>
 															</c:choose>
-															<td><c:choose>
+															<%-- <td><c:choose>
 																	<c:when
 																		test="${institueInfraHrActivityDetailsMopr[index.index].isApproved eq true}">
 																		<i class="fa fa-check" aria-hidden="true"
@@ -953,9 +953,9 @@ function calculateTotalFundDprc() {
 																		<i class="fa fa-times" aria-hidden="true"
 																			style="color: red"></i>
 																	</c:otherwise>
-																</c:choose></td>
+																</c:choose></td> --%>
 															<td>
-																<div align="center">${institueInfraHrActivityDetailsMopr[index.index].remarks }</div>
+																<div align="center">${institueInfraHrActivityDetailsState[index.index].remarks }</div>
 															</td>
 														</tr>
 													</c:forEach>
@@ -965,7 +965,7 @@ function calculateTotalFundDprc() {
 															<strong>Total SPRC Fund</strong>
 														</div></td>
 													<td colspan="3"></td>
-													<td><div align="center">${SPRC_TOTAL_MOPR}</div></td>
+													<td><div align="center">${SPRC_TOTAL_STATE}</div></td>
 												</tr>
 												<tr>
 													<td><div align="center">
@@ -973,7 +973,7 @@ function calculateTotalFundDprc() {
 																	code="Label.AdditionalRequirement" htmlEscape="true" /></strong>
 														</div></td>
 													<td colspan="3"></td>
-													<td><div align="center">${institueInfraHrActivityMopr.additionalRequirementSprc}</div></td>
+													<td><div align="center">${institueInfraHrActivityState.additionalRequirementSprc}</div></td>
 												</tr>
 												<!-- SPRC LOOP ENDS -->
 												
@@ -988,11 +988,11 @@ function calculateTotalFundDprc() {
 																	<strong>${ACTIVITY.instituteInfraHrActivityName}</strong>
 																</div></td>
 
-															<td><div align="center">${institueInfraHrActivityDetailsMopr[index.index].noOfUnits}</div></td>
+															<td><div align="center">${institueInfraHrActivityDetailsState[index.index].noOfUnits}</div></td>
 
-															<td><div align="center">${institueInfraHrActivityDetailsMopr[index.index].noOfMonths}</div></td>
+															<td><div align="center">${institueInfraHrActivityDetailsState[index.index].noOfMonths}</div></td>
 
-															<td><div align="center">${institueInfraHrActivityDetailsMopr[index.index].fund}</div></td>
+															<td><div align="center">${institueInfraHrActivityDetailsState[index.index].fund}</div></td>
 
 															<c:choose>
 																<c:when test="${index.index eq 0 }">
@@ -1010,7 +1010,7 @@ function calculateTotalFundDprc() {
 																	<td></td>
 																</c:otherwise>
 															</c:choose>
-															<td><c:choose>
+															<%-- <td><c:choose>
 																	<c:when
 																		test="${institueInfraHrActivityDetailsMopr[index.index].isApproved eq true}">
 																		<i class="fa fa-check" aria-hidden="true"
@@ -1020,9 +1020,9 @@ function calculateTotalFundDprc() {
 																		<i class="fa fa-times" aria-hidden="true"
 																			style="color: red"></i>
 																	</c:otherwise>
-																</c:choose></td>
+																</c:choose></td> --%>
 															<td>
-																<div align="center">${institueInfraHrActivityDetailsMopr[index.index].remarks }</div>
+																<div align="center">${institueInfraHrActivityDetailsState[index.index].remarks }</div>
 															</td>
 														</tr>
 													</c:forEach>
@@ -1031,7 +1031,7 @@ function calculateTotalFundDprc() {
 															<strong>Total DPRC Fund</strong>
 														</div></td>
 													<td colspan="3"></td>
-													<td><div align="center">${DPRC_TOTAL_MOPR}</div></td>
+													<td><div align="center">${DPRC_TOTAL_STATE}</div></td>
 												</tr>
 												<tr>
 													<td><div align="center">
@@ -1039,7 +1039,7 @@ function calculateTotalFundDprc() {
 																	code="Label.AdditionalRequirement" htmlEscape="true" /></strong>
 														</div></td>
 													<td colspan="3"></td>
-													<td><div align="center">${institueInfraHrActivityMopr.additionalRequirementDprc}</div></td>
+													<td><div align="center">${institueInfraHrActivityState.additionalRequirementDprc}</div></td>
 												</tr>
 												<!-- DPRC LOOP ENDS -->
 												<tr>
@@ -1048,7 +1048,7 @@ function calculateTotalFundDprc() {
 																	code="Label.TotalProposedFund" htmlEscape="true" /></strong>
 														</div></td>
 													<td colspan="3"></td>
-													<td><div align="center">${institueInfraHrActivityMopr.additionalRequirementSprc + SPRC_TOTAL_MOPR + institueInfraHrActivityMopr.additionalRequirementDprc + DPRC_TOTAL_MOPR}</div></td>
+													<td><div align="center">${institueInfraHrActivityState.additionalRequirementSprc + SPRC_TOTAL_MOPR + institueInfraHrActivityMopr.additionalRequirementDprc + DPRC_TOTAL_MOPR}</div></td>
 												</tr>
 											</tbody>
 										</table>
@@ -1103,7 +1103,7 @@ function calculateTotalFundDprc() {
 																					test="${DOMAINS.trainingInstitueType.trainingInstitueTypeId eq 2 }">
 																					<tr>
 																						<th><div align="center">${DOMAINS.domainName}</div></th>
-																						<td><div align="center">${tIWiseProposedDomainExpertsMopr[temp].noOfExperts }</div></td>
+																						<td><div align="center">${tIWiseProposedDomainExpertsState[temp].noOfExperts }</div></td>
 																					</tr>
 																				</c:if>
 																				<c:set var="temp" value="${temp+1}" scope="page" />
@@ -1185,9 +1185,9 @@ function calculateTotalFundDprc() {
 																					<c:forEach items="${LIST_OF_DOMAINS}" var="DOMAINS">
 																						<c:if test="${DOMAINS.trainingInstitueType.trainingInstitueTypeId eq 4}">
 																							<c:choose>
-																								<c:when test="${DOMAINS.domainId eq 4}"><td style="width: 207px;"><div align="center">${tIWiseProposedDomainExpertsMopr[dprcIndex+3].noOfExperts }</div></td></c:when>
-																								<c:when test="${DOMAINS.domainId eq 5}"><td style="width: 159px;"><div align="center">${tIWiseProposedDomainExpertsMopr[dprcIndex+3].noOfExperts }</div></td></c:when>
-																								<c:when test="${DOMAINS.domainId eq 6}"><td style="width: 210px;"><div align="center">${tIWiseProposedDomainExpertsMopr[dprcIndex+3].noOfExperts }</div></td></c:when>
+																								<c:when test="${DOMAINS.domainId eq 4}"><td style="width: 207px;"><div align="center">${tIWiseProposedDomainExpertsState[dprcIndex+3].noOfExperts }</div></td></c:when>
+																								<c:when test="${DOMAINS.domainId eq 5}"><td style="width: 159px;"><div align="center">${tIWiseProposedDomainExpertsState[dprcIndex+3].noOfExperts }</div></td></c:when>
+																								<c:when test="${DOMAINS.domainId eq 6}"><td style="width: 210px;"><div align="center">${tIWiseProposedDomainExpertsState[dprcIndex+3].noOfExperts }</div></td></c:when>
 																							</c:choose>
 																							
 																							<c:set var="dprcIndex" value="${dprcIndex + 1}"

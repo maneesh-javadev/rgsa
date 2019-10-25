@@ -36,7 +36,7 @@
 								</ul>
 								
 								<div class="tab-content">
-									<div role="tabpanel" class="container tab-pane active" id="state" style="width: auto;">
+									<div role="tabpanel" class="container tab-pane active" id="MOPR" style="width: auto;">
 									<table class="table table-bordered">
 										<thead>
 											<tr>
@@ -85,8 +85,8 @@
 														<input type="hidden"
 															data-ng-model="satcomActivityObject.activityDetails[$index].level.satcomLevelId" />
 															<input type="hidden"
-															data-ng-model="satcomActivityObject.activityDetails[outerIndex].level.satcomLevelId" value="{{satcomActivityObjectState.activityDetails[outerIndex].level.satcomLevelName}}"/>
-															<div align="center" ><strong>{{satcomActivityObjectState.activityDetails[outerIndex].level.satcomLevelName}}</strong></div>
+															data-ng-model="satcomActivityObject.activityDetails[outerIndex].level.satcomLevelId" value="{{satcomActivityObjectMOPR.activityDetails[outerIndex].level.satcomLevelName}}"/>
+															<div align="center" ><strong>{{satcomActivityObjectMOPR.activityDetails[outerIndex].level.satcomLevelName}}</strong></div>
 													<!-- 	<select
 															data-ng-disabled="satcomActivityObject.status == 'F'"
 															data-ng-model="satcomActivityObject.activityDetails[outerIndex].level.satcomLevelId"
@@ -98,7 +98,7 @@
 													</div>
 												</td>
 												<td>
-												<div align="center" data-ng-style="{'color':(satcomActivityObjectState.activityDetails[$index].noOfUnits > satcomActivityObject.activityDetails[$index].noOfUnits) ? 'red' : '#00cc00'}"><strong>{{satcomActivityObjectState.activityDetails[$index].noOfUnits}}</strong></div>
+												<div align="center" data-ng-style="{'color':(satcomActivityObjectMOPR.activityDetails[$index].noOfUnits > satcomActivityObject.activityDetails[$index].noOfUnits) ? 'red' : '#00cc00'}"><strong>{{satcomActivityObjectMOPR.activityDetails[$index].noOfUnits}}</strong></div>
 												<input type="text" maxlength="6"
 													data-ng-show="satcomActivityObject.status != 'F'"
 													data-restrict-input="{type: 'digitsOnly',index: $index}"
@@ -115,7 +115,7 @@
 													
 													
 												<td>
-												<div align="center" data-ng-style="{'color':(satcomActivityObjectState.activityDetails[$index].unitCost > satcomActivityObject.activityDetails[$index].unitCost ) ? 'red' : '#00cc00'}"><strong>{{satcomActivityObjectState.activityDetails[$index].unitCost}}</strong></div>
+												<div align="center" data-ng-style="{'color':(satcomActivityObjectMOPR.activityDetails[$index].unitCost > satcomActivityObject.activityDetails[$index].unitCost ) ? 'red' : '#00cc00'}"><strong>{{satcomActivityObjectMOPR.activityDetails[$index].unitCost}}</strong></div>
 												<input type="text" maxlength="5"
 													data-ng-show="satcomActivityObject.status != 'F'"
 													data-restrict-input="{type: 'digitsOnly',index: $index}"
@@ -131,7 +131,7 @@
 													class="form-control validate" style="text-align: right;" />
 												</td>
 												<td>
-												<div align="center" data-ng-style="{'color':(satcomActivityObjectState.activityDetails[$index].funds > satcomActivityObject.activityDetails[$index].funds ) ? 'red' : '#00cc00'}"><strong>{{satcomActivityObjectState.activityDetails[$index].funds}}</strong></div>
+												<div align="center" data-ng-style="{'color':(satcomActivityObjectMOPR.activityDetails[$index].funds > satcomActivityObject.activityDetails[$index].funds ) ? 'red' : '#00cc00'}"><strong>{{satcomActivityObjectMOPR.activityDetails[$index].funds}}</strong></div>
 												<input type="text"
 													data-ng-disabled="satcomActivityObject.status == 'F'"
 													data-ng-model="satcomActivityObject.activityDetails[$index].funds"
@@ -142,7 +142,7 @@
 												<th colspan="4"><label><spring:message code="Label.TotalFund" htmlEscape="true" /></label></th>
 
 												<td>
-												<div align="center" data-ng-style="{'color':(totalWithoutAddRequirementsForState > totalWithoutAddRequirements ) ? 'red' : '#00cc00'}"><strong>{{totalWithoutAddRequirementsForState}}</strong></div>
+												<div align="center" data-ng-style="{'color':(totalWithoutAddRequirementsForMOPR > totalWithoutAddRequirements) ? 'red' : '#00cc00'}"><strong>{{totalWithoutAddRequirementsForMOPR}}</strong></div>
 												<input type="text" data-ng-disabled="true"
 													data-ng-model="totalWithoutAddRequirements"
 													class="form-control"
@@ -153,7 +153,7 @@
 												<th colspan="4"><label><spring:message code="Label.AdditionalRequirement" htmlEscape="true" /></label></th>
 
 												<td>
-												<div align="center" data-ng-style="{'color':(satcomActivityObjectState.additionalRequirement > satcomActivityObject.additionalRequirement ) ? 'red' : '#00cc00'}"><strong>{{satcomActivityObjectState.additionalRequirement}}</strong></div>
+												<div align="center" data-ng-style="{'color':(satcomActivityObjectMOPR.additionalRequirement > satcomActivityObject.additionalRequirement ) ? 'red' : '#00cc00'}"><strong>{{satcomActivityObjectMOPR.additionalRequirement}}</strong></div>
 												<input type="text"
 													data-ng-show="satcomActivityObject.status == 'F'"
 													data-restrict-input="{type: 'digitsOnly',index: $index}"
@@ -176,7 +176,7 @@
 												<th colspan="4"><label><spring:message code="Label.TotalProposedFund" htmlEscape="true" /></label></th>
 
 												<td>
-												<div align="center" data-ng-style="{'color':(grandTotalForState> grandTotal) ? 'red' : '#00cc00'}"><strong>{{grandTotalForState}}</strong></div>
+												<div align="center" data-ng-style="{'color':(grandTotalForMOPR > grandTotal) ? 'red' : '#00cc00'}"><strong>{{grandTotalForMOPR}}</strong></div>
 												<input data-ng-disabled="true"
 													style="background: #dddddd; text-align: right;" type="text"
 													data-ng-model="grandTotal" class="form-control"
@@ -233,7 +233,7 @@
 							</div>
 								</div>
 									
-									<div class="container tab-pane fade" id="MOPR" style="width: auto;">
+									<div class="container tab-pane fade" id="state" style="width: auto;">
 									<table class="table table-bordered">
 										<thead>
 											<tr>
@@ -265,7 +265,7 @@
 														</strong>
 													</div>
 												</th>
-												<th data-ng-if="userType != 'S'"><div align="center"><strong><spring:message code="Label.isApproved" htmlEscape="true" /></strong></div></th>
+												<%-- <th data-ng-if="userType != 'S'"><div align="center"><strong><spring:message code="Label.isApproved" htmlEscape="true" /></strong></div></th> --%>
 												<th data-ng-if="userType != 'S'"><div align="center"><strong><spring:message code="Label.Remarks" htmlEscape="true" /></strong></div></th>
 											</tr>
 										</thead>
@@ -278,24 +278,24 @@
 												<td>
 													<div align="center">
 														<div align="center">
-															<span>{{satcomActivityObjectMOPR.activityDetails[outerIndex].level.satcomLevelId}}</span>
+															<span>{{satcomActivityObjectState.activityDetails[outerIndex].level.satcomLevelId}}</span>
 														</div>
 													</div>
 												</td>
 												<td>
 													<div align="center">
-														<span>{{satcomActivityObjectMOPR.activityDetails[$index].noOfUnits}}</span>
+														<span>{{satcomActivityObjectState.activityDetails[$index].noOfUnits}}</span>
 													</div>
 												<td>
 													<div align="center">
-														<span>{{satcomActivityObjectMOPR.activityDetails[$index].unitCost}}</span>
+														<span>{{satcomActivityObjectState.activityDetails[$index].unitCost}}</span>
 													</div>
 												</td>
 												<td>
 													<div align="center">
-														<span>{{satcomActivityObjectMOPR.activityDetails[$index].funds}}</span>
+														<span>{{satcomActivityObjectState.activityDetails[$index].funds}}</span>
 													</div>
-												<td data-ng-if="userType != 'S'">
+												<!-- <td data-ng-if="userType != 'S'">
 													<div
 														data-ng-show="satcomActivityObjectMOPR.activityDetails[$index].isApproved"
 														align="center">
@@ -308,10 +308,10 @@
 														<i class="fa fa-times" aria-hidden="true"
 															style="color: red"></i>
 													</div>
-												</td>
+												</td> -->
 												<td data-ng-if="userType != 'S'">
 													<div align="center">
-														<span>{{satcomActivityObjectMOPR.activityDetails[$index].remarks}}</span>
+														<span>{{satcomActivityObjectState.activityDetails[$index].remarks}}</span>
 													</div>
 											</tr>
 
@@ -320,7 +320,7 @@
 
 												<td>
 													<div align="center">
-														<span>{{totalWithoutAddRequirementsForMOPR}}</span>
+														<span>{{totalWithoutAddRequirementsForState}}</span>
 													</div>
 											</tr>
 
@@ -329,7 +329,7 @@
 
 												<td>
 													<div align="center">
-														<span>{{satcomActivityObjectMOPR.additionalRequirement}}</span>
+														<span>{{satcomActivityObjectState.additionalRequirement}}</span>
 													</div>
 												</td>
 
@@ -340,7 +340,7 @@
 
 												<td>
 													<div align="center">
-														<span>{{grandTotalForMOPR}}</span>
+														<span>{{grandTotalForState}}</span>
 													</div>
 											</tr>
 

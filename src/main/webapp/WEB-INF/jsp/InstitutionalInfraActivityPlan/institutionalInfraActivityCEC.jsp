@@ -48,7 +48,7 @@ function isNumber(evt) {
 						<div class="tab-content">
 						
 						
-							<div role="tabpanel" class="container tab-pane active" id="state"
+							<div role="tabpanel" class="container tab-pane active" id="MOPR"
 								style="width: auto;">
 
 								
@@ -89,12 +89,12 @@ function isNumber(evt) {
 														<strong>Total Fund<br>(B = A + Funds required <br>in carry forward section)
 														</strong>
 													</div></th> -->
-												<th > 
+												<%-- <th > 
 													<div align="center">
 														<strong><spring:message code="Label.IsApproved" htmlEscape="true" />
 														</strong>
 													</div>
-												</th>	
+												</th> --%>	
 													
 												<th> 
 													<div align="center">
@@ -105,13 +105,13 @@ function isNumber(evt) {
 											</tr>
 							  </thead>
                               <tbody>
-                                 <tr data-ng-repeat="details in institutionalPlanDetailsNBState | orderBy : 'trainingInstitueType.trainingInstitueTypeId'">
+                                 <tr data-ng-repeat="details in institutionalPlanDetailsNBStateMOPR | orderBy : 'trainingInstitueType.trainingInstitueTypeId'">
 												<td class="padding_left_local"><strong>{{details.trainingInstitueType.trainingInstitueTypeName}}</strong></td>
 												<td ><strong>{{details.districtName}}</strong></td>
 											
 												<td>
 												<div align="center" data-ng-style="{'color':(institutionalPlanDetailsNBStateCEC[$index].fundProposed < details.fundProposed) ? 'red' : '#00cc00'}">
-												<strong>{{institutionalPlanDetailsNBState[$index].fundProposed}}</strong></div>
+												<strong>{{details.fundProposed}}</strong></div>
 												<input type="text" onkeypress="return isNumber(event)" data-ng-show="!institutionalInfraActivityPlan.isFreeze" data-ng-model="institutionalPlanDetailsNBStateCEC[$index].fundProposed" class="form-control" id="fundProposedId" data-ng-keyup="calculate_total_fund(1,$index,null)" maxlength="8" style="text-align:right;" required="required" autocomplete="off"/>
 												<input type="text" data-ng-show="institutionalInfraActivityPlan.isFreeze" data-ng-model="institutionalPlanDetailsNBStateCEC[$index].fundProposed" class="form-control" readonly="readonly" style="text-align:right;"/>
 												</td>
@@ -120,13 +120,13 @@ function isNumber(evt) {
 													<input type="text" restrict-input="{type: 'digitsOnly'}" data-ng-show="institutionalInfraActivityPlan.isFreeze" data-ng-model="institutionalInfraActivityPlanDetailsNBlInfraActivityPlanDetails[$index].totalFund" class="form-control" readonly="readonly" style="text-align:right;"/>
 												</td> -->
 												
-												<td align="center">
+												<!-- <td align="center">
 													<input type="checkbox" data-ng-show="!institutionalInfraActivityPlan.isFreeze" data-ng-model="institutionalPlanDetailsNBStateCEC[$index].isApproved">
 													<input type="checkbox" data-ng-show="institutionalInfraActivityPlan.isFreeze" data-ng-model="institutionalPlanDetailsNBStateCEC[$index].isApproved" disabled="disabled">
-												</td>
+												</td> -->
 												<td align="center">
 													<div align="center" data-ng-style="{'color':(institutionalPlanDetailsNBStateCEC[$index].remarks< details.remarks) ? 'red' : '#00cc00'}">
-													<strong>{{institutionalPlanDetailsNBState[$index].remarks}}</strong></div>
+													<strong>{{details.remarks}}</strong></div>
 													<textarea rows="2" data-ng-show="!institutionalInfraActivityPlan.isFreeze" data-ng-model="institutionalPlanDetailsNBStateCEC[$index].remarks" cols="10"></textarea>
 													<textarea rows="2" data-ng-show="institutionalInfraActivityPlan.isFreeze" data-ng-model="institutionalPlanDetailsNBStateCEC[$index].remarks" cols="10" readonly="readonly" autocomplete="off"></textarea>
 												</td>
@@ -139,8 +139,8 @@ function isNumber(evt) {
                                  			<tr>
 												<td colspan="2" class="padding_left_local"><strong><spring:message code="Label.SubTotal" htmlEscape="true" />(SPRC)</strong></td>
 												<td>
-													<div align="center" data-ng-style="{'color':(subTotalFundStateNBS >subTotalFundCECNBS) ? 'red' : '#00cc00'}">
-													<strong>{{subTotalFundStateNBS}}</strong></div>
+													<div align="center" data-ng-style="{'color':(subTotalFundMOPRNBS >subTotalFundCECNBS) ? 'red' : '#00cc00'}">
+													<strong>{{subTotalFundMOPRNBS}}</strong></div>
 													<input type="text" class="form-control" value="{{subTotalFundCECNBS}}" disabled="disabled" style="text-align:right;"/>
 												</td>
 												<td colspan="2" ></td>
@@ -149,8 +149,8 @@ function isNumber(evt) {
 											<tr>
 												<td colspan="2" class="padding_left_local"><strong><spring:message code="Label.AdditionalRequirement" htmlEscape="true" /> (SPRC)</strong></td>
 												<td>
-													<div align="center" data-ng-style="{'color':(planstateAdditionalRequirementState >planstateAdditionalRequirementCEC) ? 'red' : '#00cc00'}">
-													<strong>{{planstateAdditionalRequirementState}}</strong></div>
+													<div align="center" data-ng-style="{'color':(planstateAdditionalRequirementMOPR > planstateAdditionalRequirementCEC) ? 'red' : '#00cc00'}">
+													<strong>{{planstateAdditionalRequirementMOPR}}</strong></div>
 													<input type="text" onkeypress="return isNumber(event)" class="form-control" data-ng-readonly="institutionalInfraActivityPlan.isFreeze" data-ng-model="planstateAdditionalRequirementCEC" placeholder=" 25% of Grand Total cost " data-ng-keyup="calculate_total_fund(1,null,null)" maxlength="8" style="text-align:right;" autocomplete="off"/>
 													<!-- <input type="text" restrict-input="{type: 'digitsOnly'}" class="form-control" data-ng-show="institutionalInfraActivityPlan.isFreeze || trainingInstituteTypeId == 4" data-ng-model="institutionalInfraActivityPlan.additionalRequirement" placeholder=" 25% of Grand Total cost " readonly="readonly" id="additionalRequirementId" style="text-align:right;"/> -->
 												</td>
@@ -159,8 +159,8 @@ function isNumber(evt) {
 											<tr>
 												<td colspan="2" class="padding_left_local"><strong><spring:message code="Label.TotalProposedFund" htmlEscape="true" /> (SPRC)</strong></td>
 												<td>
-												<div align="center" data-ng-style="{'color':(totalFundStateNBS >totalFundCECNBS) ? 'red' : '#00cc00'}">
-												<strong>{{totalFundStateNBS}}</strong></div>
+												<div align="center" data-ng-style="{'color':(totalFundMOPRNBS >totalFundCECNBS) ? 'red' : '#00cc00'}">
+												<strong>{{totalFundMOPRNBS}}</strong></div>
 												<input type="text" data-ng-show="!institutionalInfraActivityPlan.isFreeze" class="form-control" data-ng-model="totalFundCECNBS" style="text-align:right;" readonly="readonly"/>
 												<input type="text" data-ng-show="institutionalInfraActivityPlan.isFreeze" class="form-control" data-ng-model="totalFundCECNBS" readonly="readonly" style="text-align:right;"/>
 												</td>
@@ -212,12 +212,12 @@ function isNumber(evt) {
 														<strong>Total Fund<br>(B = A + Funds required <br>in carry forward section)
 														</strong>
 													</div></th> -->
-												<th > 
+												<%-- <th > 
 													<div align="center">
 														<strong><spring:message code="Label.IsApproved" htmlEscape="true" />
 														</strong>
 													</div>
-												</th>	
+												</th> --%>	
 													
 												<th> 
 													<div align="center">
@@ -228,13 +228,13 @@ function isNumber(evt) {
 											</tr>
 							  </thead>
                               <tbody>
-                                 <tr data-ng-repeat="details in institutionalPlanDetailsNBDistrict | orderBy : 'trainingInstitueType.trainingInstitueTypeId'">
+                                 <tr data-ng-repeat="details in institutionalPlanDetailsNBDistrictMOPR | orderBy : 'trainingInstitueType.trainingInstitueTypeId'">
 												<td  class="padding_left_local"><strong>{{details.trainingInstitueType.trainingInstitueTypeName}}</strong></td>
 												<td align="center"><strong>{{details.districtName}}</strong></td>
 											
 												<td>
 												<div align="center" data-ng-style="{'color':(institutionalPlanDetailsNBDistrictCEC[$index].fundProposed < details.fundProposed) ? 'red' : '#00cc00'}">
-												<strong>{{institutionalPlanDetailsNBDistrict[$index].fundProposed}}</strong></div>
+												<strong>{{details.fundProposed}}</strong></div>
 												<input type="text" onkeypress="return isNumber(event)" data-ng-show="!institutionalInfraActivityPlan.isFreeze" data-ng-model="institutionalPlanDetailsNBDistrictCEC[$index].fundProposed" class="form-control" id="fundProposedId" data-ng-keyup="calculate_total_fund(2,$index,null)" maxlength="8" style="text-align:right;" required="required" autocomplete="off"/>
 													<input type="number" onkeypress="return isNumber(event)" data-ng-show="institutionalInfraActivityPlan.isFreeze" data-ng-model="institutionalPlanDetailsNBDistrictCEC[$index].fundProposed" class="form-control" readonly="readonly" style="text-align:right;"/>
 												</td>
@@ -243,13 +243,13 @@ function isNumber(evt) {
 													<input type="text" restrict-input="{type: 'digitsOnly'}" data-ng-show="institutionalInfraActivityPlan.isFreeze" data-ng-model="institutionalInfraActivityPlanDetailsNBlInfraActivityPlanDetails[$index].totalFund" class="form-control" readonly="readonly" style="text-align:right;"/>
 												</td> -->
 												
-												<td align="center">
+												<!-- <td align="center">
 													<input type="checkbox" data-ng-show="!institutionalInfraActivityPlan.isFreeze" data-ng-model="institutionalPlanDetailsNBDistrictCEC[$index].isApproved">
 													<input type="checkbox" data-ng-show="institutionalInfraActivityPlan.isFreeze" data-ng-model="institutionalPlanDetailsNBDistrictCEC[$index].isApproved" disabled="disabled">
-												</td>
+												</td> -->
 												<td align="center">
 													<div align="center" data-ng-style="{'color':(institutionalPlanDetailsNBDistrictCEC[$index].remarks < details.remarks) ? 'red' : '#00cc00'}">
-													<strong>{{institutionalPlanDetailsNBDistrict[$index].remarks}}</strong></div>
+													<strong>{{details.remarks}}</strong></div>
 													<textarea rows="2" data-ng-show="!institutionalInfraActivityPlan.isFreeze" data-ng-model="institutionalPlanDetailsNBDistrictCEC[$index].remarks" cols="10" autocomplete="off"></textarea>
 													<textarea rows="2" data-ng-show="institutionalInfraActivityPlan.isFreeze" data-ng-model="institutionalPlanDetailsNBDistrictCEC[$index].remarks" cols="10" readonly="readonly"></textarea>
 												</td>
@@ -262,8 +262,8 @@ function isNumber(evt) {
                                  			<tr>
 												<td colspan="2" class="padding_left_local"><strong><spring:message code="Label.SubTotal" htmlEscape="true" />(DPRC)</strong></td>
 												<td>
-													<div align="center" data-ng-style="{'color':(subTotalFundStateNBD >subTotalFundCECNBD) ? 'red' : '#00cc00'}">
-													<strong>{{subTotalFundStateNBD}}</strong></div>
+													<div align="center" data-ng-style="{'color':(subTotalFundMOPRNBD >subTotalFundCECNBD) ? 'red' : '#00cc00'}">
+													<strong>{{subTotalFundMOPRNBD}}</strong></div>
 													<input type="text" class="form-control" value="{{subTotalFundCECNBD}}" disabled="disabled" style="text-align:right;"/>
 												</td>
 												<td colspan="2" ></td>
@@ -272,8 +272,8 @@ function isNumber(evt) {
 											<tr>
 												<td colspan="2" class="padding_left_local"><strong><spring:message code="Label.AdditionalRequirement" htmlEscape="true" /> (DPRC)</strong></td>
 												<td>
-													<div align="center" data-ng-style="{'color':(plandistrictAdditionalRequirementState >plandistrictAdditionalRequirementCEC) ? 'red' : '#00cc00'}">
-													<strong>{{plandistrictAdditionalRequirementState}}</strong></div>
+													<div align="center" data-ng-style="{'color':(plandistrictAdditionalRequirementMOPR >plandistrictAdditionalRequirementCEC) ? 'red' : '#00cc00'}">
+													<strong>{{plandistrictAdditionalRequirementMOPR}}</strong></div>
 													<input type="text" onkeypress="return isNumber(event)" class="form-control" data-ng-readonly="institutionalInfraActivityPlan.isFreeze" data-ng-model="plandistrictAdditionalRequirementCEC" placeholder=" 25% of Grand Total cost " data-ng-keyup="calculate_total_fund(2,null,null)" maxlength="8" style="text-align:right;" autocomplete="off"/>
 													<!-- <input type="text" restrict-input="{type: 'digitsOnly'}" class="form-control" data-ng-show="institutionalInfraActivityPlan.isFreeze || trainingInstituteTypeId == 4" data-ng-model="institutionalInfraActivityPlan.additionalRequirement" placeholder=" 25% of Grand Total cost " readonly="readonly" id="additionalRequirementId" style="text-align:right;"/> -->
 												</td>
@@ -282,8 +282,8 @@ function isNumber(evt) {
 											<tr>
 												<td colspan="2" class="padding_left_local"><strong><spring:message code="Label.TotalProposedFund" htmlEscape="true" /> (DPRC)</strong></td>
 												<td>
-												<div align="center" data-ng-style="{'color':(totalFundStateNBD >totalFundCECNBD) ? 'red' : '#00cc00'}">
-												<strong>{{totalFundStateNBD}}</strong></div>
+												<div align="center" data-ng-style="{'color':(totalFundMOPRNBD >totalFundCECNBD) ? 'red' : '#00cc00'}">
+												<strong>{{totalFundMOPRNBD}}</strong></div>
 												<input type="text" data-ng-show="!institutionalInfraActivityPlan.isFreeze" class="form-control" data-ng-model="grandTotalNBD" style="text-align:right;" readonly="readonly"/>
 												<input type="text" data-ng-show="institutionalInfraActivityPlan.isFreeze" class="form-control" data-ng-model="grandTotalNBD" readonly="readonly" style="text-align:right;"/>
 												</td>
@@ -366,12 +366,12 @@ function isNumber(evt) {
 			                                       <br>C=A-B
 			                                    </div>
 			                                 </th>
-			                                 <th > 
+			                                <%--  <th > 
 													<div align="center">
 														<strong><spring:message code="Label.IsApproved" htmlEscape="true" />
 														</strong>
 													</div>
-												</th>	
+												</th> --%>	
 													
 												<th> 
 													<div align="center">
@@ -382,7 +382,7 @@ function isNumber(evt) {
 											</tr>
 										</thead>
                               <tbody>
-                                 <tr data-ng-repeat="details in institutionalPlanDetailsCFState | orderBy : 'trainingInstitueType.trainingInstitueTypeId'">
+                                 <tr data-ng-repeat="details in institutionalPlanDetailsCFStateMOPR | orderBy : 'trainingInstitueType.trainingInstitueTypeId'">
 												<td class="padding_left_local"><strong>{{details.trainingInstitueType.trainingInstitueTypeName}}</strong></td>
 												<td align="center"><strong>{{details.districtName}}</strong></td>
 												
@@ -413,10 +413,10 @@ function isNumber(evt) {
 													<input type="text"  data-ng-show="!institutionalInfraActivityPlan.isFreeze" data-ng-model="institutionalPlanDetailsCFStateCEC[$index].fundRequired" class="form-control" readonly="readonly" style="text-align:right;"/>
 													<input type="text"  data-ng-show="institutionalInfraActivityPlan.isFreeze" data-ng-model="institutionalPlanDetailsCFStateCEC[$index].fundRequired" class="form-control" readonly="readonly" style="text-align:right;"/>
 												</td>
-												<td align="center">
+												<!-- <td align="center">
 													<input type="checkbox" data-ng-show="!institutionalInfraActivityPlan.isFreeze" data-ng-model="institutionalPlanDetailsCFStateCEC[$index].isApproved">
 													<input type="checkbox" data-ng-show="institutionalInfraActivityPlan.isFreeze" data-ng-model="institutionalPlanDetailsCFStateCEC[$index].isApproved" disabled="disabled">
-												</td>
+												</td> -->
 												<td>
 													<div align="center" data-ng-style="{'color':(institutionalPlanDetailsCFStateCEC[$index].remarks < details.remarks) ? 'red' : '#00cc00'}">
 													<strong>{{details.remarks}}</strong></div>
@@ -434,8 +434,8 @@ function isNumber(evt) {
 											<tr >
 												<td colspan="5" class="padding_left_local"><strong><spring:message code="Label.TotalProposedFund" htmlEscape="true" /> (SPRC)</strong></td>
 												<td>
-												<div align="center" data-ng-style="{'color':(subTotalFundStateCFS < subTotalFundCECCFS) ? 'red' : '#00cc00'}">
-													<strong>{{subTotalFundStateCFS}}</strong></div>
+												<div align="center" data-ng-style="{'color':(subTotalFundMOPRCFS < subTotalFundCECCFS) ? 'red' : '#00cc00'}">
+													<strong>{{subTotalFundMOPRCFS}}</strong></div>
 												
 												<input type="text" data-ng-show="!institutionalInfraActivityPlan.isFreeze" class="form-control" data-ng-model="subTotalFundCECCFS" style="text-align:right;" readonly="readonly"/>
 												<input type="text" data-ng-show="institutionalInfraActivityPlan.isFreeze" class="form-control" data-ng-model="subTotalFundCECCFS" readonly="readonly" style="text-align:right;"/>
@@ -510,12 +510,12 @@ function isNumber(evt) {
 			                                       <br>C=A-B
 			                                    </div>
 			                                 </th>
-			                                 <th > 
+			                                 <%-- <th > 
 													<div align="center">
 														<strong><spring:message code="Label.IsApproved" htmlEscape="true" />
 														</strong>
 													</div>
-												</th>	
+												</th> --%>	
 													
 												<th> 
 													<div align="center">
@@ -526,7 +526,7 @@ function isNumber(evt) {
 											</tr>
 										</thead>
                               <tbody>
-                                 <tr data-ng-repeat="details in institutionalPlanDetailsCFDistrict | orderBy : 'trainingInstitueType.trainingInstitueTypeId'">
+                                 <tr data-ng-repeat="details in institutionalPlanDetailsCFDistrictMOPR | orderBy : 'trainingInstitueType.trainingInstitueTypeId'">
 												<td class="padding_left_local"><strong>{{details.trainingInstitueType.trainingInstitueTypeName}}</strong></td>
 												<td align="center"><strong>{{details.districtName}}</strong></td>
 												
@@ -557,10 +557,10 @@ function isNumber(evt) {
 													<input type="text" data-ng-show="!institutionalInfraActivityPlan.isFreeze"  data-ng-model="institutionalPlanDetailsCFDistrictCEC[$index].fundRequired" class="form-control"  readonly="readonly" style="text-align:right;"/>
 													<input type="text" data-ng-show="institutionalInfraActivityPlan.isFreeze" data-ng-model="institutionalPlanDetailsCFDistrictCEC[$index].fundRequired" class="form-control" readonly="readonly" style="text-align:right;"/>
 												</td>
-												<td align="center">
+												<!-- <td align="center">
 													<input type="checkbox" data-ng-show="!institutionalInfraActivityPlan.isFreeze" data-ng-model="institutionalPlanDetailsCFDistrictCEC[$index].isApproved">
 													<input type="checkbox" data-ng-show="institutionalInfraActivityPlan.isFreeze" data-ng-model="institutionalPlanDetailsCFDistrictCEC[$index].isApproved" disabled="disabled">
-												</td>
+												</td> -->
 												<td align="center">
 													<div align="center" data-ng-style="{'color':(institutionalPlanDetailsCFDistrictCEC[$index].remarks < details.remarks) ? 'red' : '#00cc00'}">
 													<strong>{{details.remarks}}</strong></div>
@@ -577,8 +577,8 @@ function isNumber(evt) {
 											<tr >
 												<td colspan="5" class="padding_left_local"><strong><spring:message code="Label.TotalProposedFund" htmlEscape="true" /> (DPRC)</strong></td>
 												<td>
-												<div align="center" data-ng-style="{'color':(subTotalFundStateCFD < subTotalFundCECCFD) ? 'red' : '#00cc00'}">
-												<strong>{{subTotalFundStateCF}}</strong></div>
+												<div align="center" data-ng-style="{'color':(subTotalFundMOPRCFD < subTotalFundCECCFD) ? 'red' : '#00cc00'}">
+												<strong>{{subTotalFundMOPRCFD}}</strong></div>
 												<input type="text" data-ng-show="!institutionalInfraActivityPlan.isFreeze" class="form-control" data-ng-model="subTotalFundCECCFD" style="text-align:right;" readonly="readonly"/>
 												<input type="text" data-ng-show="institutionalInfraActivityPlan.isFreeze" class="form-control" data-ng-model="subTotalFundCECCFD" readonly="readonly" style="text-align:right;"/>
 												</td>
@@ -601,12 +601,12 @@ function isNumber(evt) {
 										<tr>
 											<td colspan="4" width="60%">
 												<strong>
-													Grand Total(New Building Total Fund(SPRC)+New Building Total Fund(DPRC)+Carry Forward Total Fund(SPRC)+Carry Forward Total Fund(DPRC))
+													Grand Total(New Building Total Fund(SPRC) + New Building Total Fund(DPRC) + Carry Forward Total Fund(SPRC) + Carry Forward Total Fund(DPRC))
 												</strong>
 											</td>
 											<td align="right" width="40%">
-												<div align="center"  align="center" data-ng-style="{'color':(grandTotalState < grandTotal) ? 'red' : '#00cc00'}">
-													<strong>{{grandTotalState}}</strong></div>
+												<div align="center"  align="center" data-ng-style="{'color':(grandTotalMOPR < grandTotal) ? 'red' : '#00cc00'}">
+													<strong>{{grandTotalMOPR}}</strong></div>
 												<input type="text"  class="form-control" data-ng-model="grandTotal" readonly="readonly" style="text-align:right;"/>
 											</td>
 										</tr>
@@ -659,109 +659,99 @@ function isNumber(evt) {
 							
 							
 							
-							<div role="tabpanel" class="container tab-pane" id="MOPR"
-								style="width: auto;">
-								
-								
+				<div role="tabpanel" class="container tab-pane" id="state" style="width: auto;">
 					<div class="records">
                         <div class="">
                            <div  class="col-lg-12 sub_head">
                               <spring:message code="Label.NewBuilding" htmlEscape="true" />(SPRC)
                            </div>
-                           
                            <div class="row">
                            <div class="col-lg-12 padding_top"></div>
                            </div>
                            
-                           
-                           <table id="trainingActivityTblId"
-                              class="table table-hover dashboard-task-infos">
+                           <table id="trainingActivityTblId" class="table table-hover dashboard-task-infos">
                              <thead>
-											<tr>
-													<th class="padding_left_local"><div >
-														<strong><spring:message code="Label.BuildingType" htmlEscape="true" />
-														</strong>
-													</div></th>
+								<tr>
+									<th class="padding_left_local"><div >
+										<strong><spring:message code="Label.BuildingType" htmlEscape="true" />
+										</strong>
+									</div></th>
 													
-													<th>
-														<div align="center">
-															<strong><spring:message code="Label.District" htmlEscape="true" /> 
-															</strong>
-														</div>
-													</th>
-													
-														
+									<th>
+										<div align="center">
+											<strong><spring:message code="Label.District" htmlEscape="true" /> 
+											</strong>
+										</div>
+									</th>
 											
-												<th><div align="center">
-														<strong><spring:message code="Label.Funds" htmlEscape="true" />
-														</strong>
-													</div></th>
-												<!-- <th><div align="center">
-														<strong>Total Fund<br>(B = A + Funds required <br>in carry forward section)
-														</strong>
-													</div></th> -->
-												<th > 
-													<div align="center">
-														<strong><spring:message code="Label.IsApproved" htmlEscape="true" />
-														</strong>
-													</div>
-												</th>	
+									<th><div align="center">
+											<strong><spring:message code="Label.Funds" htmlEscape="true" />
+											</strong>
+									</div></th>
+									
+									<!-- <th><div align="center">
+											<strong>Total Fund<br>(B = A + Funds required <br>in carry forward section)
+											</strong>
+									</div></th> -->
+									
+									<%-- <th> 
+										<div align="center">
+											<strong><spring:message code="Label.IsApproved" htmlEscape="true" />
+											</strong>
+										</div>
+									</th> --%>	
 													
-												<th> 
-													<div align="center">
-														<strong><spring:message code="Label.Remarks" htmlEscape="true" />
-														</strong>
-													</div>
-												</th>
-											</tr>
+									<th> 
+										<div align="center">
+											<strong><spring:message code="Label.Remarks" htmlEscape="true" />
+											</strong>
+										</div>
+									</th>
+								</tr>
 							  </thead>
                               <tbody>
-                                 <tr data-ng-repeat="details in institutionalPlanDetailsNBStateMOPR | orderBy : 'trainingInstitueType.trainingInstitueTypeId'">
-												<td class="padding_left_local"><strong>{{details.trainingInstitueType.trainingInstitueTypeName}}</strong></td>
-												<td ><strong>{{details.districtName}}</strong></td>
-											
-												<td align="center">
-												<strong>{{details.fundProposed}}</strong>
-												</td>
-												<!-- <td>
-													<input type="text" restrict-input="{type: 'digitsOnly'}" data-ng-show="!institutionalInfraActivityPlan.isFreeze"  data-ng-model="institutionalInfraActivityPlanDetailsNB[$index].totalFund" class="form-control" id="totalFundId" data-ng-keyup="calculationDependentField(trainingInstituteTypeId)" readonly="readonly" style="text-align:right;"/>
-													<input type="text" restrict-input="{type: 'digitsOnly'}" data-ng-show="institutionalInfraActivityPlan.isFreeze" data-ng-model="institutionalInfraActivityPlanDetailsNBlInfraActivityPlanDetails[$index].totalFund" class="form-control" readonly="readonly" style="text-align:right;"/>
-												</td> -->
+                                 <tr data-ng-repeat="details in institutionalPlanDetailsNBState | orderBy : 'trainingInstitueType.trainingInstitueTypeId'">
 												
-												<td align="center">
-													
-													<input type="checkbox"  data-ng-model="details.isApproved" disabled="disabled">
-												</td>
-												<td align="center">
-													<strong>{{details.remarks}}</strong>
-													
-												</td>
-											</tr>
+									<td class="padding_left_local"><strong>{{details.trainingInstitueType.trainingInstitueTypeName}}</strong></td>
+												
+									<td><strong>{{details.districtName}}</strong></td>
 											
-											
-											
+									<td align="center"><strong>{{details.fundProposed}}</strong></td>
+									
+									<!-- <td>
+										<input type="text" restrict-input="{type: 'digitsOnly'}" data-ng-show="!institutionalInfraActivityPlan.isFreeze"  data-ng-model="institutionalInfraActivityPlanDetailsNB[$index].totalFund" class="form-control" id="totalFundId" data-ng-keyup="calculationDependentField(trainingInstituteTypeId)" readonly="readonly" style="text-align:right;"/>
+										<input type="text" restrict-input="{type: 'digitsOnly'}" data-ng-show="institutionalInfraActivityPlan.isFreeze" data-ng-model="institutionalInfraActivityPlanDetailsNBlInfraActivityPlanDetails[$index].totalFund" class="form-control" readonly="readonly" style="text-align:right;"/>
+									</td> -->
+												
+									<!-- <td align="center">
+										<input type="checkbox"  data-ng-model="details.isApproved" disabled="disabled">
+									</td> -->
+									
+									<td align="center">
+										<strong>{{details.remarks}}</strong>
+									</td>
+									
+								</tr>
                               </tbody>
                               <tfoot>
-                                 			<tr>
-												<td colspan="2" class="padding_left_local"><strong><spring:message code="Label.SubTotal" htmlEscape="true" />(SPRC)</strong></td>
-												<td align="center">
-												
-													<strong>{{subTotalFundMOPRNBS}}</strong>	
-												</td>
+                       				<tr>
+										<td colspan="2" class="padding_left_local"><strong><spring:message code="Label.SubTotal" htmlEscape="true" />(SPRC)</strong></td>
+										
+										<td align="center"><strong>{{subTotalFundStateNBS}}</strong></td>
 												<td colspan="2" ></td>
 											</tr>
 											
 											<tr>
 												<td colspan="2" class="padding_left_local"><strong><spring:message code="Label.AdditionalRequirement" htmlEscape="true" /> (SPRC)</strong></td>
 												<td align="center">
-													<strong>{{planstateAdditionalRequirementMOPR}}</strong>	
+													<strong>{{planstateAdditionalRequirementState}}</strong>	
 												</td>
 												<td colspan="2" ></td>
 											</tr>
 											<tr>
 												<td colspan="2" class="padding_left_local"><strong><spring:message code="Label.TotalProposedFund" htmlEscape="true" /> (SPRC)</strong></td>
 												<td align="center">
-													<strong>{{totalFundMOPRNBS}}</strong>	
+													<strong>{{totalFundStateNBS}}</strong>	<!-- totalFundMOPRNBS -->
 												</td>
 												<td colspan="2" ></td>
 											</tr>
@@ -814,12 +804,12 @@ function isNumber(evt) {
 														<strong>Total Fund<br>(B = A + Funds required <br>in carry forward section)
 														</strong>
 													</div></th> -->
-												<th > 
+												<%-- <th > 
 													<div align="center">
 														<strong><spring:message code="Label.IsApproved" htmlEscape="true" />
 														</strong>
 													</div>
-												</th>	
+												</th>	 --%>
 													
 												<th> 
 													<div align="center">
@@ -830,58 +820,55 @@ function isNumber(evt) {
 											</tr>
 							  </thead>
                                <tbody>
-                                 <tr data-ng-repeat="details in institutionalPlanDetailsNBDistrictMOPR | orderBy : 'trainingInstitueType.trainingInstitueTypeId'">
-												<td class="padding_left_local"><strong>{{details.trainingInstitueType.trainingInstitueTypeName}}</strong></td>
-												<td ><strong>{{details.districtName}}</strong></td>
+                                 <tr data-ng-repeat="details in institutionalPlanDetailsNBDistrict | orderBy : 'trainingInstitueType.trainingInstitueTypeId'">
+										<td class="padding_left_local"><strong>{{details.trainingInstitueType.trainingInstitueTypeName}}</strong></td>
+										
+										<td ><strong>{{details.districtName}}</strong></td>
 											
-												<td align="center">
-												<strong>{{details.fundProposed}}</strong>
-												</td>
-												<!-- <td>
-													<input type="text" restrict-input="{type: 'digitsOnly'}" data-ng-show="!institutionalInfraActivityPlan.isFreeze"  data-ng-model="institutionalInfraActivityPlanDetailsNB[$index].totalFund" class="form-control" id="totalFundId" data-ng-keyup="calculationDependentField(trainingInstituteTypeId)" readonly="readonly" style="text-align:right;"/>
-													<input type="text" restrict-input="{type: 'digitsOnly'}" data-ng-show="institutionalInfraActivityPlan.isFreeze" data-ng-model="institutionalInfraActivityPlanDetailsNBlInfraActivityPlanDetails[$index].totalFund" class="form-control" readonly="readonly" style="text-align:right;"/>
-												</td> -->
+										<td align="center"><strong>{{details.fundProposed}}</strong></td>
 												
-												<td align="center">
-													
-													<input type="checkbox"  data-ng-model="details.isApproved" disabled="disabled">
-												</td>
-												<td align="center">
-													<strong>{{details.remarks}}</strong>
-													
-												</td>
-											</tr>
-											
-											
-											
+										<!-- <td>
+											<input type="text" restrict-input="{type: 'digitsOnly'}" data-ng-show="!institutionalInfraActivityPlan.isFreeze"  data-ng-model="institutionalInfraActivityPlanDetailsNB[$index].totalFund" class="form-control" id="totalFundId" data-ng-keyup="calculationDependentField(trainingInstituteTypeId)" readonly="readonly" style="text-align:right;"/>
+											<input type="text" restrict-input="{type: 'digitsOnly'}" data-ng-show="institutionalInfraActivityPlan.isFreeze" data-ng-model="institutionalInfraActivityPlanDetailsNBlInfraActivityPlanDetails[$index].totalFund" class="form-control" readonly="readonly" style="text-align:right;"/>
+										</td> -->
+												
+										<!-- <td align="center"><input type="checkbox"  data-ng-model="details.isApproved" disabled="disabled"></td> -->
+										
+										<td align="center"><strong>{{details.remarks}}</strong></td>
+										
+								</tr>
                               </tbody>
                               <tfoot>
-                                 			<tr>
-												<td colspan="2" class="padding_left_local"><strong><spring:message code="Label.SubTotal" htmlEscape="true" />(DPRC)</strong></td>
-												<td align="center">
-													<strong>{{subTotalFundMOPRNBD}}</strong>	
-												</td>
-												<td colspan="2" ></td>
-											</tr>
+                          			<tr>
+										<td colspan="2" class="padding_left_local"><strong><spring:message code="Label.SubTotal" htmlEscape="true" />(DPRC)</strong></td>
+										
+										<td align="center"><strong>{{subTotalFundStateNBD}}</strong></td>
+												
+										<td colspan="2" ></td>
+									
+									</tr>
 											
-											<tr>
-												<td colspan="2" class="padding_left_local"><strong><spring:message code="Label.AdditionalRequirement" htmlEscape="true" /> (DPRC)</strong></td>
-												<td align="center">
-													<strong>{{plandistrictAdditionalRequirementMOPR}}</strong>
-												</td>
-												<td colspan="2" ></td>
-											</tr>
-											<tr>
-												<td colspan="2" class="padding_left_local"><strong><spring:message code="Label.TotalProposedFund" htmlEscape="true" /> (DPRC)</strong></td>
-												<td align="center">
-													<strong>{{totalFundMOPRNBD}}</strong>
-												</td>
-												<td colspan="2" ></td>
-											</tr>
-											<tr>
-											</tr>
-											<tr>
-											</tr>
+									<tr>
+										<td colspan="2" class="padding_left_local"><strong><spring:message code="Label.AdditionalRequirement" htmlEscape="true" /> (DPRC)</strong></td>
+										
+										<td align="center"><strong>{{plandistrictAdditionalRequirementState}}</strong> <!-- plandistrictAdditionalRequirementMOPR --></td>
+												
+										<td colspan="2" ></td>
+									
+									</tr>
+											
+									<tr>
+										<td colspan="2" class="padding_left_local"><strong><spring:message code="Label.TotalProposedFund" htmlEscape="true" /> (DPRC)</strong></td>
+										
+										<td align="center"><strong>{{totalFundStateNBD}}</strong> <!-- totalFundMOPRNBD --></td>
+												
+										<td colspan="2" ></td>
+									</tr>
+									
+									<tr>
+									</tr>
+									<tr>
+									</tr>
                               </tfoot>
                               
                              
@@ -897,70 +884,60 @@ function isNumber(evt) {
                               <spring:message code="Label.CarryForward" htmlEscape="true" />(SPRC)
                            </div>
                            <div class="row">
-                           <div class="col-lg-12 padding_top"></div>
+                           		<div class="col-lg-12 padding_top"></div>
                            </div>
-                          
-					  
-							<br/>
-                           <table id="trainingActivityTblId"
-                              class="table table-hover dashboard-task-infos">
+						<br/>
+                           
+                        <table id="trainingActivityTblId" class="table table-hover dashboard-task-infos">
                              <thead>
-											<tr>
-													<th><div  class="padding_left_local">
-														<strong><spring:message code="Label.BuildingType" htmlEscape="true" />
-														</strong>
-													</div></th>
+								<tr>
+									<th><div class="padding_left_local">
+										<strong><spring:message code="Label.BuildingType" htmlEscape="true" /></strong>
+										</div>
+									</th>
 													
-													<th>
-														<div align="center">
-															<strong><spring:message code="Label.District" htmlEscape="true" /> 
-															</strong>
-														</div>
-													</th>
-													
-														
-											
-												<th>
-			                                    <div align="center">
-			                                       <strong>
-			                                          <spring:message code="Label.fund.sanction"
-			                                             htmlEscape="true" />
-			                                       </strong>
-			                                    </div>
-			                                 </th>
-			                                 <th>
-			                                    <div align="center">
-			                                       <strong>
-			                                          <spring:message code="Label.fund.release"
-			                                             htmlEscape="true" />
-			                                       </strong>
-			                                       <br> A
-			                                    </div>
-			                                 </th>
-			                                 <th>
-			                                    <div align="center">
-			                                       <strong>
-			                                          <spring:message code="Label.fund.utilize"
-			                                             htmlEscape="true" />
-			                                       </strong>
-			                                       <br> B
-			                                    </div>
-			                                 </th>
-			                                 <th>
-			                                    <div align="center">
-			                                       <strong>
-			                                          <spring:message code="Label.fund.required"
-			                                             htmlEscape="true" />
-			                                       </strong>
-			                                       <br>C=A-B
-			                                    </div>
-			                                 </th>
-			                                 <th > 
-													<div align="center">
-														<strong><spring:message code="Label.IsApproved" htmlEscape="true" />
-														</strong>
-													</div>
-												</th>	
+									<th>
+										<div align="center"><strong><spring:message code="Label.District" htmlEscape="true" /></strong>
+										</div>
+									</th>
+									
+									<th>
+	                                    <div align="center"><strong><spring:message code="Label.fund.sanction" htmlEscape="true" /> </strong>
+	                                    </div>
+	                                </th>
+	                                 <th>
+	                                    <div align="center">
+	                                       <strong>
+	                                          <spring:message code="Label.fund.release"
+	                                             htmlEscape="true" />
+	                                       </strong>
+	                                       <br> A
+	                                    </div>
+	                                 </th>
+	                                 <th>
+	                                    <div align="center">
+	                                       <strong>
+	                                          <spring:message code="Label.fund.utilize"
+	                                             htmlEscape="true" />
+	                                       </strong>
+	                                       <br> B
+	                                    </div>
+	                                 </th>
+	                                 <th>
+	                                    <div align="center">
+	                                       <strong>
+	                                          <spring:message code="Label.fund.required"
+	                                             htmlEscape="true" />
+	                                       </strong>
+	                                       <br>C=A-B
+	                                    </div>
+	                                 </th>
+	                                 <%-- <th> 
+										<div align="center">
+											<strong><spring:message code="Label.IsApproved" htmlEscape="true" />
+											</strong>
+										</div>
+									</th> --%>	
 													
 												<th> 
 													<div align="center">
@@ -971,13 +948,9 @@ function isNumber(evt) {
 											</tr>
 										</thead>
                               <tbody>
-                                 <tr data-ng-repeat="details in institutionalPlanDetailsCFStateMOPR | orderBy : 'trainingInstitueType.trainingInstitueTypeId'">
+                                 <tr data-ng-repeat="details in institutionalPlanDetailsCFState | orderBy : 'trainingInstitueType.trainingInstitueTypeId'">
 												<td class="padding_left_local"><strong>{{details.trainingInstitueType.trainingInstitueTypeName}}</strong></td>
 												<td align="center"><strong>{{details.districtName}}</strong></td>
-												
-												
-												
-												
 												<td align="center">
 												<strong>{{details.fundSanctioned}}</strong>
 												</td>
@@ -990,25 +963,20 @@ function isNumber(evt) {
 												<td align="center">
 													<strong>{{details.fundRequired}}</strong>
 													</td>
-												<td align="center">
-													<input type="checkbox"  data-ng-model="details.isApproved" disabled="disabled">
+												<!-- <td align="center">
+													<input type="checkbox"  data-ng-model="details.isApproved" disabled="disabled"></td> -->
 												<td align="center">
 													<strong>{{details.remarks}}</strong>
 												</td>
-												
-											</tr>
-											
-											
-											
+								</tr>
                               </tbody>
                               <tfoot>
-                                 			
-											<tr >
-												<td colspan="5" class="padding_left_local"><strong><spring:message code="Label.TotalProposedFund" htmlEscape="true" /> (SPRC)</strong></td>
-												<td align="center">
-												<strong>{{subTotalFundMOPRCFS}}</strong>
-												</td>
-											</tr>
+									<tr >
+										<td colspan="5" class="padding_left_local"><strong><spring:message code="Label.TotalProposedFund" htmlEscape="true" /> (SPRC)</strong></td>
+										<td align="center">
+										<strong>{{subTotalFundStateCFS}}</strong>
+										</td>
+									</tr>
                               </tfoot>
                            </table>
                            
@@ -1076,12 +1044,12 @@ function isNumber(evt) {
 			                                       <br>C=A-B
 			                                    </div>
 			                                 </th>
-			                                 <th > 
+			                                 <%-- <th > 
 													<div align="center">
 														<strong><spring:message code="Label.IsApproved" htmlEscape="true" />
 														</strong>
 													</div>
-												</th>	
+												</th> --%>	
 													
 												<th> 
 													<div align="center">
@@ -1092,7 +1060,7 @@ function isNumber(evt) {
 											</tr>
 										</thead>
                               <tbody>
-                                 <tr data-ng-repeat="details in institutionalPlanDetailsCFDistrictMOPR | orderBy : 'trainingInstitueType.trainingInstitueTypeId'">
+                                 <tr data-ng-repeat="details in institutionalPlanDetailsCFDistrict | orderBy : 'trainingInstitueType.trainingInstitueTypeId'">
 												<td class="padding_left_local"><strong>{{details.trainingInstitueType.trainingInstitueTypeName}}</strong></td>
 												<td align="center"><strong>{{details.districtName}}</strong></td>
 												
@@ -1111,8 +1079,8 @@ function isNumber(evt) {
 												<td align="center">
 													<strong>{{details.fundRequired}}</strong>
 													</td>
-												<td align="center">
-													<input type="checkbox"  data-ng-model="details.isApproved" disabled="disabled">
+												<!-- <td align="center">
+													<input type="checkbox"  data-ng-model="details.isApproved" disabled="disabled"></td> -->
 												<td align="center">
 													<strong>{{details.remarks}}</strong>
 												</td>
@@ -1127,7 +1095,7 @@ function isNumber(evt) {
 											<tr >
 												<td colspan="5" class="padding_left_local"><strong><spring:message code="Label.TotalProposedFund" htmlEscape="true" /> (DPRC)</strong></td>
 												<td align="center">
-												<strong>{{subTotalFundMOPRCFD}}</strong>
+												<strong>{{subTotalFundStateCFD}}</strong>
 												</td>
 											</tr>
                               </tfoot>
@@ -1149,11 +1117,11 @@ function isNumber(evt) {
 									<tr>
 										<td colspan="4" width="60%">
 											<strong>
-												Grand Total(New Building Total Fund(SPRC)+New Building Total Fund(DPRC)+Carry Forward Total Fund(SPRC)+Carry Forward Total Fund(DPRC))
+												Grand Total(New Building Total Fund(SPRC) + New Building Total Fund(DPRC) + Carry Forward Total Fund(SPRC) + Carry Forward Total Fund(DPRC))
 											</strong>
 										</td>
 										<td align="center" width="40%">
-										{{grandTotalMOPR}}
+										{{grandTotalState}}
 											
 										</td>
 									</tr>

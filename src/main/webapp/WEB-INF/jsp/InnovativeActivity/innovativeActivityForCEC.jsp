@@ -126,11 +126,11 @@
 			var noOfRowCount = $('#newBody tr').length;
 			for(var i= 0; i<noOfRowCount ;i++){
 			
-		+$("#fundId_"+i).val() < +$("#fundIdState_"+i).text() ? $("#fundIdState_"+i).css("color","red") : $("#fundIdState_"+i).css("color","#00cc00");
+		+$("#fundId_"+i).val() < +$("#fundIdMopr_"+i).text() ? $("#fundIdMopr_"+i).css("color","red") : $("#fundIdMopr_"+i).css("color","#00cc00");
 			}
-			+$("#additioinalRequirements1").text() > +$("#additioinalRequirements").val() ? $("#additioinalRequirements1").css('color','red') : $("#additioinalRequirements1").css('color','#00cc00');
-			+$("#subTotalState").text() > +$("#subTotal").val() ? $("#subTotalState").css('color','red') : $("#subTotalState").css('color','#00cc00');
-			+$("#grandTotalState").text() > +$("#grandTotal").val() ? $("#grandTotalState").css('color','red') : $("#grandTotalState").css('color','#00cc00');
+			+$("#additioinalRequirementsMopr").text() > +$("#additioinalRequirements").val() ? $("#additioinalRequirementsMopr").css('color','red') : $("#additioinalRequirementsMopr").css('color','#00cc00');
+			+$("#subTotalMopr").text() > +$("#subTotal").val() ? $("#subTotalMopr").css('color','red') : $("#subTotalMopr").css('color','#00cc00');
+			+$("#grandTotalMopr").text() > +$("#grandTotal").val() ? $("#grandTotalMopr").css('color','red') : $("#grandTotalMopr").css('color','#00cc00');
 
 		}
 	 
@@ -266,7 +266,7 @@ function saveSubmit(){
 						</ul>
 
 						<div class="tab-content">
-							<div role="tabpanel" class="container tab-pane active" id="state"
+							<div role="tabpanel" class="container tab-pane " id="MOPR"
 								style="width: auto;">
 								<div class="table-responsive">
 									<table class="table table-bordered" id="supportStaff">
@@ -290,7 +290,13 @@ function saveSubmit(){
 												<th scope="col"><div align="center">
 														<spring:message text="Upload File(Pdf)" htmlEscape="true" />
 													</div></th>
-
+                                                      <%-- <th scope="col"><div align="center">
+														<spring:message text="Is Approved" htmlEscape="true" />
+													</div></th> --%>
+												<th scope="col"><div align="center">
+														<spring:message code="Label.Remarks" text="Remarks"
+															htmlEscape="true" />
+													</div></th>
 
 												<%-- <c:if test = "${fn:containsIgnoreCase(userTypeSwitch, 'S')}">	
 										<th scope="col"><div align="center">
@@ -305,7 +311,7 @@ function saveSubmit(){
 											</tr>
 										</thead>
 										<tbody id="newBody">
-													<c:forEach var="state_detail" items="${innovativeActivityDetailState}" varStatus="count">
+													<c:forEach var="state_detail" items="${innovativeActivityDetailsMopr}" varStatus="count">
 														<tr id="newRow">
 															<td><strong>${state_detail.activityName}</strong>
 																<input type="hidden" name="innovativeActivityDetails[${count.index}].activityName" value="${state_detail.activityName}"/>
@@ -324,7 +330,7 @@ function saveSubmit(){
 															<c:when test="${not empty innovativeAcitivityList}"><c:set var="totalFundToCalc"
 																value="${totalFundToCalc + innovativeAcitivityList[0].innovativeActivityDetails[count.index].fundsName}"></c:set>
 															<td><div align="center"
-																		id="fundIdState_${count.index}"><strong>${state_detail.fundsName}</strong></div>
+																		id="fundIdMopr_${count.index}"><strong>${state_detail.fundsName}</strong></div>
 
 																<input type="text" oninput="validity.valid||(value='');"
 																onKeyPress="if(this.value.length==8) return false;"
@@ -340,7 +346,7 @@ function saveSubmit(){
 															<c:set var="totalFundToCalc"
 																value="${totalFundToCalc + 0}"></c:set>
 															<td><div align="center"
-																		id="fundIdState_${count.index}"><strong>${state_detail.fundsName}</strong></div>
+																		id="fundIdMopr_${count.index}"><strong>${state_detail.fundsName}</strong></div>
 
 																<input type="text" oninput="validity.valid||(value='');"
 																onKeyPress="if(this.value.length==8) return false;"
@@ -356,6 +362,23 @@ function saveSubmit(){
 																class="btn bg-grey waves-effect"
 																onclick='showImage("${state_detail.fileLocation}","${state_detail.fileName}");' />
 															</td>
+															<%-- <td><div align="center">
+																	<c:choose>
+																		<c:when
+																			test="${innovativeActivityDetailsMopr[count.index].isApproved eq true}">
+																			<i class="fa fa-check" aria-hidden="true"
+																				style="color: #00cc00"></i>
+																		</c:when>
+																		<c:otherwise>
+																			<i class="fa fa-times" aria-hidden="true"
+																				style="color: red"></i>
+																		</c:otherwise>
+																	</c:choose>
+																</div></td> --%>
+														<td>	<input type="text" 
+																name="innovativeActivityDetails[${count.index}].remarks" class="form-control"
+																value="${innovativeAcitivityList[0].innovativeActivityDetails[count.index].remarks}"
+																 /></td>
 														</tr>
 														
 														<c:choose>
@@ -380,6 +403,7 @@ function saveSubmit(){
 																<input type="hidden"
 																	name="innovativeActivityDetails[${count.index}].fileLocation"
 																	value="${innovativeAcitivityList[0].innovativeActivityDetails[count.index].fileLocation}">
+															
 															</c:when>
 														 <c:otherwise>
 																<input type="hidden" name="innovativeActivityId"
@@ -402,6 +426,8 @@ function saveSubmit(){
 																<input type="hidden"
 																	name="innovativeActivityDetails[${count.index}].fileLocation"
 																	value="${state_detail.fileLocation}">
+																	
+																	
 															</c:otherwise>
 														</c:choose>
 														
@@ -421,7 +447,7 @@ function saveSubmit(){
 													htmlEscape="true" /></td>
 											
 											<td><div style="margin-left: 15%;"
-														id="subTotalState"><strong>${TOTALFUND}</strong></div><input type="text"
+														id="subTotalMopr"><strong>${TOTALFUNDForMopr}</strong></div><input type="text"
 												id="subTotal" value="${totalFundToCalc}" disabled="disabled"
 												Class="form-control Align-Right" /></td>
 										</tr>
@@ -443,7 +469,7 @@ function saveSubmit(){
 													</c:otherwise>
 													</c:choose>
 												
-												<td><div id="additioinalRequirements1" style="margin-left: 15%;"><strong>${innovativeAcitivityListForState[0].additioinalRequirements}</strong></div>
+												<td><div id="additioinalRequirementsMopr" style="margin-left: 15%;"><strong>${innovativeAcitivityListForMopr[0].additioinalRequirements}</strong></div>
 													<input min="0" type="text"
 													oninput="validity.valid||(value='');"
 													onKeyPress="if(this.value.length==7) return false;"
@@ -459,7 +485,7 @@ function saveSubmit(){
 											<td ><spring:message
 													text="Total Proposed Fund" htmlEscape="true" /></td>
 											
-											<td><div id="grandTotalState"  style="margin-left: 15%;"><strong>${GRANDTOTAL}</strong> </div><input
+											<td><div id="grandTotalMopr"  style="margin-left: 15%;"><strong>${TOTALFUNDForMopr+innovativeAcitivityListForMopr[0].additioinalRequirements}</strong> </div><input
 												type="text" id="grandTotal"
 												value="${addtnlReqrmnt + totalFundToCalc}"
 												disabled="disabled" Class="form-control Align-Right" /></td>
@@ -545,7 +571,7 @@ function saveSubmit(){
 								</div>
 							</div>
 
-							<div class="container tab-pane fade" id="MOPR"
+							<div class="container tab-pane active" id="state"
 								style="width: auto;">
 								<div class="table-responsive">
 									<table class="table table-bordered" id="supportStaff">
@@ -570,13 +596,7 @@ function saveSubmit(){
 										<spring:message  text="Upload File(Pdf)" htmlEscape="true" />
 											</div></th> --%>
 
-												<th scope="col"><div align="center">
-														<spring:message text="Is Approved" htmlEscape="true" />
-													</div></th>
-												<th scope="col"><div align="center">
-														<spring:message code="Label.Remarks" text="Remarks"
-															htmlEscape="true" />
-													</div></th>
+												
 
 
 
@@ -596,34 +616,20 @@ function saveSubmit(){
 														items="${innovativeActivity.innovativeActivityDetails}"
 														varStatus="count">
 														<tr id="newRow">
-															<td><strong>${innovativeActivityDetailsMopr[count.index].activityName}</strong></td>
-															<td><strong>${innovativeActivityDetailsMopr[count.index].aboutActivity}</strong></td>
-															<td><strong>${innovativeActivityDetailsMopr[count.index].yearFrom}</strong>
+															<td><strong>${innovativeActivityDetailState[count.index].activityName}</strong></td>
+															<td><strong>${innovativeActivityDetailState[count.index].aboutActivity}</strong></td>
+															<td><strong>${innovativeActivityDetailState[count.index].yearFrom}</strong>
 															</td>
-															<td><strong>${innovativeActivityDetailsMopr[count.index].yearTo}</strong>
+															<td><strong>${innovativeActivityDetailState[count.index].yearTo}</strong>
 															</td>
 
-															<td><div align="center"><strong>${innovativeActivityDetailsMopr[count.index].fundsName}</strong></div>
+															<td><div align="center"><strong>${innovativeActivityDetailState[count.index].fundsName}</strong></div>
 
 																<%-- <td> 
 												<input type="file" name="innovativeActivityDetails[${count.index}].file" id="file" onclick='pathImage("${innovativeActivityDetails.fileLocation}","${innovativeActivityDetails.fileName}");' >
 												<input type="button" value="Download File" class="btn bg-grey waves-effect" onclick='showImage("${innovativeActivityDetailsMopr[count.index].fileLocation}","${innovativeActivityDetailsMopr[count.index].fileName}");' />
 										</td> --%>
-															<td><div align="center">
-																	<c:choose>
-																		<c:when
-																			test="${innovativeActivityDetailsMopr[count.index].isApproved eq true}">
-																			<i class="fa fa-check" aria-hidden="true"
-																				style="color: #00cc00"></i>
-																		</c:when>
-																		<c:otherwise>
-																			<i class="fa fa-times" aria-hidden="true"
-																				style="color: red"></i>
-																		</c:otherwise>
-																	</c:choose>
-																</div></td>
-															<td>${innovativeActivityDetailsMopr[count.index].remarks}</td>
-
+															
 
 														</tr>
 														<%-- 	<input type="hidden" name="innovativeActivityId" value="${innovativeActivity.innovativeActivityId}">
@@ -652,19 +658,19 @@ function saveSubmit(){
 											<td><strong><spring:message text="Total Funds"
 														htmlEscape="true" /></strong></td>
 
-											<td><strong>${TOTALFUNDForMopr}</strong>
+											<td><strong>${TOTALFUND}</strong>
 										</tr>
 										<tr>
 											<td><strong><spring:message
 														text="Additional Requirement" htmlEscape="true" /></strong></td>
-											<td><strong>${innovativeAcitivityListForMopr[0].additioinalRequirements}</strong></td>
+											<td><strong>${innovativeAcitivityListForState[0].additioinalRequirements}</strong></td>
 										</tr>
 
 
 										<tr>
 											<td><strong><spring:message
 														text="Total Proposed Fund" htmlEscape="true" /></strong></td>
-											<td><strong>${TOTALFUNDForMopr+innovativeAcitivityListForMopr[0].additioinalRequirements}</strong>
+											<td><strong>${GRANDTOTAL}</strong>
 										</tr>
 									</table>
 								</div>

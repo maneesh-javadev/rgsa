@@ -88,7 +88,6 @@ public class QprGramPanchayatController {
 		if(activityId>0) {
 			model.addAttribute("districtList",progressReportService.getDistrictBasedOnPNCHAYATBHAWANnState(activityId));
 			if(districtCode>0) {
-			
 				List<GramPanchayatProgressReportDTO> gramPanchayatProgressReportDTOAll =panchayatBhawanService.fetchGPBhawanData(activityId,districtCode);
 				if(gramPanchayatProgressReportDTOAll!=null && !gramPanchayatProgressReportDTOAll.isEmpty()) {
 					panchayatBhawanActivityId=gramPanchayatProgressReportDTOAll.get(0).getPanchayatBhawanActivityId();	
@@ -96,8 +95,7 @@ public class QprGramPanchayatController {
 					if(obj!=null) {
 						gramPanchayatProgressReportDTO.add(obj);
 					}
-				}
-				
+					}
 				}
 				
 				model.addAttribute("QprPanchayatBhawanDto", gramPanchayatProgressReportDTO);
@@ -111,8 +109,8 @@ public class QprGramPanchayatController {
 				if(QprPanchayatBhawan!=null && !QprPanchayatBhawan.isEmpty() && QprPanchayatBhawan.get(0).getQprPanhcayatBhawanDetails().size()>0) {
 					int temp=0;
 					for(QprPanhcayatBhawanDetails obj: QprPanchayatBhawan.get(0).getQprPanhcayatBhawanDetails()) {
+						qprPanhcayatBhawanDetailsList.add(obj);
 						if(districtCode.equals(obj.getDistrictCode())) {
-							qprPanhcayatBhawanDetailsList.add(obj);
 							temp=obj.getExpenditureIncurred()!=null && obj.getExpenditureIncurred()>0?obj.getExpenditureIncurred():0;
 							curDistBal=	curDistBal+ temp;
 						}else {
@@ -125,12 +123,15 @@ public class QprGramPanchayatController {
 					qprPanchayatBhawan.setSelectDistrictId(districtCode);
 					qprPanchayatBhawan.setQprPanhcayatBhawanDetails(qprPanhcayatBhawanDetailsList);
 					
-					
+					if(QprPanchayatBhawan.get(0) != null) {
+						model.addAttribute("DISABLE_FREEZE", false);
+					}else {
+						model.addAttribute("DISABLE_FREEZE", true);
+					}
 					if(activityId==QprPanchayatBhawan.get(0).getActivityId())
 					{
 						model.addAttribute("QPR_PANCHAYAT_BHAWAN", QprPanchayatBhawan.get(0));
 						model.addAttribute("QPRPANHCAYATBHAWANDETAILS", qprPanhcayatBhawanDetailsList);
-
 					}
 				}
 				

@@ -27,7 +27,7 @@
 						modelAttribute="QPR_TRAINING_DETAILS" enctype="multipart/form-data" >
 						<input type="hidden" name="<csrf:token-name/>"value="<csrf:token-value uri="savetrainingProgressReport.html" />" />
 						<spring:bind path="QPR_TRAINING_DETAILS.qprTrainingsId" >
-										<input type="hidden" name="${status.expression}" value="${status.value}" /> 
+										<input type="hidden" name="${status.expression}" value="${status.value}" id="qprActivityId" /> 
 						</spring:bind>
 						<spring:bind path="QPR_TRAINING_DETAILS.trainingActivityId" >
 										<input type="hidden" name="${status.expression}" value="${fetchTrainingCEC.trainingActivityId}" /> 
@@ -142,8 +142,8 @@
 								<td align="left">
 								
 										 <spring:bind path="QPR_TRAINING_DETAILS.quarterTrainingsDetailsList[${count.index}].expenditureIncurred" >
-												<input type="text" id="expenditureIncurred_${count.index}" onkeypress="return isNumber(event)"  name="${status.expression}"  class="form-control"  value="${status.value}" 
-										maxlength="8" style="text-align:right;" required="required" autocomplete="off" onblur="validate_expenditureIncurred('${subcomponentwiseQuaterBalanceList[0].balanceAmount}',this)" />
+												<form:input id="expenditureIncurred_${count.index}" onkeypress="return isNumber(event)"  path="${status.expression}"  class="form-control"  value="${status.value}" 
+										maxlength="8" style="text-align:right;" required="required" autocomplete="off" onblur="validate_expenditureIncurred('${subcomponentwiseQuaterBalanceList[0].balanceAmount}',this)" readonly="${QPR_TRAINING_DETAILS.isFreeze}"/>
 										</spring:bind>
 										<span class="errormsg" id="error_expenditureIncurred_${count.index}"></span>
 								
@@ -151,7 +151,11 @@
 									</td>
 									<td align="left">
 									<spring:bind path="QPR_TRAINING_DETAILS.quarterTrainingsDetailsList[${count.index}].file" >
-									 <input type="file" id="file"  name="${status.expression}"/><br/>
+									 <c:choose>
+									 	<c:when test="${QPR_TRAINING_DETAILS.isFreeze}"><input type="file" id="file"  name="${status.expression}" disabled="disabled"/></c:when>
+									 	<c:otherwise><input type="file" id="file"  name="${status.expression}"/></c:otherwise>
+									 </c:choose>
+									 <br/>
 									 	<c:if test="${QPR_TRAINING_DETAILS.quarterTrainingsDetailsList[count.index].fileNode.fileNodeId!=null }">
 											<a type="button" class="btn btn-lg btn-success" href="downloadFileNew.html?fileNodeId=${QPR_TRAINING_DETAILS.quarterTrainingsDetailsList[count.index].fileNode.fileNodeId}" target="_blank">
 												<span class="glyphicon glyphicon-download" aria-hidden="true"></span>Download File
@@ -186,7 +190,7 @@
 									</td>
 									<td>
 										<spring:bind path="QPR_TRAINING_DETAILS.additionalRequirement" >
-										<input type="text" onkeypress="return isNumber(event)" id="addReq" class="form-control" name="${status.expression}"  value="${status.value}" onblur="calculcate_total(null,'expenditureIncurred')"  maxlength="8" style="text-align:right;" autocomplete="off"/>
+										<form:input onkeypress="return isNumber(event)" id="addReq" class="form-control" path="${status.expression}"  value="${status.value}" onblur="calculcate_total(null,'expenditureIncurred')"  maxlength="8" style="text-align:right;" autocomplete="off" readonly="${QPR_TRAINING_DETAILS.isFreeze}"/>
 										</spring:bind>
 										<span class="errormsg" id="error_addReq"></span>
 									</td>
@@ -256,26 +260,39 @@
                            
                         </div>
                      </div>
+                     <div class="form-group text-right">
+						<c:if test="${installementExist}">
+							<button onclick="save_data('mainSsave')" type="button"
+								class="btn bg-green waves-effect">
+								<spring:message code="Label.SAVE" htmlEscape="true" />
+							</button>
+							<c:choose>
+								<c:when test="${QPR_TRAINING_DETAILS.isFreeze}">
+									<form:button class="btn bg-orange waves-effect"
+										onclick="FreezeAndUnfreeze('unfreeze')">UNFREEZE</form:button>
+								</c:when>
+								<c:otherwise>
+									<form:button class="btn bg-orange waves-effect"
+										disabled="${DISABLE_FREEZE}"
+										onclick="FreezeAndUnfreeze('freeze')">FREEZE</form:button>
+								</c:otherwise>
+							</c:choose>
+							<button type="button"
+								data-ng-show="!institutionalInfraActivityPlan.isFreeze"
+								data-ng-click="load_data()"
+								class="btn bg-light-blue waves-effect">
+								<spring:message code="Label.CLEAR" htmlEscape="true" />
+							</button>
+						</c:if>
+						<button type="button"
+							onclick="onClose('home.html?<csrf:token uri='home.html'/>')"
+							class="btn bg-red waves-effect">
+							<spring:message code="Label.CLOSE" htmlEscape="true" />
+						</button>
+						<br /> <br />
+					</div>
 					</form:form>
-						
-						
-								
-									<div class="form-group text-right">
-									 
-								 <c:if test="${installementExist}">
-								<button  onclick="save_data('mainSsave')" type="button" class="btn bg-green waves-effect"><spring:message code="Label.SAVE" htmlEscape="true" /></button>
-								
-								<button type="button" data-ng-show="!institutionalInfraActivityPlan.isFreeze" data-ng-click="load_data()" class="btn bg-light-blue waves-effect"><spring:message code="Label.CLEAR" htmlEscape="true" /></button>
-								</c:if>
-								<button type="button"
-									onclick="onClose('home.html?<csrf:token uri='home.html'/>')"
-									class="btn bg-orange waves-effect">
-									<spring:message code="Label.CLOSE" htmlEscape="true" />
-								</button>
-								<br/>
-								<br/>
-							</div>
-								</div>
+				</div>
 						</div>
 					</div>
 				</div>
@@ -317,7 +334,8 @@ function openModel(index , detailId){
 
 
  function voteViaAjax(detailId,index) {
-	$.ajax({
+	 var flag = ('${QPR_TRAINING_DETAILS.isFreeze}' === 'true') ? true : false;
+	 $.ajax({
         type : "POST",
         url : "fetchTrainingBreakUpData.html?<csrf:token uri='fetchTrainingBreakUpData.html'/>&detailId="+detailId,  
         timeout : 100000, 
@@ -332,34 +350,34 @@ function openModel(index , detailId){
          		 tableBuilder +="<th align='center' style='width: 6%'>"+(count + 1)+"</th>"; 
          		 tableBuilder += "<th align='center' style='width: 139px;'>"+listItems[key]+"</th>";
          		 if(data.breakUpData[count].scMales != null){
-         			tableBuilder +=" <td style='width: 97px;'><input type='text' name='quarterTrainingsDetailsList["+index+"].qprTrainingBreakup["+count+"].scMales' onkeypress='return isNumber(event)' class='form-control Align-Right' onkeyup='getTotalNoOfParticipants("+index+","+count+",this.id)' value='"+data.breakUpData[count].scMales+"' id='scMale_"+count+"'/></td>"; 
+         			tableBuilder +=" <td style='width: 97px;'><input type='text' name='quarterTrainingsDetailsList["+index+"].qprTrainingBreakup["+count+"].scMales' onkeypress='return isNumber(event)' class='form-control Align-Right' onkeyup='getTotalNoOfParticipants("+index+","+count+",this.id)' value='"+data.breakUpData[count].scMales+"' id='scMale_"+count+"' readonly='"+flag+"'/></td>"; 
          		 }else{
-         			tableBuilder +=" <td style='width: 97px;'><input type='text' name='quarterTrainingsDetailsList["+index+"].qprTrainingBreakup["+count+"].scMales' onkeypress='return isNumber(event)' class='form-control Align-Right' onkeyup='getTotalNoOfParticipants("+index+","+count+",this.id)' id='scMale_"+count+"'/></td>";
+         			tableBuilder +=" <td style='width: 97px;'><input type='text' name='quarterTrainingsDetailsList["+index+"].qprTrainingBreakup["+count+"].scMales' onkeypress='return isNumber(event)' class='form-control Align-Right' onkeyup='getTotalNoOfParticipants("+index+","+count+",this.id)' id='scMale_"+count+"' readonly='"+flag+"'/></td>";
          		 }
          		 if(data.breakUpData[count].scFemales != null){
-         			tableBuilder +="<td style='width: 123px;' ><input type='text' name='quarterTrainingsDetailsList["+index+"].qprTrainingBreakup["+count+"].scFemales' onkeypress='return isNumber(event)' class='form-control Align-Right' onkeyup='getTotalNoOfParticipants("+index+","+count+",this.id)' value='"+data.breakUpData[count].scFemales+"' id='scFemale_"+count+"'/></td>"; 
+         			tableBuilder +="<td style='width: 123px;' ><input type='text' name='quarterTrainingsDetailsList["+index+"].qprTrainingBreakup["+count+"].scFemales' onkeypress='return isNumber(event)' class='form-control Align-Right' onkeyup='getTotalNoOfParticipants("+index+","+count+",this.id)' value='"+data.breakUpData[count].scFemales+"' id='scFemale_"+count+"' readonly='"+flag+"'/></td>"; 
           		 }else{
-          			tableBuilder +=" <td style='width: 97px;' ><input type='text' name='quarterTrainingsDetailsList["+index+"].qprTrainingBreakup["+count+"].scFemales' onkeypress='return isNumber(event)' class='form-control Align-Right' onkeyup='getTotalNoOfParticipants("+index+","+count+",this.id)' id='scFemale_"+count+"'/></td>";
+          			tableBuilder +=" <td style='width: 97px;' ><input type='text' name='quarterTrainingsDetailsList["+index+"].qprTrainingBreakup["+count+"].scFemales' onkeypress='return isNumber(event)' class='form-control Align-Right' onkeyup='getTotalNoOfParticipants("+index+","+count+",this.id)' id='scFemale_"+count+"' readonly='"+flag+"'/></td>";
           		 }
          		if(data.breakUpData[count].stMales != null){
-         			tableBuilder +="<td style='width: 97px;'><input type='text' name='quarterTrainingsDetailsList["+index+"].qprTrainingBreakup["+count+"].stMales' onkeypress='return isNumber(event)' class='form-control Align-Right' onkeyup='getTotalNoOfParticipants("+index+","+count+",this.id)' value='"+data.breakUpData[count].stMales+"' id='stMale_"+count+"'/></td>"; 
+         			tableBuilder +="<td style='width: 97px;'><input type='text' name='quarterTrainingsDetailsList["+index+"].qprTrainingBreakup["+count+"].stMales' onkeypress='return isNumber(event)' class='form-control Align-Right' onkeyup='getTotalNoOfParticipants("+index+","+count+",this.id)' value='"+data.breakUpData[count].stMales+"' id='stMale_"+count+"' readonly='"+flag+"'/></td>"; 
           		 }else{
-          			tableBuilder +=" <td style='width: 97px;'><input type='text' name='quarterTrainingsDetailsList["+index+"].qprTrainingBreakup["+count+"].stMales' onkeypress='return isNumber(event)' class='form-control Align-Right' onkeyup='getTotalNoOfParticipants("+index+","+count+",this.id)' id='stMale_"+count+"' /></td>";
+          			tableBuilder +=" <td style='width: 97px;'><input type='text' name='quarterTrainingsDetailsList["+index+"].qprTrainingBreakup["+count+"].stMales' onkeypress='return isNumber(event)' class='form-control Align-Right' onkeyup='getTotalNoOfParticipants("+index+","+count+",this.id)' id='stMale_"+count+"' readonly='"+flag+"'/></td>";
           		 }
          		if(data.breakUpData[count].stFemales != null){
-         			 tableBuilder +="<td style='width: 123px;'><input type='text' name='quarterTrainingsDetailsList["+index+"].qprTrainingBreakup["+count+"].stFemales' onkeypress='return isNumber(event)' class='form-control Align-Right' onkeyup='getTotalNoOfParticipants("+index+","+count+",this.id)' value='"+data.breakUpData[count].stFemales+"' id='stFemale_"+count+"'/></td>"; 
+         			 tableBuilder +="<td style='width: 123px;'><input type='text' name='quarterTrainingsDetailsList["+index+"].qprTrainingBreakup["+count+"].stFemales' onkeypress='return isNumber(event)' class='form-control Align-Right' onkeyup='getTotalNoOfParticipants("+index+","+count+",this.id)' value='"+data.breakUpData[count].stFemales+"' id='stFemale_"+count+"' readonly='"+flag+"'/></td>"; 
           		 }else{
-          			tableBuilder +=" <td style='width: 97px;'><input type='text' name='quarterTrainingsDetailsList["+index+"].qprTrainingBreakup["+count+"].stFemales' onkeypress='return isNumber(event)' class='form-control Align-Right' onkeyup='getTotalNoOfParticipants("+index+","+count+",this.id)' id='stFemale_"+count+"'/></td>";
+          			tableBuilder +=" <td style='width: 97px;'><input type='text' name='quarterTrainingsDetailsList["+index+"].qprTrainingBreakup["+count+"].stFemales' onkeypress='return isNumber(event)' class='form-control Align-Right' onkeyup='getTotalNoOfParticipants("+index+","+count+",this.id)' id='stFemale_"+count+"' readonly='"+flag+"'/></td>";
           		 }
          		if(data.breakUpData[count].othersMales != null){
-         			tableBuilder +="<td style='width: 97px;'><input type='text' name='quarterTrainingsDetailsList["+index+"].qprTrainingBreakup["+count+"].othersMales' onkeypress='return isNumber(event)' class='form-control Align-Right' onkeyup='getTotalNoOfParticipants("+index+","+count+",this.id)' value='"+data.breakUpData[count].othersMales+"' id='othersMale_"+count+"'/></td>"; 
+         			tableBuilder +="<td style='width: 97px;'><input type='text' name='quarterTrainingsDetailsList["+index+"].qprTrainingBreakup["+count+"].othersMales' onkeypress='return isNumber(event)' class='form-control Align-Right' onkeyup='getTotalNoOfParticipants("+index+","+count+",this.id)' value='"+data.breakUpData[count].othersMales+"' id='othersMale_"+count+"' readonly='"+flag+"'/></td>"; 
          		 }else{
-         			tableBuilder +=" <td style='width: 97px;'><input type='text' name='quarterTrainingsDetailsList["+index+"].qprTrainingBreakup["+count+"].othersMales' onkeypress='return isNumber(event)' class='form-control Align-Right' onkeyup='getTotalNoOfParticipants("+index+","+count+",this.id)' id='othersMale_"+count+"'/></td>";
+         			tableBuilder +=" <td style='width: 97px;'><input type='text' name='quarterTrainingsDetailsList["+index+"].qprTrainingBreakup["+count+"].othersMales' onkeypress='return isNumber(event)' class='form-control Align-Right' onkeyup='getTotalNoOfParticipants("+index+","+count+",this.id)' id='othersMale_"+count+"' readonly='"+flag+"'/></td>";
          		 }
          		if(data.breakUpData[count].othersFemales != null){
-         			tableBuilder +="<td><input type='text' name='quarterTrainingsDetailsList["+index+"].qprTrainingBreakup["+count+"].othersFemales' class='form-control Align-Right' onkeypress='return isNumber(event)' onkeyup='getTotalNoOfParticipants("+index+","+count+",this.id)' value='"+data.breakUpData[count].othersFemales+"' id='othersFemale_"+count+"'/></td>"; 
+         			tableBuilder +="<td><input type='text' name='quarterTrainingsDetailsList["+index+"].qprTrainingBreakup["+count+"].othersFemales' class='form-control Align-Right' onkeypress='return isNumber(event)' onkeyup='getTotalNoOfParticipants("+index+","+count+",this.id)' value='"+data.breakUpData[count].othersFemales+"' id='othersFemale_"+count+"' readonly='"+flag+"'/></td>"; 
          		 }else{
-         			tableBuilder +=" <td><input type='text' name='quarterTrainingsDetailsList["+index+"].qprTrainingBreakup["+count+"].othersFemales' class='form-control Align-Right' onkeypress='return isNumber(event)' onkeyup='getTotalNoOfParticipants("+index+","+count+",this.id)' id='othersFemale_"+count+"'/></td>";
+         			tableBuilder +=" <td><input type='text' name='quarterTrainingsDetailsList["+index+"].qprTrainingBreakup["+count+"].othersFemales' class='form-control Align-Right' onkeypress='return isNumber(event)' onkeyup='getTotalNoOfParticipants("+index+","+count+",this.id)' id='othersFemale_"+count+"' readonly='"+flag+"'/></td>";
          		 }
          		 tableBuilder +="<input type='hidden' name='quarterTrainingsDetailsList["+index+"].qprTrainingBreakup["+count+"].targetGroupMasterId' value='"+key+"' />";
         		 tableBuilder +="<input type='hidden' name='quarterTrainingsDetailsList["+index+"].qprTrainingBreakup["+count+"].quarterTrainingsDetails.qprTrainingsDetailsId' value='"+detailId+"' />";
@@ -375,12 +393,12 @@ function openModel(index , detailId){
                		 tableBuilder += "<tr>";
                		 tableBuilder +="<th align='center' style='width: 6%'>"+(count + 1)+"</th>"; 
                		 tableBuilder += "<th align='center' style='width: 139px;'>"+listItems[key]+"</th>";
-               		 tableBuilder +=" <td style='width: 97px;'><input type='text' name='quarterTrainingsDetailsList["+index+"].qprTrainingBreakup["+count+"].scMales' class='form-control Align-Right' onkeypress='return isNumber(event)' onkeyup='getTotalNoOfParticipants("+index+","+count+",this.id)' id='scMale_"+count+"'/></td>";
-               		 tableBuilder +="<td style='width: 123px;'><input type='text' name='quarterTrainingsDetailsList["+index+"].qprTrainingBreakup["+count+"].scFemales' class='form-control Align-Right' onkeypress='return isNumber(event)' onkeyup='getTotalNoOfParticipants("+index+","+count+",this.id)' id='scFemale_"+count+"'/></td>";
-               		 tableBuilder +="<td style='width: 97px;'><input type='text' name='quarterTrainingsDetailsList["+index+"].qprTrainingBreakup["+count+"].stMales' class='form-control Align-Right' onkeypress='return isNumber(event)' onkeyup='getTotalNoOfParticipants("+index+","+count+",this.id)' id='stMale_"+count+"'/></td>";
-               		 tableBuilder +="<td style='width: 123px;'><input type='text' name='quarterTrainingsDetailsList["+index+"].qprTrainingBreakup["+count+"].stFemales' class='form-control Align-Right' onkeypress='return isNumber(event)' onkeyup='getTotalNoOfParticipants("+index+","+count+",this.id)' id='stFemale_"+count+"'/></td>";
-               		 tableBuilder +="<td style='width: 97px;'><input type='text' name='quarterTrainingsDetailsList["+index+"].qprTrainingBreakup["+count+"].othersMales' class='form-control Align-Right' onkeypress='return isNumber(event)' onkeyup='getTotalNoOfParticipants("+index+","+count+",this.id)' id='othersMale_"+count+"'/></td>";
-               		 tableBuilder +="<td><input type='text' name='quarterTrainingsDetailsList["+index+"].qprTrainingBreakup["+count+"].othersFemales' class='form-control Align-Right' onkeypress='return isNumber(event)' onkeyup='getTotalNoOfParticipants("+index+","+count+",this.id)' id='othersFemale_"+count+"'/></td>";
+               		 tableBuilder +=" <td style='width: 97px;'><input type='text' name='quarterTrainingsDetailsList["+index+"].qprTrainingBreakup["+count+"].scMales' class='form-control Align-Right' onkeypress='return isNumber(event)' onkeyup='getTotalNoOfParticipants("+index+","+count+",this.id)' id='scMale_"+count+"' readonly='"+flag+"'/></td>";
+               		 tableBuilder +="<td style='width: 123px;'><input type='text' name='quarterTrainingsDetailsList["+index+"].qprTrainingBreakup["+count+"].scFemales' class='form-control Align-Right' onkeypress='return isNumber(event)' onkeyup='getTotalNoOfParticipants("+index+","+count+",this.id)' id='scFemale_"+count+"' readonly='"+flag+"'/></td>";
+               		 tableBuilder +="<td style='width: 97px;'><input type='text' name='quarterTrainingsDetailsList["+index+"].qprTrainingBreakup["+count+"].stMales' class='form-control Align-Right' onkeypress='return isNumber(event)' onkeyup='getTotalNoOfParticipants("+index+","+count+",this.id)' id='stMale_"+count+"' readonly='"+flag+"'/></td>";
+               		 tableBuilder +="<td style='width: 123px;'><input type='text' name='quarterTrainingsDetailsList["+index+"].qprTrainingBreakup["+count+"].stFemales' class='form-control Align-Right' onkeypress='return isNumber(event)' onkeyup='getTotalNoOfParticipants("+index+","+count+",this.id)' id='stFemale_"+count+"' readonly='"+flag+"'/></td>";
+               		 tableBuilder +="<td style='width: 97px;'><input type='text' name='quarterTrainingsDetailsList["+index+"].qprTrainingBreakup["+count+"].othersMales' class='form-control Align-Right' onkeypress='return isNumber(event)' onkeyup='getTotalNoOfParticipants("+index+","+count+",this.id)' id='othersMale_"+count+"' readonly='"+flag+"'/></td>";
+               		 tableBuilder +="<td><input type='text' name='quarterTrainingsDetailsList["+index+"].qprTrainingBreakup["+count+"].othersFemales' class='form-control Align-Right' onkeypress='return isNumber(event)' onkeyup='getTotalNoOfParticipants("+index+","+count+",this.id)' id='othersFemale_"+count+"' readonly='"+flag+ "'/></td>";
                		 tableBuilder +="<input type='hidden' name='quarterTrainingsDetailsList["+index+"].qprTrainingBreakup["+count+"].targetGroupMasterId' value='"+key+"' />";
             		 tableBuilder +="<input type='hidden' name='quarterTrainingsDetailsList["+index+"].qprTrainingBreakup["+count+"].quarterTrainingsDetails.qprTrainingsDetailsId' value='"+detailId+"' />";
                		 tableBuilder +="</tr>";
@@ -434,4 +452,12 @@ function isNumber(evt) {
     return true;
 }
 
+function FreezeAndUnfreeze(msg){
+	var componentId=1;
+	var qprActivityId=$('#qprActivityId').val();
+	var quaterId = $('#qtrId').val();
+	document.quarterTrainings.method = "post";
+	document.quarterTrainings.action = "freezeAndUnfreezeReport.html?<csrf:token uri='freezeAndUnfreezeReport.html'/>&componentId="+componentId+"&qprActivityId="+qprActivityId+"&quaterId="+quaterId+"&msg="+msg;
+	document.quarterTrainings.submit();
+}
 </script>

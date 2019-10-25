@@ -679,10 +679,10 @@ public class ProgressReportServiceImpl implements ProgressReportService {
                     if (multipartFile.getSize() > 0) {
                         uploadReport = attemptUpload(obj.getFileNode(), multipartFile, uploadPath, qprInstitutionalInfrastructure.getQtrId(), "institutional");
                         obj.setFileNode(uploadReport.getFileNode());
-                        updateQprInstitutionalInfraDetailsList.add(obj);
                     } else {
                         obj.setFileNode(null);
                     }
+                    updateQprInstitutionalInfraDetailsList.add(obj);
                 }
             }
 
@@ -791,10 +791,10 @@ public class ProgressReportServiceImpl implements ProgressReportService {
                         uploadReport = attemptUpload(obj.getFileNode(), multipartFile, uploadPath, qprPanchayatBhawan.getQtrId(), "panchayat bhwan");
                         obj.setFileNode(uploadReport.getFileNode());
                         obj.setDistrictCode(districtCode);
-                        updateQprPanhcayatBhawanDetailsList.add(obj);
                     } else {
                         obj.setFileNode(null);
                     }
+                    updateQprPanhcayatBhawanDetailsList.add(obj);
                 }
             }
 

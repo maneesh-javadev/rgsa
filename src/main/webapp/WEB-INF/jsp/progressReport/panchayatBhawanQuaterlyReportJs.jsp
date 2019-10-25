@@ -126,6 +126,15 @@ loadSubElement=function(gpBhawanStatusId,index){
 	
 };
 
+function FreezeAndUnfreeze(msg){
+	var componentId=3;
+	var qprActivityId=$('#qprActivityId').val();
+	var quaterId = $('#qtrId').val();
+	document.qprPanchayatBhawan.method = "post";
+	document.qprPanchayatBhawan.action = "freezeAndUnfreezeReport.html?<csrf:token uri='freezeAndUnfreezeReport.html'/>&componentId="+componentId+"&qprActivityId="+qprActivityId+"&quaterId="+quaterId+"&msg="+msg;
+	document.qprPanchayatBhawan.submit();
+}
+
 </script>
 
 <!--#stared page return from server with error then call loadElementandShowError  method -->

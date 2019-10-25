@@ -106,15 +106,15 @@ function onloadChangeColor(){
 	var noOfRowCount = $('#tbody tr').length-3;
 	for(var i= 0; i<noOfRowCount ;i++){
 	
-+$("#noOfUnitsId_"+i).val() < +$("#noOfUnitsIdState_"+i).text() ? $("#noOfUnitsIdState_"+i).css("color","red") : $("#noOfUnitsIdState_"+i).css("color","#00cc00");
-+$("#fundId_"+i).val() < +$("#fundIdState_"+i).text() ? $("#fundIdState_"+i).css("color","red") : $("#fundIdState_"+i).css("color","#00cc00");
-+$("#unitCostId_"+i).val() < +$("#unitCostIdState_"+i).text() ? $("#unitCostIdState_"+i).css("color","red") : $("#unitCostIdState_"+i).css("color","#00cc00");
++$("#noOfUnitsId_"+i).val() < +$("#noOfUnitsIdMopr_"+i).text() ? $("#noOfUnitsIdMopr_"+i).css("color","red") : $("#noOfUnitsIdMopr_"+i).css("color","#00cc00");
++$("#fundId_"+i).val() < +$("#fundIdMopr_"+i).text() ? $("#fundIdMopr_"+i).css("color","red") : $("#fundIdMopr_"+i).css("color","#00cc00");
++$("#unitCostId_"+i).val() < +$("#unitCostIdMopr_"+i).text() ? $("#unitCostIdMopr_"+i).css("color","red") : $("#unitCostIdMopr_"+i).css("color","#00cc00");
 
-+$("#noOfMonthsId_"+i).val() < +$("#noOfMonthsIdState_"+i).text() ? $("#noOfMonthsIdState_"+i).css("color","red") : $("#noOfMonthsIdState_"+i).css("color","#00cc00");
++$("#noOfMonthsId_"+i).val() < +$("#noOfMonthsIdMopr_"+i).text() ? $("#noOfMonthsIdMopr_"+i).css("color","red") : $("#noOfMonthsIdMopr_"+i).css("color","#00cc00");
 }
-	+$("#additionalRequirementIdState").text() > +$("#additionalRequirementId").val() ? $("#additionalRequirementIdState").css('color','red') : $("#additionalRequirementIdState").css('color','#00cc00');
-	+$("#TotalCostIdState").text() > +$("#total_fund").val() ? $("#TotalCostIdState").css('color','red') : $("#TotalCostIdState").css('color','#00cc00');
-	+$("#GrandTotalIdState").text() > +$("#GrandTotalId").val() ? $("#GrandTotalIdState").css('color','red') : $("#GrandTotalIdState").css('color','#00cc00');
+	+$("#additionalRequirementIdMopr").text() > +$("#additionalRequirementId").val() ? $("#additionalRequirementIdMopr").css('color','red') : $("#additionalRequirementIdMopr").css('color','#00cc00');
+	+$("#TotalCostIdMopr").text() > +$("#total_fund").val() ? $("#TotalCostIdMopr").css('color','red') : $("#TotalCostIdMopr").css('color','#00cc00');
+	+$("#GrandTotalIdMopr").text() > +$("#GrandTotalId").val() ? $("#GrandTotalIdMopr").css('color','red') : $("#GrandTotalIdMopr").css('color','#00cc00');
 
 }
 
@@ -153,7 +153,7 @@ function validateUnitCost(index){
 						</ul>
 
 						<div class="tab-content">
-							<div role="tabpanel" class="container tab-pane active" id="state"
+							<div role="tabpanel" class="container tab-pane " id="MOPR"
 								style="width: auto;">
 								<div class="table-responsive">
 									<table class="table table-bordered">
@@ -175,7 +175,15 @@ function validateUnitCost(index){
 												<th><div align="center">
 														Funds(in Rs.) <br> D= (A*B*C)
 													</div></th>
-
+                                             <%--   <th><div align="center">
+														<spring:message code="Label.IsApproved" htmlEscape="true" />
+													</div></th> --%>
+												<th scope="col">
+													<div align="center">
+														<strong><spring:message code="Label.Remarks"
+																htmlEscape="true" /></strong>
+													</div>
+												</th>
 											</tr>
 										</thead>
 										<tbody id="tbody">
@@ -201,13 +209,13 @@ function validateUnitCost(index){
 															<strong>${post.master.postTypeName}</strong>
 														</div></td>
 													<td><div align="center">
-															<strong>${detailsForState[index.index].postLevel.postLevelName}</strong>
+															<strong>${detailsForMOPR[index.index].postLevel.postLevelName}</strong>
 														</div></td>
 													<c:choose>
 
 														<c:when test="${ISFREEZE == 'F'}">
 															<td>
-																<div align="center" id="noOfUnitsIdState_${index.index}">${detailsForState[index.index].noOfUnits}</div>
+																<div align="center" id="noOfUnitsIdMopr_${index.index}">${detailsForMOPR[index.index].noOfUnits}</div>
 																<input name="supportDetails[${index.index}].noOfUnits"
 																type="text" maxlength="4"
 																value="${details[index.index].noOfUnits}"
@@ -218,14 +226,14 @@ function validateUnitCost(index){
 																id="noOfUnitsId_${index.index}" readonly="readonly" <%-- readonly="${IS_FREEZE eq true}" --%> />
 															</td>
 															<td>
-																<div align="center" style="margin-top: 20px;">${detailsForState[index.index].noOfMonths}</div>
+																<div align="center" style="margin-top: 20px;">${detailsForMOPR[index.index].noOfMonths}</div>
 																<input name="supportDetails[${index.index}].noOfMonths"
 																type="hidden"
-																value="${detailsForState[index.index].noOfMonths}"
+																value="${detailsForMOPR[index.index].noOfMonths}"
 																id="noOfMonthsId_${index.index}" />
 															</td>
 															<td><div align="center"
-																	id="unitCostIdState_${index.index}">${detailsForState[index.index].unitCost}</div>
+																	id="unitCostIdMopr_${index.index}">${detailsForMOPR[index.index].unitCost}</div>
 																<input name="supportDetails[${index.index}].unitCost"
 																value="${details[index.index].unitCost}" type="text"
 																max="50000"
@@ -234,10 +242,20 @@ function validateUnitCost(index){
 																style="text-align: right;"
 																onkeyup="validateMonth(${index.index}); calculateFund(${index.index}); onloadChangeColor()"
 																id="unitCostId_${index.index}" readonly="readonly" /></td>
+																	<td><div align="center"
+															id="fundIdMopr_${index.index}">${detailsForMOPR[index.index].funds}</div>
+														<input name="supportDetails[${index.index}].funds"
+														value="${details[index.index].funds}" type="text"
+														class="form-control Align-Right"
+														onkeypress="return isNumber(event)"
+															style="text-align: right;"
+														onchange="calculateFund()" onkeyup="onloadChangeColor()"
+														id="fundId_${index.index}" readonly="readonly" /></td>
+														<td><input type="text"  name="supportDetails[${index.index}].remarks"  readonly="readonly" style="height: 58px;" class="form-control Align-Right"  value="${details[index.index].remarks}"/></td>
 														</c:when>
 														<c:otherwise>
 															<td><div align="center"
-																	id="noOfUnitsIdState_${index.index}">${detailsForState[index.index].noOfUnits}</div>
+																	id="noOfUnitsIdMopr_${index.index}">${detailsForMOPR[index.index].noOfUnits}</div>
 																<input name="supportDetails[${index.index}].noOfUnits"
 																type="text" maxlength="4"
 																value="${details[index.index].noOfUnits}"
@@ -247,15 +265,15 @@ function validateUnitCost(index){
 																onkeyup="calculateFund(${index.index}); onloadChangeColor()"
 																id="noOfUnitsId_${index.index}" <%-- readonly="${IS_FREEZE eq true}" --%> /></td>
 															<td>
-																<div align="center" style="margin-top: 20px;">${detailsForState[index.index].noOfMonths}</div>
+																<div align="center" style="margin-top: 20px;">${detailsForMOPR[index.index].noOfMonths}</div>
 																<input name="supportDetails[${index.index}].noOfMonths"
 																type="hidden"
-																value="${detailsForState[index.index].noOfMonths}"
+																value="${detailsForMOPR[index.index].noOfMonths}"
 																id="noOfMonthsId_${index.index}" />
 															</td>
 
 															<td><div align="center"
-																	id="unitCostIdState_${index.index}">${detailsForState[index.index].unitCost}</div>
+																	id="unitCostIdMopr_${index.index}">${detailsForMOPR[index.index].unitCost}</div>
 																<input name="supportDetails[${index.index}].unitCost"
 																value="${details[index.index].unitCost}" type="text"
 																class="form-control Align-Right"
@@ -264,8 +282,16 @@ function validateUnitCost(index){
 																maxlength="5"
 																onkeyup=" calculateFund(${index.index}); onloadChangeColor();validateUnitCost(${index.index})"
 																id="unitCostId_${index.index}" /></td>
-
-
+	<td><div align="center"
+															id="fundIdMopr_${index.index}">${detailsForMOPR[index.index].funds}</div>
+														<input name="supportDetails[${index.index}].funds"
+														value="${details[index.index].funds}" type="text"
+														class="form-control Align-Right"
+														onkeypress="return isNumber(event)"
+															style="text-align: right;"
+														onchange="calculateFund()" onkeyup="onloadChangeColor()"
+														id="fundId_${index.index}" readonly="readonly" /></td>
+                                                                 <td><input type="text" name="supportDetails[${index.index}].remarks" style="height: 58px;" class="form-control Align-Right"  value="${details[index.index].remarks}"/></td>
 														</c:otherwise>
 
 
@@ -274,16 +300,24 @@ function validateUnitCost(index){
 
 
 
-													<td><div align="center"
-															id="fundIdState_${index.index}">${detailsForState[index.index].funds}</div>
-														<input name="supportDetails[${index.index}].funds"
-														value="${details[index.index].funds}" type="text"
-														class="form-control Align-Right"
-														onkeypress="return isNumber(event)"
-															style="text-align: right;"
-														onchange="calculateFund()" onkeyup="onloadChangeColor()"
-														id="fundId_${index.index}" readonly="readonly" /></td>
+												
+                                                                 <%-- <td><div align="center">
+															<c:choose>
+																<c:when
+																	test="${detailsForMOPR[index.index].isApproved eq true}">
+																	<i class="fa fa-check" aria-hidden="true"
+																		style="color: #00cc00"></i>
+																</c:when>
+																<c:otherwise>
+																	<i class="fa fa-times" aria-hidden="true"
+																		style="color: red"></i>
+																</c:otherwise>
+															</c:choose>
+														</div></td>
+ --%>
 
+                                             
+													
 												</tr>
 												<c:set var="count" value="${count+1}"></c:set>
 
@@ -294,7 +328,7 @@ function validateUnitCost(index){
 																htmlEscape="true" /></strong>
 													</div></td>
 												<td colspan="5"></td>
-												<td><div align="center" id="TotalCostIdState">${TotalStateFund}</div>
+												<td><div align="center" id="TotalCostIdMopr">${TotalMoprFund}</div>
 
 													<input type="text" class="form-control Align-Right"
 													readonly="readonly" id="total_fund" style="text-align: right;"/></td>
@@ -307,7 +341,7 @@ function validateUnitCost(index){
 													</div></td>
 												<td colspan="5"></td>
 												<td><div align="center"
-														id="additionalRequirementIdState">${technicalSupportForState.additionalRequirement}</div>
+														id="additionalRequirementIdMopr">${technicalSupportForMOPR.additionalRequirement}</div>
 													
 													<c:choose>
 													<c:when test="${ISFREEZE == 'F'}">
@@ -340,7 +374,7 @@ function validateUnitCost(index){
 																code="Label.TotalProposedFund" htmlEscape="true" /></strong>
 													</div></td>
 												<td colspan="5"></td>
-												<td><div align="center" id="GrandTotalIdState">${technicalSupportForState.additionalRequirement+TotalStateFund}</div>
+												<td><div align="center" id="GrandTotalIdMopr">${technicalSupportForMOPR.additionalRequirement+TotalMoprFund}</div>
 													<input type="text" class="form-control Align-Right"
 													readonly="readonly" id="GrandTotalId" style="text-align: right;"/></td>
 											</tr>
@@ -411,7 +445,7 @@ function validateUnitCost(index){
 									value="${user_type}" />
  --%>
 
-							<div class="container tab-pane fade" id="MOPR"
+							<div class="container tab-pane active " id="state"
 								style="width: auto;">
 								<div class="table-responsive">
 									<table class="table table-bordered">
@@ -433,15 +467,7 @@ function validateUnitCost(index){
 												<th><div align="center">
 														Funds(in Rs.) <br> D= (A*B*C)
 													</div></th>
-												<th><div align="center">
-														<spring:message code="Label.IsApproved" htmlEscape="true" />
-													</div></th>
-												<th scope="col">
-													<div align="center">
-														<strong><spring:message code="Label.Remarks"
-																htmlEscape="true" /></strong>
-													</div>
-												</th>
+												
 											</tr>
 										</thead>
 										<tbody>
@@ -463,33 +489,17 @@ function validateUnitCost(index){
 															<strong>${post.master.postTypeName}</strong>
 														</div></td>
 													<td><div align="center">
-															<strong>${detailsForMOPR[index.index].postLevel.postLevelName}</strong>
+															<strong>${detailsForState[index.index].postLevel.postLevelName}</strong>
 														</div></td>
-													<td><div align="center"><strong>${detailsForMOPR[index.index].noOfUnits}</strong></div>
+													<td><div align="center"><strong>${detailsForState[index.index].noOfUnits}</strong></div>
 													</td>
-													<td><div align="center"><strong>${detailsForMOPR[index.index].noOfMonths}</strong></div>
+													<td><div align="center"><strong>${detailsForState[index.index].noOfMonths}</strong></div>
 													</td>
-													<td><div align="center"><strong>${detailsForMOPR[index.index].unitCost}</strong></div>
+													<td><div align="center"><strong>${detailsForState[index.index].unitCost}</strong></div>
 													</td>
 
-													<td><div align="center"><strong>${detailsForMOPR[index.index].funds}</strong></div>
-													<td><div align="center">
-															<c:choose>
-																<c:when
-																	test="${detailsForMOPR[index.index].isApproved eq true}">
-																	<i class="fa fa-check" aria-hidden="true"
-																		style="color: #00cc00"></i>
-																</c:when>
-																<c:otherwise>
-																	<i class="fa fa-times" aria-hidden="true"
-																		style="color: red"></i>
-																</c:otherwise>
-															</c:choose>
-														</div></td>
-
-
-
-													<td><strong>${detailsForMOPR[index.index].remarks}</strong></td>
+													<td><div align="center"><strong>${detailsForState[index.index].funds}</strong></div>
+													
 												</tr>
 												</td>
 												<%-- <td><form:input path="adminFinancialDataCellActivityDetails[${index.index}].otherExpenses" type="text" class="form-control Align-Right" onkeypress="return isNumber(event)" onkeyup="calculateSubTotal(${index.index})" id="otherExpensesId_${index.index}" readonly="${IS_FREEZE eq true}"/></td>
@@ -509,7 +519,7 @@ function validateUnitCost(index){
 													</div></td>
 												<td colspan="3"></td>
 												<td><div align="center">
-														<strong>${TotalMoprFund}</strong>
+														<strong>${TotalStateFund}</strong>
 													</div></td>
 											</tr>
 
@@ -520,7 +530,7 @@ function validateUnitCost(index){
 													</div></td>
 												<td colspan="3"></td>
 												<td><div align="center">
-														<strong>${technicalSupportForMOPR.additionalRequirement}</</strong>
+														<strong>${technicalSupportForState.additionalRequirement}</</strong>
 													</div></td>
 											</tr>
 
@@ -531,7 +541,7 @@ function validateUnitCost(index){
 													</div></td>
 												<td colspan="3"></td>
 												<td><div align="center">
-														<strong>${technicalSupportForMOPR.additionalRequirement+TotalMoprFund}</strong>
+														<strong>${technicalSupportForState.additionalRequirement+TotalStateFund}</strong>
 													</div></td>
 											</tr>
 										</tbody>

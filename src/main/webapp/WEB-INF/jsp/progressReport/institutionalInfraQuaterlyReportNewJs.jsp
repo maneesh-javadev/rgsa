@@ -142,6 +142,15 @@ function calculcate_total(subtotal,id){
 	
 	
 }
+
+function FreezeAndUnfreeze(msg){
+	var componentId=2;
+	var qprActivityId=$('#qprActivityId').val();
+	var quaterId = $('#qtrId').val();
+	document.qprInstitutionalInfrastructure.method = "post";
+	document.qprInstitutionalInfrastructure.action = "freezeAndUnfreezeReport.html?<csrf:token uri='freezeAndUnfreezeReport.html'/>&componentId="+componentId+"&qprActivityId="+qprActivityId+"&quaterId="+quaterId+"&msg="+msg;
+	document.qprInstitutionalInfrastructure.submit();
+}
 </script>
 
 <!--#stared page return from server with error then call loadElementandShowError  method -->

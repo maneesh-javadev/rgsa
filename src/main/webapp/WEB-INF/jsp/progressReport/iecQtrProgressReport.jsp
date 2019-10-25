@@ -156,12 +156,12 @@ function FreezeAndUnfreeze(msg){
 												<td><div align="center" id="fundCecId"><strong>${CEC_APPROVED_ACTIVITY.iecActivityDetails.totalAmountProposed}</strong></div></td>
 											<c:choose>
 												<c:when test="${not empty IEC_ACTIVITY_PROGRESS}">
-														<td><input type="text"
-															name="iecQuaterDetails.expenditureIncurred"
+														<td><form:input
+															path="iecQuaterDetails.expenditureIncurred"
 															id="expenditureIncurred"
 															value="${IEC_ACTIVITY_PROGRESS.iecQuaterDetails.expenditureIncurred}"
 															onkeyup="validateFundByAllocatedFund();validateWithCorrespondingFund()"
-															class="form-control validate" required="required"></td>
+															class="form-control validate" required="required" readonly="${IEC_ACTIVITY_PROGRESS.isFreeze}"/></td>
 													</c:when>
 												<c:otherwise>
 														<td><input type="text"
@@ -179,15 +179,17 @@ function FreezeAndUnfreeze(msg){
 								<input type="hidden" name="iecQuaterDetails.qprIecDetailsId" value="${IEC_ACTIVITY_PROGRESS.iecQuaterDetails.qprIecDetailsId}" />
 								
 								<div class="text-right">
-									<button type="button" onclick="saveAndGetDataQtrRprt('save')" id="saveButtn"
-										class="btn bg-green waves-effect">SAVE</button>
-									<button type="button" onclick="FreezeAndUnfreeze('freeze')"
-										class="btn bg-green waves-effect">FREEZE</button>	
-									<button type="button" onclick="onClear(this)"
-										class="btn bg-light-blue waves-effect">CLEAR</button>
-									<button type="button"
+									<form:button type="button" onclick="saveAndGetDataQtrRprt('save')" id="saveButtn" disabled="${IEC_ACTIVITY_PROGRESS.isFreeze}"
+										class="btn bg-green waves-effect">SAVE</form:button>
+									<c:choose>
+										<c:when test="${IEC_ACTIVITY_PROGRESS.isFreeze}"><form:button class="btn bg-orange waves-effect" onclick="FreezeAndUnfreeze('unfreeze')">UNFREEZE</form:button></c:when>
+										<c:otherwise><form:button class="btn bg-orange waves-effect" disabled="${DISABLE_FREEZE}" onclick="FreezeAndUnfreeze('freeze')">FREEZE</form:button></c:otherwise>
+									</c:choose>	
+									<form:button type="button" onclick="onClear(this)"
+										class="btn bg-light-blue waves-effect" disabled="${IEC_ACTIVITY_PROGRESS.isFreeze}">CLEAR</form:button>
+									<form:button type="button"
 										onclick="onClose('home.html?<csrf:token uri='home.html'/>')"
-										class="btn bg-orange waves-effect">CLOSE</button>
+										class="btn bg-orange waves-effect" disabled="${IEC_ACTIVITY_PROGRESS.isFreeze}">CLOSE</form:button>
 								</div>
 							</div>
 

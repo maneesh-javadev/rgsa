@@ -5,13 +5,13 @@
 $( document ).ready(function() {
 	calculateTotalCost();
 	calculateTotalProposedFund();
-	calculateTotalProposedFundForMopr();
+	calculateTotalProposedFundForState();
 	onloadChangeColor();
 });
 
 
-function calculateTotalProposedFundForMopr(){
-		$("#GrandTotalIdMopr").text(parseInt($("#totalcostforMopr").text()) + parseInt($("#additionalRequirementIdMopr").text()));
+function calculateTotalProposedFundForState(){
+		$("#stateGrandTotalId").text(parseInt($("#stateTotalCost").text()) + parseInt($("#stateAdditionalRequirementId").text()));
 	}
 
 
@@ -108,14 +108,14 @@ function validatingTotalProposedFund(){
 		var noOfRowCount = $('#tbody tr').length-3;
 		for(var i= 0; i<noOfRowCount ;i++){
 		
-	+$("#noOfStaffId_"+i).val() < +$("#noOfStaffIdState_"+i).text() ? $("#noOfStaffIdState_"+i).css("color","red") : $("#noOfStaffIdState_"+i).css("color","#00cc00");
-	+$("#fundId_"+i).val() < +$("#fundIdState_"+i).text() ? $("#fundIdState_"+i).css("color","red") : $("#fundIdState_"+i).css("color","#00cc00");
-	+$("#noOfMonthsId_"+i).val() < +$("#noOfMonthsIdState_"+i).text() ? $("#noOfMonthsIdState_"+i).css("color","red") : $("#noOfMonthsIdState_"+i).css("color","#00cc00");
-	+$("#unitCostId_"+i).val() < +$("#unitCostIdState_"+i).text() ? $("#unitCostIdState_"+i).css("color","red") : $("#unitCostIdState_"+i).css("color","#00cc00");
+	+$("#noOfStaffId_"+i).val() < +$("#noOfStaffIdMopr_"+i).text() ? $("#noOfStaffIdMopr_"+i).css("color","red") : $("#noOfStaffIdMopr_"+i).css("color","#00cc00");
+	+$("#fundId_"+i).val() < +$("#fundIdMopr_"+i).text() ? $("#fundIdMopr_"+i).css("color","red") : $("#fundIdMopr_"+i).css("color","#00cc00");
+	+$("#noOfMonthsId_"+i).val() < +$("#noOfMonthsIdMopr_"+i).text() ? $("#noOfMonthsIdMopr_"+i).css("color","red") : $("#noOfMonthsIdMopr_"+i).css("color","#00cc00");
+	+$("#unitCostId_"+i).val() < +$("#unitCostIdMopr_"+i).text() ? $("#unitCostIdMopr_"+i).css("color","red") : $("#unitCostIdMopr_"+i).css("color","#00cc00");
 }
-		+$("#additionalRequirementIdState").text() > +$("#additionalRequirementId").val() ? $("#additionalRequirementIdState").css('color','red') : $("#additionalRequirementIdState").css('color','#00cc00');
-		+$("#TotalCostIdState").text() > +$("#TotalCostId").val() ? $("#TotalCostIdState").css('color','red') : $("#TotalCostIdState").css('color','#00cc00');
-		+$("#GrandTotalIdState").text() > +$("#GrandTotalId").val() ? $("#GrandTotalIdState").css('color','red') : $("#GrandTotalIdState").css('color','#00cc00');
+		+$("#additionalRequirementIdMopr").text() > +$("#additionalRequirementId").val() ? $("#additionalRequirementIdMopr").css('color','red') : $("#additionalRequirementIdMopr").css('color','#00cc00');
+		+$("#TotalCostIdMopr").text() > +$("#TotalCostId").val() ? $("#TotalCostIdMopr").css('color','red') : $("#TotalCostIdMopr").css('color','#00cc00');
+		+$("#GrandTotalIdMopr").text() > +$("#GrandTotalId").val() ? $("#GrandTotalIdMopr").css('color','red') : $("#GrandTotalIdMopr").css('color','#00cc00');
 
 	}
 	
@@ -151,7 +151,7 @@ function validatingTotalProposedFund(){
 
 							<div class="tab-content">
 								<div role="tabpanel" class="container tab-pane active"
-									id="state" style="width: auto;">
+									id="MOPR" style="width: auto;">
 									<div class="table-responsive">
 										<table class="table table-bordered">
 											<thead>
@@ -221,7 +221,7 @@ function validatingTotalProposedFund(){
 															<td><div align="center">
 																	<strong>${activity.pmuActivityName}</strong>
 																</div></td>
-															<td><div align="center" id="noOfStaffIdState_${index.index}">${activityDetailsForState[index.index].noOfStaffProposed}</div>
+															<td><div align="center" id="noOfStaffIdMopr_${index.index}">${activityDetailsForMopr[index.index].noOfStaffProposed}</div>
 															<form:input
 																	path="adminFinancialDataCellActivityDetails[${index.index}].noOfStaffProposed"
 																	type="text" maxlength="4"
@@ -230,7 +230,7 @@ function validatingTotalProposedFund(){
 																	onkeyup="calculateFund(${index.index}); onloadChangeColor()"
 																	id="noOfStaffId_${index.index}"
 																	readonly="${IS_FREEZE eq true}" /></td>
-															<td><div align="center" id="unitCostIdState_${index.index}">${activityDetailsForState[index.index].unitCost}</div>
+															<td><div align="center" id="unitCostIdMopr_${index.index}">${activityDetailsForMopr[index.index].unitCost}</div>
 															<form:input
 																	path="adminFinancialDataCellActivityDetails[${index.index}].unitCost"
 																	type="text" maxlength="7"
@@ -239,13 +239,13 @@ function validatingTotalProposedFund(){
 																	onkeyup="calculateFund(${index.index}); onloadChangeColor()"
 																	id="unitCostId_${index.index}"
 																	readonly="${IS_FREEZE eq true}" /></td>
-															<td><div align="center" id="noOfMonthsIdState_${index.index}">${activityDetailsForState[index.index].noOfMonths}</div>
+															<td><div align="center" id="noOfMonthsIdMopr_${index.index}">${activityDetailsForMopr[index.index].noOfMonths}</div>
 															<form:input
 																	path="adminFinancialDataCellActivityDetails[${index.index}].noOfMonths"
 																	onkeyup="calculateFund(${index.index}); onloadChangeColor() ; validateMonth(${index.index})"
 																	class="form-control Align-Right"
 																	id="noOfMonthsId_${index.index}" readonly="${IS_FREEZE eq true}" /></td>
-															<td><div align="center" id="fundIdState_${index.index}">${activityDetailsForState[index.index].funds}</div>
+															<td><div align="center" id="fundIdMopr_${index.index}">${activityDetailsForMopr[index.index].funds}</div>
 															<form:input
 																	path="adminFinancialDataCellActivityDetails[${index.index}].funds"
 																	type="text" class="form-control Align-Right"
@@ -273,7 +273,7 @@ function validatingTotalProposedFund(){
 																	htmlEscape="true" /></strong>
 														</div></td>
 													<td colspan="3"></td>
-													<td><div align="center" id="TotalCostIdState">${totalUnitCostForState}</div>
+													<td><div align="center" id="TotalCostIdMopr">${totalUnitCostForMopr}</div>
 													
 													<input type="text"
 														class="form-control Align-Right" readonly="readonly"
@@ -286,7 +286,7 @@ function validatingTotalProposedFund(){
 																	code="Label.AdditionalRequirement" htmlEscape="true" /></strong>
 														</div></td>
 													<td colspan="3"></td>
-													<td><div align="center" id="additionalRequirementIdState">${activityForState.additionalRequirement}</div>
+													<td><div align="center" id="additionalRequirementIdMopr">${activityForMopr.additionalRequirement}</div>
 
 													<form:input path="additionalRequirement"
 															type="text" class="form-control Align-Right"
@@ -303,7 +303,7 @@ function validatingTotalProposedFund(){
 																	code="Label.TotalProposedFund" htmlEscape="true" /></strong>
 														</div></td>
 													<td colspan="3"></td>
-													<td><div align="center" id="GrandTotalIdState">${TOTAL_WITH_ADDITIONAL}</div>
+													<td><div align="center" id="GrandTotalIdMopr">${TOTAL_WITH_ADDITIONAL}</div>
 													<input type="text"
 														class="form-control Align-Right" readonly="readonly"
 														id="GrandTotalId" /></td>
@@ -376,7 +376,7 @@ function validatingTotalProposedFund(){
 								
 
 
-								<div class="container tab-pane fade" id="MOPR"
+								<div class="container tab-pane fade" id="state"
 									style="width: auto;">
 									<div class="table-responsive">
 										<table class="table table-bordered">
@@ -430,12 +430,12 @@ function validatingTotalProposedFund(){
 												</div>
 											</th> --%>
 
-													<th>
+													<%-- <th>
 														<div align="center">
 															<strong><spring:message code="Label.IsApproved"
 																	htmlEscape="true" /></strong>
 														</div>
-													</th>
+													</th> --%>
 
 													<th>
 														<div align="center">
@@ -461,14 +461,14 @@ function validatingTotalProposedFund(){
 															<td><div align="center">
 																	<strong>${activity.pmuActivityName}</strong>
 																</div></td>
-															<td><div align="center">${activityDetailsForMopr[index.index].noOfStaffProposed}</div></td>
-															<td><div align="center">${activityDetailsForMopr[index.index].unitCost}</div></td>
-															<td><div align="center">${activityDetailsForMopr[index.index].noOfMonths}</div></td>
-															<td><div align="center">${activityDetailsForMopr[index.index].funds}</div></td>
-															<td><div align="center">
+															<td><div align="center">${activityDetailsForState[index.index].noOfStaffProposed}</div></td>
+															<td><div align="center">${activityDetailsForState[index.index].unitCost}</div></td>
+															<td><div align="center">${activityDetailsForState[index.index].noOfMonths}</div></td>
+															<td><div align="center">${activityDetailsForState[index.index].funds}</div></td>
+															<%-- <td><div align="center">
 																	<c:choose>
 																		<c:when
-																			test="${activityDetailsForMopr[index.index].isApproved eq true}">
+																			test="${activityDetailsForState[index.index].isApproved eq true}">
 																			<i class="fa fa-check" aria-hidden="true"
 																				style="color: #00cc00"></i>
 																		</c:when>
@@ -477,8 +477,8 @@ function validatingTotalProposedFund(){
 																				style="color: red"></i>
 																		</c:otherwise>
 																	</c:choose>
-																</div></td>
-															<td><div align="center">${activityDetailsForMopr[index.index].remarks}</div></td>
+																</div></td> --%>
+															<td><div align="center">${activityDetailsForState[index.index].remarks}</div></td>
 														</tr>
 														<c:set var="count" value="${count+1}"></c:set>
 													</c:if>
@@ -489,8 +489,8 @@ function validatingTotalProposedFund(){
 																	htmlEscape="true" /></strong>
 														</div></td>
 													<td colspan="3"></td>
-													<td><div align="center"  id ="totalcostforMopr"> ${totalUnitCostForMopr}
-															<%-- <input type = "text" class="form-control Align-Right" disabled="disabled" value="${totalUnitCostForMopr}"  id ="totalcostforMopr"/> --%>
+													<td><div align="center"  id ="stateTotalCost"> ${totalUnitCostForState}
+															<%-- <input type = "text" class="form-control Align-Right" disabled="disabled" value="${totalUnitCostForMopr}"  id ="stateTotalCost"/> --%>
 														</div></td>
 												</tr>
 
@@ -500,10 +500,10 @@ function validatingTotalProposedFund(){
 																	code="Label.AdditionalRequirement" htmlEscape="true" /></strong>
 														</div></td>
 													<td colspan="3"></td>
-													<td><div align="center" id="additionalRequirementIdMopr">${activityForMopr.additionalRequirement }</div><%-- <form:input path="additionalRequirement"
+													<td><div align="center" id="stateAdditionalRequirementId">${activityForState.additionalRequirement }</div><%-- <form:input path="additionalRequirement"
 															type="text" class="form-control Align-Right"
 															onkeypress="return isNumber(event)"
-															id="additionalRequirementIdMopr"
+															id="stateAdditionalRequirementId"
 															onkeyup="validateAdditionalRequirement()"
 															placeholder="25 % of Sub Total"
 															 disabled="true"/> --%></td>
@@ -515,7 +515,7 @@ function validatingTotalProposedFund(){
 																	code="Label.TotalProposedFund" htmlEscape="true" /></strong>
 														</div></td>
 													<td colspan="3"></td>
-													<td ><div align="center" id="GrandTotalIdMopr"></div><!-- <input type="text"
+													<td ><div align="center" id="stateGrandTotalId"></div><!-- <input type="text"
 														class="form-control Align-Right" id="GrandTotalId1" disabled="disabled"/> --></td>
 												</tr>
 											</tbody>

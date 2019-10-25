@@ -247,6 +247,11 @@ public class ProgressReportController {
             model.addAttribute("CEC_APPROVED_ACT_ID", iecActivitiesApproved.get(0).getId());
             IecQuater iecQuaterProgressReport = progressReportService.getSatcomProgress(iecActivitiesApproved.get(0).getId(), quarterId);
                 model.addAttribute("IEC_ACTIVITY_PROGRESS", iecQuaterProgressReport);
+                if(iecQuaterProgressReport != null) {
+                	model.addAttribute("DISABLE_FREEZE", false);
+                }else {
+                	model.addAttribute("DISABLE_FREEZE", true);
+                }
           
             /*
              * used to get previous data stored which is then use to validate the
@@ -1789,9 +1794,11 @@ public class ProgressReportController {
 
             if (qprInstitutionalInfrastructureList != null && !qprInstitutionalInfrastructureList.isEmpty()) {
                 qprInstitutionalInfrastructure = qprInstitutionalInfrastructureList.get(0);
+                model.addAttribute("DISABLE_FREEZE", false);
             } else {
                 qprInstitutionalInfrastructure = new QprInstitutionalInfrastructure();
                 qprInstitutionalInfrastructure.setQtrId(quaterId);
+                model.addAttribute("DISABLE_FREEZE", true);
             }
             qprInstitutionalInfrastructure.setInstitutionalInfraActivivtyId(activityId);
             model.addAttribute("additionalRequirement", additionalRequirement);
@@ -1995,9 +2002,11 @@ public class ProgressReportController {
     				detail.setTotalParticipantsEnter(total_participants);
     			}
     		}
+    		model.addAttribute("DISABLE_FREEZE", false);
     	}else {
     		 quarterTrainings=new QuarterTrainings();
     		 quarterTrainings.setQtrId(qtrId);
+    		 model.addAttribute("DISABLE_FREEZE", true);
     	}
     	model.addAttribute("quarterDuration", progressReportService.getQuarterDurations());
     	
@@ -2058,11 +2067,11 @@ public class ProgressReportController {
 			break;
 		case 2 :
 			progressReportService.freezeAndUnfreezeReport(QprInstitutionalInfrastructure.class, qprActivityId, isFreeze);
-			view =institutionalInfraActivityPlanMOPR(new QprInstitutionalInfrastructure(),model,redirectAttributes);	
+			view =REDIRECT_INSTITUTIONAL_INFRA_REPORT;	
 			break;
 		case 3 : 
 			progressReportService.freezeAndUnfreezeReport(QprPanchayatBhawan.class, qprActivityId, isFreeze);
-			view = new QprGramPanchayatController().getQprgGramPanchayat(new QprPanchayatBhawan(), model, redirectAttributes);
+			view = "redirect:panchayatBhawanQuaterlyReport.html";
 			break;
 		case 4 :
 			progressReportService.freezeAndUnfreezeReport(AdministrativeTechnicalProgress.class, qprActivityId, isFreeze);
@@ -2100,9 +2109,7 @@ public class ProgressReportController {
 			break;	
 		case 13 :
 			progressReportService.freezeAndUnfreezeReport(QprCbActivity.class, qprActivityId, isFreeze);
-			QprCbActivity qprCbActivity=new QprCbActivity();
-			qprCbActivity.setShowQqrtrId(quaterId);
-			view = new QprTrainingActivityController().qprGetFormCapacityBuilding(qprCbActivity,model,redirectAttributes);
+			view = "redirect:qprCapacityBuilding.html";
 			break;
 		case 14 :
 			progressReportService.freezeAndUnfreezeReport(AdditionalFacultyProgress.class, qprActivityId, isFreeze);

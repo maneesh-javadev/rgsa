@@ -71,7 +71,7 @@ function calculateTotal(obj){
 								htmlEscape="true" /></a></li>
 				</ul>
 				 <div class="tab-content">
-					<div role="tabpanel" class="container tab-pane active" id="state" style="width: auto;">
+					<div role="tabpanel" class="container tab-pane active" id="MOPR" style="width: auto;">
 					
 					<div class="records">
                         <div class="">
@@ -143,7 +143,7 @@ function calculateTotal(obj){
                                  </tr>
                               </thead>
                               <tbody>
-                                 <tr ng-repeat="activity in activityList" ng-if="[1, 2,3].indexOf(activity.activityId) > -1">
+                                 <tr data-ng-repeat="activity in activityList" data-ng-if="[1, 2,3].indexOf(activity.activityId) > -1">
                                    
                                     		<td><strong>{{activity.activityName}}</strong> <input
 													type="hidden"
@@ -152,16 +152,16 @@ function calculateTotal(obj){
 												</td>
 												<td>
 												<div align="center"
-														data-ng-style="{'color':(panchayatBhawanActivityState.panchatayBhawanActivityDetails[$index].noOfGPs > panchayatBhawanActivity.panchatayBhawanActivityDetails[$index].noOfGPs) ? 'red' : '#00cc00'}">
-														<strong>{{panchayatBhawanActivityState.panchatayBhawanActivityDetails[$index].noOfGPs}}</strong>
+														data-ng-style="{'color':(panchayatBhawanActivityMOPR.panchatayBhawanActivityDetails[$index].noOfGPs > panchayatBhawanActivity.panchatayBhawanActivityDetails[$index].noOfGPs) ? 'red' : '#00cc00'}">
+														<strong>{{panchayatBhawanActivityMOPR.panchatayBhawanActivityDetails[$index].noOfGPs}}</strong>
 												</div> 
 														 <input type="text" class="form-control" data-ng-show="panchayatBhawanActivity.status == 'F'" data-ng-model="panchayatBhawanActivity.panchatayBhawanActivityDetails[$index].noOfGPs"  style="text-align:right;" disabled="disabled">
 														<input type="text" class="form-control" data-ng-show="panchayatBhawanActivity.status != 'F'" data-ng-model="panchayatBhawanActivity.panchatayBhawanActivityDetails[$index].noOfGPs"  onkeypress="return isNumber(event)" data-ng-keyup="calculateFundsAndTotalWithoutAdditionaRequirement($index);calculateAspirationalGps($index)" maxlength="7" style="text-align:right;"> 
 												</td>
 												<td>
 												<div align="center"
-														data-ng-style="{'color':(panchayatBhawanActivityState.panchatayBhawanActivityDetails[$index].aspirationalGps > panchayatBhawanActivity.panchatayBhawanActivityDetails[$index].aspirationalGps) ? 'red' : '#00cc00'}">
-														<strong>{{panchayatBhawanActivityState.panchatayBhawanActivityDetails[$index].aspirationalGps}}</strong>
+														data-ng-style="{'color':(panchayatBhawanActivityMOPR.panchatayBhawanActivityDetails[$index].aspirationalGps > panchayatBhawanActivity.panchatayBhawanActivityDetails[$index].aspirationalGps) ? 'red' : '#00cc00'}">
+														<strong>{{panchayatBhawanActivityMOPR.panchatayBhawanActivityDetails[$index].aspirationalGps}}</strong>
 												</div> 
 												<input type="text" class="form-control" data-ng-show="panchayatBhawanActivity.status == 'F'" data-ng-model="panchayatBhawanActivity.panchatayBhawanActivityDetails[$index].aspirationalGps" style="text-align:right;" disabled="disabled"/>
 														<input type="text" class="form-control" data-ng-show="panchayatBhawanActivity.status != 'F'" onkeypress="return isNumber(event)" data-ng-model="panchayatBhawanActivity.panchatayBhawanActivityDetails[$index].aspirationalGps" data-ng-keyup="calculateAspirationalGps($index)" maxlength="7" style="text-align:right;"/>	
@@ -169,8 +169,8 @@ function calculateTotal(obj){
 
 												<td>
 													<div align="center"
-														data-ng-style="{'color':(panchayatBhawanActivityState.panchatayBhawanActivityDetails[$index].unitCost > panchayatBhawanActivity.panchatayBhawanActivityDetails[$index].unitCost) ? 'red' : '#00cc00'}">
-														<strong>{{panchayatBhawanActivityState.panchatayBhawanActivityDetails[$index].unitCost}}</strong>
+														data-ng-style="{'color':(panchayatBhawanActivityMOPR.panchatayBhawanActivityDetails[$index].unitCost > panchayatBhawanActivity.panchatayBhawanActivityDetails[$index].unitCost) ? 'red' : '#00cc00'}">
+														<strong>{{panchayatBhawanActivityMOPR.panchatayBhawanActivityDetails[$index].unitCost}}</strong>
 													</div> <input type="text" class="form-control"
 													data-ng-show="panchayatBhawanActivity.status != 'F'"
 													onkeypress="return isNumber(event)"
@@ -184,8 +184,8 @@ function calculateTotal(obj){
 												</td>
 												<td>
 													<div align="center"
-														data-ng-style="{'color':(panchayatBhawanActivityState.panchatayBhawanActivityDetails[$index].funds > panchayatBhawanActivity.panchatayBhawanActivityDetails[$index].funds) ? 'red' : '#00cc00'}">
-														<strong>{{panchayatBhawanActivityState.panchatayBhawanActivityDetails[$index].funds}}</strong>
+														data-ng-style="{'color':(panchayatBhawanActivityMOPR.panchatayBhawanActivityDetails[$index].funds > panchayatBhawanActivity.panchatayBhawanActivityDetails[$index].funds) ? 'red' : '#00cc00'}">
+														<strong>{{panchayatBhawanActivityMOPR.panchatayBhawanActivityDetails[$index].funds}}</strong>
 													</div> <input type="text" class="form-control" data-ng-model="panchayatBhawanActivity.panchatayBhawanActivityDetails[$index].funds"
 													style="text-align: right;" disabled="disabled"/> 
 												</td>
@@ -198,8 +198,8 @@ function calculateTotal(obj){
                                           htmlEscape="true" />
                                     </th>
                                     <td>
-                                    <div align="center" data-ng-style="{'color':(totalState > totalWithoutAddRequirements) ? 'red' : '#00cc00'}">
-										<strong>{{totalState}}</strong>
+                                    <div align="center" data-ng-style="{'color':(totalMOPR > totalWithoutAddRequirements) ? 'red' : '#00cc00'}">
+										<strong>{{totalMOPR}}</strong>
 									</div>
                                     <input type="text"  id = "totalFonds" data-ng-model="totalWithoutAddRequirements" class="form-control col-sm-1"  style="text-align:right;" data-ng-disabled = "true"/>														
                                  </tr>
@@ -210,11 +210,11 @@ function calculateTotal(obj){
                                     </th>
                                     <td>
                                     <div align="center"
-														data-ng-style="{'color':(panchayatBhawanActivityState.additionalRequirement > panchayatBhawanActivity.additionalRequirement) ? 'red' : '#00cc00'}">
-														<strong>{{panchayatBhawanActivityState.additionalRequirement}}</strong>
+														data-ng-style="{'color':(panchayatBhawanActivityMOPR.additionalRequirement > panchayatBhawanActivity.additionalRequirement) ? 'red' : '#00cc00'}">
+														<strong>{{panchayatBhawanActivityMOPR.additionalRequirement}}</strong>
 													</div> 
-                                       <input type="text" ng-model="panchayatBhawanActivity.additionalRequirement" onkeypress="return isNumber(event)" data-ng-show="panchayatBhawanActivity.status != 'F'" data-ng-keyUp="calculateGrandTotal()" class="form-control col-sm-1" placeholder="25% of total" style="text-align:right;"/>
-                                       <input type="text" ng-model="panchayatBhawanActivity.additionalRequirement" data-ng-show="panchayatBhawanActivity.status == 'F'" class="form-control col-sm-1" placeholder="25% of total" style="text-align:right;" disabled="disabled"/>
+                                       <input type="text" data-ng-model="panchayatBhawanActivity.additionalRequirement" onkeypress="return isNumber(event)" data-ng-show="panchayatBhawanActivity.status != 'F'" data-ng-keyUp="calculateGrandTotal()" class="form-control col-sm-1" placeholder="25% of total" style="text-align:right;"/>
+                                       <input type="text" data-ng-model="panchayatBhawanActivity.additionalRequirement" data-ng-show="panchayatBhawanActivity.status == 'F'" class="form-control col-sm-1" placeholder="25% of total" style="text-align:right;" disabled="disabled"/>
                                     </td>
                                  </tr>
                               </tfoot>
@@ -228,6 +228,7 @@ function calculateTotal(obj){
                         <div class="">
                            <table id="trainingActivityTblId" class="table table-hover dashboard-task-infos">
                               <thead>
+                              <tr>
                                  <%-- 	<tr><th colspn="4"  class="xyz"><spring:message code="Label.CarryForward" htmlEscape="true" /></th>	<tr> --%>
                                  <th>
                                     <div align="center">
@@ -275,7 +276,7 @@ function calculateTotal(obj){
                                  </tr>
                               </thead>
                               <tbody>
-                                 <tr ng-repeat="activity in activityList" ng-if="[4,5,6].indexOf(activity.activityId) > -1">
+                                 <tr data-ng-repeat="activity in activityList" data-ng-if="[4,5,6].indexOf(activity.activityId) > -1">
                                     <td><strong>{{activity.activityName}}</strong> <input
 													type="hidden"
 													data-ng-model="panchayatBhawanActivity.panchatayBhawanActivityDetails[$index].activity.activityId"
@@ -283,16 +284,16 @@ function calculateTotal(obj){
 												</td>
 												<td>
 												<div align="center"
-														data-ng-style="{'color':(panchayatBhawanActivityState.panchatayBhawanActivityDetails[$index].noOfGPs > panchayatBhawanActivity.panchatayBhawanActivityDetails[$index].noOfGPs) ? 'red' : '#00cc00'}">
-														<strong>{{panchayatBhawanActivityState.panchatayBhawanActivityDetails[$index].noOfGPs}}</strong>
+														data-ng-style="{'color':(panchayatBhawanActivityMOPR.panchatayBhawanActivityDetails[$index].noOfGPs > panchayatBhawanActivity.panchatayBhawanActivityDetails[$index].noOfGPs) ? 'red' : '#00cc00'}">
+														<strong>{{panchayatBhawanActivityMOPR.panchatayBhawanActivityDetails[$index].noOfGPs}}</strong>
 												</div> 
 														 <input type="text" class="form-control" data-ng-show="panchayatBhawanActivity.status == 'F'" data-ng-model="panchayatBhawanActivity.panchatayBhawanActivityDetails[$index].noOfGPs"  style="text-align:right;" disabled="disabled">
-														<input type="text" class="form-control" data-ng-show="panchayatBhawanActivity.status != 'F'" data-ng-model="panchayatBhawanActivity.panchatayBhawanActivityDetails[$index].noOfGPs"  onkeypress="return isNumber(event)" data-ng-change="calculateFundRequired($index,'SAN')"" maxlength="7" style="text-align:right;"> 
+														<input type="text" class="form-control" data-ng-show="panchayatBhawanActivity.status != 'F'" data-ng-model="panchayatBhawanActivity.panchatayBhawanActivityDetails[$index].noOfGPs"  onkeypress="return isNumber(event)" data-ng-change="calculateFundRequired($index,'SAN')" maxlength="7" style="text-align:right;"> 
 												</td>
 												<td>
 												<div align="center"
-														data-ng-style="{'color':(panchayatBhawanActivityState.panchatayBhawanActivityDetails[$index].aspirationalGps > panchayatBhawanActivity.panchatayBhawanActivityDetails[$index].aspirationalGps) ? 'red' : '#00cc00'}">
-														<strong>{{panchayatBhawanActivityState.panchatayBhawanActivityDetails[$index].aspirationalGps}}</strong>
+														data-ng-style="{'color':(panchayatBhawanActivityMOPR.panchatayBhawanActivityDetails[$index].aspirationalGps > panchayatBhawanActivity.panchatayBhawanActivityDetails[$index].aspirationalGps) ? 'red' : '#00cc00'}">
+														<strong>{{panchayatBhawanActivityMOPR.panchatayBhawanActivityDetails[$index].aspirationalGps}}</strong>
 												</div> 
 												<input type="text" class="form-control" data-ng-show="panchayatBhawanActivity.status == 'F'" data-ng-model="panchayatBhawanActivity.panchatayBhawanActivityDetails[$index].aspirationalGps" style="text-align:right;" disabled="disabled"/>
 														<input type="text" class="form-control" data-ng-show="panchayatBhawanActivity.status != 'F'" onkeypress="return isNumber(event)" data-ng-model="panchayatBhawanActivity.panchatayBhawanActivityDetails[$index].aspirationalGps" data-ng-change="calculateFundRequired($index,'REL')" maxlength="7" style="text-align:right;"/>	
@@ -300,8 +301,8 @@ function calculateTotal(obj){
 
 												<td>
 													<div align="center"
-														data-ng-style="{'color':(panchayatBhawanActivityState.panchatayBhawanActivityDetails[$index].unitCost > panchayatBhawanActivity.panchatayBhawanActivityDetails[$index].unitCost) ? 'red' : '#00cc00'}">
-														<strong>{{panchayatBhawanActivityState.panchatayBhawanActivityDetails[$index].unitCost}}</strong>
+														data-ng-style="{'color':(panchayatBhawanActivityMOPR.panchatayBhawanActivityDetails[$index].unitCost > panchayatBhawanActivity.panchatayBhawanActivityDetails[$index].unitCost) ? 'red' : '#00cc00'}">
+														<strong>{{panchayatBhawanActivityMOPR.panchatayBhawanActivityDetails[$index].unitCost}}</strong>
 													</div> <input type="text" class="form-control"
 													data-ng-show="panchayatBhawanActivity.status != 'F'"
 													onkeypress="return isNumber(event)"
@@ -315,8 +316,8 @@ function calculateTotal(obj){
 												</td>
 												<td>
 													<div align="center"
-														data-ng-style="{'color':(panchayatBhawanActivityState.panchatayBhawanActivityDetails[$index].funds > panchayatBhawanActivity.panchatayBhawanActivityDetails[$index].funds) ? 'red' : '#00cc00'}">
-														<strong>{{panchayatBhawanActivityState.panchatayBhawanActivityDetails[$index].funds}}</strong>
+														data-ng-style="{'color':(panchayatBhawanActivityMOPR.panchatayBhawanActivityDetails[$index].funds > panchayatBhawanActivity.panchatayBhawanActivityDetails[$index].funds) ? 'red' : '#00cc00'}">
+														<strong>{{panchayatBhawanActivityMOPR.panchatayBhawanActivityDetails[$index].funds}}</strong>
 													</div>
 													 <input type="text" class="form-control" data-ng-model="panchayatBhawanActivity.panchatayBhawanActivityDetails[$index].funds"
 														style="text-align: right;" disabled="disabled"/>
@@ -330,8 +331,8 @@ function calculateTotal(obj){
                                           htmlEscape="true" />
                                     </th>
                                     <td>
-                                     <div align="center" data-ng-style="{'color':(totalState > totalWithoutAddRequirements) ? 'red' : '#00cc00'}">
-										<strong>{{totalOfFundsReqState}}</strong>
+                                     <div align="center" data-ng-style="{'color':(totalOfFundsReqMOPR > totalFundReq ) ? 'red' : '#00cc00'}">
+										<strong>{{totalOfFundsReqMOPR}}</strong>
 									</div>
                                     <input type="text"  id = "totalFonds" data-ng-model="totalFundReq" class="form-control col-sm-1"  style="text-align:right;" data-ng-disabled = "true"/>														
                                  </tr>
@@ -346,9 +347,9 @@ function calculateTotal(obj){
                               
                                  <th colspan="4" width="81%">Total Proposed Fund  =(Total Cost of New Building+Additional Requirement of New Building+Total Cost of Carry Forward)</th>
                                  <th>
-                                 <div align="center" data-ng-style="{'color':((totalState + panchayatBhawanActivityState.additionalRequirement) > totalproposedFonds) ? 'red' : '#00cc00'}">
-														<strong>{{totalState +
-															panchayatBhawanActivityState.additionalRequirement+totalOfFundsReqState}}</strong>
+                                 <div align="center" data-ng-style="{'color':((totalMOPR + panchayatBhawanActivityMOPR.additionalRequirement + totalOfFundsReqMOPR) > totalproposedFonds) ? 'red' : '#00cc00'}">
+														<strong>{{totalMOPR +
+															panchayatBhawanActivityMOPR.additionalRequirement+totalOfFundsReqMOPR}}</strong>
 								</div> 
                                  <input type="text"  id = "totalproposedFonds" data-ng-model="grandTotal" class="form-control col-sm-1"  style="text-align:right;" data-ng-disabled = "true"/></th>														
                               </tr>
@@ -369,9 +370,9 @@ function calculateTotal(obj){
 										
 									   	<div class="col-md-8 text-right ex1">
  									   	    <button data-ng-show="panchayatBhawanActivity.status == 'F'" data-ng-click="saveData('S')" type="button" class="btn bg-green waves-effect" disabled="disabled"><spring:message code="Label.SAVE" htmlEscape="true"/></button> 
-									   		<button type="button" data-ng-show="panchayatBhawanActivity.status != 'F'"  ng-disabled="btn_disabled" ng-click="saveData('S')" class="btn bg-green waves-effect"><spring:message code="Label.SAVE" htmlEscape="true" /></button>
+									   		<button type="button" data-ng-show="panchayatBhawanActivity.status != 'F'"  data-ng-disabled="btn_disabled" data-ng-click="saveData('S')" class="btn bg-green waves-effect"><spring:message code="Label.SAVE" htmlEscape="true" /></button>
 									   		<button data-ng-show="panchayatBhawanActivity.status != 'F' " data-ng-click="saveData('F')" type="button" class="btn bg-green waves-effect" data-ng-disabled="initial_status == true"><spring:message code="Label.FREEZE" htmlEscape="true" /></button>
-								       <button data-ng-show="panchayatBhawanActivity.status == 'F'" type="button" data-ng-click="saveData('UF')"  ng-disabled="btn_disabled"  class="btn bg-green waves-effect">
+								       <button data-ng-show="panchayatBhawanActivity.status == 'F'" type="button" data-ng-click="saveData('UF')"  data-ng-disabled="btn_disabled"  class="btn bg-green waves-effect">
 									      <spring:message code="Label.UNFREEZE" htmlEscape="true" />
 								       </button>
 			 						   		<button type="button" data-ng-show="panchayatBhawanActivity.status == 'F'"  class="btn bg-light-blue waves-effect" disabled="disabled">
@@ -388,7 +389,7 @@ function calculateTotal(obj){
 					
 					</div>
 					
-					<div class="container tab-pane fade" id="MOPR" style="width: auto;">
+					<div class="container tab-pane fade" id="state" style="width: auto;">
 					
 							<div class="records">
                         <div class="">
@@ -460,13 +461,13 @@ function calculateTotal(obj){
                                  </tr>
                               </thead>
                               <tbody>
-                                 <tr ng-repeat="activity in activityList" ng-if="[1, 2,3].indexOf(activity.activityId) > -1">
+                                 <tr data-ng-repeat="activity in activityList" data-ng-if="[1, 2,3].indexOf(activity.activityId) > -1">
                                    
                                     		<td><div align="center">{{activity.activityName}}</div></td>
-												<td><div align="center">{{panchayatBhawanActivityMOPR.panchatayBhawanActivityDetails[$index].noOfGPs}}</div></td>
-												<td><div align="center">{{panchayatBhawanActivityMOPR.panchatayBhawanActivityDetails[$index].aspirationalGps}}</div></td>
-												<td><div align="center">{{panchayatBhawanActivityMOPR.panchatayBhawanActivityDetails[$index].unitCost}}</div></td>
-												<td><div align="center">{{panchayatBhawanActivityMOPR.panchatayBhawanActivityDetails[$index].funds}}</div></td>
+												<td><div align="center">{{panchayatBhawanActivityState.panchatayBhawanActivityDetails[$index].noOfGPs}}</div></td>
+												<td><div align="center">{{panchayatBhawanActivityState.panchatayBhawanActivityDetails[$index].aspirationalGps}}</div></td>
+												<td><div align="center">{{panchayatBhawanActivityState.panchatayBhawanActivityDetails[$index].unitCost}}</div></td>
+												<td><div align="center">{{panchayatBhawanActivityState.panchatayBhawanActivityDetails[$index].funds}}</div></td>
                                  </tr>
                               </tbody>
                               <tfoot>
@@ -477,7 +478,7 @@ function calculateTotal(obj){
                                     </th>
                                     <td align="center">
                                     <div>
-										<strong>{{totalMOPR}}</strong>
+										<strong>{{totalState}}</strong>
 									</div>
                                     </tr>
                                  <tr>
@@ -487,7 +488,7 @@ function calculateTotal(obj){
                                     </th>
                                     <td>
                                     <div align="center">
-														<strong>{{panchayatBhawanActivityMOPR.additionalRequirement}}</strong>
+														<strong>{{panchayatBhawanActivityState.additionalRequirement}}</strong>
 									</div> 
                                       
                                     </td>
@@ -504,6 +505,7 @@ function calculateTotal(obj){
                            <table id="trainingActivityTblId" class="table table-hover dashboard-task-infos">
                               <thead>
                                  <%-- 	<tr><th colspn="4"  class="xyz"><spring:message code="Label.CarryForward" htmlEscape="true" /></th>	<tr> --%>
+                                <tr>
                                  <th>
                                     <div align="center">
                                        <strong>
@@ -550,14 +552,14 @@ function calculateTotal(obj){
                                  </tr>
                               </thead>
                               <tbody>
-                                 <tr ng-repeat="activity in activityList" ng-if="[4,5,6].indexOf(activity.activityId) > -1">
+                                 <tr data-ng-repeat="activity in activityList" data-ng-if="[4,5,6].indexOf(activity.activityId) > -1">
                                   
                                    
                                     		<td><div align="center">{{activity.activityName}}</div></td>
-												<td><div align="center">{{panchayatBhawanActivityMOPR.panchatayBhawanActivityDetails[$index].noOfGPs}}</div></td>
-												<td><div align="center">{{panchayatBhawanActivityMOPR.panchatayBhawanActivityDetails[$index].aspirationalGps}}</div></td>
-												<td><div align="center">{{panchayatBhawanActivityMOPR.panchatayBhawanActivityDetails[$index].unitCost}}</div></td>
-												<td><div align="center">{{panchayatBhawanActivityMOPR.panchatayBhawanActivityDetails[$index].funds}}</div></td>
+												<td><div align="center">{{panchayatBhawanActivityState.panchatayBhawanActivityDetails[$index].noOfGPs}}</div></td>
+												<td><div align="center">{{panchayatBhawanActivityState.panchatayBhawanActivityDetails[$index].aspirationalGps}}</div></td>
+												<td><div align="center">{{panchayatBhawanActivityState.panchatayBhawanActivityDetails[$index].unitCost}}</div></td>
+												<td><div align="center">{{panchayatBhawanActivityState.panchatayBhawanActivityDetails[$index].funds}}</div></td>
                                 
                                  </tr>
                               </tbody>
@@ -569,7 +571,7 @@ function calculateTotal(obj){
                                     </th>
                                     <td align="center">
                                      <div >
-										<strong>{{totalOfFundsReqMOPR}}</strong>
+										<strong>{{totalOfFundsReqState}}</strong>
 									</div>
                                      </tr>
                               </tfoot>
@@ -580,8 +582,8 @@ function calculateTotal(obj){
                         <div class="">
                            <table id="trainingActivityTblId"	class="table table-hover dashboard-task-infos">
                               <tr>
-                                 <th colspan="4" width="81%" align="center">Total Proposed Fund  =(Total Cost of New Building+Additional Requirement of New Building+Total Cost of Carry Forward)</th>
-                                 <th style="text-align: right;padding-right:80px">{{totalMOPR+totalOfFundsReqMOPR+panchayatBhawanActivityMOPR.additionalRequirement}}</th>														
+                                 <th colspan="4" width="81%" align="center">Total Proposed Fund  =(Total Cost of New Building + Additional Requirement of New Building + Total Cost of Carry Forward)</th>
+                                 <th style="text-align: right;padding-right:80px">{{totalState + totalOfFundsReqState + panchayatBhawanActivityState.additionalRequirement}}</th>														
                               </tr>
                            </table>
                         </div>

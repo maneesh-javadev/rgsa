@@ -23,7 +23,7 @@
 										<input type="hidden" name="${status.expression}" value="${status.value}" /> 
 									</spring:bind>
 									<spring:bind path="qprPanchayatBhawanId" >
-										<input type="hidden" name="${status.expression}" value="${status.value}" /> 
+										<input type="hidden" name="${status.expression}" value="${status.value}" id="qprActivityId"/> 
 									</spring:bind>
 									
 									<span class="errormsg show" ><c:out value='${isError}' /></span>
@@ -145,7 +145,7 @@
 																<td>${bhawanDto.localBodyNameEnglish}</td>
 																<td>
 																		<spring:bind path="QPR_PANCHAYAT_BHAWAN.qprPanhcayatBhawanDetails[${count.index}].gpBhawanStatusId" >
-																			<select class="form-control" name="${status.expression}" id="gpBhawanStatusId_${count.index}">
+																			<select class="form-control" name="${status.expression}" id="gpBhawanStatusId_${count.index}" disabled="${QPR_PANCHAYAT_BHAWAN.isFreeze}">
 																		<option value="0">Please select gp status</option>
 																		<c:forEach items="${GPBhawanStatus}" var="status" >
 																			<option value="${status.gpBhawanStatusId}" >${status.gpBhawanStatusName}</option>
@@ -155,14 +155,17 @@
 																</td>
 																<td>
 																	<spring:bind path="QPR_PANCHAYAT_BHAWAN.qprPanhcayatBhawanDetails[${count.index}].expenditureIncurred" >
-																	<input type="text" class="form-control" id="expenditureIncurred_${count.index}" name="${status.expression}"  value="${status.value}"
-																	autocomplete="off" onblur="validate_expenditureIncurred('${subcomponentwiseQuaterBalance}',this,null)" onkeypress="return isNumber(event)"/>
+																	<form:input class="form-control" id="expenditureIncurred_${count.index}" path="${status.expression}"  value="${status.value}"
+																	autocomplete="off" onblur="validate_expenditureIncurred('${subcomponentwiseQuaterBalance}',this,null)" onkeypress="return isNumber(event)" readonly="${QPR_PANCHAYAT_BHAWAN.isFreeze}"/>
 																	</spring:bind>
 																	<span class="errormsg" id="error_expenditureIncurred_${count.index}"></span>
 																</td>
 																<td>
 																	<spring:bind path="QPR_PANCHAYAT_BHAWAN.qprPanhcayatBhawanDetails[${count.index}].file" >
-																	<input type="file" name="${status.expression}" class="form-control"/>
+																	<c:choose>
+																		<c:when test="${QPR_PANCHAYAT_BHAWAN.isFreeze}"><input type="file" name="${status.expression}" class="form-control" disabled="disabled"/></c:when>
+																		<c:otherwise><input type="file" name="${status.expression}" class="form-control"/></c:otherwise>
+																	</c:choose>
 																	</spring:bind>
 																	<c:if test="${QPR_PANCHAYAT_BHAWAN.qprPanhcayatBhawanDetails[count.index].fileNode.fileNodeId!=null }">
 																		<a type="button" class="btn btn-lg btn-success" href="downloadFileNew.html?fileNodeId=${QPR_PANCHAYAT_BHAWAN.qprPanhcayatBhawanDetails[count.index].fileNode.fileNodeId}" target="_blank">
@@ -203,7 +206,7 @@
 											</td>
 											<td>
 												<spring:bind path="QPR_PANCHAYAT_BHAWAN.additionalRequirement" >
-												<input type="text" onkeypress="return isNumber(event)" id="addReq" class="form-control" name="${status.expression}"  value="${status.value}" onblur="calculcate_total(null,'expenditureIncurred')" placeholder=" 25% of Grand Total cost " maxlength="8" style="text-align:right;" autocomplete="off"/>
+												<form:input onkeypress="return isNumber(event)" id="addReq" class="form-control" path="${status.expression}"  value="${status.value}" onblur="calculcate_total(null,'expenditureIncurred')" placeholder=" 25% of Grand Total cost " maxlength="8" style="text-align:right;" autocomplete="off" readonly="${QPR_PANCHAYAT_BHAWAN.isFreeze}"/>
 												</spring:bind>
 												<span class="errormsg" id="error_addReq"></span>
 											</td>
@@ -222,21 +225,32 @@
 										</tfoot>
 										</table>	
 											<br/><br/>
-											
-											<div class="form-group text-right">
-												<button type="submit" class="btn bg-green waves-effect">
-											Save
-										</button>
-												<button type="button" onclick="" class="btn bg-light-blue waves-effect reset">CLEAR${districtCode}</button>
-												<button type="button"
-											onclick=" onClose('home.html?
-													<csrf:token uri='home.html'/>')"
-											class="btn bg-orange waves-effect">
-													<spring:message code="Label.CLOSE" htmlEscape="true" />
-												</button>
-											</div>
-											
-											</div>
+
+										<div class="form-group text-right">
+											<form:button type="submit" class="btn bg-green waves-effect" disabled="${QPR_PANCHAYAT_BHAWAN.isFreeze}">
+												Save</form:button>
+										<c:choose>
+											<c:when test="${QPR_PANCHAYAT_BHAWAN.isFreeze}">
+												<form:button class="btn bg-orange waves-effect"
+													onclick="FreezeAndUnfreeze('unfreeze')">UNFREEZE</form:button>
+											</c:when>
+											<c:otherwise>
+												<form:button class="btn bg-orange waves-effect"
+													disabled="${DISABLE_FREEZE}"
+													onclick="FreezeAndUnfreeze('freeze')">FREEZE</form:button>
+											</c:otherwise>
+										</c:choose>
+										<form:button type="button" onclick=""
+												class="btn bg-light-blue waves-effect reset" disabled="${QPR_PANCHAYAT_BHAWAN.isFreeze}">CLEAR ${districtCode}</form:button>
+											<form:button type="button"
+												onclick=" onClose('home.html?
+														<csrf:token uri='home.html'/>')"
+												class="btn bg-orange waves-effect">
+												<spring:message code="Label.CLOSE" htmlEscape="true" />
+											</form:button>
+										</div>
+
+								</div>
 													
 													</form:form>
 													

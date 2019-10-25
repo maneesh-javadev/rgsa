@@ -24,7 +24,7 @@ public class QprPanchayatBhawan  implements IFreezable{
 	@Id
 	@Column(name="qpr_panhcayat_bhawan_id")
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	private Long qprPanchayatBhawanId;
+	private Integer qprPanchayatBhawanId;
 	
 	@Column(name="panhcayat_bhawan_activity_id")
 	private Integer panchayatBhawanActivityId;
@@ -63,11 +63,11 @@ public class QprPanchayatBhawan  implements IFreezable{
 	private Integer selectDistrictId;
 	
 
-	public Long getQprPanchayatBhawanId() {
+	public Integer getQprPanchayatBhawanId() {
 		return qprPanchayatBhawanId;
 	}
 
-	public void setQprPanchayatBhawanId(Long qprPanchayatBhawanId) {
+	public void setQprPanchayatBhawanId(Integer qprPanchayatBhawanId) {
 		this.qprPanchayatBhawanId = qprPanchayatBhawanId;
 	}
 

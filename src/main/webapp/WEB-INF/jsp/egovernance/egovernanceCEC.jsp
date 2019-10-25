@@ -9,21 +9,21 @@ function changeColor() {
 	var rowCount = $('#tbodyId tr').length - 3;
 	for (var i = 0; i < rowCount; i++) {
 		
-		+$('#noOfPostId_' + i).val() < +$('#noOfPostStateId_' + i).text() ? $(
-				'#noOfPostStateId_' + i).css('color', 'red') : $(
-				'#noOfPostStateId_' + i).css('color', '#00cc00');
-		+$('#unitCostId_' + i).val() < +$('#unitCostStateId_' + i).text() ? $(
-				'#unitCostStateId_' + i).css('color', 'red') : $(
-				'#unitCostStateId_' + i).css('color', '#00cc00');
-		+$('#fundId_' + i).val() < +$('#fundStateId_' + i).text() ? $(
-				'#fundStateId_' + i).css('color', 'red') : $(
-				'#fundStateId_' + i).css('color', '#00cc00');
+		+$('#noOfPostId_' + i).val() < +$('#noOfPostMoprId_' + i).text() ? $(
+				'#noOfPostMoprId_' + i).css('color', 'red') : $(
+				'#noOfPostMoprId_' + i).css('color', '#00cc00');
+		+$('#unitCostId_' + i).val() < +$('#unitCostMoprId_' + i).text() ? $(
+				'#unitCostMoprId_' + i).css('color', 'red') : $(
+				'#unitCostMoprId_' + i).css('color', '#00cc00');
+		+$('#fundId_' + i).val() < +$('#fundMoprId_' + i).text() ? $(
+				'#fundMoprId_' + i).css('color', 'red') : $(
+				'#fundMoprId_' + i).css('color', '#00cc00');
 	}
-	$('#total_fund_spmu').val() < +$('#total_fund_state_spmu').text() ? $('#total_fund_state_spmu').css('color', 'red') : $('#total_fund_state_spmu').css('color', '#00cc00');
-	$('#total_fund_dpmu').val() < +$('#total_fund_state_dpmu').text() ? $('#total_fund_state_dpmu').css('color', 'red') : $('#total_fund_state_dpmu').css('color', '#00cc00');
-	$('#additionalRequirementSpmuId').val() < +$('#additionalRequirementStateSpmuId').text() ? $('#additionalRequirementStateSpmuId').css('color', 'red') : $('#additionalRequirementStateSpmuId').css('color', '#00cc00');
-	$('#additionalRequirementDpmuId').val() < +$('#additionalRequirementStateDpmuId').text() ? $('#additionalRequirementStateDpmuId').css('color', 'red') : $('#additionalRequirementStateDpmuId').css('color', '#00cc00');
-	$('#grandTotalId').val() < +$('#grandTotalStateId').text() ? $('#grandTotalStateId').css('color', 'red') : $('#grandTotalStateId').css('color', '#00cc00');
+	$('#total_fund_spmu').val() < +$('#total_fund_Mopr_spmu').text() ? $('#total_fund_Mopr_spmu').css('color', 'red') : $('#total_fund_Mopr_spmu').css('color', '#00cc00');
+	$('#total_fund_dpmu').val() < +$('#total_fund_Mopr_dpmu').text() ? $('#total_fund_Mopr_dpmu').css('color', 'red') : $('#total_fund_Mopr_dpmu').css('color', '#00cc00');
+	$('#additionalRequirementSpmuId').val() < +$('#additionalRequirementMoprSpmuId').text() ? $('#additionalRequirementMoprSpmuId').css('color', 'red') : $('#additionalRequirementMoprSpmuId').css('color', '#00cc00');
+	$('#additionalRequirementDpmuId').val() < +$('#additionalRequirementMoprDpmuId').text() ? $('#additionalRequirementMoprDpmuId').css('color', 'red') : $('#additionalRequirementMoprDpmuId').css('color', '#00cc00');
+	$('#grandTotalId').val() < +$('#grandTotalMoprId').text() ? $('#grandTotalMoprId').css('color', 'red') : $('#grandTotalMoprId').css('color', '#00cc00');
 
 };
 </script>
@@ -48,7 +48,7 @@ function changeColor() {
 										htmlEscape="true" /></a></li>
 						</ul>
 						<div class="tab-content">
-							<div role="tabpanel" class="container tab-pane active" id="state"
+							<div role="tabpanel" class="container tab-pane " id="MOPR"
 								style="width: auto;">
 
 								<form:form method="post" name="egovernance"
@@ -102,6 +102,12 @@ function changeColor() {
 																	* C
 																</strong>
 															</div></th>
+															<%-- <th rowspan="2"><div align="center">
+																<strong><spring:message code="Label.IsApproved" htmlEscape="true" /></strong>
+															</div></th> --%>
+														<th rowspan="2"><div align="center">
+																<strong><spring:message code="Label.Remarks" htmlEscape="true" /></strong>
+															</div></th>
 													</tr>
 												</thead>
 											<tbody id="tbodyId">
@@ -126,7 +132,7 @@ function changeColor() {
 													<c:when
 														test="${POST_LEVEL.eGovPostId ne 4 and POST_LEVEL.eGovPostId ne 7}">
 														<td>
-														<div align="center" id="noOfPostStateId_${index.index}"><strong>${eGovActivityForState.eGovSupportActivityDetails[index.index].noOfPosts }</strong></div>
+														<div align="center" id="noOfPostMoprId_${index.index}"><strong>${eGovActivityForMOPR.eGovSupportActivityDetails[index.index].noOfPosts }</strong></div>
 														<form:input
 																path="eGovSupportActivityDetails[${index.index}].noOfPosts"
 																type="text" onkeypress="return isNumber(event)"
@@ -137,12 +143,12 @@ function changeColor() {
 																style="text-align:right;"
 																disabled="${eGovActivity.status eq true}" /></td>
 														<td>
-														<div align="center" style="margin-top: 20px;"><strong>${eGovActivityForState.eGovSupportActivityDetails[index.index].months}</strong></div>
+														<div align="center" style="margin-top: 20px;"><strong>${eGovActivityForMOPR.eGovSupportActivityDetails[index.index].months}</strong></div>
 														<form:hidden path="eGovSupportActivityDetails[${index.index}].months"
 																value="${eGovActivityForState.eGovSupportActivityDetails[index.index].months}" 
 																id="monthId_${index.index}" /></td>
 														<td>
-														<div align="center" id="unitCostStateId_${index.index}"><strong>${eGovActivityForState.eGovSupportActivityDetails[index.index].unitCost}</strong></div>
+														<div align="center" id="unitCostMoprId_${index.index}"><strong>${eGovActivityForMOPR.eGovSupportActivityDetails[index.index].unitCost}</strong></div>
 														<form:input
 																path="eGovSupportActivityDetails[${index.index}].unitCost"
 																type="text" onkeypress="return isNumber(event)"
@@ -158,7 +164,7 @@ function changeColor() {
 														</c:otherwise>	
 														</c:choose>	
 														<td>
-														<div align="center" id="fundStateId_${index.index}"><strong>${eGovActivityForState.eGovSupportActivityDetails[index.index].funds}</strong></div>
+														<div align="center" id="fundMoprId_${index.index}"><strong>${eGovActivityForMOPR.eGovSupportActivityDetails[index.index].funds}</strong></div>
 														<c:choose>
 															<c:when test="${POST_LEVEL.eGovPostId eq 4}">
 																<form:input
@@ -179,6 +185,26 @@ function changeColor() {
 															</c:otherwise>
 														</c:choose>
 														</td>
+														<%-- <td><c:choose>
+																<c:when
+																	test="${eGovActivityForMOPR.eGovSupportActivityDetails[index.index].isApproved}">
+																	<i class="fa fa-check" aria-hidden="true"
+																		style="color: #00cc00"></i>
+																</c:when>
+																<c:otherwise>
+																	<i class="fa fa-times" aria-hidden="true"
+																		style="color: red"></i>
+																</c:otherwise>
+															</c:choose></td> --%>
+<%-- 														<td><div align="center">${eGovActivityForMOPR.eGovSupportActivityDetails[index.index].remarks }</div></td>
+ --%>								                        <td>   <form:textarea
+																	path="eGovSupportActivityDetails[${index.index}].remarks"
+																	type="text" 
+																	class="form-control" 
+																	disabled="${eGovActivity.status eq true}"
+																	style="text-align:right;"
+																	/>
+																	</td>
 													</tr>
 													<c:set var="countSpmuCec" value="${countSpmuCec + 1}" scope="page" />
 												</c:forEach>
@@ -188,7 +214,7 @@ function changeColor() {
 														</div></td>
 													<td colspan="4"></td>
 													<td>
-													<div align="center" id="total_fund_state_spmu"><strong>${SPMU_TOTAL_STATE}</strong></div>
+													<div align="center" id="total_fund_Mopr_spmu"><strong>${SPMU_TOTAL_MOPR}</strong></div>
 													<input type="text" class="active12 form-control"
 														id="total_fund_spmu"
 														onkeypress="return isNumber(event)"
@@ -202,7 +228,7 @@ function changeColor() {
 														</div></td>
 													<td colspan="4"></td>
 													<td>
-													<div align="center" id="additionalRequirementStateSpmuId"><strong>${eGovActivityForState.additionalRequirementSpmu}</strong></div>
+													<div align="center" id="additionalRequirementMoprSpmuId"><strong>${eGovActivityForMOPR.additionalRequirementSpmu}</strong></div>
 													<form:input path="additionalRequirementSpmu"
 															type="text" onkeypress="return isNumber(event)"
 															class="form-control"
@@ -234,7 +260,7 @@ function changeColor() {
 													<c:when
 														test="${POST_LEVEL.eGovPostId ne 4 and POST_LEVEL.eGovPostId ne 7}">
 														<td>
-														<div align="center" id="noOfPostStateId_${index.index}"><strong>${eGovActivityForState.eGovSupportActivityDetails[index.index].noOfPosts }</strong></div>
+														<div align="center" id="noOfPostMoprId_${index.index}"><strong>${eGovActivityForMOPR.eGovSupportActivityDetails[index.index].noOfPosts }</strong></div>
 														<form:input
 																path="eGovSupportActivityDetails[${index.index}].noOfPosts"
 																type="text" onkeypress="return isNumber(event)"
@@ -245,12 +271,12 @@ function changeColor() {
 																style="text-align:right;"
 																disabled="${eGovActivity.status eq true}" /></td>
 														<td>
-														<div align="center" style="margin-top: 20px;"><strong>${eGovActivityForState.eGovSupportActivityDetails[index.index].months}</strong></div>
+														<div align="center" style="margin-top: 20px;"><strong>${eGovActivityForMOPR.eGovSupportActivityDetails[index.index].months}</strong></div>
 														<form:hidden path="eGovSupportActivityDetails[${index.index}].months"
 																value="${eGovActivityForState.eGovSupportActivityDetails[index.index].months}" 
 																id="monthId_${index.index}" /></td>
 														<td>
-														<div align="center" id="unitCostStateId_${index.index}"><strong>${eGovActivityForState.eGovSupportActivityDetails[index.index].unitCost}</strong></div>
+														<div align="center" id="unitCostMoprId_${index.index}"><strong>${eGovActivityForMOPR.eGovSupportActivityDetails[index.index].unitCost}</strong></div>
 														<form:input
 																path="eGovSupportActivityDetails[${index.index}].unitCost"
 																type="text" onkeypress="return isNumber(event)"
@@ -266,7 +292,7 @@ function changeColor() {
 														</c:otherwise>	
 														</c:choose>	
 														<td>
-														<div align="center" id="fundStateId_${index.index}"><strong>${eGovActivityForState.eGovSupportActivityDetails[index.index].funds}</strong></div>
+														<div align="center" id="fundMoprId_${index.index}"><strong>${eGovActivityForMOPR.eGovSupportActivityDetails[index.index].funds}</strong></div>
 														<c:choose>
 															<c:when test="${POST_LEVEL.eGovPostId eq 7}">
 																<form:input
@@ -288,6 +314,25 @@ function changeColor() {
 															</c:otherwise>
 														</c:choose>
 														</td>
+														<%-- <td><c:choose>
+																<c:when
+																	test="${eGovActivityForMOPR.eGovSupportActivityDetails[index.index].isApproved}">
+																	<i class="fa fa-check" aria-hidden="true"
+																		style="color: #00cc00"></i>
+																</c:when>
+																<c:otherwise>
+																	<i class="fa fa-times" aria-hidden="true"
+																		style="color: red"></i>
+																</c:otherwise>
+															</c:choose></td> --%>
+														 <td>   <form:textarea
+																	path="eGovSupportActivityDetails[${index.index}].remarks"
+																	type="text" 
+																	class="form-control" 
+																	disabled="${eGovActivity.status eq true}"
+																	style="text-align:right;"
+																	 />
+																	</td>		
 													</tr>
 													<c:set var="countDpmuCec" value="${countDpmuCec + 1}" scope="page" />
 												</c:forEach>
@@ -300,7 +345,7 @@ function changeColor() {
 														</div></td>
 													<td colspan="4"></td>
 													<td>
-													<div align="center" id="total_fund_state_dpmu"><strong>${DPMU_TOTAL_STATE}</strong></div>
+													<div align="center" id="total_fund_Mopr_dpmu"><strong>${DPMU_TOTAL_MOPR}</strong></div>
 													<input type="text" class="active12 form-control"
 														id="total_fund_dpmu"
 														onkeypress="return isNumber(event)"
@@ -314,7 +359,7 @@ function changeColor() {
 														</div></td>
 													<td colspan="4"></td>
 													<td>
-													<div align="center" id="additionalRequirementStateDpmuId"><strong>${eGovActivityForState.additionalRequirementDpmu}</strong></div>
+													<div align="center" id="additionalRequirementMoprDpmuId"><strong>${eGovActivityForMOPR.additionalRequirementDpmu}</strong></div>
 													<form:input path="additionalRequirementDpmu"
 															type="text" onkeypress="return isNumber(event)"
 															class="form-control"
@@ -331,7 +376,7 @@ function changeColor() {
 														</div></td>
 													<td colspan="4"></td>
 													<td>
-													<div align="center" id="grandTotalStateId"><strong>${eGovActivityForState.additionalRequirementDpmu + DPMU_TOTAL_STATE + SPMU_TOTAL_STATE + eGovActivityForState.additionalRequirementSpmu}</strong></div>
+													<div align="center" id="grandTotalMoprId"><strong>${eGovActivityForMOPR.additionalRequirementDpmu + DPMU_TOTAL_MOPR + SPMU_TOTAL_MOPR + eGovActivityForMOPR.additionalRequirementSpmu}</strong></div>
 													
 													<input type="text" onkeypress="return isNumber(event)" class="form-control" id="grandTotalId"
 														readonly="readonly" onchange="changeColor();" style="text-align: right;" /></td>
@@ -375,8 +420,8 @@ function changeColor() {
 								</form:form>
 							</div>
 
-							<div class="container tab-pane fade" id="MOPR"
-								style="width: auto;">
+							<div class="container tab-pane active" id="state"
+								style="width: auto;"> 
 									<div class="row clearfix">
 										<div class="form-group">
 											<div class="col-sm-4">
@@ -420,12 +465,7 @@ function changeColor() {
 																</strong>
 															</div></th>
 
-														<th rowspan="2"><div align="center">
-																<strong><spring:message code="Label.IsApproved" htmlEscape="true" /></strong>
-															</div></th>
-														<th rowspan="2"><div align="center">
-																<strong><spring:message code="Label.Remarks" htmlEscape="true" /></strong>
-															</div></th>
+														
 
 													</tr>
 												</thead>
@@ -441,17 +481,11 @@ function changeColor() {
 															<td><div align="center">
 																	<strong>${POST_LEVEL.EGovPostName}</strong>
 																</div></td>
-															<td><div align="center">${eGovActivityForMOPR.eGovSupportActivityDetails[index.index].noOfPosts }</div></td>
-															<td><div align="center">${eGovActivityForMOPR.eGovSupportActivityDetails[index.index].unitCost }</div></td>
-															<td><div align="center">${eGovActivityForMOPR.eGovSupportActivityDetails[index.index].months }</div></td>
-															<td><div align="center">${eGovActivityForMOPR.eGovSupportActivityDetails[index.index].funds }</div></td>
-															<td>
-															<c:choose>
-															<c:when test="${eGovActivityForMOPR.eGovSupportActivityDetails[index.index].isApproved}"><i class="fa fa-check" aria-hidden="true" style="color: #00cc00 "></i></c:when>
-															<c:otherwise><i class="fa fa-times" aria-hidden="true" style="color: red"></i></c:otherwise>
-															</c:choose>
-															</td>
-															<td><div align="center">${eGovActivityForMOPR.eGovSupportActivityDetails[index.index].noOfPosts }</div></td>
+															<td><div align="center">${eGovActivityForState.eGovSupportActivityDetails[index.index].noOfPosts }</div></td>
+															<td><div align="center">${eGovActivityForState.eGovSupportActivityDetails[index.index].unitCost }</div></td>
+															<td><div align="center">${eGovActivityForState.eGovSupportActivityDetails[index.index].months }</div></td>
+															<td><div align="center">${eGovActivityForState.eGovSupportActivityDetails[index.index].funds }</div></td>
+															
 														</tr>
 													</c:forEach>
 
@@ -461,7 +495,7 @@ function changeColor() {
 																htmlEscape="true" /></strong>
 													</div></td>
 												<td colspan="4"></td>
-												<td><div align="center">${SPMU_TOTAL_MOPR}</div></td>
+												<td><div align="center">${SPMU_TOTAL_STATE}</div></td>
 											</tr>
 											<tr>
 												<td><div align="center">
@@ -469,7 +503,7 @@ function changeColor() {
 																code="Label.AdditionalRequirement" htmlEscape="true" /></strong>
 													</div></td>
 												<td colspan="4"></td>
-												<td><div align="center">${eGovActivityForMOPR.additionalRequirementSpmu}</div></td>
+												<td><div align="center">${eGovActivityForState.additionalRequirementSpmu}</div></td>
 											</tr>
 											<tr>
 											<!-- spmu loop end here -->
@@ -485,22 +519,11 @@ function changeColor() {
 														<td><div align="center">
 																<strong>${POST_LEVEL.EGovPostName}</strong>
 															</div></td>
-														<td><div align="center">${eGovActivityForMOPR.eGovSupportActivityDetails[index.index].noOfPosts }</div></td>
-														<td><div align="center">${eGovActivityForMOPR.eGovSupportActivityDetails[index.index].unitCost }</div></td>
-														<td><div align="center">${eGovActivityForMOPR.eGovSupportActivityDetails[index.index].months }</div></td>
-														<td><div align="center">${eGovActivityForMOPR.eGovSupportActivityDetails[index.index].funds }</div></td>
-														<td><c:choose>
-																<c:when
-																	test="${eGovActivityForMOPR.eGovSupportActivityDetails[index.index].isApproved}">
-																	<i class="fa fa-check" aria-hidden="true"
-																		style="color: #00cc00"></i>
-																</c:when>
-																<c:otherwise>
-																	<i class="fa fa-times" aria-hidden="true"
-																		style="color: red"></i>
-																</c:otherwise>
-															</c:choose></td>
-														<td><div align="center">${eGovActivityForMOPR.eGovSupportActivityDetails[index.index].noOfPosts }</div></td>
+														<td><div align="center">${eGovActivityForState.eGovSupportActivityDetails[index.index].noOfPosts }</div></td>
+														<td><div align="center">${eGovActivityForState.eGovSupportActivityDetails[index.index].unitCost }</div></td>
+														<td><div align="center">${eGovActivityForState.eGovSupportActivityDetails[index.index].months }</div></td>
+														<td><div align="center">${eGovActivityForState.eGovSupportActivityDetails[index.index].funds }</div></td>
+														
 													</tr>
 												</c:forEach>
 												
@@ -510,7 +533,7 @@ function changeColor() {
 																htmlEscape="true" /></strong>
 													</div></td>
 												<td colspan="4"></td>
-												<td><div align="center">${DPMU_TOTAL_MOPR}</div></td>
+												<td><div align="center">${DPMU_TOTAL_STATE}</div></td>
 											</tr>
 											<tr>
 												<td><div align="center">
@@ -518,7 +541,7 @@ function changeColor() {
 																code="Label.AdditionalRequirement" htmlEscape="true" /></strong>
 													</div></td>
 												<td colspan="4"></td>
-												<td><div align="center">${eGovActivityForMOPR.additionalRequirementDpmu}</div></td>
+												<td><div align="center">${eGovActivityForState.additionalRequirementDpmu}</div></td>
 											</tr>
 											<!-- dpmu loop ends here -->
 											
@@ -528,7 +551,7 @@ function changeColor() {
 																code="Label.TotalProposedFund" htmlEscape="true" /></strong>
 													</div></td>
 												<td colspan="4"></td>
-												<td><div align="center">${eGovActivityForMOPR.additionalRequirementSpmu + SPMU_TOTAL_MOPR + eGovActivityForMOPR.additionalRequirementDpmu + DPMU_TOTAL_MOPR}</div></td>
+												<td><div align="center">${eGovActivityForState.additionalRequirementSpmu + SPMU_TOTAL_STATE + eGovActivityForState.additionalRequirementDpmu + DPMU_TOTAL_STATE}</div></td>
 											</tr>
 										</tbody>
 											</table>

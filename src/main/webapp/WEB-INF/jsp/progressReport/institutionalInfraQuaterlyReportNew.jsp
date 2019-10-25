@@ -11,7 +11,6 @@
  }
 
 </style>
-<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/angular/toastr.css">
 <html>
 	<section class="content">
 		<div class="container-fluid">
@@ -29,7 +28,7 @@
 										<input type="hidden" name="${status.expression}" value="${status.value}" /> 
 						</spring:bind>
 						<spring:bind path="QPR_INSTITUTIONALINFRAQUATERLY.qprInstInfraId" >
-										<input type="hidden" name="${status.expression}" value="${status.value}" /> 
+										<input type="hidden" name="${status.expression}" value="${status.value}" id="qprActivityId" /> 
 						</spring:bind>
 						
 						<span class="errormsg show" ><c:out value='${isError}' /></span>
@@ -131,15 +130,15 @@
 								</td>
 								<td align="center">
 									<spring:bind path="QPR_INSTITUTIONALINFRAQUATERLY.qprInstitutionalInfraDetails[${mindex}].instInfraStatusId" >
-											<select id="instInfraStatusId${mindex}"
-											 class="form-control"  name="${status.expression}" >
-								 			<option value="0">Select Status</option>
+											<form:select id="instInfraStatusId${mindex}"
+											 class="form-control"  path="${status.expression}"  disabled="${QPR_INSTITUTIONALINFRAQUATERLY.isFreeze}">
+								 			<form:option value="0">Select Status</form:option>
 											<c:forEach items="${InstInfraStatus}" var="obj">
 												<c:if test="${obj.trainingInstitueType.trainingInstitueTypeId==bhawanDto.institutionalActivityTypeId }">
-													<option  value="${obj.instInfraStatusId}" >${obj.instInfraStatusName}</option>
+													<form:option  value="${obj.instInfraStatusId}" >${obj.instInfraStatusName}</form:option>
 												</c:if>
 											</c:forEach>
-										</select>
+										</form:select>
 									</spring:bind>
 								</td>
 								<td align="center">
@@ -148,8 +147,8 @@
 								<td align="center">
 								
 										 <spring:bind path="QPR_INSTITUTIONALINFRAQUATERLY.qprInstitutionalInfraDetails[${mindex}].expenditureIncurred" >
-												<input type="text" id="nbs_${sindex}" onkeypress="return isNumber(event)"  name="${status.expression}"  class="form-control"  value="${status.value}" 
-										maxlength="8" style="text-align:right;" required="required" autocomplete="off" onblur="validate_expenditureIncurred('${subcomponentwiseQuaterBalanceList[0].balanceAmount}',this)" />
+												<form:input id="nbs_${sindex}" onkeypress="return isNumber(event)"  path="${status.expression}"  class="form-control"  value="${status.value}" 
+										maxlength="8" style="text-align:right;" required="required" autocomplete="off" onblur="validate_expenditureIncurred('${subcomponentwiseQuaterBalanceList[0].balanceAmount}',this)" readonly="${QPR_INSTITUTIONALINFRAQUATERLY.isFreeze}"/>
 										</spring:bind>
 										<span class="errormsg" id="error_nbs_${sindex}"></span>
 								
@@ -157,7 +156,10 @@
 									</td>
 									<td align="left">
 									<spring:bind path="QPR_INSTITUTIONALINFRAQUATERLY.qprInstitutionalInfraDetails[${mindex}].file" >
-									 <input type="file" id="file"  name="${status.expression}"/><br/>
+									 <c:choose>
+									 	<c:when test="${QPR_INSTITUTIONALINFRAQUATERLY.isFreeze}"><input type="file" id="file"  name="${status.expression}" disabled="disabled"/><br/></c:when>
+									 	<c:otherwise><input type="file" id="file"  name="${status.expression}"/><br/></c:otherwise>
+									 </c:choose>
 									 	<c:if test="${QPR_INSTITUTIONALINFRAQUATERLY.qprInstitutionalInfraDetails[mindex].fileNode.fileNodeId!=null }">
 											<a type="button" class="btn btn-lg btn-success" href="downloadFileNew.html?fileNodeId=${QPR_INSTITUTIONALINFRAQUATERLY.qprInstitutionalInfraDetails[mindex].fileNode.fileNodeId}" target="_blank">
 												<span class="glyphicon glyphicon-download" aria-hidden="true"></span>Download File
@@ -194,7 +196,7 @@
 									</td>
 									<td>
 										<spring:bind path="QPR_INSTITUTIONALINFRAQUATERLY.additionalRequirement" >
-										<input type="text" onkeypress="return isNumber(event)" id="nbs_addReq" class="form-control" name="${status.expression}"  value="${status.value}" onblur="calculcate_total(null,'nbs')"  maxlength="8" style="text-align:right;" autocomplete="off"/>
+										<input type="text" onkeypress="return isNumber(event)" id="nbs_addReq" class="form-control" name="${status.expression}"  value="${status.value}" onblur="calculcate_total(null,'nbs')"  maxlength="8" style="text-align:right;" autocomplete="off" readonly="${QPR_INSTITUTIONALINFRAQUATERLY.isFreeze}"/>
 										</spring:bind>
 										<span class="errormsg" id="error_nbs_addReq"></span>
 									</td>
@@ -293,15 +295,15 @@
 								</td>
 								<td align="center">
 									<spring:bind path="QPR_INSTITUTIONALINFRAQUATERLY.qprInstitutionalInfraDetails[${mindex}].instInfraStatusId" >
-											<select id="instInfraStatusId${mindex}"
-											 class="form-control"  name="${status.expression}" >
+											<form:select id="instInfraStatusId${mindex}"
+											 class="form-control"  path="${status.expression}" disabled="${QPR_INSTITUTIONALINFRAQUATERLY.isFreeze}">
 								 			<option value="0">Select Status</option>
 											<c:forEach items="${InstInfraStatus}" var="obj">
 												<c:if test="${obj.trainingInstitueType.trainingInstitueTypeId==bhawanDto.institutionalActivityTypeId }">
 													<option  value="${obj.instInfraStatusId}" >${obj.instInfraStatusName}</option>
 												</c:if>
 											</c:forEach>
-										</select>
+										</form:select>
 									</spring:bind>
 								</td>
 								<td align="center">
@@ -310,8 +312,8 @@
 								<td align="center">
 								
 										 <spring:bind path="QPR_INSTITUTIONALINFRAQUATERLY.qprInstitutionalInfraDetails[${mindex}].expenditureIncurred" >
-												<input type="text" id="nbd_${sindex}" onkeypress="return isNumber(event)"  name="${status.expression}"  class="form-control"  value="${status.value}" 
-										maxlength="8" style="text-align:right;" required="required" autocomplete="off" onblur="validate_expenditureIncurred('${subcomponentwiseQuaterBalanceList[1].balanceAmount}',this,null)"/>
+												<form:input id="nbd_${sindex}" onkeypress="return isNumber(event)"  path="${status.expression}"  class="form-control"  value="${status.value}" 
+										maxlength="8" style="text-align:right;" required="required" autocomplete="off" onblur="validate_expenditureIncurred('${subcomponentwiseQuaterBalanceList[1].balanceAmount}',this,null)" readonly="${QPR_INSTITUTIONALINFRAQUATERLY.isFreeze}"/>
 										</spring:bind>
 										<span class="errormsg" id="error_nbd_${sindex}"></span>
 								
@@ -319,7 +321,10 @@
 									</td>
 									<td align="left">
 									<spring:bind path="QPR_INSTITUTIONALINFRAQUATERLY.qprInstitutionalInfraDetails[${mindex}].file" >
-									 <input type="file" id="file"  name="${status.expression}"/><br/>
+									 <c:choose>
+									 	<c:when test="${QPR_INSTITUTIONALINFRAQUATERLY.isFreeze}"><input type="file" id="file"  name="${status.expression}" disabled="disabled"/><br/></c:when>
+									 	<c:otherwise><input type="file" id="file"  name="${status.expression}"/><br/></c:otherwise>
+									 </c:choose>
 									 	<c:if test="${QPR_INSTITUTIONALINFRAQUATERLY.qprInstitutionalInfraDetails[mindex].fileNode.fileNodeId!=null }">
 											<a type="button" class="btn btn-lg btn-success" href="downloadFileNew.html?fileNodeId=${QPR_INSTITUTIONALINFRAQUATERLY.qprInstitutionalInfraDetails[mindex].fileNode.fileNodeId}" target="_blank">
 												<span class="glyphicon glyphicon-download" aria-hidden="true"></span>Download File
@@ -353,7 +358,7 @@
 									</td>
 									<td>
 										<spring:bind path="QPR_INSTITUTIONALINFRAQUATERLY.additionalRequirementDPRC" >
-										<input type="text" onkeypress="return isNumber(event)" id="nbd_addReq" class="form-control" name="${status.expression}"  value="${status.value}" onblur="calculcate_total(null,'nbd')"  maxlength="8" style="text-align:right;" autocomplete="off"/>
+										<input type="text" onkeypress="return isNumber(event)" id="nbd_addReq" class="form-control" name="${status.expression}"  value="${status.value}" onblur="calculcate_total(null,'nbd')"  maxlength="8" style="text-align:right;" autocomplete="off" readonly="${QPR_INSTITUTIONALINFRAQUATERLY.isFreeze}"/>
 										</spring:bind>
 										<span class="errormsg" id="error_nbd_addReq"></span>
 									</td>
@@ -453,15 +458,15 @@
 								</td>
 								<td align="center">
 									<spring:bind path="QPR_INSTITUTIONALINFRAQUATERLY.qprInstitutionalInfraDetails[${mindex}].instInfraStatusId" >
-											<select id="instInfraStatusId${mindex}"
-											 class="form-control"  name="${status.expression}" >
+											<form:select id="instInfraStatusId${mindex}"
+											 class="form-control"  path="${status.expression}" disabled="${QPR_INSTITUTIONALINFRAQUATERLY.isFreeze}" >
 								 			<option value="0">Select Status</option>
 											<c:forEach items="${InstInfraStatus}" var="obj">
 												<c:if test="${obj.trainingInstitueType.trainingInstitueTypeId==bhawanDto.institutionalActivityTypeId }">
 													<option  value="${obj.instInfraStatusId}" >${obj.instInfraStatusName}</option>
 												</c:if>
 											</c:forEach>
-										</select>
+										</form:select>
 									</spring:bind>
 								</td>
 								<td align="center">
@@ -470,15 +475,18 @@
 								<td align="center">
 								
 										 <spring:bind path="QPR_INSTITUTIONALINFRAQUATERLY.qprInstitutionalInfraDetails[${mindex}].expenditureIncurred" >
-												<input type="text" id="cfs_${sindex}" onkeypress="return isNumber(event)"  name="${status.expression}"  class="form-control"  value="${status.value}" 
-										maxlength="8" style="text-align:right;" required="required" autocomplete="off" onblur="validate_expenditureIncurred('${subcomponentwiseQuaterBalanceList[2].balanceAmount}',this,null)"/>
+												<form:input id="cfs_${sindex}" onkeypress="return isNumber(event)"  path="${status.expression}"  class="form-control"  value="${status.value}" 
+										maxlength="8" style="text-align:right;" required="required" autocomplete="off" onblur="validate_expenditureIncurred('${subcomponentwiseQuaterBalanceList[2].balanceAmount}',this,null)" readonly="${QPR_INSTITUTIONALINFRAQUATERLY.isFreeze}"/>
 										</spring:bind>
 										<span class="errormsg" id="error_cfs_${sindex}"></span>
 										
 									</td>
 									<td align="left">
 									<spring:bind path="QPR_INSTITUTIONALINFRAQUATERLY.qprInstitutionalInfraDetails[${mindex}].file" >
-									 <input type="file" id="file"  name="${status.expression}"/><br/>
+									 <c:choose>
+									 	<c:when test="${QPR_INSTITUTIONALINFRAQUATERLY.isFreeze}"><input type="file" id="file"  name="${status.expression}" disabled="disabled"/><br/></c:when>
+									 	<c:otherwise><input type="file" id="file"  name="${status.expression}"/><br/></c:otherwise>
+									 </c:choose>
 									 	<c:if test="${QPR_INSTITUTIONALINFRAQUATERLY.qprInstitutionalInfraDetails[mindex].fileNode.fileNodeId!=null }">
 											<a type="button" class="btn btn-lg btn-success" href="downloadFileNew.html?fileNodeId=${QPR_INSTITUTIONALINFRAQUATERLY.qprInstitutionalInfraDetails[mindex].fileNode.fileNodeId}" target="_blank">
 												<span class="glyphicon glyphicon-download" aria-hidden="true"></span>Download File
@@ -586,15 +594,15 @@
 								</td>
 								<td align="center">
 									<spring:bind path="QPR_INSTITUTIONALINFRAQUATERLY.qprInstitutionalInfraDetails[${mindex}].instInfraStatusId" >
-											<select id="instInfraStatusId${mindex}"
-											 class="form-control"  name="${status.expression}" >
+											<form:select id="instInfraStatusId${mindex}"
+											 class="form-control"  path="${status.expression}" disabled="${QPR_INSTITUTIONALINFRAQUATERLY.isFreeze}">
 								 			<option value="0">Select Status</option>
 											<c:forEach items="${InstInfraStatus}" var="obj">
 												<c:if test="${obj.trainingInstitueType.trainingInstitueTypeId==bhawanDto.institutionalActivityTypeId }">
 													<option  value="${obj.instInfraStatusId}" >${obj.instInfraStatusName}</option>
 												</c:if>
 											</c:forEach>
-										</select>
+										</form:select>
 									</spring:bind>
 								</td>
 								<td align="center">
@@ -603,15 +611,18 @@
 								<td align="center">
 								
 										 <spring:bind path="QPR_INSTITUTIONALINFRAQUATERLY.qprInstitutionalInfraDetails[${mindex}].expenditureIncurred" >
-												<input type="text" id="cfd_${sindex}" onkeypress="return isNumber(event)"  name="${status.expression}"  class="form-control"  value="${status.value}" 
-										maxlength="8" style="text-align:right;" required="required" autocomplete="off" onblur="validate_expenditureIncurred('${subcomponentwiseQuaterBalanceList[3].balanceAmount}',this,null)"/>
+												<form:input id="cfd_${sindex}" onkeypress="return isNumber(event)"  path="${status.expression}"  class="form-control"  value="${status.value}" 
+										maxlength="8" style="text-align:right;" required="required" autocomplete="off" onblur="validate_expenditureIncurred('${subcomponentwiseQuaterBalanceList[3].balanceAmount}',this,null)" readonly="${QPR_INSTITUTIONALINFRAQUATERLY.isFreeze}"/>
 										</spring:bind>
 										<span class="errormsg" id="error_cfd_${sindex}"></span>
 										
 									</td>
 									<td align="left">
 									<spring:bind path="QPR_INSTITUTIONALINFRAQUATERLY.qprInstitutionalInfraDetails[${mindex}].file" >
-									 <input type="file" id="file"  name="${status.expression}"/><br/>
+									 <c:choose>
+									 	<c:when test="${QPR_INSTITUTIONALINFRAQUATERLY.isFreeze}"><input type="file" id="file"  name="${status.expression}" disabled="disabled"/><br/></c:when>
+									 	<c:otherwise><input type="file" id="file"  name="${status.expression}"/><br/></c:otherwise>
+									 </c:choose>
 									 	<c:if test="${QPR_INSTITUTIONALINFRAQUATERLY.qprInstitutionalInfraDetails[mindex].fileNode.fileNodeId!=null }">
 											<a type="button" class="btn btn-lg btn-success" href="downloadFileNew.html?fileNodeId=${QPR_INSTITUTIONALINFRAQUATERLY.qprInstitutionalInfraDetails[mindex].fileNode.fileNodeId}" target="_blank">
 												<span class="glyphicon glyphicon-download" aria-hidden="true"></span>Download File
@@ -675,27 +686,43 @@
 							</div>
                          
                          </c:if>
-						
+
+						<div class="form-group text-right">
+
+							<c:if test="${installementExist}">
+								<form:button onclick="save_data()" type="button"
+									class="btn bg-green waves-effect"
+									disabled="${QPR_INSTITUTIONALINFRAQUATERLY.isFreeze}">
+									<spring:message code="Label.SAVE" htmlEscape="true"/>
+								</form:button>
+								<c:choose>
+									<c:when test="${QPR_INSTITUTIONALINFRAQUATERLY.isFreeze}">
+										<form:button class="btn bg-orange waves-effect"
+											onclick="FreezeAndUnfreeze('unfreeze')">UNFREEZE</form:button>
+									</c:when>
+									<c:otherwise>
+										<form:button class="btn bg-orange waves-effect"
+											disabled="${DISABLE_FREEZE}"
+											onclick="FreezeAndUnfreeze('freeze')">FREEZE</form:button>
+									</c:otherwise>
+								</c:choose>
+								<form:button type="button"
+									data-ng-show="!institutionalInfraActivityPlan.isFreeze"
+									data-ng-click="load_data()"
+									class="btn bg-light-blue waves-effect"
+									disabled="${QPR_INSTITUTIONALINFRAQUATERLY.isFreeze}">
+									<spring:message code="Label.CLEAR" htmlEscape="true" />
+								</form:button>
+							</c:if>
+							<form:button type="button"
+								onclick="onClose('home.html?<csrf:token uri='home.html'/>')"
+								class="btn bg-orange waves-effect">
+								<spring:message code="Label.CLOSE" htmlEscape="true" />
+							</form:button>
+							<br /> <br />
+						</div>
 					</form:form>
-						
-						
-								
-									<div class="form-group text-right">
-									 
-								 <c:if test="${installementExist}">
-								<button  onclick="save_data()" type="button" class="btn bg-green waves-effect"><spring:message code="Label.SAVE" htmlEscape="true" /></button>
-								
-								<button type="button" data-ng-show="!institutionalInfraActivityPlan.isFreeze" data-ng-click="load_data()" class="btn bg-light-blue waves-effect"><spring:message code="Label.CLEAR" htmlEscape="true" /></button>
-								</c:if>
-								<button type="button"
-									onclick="onClose('home.html?<csrf:token uri='home.html'/>')"
-									class="btn bg-orange waves-effect">
-									<spring:message code="Label.CLOSE" htmlEscape="true" />
-								</button>
-								<br/>
-								<br/>
-							</div>
-								</div>
+				</div>
 						</div>
 					</div>
 				</div>

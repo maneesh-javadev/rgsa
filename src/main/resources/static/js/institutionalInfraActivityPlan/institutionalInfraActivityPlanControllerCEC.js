@@ -400,8 +400,8 @@ publicModule.controller("institutionalInfraActivityPlanController", [ '$scope', 
 					isError=true;
 				}else{
 					if(id!='SAN'){
-						if(FSAN>=FUTI){
-							FREQ=FSAN-FUTI;
+						if(FSAN>=FREL){
+							FREQ=FSAN-FREL;
 							if(FSAN>=FREQ ){
 								$scope.institutionalPlanDetailsCFStateCEC[index].fundRequired=FREQ;
 								
@@ -412,7 +412,7 @@ publicModule.controller("institutionalInfraActivityPlanController", [ '$scope', 
 							}
 							
 							if(FREL<FUTI){
-								toastr.error("Fund Utilize must be less then Fund Released ");
+								toastr.error("Fund Utilize must be less then Fund Sanctioned ");
 								isError=true;
 							}
 							
@@ -474,8 +474,8 @@ publicModule.controller("institutionalInfraActivityPlanController", [ '$scope', 
 					isError=true;
 				}else{
 					if(id!='SAN'){
-						if(FSAN>=FUTI){
-							FREQ=FSAN-FUTI;
+						if(FSAN>=FREL){
+							FREQ=FSAN-FREL;
 							if(FSAN>=FREQ ){
 								$scope.institutionalPlanDetailsCFDistrictCEC[index].fundRequired=FREQ;
 								
@@ -486,7 +486,7 @@ publicModule.controller("institutionalInfraActivityPlanController", [ '$scope', 
 							}
 							
 							if(FREL<FUTI){
-								toastr.error("Fund Utilize must be less then Fund Released ");
+								toastr.error("Fund Utilize must be less then Fund Sanctioned");
 								isError=true;
 							}
 							

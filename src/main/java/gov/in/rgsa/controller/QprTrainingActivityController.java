@@ -109,7 +109,9 @@ public class QprTrainingActivityController {
 			if(qprCapacityBuildingActivity != null) {
 				Collections.sort(qprCapacityBuildingActivity.getQprCbActivityDetails(), (o1,o2) -> o1.getQprCbActivityDetailsId() -o2.getQprCbActivityDetailsId());
 				model.addAttribute("QPR_CB_ACT_DATA", qprCapacityBuildingActivity);
+				model.addAttribute("DISABLE_FREEZE", false);
 			}else {
+				model.addAttribute("DISABLE_FREEZE", true);
 				if(qprCbActivity.getQprCbActivityDetails() != null) {
 					qprCbActivity.getQprCbActivityDetails().clear();
 				}
@@ -198,20 +200,34 @@ public class QprTrainingActivityController {
 				MultipartFile multipartFile=null;
 				
 				if(qprTnaTrgEvaluation != null) {
-					multipartFile = qprTnaTrgEvaluation.getFile();
-					uploadReport = attemptUpload(qprTnaTrgEvaluation.getFileNode(), multipartFile, uploadPath, qprCbActivity.getQuarterDuration().getQtrId(),"trntrgeval");
-					qprTnaTrgEvaluation.setFileNode(uploadReport.getFileNode());
-					
+					if((qprTnaTrgEvaluation.getFile() != null && !qprTnaTrgEvaluation.getFile().getOriginalFilename().isEmpty()) || qprTnaTrgEvaluation.getFileNode().getFileNodeId() != null) {
+						multipartFile = qprTnaTrgEvaluation.getFile();
+						uploadReport = attemptUpload(qprTnaTrgEvaluation.getFileNode(), multipartFile, uploadPath, qprCbActivity.getQuarterDuration().getQtrId(),"trntrgeval");
+						if(uploadReport != null)
+							qprTnaTrgEvaluation.setFileNode(uploadReport.getFileNode());
+					}else {
+						qprTnaTrgEvaluation.setFileNode(null);
+					}
 				}
 				if(qprPanchayatLearningCenter != null) {
-					multipartFile = qprPanchayatLearningCenter.getFile();
-					uploadReport = attemptUpload(qprPanchayatLearningCenter.getFileNode(), multipartFile, uploadPath, qprCbActivity.getQuarterDuration().getQtrId(),"panchlearncenter");
-					qprPanchayatLearningCenter.setFileNode(uploadReport.getFileNode());
+					if((qprPanchayatLearningCenter.getFile() != null && !qprPanchayatLearningCenter.getFile().getOriginalFilename().isEmpty()) || qprPanchayatLearningCenter.getFileNode().getFileNodeId() != null) {
+						multipartFile = qprPanchayatLearningCenter.getFile();
+						uploadReport = attemptUpload(qprPanchayatLearningCenter.getFileNode(), multipartFile, uploadPath, qprCbActivity.getQuarterDuration().getQtrId(),"trntrgeval");
+						if(uploadReport != null)
+							qprPanchayatLearningCenter.setFileNode(uploadReport.getFileNode());
+					}else {
+						qprPanchayatLearningCenter.setFileNode(null);
+					}
 				}
 				if(qprHandholdingGpdp != null) {
-					multipartFile = qprHandholdingGpdp.getFile();
-					uploadReport = attemptUpload(qprHandholdingGpdp.getFileNode(), multipartFile, uploadPath, qprCbActivity.getQuarterDuration().getQtrId(),"handHoldinggpdp");
-					qprHandholdingGpdp.setFileNode(uploadReport.getFileNode());
+					if((qprHandholdingGpdp.getFile() != null && !qprHandholdingGpdp.getFile().getOriginalFilename().isEmpty()) || qprHandholdingGpdp.getFileNode().getFileNodeId() != null) {
+						multipartFile = qprHandholdingGpdp.getFile();
+						uploadReport = attemptUpload(qprHandholdingGpdp.getFileNode(), multipartFile, uploadPath, qprCbActivity.getQuarterDuration().getQtrId(),"trntrgeval");
+						if(uploadReport != null)
+							qprHandholdingGpdp.setFileNode(uploadReport.getFileNode());
+					}else {
+						qprHandholdingGpdp.setFileNode(null);
+					}
 				}
 			}
 			

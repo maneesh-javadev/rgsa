@@ -41,7 +41,7 @@ $('document').ready(function(){
 										htmlEscape="true" /></a></li>
 						</ul>
 						<div class="tab-content">
-							<div role="tabpanel" class="container tab-pane active" id="state"
+							<div role="tabpanel" class="container tab-pane " id="MOPR"
 								style="width: auto;">
 								<div class="table-responsive">
 
@@ -69,6 +69,9 @@ $('document').ready(function(){
 													<strong>Funds (in Rs) <br>D = A * B * C
 													</strong>
 												</div></th>
+												<!-- <th data-ng-if="userType != 'S'">Is Approved</th> -->
+												<th data-ng-if="userType != 'S'"><div align="center"><strong>Remarks</strong></div></th>
+										
 											<!-- <th data-ng-if="userType != 'S'">Is Approved</th>
 											<th data-ng-if="userType != 'S'"><div align="center"><strong>Remarks</strong></div></th> -->
 										</tr>
@@ -88,9 +91,9 @@ $('document').ready(function(){
 											
 											
 												<div align="center"
-														data-ng-style="{'color':(pesaPlanForState.pesaPlanDetails[$index].noOfUnits > pesaPlanForCEC.pesaPlanDetails[$index].noOfUnits) ? 'red' : '#00cc00'}">
+														data-ng-style="{'color':(pesaPlanForMOPR.pesaPlanDetails[$index].noOfUnits > pesaPlanForCEC.pesaPlanDetails[$index].noOfUnits) ? 'red' : '#00cc00'}">
 														<strong> 
-															{{pesaPlanForState.pesaPlanDetails[$index].noOfUnits}}
+															{{pesaPlanForMOPR.pesaPlanDetails[$index].noOfUnits}}
 														</strong>
 													</div> 
 													
@@ -106,9 +109,9 @@ $('document').ready(function(){
 											<td>
 											
 													<div align="center"
-														data-ng-style="{'color':(pesaPlanForState.pesaPlanDetails[$index].unitCostPerMonth > pesaPlanForCEC.pesaPlanDetails[$index].unitCostPerMonth) ? 'red' : '#00cc00'}">
+														data-ng-style="{'color':(pesaPlanForMOPR.pesaPlanDetails[$index].unitCostPerMonth > pesaPlanForCEC.pesaPlanDetails[$index].unitCostPerMonth) ? 'red' : '#00cc00'}">
 														<strong> <i style="font-size: 15px" class="fa">&#xf156;</i>
-															{{pesaPlanForState.pesaPlanDetails[$index].unitCostPerMonth}}
+															{{pesaPlanForMOPR.pesaPlanDetails[$index].unitCostPerMonth}}
 														</strong>
 													</div> 
 													
@@ -122,9 +125,9 @@ $('document').ready(function(){
 											</td>
 											<td>
 											<div align="center"
-														data-ng-style="{'color':(pesaPlanForState.pesaPlanDetails[$index].noOfMonths > pesaPlanForCEC.pesaPlanDetails[$index].noOfMonths) ? 'red' : '#00cc00'}">
+														data-ng-style="{'color':(pesaPlanForMOPR.pesaPlanDetails[$index].noOfMonths > pesaPlanForCEC.pesaPlanDetails[$index].noOfMonths) ? 'red' : '#00cc00'}">
 														<strong>
-															{{pesaPlanForState.pesaPlanDetails[$index].noOfMonths}}
+															{{pesaPlanForMOPR.pesaPlanDetails[$index].noOfMonths}}
 														</strong>
 													</div> <input type="text" class="form-control"
 													data-ng-disabled="isFreezeOrUnfreeze"
@@ -141,9 +144,9 @@ $('document').ready(function(){
 											<td>
 											
 													<div align="center"
-														data-ng-style="{'color':(pesaPlanForState.pesaPlanDetails[$index].funds > pesaPlanForCEC.pesaPlanDetails[$index].funds) ? 'red' : '#00cc00'}" >
+														data-ng-style="{'color':(pesaPlanForMOPR.pesaPlanDetails[$index].funds > pesaPlanForCEC.pesaPlanDetails[$index].funds) ? 'red' : '#00cc00'}" >
 														<strong> <i style="font-size: 15px;" class="fa">&#xf156;</i>
-															{{pesaPlanForState.pesaPlanDetails[$index].funds}}
+															{{pesaPlanForMOPR.pesaPlanDetails[$index].funds}}
 														</strong>
 													</div> 
 													
@@ -156,6 +159,26 @@ $('document').ready(function(){
 											
 												
 											</td>
+											<!-- <td>
+													<div align="center"
+														data-ng-if="pesaPlanForMOPR.pesaPlanDetails[$index].isApproved">
+														<i class="fa fa-check" aria-hidden="true"
+															style="color: #00cc00"></i>
+													</div>
+													<div align="center"
+														data-ng-if="!pesaPlanForMOPR.pesaPlanDetails[$index].isApproved">
+														<i class="fa fa-times" aria-hidden="true"
+															style="color: red"></i>
+													</div>
+												</td> -->
+												<td><input type="text" class="form-control"
+													
+													
+													data-ng-model="pesaPlanForCEC.pesaPlanDetails[$index].remarks"
+													maxlength="7" data-ng-disabled="isFreezeOrUnfreeze"
+													style="text-align: right; border: none; border-color: transparent;" />
+												</td>
+									
 											<!-- <td data-ng-if="userType != 'S'">
 												<input type="checkbox" data-ng-disabled="pesaPlan.isFreez"  data-ng-model="pesaPlan.pesaPlanDetails[$index].isApproved"/>
 											</td>
@@ -172,9 +195,9 @@ $('document').ready(function(){
 											<td></td>
 											<td>
 												<div align="center"
-														data-ng-style="{'color':(totalWithoutAddRequirementsForState > totalWithoutAddRequirementsForCEC) ? 'red' : '#00cc00'}">
+														data-ng-style="{'color':(totalWithoutAddRequirementsForMOPR > totalWithoutAddRequirementsForCEC) ? 'red' : '#00cc00'}">
 														<strong> <i style="font-size: 15px" class="fa">&#xf156;</i>
-															{{totalWithoutAddRequirementsForState}}
+															{{totalWithoutAddRequirementsForMOPR}}
 														</strong>
 													</div>
 												<div>
@@ -195,9 +218,9 @@ $('document').ready(function(){
 											<td></td>
 											<td>
 												<div align="center"
-														data-ng-style="{'color':(pesaPlanForState.additionalRequirement > pesaPlanForCEC.additionalRequirement) ? 'red' : '#00cc00'}">
+														data-ng-style="{'color':(pesaPlanForMOPR.additionalRequirement > pesaPlanForCEC.additionalRequirement) ? 'red' : '#00cc00'}">
 														<strong> <i style="font-size: 15px" class="fa">&#xf156;</i>
-															{{pesaPlanForState.additionalRequirement}}
+															{{pesaPlanForMOPR.additionalRequirement}}
 														</strong>
 													</div>
 												<div>
@@ -219,9 +242,9 @@ $('document').ready(function(){
 											<td>
 											
 												<div align="center"
-														data-ng-style="{'color':(grandTotalForState > grandTotalForCEC) ? 'red' : '#00cc00'}">
+														data-ng-style="{'color':(grandTotalForMOPR > grandTotalForCEC) ? 'red' : '#00cc00'}">
 														<strong> <i style="font-size: 15px" class="fa">&#xf156;</i>
-															{{grandTotalForState}}
+															{{grandTotalForMOPR}}
 														</strong>
 													</div>
 												<div>
@@ -276,7 +299,7 @@ $('document').ready(function(){
 									</div>
 								</div>
 							</div>
-							<div role="tabpanel" class="container tab-pane" id="MOPR"
+							<div role="tabpanel" class="container tab-pane active" id="state"
 								style="width: auto;">
 								<div class="table-responsive">
 									<table class="table table-hover dashboard-task-infos"
@@ -303,9 +326,7 @@ $('document').ready(function(){
 													<strong>Funds (in Rs) <br>D = A * B * C
 													</strong>
 												</div></th>
-												<th data-ng-if="userType != 'S'">Is Approved</th>
-												<th data-ng-if="userType != 'S'"><div align="center"><strong>Remarks</strong></div></th>
-										<!-- 	<th data-ng-if="userType != 'S'">Is Approved</th>
+												<!-- 	<th data-ng-if="userType != 'S'">Is Approved</th>
 											<th data-ng-if="userType != 'S'"><div align="center"><strong>Remarks</strong></div></th> -->
 										</tr>
 									</thead>
@@ -314,45 +335,32 @@ $('document').ready(function(){
 											<tr data-ng-repeat="designation in designationArray">
 												
 												<td><div align="center">{{designation.pesaPostName}}</div></td>
-												<td><div align="center">{{pesaPlanForMOPR.pesaPlanDetails[$index].noOfUnits}}</div></td>
-												<td><div align="center">{{pesaPlanForMOPR.pesaPlanDetails[$index].unitCostPerMonth}}</div></td>
+												<td><div align="center">{{pesaPlanForState.pesaPlanDetails[$index].noOfUnits}}</div></td>
+												<td><div align="center">{{pesaPlanForState.pesaPlanDetails[$index].unitCostPerMonth}}</div></td>
 												<td>
-												<div align="center" data-ng-if="designation.pesaPostId != 4">{{pesaPlanForMOPR.pesaPlanDetails[$index].noOfMonths}}</div>
+												<div align="center" data-ng-if="designation.pesaPostId != 4">{{pesaPlanForState.pesaPlanDetails[$index].noOfMonths}}</div>
 												<div align="center" data-ng-if="designation.pesaPostId == 4">1</div>
 												</td>
-												 <td><div align="center">{{pesaPlanForMOPR.pesaPlanDetails[$index].funds}}</div></td>
+												 <td><div align="center">{{pesaPlanForState.pesaPlanDetails[$index].funds}}</div></td>
 												
-												<td>
-													<div align="center"
-														data-ng-if="pesaPlanForMOPR.pesaPlanDetails[$index].isApproved">
-														<i class="fa fa-check" aria-hidden="true"
-															style="color: #00cc00"></i>
-													</div>
-													<div align="center"
-														data-ng-if="!pesaPlanForMOPR.pesaPlanDetails[$index].isApproved">
-														<i class="fa fa-times" aria-hidden="true"
-															style="color: red"></i>
-													</div>
-												</td>
-												<td><div align="center">{{pesaPlanForMOPR.pesaPlanDetails[$index].remarks}}</div></td>
-											</tr>
+														</tr>
 											<tr>
 												<th colspan="4" align="center">Total Funds</th>
-												<th><div align="center">{{totalWithoutAddRequirementsForMOPR}}</div></th>
+												<th><div align="center">{{totalWithoutAddRequirementsForState}}</div></th>
 												<td></td>
 												<td></td>
 												<td></td>
 											</tr>
 											<tr>
 												<th colspan="4" align="center">Additional Requirement</th>
-												<th><div align="center">{{pesaPlanForMOPR.additionalRequirement}}</div></th>
+												<th><div align="center">{{pesaPlanForState.additionalRequirement}}</div></th>
 												<td></td>
 												<td></td>
 												<td></td>
 											</tr>
 											<tr>
 												<th colspan="4" align="center">Total Proposed Fund</th>
-												<th><div align="center">{{grandTotalForMOPR}}</div></th>
+												<th><div align="center">{{grandTotalForState}}</div></th>
 												<td></td>
 												<td></td>
 												<td></td>

@@ -63,7 +63,7 @@ public class CapacityBuildingOneController {
 		/*
 		 * userPreference.setMenuId(menuId); commented becoz it is stopping the url
 		 * during forward plan @RequestParam(value = "menuId") int menuId , paste this
-		 * in the argument is used in future
+		 * in the argument if used in future
 		 */
 		
 		String status = basicInfoService.fillFirstBasicInfo();

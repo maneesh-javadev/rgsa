@@ -81,22 +81,22 @@ function calculateGrandTotal(){
 }
 
 function onloadChangeColor(){
-	+$("#noOfGpID").val() < +$("#noOfGpIDState").text() ? $("#noOfGpIDState").css("color","red") : $("#noOfGpIDState").css("color","#00cc00");
-	+$("#aspirational").val() < +$("#aspirationalState").text() ? $("#aspirationalState").css("color","red") : $("#aspirationalState").css("color","#00cc00");
-	+$("#unitCostId").val() < +$("#unitCostIdState").text() ? $("#unitCostIdState").css("color","red") : $("#unitCostIdState").css("color","#00cc00");
-	+$("#additionalRequirementId").val() < +$("#additionalRequirementIdState").text() ? $("#additionalRequirementIdState").css("color","red") : $("#additionalRequirementIdState").css("color","#00cc00");
-	+$("#fund").val() < + $("#fundState").text() ? $("#fundState").css("color","red") : $("#fundState").css("color","#00cc00");
-	+$("#grandTotalId").val() < +$("#grandTotalIdState").text() ? $("#grandTotalIdState").css("color","red") : $("#grandTotalIdState").css("color","#00cc00");
+	+$("#noOfGpID").val() < +$("#noOfGpIDMopr").text() ? $("#noOfGpIDMopr").css("color","red") : $("#noOfGpIDMopr").css("color","#00cc00");
+	+$("#aspirational").val() < +$("#aspirationalMopr").text() ? $("#aspirationalMopr").css("color","red") : $("#aspirationalMopr").css("color","#00cc00");
+	+$("#unitCostId").val() < +$("#unitCostIdMopr").text() ? $("#unitCostIdMopr").css("color","red") : $("#unitCostIdMopr").css("color","#00cc00");
+	+$("#additionalRequirementId").val() < +$("#additionalRequirementIdMopr").text() ? $("#additionalRequirementIdMopr").css("color","red") : $("#additionalRequirementIdMopr").css("color","#00cc00");
+	+$("#fund").val() < + $("#fundMopr").text() ? $("#fundMopr").css("color","red") : $("#fundMopr").css("color","#00cc00");
+	+$("#grandTotalId").val() < +$("#grandTotalIdMopr").text() ? $("#grandTotalIdMopr").css("color","red") : $("#grandTotalIdMopr").css("color","#00cc00");
 }
 
 function changeColor(txt){
-	if(+$("#"+txt).val() < +$("#"+txt+"State").text() ){
-		$("#"+txt+"State").css("color","red");
+	if(+$("#"+txt).val() < +$("#"+txt+"Mopr").text() ){
+		$("#"+txt+"Mopr").css("color","red");
 	}else{
-		$("#"+txt+"State").css("color","#00cc00");
+		$("#"+txt+"Mopr").css("color","#00cc00");
 	}
-	+$("#grandTotalId").val() < +$("#grandTotalIdState").text() ? $("#grandTotalIdState").css("color","red") : $("#grandTotalIdState").css("color","#00cc00");
-	+$("#fund").val() < + $("#fundState").text() ? $("#fundState").css("color","red") : $("#fundState").css("color","#00cc00");
+	+$("#grandTotalId").val() < +$("#grandTotalIdMopr").text() ? $("#grandTotalIdMopr").css("color","red") : $("#grandTotalIdMopr").css("color","#00cc00");
+	+$("#fund").val() < + $("#fundMopr").text() ? $("#fundMopr").css("color","red") : $("#fundMopr").css("color","#00cc00");
 }
 </script>
 <section class="content">
@@ -120,7 +120,8 @@ function changeColor(txt){
 							</ul>
 
 							<div class="tab-content">
-								<div role="tabpanel" class="container tab-pane active" id="state" style="width: auto;">
+							<div class="container tab-pane active" id="state" 
+									style="width: auto;">
 									<div class="table-responsive">
 										<table class="table table-bordered"">
 											<thead>
@@ -146,6 +147,84 @@ function changeColor(txt){
 															<strong><spring:message code="Label.Funds" htmlEscape="true" />(in Rs.) <br> C = A*B
 															</strong>
 														</div></th>
+													
+												</tr>
+											</thead>
+											<tbody>
+												<c:forEach items="${INFRA_RESOURCE_LIST}"
+													var="INFRA_RESOURCE" varStatus="index">
+													<tr>
+														<td><div align="center">
+																<strong>${INFRA_RESOURCE.eaName}</strong>
+															</div></td>
+														<td><div align="center">${enablementDetailsForState[index.index].noOfUnit}</div></td>
+														<td><div align="center">${enablementDetailsForState[index.index].aspirationalGps}</div></td>
+														<td><div align="center">${enablementDetailsForState[index.index].unitCost}</div></td>
+														<td><div align="center">${enablementDetailsForState[index.index].fund}</div></td>
+														
+													</tr>
+												</c:forEach>
+												<tr>
+													<td><div align="center">
+															<strong><spring:message code="Label.AdditionalRequirement" htmlEscape="true" /></strong>
+														</div></td>
+													<td colspan="3"></td>
+													<td><div align="center">${ENABLEMENT_OF_PANCHAYAT_MODEL.additionalRequirementForState}</div></td>
+												</tr>
+												<tr>
+													<td><div align="center">
+															<strong><spring:message code="Label.TotalProposedFund" htmlEscape="true" /></strong>
+														</div></td>
+													<td colspan="3"></td>
+													<td><div align="center">${ENABLEMENT_OF_PANCHAYAT_MODEL.additionalRequirementForState + enablementDetailsForState[0].fund}</div></td>
+												</tr>
+											</tbody>
+										</table>
+									</div>
+									<div class="col-md-4">
+										<button type="button"
+											onclick="onClose('viewPlanDetails.html?<csrf:token uri='viewPlanDetails.html'/>&stateCode=${STATE_CODE}')"
+											class="btn bg-orange waves-effect">
+											<i class="fa fa-arrow-left" aria-hidden="true"></i>
+											<spring:message code="Label.BACK" htmlEscape="true" />
+										</button>
+									</div>
+									<div class="text-right">
+										<button type="button"onclick="onClose('home.html?<csrf:token uri='home.html'/>')"class="btn bg-orange waves-effect"><spring:message code="Label.CLOSE" htmlEscape="true" /></button>
+									</div>
+								</div>
+								<div role="tabpanel" class="container tab-pane " id="MOPR" style="width: auto;">
+									<div class="table-responsive">
+										<table class="table table-bordered"">
+											<thead>
+												<tr>
+													<th rowspan="2"><div align="center">
+															<strong><spring:message code="Label.E-infrastructureResource" htmlEscape="true" /></strong>
+														</div></th>
+
+													<th rowspan="2"><div align="center">
+															<strong><spring:message code="Label.NoOfGPs" htmlEscape="true" /><br>A
+															</strong>
+														</div></th>
+
+													<th rowspan="2"><div align="center">
+															<strong><spring:message code="Label.NoOfAspirationalGps" htmlEscape="true" /></strong>
+														</div></th>
+
+													<th rowspan="2"><div align="center">
+															<strong><spring:message code="Label.UnitCost" htmlEscape="true" />(in Rs.) <br></>B
+															</strong>
+														</div></th>
+													<th rowspan="2"><div align="center">
+															<strong><spring:message code="Label.Funds" htmlEscape="true" />(in Rs.) <br> C = A*B
+															</strong>
+														</div></th>
+														<%-- <th rowspan="2"><div align="center">
+															<strong><spring:message code="Label.isApproved" htmlEscape="true" /></strong>
+														</div></th> --%>
+													<th rowspan="2"><div align="center">
+															<strong><spring:message code="Label.Remarks" htmlEscape="true" /></strong>
+														</div></th>
 												</tr>
 											</thead>
 											<tbody>
@@ -158,7 +237,7 @@ function changeColor(txt){
 																<strong>${INFRA_RESOURCE.eaName}</strong>
 															</div></td>
 														<td>
-																<div align="center" id="noOfGpIDState">${enablementDetailsForState[index.index].noOfUnit}</div>
+																<div align="center" id="noOfGpIDMopr">${enablementDetailsForMOPR[index.index].noOfUnit}</div>
 																<form:input maxlength="6"
 																disabled="${enablement.status == 'f'}"
 																onkeypress="return isNumber(event)"
@@ -167,7 +246,7 @@ function changeColor(txt){
 																class="form-control" id="noOfGpID"
 																onchange="return validate()" style="text-align:right;" /></td>
 														<td>
-																<div align="center" id="aspirationalState">${enablementDetailsForState[index.index].aspirationalGps}</div>
+																<div align="center" id="aspirationalMopr">${enablementDetailsForMOPR[index.index].aspirationalGps}</div>
 																<form:input maxlength="6"
 																disabled="${enablement.status == 'f'}"
 																onkeypress="return isNumber(event)"
@@ -176,7 +255,7 @@ function changeColor(txt){
 																class="form-control" id="aspirational"
 																onchange="return validate()" style="text-align:right;" /></td>
 														<td>
-																<div align="center" id="unitCostIdState">${enablementDetailsForState[index.index].unitCost}</div>
+																<div align="center" id="unitCostIdMopr">${enablementDetailsForMOPR[index.index].unitCost}</div>
 																<form:input maxlength="6"
 																disabled="${enablement.status == 'f'}"
 																onkeypress="return isNumber(event)"
@@ -185,12 +264,24 @@ function changeColor(txt){
 																type="text" class="form-control" id="unitCostId"
 																onchange="return validate()" style="text-align:right;" /></td>
 														<td>
-																<div align="center" id="fundState">${enablementDetailsForState[index.index].fund}</div>
+																<div align="center" id="fundMopr">${enablementDetailsForMOPR[index.index].fund}</div>
 																<form:input disabled="true"
 																path="eEnablementDetails[${index.index }].fund"
 																onchange="changeColor('fund')"
 																type="text" class="form-control" id="fund"
 																style="text-align:right;" /></td>
+																<%-- <td><div align="center">
+																<c:choose>
+																	<c:when
+																		test="${enablementDetailsForMOPR[index.index].isApproved eq true}">
+																		<i class="fa fa-check" aria-hidden="true" style="color: #00cc00 "></i>
+																	</c:when>
+																	<c:otherwise>
+																		<i class="fa fa-times" aria-hidden="true" style="color: red"></i>
+																	</c:otherwise>
+																</c:choose>
+															</div></td> --%>
+														<td><div align="center">${enablementDetailsForMOPR[index.index].remarks}</div></td>
 													</tr>
 													<form:hidden path="eEnablementDetails[${index.index }].eeMasterId" value="${INFRA_RESOURCE.eMasterId}" />
 												</c:forEach>
@@ -200,7 +291,7 @@ function changeColor(txt){
 														</div></td>
 													<td colspan="3"></td>
 													<td>
-															<div align="center" id="additionalRequirementIdState">${ENABLEMENT_OF_PANCHAYAT_MODEL.additionalRequirementForState}</div>
+															<div align="center" id="additionalRequirementIdMopr">${ENABLEMENT_OF_PANCHAYAT_MODEL.additionalRequirementForMopr}</div>
 															<form:input path="additionalRequirement"
 															disabled="${enablement.status == 'f'}" type="text"
 															onkeypress="return isNumber(event)"
@@ -216,13 +307,15 @@ function changeColor(txt){
 														</div></td>
 													<td colspan="3"></td>
 													<td>
-														<div align="center" id="grandTotalIdState">${ENABLEMENT_OF_PANCHAYAT_MODEL.additionalRequirementForState + enablementDetailsForState[0].fund}</div>
+														<div align="center" id="grandTotalIdMopr">${ENABLEMENT_OF_PANCHAYAT_MODEL.additionalRequirementForMopr + enablementDetailsForMOPR[0].fund}</div>
 														<input type="text"
 														onkeypress="return isNumber(event)"
 														onchange="changeColor('grandTotalId')"
 														class="active123 form-control" id="grandTotalId"
 														readonly="readonly" style="text-align: right;" /></td>
+														
 												</tr>
+												
 											</tbody>
 										</table>
 									</div>
@@ -257,95 +350,7 @@ function changeColor(txt){
 									</div>
 								</div>
 								</div>
-								<div class="container tab-pane fade" id="MOPR"
-									style="width: auto;">
-									<div class="table-responsive">
-										<table class="table table-bordered"">
-											<thead>
-												<tr>
-													<th rowspan="2"><div align="center">
-															<strong><spring:message code="Label.E-infrastructureResource" htmlEscape="true" /></strong>
-														</div></th>
-
-													<th rowspan="2"><div align="center">
-															<strong><spring:message code="Label.NoOfGPs" htmlEscape="true" /><br>A
-															</strong>
-														</div></th>
-
-													<th rowspan="2"><div align="center">
-															<strong><spring:message code="Label.NoOfAspirationalGps" htmlEscape="true" /></strong>
-														</div></th>
-
-													<th rowspan="2"><div align="center">
-															<strong><spring:message code="Label.UnitCost" htmlEscape="true" />(in Rs.) <br></>B
-															</strong>
-														</div></th>
-													<th rowspan="2"><div align="center">
-															<strong><spring:message code="Label.Funds" htmlEscape="true" />(in Rs.) <br> C = A*B
-															</strong>
-														</div></th>
-													<th rowspan="2"><div align="center">
-															<strong><spring:message code="Label.isApproved" htmlEscape="true" /></strong>
-														</div></th>
-													<th rowspan="2"><div align="center">
-															<strong><spring:message code="Label.Remarks" htmlEscape="true" /></strong>
-														</div></th>
-												</tr>
-											</thead>
-											<tbody>
-												<c:forEach items="${INFRA_RESOURCE_LIST}"
-													var="INFRA_RESOURCE" varStatus="index">
-													<tr>
-														<td><div align="center">
-																<strong>${INFRA_RESOURCE.eaName}</strong>
-															</div></td>
-														<td><div align="center">${enablementDetailsForMOPR[index.index].noOfUnit}</div></td>
-														<td><div align="center">${enablementDetailsForMOPR[index.index].aspirationalGps}</div></td>
-														<td><div align="center">${enablementDetailsForMOPR[index.index].unitCost}</div></td>
-														<td><div align="center">${enablementDetailsForMOPR[index.index].fund}</div></td>
-														<td><div align="center">
-																<c:choose>
-																	<c:when
-																		test="${enablementDetailsForMOPR[index.index].isApproved eq true}">
-																		<i class="fa fa-check" aria-hidden="true" style="color: #00cc00 "></i>
-																	</c:when>
-																	<c:otherwise>
-																		<i class="fa fa-times" aria-hidden="true" style="color: red"></i>
-																	</c:otherwise>
-																</c:choose>
-															</div></td>
-														<td><div align="center">${enablementDetailsForMOPR[index.index].remarks}</div></td>
-													</tr>
-												</c:forEach>
-												<tr>
-													<td><div align="center">
-															<strong><spring:message code="Label.AdditionalRequirement" htmlEscape="true" /></strong>
-														</div></td>
-													<td colspan="3"></td>
-													<td><div align="center">${ENABLEMENT_OF_PANCHAYAT_MODEL.additionalRequirementForMopr}</div></td>
-												</tr>
-												<tr>
-													<td><div align="center">
-															<strong><spring:message code="Label.TotalProposedFund" htmlEscape="true" /></strong>
-														</div></td>
-													<td colspan="3"></td>
-													<td><div align="center">${ENABLEMENT_OF_PANCHAYAT_MODEL.additionalRequirementForMopr + enablementDetailsForMOPR[0].fund}</div></td>
-												</tr>
-											</tbody>
-										</table>
-									</div>
-									<div class="col-md-4">
-										<button type="button"
-											onclick="onClose('viewPlanDetails.html?<csrf:token uri='viewPlanDetails.html'/>&stateCode=${STATE_CODE}')"
-											class="btn bg-orange waves-effect">
-											<i class="fa fa-arrow-left" aria-hidden="true"></i>
-											<spring:message code="Label.BACK" htmlEscape="true" />
-										</button>
-									</div>
-									<div class="text-right">
-										<button type="button"onclick="onClose('home.html?<csrf:token uri='home.html'/>')"class="btn bg-orange waves-effect"><spring:message code="Label.CLOSE" htmlEscape="true" /></button>
-									</div>
-								</div>
+								
 							</div>
 						</div>
 						<input type="hidden" name="eEnablementId" value="${enablement.eEnablementId }">

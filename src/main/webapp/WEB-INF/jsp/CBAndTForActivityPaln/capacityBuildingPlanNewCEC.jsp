@@ -89,7 +89,7 @@ table.dataTable thead > tr > th, table.dataTable thead > tr > td {
 										htmlEscape="true" /></a></li>
 						</ul>
 						<div class="tab-content">
-							<div role="tabpanel" class="container tab-pane active" id="state"
+							<div role="tabpanel" class="container tab-pane " id="MOPR"
 								style="width: auto;">
 								<div class="table-responsive">
 
@@ -114,13 +114,14 @@ table.dataTable thead > tr > th, table.dataTable thead > tr > td {
 												<th width="8%" class="element_right"><spring:message code="No.of Days" htmlEscape="true" /></th>
 												<th width="8%" class="element_right"><spring:message code="Unit Cost" htmlEscape="true" /></th>
 												<th width="8%" class="element_right"><spring:message code="Funds Proposed" htmlEscape="true"/></th>
-												<th width="4%" align="center"><spring:message text="Is Approved" htmlEscape="true" /></th>
+												
+											<%-- <th width="4%" align="center"><spring:message text="Is Approved" htmlEscape="true" /></th> --%>
 												<th width="10%" align="center"><spring:message text="Remarks" htmlEscape="true" /></th>
 											</tr>
 										</thead>
 										<tbody>
 										
-										<tr data-ng-repeat="obj in fetchTrainingDetailsListState">
+										<tr data-ng-repeat="obj in fetchTrainingDetailsListMOPR">
 										<td 
 											data-ng-model="training.trainingDetailList[$index].preLevelTrainActivityId"
 											data-ng-init="training.trainingDetailList[$index].preLevelTrainActivityId=fetchTrainingDetailsListState[$index].trainingId"
@@ -134,9 +135,9 @@ table.dataTable thead > tr > th, table.dataTable thead > tr > td {
 										<td align="right">
 													
 													<div align="center"
-														data-ng-style="{'color':(fetchTrainingDetailsListState[$index].noOfParticipants > training.trainingDetailList[$index].noOfParticipants) ? 'red' : '#00cc00'}">
+														data-ng-style="{'color':(fetchTrainingDetailsListMOPR[$index].noOfParticipants > training.trainingDetailList[$index].noOfParticipants) ? 'red' : '#00cc00'}">
 														<strong> 
-															{{fetchTrainingDetailsListState[$index].noOfParticipants}}
+															{{fetchTrainingDetailsListMOPR[$index].noOfParticipants}}
 														</strong>
 													</div>
 													<input type="text" class="form-control element_style"	data-ng-disabled="training.isFreeze" data-ng-change="calculateFund('P',$index);" 
@@ -147,9 +148,9 @@ table.dataTable thead > tr > th, table.dataTable thead > tr > td {
 										<td align="right">
 													
 													<div align="center"
-														data-ng-style="{'color':(fetchTrainingDetailsListState[$index].noOfDays > training.trainingDetailList[$index].noOfDays) ? 'red' : '#00cc00'}">
+														data-ng-style="{'color':(fetchTrainingDetailsListMOPR[$index].noOfDays > training.trainingDetailList[$index].noOfDays) ? 'red' : '#00cc00'}">
 														<strong> 
-															{{fetchTrainingDetailsListState[$index].noOfDays}}
+															{{fetchTrainingDetailsListMOPR[$index].noOfDays}}
 														</strong>
 													</div>
 													<input type="text" class="form-control element_style"	data-ng-disabled="training.isFreeze" data-ng-change="calculateFund('D',$index)" 
@@ -160,9 +161,9 @@ table.dataTable thead > tr > th, table.dataTable thead > tr > td {
 										<td align="right">
 													
 													<div align="center"
-														data-ng-style="{'color':(fetchTrainingDetailsListState[$index].unitCost > training.trainingDetailList[$index].unitCost) ? 'red' : '#00cc00'}">
+														data-ng-style="{'color':(fetchTrainingDetailsListMOPR[$index].unitCost > training.trainingDetailList[$index].unitCost) ? 'red' : '#00cc00'}">
 														<strong> 
-															{{fetchTrainingDetailsListState[$index].unitCost}}
+															{{fetchTrainingDetailsListMOPR[$index].unitCost}}
 														</strong>
 													</div>
 													<input type="text" class="form-control element_style"	data-ng-disabled="training.isFreeze" data-ng-change="calculateFund('U',$index)" 
@@ -173,22 +174,36 @@ table.dataTable thead > tr > th, table.dataTable thead > tr > td {
 										<td align="right">
 													
 													<div align="center"
-														data-ng-style="{'color':(fetchTrainingDetailsListState[$index].funds > training.trainingDetailList[$index].funds) ? 'red' : '#00cc00'}">
+														data-ng-style="{'color':(fetchTrainingDetailsListMOPR[$index].funds > training.trainingDetailList[$index].funds) ? 'red' : '#00cc00'}">
 														<strong> 
-															{{fetchTrainingDetailsListState[$index].funds}}
+															{{fetchTrainingDetailsListMOPR[$index].funds}}
 														</strong>
 													</div>
-													<input type="text" class="form-control element_style"	data-ng-disabled="training.isFreeze"readonly="readonly"
-													data-ng-model="training.trainingDetailList[$index].funds" style="text-align: right; border: none; border-color: transparent;" />
+													<input type="text" class="form-control element_style"	data-ng-disabled="training.isFreeze" 
+													data-ng-model="training.trainingDetailList[$index].funds" readonly="readonly" style="text-align: right; border: none; border-color: transparent;" />
 										</td>
 										
 										
-										<td align="center">
+										<!-- <td align="center">
 											  <input type="checkbox" data-ng-disabled="training.isFreeze" data-ng-model="training.trainingDetailList[$index].isApproved"  />
 										</td>
 										<td align="center">
 											 <textarea cols="40" data-ng-disabled="training.isFreeze" data-ng-model="training.trainingDetailList[$index].remarks" rows="2" class="element-width">{{trainingDetails.remarks}}</textarea>
-										</td>
+										</td> -->
+									<!-- 	<td>
+													<div align="center"
+														data-ng-if="obj.isApproved">
+														<i class="fa fa-check" aria-hidden="true"
+															style="color: #00cc00"></i>
+													</div>
+													<div align="center"
+														data-ng-if="!obj.isApproved">
+														<i class="fa fa-times" aria-hidden="true"
+															style="color: red"></i>
+													</div>
+												</td> -->
+												<td><div align="center"><input type="text" class="form-control element_style"	data-ng-disabled="training.isFreeze"
+													data-ng-model="training.trainingDetailList[$index].remarks" style="text-align: right; border: none; border-color: transparent;" /></div></td>
 										</tr>
 										
 
@@ -208,9 +223,9 @@ table.dataTable thead > tr > th, table.dataTable thead > tr > td {
 									</div>
 									<div class="col-sm-4">
 										<div align="center"
-											data-ng-style="{'color':(allNoOfParticipantsState> allNoOfParticipants) ? 'red' : '#00cc00'}">
+											data-ng-style="{'color':(allNoOfParticipantsMOPR> allNoOfParticipants) ? 'red' : '#00cc00'}">
 											<strong> 
-												{{allNoOfParticipantsState}}
+												{{allNoOfParticipantsMOPR}}
 											</strong>
 										</div>
 										<input type="text" class="form-control" id="subTotal"
@@ -227,9 +242,9 @@ table.dataTable thead > tr > th, table.dataTable thead > tr > td {
 									</div>
 									<div class="col-sm-4">
 										<div align="center"
-											data-ng-style="{'color':(allTrainingFundState> allTrainingFund) ? 'red' : '#00cc00'}">
+											data-ng-style="{'color':(allTrainingFundMOPR> allTrainingFund) ? 'red' : '#00cc00'}">
 											<strong> 
-												{{allTrainingFundState}}
+												{{allTrainingFundMOPR}}
 											</strong>
 										</div>
 										<input type="text" class="form-control" id="subTotal"
@@ -245,9 +260,9 @@ table.dataTable thead > tr > th, table.dataTable thead > tr > td {
 									</div>
 									<div class="col-sm-4">
 										<div align="center"
-														data-ng-style="{'color':(fetchTrainingState.additionalRequirement > training.additionalRequirement) ? 'red' : '#00cc00'}">
+														data-ng-style="{'color':(fetchTrainingMOPR.additionalRequirement > training.additionalRequirement) ? 'red' : '#00cc00'}">
 														<strong> 
-															{{fetchTrainingState.additionalRequirement}}
+															{{fetchTrainingMOPR.additionalRequirement}}
 														</strong>
 										</div>
 										  <input type="text" data-ng-disabled="training.isFreeze" data-ng-change="calculateMasterFund()" data-ng-model="training.additionalRequirement" onkeypress="return isNumber(event)" required="required"  class="form-control" maxlength="9" style="text-align:right;">
@@ -262,9 +277,9 @@ table.dataTable thead > tr > th, table.dataTable thead > tr > td {
 									</div>
 									<div class="col-sm-4">
 										<div align="center"
-											data-ng-style="{'color':(masterFundsState> masterFunds) ? 'red' : '#00cc00'}">
+											data-ng-style="{'color':(masterFundsMOPR> masterFunds) ? 'red' : '#00cc00'}">
 											<strong> 
-												{{masterFundsState}}
+												{{masterFundsMOPR}}
 											</strong>
 										</div>
 										<input type="text" class="form-control" 
@@ -305,7 +320,7 @@ table.dataTable thead > tr > th, table.dataTable thead > tr > td {
 								</div>
 								
 							</div>
-							<div role="tabpanel" class="container tab-pane" id="MOPR"
+							<div role="tabpanel" class="container tab-pane active" id="state"
 								style="width: auto;">
 								<div class="table-responsive">
 									<table class="table table-hover dashboard-task-infos"
@@ -329,13 +344,12 @@ table.dataTable thead > tr > th, table.dataTable thead > tr > td {
 												<th width="8%" class="element_right"><spring:message code="No.of Days" htmlEscape="true" /></th>
 												<th width="8%" class="element_right"><spring:message code="Unit Cost" htmlEscape="true" /></th>
 												<th width="8%" class="element_right"><spring:message code="Funds Proposed" htmlEscape="true"/></th>
-												<th width="4%" align="center"><spring:message text="Is Approved" htmlEscape="true" /></th>
-												<th width="10%" align="center"><spring:message text="Remarks" htmlEscape="true" /></th>
+												
 											</tr>
 										</thead>
 
 										<tbody>
-											<tr data-ng-repeat="obj in fetchTrainingDetailsListMOPR">
+											<tr data-ng-repeat="obj in fetchTrainingDetailsListState">
 													<td>{{$index+1}}</td>
 													<td>{{obj.trainingCategoryName}} </td>
 													<td>{{obj.subjectName}} </td>
@@ -346,19 +360,7 @@ table.dataTable thead > tr > th, table.dataTable thead > tr > td {
 													<td>{{obj.noOfDays}} </td>
 													<td>{{obj.unitCost}} </td>
 													<td>{{obj.funds}} </td>
-												<td>
-													<div align="center"
-														data-ng-if="obj.isApproved">
-														<i class="fa fa-check" aria-hidden="true"
-															style="color: #00cc00"></i>
-													</div>
-													<div align="center"
-														data-ng-if="!obj.isApproved">
-														<i class="fa fa-times" aria-hidden="true"
-															style="color: red"></i>
-													</div>
-												</td>
-												<td><div align="center">{{obj.remarks}}</div></td>
+												
 											</tr>
 											
 										</tbody>
@@ -374,7 +376,7 @@ table.dataTable thead > tr > th, table.dataTable thead > tr > td {
 									</div>
 									<div class="col-sm-4">
 										<input type="text" class="form-control" id="subTotal"
-											value="{{allNoOfParticipantsMOPR}}" readonly="readonly"
+											value="{{allNoOfParticipantsState}}" readonly="readonly"
 											style="text-align: right;">
 									</div>
 								</div>
@@ -387,7 +389,7 @@ table.dataTable thead > tr > th, table.dataTable thead > tr > td {
 									</div>
 									<div class="col-sm-4">
 										<input type="text" class="form-control" id="subTotal"
-											value="{{allTrainingFundMOPR}}" readonly="readonly"
+											value=" {{allTrainingFundState}}" readonly="readonly"
 											style="text-align: right;">
 									</div>
 								</div>
@@ -399,7 +401,7 @@ table.dataTable thead > tr > th, table.dataTable thead > tr > td {
 									</div>
 									<div class="col-sm-4">
 										
-										  <input type="text" readonly="readonly" data-ng-model="fetchTrainingMOPR.additionalRequirement"  class="form-control" style="text-align:right;">
+										  <input type="text" readonly="readonly" data-ng-model="fetchTrainingState.additionalRequirement"  class="form-control" style="text-align:right;">
 									
 									</div>
 								</div>
@@ -411,7 +413,7 @@ table.dataTable thead > tr > th, table.dataTable thead > tr > td {
 									</div>
 									<div class="col-sm-4">
 										<input type="text" class="form-control" 
-											value="{{masterFundsMOPR}}"
+											value="{{masterFundsState}}"
 											readonly="readonly" style="text-align: right;">
 									</div>
 									</div>

@@ -109,6 +109,15 @@ function calTotalExpenditure(){
 	}
 	$('#totalExpenditureId').val(total_expenditure + +$('#additionalReqId').val());
 }
+
+function FreezeAndUnfreeze(msg){
+	var componentId=13;
+	var qprActivityId=$('#qprActivityId').val();
+	var quaterId = $('#quaterDropDownId').val();
+	document.qpqCapacityBuilding.method = "post";
+	document.qpqCapacityBuilding.action = "freezeAndUnfreezeReport.html?<csrf:token uri='freezeAndUnfreezeReport.html'/>&componentId="+componentId+"&qprActivityId="+qprActivityId+"&quaterId="+quaterId+"&msg="+msg;
+	document.qpqCapacityBuilding.submit();
+}
 </script>
 <section class="content">
 	<div class="container-fluid">
@@ -175,20 +184,20 @@ function calTotalExpenditure(){
 												<td><div align="center" id="fundCecId_${index.index}"><strong>${CEC_APPROVED_ACTIVITY.capacityBuildingActivityDetails[index.index].funds}</strong></div></td>
 												<c:choose>
 													<c:when test="${not empty QPR_CB_ACT_DATA}">
-														<td><div align="center"><input type="text" name="qprCbActivityDetails[${index.index}].noOfDaysCompleted" class="form-control Align-Right" id="noOfDaysCompleted_${index.index}" value="${QPR_CB_ACT_DATA.qprCbActivityDetails[index.index].noOfDaysCompleted }"></div></td>
-														<td><div align="center"><input type="text" name="qprCbActivityDetails[${index.index}].noOfUnitsCompleted" class="form-control Align-Right" id="noOfUnitCompleted_${index.index}" value="${QPR_CB_ACT_DATA.qprCbActivityDetails[index.index].noOfUnitsCompleted}"
-																				onkeyup="this.value=this.value.replace(/[^0-9]/g,'');validateNoOfUnits(${index.index});validateFundByAllocatedFund(${index.index})" ></div></td>
-														<td><div align="center"><input type="text" name="qprCbActivityDetails[${index.index}].expenditureIncurred" class="form-control Align-Right" id="expenditureIncurred_${index.index}" value="${QPR_CB_ACT_DATA.qprCbActivityDetails[index.index].expenditureIncurred}"
+														<td><div align="center"><form:input path="qprCbActivityDetails[${index.index}].noOfDaysCompleted" class="form-control Align-Right" id="noOfDaysCompleted_${index.index}" value="${QPR_CB_ACT_DATA.qprCbActivityDetails[index.index].noOfDaysCompleted }" readonly="${QPR_CB_ACT_DATA.isFreeze}"/></div></td>
+														<td><div align="center"><form:input path="qprCbActivityDetails[${index.index}].noOfUnitsCompleted" class="form-control Align-Right" id="noOfUnitCompleted_${index.index}" value="${QPR_CB_ACT_DATA.qprCbActivityDetails[index.index].noOfUnitsCompleted}"
+																				onkeyup="this.value=this.value.replace(/[^0-9]/g,'');validateNoOfUnits(${index.index});validateFundByAllocatedFund(${index.index})" readonly="${QPR_CB_ACT_DATA.isFreeze}"/></div></td>
+														<td><div align="center"><form:input path="qprCbActivityDetails[${index.index}].expenditureIncurred" class="form-control Align-Right" id="expenditureIncurred_${index.index}" value="${QPR_CB_ACT_DATA.qprCbActivityDetails[index.index].expenditureIncurred}"
 																				onkeyup="this.value=this.value.replace(/[^0-9]/g,'');validateFundByAllocatedFund(${index.index});
-																				isNoOfUnitAndExpInurredFilled(${index.index});validateWithCorrespondingFund(${index.index});calTotalExpenditure()" ></div></td>
+																				isNoOfUnitAndExpInurredFilled(${index.index});validateWithCorrespondingFund(${index.index});calTotalExpenditure()" readonly="${QPR_CB_ACT_DATA.isFreeze}"/></div></td>
 													</c:when>
 													<c:otherwise>
-														<td><div align="center"><input type="text" name="qprCbActivityDetails[${index.index}].noOfDaysCompleted" class="form-control Align-Right" id="noOfDaysCompleted_${index.index}"></div></td>
-														<td><div align="center"><input type="text" name="qprCbActivityDetails[${index.index}].noOfUnitsCompleted" class="form-control Align-Right" id="noOfUnitCompleted_${index.index}"
+														<td><div align="center"><form:input path="qprCbActivityDetails[${index.index}].noOfDaysCompleted" class="form-control Align-Right" id="noOfDaysCompleted_${index.index}" readonly="${QPR_CB_ACT_DATA.isFreeze}"/></div></td>
+														<td><div align="center"><form:input path="qprCbActivityDetails[${index.index}].noOfUnitsCompleted" class="form-control Align-Right" id="noOfUnitCompleted_${index.index}"
 																				onkeyup="this.value=this.value.replace(/[^0-9]/g,'');validateFundByAllocatedFund(${index.index});
-																				validateNoOfUnits(${index.index})"></div></td>
-														<td><div align="center"><input type="text" name="qprCbActivityDetails[${index.index}].expenditureIncurred" class="form-control Align-Right" id="expenditureIncurred_${index.index}"
-																				onkeyup="this.value=this.value.replace(/[^0-9]/g,'');validateFundByAllocatedFund(${index.index});isNoOfUnitAndExpInurredFilled(${index.index});validateWithCorrespondingFund(${index.index})"></div></td>
+																				validateNoOfUnits(${index.index})" readonly="${QPR_CB_ACT_DATA.isFreeze}"/></div></td>
+														<td><div align="center"><form:input path="qprCbActivityDetails[${index.index}].expenditureIncurred" class="form-control Align-Right" id="expenditureIncurred_${index.index}"
+																				onkeyup="this.value=this.value.replace(/[^0-9]/g,'');validateFundByAllocatedFund(${index.index});isNoOfUnitAndExpInurredFilled(${index.index});validateWithCorrespondingFund(${index.index})" readonly="${QPR_CB_ACT_DATA.isFreeze}"/></div></td>
 													</c:otherwise>
 												</c:choose>
 												<!----------------------------- modal Starts  here------------------------------------------------ -->
@@ -209,13 +218,13 @@ function calTotalExpenditure(){
 														<td><button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#tnaTrainingEavltionModal2">Fill Details</button></td>
 													</c:when>
 													
-													<c:when test="${index.index eq 4 }">
+													<%-- <c:when test="${index.index eq 4 }">
 														<td><button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#exposureVisitState">Fill Details</button></td>
 													</c:when>
 													
 													<c:when test="${index.index eq 5 }">
 														<td><button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#exposureVisitOutside">Fill Details</button></td>
-													</c:when>
+													</c:when> --%>
 													
 													<c:when test="${index.index eq 6}">
 														<td><button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#handHoldingModal">Fill Details</button></td>
@@ -232,7 +241,7 @@ function calTotalExpenditure(){
 												<!----------------------------- modal ends  here------------------------------------------------ -->
 											</tr>
 											<c:if test="${not empty QPR_CB_ACT_DATA}">
-												<input type="hidden" name="qpCbActivityId" value="${QPR_CB_ACT_DATA.qpCbActivityId}" />
+												<input type="hidden" name="qpCbActivityId" value="${QPR_CB_ACT_DATA.qpCbActivityId}" id="qprActivityId"/>
 												<input type="hidden" name="qprCbActivityDetails[${index.index}].qprCbActivityDetailsId" value="${QPR_CB_ACT_DATA.qprCbActivityDetails[index.index].qprCbActivityDetailsId }" />
 												<input type="hidden" name="qprCbActivityDetails[${index.index}].capacityBuildingActivityDetails.capacityBuildingActivityDetailsId" value="${CEC_APPROVED_ACTIVITY.capacityBuildingActivityDetails[index.index].capacityBuildingActivityDetailsId}" />
 											</c:if>
@@ -240,7 +249,7 @@ function calTotalExpenditure(){
 										<tr>
 										<th colspan="3"><div align="center">Additional Requirement</div></th>
 										<th colspan="1"><div align="center" id="additionalReqStateId">${CEC_APPROVED_ACTIVITY.additionalRequirement }</div></th>
-										<td colspan="3"><div align="right"><input type="text" name="additionalRequirement" id="additionalReqId" value="${QPR_CB_ACT_DATA.additionalRequirement}" class="form-control validate Align-Right" onkeyup="validateAddReq();calTotalExpenditure()"></div></td>
+										<td colspan="3"><div align="right"><form:input path="additionalRequirement" id="additionalReqId" value="${QPR_CB_ACT_DATA.additionalRequirement}" class="form-control validate Align-Right" onkeyup="validateAddReq();calTotalExpenditure()" readonly="${QPR_CB_ACT_DATA.isFreeze}"/></div></td>
 									</tr>
 										<tr>
 											<th colspan="2"><div align="center">Total Expenditure Incurred</div></th>
@@ -282,12 +291,11 @@ function calTotalExpenditure(){
 																		</thead>
 																		<tbody>
 																			<tr>
-																				<td><input type="text"
-																					name="qprCbActivityDetails[0].qprTnaTrgEvaluation.noOfPersons"
+																				<td><form:input path="qprCbActivityDetails[0].qprTnaTrgEvaluation.noOfPersons"
 																					value="${QPR_CB_ACT_DATA.qprCbActivityDetails[0].qprTnaTrgEvaluation.noOfPersons}"
-																					class="active12 form-control Align-Right"></td>
+																					class="active12 form-control Align-Right" readonly="${QPR_CB_ACT_DATA.isFreeze}"/></td>
 																				<td><select class="form-control"
-																					name="qprCbActivityDetails[0].qprTnaTrgEvaluation.trngSubject">
+																					name="qprCbActivityDetails[0].qprTnaTrgEvaluation.trngSubject" disabled="${QPR_CB_ACT_DATA.isFreeze}">
 																						<option value="">select</option>
 																						<c:forEach items="${SUBJECTS_LIST}" var="sbjctLst">
 																					<c:choose>
@@ -301,8 +309,11 @@ function calTotalExpenditure(){
 																					</c:choose>
 																				</c:forEach>
 																				</select></td>
-																				<td><input name="qprCbActivityDetails[0].qprTnaTrgEvaluation.file"
-																						type="file" class="active12 form-control" />
+																				<td>
+																					<c:choose>
+																						<c:when test="${QPR_CB_ACT_DATA.isFreeze}"><input name="qprCbActivityDetails[0].qprTnaTrgEvaluation.file" type="file" class="active12 form-control" disabled="disabled"/></c:when>
+																						<c:otherwise><input name="qprCbActivityDetails[0].qprTnaTrgEvaluation.file" type="file" class="active12 form-control" disabled="disabled"/></c:otherwise>
+																					</c:choose>
 																					<c:if test="${not empty QPR_CB_ACT_DATA and not empty QPR_CB_ACT_DATA.qprCbActivityDetails[0].qprTnaTrgEvaluation.fileNode.uploadName}">
 																						<input type="button" value="Download File" class="btn bg-grey waves-effect" onclick='showImage("TnaTrgEvaluation",${QPR_CB_ACT_DATA.qprCbActivityDetails[0].qprTnaTrgEvaluation.qprTnaTrgEvaluationId});' />
 																					</c:if>
@@ -355,15 +366,14 @@ function calTotalExpenditure(){
 																			<tr>
 																				<c:choose>
 																					<c:when test="${QPR_CB_ACT_DATA.qprCbActivityDetails[1].qprTrgMaterialAndModule.materialUsed eq true}">
-																						<td><div align="center"><input type="radio" name="qprCbActivityDetails[1].qprTrgMaterialAndModule.materialUsed" class="active12 form-control" checked="checked"></div></td>
+																						<td><div align="center"><input type="radio" name="qprCbActivityDetails[1].qprTrgMaterialAndModule.materialUsed" class="active12 form-control" checked="checked" disabled="${QPR_CB_ACT_DATA.isFreeze}"></div></td>
 																					</c:when>
-																					<c:otherwise><td><div align="center"><input type="radio" name="qprCbActivityDetails[1].qprTrgMaterialAndModule.materialUsed" class="active12 form-control"></div></td></c:otherwise>
+																					<c:otherwise><td><div align="center"><input type="radio" name="qprCbActivityDetails[1].qprTrgMaterialAndModule.materialUsed" class="active12 form-control" disabled="${QPR_CB_ACT_DATA.isFreeze}"></div></td></c:otherwise>
 																				</c:choose>
 										
-																				<td><div align="center"><input type="text"
-																					name="qprCbActivityDetails[1].qprTrgMaterialAndModule.instituteInvolved"
+																				<td><div align="center"><form:input path="qprCbActivityDetails[1].qprTrgMaterialAndModule.instituteInvolved"
 																					value="${QPR_CB_ACT_DATA.qprCbActivityDetails[1].qprTrgMaterialAndModule.instituteInvolved}"
-																					class="active12 form-control Align-Right" /></div></td>
+																					class="active12 form-control Align-Right" readonly="${QPR_CB_ACT_DATA.isFreeze}"/></div></td>
 																			</tr>
 																	</table>
 																</div>
@@ -408,12 +418,12 @@ function calTotalExpenditure(){
 																<tr> 
 																	<c:choose>
 																		<c:when test="${QPR_CB_ACT_DATA.qprCbActivityDetails[2].qprTrgMaterialAndModule.materialUsed eq true}">
-																			<td><div align="center"><input type="radio" name="qprCbActivityDetails[2].qprTrgMaterialAndModule.materialUsed" class="form-control" value="${QPR_CB_ACT_DATA.qprCbActivityDetails[2].qprTrgMaterialAndModule.materialUsed}" checked="checked"></div></td>
+																			<td><div align="center"><input type="radio" name="qprCbActivityDetails[2].qprTrgMaterialAndModule.materialUsed" class="form-control" value="${QPR_CB_ACT_DATA.qprCbActivityDetails[2].qprTrgMaterialAndModule.materialUsed}" checked="checked" disabled="${QPR_CB_ACT_DATA.isFreeze}"></div></td>
 																		</c:when>
-																		<c:otherwise><td><div align="center"><input type="radio" name="qprCbActivityDetails[2].qprTrgMaterialAndModule.materialUsed" class="form-control"> </div></td></c:otherwise>
+																		<c:otherwise><td><div align="center"><input type="radio" name="qprCbActivityDetails[2].qprTrgMaterialAndModule.materialUsed" class="form-control" disabled="${QPR_CB_ACT_DATA.isFreeze}"> </div></td></c:otherwise>
 																	</c:choose>
 																	
-																	<td><div align="center"><input type="text" name="qprCbActivityDetails[2].qprTrgMaterialAndModule.instituteInvolved" value="${QPR_CB_ACT_DATA.qprCbActivityDetails[2].qprTrgMaterialAndModule.instituteInvolved}" class="active12 Align-Right form-control"  /></div></td>
+																	<td><div align="center"><form:input path="qprCbActivityDetails[2].qprTrgMaterialAndModule.instituteInvolved" value="${QPR_CB_ACT_DATA.qprCbActivityDetails[2].qprTrgMaterialAndModule.instituteInvolved}" class="active12 Align-Right form-control"  readonly="${QPR_CB_ACT_DATA.isFreeze}"/></div></td>
 																</tr>
 															</table>
 														</div>
@@ -457,9 +467,9 @@ function calTotalExpenditure(){
 																</thead>
 																<tbody>
 																<tr>
-																	<td><input type="text" name="qprCbActivityDetails[3].qprTnaTrgEvaluation.noOfPersons" value="${QPR_CB_ACT_DATA.qprCbActivityDetails[3].qprTnaTrgEvaluation.noOfPersons}" class="active12 Align-Right form-control Align-Right"></td>
+																	<td><form:input path="qprCbActivityDetails[3].qprTnaTrgEvaluation.noOfPersons" value="${QPR_CB_ACT_DATA.qprCbActivityDetails[3].qprTnaTrgEvaluation.noOfPersons}" class="active12 Align-Right form-control Align-Right" readonly="${QPR_CB_ACT_DATA.isFreeze}"/></td>
 																	<td>
-																		<select name="qprCbActivityDetails[3].qprTnaTrgEvaluation.trngSubject" class="form-control">
+																		<select name="qprCbActivityDetails[3].qprTnaTrgEvaluation.trngSubject" class="form-control" disabled="${QPR_CB_ACT_DATA.isFreeze}">
 																			<option value="">select</option>
 																			<c:forEach items="${SUBJECTS_LIST}" var="sbjctLst">
 																				<c:choose>
@@ -474,7 +484,11 @@ function calTotalExpenditure(){
 																			</c:forEach>
 																		</select>
 																	</td>
-																	<td><input name="qprCbActivityDetails[3].qprTnaTrgEvaluation.file" type="file" class="form-control"/>
+																	<td>
+																	<c:choose>
+																		<c:when test="${QPR_CB_ACT_DATA.isFreeze}"><input name="qprCbActivityDetails[3].qprTnaTrgEvaluation.file" type="file" class="form-control" disabled="disabled"/></c:when>
+																		<c:otherwise><input name="qprCbActivityDetails[3].qprTnaTrgEvaluation.file" type="file" class="form-control"/></c:otherwise>
+																	</c:choose>
 																	<c:if test="${not empty QPR_CB_ACT_DATA and  not empty QPR_CB_ACT_DATA.qprCbActivityDetails[3].qprTnaTrgEvaluation.fileNode.uploadName}">
 																		<input type="button" value="Download File" class="btn bg-grey waves-effect" onclick='showImage("TnaTrgEvaluation",${QPR_CB_ACT_DATA.qprCbActivityDetails[3].qprTnaTrgEvaluation.qprTnaTrgEvaluationId});' />
 																	</c:if>
@@ -521,9 +535,13 @@ function calTotalExpenditure(){
 																</thead>
 																<tbody>
 																<tr>
-																	<td><input name="qprCbActivityDetails[6].qprHandholdingGpdp.instituteInvolved" value="${QPR_CB_ACT_DATA.qprCbActivityDetails[6].qprHandholdingGpdp.instituteInvolved}" type="text" class="active12 Align-Right form-control"/></td>
+																	<td><form:input path="qprCbActivityDetails[6].qprHandholdingGpdp.instituteInvolved" value="${QPR_CB_ACT_DATA.qprCbActivityDetails[6].qprHandholdingGpdp.instituteInvolved}" class="active12 Align-Right form-control" readonly="${QPR_CB_ACT_DATA.isFreeze}"/></td>
 																	<td>
-																	<input name="qprCbActivityDetails[6].qprHandholdingGpdp.file" type="file" class="active12 form-control"/>
+																	<c:choose>
+																		<c:when test="${QPR_CB_ACT_DATA.isFreeze}"><input name="qprCbActivityDetails[6].qprHandholdingGpdp.file" type="file" class="active12 form-control" disabled="disabled"/></c:when>
+																		<c:otherwise><input name="qprCbActivityDetails[6].qprHandholdingGpdp.file" type="file" class="active12 form-control"/></c:otherwise>
+																	</c:choose>
+																	
 																	<c:if test="${not empty QPR_CB_ACT_DATA and  not empty QPR_CB_ACT_DATA.qprCbActivityDetails[6].qprHandholdingGpdp.fileNode.uploadName}">
 																		<input type="button" value="Download File" class="btn bg-grey waves-effect" onclick='showImage("HandholdingGpdp",${QPR_CB_ACT_DATA.qprCbActivityDetails[6].qprHandholdingGpdp.qprHandholdingGpdpId});' />
 																	</c:if>
@@ -570,7 +588,11 @@ function calTotalExpenditure(){
 																<tbody>
 																<tr>
 																	<td>
-																		<div align="center" class="row"><input name="qprCbActivityDetails[7].qprPanchayatLearningCenter.file" type="file" class="active12 form-control"/>
+																		<div align="center" class="row">
+																		<c:choose>
+																			<c:when test="${QPR_CB_ACT_DATA.isFreeze}"><input name="qprCbActivityDetails[7].qprPanchayatLearningCenter.file" type="file" class="active12 form-control" disabled="disabled"/></c:when>
+																			<c:otherwise><input name="qprCbActivityDetails[7].qprPanchayatLearningCenter.file" type="file" class="active12 form-control"/></c:otherwise>
+																		</c:choose>
 																		<c:if test="${not empty QPR_CB_ACT_DATA and QPR_CB_ACT_DATA.qprCbActivityDetails[7].qprPanchayatLearningCenter.fileNode.uploadName}">
 																			<input type="button" value="Download File" class="btn bg-grey waves-effect" onclick='showImage("PanchayatLearningCenter",${QPR_CB_ACT_DATA.qprCbActivityDetails[7].qprPanchayatLearningCenter.qprPanchayatLearningId});' />
 																		</c:if>
@@ -591,7 +613,7 @@ function calTotalExpenditure(){
 								<!-- Modal content ends here-->
 								
 								<!-- Modal content exposure visit inside-->
-									<div id="exposureVisitState" class="modal fade" role="dialog">
+									<%-- <div id="exposureVisitState" class="modal fade" role="dialog">
 									<div class="modal-dialog modal-lg">
 										<div class="modal-content modal-lg">
 											<div class="modal-header">
@@ -677,11 +699,11 @@ function calTotalExpenditure(){
 											</div>
 										</div>
 									</div>
-								</div>
+								</div> --%>
 								<!-- Modal content ends here-->
 								
 								<!-- Modal content exposure visit outside-->
-									<div id="exposureVisitOutside" class="modal fade" role="dialog">
+									<%-- <div id="exposureVisitOutside" class="modal fade" role="dialog">
 									<div class="modal-dialog modal-lg">
 										<div class="modal-content modal-lg">
 											<div class="modal-header">
@@ -767,18 +789,25 @@ function calTotalExpenditure(){
 											</div>
 										</div>
 									</div>
-								</div>
+								</div> --%>
 								<!-- Modal content ends here-->
 							</div>
 							
 							<div class="form-group text-right ex1" style="margin-bottom: 5px;">
-								<input type="submit" name="origin" value="SAVE"  class="btn bg-green waves-effect" />
-								<button type="button" data-ng-click="onClear(this)" class="btn bg-light-blue waves-effect">
-									<spring:message code="Label.CLEAR" htmlEscape="true" />
-								</button>
-								<button type="button" onclick="onClose('home.html?<csrf:token uri='home.html'/>')" class="btn bg-red waves-effect">
+							<c:choose>
+								<c:when test="${QPR_CB_ACT_DATA.isFreeze}"><input type="submit" name="origin" value="SAVE"  class="btn bg-green waves-effect" disabled="disabled"/></c:when>
+								<c:otherwise><input type="submit" name="origin" value="SAVE"  class="btn bg-green waves-effect" /></c:otherwise>
+							</c:choose>
+								<c:choose>
+									<c:when test="${QPR_CB_ACT_DATA.isFreeze}"><form:button class="btn bg-orange waves-effect" onclick="FreezeAndUnfreeze('unfreeze')">UNFREEZE</form:button></c:when>
+									<c:otherwise><form:button class="btn bg-orange waves-effect" disabled="${DISABLE_FREEZE}" onclick="FreezeAndUnfreeze('freeze')">FREEZE</form:button></c:otherwise>
+								</c:choose>
+								<form:button type="button" data-ng-click="onClear(this)" class="btn bg-light-blue waves-effect" disabled="${QPR_CB_ACT_DATA.isFreeze}">
+									<spring:message code="Label.CLEAR" htmlEscape="true"/>
+								</form:button>
+								<form:button type="button" onclick="onClose('home.html?<csrf:token uri='home.html'/>')" class="btn bg-red waves-effect">
 									<spring:message code="Label.CLOSE" htmlEscape="true" />
-								</button>
+								</form:button>
 							</div><br />
 						</div>
 						<!-- HIDDEN FIELDS STARTS-->

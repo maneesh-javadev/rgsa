@@ -100,17 +100,17 @@ function onLoadChangeColor(){
 	var rowModal1 =  $('#tbodySprcId tr').length;
 	var rowModal2 = $('#modal2Tbody tr').length;
  	for(var i=0;i<rowCount;i++){
-		+$("#noOfUnitsState_"+i).text() > +$("#noOfUnits_"+i).val() ? $("#noOfUnitsState_"+i).css('color','red') : $("#noOfUnitsState_"+i).css('color','#00cc00');
+		+$("#noOfUnitsMopr_"+i).text() > +$("#noOfUnits_"+i).val() ? $("#noOfUnitsMopr_"+i).css('color','red') : $("#noOfUnitsMopr_"+i).css('color','#00cc00');
 		//+$("#unitCostState_"+i).text() > +$("#unitCost_"+i).val() ? $("#unitCostState_"+i).css('color','red') : $("#unitCostState_"+i).css('color','#00cc00');
-		+$("#fundState_"+i).text() > +$("#fund_"+i).val() ? $("#fundState_"+i).css('color','red') : $("#fundState_"+i).css('color','#00cc00');
-		+$("#noOfMonthsState_"+i).text() > +$("#noOfMonths_"+i).val() ? $("#noOfMonthsState_"+i).css('color','red') : $("#noOfMonthsState_"+i).css('color','#00cc00');
+		+$("#fundMopr_"+i).text() > +$("#fund_"+i).val() ? $("#fundMopr_"+i).css('color','red') : $("#fundMopr_"+i).css('color','#00cc00');
+		+$("#noOfMonthsMopr_"+i).text() > +$("#noOfMonths_"+i).val() ? $("#noOfMonthsMopr_"+i).css('color','red') : $("#noOfMonthsMopr_"+i).css('color','#00cc00');
 	}
-	+$("#total_fund_spmu_state").text() > +$("#total_fund_spmu").val() ? $("#total_fund_spmu_state").css('color','red') : $("#total_fund_spmu_state").css('color','#00cc00');
+	+$("#total_fund_spmu_mopr").text() > +$("#total_fund_spmu").val() ? $("#total_fund_spmu_mopr").css('color','red') : $("#total_fund_spmu_mopr").css('color','#00cc00');
 	//+$("#total_fund_dpmu_state").text() > +$("#total_fund_dpmu").val() ? $("#total_fund_dpmu_state").css('color','red') : $("#total_fund_dpmu_state").css('color','#00cc00');
 	//+$("#totalFundIdState").text() > +$("#grandtotal").val() ? $("#totalFundIdState").css('color','red') : $("#totalFundIdState").css('color','#00cc00');
 	
 	for(var j=0;j < rowModal1 ;j++){
-		+$("#noOfFacultyState_"+j).text() > +$("#noOfFaculty_"+j).val() ? $("#noOfFacultyState_"+j).css('color','red') : $("#noOfFacultyState_"+j).css('color','#00cc00');
+		+$("#noOfFacultyMopr_"+j).text() > +$("#noOfFaculty_"+j).val() ? $("#noOfFacultyMopr_"+j).css('color','red') : $("#noOfFacultyMopr_"+j).css('color','#00cc00');
 	}
 	/* for(var j=0 ; j < rowModal2; j++){
 		+$("#noOfFacultyDpmuState_"+j).text() > +$("#noOfFacultyDpmu_"+j).val() ? $("#noOfFacultyDpmuState_"+j).css('color','red') : $("#noOfFacultyDpmuState_"+j).css('color','#00cc00');
@@ -316,7 +316,7 @@ function validateFund(index){
 										htmlEscape="true" /></a></li>
 						</ul>
 						<div class="tab-content">
-							<div role="tabpanel" class="container tab-pane active" id="state"
+							<div role="tabpanel" class="container tab-pane " id="MOPR"
 								style="width: auto;">
 								<form:form method="post" name="pmuController"
 									action="addUpdatePmu.html" modelAttribute="PMU_ACTIVITY" onsubmit=" return validationOnSubmit()">
@@ -354,9 +354,13 @@ function validateFund(index){
 														<spring:message code="Label.DomainDetails"
 															htmlEscape="true" />
 													</div></th>
+													<%-- <th><div align="center">
+														<spring:message code="Label.IsApproved" htmlEscape="true" />
+													</div></th> --%>
 												<th><div align="center">
 														<spring:message code="Label.Remarks" htmlEscape="true" />
 													</div></th>
+												
 											</tr>
 										</thead>
 										<tbody id="tbody">
@@ -375,7 +379,7 @@ function validateFund(index){
 																<strong>${ACTIVITY.pmuActivityName}</strong>
 															</div></td>
 														<td>
-														<div align="center" id="noOfUnitsState_${srl.index}">${pmuActivityState.pmuActivityDetails[srl.index].noOfUnits}</div>
+														<div align="center" id="noOfUnitsMopr_${srl.index}">${pmuActivityMOPR.pmuActivityDetails[srl.index].noOfUnits}</div>
 														<input
 															value="${pmuActivity.pmuActivityDetails[srl.index].noOfUnits}"
 															name="pmuActivityDetails[${srl.index}].noOfUnits" min="1"
@@ -395,7 +399,7 @@ function validateFund(index){
 															onkeyup="calculate(${srl.index});onLoadChangeColor()"
 															style="text-align: right;" required="required"/></td> --%>
 														<td>
-														<div align="center" id="noOfMonthsState_${srl.index}">${pmuActivityState.pmuActivityDetails[srl.index].noOfMonths}</div>
+														<div align="center" id="noOfMonthsMopr_${srl.index}">${pmuActivityMOPR.pmuActivityDetails[srl.index].noOfMonths}</div>
 														<input
 															value="${pmuActivity.pmuActivityDetails[srl.index].noOfMonths}"
 															name="pmuActivityDetails[${srl.index}].noOfMonths"  type="text" min="1"
@@ -405,7 +409,7 @@ function validateFund(index){
 														<c:set var="totalFundToCalc"
 															value="${pmuActivity.pmuActivityDetails[srl.index].fund}"></c:set>
 														<td>
-														<div align="center" id="fundState_${srl.index}">${pmuActivityState.pmuActivityDetails[srl.index].fund}</div>
+														<div align="center" id="fundMopr_${srl.index}">${pmuActivityMOPR.pmuActivityDetails[srl.index].fund}</div>
 														<input
 															value="${pmuActivity.pmuActivityDetails[srl.index].fund}"
 															name="pmuActivityDetails[${srl.index}].fund"
@@ -430,17 +434,28 @@ function validateFund(index){
 																<td></td>
 															</c:otherwise>
 														</c:choose>
-														<td><textarea
+														
+																	 <%-- <td><c:choose>
+	                                             			<c:when test="${pmuActivityMOPR.pmuActivityDetails[srl.index].isApproved}">	
+														  		 <i class="fa fa-check" aria-hidden="true" style="color: #00cc00 "></i>
+														   </c:when>
+														   <c:otherwise>
+														   		<i class="fa fa-times" aria-hidden="true" style="color: red "></i>
+														   </c:otherwise>
+													</c:choose>
+												</td> --%>
+												<td><textarea
 																name="pmuActivityDetails[${srl.index}].remarks" rows="3"
 																class="form-control" cols="5"><c:out
 																	value="${pmuActivity.pmuActivityDetails[srl.index].remarks}"></c:out></textarea></td>
+										   		
 													</tr>
 													<c:set var="countSpmu" value="${countSpmu + 1}" scope="page" />
 												</c:forEach>
 												<tr>
 													<th colspan="5"><label>Total SPMU Fund</label></th>
 													<td>
-													<div align="center" id="total_fund_spmu_state">${SPMU_TOTAL_STATE }</div>
+													<div align="center" id="total_fund_spmu_mopr">${SPMU_TOTAL_MOPR }</div>
 													<input type="text" style="background: #dddddd;"
 														class="form-control Align-Right" id="total_fund_spmu"
 														value="" disabled="disabled" onchange="onLoadChangeColor()"></td>
@@ -462,7 +477,7 @@ function validateFund(index){
 																<strong>${ACTIVITY.pmuActivityName}</strong>
 															</div></td>
 														<td>
-														<div align="center" id="noOfUnitsState_${srl.index}">${pmuActivityState.pmuActivityDetails[srl.index].noOfUnits}</div>
+														<div align="center" id="noOfUnitsMopr_${srl.index}">${pmuActivityState.pmuActivityDetails[srl.index].noOfUnits}</div>
 														<input
 															value="${pmuActivity.pmuActivityDetails[srl.index].noOfUnits}"
 															name="pmuActivityDetails[${srl.index}].noOfUnits" min="1"
@@ -483,7 +498,7 @@ function validateFund(index){
 															onkeyup="calculate(${srl.index});onLoadChangeColor()"
 															style="text-align: right;" required="required"/></td>
 														<td>
-														<div align="center" id="noOfMonthsState_${srl.index}">${pmuActivityState.pmuActivityDetails[srl.index].noOfMonths}</div>
+														<div align="center" id="noOfMonthsMopr_${srl.index}">${pmuActivityState.pmuActivityDetails[srl.index].noOfMonths}</div>
 														<input
 															value="${pmuActivity.pmuActivityDetails[srl.index].noOfMonths}"
 															name="pmuActivityDetails[${srl.index}].noOfMonths"  type="text" min="1"
@@ -493,7 +508,7 @@ function validateFund(index){
 														<c:set var="totalFundToCalc"
 															value="${pmuActivity.pmuActivityDetails[srl.index].fund}"></c:set>
 														<td>
-														<div align="center" id="fundState_${srl.index}">${pmuActivityState.pmuActivityDetails[srl.index].fund}</div>
+														<div align="center" id="fundMopr_${srl.index}">${pmuActivityState.pmuActivityDetails[srl.index].fund}</div>
 														<input
 															value="${pmuActivity.pmuActivityDetails[srl.index].fund}"
 															readonly="readonly"
@@ -605,7 +620,7 @@ function validateFund(index){
 																							name="pmuWiseProposedDomainExperts[${temp}].domainId"
 																							value="${DOMAINS.pmuDomainId}"></th>
 																						<td>
-																						<div align="center" id="noOfFacultyState_${temp}">${pmuWiseDomainListState[temp].noOfExperts}</div>
+																						<div align="center" id="noOfFacultyMopr_${temp}">${pmuWiseDomainListMOPR[temp].noOfExperts}</div>
 																						<input
 																							name="pmuWiseProposedDomainExperts[${temp}].noOfExperts"
 																							value="${pmuWiseDomainList[temp].noOfExperts}"
@@ -790,7 +805,7 @@ function validateFund(index){
 								</form:form>
 							</div>
 						<!-- MOPR TAB STARTS -->		
-							<div class="container tab-pane fade" id="MOPR"
+							<div class="container tab-pane active  " id="state"
 								style="width: auto;">
 								<div class="table-responsive">
 									<table class="table table-bordered">
@@ -825,9 +840,6 @@ function validateFund(index){
 															htmlEscape="true" />
 													</div></th>
 												<th><div align="center">
-														<spring:message code="Label.IsApproved" htmlEscape="true" />
-													</div></th>
-												<th><div align="center">
 														<spring:message code="Label.Remarks" htmlEscape="true" />
 													</div></th>
 											</tr>
@@ -838,10 +850,10 @@ function validateFund(index){
 											<tr>
 												<td><div align="center"><strong>${ACTIVITY.pmuType.pmuTypeName}</strong></div></td>
 												<td><div align="center"><strong>${ACTIVITY.pmuActivityName}</strong></div></td>
-												<td><div align="center">${pmuActivityMOPR.pmuActivityDetails[srl.index].noOfUnits}</div></td>
+												<td><div align="center">${pmuActivityState.pmuActivityDetails[srl.index].noOfUnits}</div></td>
 												<%-- <td><div align="center"> ${pmuActivityMOPR.pmuActivityDetails[srl.index].unitCost }</div></td> --%>
-												<td><div align="center">${pmuActivityMOPR.pmuActivityDetails[srl.index].noOfMonths}</div></td>
-												<td><div align="center" id="fundMOPR_${srl.index}">${pmuActivityMOPR.pmuActivityDetails[srl.index].fund}</div></td>
+												<td><div align="center">${pmuActivityState.pmuActivityDetails[srl.index].noOfMonths}</div></td>
+												<td><div align="center" id="fundMOPR_${srl.index}">${pmuActivityState.pmuActivityDetails[srl.index].fund}</div></td>
 													<c:choose>
 														<c:when test="${srl.index eq 0 }">
 															<td><button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal3">See <spring:message code="Label.DomainDetails" htmlEscape="true" /></button></td>
@@ -853,21 +865,12 @@ function validateFund(index){
 															<td></td>
 														</c:otherwise>
 													</c:choose>
-	                                             <td><c:choose>
-	                                             			<c:when test="${pmuActivityMOPR.pmuActivityDetails[srl.index].isApproved}">	
-														  		 <i class="fa fa-check" aria-hidden="true" style="color: #00cc00 "></i>
-														   </c:when>
-														   <c:otherwise>
-														   		<i class="fa fa-times" aria-hidden="true" style="color: red "></i>
-														   </c:otherwise>
-													</c:choose>
-												</td>
-										   		<td><div align="center">${pmuActivityMOPR.pmuActivityDetails[srl.index].remarks}</div></td>
+	                                            <td><div align="center">${pmuActivityState.pmuActivityDetails[srl.index].remarks}</div></td>
 												</tr>
 											</c:forEach>
 											<tr>
 											<th colspan="5"><label>Total SPMU Fund</label></th>
-													<td><div align="center">${SPMU_TOTAL_MOPR}</div></td>
+													<td><div align="center">${SPMU_TOTAL_STATE}</div></td>
 														<td colspan="4"></td>
 												</tr>
 											<!-- SPMU LOOP ENDS -->
@@ -953,7 +956,7 @@ function validateFund(index){
 																				<c:if	test="${DOMAINS.pmuType.pmuTypeId eq 1 }">
 																					<tr>
 																						<th><div align="center">${DOMAINS.pmuDomainName}</div>
-																						<td><div align="center">${pmuWiseDomainListMOPR[temp].noOfExperts}</div></td>
+																						<td><div align="center">${pmuWiseDomainListState[temp].noOfExperts}</div></td>
 																					</tr>
 																				</c:if>
 																				<c:set var="temp" value="${temp+1}" scope="page" />

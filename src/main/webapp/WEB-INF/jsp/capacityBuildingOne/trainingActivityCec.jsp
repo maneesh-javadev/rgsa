@@ -50,7 +50,7 @@
 										htmlEscape="true" /></a></li>
 						</ul>
 						<div class="tab-content">
-							<div role="tabpanel" class="container tab-pane active" id="state"
+							<div role="tabpanel" class="container tab-pane active" id="MOPR"
 								style="width: auto;">
 								<div class="table-responsive">
 
@@ -114,24 +114,24 @@
 												<td>{{$index+1}}</td>
 												<td align="center"
 														data-ng-model="cecData.capacityBuildingActivityDetails[$index].cbMaster" 
-														data-ng-init="cecData.capacityBuildingActivityDetails[$index].cbMaster=stateData.capacityBuildingActivityDetails[$index].cbMaster">
+														data-ng-init="cecData.capacityBuildingActivityDetails[$index].cbMaster=moprData.capacityBuildingActivityDetails[$index].cbMaster">
 														<strong>	{{cbMaster.cbName}}</strong>
 													
 												</td>
 												<td>
 													<div align="center"
 														data-ng-model="cecData.capacityBuildingActivityDetails[$index].noOfDays"
-														data-ng-init="cecData.capacityBuildingActivityDetails[$index].noOfDays=stateData.capacityBuildingActivityDetails[$index].noOfDays">
-														<strong>{{stateData.capacityBuildingActivityDetails[$index].noOfDays}}</strong>
+														data-ng-init="cecData.capacityBuildingActivityDetails[$index].noOfDays=moprData.capacityBuildingActivityDetails[$index].noOfDays">
+														<strong>{{moprData.capacityBuildingActivityDetails[$index].noOfDays}}</strong>
 													</div>
 													
 												</td>
 												<td>
 													
 													<div align="center"
-														data-ng-style="{'color':(stateData.capacityBuildingActivityDetails[$index].noOfUnits > cecData.capacityBuildingActivityDetails[$index].noOfUnits) ? 'red' : '#00cc00'}">
+														data-ng-style="{'color':(moprData.capacityBuildingActivityDetails[$index].noOfUnits > cecData.capacityBuildingActivityDetails[$index].noOfUnits) ? 'red' : '#00cc00'}">
 														<strong> 
-															{{stateData.capacityBuildingActivityDetails[$index].noOfUnits}}
+															{{moprData.capacityBuildingActivityDetails[$index].noOfUnits}}
 														</strong>
 													</div>
 													<input type="text" class="form-control"
@@ -144,9 +144,9 @@
 												</td>
 												<td>
 													<div align="center"
-														data-ng-style="{'color':(stateData.capacityBuildingActivityDetails[$index].unitCost > cecData.capacityBuildingActivityDetails[$index].unitCost) ? 'red' : '#00cc00'}">
+														data-ng-style="{'color':(moprData.capacityBuildingActivityDetails[$index].unitCost > cecData.capacityBuildingActivityDetails[$index].unitCost) ? 'red' : '#00cc00'}">
 														<strong> <i style="font-size: 15px" class="fa">&#xf156;</i>
-															{{stateData.capacityBuildingActivityDetails[$index].unitCost}}
+															{{moprData.capacityBuildingActivityDetails[$index].unitCost}}
 														</strong>
 													</div> <input type="text" class="form-control"
 													data-ng-change="calculateNewFund($index)" 
@@ -160,9 +160,9 @@
 												</td>
 												<td>
 													<div align="center"
-														data-ng-style="{'color':(stateData.capacityBuildingActivityDetails[$index].funds > cecData.capacityBuildingActivityDetails[$index].funds) ? 'red' : '#00cc00'}">
+														data-ng-style="{'color':(moprData.capacityBuildingActivityDetails[$index].funds > cecData.capacityBuildingActivityDetails[$index].funds) ? 'red' : '#00cc00'}">
 														<strong> <i style="font-size: 15px" class="fa">&#xf156;</i>
-															{{stateData.capacityBuildingActivityDetails[$index].funds}}
+															{{moprData.capacityBuildingActivityDetails[$index].funds}}
 														</strong>
 													</div>
 													<input type="text" class="form-control"
@@ -177,22 +177,22 @@
 												<td>
 													<div align="center"
 														data-ng-model="cecData.capacityBuildingActivityDetails[$index].collabInstitute"
-														data-ng-init="cecData.capacityBuildingActivityDetails[$index].collabInstitute=stateData.capacityBuildingActivityDetails[$index].collabInstitute">
-														<strong>{{stateData.capacityBuildingActivityDetails[$index].collabInstitute}}</strong>
+														data-ng-init="cecData.capacityBuildingActivityDetails[$index].collabInstitute=moprData.capacityBuildingActivityDetails[$index].collabInstitute">
+														<strong>{{moprData.capacityBuildingActivityDetails[$index].collabInstitute}}</strong>
 													</div>
 													</td>
 												<td>
 													<div align="center"
 														data-ng-model="cecData.capacityBuildingActivityDetails[$index].remarks"
-														data-ng-init="cecData.capacityBuildingActivityDetails[$index].remarks=stateData.capacityBuildingActivityDetails[$index].remarks">
-														<strong>{{stateData.capacityBuildingActivityDetails[$index].remarks}}</strong>
+														data-ng-init="cecData.capacityBuildingActivityDetails[$index].remarks=moprData.capacityBuildingActivityDetails[$index].remarks">
+														<strong>{{moprData.capacityBuildingActivityDetails[$index].remarks}}</strong>
 													</div>
 													
 												</td>
 											</tr>
 											<tr>
 												<th colspan="5" align="center">Total Funds</th>
-												<td><div align="center" data-ng-style="{'color':(stateFundTotalInCEC > stateTotalFund) ? 'red' : '#00cc00'}"><i style="font-size: 15px" class="fa">&#xf156;</i>{{stateFundTotalInCEC}}</div>
+												<td><div align="center" data-ng-style="{'color':(totalFund > stateTotalFund) ? 'red' : '#00cc00'}"><i style="font-size: 15px" class="fa">&#xf156;</i>{{totalFund}}</div>
 												<input type="text" class="form-control"
 													data-ng-model="stateTotalFund" 
 													readonly="readonly"
@@ -207,9 +207,9 @@
 												<td>
 													<!-- <div align="center"><i style="font-size: 15px" class="fa">&#xf156;</i>  {{stateAdditionalReq}}</div> -->
 													<div align="center"
-														data-ng-style="{'color':(stateData.capacityBuildingActivityDetails[$index].funds > cecData.capacityBuildingActivityDetails[$index].funds) ? 'red' : '#00cc00'}">
+														data-ng-style="{'color':(additionalReq > cecData.additionalRequirement) ? 'red' : '#00cc00'}">
 														<strong> <i style="font-size: 15px" class="fa">&#xf156;</i>
-															{{stateAdditionalReq}}
+															{{additionalReq}}
 														</strong>
 													</div>
 													<input type="text" class="form-control"
@@ -224,7 +224,7 @@
 											</tr>
 											<tr>
 												<th colspan="5" align="center">Total Proposed Fund</th>
-												<td><div align="center" data-ng-style="{'color':(stateGrandTotalInCEC > stateGrandTotal) ? 'red' : '#00cc00'}"><i style="font-size: 15px" class="fa">&#xf156;</i> {{stateGrandTotalInCEC}}</div>
+												<td><div align="center" data-ng-style="{'color':(stateGrandTotalInCEC > stateGrandTotal) ? 'red' : '#00cc00'}"><i style="font-size: 15px" class="fa">&#xf156;</i> {{grandTotal}}</div>
 												<input type="text" class="form-control"
 													data-ng-model="stateGrandTotal" 
 													readonly="readonly"
@@ -274,7 +274,7 @@
 								</div>
 								</div>
 							</div>
-							<div role="tabpanel" class="container tab-pane" id="MOPR"
+							<div role="tabpanel" class="container tab-pane" id="state"
 								style="width: auto;">
 								<div class="table-responsive">
 									<table class="table table-hover dashboard-task-infos"
@@ -321,11 +321,11 @@
 												<th><div align="center">
 														<strong>Collaboration with Institute</strong>
 													</div></th>
-												<th>
+												<!-- <th>
 													<div align="center">
 														<strong>Is Approved</strong>
 													</div>
-												</th>
+												</th> -->
 												<th>
 													<div align="center">
 														<strong>Remarks by State</strong>
@@ -338,12 +338,12 @@
 											<tr data-ng-repeat="cbMaster in cbmasters">
 												<td><div align="center">{{$index+1}}</div></td>
 												<td><div align="center">{{cbMaster.cbName}}</div></td>
-												<td><div align="center">{{moprData.capacityBuildingActivityDetails[$index].noOfDays}}</div></td>
-												<td><div align="center">{{moprData.capacityBuildingActivityDetails[$index].noOfUnits}}</div></td>
-												<td><div align="center">{{moprData.capacityBuildingActivityDetails[$index].unitCost}}</div></td>
-												<td><div align="center">{{moprData.capacityBuildingActivityDetails[$index].funds}}</div></td>
-												<td><div align="center">{{moprData.capacityBuildingActivityDetails[$index].collabInstitute}}</div></td>
-												<td>
+												<td><div align="center">{{stateData.capacityBuildingActivityDetails[$index].noOfDays}}</div></td>
+												<td><div align="center">{{stateData.capacityBuildingActivityDetails[$index].noOfUnits}}</div></td>
+												<td><div align="center">{{stateData.capacityBuildingActivityDetails[$index].unitCost}}</div></td>
+												<td><div align="center">{{stateData.capacityBuildingActivityDetails[$index].funds}}</div></td>
+												<td><div align="center">{{stateData.capacityBuildingActivityDetails[$index].collabInstitute}}</div></td>
+												<!-- <td>
 													<div align="center"
 														data-ng-if="moprData.capacityBuildingActivityDetails[$index].isApproved">
 														<i class="fa fa-check" aria-hidden="true"
@@ -354,26 +354,26 @@
 														<i class="fa fa-times" aria-hidden="true"
 															style="color: red"></i>
 													</div>
-												</td>
-												<td><div align="center">{{moprData.capacityBuildingActivityDetails[$index].remarks}}</div></td>
+												</td> -->
+												<td><div align="center">{{stateData.capacityBuildingActivityDetails[$index].remarks}}</div></td>
 											</tr>
 											<tr>
 												<th colspan="5" align="center">Total Funds</th>
-												<td><div align="center">{{totalFund}}</div></td>
+												<td><div align="center">{{stateFundTotalInCEC}}</div></td>
 												<td></td>
 												<td></td>
 												<td></td>
 											</tr>
 											<tr>
 												<th colspan="5" align="center">Additional Requirement</th>
-												<td><div align="center">{{additionalReq}}</div></td>
+												<td><div align="center">{{stateAdditionalReq}}</div></td>
 												<td></td>
 												<td></td>
 												<td></td>
 											</tr>
 											<tr>
 												<th colspan="5" align="center">Total Proposed Fund</th>
-												<td><div align="center">{{grandTotal}}</div></td>
+												<td><div align="center">{{stateGrandTotalInCEC}}</div></td>
 												<td></td>
 												<td></td>
 												<td></td>

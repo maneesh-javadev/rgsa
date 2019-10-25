@@ -203,24 +203,24 @@ function changeColor(){
 	var rowCount = $('#tbodyId tr').length;
 	for(var i=0;i<rowCount;i++){
 		
-		+$('#noOfGpCoveredId_' + i).val() < +$('#noOfGpCoveredStateId_' + i).text() ? $(
-				'#noOfGpCoveredStateId_' + i).css('color', 'red') : $(
-				'#noOfGpCoveredStateId_' + i).css('color', '#00cc00');
-		+$('#aspirationalGpId_' + i).val() < +$('#aspirationalStateGpId_' + i).text() ? $(
-				'#aspirationalStateGpId_' + i).css('color', 'red') : $(
-				'#aspirationalStateGpId_' + i).css('color', '#00cc00');
-		+$('#projectCostId_' + i).val() < +$('#projectCostStateId_' + i).text() ? $(
-				'#projectCostStateId_' + i).css('color', 'red') : $(
-				'#projectCostStateId_' + i).css('color', '#00cc00');
-		+$('#fundsName_' + i).val() < +$('#fundsNameStateId_' + i).text() ? $(
-				'#fundsNameStateId_' + i).css('color', 'red') : $(
-				'#fundsNameStateId_' + i).css('color', '#00cc00');
+		+$('#noOfGpCoveredId_' + i).val() < +$('#noOfGpCoveredMoprId_' + i).text() ? $(
+				'#noOfGpCoveredMoprId_' + i).css('color', 'red') : $(
+				'#noOfGpCoveredMoprId_' + i).css('color', '#00cc00');
+		+$('#aspirationalGpId_' + i).val() < +$('#aspirationalMoprGpId_' + i).text() ? $(
+				'#aspirationalMoprGpId_' + i).css('color', 'red') : $(
+				'#aspirationalMoprGpId_' + i).css('color', '#00cc00');
+		+$('#projectCostId_' + i).val() < +$('#projectCostMoprId_' + i).text() ? $(
+				'#projectCostMoprId_' + i).css('color', 'red') : $(
+				'#projectCostMoprId_' + i).css('color', '#00cc00');
+		+$('#fundsName_' + i).val() < +$('#fundsNameMoprId_' + i).text() ? $(
+				'#fundsNameMoprId_' + i).css('color', 'red') : $(
+				'#fundsNameMoprId_' + i).css('color', '#00cc00');
 	}
-	+$('#subTotal').val() < +$('#subTotalState').text() ? $(
-			'#subTotalState').css('color', 'red') : $(
-			'#subTotalState').css('color', '#00cc00');
-	+$('#additioinalRequirements').val() < +$('#additioinalRequirementsState').text() ? $(
-			'#additioinalRequirementsState').css('color', 'red') : $('#additioinalRequirementsState').css('color', '#00cc00');
+	+$('#subTotal').val() < +$('#subTotalMopr').text() ? $(
+			'#subTotalMopr').css('color', 'red') : $(
+			'#subTotalMopr').css('color', '#00cc00');
+	+$('#additioinalRequirements').val() < +$('#additioinalRequirementsMopr').text() ? $(
+			'#additioinalRequirementsMopr').css('color', 'red') : $('#additioinalRequirementsMopr').css('color', '#00cc00');
 	+$('#grandTotal').val() < +$('#grandTotalState').text() ? $(
 	'#grandTotalState').css('color', 'red') : $('#grandTotalState').css('color', '#00cc00');
 }
@@ -251,7 +251,7 @@ function changeColor(){
 
 							<div class="tab-content">
 								<div role="tabpanel" class="container tab-pane active"
-									id="state" style="width: auto;">
+									id="MOPR" style="width: auto;">
 									<div class="table-responsive">
 										<table class="table table-bordered" id="mytable">
 											<thead>
@@ -269,7 +269,7 @@ function changeColor(){
 													<th rowspan="2">Total cost of project</th>
 													<th rowspan="2">Funds Proposed in current year</th>
 													<th rowspan="2">Brief about the Activity</th>
-													<th rowspan="2">Upload File(PDF)</th>
+													<th rowspan="2">Download File(PDF)</th>
 													<th rowspan="2">Plan approved by DPC</th>
 
 
@@ -284,7 +284,7 @@ function changeColor(){
 
 												<%-- <c:if test="${not empty dbActivitiesList}"> --%>
 													<c:forEach
-														items="${INCOMEENHANCEMENTDETAIL_STATE}"
+														items="${INCOMEENHANCEMENTDETAIL_MOPR}"
 														var="state_data" varStatus="count">
 														<tr>
 															<td><strong>${count.count}</strong></td>
@@ -333,7 +333,7 @@ function changeColor(){
 																</td>
 															<c:choose>
 															<c:when test="${not empty dbActivitiesList}">
-																<td><div align="center" id="noOfGpCoveredStateId_${count.index}">${state_data.totalNoOfGpCovered}</div>
+																<td><div align="center" id="noOfGpCoveredMoprId_${count.index}">${state_data.totalNoOfGpCovered}</div>
 																<input type="text" oninput="validity.valid||(value='');"
 																placeholder="Total GP's covered"
 																onKeyPress="if(this.value.length==3) return false;"
@@ -344,7 +344,7 @@ function changeColor(){
 																id="noOfGpCoveredId_${count.index}"
 																class="form-control Align-Right" /></td>
 															
-															<td><div align="center" id="aspirationalStateGpId_${count.index}">${state_data.noOfAspirationalGp}</div>
+															<td><div align="center" id="aspirationalMoprGpId_${count.index}">${state_data.noOfAspirationalGp}</div>
 															<input type="text" placeholder="Total Aspirational GP"
 															oninput="validity.valid||(value='');"
 															onKeyPress="if(this.value.length==3) return false;"
@@ -356,7 +356,7 @@ function changeColor(){
 															class="form-control Align-Right" /></td>
 															</c:when>
 															<c:otherwise>
-																<td><div align="center" id="noOfGpCoveredStateId_${count.index}">${state_data.totalNoOfGpCovered}</div>
+																<td><div align="center" id="noOfGpCoveredMoprId_${count.index}">${state_data.totalNoOfGpCovered}</div>
 																<input type="text" oninput="validity.valid||(value='');"
 																placeholder="Total GP's covered"
 																onKeyPress="if(this.value.length==3) return false;"
@@ -366,7 +366,7 @@ function changeColor(){
 																id="noOfGpCoveredId_${count.index}"
 																class="form-control Align-Right" /></td>
 															
-															<td><div align="center" id="aspirationalStateGpId_${count.index}">${state_data.noOfAspirationalGp}</div>
+															<td><div align="center" id="aspirationalMoprGpId_${count.index}">${state_data.noOfAspirationalGp}</div>
 															<input type="text" placeholder="Total Aspirational GP"
 															oninput="validity.valid||(value='');"
 															onKeyPress="if(this.value.length==3) return false;"
@@ -388,7 +388,7 @@ function changeColor(){
 															</td>
 															<c:choose>
 															<c:when test="${not empty dbActivitiesList}">
-															<td><div align="center" id="projectCostStateId_${count.index}">${state_data.totalCostOfProject}</div>
+															<td><div align="center" id="projectCostMoprId_${count.index}">${state_data.totalCostOfProject}</div>
 																<form:input oninput="validity.valid||(value='');"
 																onKeyPress="if(this.value.length==7) return false;"
 																value="${dbActivitiesList.incomeEnhancementDetails[count.index].totalCostOfProject}"																
@@ -397,12 +397,12 @@ function changeColor(){
 																id="projectCostId_${count.index}"
 																required="required" class="form-control Align-Right" /></td>
 															
-															<c:set var="totalFundForState"
-																value="${totalFundForState + state_data.fundsRequired}"></c:set>
+															<c:set var="totalFundForMopr"
+																value="${totalFundForMopr + state_data.fundsRequired}"></c:set>
 															<c:set var="totalFundToCalc"
 																value="${totalFundToCalc + dbActivitiesList.incomeEnhancementDetails[count.index].fundsRequired}"></c:set>
 															
-															<td><div align="center" id="fundsNameStateId_${count.index}">${state_data.fundsRequired}</div>
+															<td><div align="center" id="fundsNameMoprId_${count.index}">${state_data.fundsRequired}</div>
 																<form:input oninput="validity.valid||(value='');"
 																onKeyPress="if(this.value.length==5) return false;"
 																onkeyup="this.value=this.value.replace(/[^0-9]/g,'');changeColor()"
@@ -414,7 +414,7 @@ function changeColor(){
 																class="form-control Align-Right exclud" /></td>
 															</c:when>
 															<c:otherwise>
-															<td><div align="center" id="projectCostStateId_${count.index}">${state_data.totalCostOfProject}</div>
+															<td><div align="center" id="projectCostMoprId_${count.index}">${state_data.totalCostOfProject}</div>
 																<form:input oninput="validity.valid||(value='');"
 																onKeyPress="if(this.value.length==7) return false;"
 																min="1" onkeyup="this.value=this.value.replace(/[^0-9]/g,'');changeColor()"
@@ -422,12 +422,12 @@ function changeColor(){
 																id="projectCostId_${count.index}"
 																required="required" class="form-control Align-Right" /></td>
 															
-															<c:set var="totalFundForState"
-																value="${totalFundForState + state_data.fundsRequired}"></c:set>
+															<c:set var="totalFundForMopr"
+																value="${totalFundForMopr + state_data.fundsRequired}"></c:set>
 															<c:set var="totalFundToCalc"
 																value="${totalFundToCalc + dblist.fundsRequired}"></c:set>
 															
-															<td><div align="center" id="fundsNameStateId_${count.index}">${state_data.fundsRequired}</div>
+															<td><div align="center" id="fundsNameMoprId_${count.index}">${state_data.fundsRequired}</div>
 																<form:input oninput="validity.valid||(value='');"
 																onKeyPress="if(this.value.length==5) return false;"
 																onkeyup="this.value=this.value.replace(/[^0-9]/g,'');changeColor()"
@@ -517,7 +517,7 @@ function changeColor(){
 										<tr>
 											<td>Funds</td>
 											<td>
-											<div id="subTotalState" style="margin-left: 15%"><c:out value="${totalFundForState}" /></div>
+											<div id="subTotalMopr" style="margin-left: 15%"><c:out value="${totalFundForMopr}" /></div>
 											<input type="text" id="subTotal"
 												value="${totalFundToCalc}" Class="form-control Align-Right"
 												readonly="readonly"></td>
@@ -534,7 +534,7 @@ function changeColor(){
 												</c:otherwise>
 											</c:choose>
 											<td>
-											<div id="additioinalRequirementsState" style="margin-left: 15%">${INCOMEENHANCEMENT_STATE[0].additionalRequirement }</div>
+											<div id="additioinalRequirementsMopr" style="margin-left: 15%">${INCOMEENHANCEMENT_STATE[0].additionalRequirement }</div>
 											<input type="text"
 												oninput="validity.valid||(value='');"
 												onKeyPress="if(this.value.length==7) return false;"
@@ -546,7 +546,7 @@ function changeColor(){
 										<tr>
 											<td>Total Proposed Funds</td>
 											<td>
-											<div id="grandTotalState" style="margin-left: 15%">${totalFundForState + INCOMEENHANCEMENT_STATE[0].additionalRequirement }</div>
+											<div id="grandTotalState" style="margin-left: 15%">${totalFundForMopr + INCOMEENHANCEMENT_MOPR.additionalRequirement }</div>
 											<input type="text" id="grandTotal"
 												value="${addtnlReqrmnt + totalFundToCalc}"
 												Class="form-control Align-Right" readonly="readonly"></td>
@@ -596,8 +596,7 @@ function changeColor(){
 								</div>
 
 
-								<div class="container tab-pane fade" id="MOPR"
-									style="width: auto;">
+								<div class="container tab-pane fade" id="state" style="width: auto;">
 									<div class="table-responsive">
 										<table class="table table-bordered">
 											<thead>
@@ -617,7 +616,7 @@ function changeColor(){
 													<th rowspan="2">Brief about the Activity</th>
 
 													<th rowspan="2">Plan approved by DPC</th>
-													<th rowspan="2">Is Approved</th>
+													<!-- <th rowspan="2">Is Approved</th> -->
 													<th rowspan="2">Remarks</th>
 
 												</tr>
@@ -628,8 +627,8 @@ function changeColor(){
 											</thead>
 											<tbody>
 
-												<c:if test="${not empty INCOMEENHANCEMENTDETAIL_MOPR}">
-													<c:forEach items="${INCOMEENHANCEMENTDETAIL_MOPR}"
+												<c:if test="${not empty INCOMEENHANCEMENTDETAIL_STATE}">
+													<c:forEach items="${INCOMEENHANCEMENTDETAIL_STATE}"
 														var="dblist" varStatus="count">
 														<tr>
 															<td>${count.count}</td>
@@ -684,7 +683,7 @@ function changeColor(){
 																</c:choose></td>
 
 
-															<td><div align="center">
+															<%-- <td><div align="center">
 																	<c:choose>
 																		<c:when test="${dblist.isApproved eq true}">
 																			<i class="fa fa-check" aria-hidden="true"
@@ -695,7 +694,7 @@ function changeColor(){
 																				style="color: red"></i>
 																		</c:otherwise>
 																	</c:choose>
-																</div></td>
+																</div></td> --%>
 															<td><strong>${dblist.remarks}</strong></td>
 
 
@@ -718,11 +717,11 @@ function changeColor(){
 										</tr>
 										<tr>
 											<td>Additional Requirements</td>
-											<td><strong>${INCOMEENHANCEMENT_MOPR.additionalRequirement}</strong></td>
+											<td><strong>${INCOMEENHANCEMENT_STATE[0].additionalRequirement}</strong></td>
 										</tr>
 										<tr>
 											<td>Total Proposed Funds</td>
-											<td><strong>${INCOMEENHANCEMENT_MOPR.additionalRequirement + totalFundToCalc}</strong></td>
+											<td><strong>${INCOMEENHANCEMENT_STATE[0].additionalRequirement + totalFundToCalc}</strong></td>
 										</tr>
 									</table>
 									<div class="row clearfix">
