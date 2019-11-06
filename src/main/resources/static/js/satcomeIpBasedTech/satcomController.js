@@ -38,6 +38,8 @@ publicModule.controller("satcomController",['$scope','satcomService',function($s
 				$scope.calculateTotalMOPR();
 			}
 			
+			$scope.statePreComments = response.data.STATE_PRE_COMMENTS;
+			$scope.moprPreComments = response.data.MOPR_PRE_COMMENTS;
 			if(response.data.SATCOME_ACTIVITY_DETAILS!=undefined){
 				$scope.satcomActivityObject=response.data.SATCOME_ACTIVITY_DETAILS;
 				if($scope.satcomActivityObject.status == 'F'){

@@ -1,5 +1,6 @@
 package gov.in.rgsa.entity;
 
+import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.List;
 
@@ -25,8 +26,13 @@ import org.hibernate.annotations.UpdateTimestamp;
 @Entity
 @Table(name="cb_activity", schema = "rgsa")
 @NamedQuery(name="FETCH_CAPACITY_BUILDING",query="SELECT cb FROM CapacityBuildingActivity cb left outer join fetch cb.capacityBuildingActivityDetails cbad where cb.stateCode=:stateCode and cb.userType=:userType and cb.yearId=:yearId and cb.versionNo=:versionNo and cb.isActive=true order by cbad.capacityBuildingActivityDetailsId asc")
-public class CapacityBuildingActivity {
+public class CapacityBuildingActivity  implements Serializable{
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	@Column(name="cb_activity_id",updatable=false,nullable=false)

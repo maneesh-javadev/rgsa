@@ -371,37 +371,58 @@
 								<table class="table table-bordered">
 									<thead>
 										<tr>
-											<th>
+											<th rowspan="2">
 													<div align="center">
 														<strong><spring:message code="Label.NameOfActivity" htmlEscape="true" /></strong>
 													</div>
 												</th>
-												<th>
+											<th rowspan="2">
 													<div align="center">
 														<strong><spring:message code="Label.PanchayatLevel" htmlEscape="true" /></strong>
 													</div>
 												</th>
-												<th>
+											<th rowspan="2">
 													<div align="center">
 														<strong><spring:message code="Label.NoOfUnits" htmlEscape="true" /><br>A
 														</strong>
 													</div>
 												</th>
-												<th>
+											<th rowspan="2">
 													<div align="center">
 														<strong><spring:message code="Label.UnitCost" htmlEscape="true" /> (in Rs)<br>B
 														</strong>
 													</div>
 												</th>
-												<th>
+											<th rowspan="2">
 													<div align="center">
 														<strong><spring:message code="Label.FundProposed" htmlEscape="true" />  (in Rs)<br>C = A * B
 														</strong>
 													</div>
 												</th>
-												<th data-ng-if="userType != 'S'"><div align="center"><strong><spring:message code="Label.isApproved" htmlEscape="true" /></strong></div></th>
-												<th data-ng-if="userType != 'S'"><div align="center"><strong><spring:message code="Label.Remarks" htmlEscape="true" /></strong>
+											<th data-ng-if="userType != 'S'" rowspan="2"><div align="center"><strong><spring:message code="Label.isApproved" htmlEscape="true" /></strong></div></th>
+											<th rowspan="2"><div align="center"><strong><spring:message code="Label.Remarks" htmlEscape="true" /></strong>
 													</div></th>
+											<c:if test="${sessionScope['scopedTarget.userPreference'].planVersion > 1}">
+											<th colspan="2" rowspan="1">
+												<div align="center">
+													<strong>Previous comment history</strong>
+												</div>
+											</th>
+											</c:if>		
+										</tr>
+										<tr>
+											<c:if test="${sessionScope['scopedTarget.userPreference'].planVersion > 1}">
+												<th >
+													<div align="center">
+														<strong>State Previous Comments <span style="color: #396721;">&nbsp;<i class="fa fa-circle"></i></span></strong>
+													</div>
+												</th>
+												<th>
+													<div align="center">
+														<strong>MOPR's Feedback <span style="color: #bc6317;">&nbsp;<i class="fa fa-circle"></i></span></strong>
+													</div>
+												</th>
+											</c:if>
 										</tr>
 									</thead>
 									<tbody>
@@ -465,13 +486,50 @@
 												data-ng-disabled="satcomActivityObject.status == 'F'"
 												data-ng-model="satcomActivityObject.activityDetails[$index].isApproved" />
 											</td>
-											<td data-ng-if="userType != 'S'"><input type="text"
+											<td><input type="text"
 												data-ng-disabled="satcomActivityObject.status == 'F'"
 												data-ng-model="satcomActivityObject.activityDetails[$index].remarks"
 												class="form-control" placeholder="Enter Remarks"
 												style="text-align: right;" /></td>
 
-										</tr>
+										<c:if
+											test="${sessionScope['scopedTarget.userPreference'].planVersion > 1}">
+											<td>
+												<ol>
+													<%-- <c:forEach items="${STATE_PRE_COMMENTS[index.index]}"
+														varStatus="indexInner" var="stateComments"> --%>
+														<li data-ng-repeat="stateComments in statePreComments[outerIndex] track by $index" style="color: #396721; font-weight: bold;">
+																<div data-ng-if = "stateComments != '' && stateComments != null && stateComments != undefined">{{stateComments}}</div>
+																<div data-ng-if = "stateComments === '' && stateComments === null && stateComments === undefined">{{stateComments}}</div>
+																<%-- <c:choose>
+																	<c:when test="${not empty stateComments}">${stateComments}</c:when>
+																	<c:otherwise>No comments by state</c:otherwise>
+																</c:choose> --%>
+															</li>
+														<br>
+													<%-- </c:forEach> --%>
+												</ol>
+											</td>
+
+											<td>
+												<ol>
+													<%-- <c:forEach items="${MOPR_PRE_COMMENTS[index.index]}"
+														varStatus="indexMopr" var="moprComments"> --%>
+														<li data-ng-repeat="moprComments in moprPreComments[outerIndex] track by $index" style="color: #bc6317; font-weight: bold;">
+														<div data-ng-if = "moprComments != '' && moprComments != null && moprComments != undefined">{{moprComments}}</div>
+																<div data-ng-if = "moprComments === '' && moprComments === null && moprComments === undefined">{{moprComments}}</div>
+																
+														
+														<%-- <c:choose>
+																<c:when test="${not empty moprComments}">${moprComments}</c:when>
+																<c:otherwise>No comments by MOPR</c:otherwise>
+															</c:choose> --%></li>
+														<br>
+													<%-- </c:forEach> --%>
+												</ol>
+											</td>
+										</c:if>
+									</tr>
 										<tr>
 											<th colspan="4"><label><spring:message code="Label.TotalFund" htmlEscape="true" /></label></th>
 

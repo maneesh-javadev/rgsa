@@ -12,6 +12,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
@@ -94,6 +95,9 @@ public class IncomeEnhancementController {
 		model.addAttribute("USER_TYPE", userPreference.getUserType());
 		List<IncomeEnhancementActivity> dbActivitiesList = enhancementService.fetchAllIncmEnhncmntActvty(userPreference.getUserType().charAt(0));
  		if(!CollectionUtils.isEmpty(dbActivitiesList)) {
+ 			Map<String, List<List<String>>> map = basicInfoService.fetchStateAndMoprPreComments(dbActivitiesList.get(0).getIncomeEnhancementDetails().size(),10);
+			model.addAttribute("STATE_PRE_COMMENTS", map.get("statePreviousComments"));
+			model.addAttribute("MOPR_PRE_COMMENTS", map.get("moprPreviousComments"));
 			for(int i=0;i<dbActivitiesList.get(0).getIncomeEnhancementDetails().size();i++) {
 				
 					int distrctId = dbActivitiesList.get(0).getIncomeEnhancementDetails().get(i).getDistrictCode();

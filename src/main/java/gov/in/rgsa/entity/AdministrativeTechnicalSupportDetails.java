@@ -8,10 +8,12 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
 @Entity
 @Table(name="administrative_technical_support_details",schema="rgsa")
+@NamedQuery(name="FETCH_ALL_ADMIN_TECH_DETAILS_EXCEPT_CURRENT_VERSION",query="From AdministrativeTechnicalSupportDetails where administrativeTechnicalSupport.stateCode=:stateCode and administrativeTechnicalSupport.versionNo !=:versionNo and administrativeTechnicalSupport.userType in('S','M') order by id")
 public class AdministrativeTechnicalSupportDetails{
 	
 	/**

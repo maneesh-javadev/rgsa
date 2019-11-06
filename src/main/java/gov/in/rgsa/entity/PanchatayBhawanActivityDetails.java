@@ -12,6 +12,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
@@ -19,6 +20,7 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 
 @Entity
 @Table(name="panhcayat_bhawan_activity_details", schema="rgsa")
+@NamedQuery(name="FETCH_ALL_PANCH_DETAILS_EXCEPT_CURRENT_VERSION",query="from PanchatayBhawanActivityDetails where panchatayBhawanActivity.stateCode=:stateCode and panchatayBhawanActivity.versionNo !=:versionNo and panchatayBhawanActivity.userType in('S','M') order by id")
 public class PanchatayBhawanActivityDetails implements Serializable{
 	
 	/**
@@ -63,6 +65,9 @@ public class PanchatayBhawanActivityDetails implements Serializable{
 	
 	@Column(name="is_approved")
 	private Boolean isApproved;
+	
+	@Column(name="remarks")
+	private String remarks;
 
 
 	public Integer getId() {
@@ -161,6 +166,16 @@ public class PanchatayBhawanActivityDetails implements Serializable{
 
 	public void setWorkType(Character workType) {
 		this.workType = workType;
+	}
+
+
+	public String getRemarks() {
+		return remarks;
+	}
+
+
+	public void setRemarks(String remarks) {
+		this.remarks = remarks;
 	}
 	
 	

@@ -50,27 +50,27 @@
 								<table id="tableId" class="table table-bordered">
 									<thead>
 										<tr>
-											<th><div align="center">
+											<th rowspan="2"><div align="center">
 													<strong><spring:message code="Label.Level"
 															htmlEscape="true" /></strong>
 												</div></th>
-											<th><div align="center">
+											<th rowspan="2"><div align="center">
 													<strong><spring:message code="Label.Designation"
 															htmlEscape="true" /></strong>
 												</div></th>
-											<th><div align="center">
+											<th rowspan="2"><div align="center">
 													<strong><spring:message code="Label.PostProposed"
 															htmlEscape="true" /><br> A </strong>
 												</div></th>
-											<th><div align="center">
+											<th rowspan="2"><div align="center">
 													<strong><spring:message code="Label.NoOfMonths"
 															htmlEscape="true" /><br> B </strong>
 												</div></th>
-											<th><div align="center">
+											<th rowspan="2"><div align="center">
 													<strong><spring:message code="Label.UnitCost"
 															htmlEscape="true" />(in Rs)<br>C </strong>
 												</div></th>
-											<th><div align="center">
+											<th rowspan="2"><div align="center">
 													<strong><spring:message code="Label.FundProposed"
 															htmlEscape="true" />(in Rs)<br>D = A * B * C </strong>
 												</div></th>
@@ -79,10 +79,32 @@
 														<strong><spring:message code="Label.IsApproved"
 																htmlEscape="true" /></strong>
 													</div></th>
-												<th rowspan="2"><div align="center">
+											</c:if>
+											<th rowspan="2"><div align="center">
 														<strong><spring:message code="Label.Remarks"
 																htmlEscape="true" /></strong>
-													</div></th>
+											</div></th>
+											
+											<c:if test="${sessionScope['scopedTarget.userPreference'].planVersion > 1}">
+											<th colspan="2" rowspan="1">
+												<div align="center">
+													<strong>Previous comment history</strong>
+												</div>
+											</th>
+											</c:if>
+										</tr>
+										<tr>
+											<c:if test="${sessionScope['scopedTarget.userPreference'].planVersion > 1}">
+												<th >
+													<div align="center">
+														<strong>State Previous Comments <span style="color: #396721;">&nbsp;<i class="fa fa-circle"></i></span></strong>
+													</div>
+												</th>
+												<th>
+													<div align="center">
+														<strong>MOPR's Feedback <span style="color: #bc6317;">&nbsp;<i class="fa fa-circle"></i></span></strong>
+													</div>
+												</th>
 											</c:if>
 										</tr>
 									</thead>
@@ -162,11 +184,39 @@
 													<td><form:checkbox
 															path="eGovSupportActivityDetails[${index.index }].isApproved"
 															disabled="${eGovActivity.status eq true}" /></td>
-													<td><form:textarea
+												</c:if>
+												<td><form:textarea
 															path="eGovSupportActivityDetails[${index.index }].remarks"
 															rows="2" cols="10"
-															disabled="${eGovActivity.status eq true}" /></td>
-												</c:if>
+															readonly="${eGovActivity.status eq true}" /></td>
+												
+												<c:if test="${sessionScope['scopedTarget.userPreference'].planVersion > 1}">
+														<td>
+															<ol>
+															<c:forEach items="${STATE_PRE_COMMENTS[index.index]}" varStatus="indexInner" var="stateComments">
+															<li style="color: #396721;font-weight: bold;">
+																<c:choose>
+																	<c:when test="${not empty stateComments}">${stateComments}</c:when>
+																	<c:otherwise>No comments by state</c:otherwise>
+																</c:choose>
+															</li><br>
+															</c:forEach>
+														</ol>
+														</td>
+													
+													<td>
+														<ol>
+															<c:forEach items="${MOPR_PRE_COMMENTS[index.index]}" varStatus="indexMopr" var="moprComments">
+															<li style="color: #bc6317;font-weight: bold;">
+																<c:choose>
+																	<c:when test="${not empty moprComments}">${moprComments}</c:when>
+																	<c:otherwise>No comments by MOPR</c:otherwise>
+																</c:choose>
+															</li><br>
+															</c:forEach>
+														</ol>
+													</td>
+													</c:if>			
 											</tr>
 											<c:set var="countSpmu" value="${countSpmu + 1}" scope="page" />
 										</c:forEach>
@@ -267,11 +317,39 @@
 													<td><form:checkbox
 															path="eGovSupportActivityDetails[${index.index}].isApproved"
 															disabled="${eGovActivity.status eq true}" /></td>
-													<td><form:textarea
+												</c:if>
+												<td><form:textarea
 															path="eGovSupportActivityDetails[${index.index}].remarks"
 															rows="2" cols="10"
-															disabled="${eGovActivity.status eq true}" /></td>
-												</c:if>
+															readonly="${eGovActivity.status eq true}" /></td>
+															
+												<c:if test="${sessionScope['scopedTarget.userPreference'].planVersion > 1}">
+														<td>
+															<ol>
+															<c:forEach items="${STATE_PRE_COMMENTS[index.index]}" varStatus="indexInner" var="stateComments">
+															<li style="color: #396721;font-weight: bold;">
+																<c:choose>
+																	<c:when test="${not empty stateComments}">${stateComments}</c:when>
+																	<c:otherwise>No comments by state</c:otherwise>
+																</c:choose>
+															</li><br>
+															</c:forEach>
+														</ol>
+														</td>
+													
+													<td>
+														<ol>
+															<c:forEach items="${MOPR_PRE_COMMENTS[index.index]}" varStatus="indexMopr" var="moprComments">
+															<li style="color: #bc6317;font-weight: bold;">
+																<c:choose>
+																	<c:when test="${not empty moprComments}">${moprComments}</c:when>
+																	<c:otherwise>No comments by MOPR</c:otherwise>
+																</c:choose>
+															</li><br>
+															</c:forEach>
+														</ol>
+													</td>
+													</c:if>		
 											</tr>
 											<c:set var="countDpmu" value="${countDpmu + 1}" scope="page" />
 										</c:forEach>
@@ -337,14 +415,14 @@
 										</button>
 										<c:if test="${eGovActivity.status  != undefined}">
 											<button type="button" onclick='freezeAndUnfreeze("freeze")'
-												id="freezeId" class="btn bg-green waves-effect">
+												id="freezeId" class="btn bg-orange waves-effect">
 												<spring:message code="Label.FREEZE" htmlEscape="true" />
 											</button>
 										</c:if>
 									</c:if>
 									<c:if test="${eGovActivity.status eq true}">
 										<button type="button" onclick='freezeAndUnfreeze("unfreeze")'
-											id="unfreezeId" class="btn bg-green waves-effect">
+											id="unfreezeId" class="btn bg-orange waves-effect">
 											<spring:message code="Label.UNFREEZE" htmlEscape="true" />
 										</button>
 									</c:if>
@@ -358,7 +436,7 @@
 								</c:if>
 								<button type="button"
 									onclick="onClose('home.html?<csrf:token uri='home.html'/>')"
-									class="btn bg-orange waves-effect">
+									class="btn bg-red waves-effect">
 									<spring:message code="Label.CLOSE" htmlEscape="true" />
 								</button>
 								<input type="hidden" name="dbFileName" id="dbFileName">

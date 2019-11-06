@@ -24,8 +24,10 @@ trainingDetail.controller("trainingDetailController",['$scope','trainingDetailSe
 		trainingDetailService.fetchtrainingDetailData(null).then(function(response){
 			delTrainingIdArr=[];
 			$scope.training = response.data.fetchTraining;	
-                            $scope.planStateStatus=response.data.planStateStatus;
+            $scope.planStateStatus=response.data.planStateStatus;
 			$scope.training.trainingDetailList = response.data.fetchTrainingDetailsList;
+			$scope.statePreComments=response.data.STATE_PRE_COMMENTS;
+			$scope.moprPreComments=response.data.MOPR_PRE_COMMENTS;
 			calculateAllTrainingFunds();
 			$scope.targetGrpMstrList=response.data.targetGrpMstrList;
 			//$scope.subjectsList=response.data.subjectsList;

@@ -24,7 +24,8 @@ publicModule.controller("pesaPlanController", [ '$scope', "pesaPlanService",
 				/*$scope.pesaPlan.isFreez = $scope.pesaPlan.isFreez;*/
 				$scope.pesaPlan.additionalRequirement = $scope.pesaPlan.additionalRequirement;
 				$scope.pesaPlan.pesaPlanDetails = response.data.pesaPlanDetails;
-				
+				$scope.statePreComments = response.data.STATE_PRE_COMMENTS;
+				$scope.moprPreComments = response.data.MOPR_PRE_COMMENTS;
 				$scope.postToPesaDetails = new Map();
 				
 				for (var i = 0; i < $scope.pesaPlan.pesaPlanDetails.length; i++) {

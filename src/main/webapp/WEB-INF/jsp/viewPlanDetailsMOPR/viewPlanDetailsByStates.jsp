@@ -833,7 +833,8 @@ toggleInstInfraAndPanchayatBhawan=function(id,msg){
 											<c:set var="forwardPlanStatus" value="false"></c:set>
 										</c:if>
 									</c:forEach>
-									
+							
+							<div data-ng-show="!hideRevertButton">		
 							<c:if test="${buttonStatus}">
 							<%-- <c:if test="${sessionScope['scopedTarget.userPreference'].userType eq 'M'}"> --%>
 										<!-- <button data-ng-click="exportData()">Download Consolidated Report</button> -->
@@ -846,9 +847,14 @@ toggleInstInfraAndPanchayatBhawan=function(id,msg){
 										</c:if>	
 									<%-- </c:if> --%>
 							<%-- <input type="button" class="btn bg-green waves-effect" data-ng-click="forwardPlan(${sessionScope['scopedTarget.userPreference'].plansAreFreezed})" value="Forward Plan To CEC"> --%>
-							<input type="button" style="float: right;" class="btn bg-red waves-effect" data-ng-click="" value="Revert Plan To ${stateName}">
+							<input type="button" style="float: right;" class="btn bg-red waves-effect" data-ng-click="revertPlan(${stateCode});" value="Revert Plan To ${stateName}">
 							</c:if>
-							
+							</div>
+							<div data-ng-show="hideRevertButton" class="text-right">
+							<button type="button" onclick="onClose('home.html?<csrf:token uri='home.html'/>')" class="btn bg-orange waves-effect">
+									<spring:message code="Label.CLOSE" htmlEscape="true" />
+								</button>
+							</div>
 							<div id="myModal" class="modal fade" role="dialog">
 									<div class="modal-dialog modal-lg">
 										<!-- Modal content-->

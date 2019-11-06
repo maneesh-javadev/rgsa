@@ -19,6 +19,9 @@ publicModule.controller("capacityBuildingController", [ '$scope', "capacityBuild
 			if(response.data.capacityBuildingDetails != null){
 				$scope.capacityBuilding = response.data.capacityBuildingDetails;
 				
+				$scope.preStateComments = response.data.STATE_PRE_COMMENTS;
+				$scope.preMoprComments = response.data.MOPR_PRE_COMMENTS;
+				
 				$scope.calculateSubTotal($scope.capacityBuilding.capacityBuildingActivityDetails);
 				
 				$scope.cbToCurrentStatusDetails = new Map();

@@ -188,13 +188,15 @@ function addNewRow(){
 		tds+='<td><input type="text" onKeyPress="if(this.value.length==7) return false;" min="1" name="incomeEnhancementDetails['+i+'].totalCostOfProject" placeholder="Total Project cost" required="required" class="form-control Align-Right numbers"/></td>';
 		tds+='<td><input type="text" oninput="validity.valid||(value="");" onKeyPress="if(this.value.length==7) return false;" id="fundsName" min="1" placeholder="Fund Proposed" name="incomeEnhancementDetails['+i+'].fundsRequired" required="required" class="form-control Align-Right numbers"/></td>';
 		tds+='<td><input type="text" name="incomeEnhancementDetails['+i+'].briefAboutActivity" required="required" maxlength="1000" placeholder="Brief About Activity" class="form-control alphaonly"/></td>';
-		tds+='<td><input type="file" name="incomeEnhancementDetails['+i+'].file"/></td>';
+		tds+='<td><input type="file" name="incomeEnhancementDetails['+i+'].file" /></td>';
 		/* tds+='<td><input type="checkbox" name="incomeEnhancementDetails['+i+'].planApprovedByDpc" class="form-control"/></td>'; */
 		tds+='<td><label class="container"><input type="checkbox" name="incomeEnhancementDetails['+i+'].planApprovedByDpc"/><span class="checkmark"></span></label></td>';
+		tds+='<td><input type="text" name="incomeEnhancementDetails['+i+'].remarks" Class="form-control exclud" rows="2" cols="4" onkeyup="this.value=this.value.replace(/[^a-zA-Z0-9 ]/g,);" maxlength="1000"/></td>'
 		/* tds+='<td><input type="button" value="Delete" onclick="deleteRow();" class="btn bg-red waves-effect"/></td>' */
+		tds+='<c:if test="${sessionScope['scopedTarget.userPreference'].planVersion > 1}"><td></td>';
+		tds+='<td></td></c:if>';
 		tds+='<td><a href="javascript:deleteRow();"><span class="glyphicon glyphicon-trash"></span></a></td>';
-								
-	tds += '</tr>';
+		tds += '</tr>';
 	i++;
 	$('#mytable tr:last').after(tds);
 	regexValidation();
@@ -435,24 +437,38 @@ select option:first-child{
 											<th rowspan="2">Brief about the Activity</th>
 											<th rowspan="2">Upload File(PDF)</th>
 											<th rowspan="2">Plan approved by DPC</th>
+											<th rowspan="2">Remarks</th>
+											<c:if test="${sessionScope['scopedTarget.userPreference'].planVersion > 1}">
+											<th colspan="2" rowspan="1">
+												<div align="center">
+													<strong>Previous comment history</strong>
+												</div>
+											</th>
+											</c:if>
 											<c:if
 												test="${USER_TYPE eq 'S'}">
 												<th rowspan="2">Delete</th>
 											</c:if>
 											<c:if
-												test="${USER_TYPE eq 'M'}">
+												test="${USER_TYPE eq 'M' or USER_TYPE eq 'C'}">
 												<th rowspan="2">Is Approved</th>
-												<th rowspan="2">Remarks</th>
-											</c:if>
-											<c:if
-												test="${USER_TYPE eq 'C'}">
-												<th rowspan="2">Is Approved</th>
-												<th rowspan="2">Remarks</th>
 											</c:if>
 										</tr>
 										<tr>
 											<th>From</th>
 											<th>To</th>
+											<c:if test="${sessionScope['scopedTarget.userPreference'].planVersion > 1}">
+												<th >
+													<div align="center">
+														<strong>State Previous Comments <span style="color: #396721;">&nbsp;<i class="fa fa-circle"></i></span></strong>
+													</div>
+												</th>
+												<th>
+													<div align="center">
+														<strong>MOPR's Feedback <span style="color: #bc6317;">&nbsp;<i class="fa fa-circle"></i></span></strong>
+													</div>
+												</th>
+											</c:if>
 										</tr>
 
 									</thead>
@@ -553,10 +569,43 @@ select option:first-child{
 													name="incomeEnhancementDetails[0].planApprovedByDpc"
 													 /><span class="checkmark"></span></label></td>
 												<%-- <td><input type="button" value="Delete" class="btn" onclick='toDelete("${incomeEnhancementDetails.id}","${incomeEnhancementDetails.fileLocation}","${incomeEnhancementDetails.fileName}");'/></td> --%>
+												<td><input type="text"
+															name="incomeEnhancementDetails[0].remarks"
+															onkeyup="this.value=this.value.replace(/[^a-zA-Z0-9 ]/g,'');"
+															Class="form-control exclud" rows="2" cols="4"
+															maxlength="1000" /></td>
+												<c:if test="${sessionScope['scopedTarget.userPreference'].planVersion > 1}">
+														<td>
+															<ol>
+															<c:forEach items="${STATE_PRE_COMMENTS[index.index]}" varStatus="indexInner" var="stateComments">
+															<li style="color: #396721;font-weight: bold;">
+																<c:choose>
+																	<c:when test="${not empty stateComments}">${stateComments}</c:when>
+																	<c:otherwise>No comments by state</c:otherwise>
+																</c:choose>
+															</li><br>
+															</c:forEach>
+														</ol>
+														</td>
+													
+													<td>
+														<ol>
+															<c:forEach items="${MOPR_PRE_COMMENTS[index.index]}" varStatus="indexMopr" var="moprComments">
+															<li style="color: #bc6317;font-weight: bold;">
+																<c:choose>
+																	<c:when test="${not empty moprComments}">${moprComments}</c:when>
+																	<c:otherwise>No comments by MOPR</c:otherwise>
+																</c:choose>
+															</li><br>
+															</c:forEach>
+														</ol>
+													</td>
+													</c:if>				
 												<td><a id="deleteButtn" class="not-active"
 													href='javascript:toDelete("${incomeEnhancementDetails.id}","${incomeEnhancementDetails.fileLocation}","${incomeEnhancementDetails.fileName}");'>
 														<span id="delete${incomeEnhancementDetails.id}" class="glyphicon glyphicon-trash"></span>
 												</a></td>
+												
 											</tr>
 											<input type="hidden" name="setBlockId" />
 										</c:if>
@@ -720,6 +769,12 @@ select option:first-child{
 																</label>
 															</c:otherwise>
 														</c:choose></td>
+													<td><input type="text"
+															name="incomeEnhancementDetails[${count.index}].remarks"
+															value="${dblist.remarks}"
+															onkeyup="this.value=this.value.replace(/[^a-zA-Z0-9 ]/g,'');"
+															Class="form-control exclud" rows="2" cols="4"
+															maxlength="1000" /></td>	
 													<c:if
 														test="${USER_TYPE eq 'S'}">
 														<td><%-- <input type="button" value="Delete"
@@ -731,7 +786,7 @@ select option:first-child{
 														</a></td>
 													</c:if>
 													<c:if
-														test="${USER_TYPE eq 'M'}">
+														test="${USER_TYPE eq 'M' or USER_TYPE eq 'C'}">
 														<td><c:choose>
 																<c:when test="${dblist.isApproved}">
 																	<input type="checkbox"
@@ -744,33 +799,6 @@ select option:first-child{
 																		Class="form-control exclud">
 																</c:otherwise>
 															</c:choose></td>
-														<td><input type="text"
-															name="incomeEnhancementDetails[${count.index}].remarks"
-															value="${dblist.remarks}"
-															onkeyup="this.value=this.value.replace(/[^a-zA-Z0-9 ]/g,'');"
-															Class="form-control exclud" rows="2" cols="4"
-															maxlength="1000" /></td>
-													</c:if>
-													<c:if
-														test="${USER_TYPE eq 'C'}">
-														<td><c:choose>
-																<c:when test="${dblist.isApproved}">
-																	<input type="checkbox"
-																		name="incomeEnhancementDetails[${count.index}].isApproved"
-																		checked="checked" Class="form-control exclud">
-																</c:when>
-																<c:otherwise>
-																	<input type="checkbox"
-																		name="incomeEnhancementDetails[${count.index}].isApproved"
-																		Class="form-control exclud">
-																</c:otherwise>
-															</c:choose></td>
-														<td><input type="text"
-															name="incomeEnhancementDetails[${count.index}].remarks"
-															value="${dblist.remarks}"
-															onkeyup="this.value=this.value.replace(/[^a-zA-Z0-9 ]/g,'');"
-															Class="form-control exclud" rows="2" cols="4"
-															maxlength="1000" /></td>
 													</c:if>
 												</tr>
 												<input type="hidden" name="setBlockId" />

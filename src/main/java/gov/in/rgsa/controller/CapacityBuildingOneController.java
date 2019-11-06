@@ -110,10 +110,14 @@ public class CapacityBuildingOneController {
 		if(capacityBuildingList != null && capacityBuildingList.getUserType()!=null &&  capacityBuildingList.getUserType() == 'S' && userPreference.getUserType().charAt(0) =='M') {
 			capacityBuildingList.setIsFreeze(false);
 			}
+		if(capacityBuildingList != null) {
+			Map<String, List<List<String>>> resultMap = basicInfoService.fetchStateAndMoprPreComments(capacityBuildingList.getCapacityBuildingActivityDetails().size(),13);
+			map.put("STATE_PRE_COMMENTS", resultMap.get("statePreviousComments"));
+			map.put("MOPR_PRE_COMMENTS", resultMap.get("moprPreviousComments"));
+		}
 		map.put("capacityBuildingDetails", capacityBuildingList);
 		map.put("userType", userPreference.getUserType().charAt(0));
 		map.put("capacityBuildingDetails", capacityBuildingService.fetchCapacityBuildingActivity(null));
-		
 		return map;
 	}
 	

@@ -8,13 +8,15 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 
 @Entity
 @Table(name="satcom_activity_details", schema="rgsa")
-public class SatcomActivityDetails{
+@NamedQuery(name="FETCH_ALL_SATCOM_DETAILS_EXCEPT_CURRENT_VERSION",query="from SatcomActivityDetails where satcomActivity.stateCode=:stateCode and satcomActivity.versionNo !=:versionNo and  satcomActivity.userType in('S','M') order by satcomActivityDetailsId")
+public class SatcomActivityDetails {
 
 	@Id
 	@Column(name="satcom_activity_details_id")

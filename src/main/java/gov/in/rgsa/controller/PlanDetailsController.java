@@ -179,6 +179,7 @@ public class PlanDetailsController {
 		
 		List<State> states =  allocationService.states(userPreference.getStateCode());
 		model.addAttribute("stateName", states.get(0).getStateNameEnglish());
+		model.addAttribute("stateCode", states.get(0).getStateCode());
 		
 		return MOPR_PLAN_DETAILS_BY_STATE;
 	}

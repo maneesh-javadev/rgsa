@@ -96,6 +96,9 @@ public class AdditionalfacultyAndMaintHrBudgetController {
 			institueInfraHrActivityDetails=additionalFacultyAndMainService.fetchInstituteHrActivityDetails(institueInfraHrActivity.get(0).getInstituteInfraHrActivityId());
 			additionalFactultyAndMaintModel.setAdditionalRequirementSprc(institueInfraHrActivity.get(0).getAdditionalRequirementSprc());
 			additionalFactultyAndMaintModel.setAdditionalRequirementDprc(institueInfraHrActivity.get(0).getAdditionalRequirementDprc());
+			Map<String, List<List<String>>> map = basicInfoService.fetchStateAndMoprPreComments(institueInfraHrActivityDetails.size(),14);
+			model.addAttribute("STATE_PRE_COMMENTS", map.get("statePreviousComments"));
+			model.addAttribute("MOPR_PRE_COMMENTS", map.get("moprPreviousComments"));
 			/*
 			 * total_fund=calTotalFund(institueInfraHrActivityDetails); for
 			 * (InstitueInfraHrActivityDetails details : institueInfraHrActivityDetails) {

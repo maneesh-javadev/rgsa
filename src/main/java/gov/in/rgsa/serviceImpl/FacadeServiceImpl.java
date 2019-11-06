@@ -5,6 +5,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.persistence.Query;
+
 import org.apache.commons.collections.CollectionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -192,6 +194,7 @@ public class FacadeServiceImpl implements FacadeService {
 		parameter.put("planStatusId",2);
 		parameter.put("stateCode", userPreference.getStateCode());
 		parameter.put("yearId", userPreference.getFinYearId());
+		parameter.put("planVersion", userPreference.getPlanVersion());
 		List<Plan> planForwardedByState=dao.findAll("PLAN_STATUS", parameter);
 		if(!CollectionUtils.isEmpty(planForwardedByState)) {
 			Plan planold = planForwardedByState.get(0);
@@ -224,6 +227,7 @@ public class FacadeServiceImpl implements FacadeService {
 		parameter.put("planStatusId",1);
 		parameter.put("stateCode", userPreference.getStateCode());
 		parameter.put("yearId", userPreference.getFinYearId());
+		parameter.put("planVersion", userPreference.getPlanVersion());
 		List<Plan> planInDraftMode=dao.findAll("PLAN_STATUS", parameter);
 		if(!CollectionUtils.isEmpty(planInDraftMode)) {
 			Plan planold = planInDraftMode.get(0);
@@ -368,6 +372,14 @@ public class FacadeServiceImpl implements FacadeService {
 		}
 		parameter.put("yearId", userPreference.getFinYearId());
 		return commonRepository.findAll("FETCH_FORMS_FREEZE_STATUS", parameter);
+	}
+
+	@Override
+	public boolean revertPlan(Integer stateCode) {
+		Map<String, Object> parameter = new HashMap<String, Object>();
+		parameter.put("state_code", stateCode);
+		parameter.put("year_id", userPreference.getFinYearId());
+		return dao.findByNativeQuery("select * from rgsa.revert_func_no_deletion(:state_code,:year_id)", parameter);
 	}
 	
 }

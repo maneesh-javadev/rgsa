@@ -9,12 +9,17 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
 @Entity	
 @Table(name="e_enablement_details" , schema="rgsa")
-@NamedQuery(name="FETCH_ENABLEMENT_DETAILS",query="select EE FROM EEnablementDetails EE where eEnablement.eEnablementId=:eEnablementId")
+@NamedQueries({
+	@NamedQuery(name="FETCH_ALL_EENABLEMENT_DETAILS_EXCEPT_CURRENT_VERSION",query = "from EEnablementDetails where eEnablement.stateCode=:stateCode and eEnablement.versionNo !=:versionNo and  eEnablement.userType in('S','M') order by eEnablementDetailId"),
+	@NamedQuery(name="FETCH_ENABLEMENT_DETAILS",query="select EE FROM EEnablementDetails EE where eEnablement.eEnablementId=:eEnablementId")
+})
+
 public class EEnablementDetails implements Serializable {
 	private static final long serialVersionUID = 1L;
 

@@ -2,6 +2,7 @@ package gov.in.rgsa.controller;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -83,6 +84,9 @@ public class EnablementOfPanchayatController {
 			model.addAttribute("enablement", enablement.get(0));
 			enablementDetails = enablementOfPanchayatService.fetchEnablementDetails(enablement.get(0).geteEnablementId());
 			form.seteEnablementDetails(enablementDetails);
+			Map<String, List<List<String>>> map = basicInfoService.fetchStateAndMoprPreComments(enablementDetails.size(),5);
+			model.addAttribute("STATE_PRE_COMMENTS", map.get("statePreviousComments"));
+			model.addAttribute("MOPR_PRE_COMMENTS", map.get("moprPreviousComments"));
 			form.setAdditionalRequirement(enablement.get(0).getAdditionalRequirement());
 			model.addAttribute("INITIAL_FLAG", false);
 		}else{

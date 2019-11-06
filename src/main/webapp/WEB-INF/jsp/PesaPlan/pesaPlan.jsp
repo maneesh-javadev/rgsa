@@ -38,31 +38,53 @@ $('document').ready(function(){
 									id="mytable">
 									<thead>
 										<tr>
-											<th><div align="center">
+											<th rowspan="2"><div align="center">
 													<strong>Designation</strong>
 												</div></th>
-											<th><div align="center">
+											<th rowspan="2"><div align="center">
 													<strong>No. of Units<br> A
 													</strong>
 												</div></th>
-											<th><div align="center">
+											<th rowspan="2"><div align="center">
 													<strong>Unit Cost per month (in Rs) <br> B
 													</strong>
 												</div></th>
-											<th><div align="center">
+											<th rowspan="2"><div align="center">
 													<strong>No. of Months<br> C
 													</strong>
 												</div></th>
-											<th><div align="center">
+											<th rowspan="2"><div align="center">
 													<strong>Funds (in Rs) <br>D = A * B * C
 													</strong>
 												</div></th>
-											<th data-ng-if="userType != 'S'">Is Approved</th>
-											<th data-ng-if="userType != 'S'"><div align="center"><strong>Remarks</strong></div></th>
+											<th rowspan="2" data-ng-if="userType != 'S'">Is Approved</th>
+											<th rowspan="2"><div align="center"><strong>Remarks</strong></div></th>
+											
+											<c:if test="${sessionScope['scopedTarget.userPreference'].planVersion > 1}">
+											<th colspan="2" rowspan="1">
+												<div align="center">
+													<strong>Previous comment history</strong>
+												</div>
+											</th>
+											</c:if>
+										</tr>
+										<tr>
+											<c:if test="${sessionScope['scopedTarget.userPreference'].planVersion > 1}">
+												<th >
+													<div align="center">
+														<strong>State Previous Comments <span style="color: #396721;">&nbsp;<i class="fa fa-circle"></i></span></strong>
+													</div>
+												</th>
+												<th>
+													<div align="center">
+														<strong>MOPR's Feedback <span style="color: #bc6317;">&nbsp;<i class="fa fa-circle"></i></span></strong>
+													</div>
+												</th>
+											</c:if>
 										</tr>
 									</thead>
 									<tbody>
-										<tr data-ng-repeat="designation in designationArray" >
+										<tr data-ng-repeat="designation in designationArray" data-ng-init="outerIndex = $index">
 
 											<td>
 												<div>
@@ -98,9 +120,27 @@ $('document').ready(function(){
 											<td data-ng-if="userType != 'S'">
 												<input type="checkbox" data-ng-disabled="pesaPlan.isFreez" data-ng-model="pesaPlan.pesaPlanDetails[$index].isApproved"/>
 											</td>
-											<td data-ng-if="userType != 'S'">
+											<td>
 												<input type="text" data-ng-disabled="pesaPlan.isFreez" data-ng-model="pesaPlan.pesaPlanDetails[$index].remarks" class="form-control" placeholder="Enter Remarks" style="text-align:right;"/>
 											</td>
+											
+											<c:if
+											test="${sessionScope['scopedTarget.userPreference'].planVersion > 1}">
+											<td>
+												<ol>
+														<li data-ng-repeat="stateComments in statePreComments[outerIndex] track by $index" style="color: #396721; font-weight: bold;">
+															{{stateComments}}
+															</li>
+												</ol>
+											</td>
+
+											<td>
+												<ol>
+													<li data-ng-repeat="moprComments in moprPreComments[outerIndex] track by $index" style="color: #bc6317; font-weight: bold;">
+													{{moprComments}}</li>
+												</ol>
+											</td>
+										</c:if>
 										</tr>
 
 

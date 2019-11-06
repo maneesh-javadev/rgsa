@@ -36,4 +36,6 @@ public interface FacadeService {
 	
 	public List<IsFreezeStatusDto> fetchFormsIsFreezeStatus(Integer stateCode);
 
+	public boolean revertPlan(Integer stateCode);
+
 }

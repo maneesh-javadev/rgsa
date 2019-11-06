@@ -8,7 +8,8 @@ import java.util.List;
 @Table(name = "iec_activity_details", schema = "rgsa")
 @NamedQueries({
         @NamedQuery(name = "FIND_IEC_ID", query = "SELECT C FROM IecActivityDropdown C  "),
-        @NamedQuery(name = "FETCH_Iec_Activity_BY_ID", query = "Delete FROM IecActivityDetails where idMain=:idMain")
+        @NamedQuery(name = "FETCH_Iec_Activity_BY_ID", query = "Delete FROM IecActivityDetails where idMain=:idMain"),
+        @NamedQuery(name="FETCH_ALL_IEC_DETAILS_EXCEPT_CURRENT_VERSION",query="From IecActivityDetails where iecActivity.stateCode =:stateCode and iecActivity.versionNo !=:versionNo and iecActivity.userType in('S','M')order by idMain")
         /*@NamedQuery(name="FETCH_Iec_DETAILS",query="SELECT IAD FROM IecActivityDetails IAD where idMain=:idMain")*/
 })
 

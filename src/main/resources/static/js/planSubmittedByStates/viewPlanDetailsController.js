@@ -6,6 +6,7 @@ publicModule.controller("adminTechSupportSaffController",['$scope','adminTechSup
 	$scope.adminTechStaffObject.supportDetails=[];
 	$scope.grandTotal=0;
 	$scope.levels=[];
+	$scope.hideRevertButton=false;
 	
 	fetchOnLoad();
 	
@@ -33,6 +34,18 @@ publicModule.controller("adminTechSupportSaffController",['$scope','adminTechSup
 				toastr.success("Plans Forwarded");
 			})
 		
+	}
+	
+	$scope.revertPlan=function(stateCode){
+		var flag = confirm('Do you want to revert plan?');
+		if(flag){
+			consolidatedReportService.revertPlan(stateCode).then(function(data){
+				$scope.hideRevertButton=true;
+				toastr.success("Plans reverted");
+			},function(error){
+				toastr.error("Something went wrong");
+			});
+		}
 	}
 	
 	$scope.validateValue = function(index){

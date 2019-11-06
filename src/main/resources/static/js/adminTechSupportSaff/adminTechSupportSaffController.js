@@ -20,6 +20,8 @@ publicModule.controller("adminTechSupportSaffController",['$scope','adminTechSup
 				$scope.adminTechStaffObject=response.data.technicalSupport;
 				$scope.adminTechStaffObject.supportDetails=response.data.details;
 				$scope.fundTotal=0;
+				$scope.preStateRemarks = response.data.STATE_PRE_COMMENTS;
+				$scope.preMoprRemarks = response.data.MOPR_PRE_COMMENTS;
 				angular.forEach($scope.adminTechStaffObject.supportDetails, function(item, key){
 					$scope.fundTotal+=item.funds;
 				});

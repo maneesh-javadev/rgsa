@@ -81,7 +81,7 @@ function calculateGrandTotal(){
 					
 						<div class="table-responsive">
 						
-							<table class="table table-bordered"">
+							<table class="table table-bordered">
 								<thead>
 									<tr>
 										<th rowspan="2"><div align="center">
@@ -98,22 +98,44 @@ function calculateGrandTotal(){
 											</div></th>
 										
 										<th rowspan="2"><div align="center">
-												<strong><spring:message code="Label.UnitCost" htmlEscape="true" />(in Rs.) <br></>B
+												<strong><spring:message code="Label.UnitCost" htmlEscape="true" />(in Rs.) <br>B
 												</strong>
 											</div></th>
 										<th rowspan="2"><div align="center">
 												<strong><spring:message code="Label.Funds" htmlEscape="true" /> <br> C = A*B
 												</strong>
 											</div></th>
-											<c:if test="${fn:containsIgnoreCase(user_type, 'M')}">
-												<th rowspan="2"><div align="center">
-													<strong><spring:message code="Label.isApproved" htmlEscape="true" /></strong>
-												</div></th>
-												<th rowspan="2"><div align="center">
-													<strong><spring:message code="Label.Remarks" htmlEscape="true" /></strong>
-												</div></th>
+										<c:if test="${fn:containsIgnoreCase(user_type, 'M')}">
+											<th rowspan="2"><div align="center">
+												<strong><spring:message code="Label.isApproved" htmlEscape="true" /></strong>
+											</div></th>
+										</c:if>
+										<th rowspan="2"><div align="center">
+												<strong><spring:message code="Label.Remarks" htmlEscape="true" /></strong>
+										</div></th>
+										
+										<c:if test="${sessionScope['scopedTarget.userPreference'].planVersion > 1}">
+											<th colspan="2" rowspan="1">
+												<div align="center">
+													<strong>Previous comment history</strong>
+												</div>
+											</th>
 											</c:if>
-									</tr>
+										</tr>
+										<tr>
+											<c:if test="${sessionScope['scopedTarget.userPreference'].planVersion > 1}">
+												<th >
+													<div align="center">
+														<strong>State Previous Comments <span style="color: #396721;">&nbsp;<i class="fa fa-circle"></i></span></strong>
+													</div>
+												</th>
+												<th>
+													<div align="center">
+														<strong>MOPR's Feedback <span style="color: #bc6317;">&nbsp;<i class="fa fa-circle"></i></span></strong>
+													</div>
+												</th>
+											</c:if>
+										</tr>
 								</thead>
 								<tbody>
 									<c:forEach items="${INFRA_RESOURCE_LIST}" var="INFRA_RESOURCE" varStatus="index">
@@ -126,8 +148,35 @@ function calculateGrandTotal(){
 												<td><form:input disabled="true" path="eEnablementDetails[${index.index }].fund" type="text" class="form-control" id="fund" style="text-align:right;"/></td>
 												<c:if test="${fn:containsIgnoreCase(user_type, 'M')}">
 												<td><form:checkbox path="eEnablementDetails[${index.index }].isApproved" disabled="${enablement.status == 'f'}" /></td>
-												<td><form:textarea path="eEnablementDetails[${index.index }].remarks" disabled="${enablement.status == 'f'}" rows="2" cols="10" /></td>
 												</c:if>
+												<td><form:textarea path="eEnablementDetails[${index.index }].remarks" readonly="${enablement.status == 'f'}" rows="2" cols="10" /></td>
+												<c:if test="${sessionScope['scopedTarget.userPreference'].planVersion > 1}">
+														<td>
+															<ol>
+															<c:forEach items="${STATE_PRE_COMMENTS[index.index]}" varStatus="indexInner" var="stateComments">
+															<li style="color: #396721;font-weight: bold;">
+																<c:choose>
+																	<c:when test="${not empty stateComments}">${stateComments}</c:when>
+																	<c:otherwise>No comments by state</c:otherwise>
+																</c:choose>
+															</li><br>
+															</c:forEach>
+														</ol>
+														</td>
+													
+													<td>
+														<ol>
+															<c:forEach items="${MOPR_PRE_COMMENTS[index.index]}" varStatus="indexMopr" var="moprComments">
+															<li style="color: #bc6317;font-weight: bold;">
+																<c:choose>
+																	<c:when test="${not empty moprComments}">${moprComments}</c:when>
+																	<c:otherwise>No comments by MOPR</c:otherwise>
+																</c:choose>
+															</li><br>
+															</c:forEach>
+														</ol>
+													</td>
+													</c:if>	
 											</tr>
 											<form:hidden path="eEnablementDetails[${index.index }].eeMasterId" value="${INFRA_RESOURCE.eMasterId}" />
 									</c:forEach>
@@ -161,22 +210,22 @@ function calculateGrandTotal(){
 						<div class="text-right">
 						<c:if test="${Plan_Status eq true}">
 							<input type="hidden" id="status" name="status">
-							<c:if test="${enablement.status eq 's' || enablement.status eq 'u' || enablement.status == undefined}">
+							<c:if test="${enablement.status eq 's' || enablement.status eq 'u' || enablement.status == undefined || enablement.status eq 'U'}">
 								<button type="submit" onclick="setStatus('s')" class="btn bg-green waves-effect save-button"><spring:message code="Label.SAVE" htmlEscape="true" /></button>
 							</c:if>
 							<c:if test="${enablement.status != undefined}">
-							<c:if test="${enablement.status eq 's' || enablement.status eq 'u' || enablement.status == undefined}">
-								<button type="submit" onclick="setStatus('f')" class="btn bg-green waves-effect"><spring:message code="Label.FREEZE" htmlEscape="true" /></button>
+							<c:if test="${enablement.status eq 's' || enablement.status eq 'u' || enablement.status == undefined || enablement.status eq 'U'}">
+								<button type="submit" onclick="setStatus('f')" class="btn bg-orange waves-effect"><spring:message code="Label.FREEZE" htmlEscape="true" /></button>
 							</c:if>
 							<c:if test="${enablement.status eq 'f'}">
 								<button type="submit" onclick="setStatus('u')" class="btn bg-green waves-effect"><spring:message code="Label.UNFREEZE" htmlEscape="true" /></button>
 							</c:if>
 							</c:if>
-							<c:if test="${enablement.status eq 's' || enablement.status eq 'u' || enablement.status == undefined}">
+							<c:if test="${enablement.status eq 's' || enablement.status eq 'u' || enablement.status == undefined || enablement.status eq 'U'}">
 								<button type="button" class="btn bg-light-blue waves-effect reset"><spring:message code="Label.CLEAR" htmlEscape="true" /></button>
 							</c:if>
 							</c:if>
-							<button type="button"onclick="onClose('home.html?<csrf:token uri='home.html'/>')"class="btn bg-orange waves-effect"><spring:message code="Label.CLOSE" htmlEscape="true" /></button>
+							<button type="button"onclick="onClose('home.html?<csrf:token uri='home.html'/>')"class="btn bg-red waves-effect"><spring:message code="Label.CLOSE" htmlEscape="true" /></button>
 						</div>
 					</div>
 						<input type="hidden" name="eEnablementId" value="${enablement.eEnablementId }">

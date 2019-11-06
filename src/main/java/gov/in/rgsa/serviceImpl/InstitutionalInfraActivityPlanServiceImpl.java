@@ -444,5 +444,13 @@ public class InstitutionalInfraActivityPlanServiceImpl implements InstitutionalI
 	public void deleteRecord(Integer detailId) {
 		commonRepository.delete(InstitutionalInfraActivityPlanDetails.class, detailId);
 	}
+
+	@Override
+	public List<InstitutionalInfraActivityPlanDetails> fetchAllDetailsExceptCurrentVersion() {
+		Map<String, Object> parameters=new HashMap<String, Object>();
+		parameters.put("stateCode",userPreference.getStateCode());
+		parameters.put("versionNo",userPreference.getPlanVersion());
+		return commonRepository.findAll("FETCH_ALL_DETAILS_EXCEPT_CURRENT_VERSION", parameters);
+	}
 	
 }

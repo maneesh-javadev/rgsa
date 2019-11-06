@@ -28,6 +28,8 @@ trainingDetail.controller("trainingDetailMoprController",['$scope','trainingDeta
 			$scope.training = $scope.fetchTrainingMOPR;	
 			$scope.training.trainingDetailList = $scope.fetchTrainingDetailsListMOPR;
 			if(!$scope.fetchTrainingDetailsListMOPR.length>0){
+				$scope.statePreComments=response.data.STATE_PRE_COMMENTS;
+				$scope.moprPreComments=response.data.MOPR_PRE_COMMENTS;
 				$scope.training = $scope.fetchTrainingState;
 				$scope.training.preTrainingActivityId=$scope.fetchTrainingState.trainingActivityId;
 				$scope.training.trainingActivityId=null;

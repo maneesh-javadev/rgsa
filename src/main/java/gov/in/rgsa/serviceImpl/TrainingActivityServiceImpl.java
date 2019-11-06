@@ -39,6 +39,7 @@ import gov.in.rgsa.entity.TrainingTargetGroups;
 import gov.in.rgsa.entity.TrainingVenueLevel;
 import gov.in.rgsa.entity.TrainingWiseCategory;
 import gov.in.rgsa.model.Response;
+import gov.in.rgsa.service.BasicInfoService;
 import gov.in.rgsa.service.FacadeService;
 import gov.in.rgsa.service.PlanAllocationService;
 import gov.in.rgsa.service.TrainingActivityService;
@@ -60,6 +61,9 @@ public class TrainingActivityServiceImpl implements TrainingActivityService {
 	
 	@Autowired
 	private FacadeService facadeService;
+	
+	@Autowired
+	private BasicInfoService basicInfoService;
 	
 	@Autowired
 	private PlanAllocationService planAllocationService;
@@ -368,6 +372,7 @@ public void save(TrainingActivity activity) {
 	@Override
 	public Map<String,Object> fetchTrainingDetails(final Character userType) {
 		List<FetchTrainingDetails> fetchTrainingDetailsList=new ArrayList<FetchTrainingDetails>();
+		Map<String,Object> data = new HashMap<>();
 		FetchTraining fetchTraining=new FetchTraining();
 		
 		Map<String,Object> params = new HashMap<>();
@@ -388,6 +393,9 @@ public void save(TrainingActivity activity) {
 			params.put("trainingActivityId", trainingActivityId);
 			params.put("isactive", Boolean.TRUE);
 			fetchTrainingDetailsList = commonRepository.findAll("Fetch_Training_Details", params);
+			Map<String, List<List<String>>> map = basicInfoService.fetchStateAndMoprPreComments(fetchTrainingDetailsList.size(),1);
+			data.put("STATE_PRE_COMMENTS", map.get("statePreviousComments"));
+			data.put("MOPR_PRE_COMMENTS", map.get("moprPreviousComments"));
 		}
 		
 		
@@ -397,7 +405,6 @@ public void save(TrainingActivity activity) {
 		{
 			planStatus=planList.get(0).getPlanStatusId();
 		}
-		Map<String,Object> data = new HashMap<>();
 		data.put("fetchTraining", fetchTraining);
 		data.put("fetchTrainingDetailsList", fetchTrainingDetailsList);
 		data.put("targetGrpMstrList",this.targetGroupMastersList());
@@ -766,6 +773,9 @@ public void save(TrainingActivity activity) {
 		
 		Map<String,Object> data = new HashMap<>();
 		data.put("fetchTrainingState", fetchTraining);
+		Map<String, List<List<String>>> map = basicInfoService.fetchStateAndMoprPreComments(fetchTrainingDetailsList.size(),1);
+		data.put("STATE_PRE_COMMENTS", map.get("statePreviousComments"));
+		data.put("MOPR_PRE_COMMENTS", map.get("moprPreviousComments"));
 		data.put("fetchTrainingDetailsListState", fetchTrainingDetailsList);
 		
 		fetchTraining=new FetchTraining();

@@ -266,6 +266,7 @@ public class IecServiceImpl implements IecService {
 			iecActivityDetails.setIsApproved(false);
 		}
 		iecActivityDetails.setTotalAmountProposed(iecFormModel.getAmount());
+		iecActivityDetails.setRemarks(iecFormModel.getRemarks());
 		commonRepository.save(iecActivityDetails);
 
 		// Now update Detail-Dropdown-link

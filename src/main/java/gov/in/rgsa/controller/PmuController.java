@@ -87,6 +87,9 @@ public class PmuController {
 			// Comparator.comparing(PmuWiseProposedDomainExperts::getPmuWiseProposedDomainExpertsId));
 			// pmuActivitiesList.get(0).setSetDistrictIdPmuWise(proposedDomainExpertsList.get(3).getDistrictId());
 			model.addAttribute("pmuActivity", pmuActivitiesList.get(0));
+			Map<String, List<List<String>>> map = basicInfoService.fetchStateAndMoprPreComments(pmuActivitiesList.get(0).getPmuActivityDetails().size(),12);
+			model.addAttribute("STATE_PRE_COMMENTS", map.get("statePreviousComments"));
+			model.addAttribute("MOPR_PRE_COMMENTS", map.get("moprPreviousComments"));
 			model.addAttribute("pmuWiseDomainList", proposedDomainExpertsList);
 			pmuActivity.setPmuWiseProposedDomainExperts(proposedDomainExpertsList);
 			model.addAttribute("initial_status", false);

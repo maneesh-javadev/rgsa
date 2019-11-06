@@ -2,8 +2,10 @@ package gov.in.rgsa.controller;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.logging.log4j.message.MapMessage.MapFormat;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -69,6 +71,10 @@ public class AdminAndFinancialDataCellController {
 				adminFinancialDataCellActivityDetails2.setSubTotal(adminFinancialDataCellActivityDetails2.getFunds());
 			}
 		}
+		
+		Map<String, List<List<String>>> map = basicInfoService.fetchStateAndMoprPreComments(adminFinancialDataCellActivityDetails.size(),8);
+		model.addAttribute("STATE_PRE_COMMENTS", map.get("statePreviousComments"));
+		model.addAttribute("MOPR_PRE_COMMENTS", map.get("moprPreviousComments"));
 		form.setAdminFinancialDataCellActivityDetails(adminFinancialDataCellActivityDetails);
 		form.setAdditionalRequirement(adminAndFinancialDataActivity.get(0).getAdditionalRequirement());
 		model.addAttribute("IS_FREEZE", adminAndFinancialDataActivity.get(0).getIsFreeze());

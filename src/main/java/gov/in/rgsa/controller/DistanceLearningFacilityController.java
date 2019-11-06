@@ -127,13 +127,14 @@ public class DistanceLearningFacilityController {
 		map.put("SATCOM_LEVEL", satcomFacilityService.getSatcomeLevel());
 		List<SatcomActivity> activities= null;
 		activities = satcomFacilityService.fetchSatcomActivities(userPreference.getUserType());
-		if(activities != null && !activities.isEmpty())
-		Collections.sort(activities.get(0).getActivityDetails(), Comparator.comparing(SatcomActivityDetails::getSatcomActivityDetailsId));
-		
 		if(!CollectionUtils.isEmpty(activities)){
+			Collections.sort(activities.get(0).getActivityDetails(), Comparator.comparing(SatcomActivityDetails::getSatcomActivityDetailsId));
+			Map<String, List<List<String>>> commentMap = basicInfoService.fetchStateAndMoprPreComments(activities.get(0).getActivityDetails().size(),7);
+			map.put("STATE_PRE_COMMENTS", commentMap.get("statePreviousComments"));
+			map.put("MOPR_PRE_COMMENTS", commentMap.get("moprPreviousComments"));
 			map.put("SATCOME_ACTIVITY_DETAILS", activities.get(0));
 		}
-		map.put("userType", userPreference.getUserType());
+		map.put("userType", userPreference.getUserType()); 
 		return map;
 	}
 	

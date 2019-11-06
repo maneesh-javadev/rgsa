@@ -16,4 +16,8 @@ publicModule.service('consolidatedReportService', [ '$http', function($http) {
 		return $http.post("forwardPlans.html?<csrf:token uri=forwardPlans.htm/>");
 	}
 	
+	this.revertPlan=function(stateCode){
+		return $http.post("revertPlan.html?<csrf:token uri=revertPlan.htm/>&stateCode="+stateCode);
+	}
+	
 } ]);

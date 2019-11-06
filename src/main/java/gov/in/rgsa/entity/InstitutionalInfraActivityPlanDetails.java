@@ -26,6 +26,7 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 	@javax.persistence.NamedQuery(name="FETCH_ALL_INSTITUTIONAL_ACTIVITY_DETAILS",query="FROM InstitutionalInfraActivityPlanDetails where institutionalInfraActivityPlan.institutionalInfraActivityId=:institutionalInfraActivityId and trainingInstitueType.trainingInstitueTypeId=:instituteType order by institutionalInfraActivityDetailsId asc"),
 	@javax.persistence.NamedQuery(name="FETCH_ALL_DETAILS",query="FROM InstitutionalInfraActivityPlanDetails where institutionalInfraActivityPlan.institutionalInfraActivityId=:institutionalInfraActivityId order by institutionalInfraActivityDetailsId asc"),
 	@javax.persistence.NamedQuery(name="UPDATE_DELETE_STATUS_BY_MULTIPLE_ID_Institutional",query="UPDATE InstitutionalInfraActivityPlanDetails SET isactive = false where institutionalInfraActivityPlan.institutionalInfraActivityId=:institutionalInfraActivityId"),
+	@javax.persistence.NamedQuery(name="FETCH_ALL_DETAILS_EXCEPT_CURRENT_VERSION",query="from InstitutionalInfraActivityPlanDetails where institutionalInfraActivityPlan.stateCode=:stateCode and institutionalInfraActivityPlan.versionNumber !=:versionNo and institutionalInfraActivityPlan.userType in('S','M') order by institutionalInfraActivityDetailsId")
 })
 
 public class InstitutionalInfraActivityPlanDetails {

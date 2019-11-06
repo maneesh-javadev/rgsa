@@ -89,6 +89,7 @@ publicModule.controller("institutionalInfraActivityPlanController", [ '$scope', 
 				$('#carryForwardCheck').hide();
 			}
 			if($scope.institutionalInfraActivityPlan!=null  && $scope.institutionalInfraActivityPlan!=""){
+				$scope.detailsForComments = $scope.institutionalInfraActivityPlan.detailsForComments;
 				$scope.institutionalInfraActivityPlan.institutionalInfraActivityPlanDetails=response.data.institutionalInfraActivityPlanDetails;
 				for (var i = 0; i < $scope.institutionalInfraActivityPlan.institutionalInfraActivityPlanDetails.length; i++) { 
 					workType=$scope.institutionalInfraActivityPlan.institutionalInfraActivityPlanDetails[i].workType;

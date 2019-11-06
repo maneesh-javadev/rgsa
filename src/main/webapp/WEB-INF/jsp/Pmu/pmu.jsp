@@ -299,21 +299,48 @@ function calculateTotalFundSpmu() {
 										<table class="table table-bordered" id="supportStaff">
 											<thead>
 												<tr>
-													<th><div align="center"><spring:message code="Label.TypeOfCenter" htmlEscape="true" /></div></th>
-													<th><div align="center"><spring:message code="Label.Faculty&Staff" htmlEscape="true" /></div></th>
-													<th><div align="center"><spring:message code="Label.NoOfUnits" htmlEscape="true" /><br></div></th>
+													<th rowspan="2"><div align="center"><spring:message code="Label.TypeOfCenter" htmlEscape="true" /></div></th>
+													<th rowspan="2"><div align="center"><spring:message code="Label.Faculty&Staff" htmlEscape="true" /></div></th>
+													<th rowspan="2"><div align="center"><spring:message code="Label.NoOfUnits" htmlEscape="true" /><br></div></th>
 													<%-- <th><div align="center"><spring:message code="Label.UnitCost" htmlEscape="true" /><br>(B)</div></th> --%>
-													<th><div align="center"><spring:message code="Label.NoOfMonths" htmlEscape="true" /><br></div></th>
-													<th><div align="center"><spring:message code="Label.Funds" htmlEscape="true" /><br></div></th>
+													<th rowspan="2"><div align="center"><spring:message code="Label.NoOfMonths" htmlEscape="true" /><br></div></th>
+													<th rowspan="2"><div align="center"><spring:message code="Label.Funds" htmlEscape="true" /><br></div></th>
 													<!-- <th><div align="center">Others Expenses</div></th>
 													<th><div align="center">Total Cost</div></th> -->
-													<th><div align="center"><spring:message code="Label.DomainDetails" htmlEscape="true" /></div></th>
+													<th rowspan="2"><div align="center"><spring:message code="Label.DomainDetails" htmlEscape="true" /></div></th>
 													<c:if test="${sessionScope['scopedTarget.userPreference'].userType eq 'M'}">
-													<th><div align="center"><spring:message code="Label.IsApproved" htmlEscape="true" /></div></th>
+													<th rowspan="2"><div align="center"><spring:message code="Label.IsApproved" htmlEscape="true" /></div></th>
 													</c:if>
-													<th><div align="center"><spring:message code="Label.Remarks" htmlEscape="true" /></div></th>
+													<th rowspan="2"><div align="center"><spring:message code="Label.Remarks" htmlEscape="true" /></div></th>
+													<c:if
+														test="${sessionScope['scopedTarget.userPreference'].planVersion > 1}">
+														<th colspan="2" rowspan="1">
+															<div align="center">
+																<strong>Previous comment history</strong>
+															</div>
+														</th>
+													</c:if>
 												</tr>
-											</thead>
+												<tr>
+													<c:if
+														test="${sessionScope['scopedTarget.userPreference'].planVersion > 1}">
+														<th>
+															<div align="center">
+																<strong>State Previous Comments <span
+																	style="color: #396721;">&nbsp;<i
+																		class="fa fa-circle"></i></span></strong>
+															</div>
+														</th>
+														<th>
+															<div align="center">
+																<strong>MOPR's Feedback <span
+																	style="color: #bc6317;">&nbsp;<i
+																		class="fa fa-circle"></i></span></strong>
+															</div>
+														</th>
+													</c:if>
+												</tr>
+										</thead>
 											<tbody id="mainTbodyId">
 											<c:set var="countSpmu" value="0" scope="page" />
 											<c:set var="countDpmu" value="0" scope="page" />
@@ -352,6 +379,35 @@ function calculateTotalFundSpmu() {
 												</td>
 										   </c:if>
 										   <td><textarea name="pmuActivityDetails[${srl.index}].remarks" rows="3" class="form-control" cols="5"><c:out value="${pmuActivity.pmuActivityDetails[srl.index].remarks}"></c:out></textarea></td>
+												
+												<c:if test="${sessionScope['scopedTarget.userPreference'].planVersion > 1}">
+														<td>
+															<ol>
+															<c:forEach items="${STATE_PRE_COMMENTS[srl.index]}" varStatus="indexInner" var="stateComments">
+															<li style="color: #396721 ; font-weight: bold;">
+																<c:choose>
+																	<c:when test="${not empty stateComments}">${stateComments}</c:when>
+																	<c:otherwise>No comments by state</c:otherwise>
+																</c:choose>
+															</li><br>
+															</c:forEach>
+														</ol>
+														</td>
+													
+													<td>
+														<ol>
+															<c:forEach items="${MOPR_PRE_COMMENTS[srl.index]}" varStatus="indexMopr" var="moprComments">
+															<li style="color: #bc6317 ;font-weight: bold;">
+																<c:choose>
+																	<c:when test="${not empty moprComments}">${moprComments}</c:when>
+																	<c:otherwise>No comments by MOPR</c:otherwise>
+																</c:choose>
+															</li><br>
+															</c:forEach>
+														</ol>
+													</td>
+													</c:if>	
+												
 												</tr>
 												<c:set var="countSpmu" value="${countSpmu + 1}" scope="page" />
 											</c:forEach>
@@ -609,12 +665,12 @@ function calculateTotalFundSpmu() {
 										<button type="submit" id="saveButtn" class="btn bg-green waves-effect"><spring:message code="Label.SAVE" htmlEscape="true" /></button>
 										<c:if test="${pmuActivity.isFreeze != undefined}">
 										
-										<button type="button" class="freeze btn bg-green waves-effect"	id="frzButtn" onclick="toFreeze();"><spring:message code="Label.FREEZE" htmlEscape="true" /></button>
-										<button type="button" class="unfreeze btn bg-green waves-effect" id="unFrzButtn" onclick="toFreeze();"><spring:message code="Label.UNFREEZE" htmlEscape="true" /></button>
+										<button type="button" class="freeze btn bg-orange waves-effect"	id="frzButtn" onclick="toFreeze();"><spring:message code="Label.FREEZE" htmlEscape="true" /></button>
+										<button type="button" class="unfreeze btn bg-orange waves-effect" id="unFrzButtn" onclick="toFreeze();"><spring:message code="Label.UNFREEZE" htmlEscape="true" /></button>
 										</c:if>
 										<button type="button" id="clearButtn" onclick="onClear(this)"	class="btn bg-light-blue waves-effect"><spring:message code="Label.CLEAR" htmlEscape="true" /></button>
 										</c:if>
-										<button type="button" onclick="onClose('home.html?<csrf:token uri='home.html'/>')"	class="btn bg-orange waves-effect"><spring:message code="Label.CLOSE" htmlEscape="true" /></button>
+										<button type="button" onclick="onClose('home.html?<csrf:token uri='home.html'/>')"	class="btn bg-red waves-effect"><spring:message code="Label.CLOSE" htmlEscape="true" /></button>
 										
 									</div>
 									

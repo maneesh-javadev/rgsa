@@ -139,6 +139,9 @@ public class StatusAdminAndStaffController {
 			technicalSupport.setStatus("U");
 		}
 		if(technicalSupport!=null){
+			Map<String, List<List<String>>> map = basicInfoService.fetchStateAndMoprPreComments(technicalSupport.getSupportDetails().size(),4);
+			object.put("STATE_PRE_COMMENTS", map.get("statePreviousComments"));
+			object.put("MOPR_PRE_COMMENTS", map.get("moprPreviousComments"));
 			List<AdministrativeTechnicalSupportDetails> details=technicalSupport.getSupportDetails();
 			technicalSupport.setSupportDetails(null);
 			object.put("details", details);

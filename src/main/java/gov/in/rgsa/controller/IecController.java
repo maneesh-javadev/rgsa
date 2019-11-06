@@ -21,6 +21,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
+
+import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @Controller
@@ -76,7 +79,11 @@ public class IecController {
             return updateFormData(iecFormModel, IEC_CEC);
 
         }else {
-            return updateFormData(iecFormModel, IEC);
+        	String redirectString = updateFormData(iecFormModel, IEC);
+        	Map<String, List<List<String>>> map = basicInfoService.fetchStateAndMoprPreComments(1,11);
+			model.addAttribute("STATE_PRE_COMMENTS", map.get("statePreviousComments"));
+			model.addAttribute("MOPR_PRE_COMMENTS", map.get("moprPreviousComments"));
+            return redirectString; 
         }
     }
 
@@ -131,6 +138,7 @@ public class IecController {
                     .stream().map(item -> item.getIecActivityDropdown().getIecId())
                     .collect(Collectors.toSet()));
             iecFormModel.setAmount(iecActivityDetails.getTotalAmountProposed());
+            iecFormModel.setRemarks(iecActivityDetails.getRemarks());
             iecFormModel.setFreeze(iecActivity.getIsFreez());
             if(userType.equalsIgnoreCase("M"))
             	iecFormModel.setIsApproved(iecActivityDetails.getIsApproved());

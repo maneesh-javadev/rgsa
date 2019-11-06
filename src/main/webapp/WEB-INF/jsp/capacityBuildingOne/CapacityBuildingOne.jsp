@@ -31,37 +31,37 @@
 								
 										<thead>
 											<tr>
-												<th>
+												<th rowspan="2">
 													<div align="center">
 														<strong>S.No.</strong>
 													</div>
 												</th>
-												<th>
+												<th rowspan="2">
 													<div align="center">
 														<strong>Activity
 														</strong>
 													</div>
 												</th>
 												
-												<th>
+												<th rowspan="2">
 													<div align="center">
 														<strong>No. of Days
 														</strong>
 													</div>
 												</th>
-												<th>
+												<th rowspan="2">
 													<div align="center">
 														<strong>No. of Units
 														</strong>
 													</div>
 												</th>
-												<th>
+												<th rowspan="2">
 													<div align="center">
 														<strong>Unit Cost(In Rs) </strong>
 													</div>
 												</th>
 												
-												<th>
+												<th rowspan="2">
 													<div align="center">
 														<strong>Funds Proposed(In Rs) </strong>
 													</div>
@@ -79,43 +79,67 @@
 													</div>
 												</th> -->
 													
-												<th><div align="center">
+												<th rowspan="2"><div align="center">
 														<strong>Collaboration with Institute</strong>
 													</div></th>
-												<th data-ng-if="userType == 'M'">
+												<th rowspan="2" data-ng-if="userType == 'M'">
 													<div align="center">
 														<strong>Is Approved</strong>
 													</div>
 												</th>
-												<th data-ng-if="userType == 'C'">
+												<th rowspan="2" data-ng-if="userType == 'C'">
 													<div align="center">
 														<strong>Is Approved</strong>
 													</div>
 												</th>
-												<th data-ng-if="userType == 'S'" style="display: none">
+												<th rowspan="2" data-ng-if="userType == 'S'" style="display: none">
 													<div align="center" >
 														<strong>Is Approved</strong>
 													</div>
 												</th>	
-												<th>
+												<th rowspan="2">
 													<div align="center">
-														<strong>Remarks by State</strong>
+														<strong>Remarks</strong>
 													</div>
 												</th>
-											</tr>
+
+												<c:if
+													test="${sessionScope['scopedTarget.userPreference'].planVersion > 1}">
+													<th colspan="2" rowspan="1">
+														<div align="center">
+															<strong>Previous comment history</strong>
+														</div>
+													</th>
+												</c:if>
+										</tr>
+										<tr>
+											<c:if test="${sessionScope['scopedTarget.userPreference'].planVersion > 1}">
+												<th >
+													<div align="center">
+														<strong>State Previous Comments <span style="color: #396721;">&nbsp;<i class="fa fa-circle"></i></span></strong>
+													</div>
+												</th>
+												<th>
+													<div align="center">
+														<strong>MOPR's Feedback <span style="color: #bc6317;">&nbsp;<i class="fa fa-circle"></i></span></strong>
+													</div>
+												</th>
+											</c:if>
+										</tr>
 										</thead>
 										
 										<tbody>
-											<tr data-ng-repeat="cbMaster in cbmasters" >
+											<tr data-ng-repeat="cbMaster in cbmasters" data-ng-init="outerIndex = $index">
 	
 												<td>
 													{{$index+1}}
 												</td>
 												<td>
 													{{cbMaster.cbName}}
-												</td>
-												<input type="hidden" id="cbMaster_{{$index}}" class="form-control" data-ng-value="cbMaster.cbMasterId" 
+													<input type="hidden" id="cbMaster_{{$index}}" class="form-control" data-ng-value="cbMaster.cbMasterId" 
 																ng-model="capacityBuilding.capacityBuildingActivityDetails[index].cbMaster" style="text-align:right;" />
+												</td>
+												
 												<td>
 													<input style="background: #dddddd; text-align:right;" ng-show="!{{$index+1 == 5 || $index+1 == 6 }}" ng-disabled="!{{$index+1 == 5 || $index+1 == 6 }}" data-ng-disabled="capacityBuilding.isFreeze" type="text" 
 														data-ng-model="capacityBuilding.capacityBuildingActivityDetails[$index].noOfDays" class="form-control" placeholder="1" />
@@ -152,6 +176,22 @@
 												<td>
 													<input data-ng-disabled="capacityBuilding.isFreeze" data-ng-change="insertCBMasterInScope($index)" type="text" data-ng-model="capacityBuilding.capacityBuildingActivityDetails[$index].remarks" class="form-control" placeholder="Remarks" style="text-align:right;" />
 												</td>
+												<c:if test="${sessionScope['scopedTarget.userPreference'].planVersion > 1}">
+													<td>
+														<ol>
+																<li data-ng-repeat="stateComments in preStateComments[outerIndex] track by $index" style="color: #396721; font-weight: bold;">
+																	{{stateComments}}
+																	</li>
+														</ol>
+													</td>
+		
+													<td>
+														<ol>
+															<li data-ng-repeat="moprComments in preMoprComments[outerIndex] track by $index" style="color: #bc6317; font-weight: bold;">
+															{{moprComments}}</li>
+														</ol>
+													</td>
+											</c:if>
 											</tr>
 											<tr>
 											<th colspan="5" align="center" >Total Funds</th>

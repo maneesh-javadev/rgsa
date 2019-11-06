@@ -317,39 +317,59 @@ function validateYear(index){
 							<table class="table table-bordered" id="supportStaff">
 								<thead>
 									<tr>
-										<th scope="col"><div align="center">
+										<th scope="col" rowspan="2"><div align="center">
 										<spring:message   text="Name of the Activity" htmlEscape="true" />
 											</div></th>
-										<th scope="col"><div align="center">
+										<th scope="col" rowspan="2"><div align="center">
 										<spring:message code="Label.Funds" text="Funds" htmlEscape="true" />
 											</div></th>
-										<th scope="col"><div align="center">
+										<th scope="col" rowspan="2"><div align="center">
 										<spring:message  text="Brief about the Activity" htmlEscape="true" />
 											</div></th>
 										<th scope="col" colspan="2"><div align="center">Time Frame of project(year wise)</div></th>
-										<th scope="col"><div align="center">
+										<th scope="col" rowspan="2"><div align="center">
 										<spring:message  text="Upload File(Pdf)" htmlEscape="true" />
 											</div></th>
 										
 										 <c:if test = "${fn:containsIgnoreCase(userTypeSwitch, 'M')}">
-												<th scope="col"><div align="center">
+												<th scope="col" rowspan="2"><div align="center">
 												<spring:message text="Is Approved" htmlEscape="true" />
 													</div></th>	
-											<th scope="col"><div align="center">
-												<spring:message code="Label.Remarks" text="Remarks" htmlEscape="true" />
-													</div></th>
-												
 											</c:if>
+										<th scope="col" rowspan="2"><div align="center">
+												<spring:message code="Label.Remarks" text="Remarks" htmlEscape="true" />
+													</div></th>	
+													
+										<c:if test="${sessionScope['scopedTarget.userPreference'].planVersion > 1 and not empty innovativeActivity.innovativeActivityDetails}">
+											<th colspan="2" >
+												<div align="center">
+													<strong>Previous comment history</strong>
+												</div>
+											</th>
+										</c:if>			
 										<c:if test = "${fn:containsIgnoreCase(userTypeSwitch, 'S')}">	
-										<th scope="col"><div align="center">
+										<th scope="col" rowspan="2"><div align="center">
 										<spring:message code="Label.Delete" htmlEscape="true" />
 											</div></th>
 										</c:if>	
 									</tr>
 									<tr>
-										<th colspan="3"></th>
-	                                        <th>From </th>
-	                                        <th> To</th>
+										<!-- <th colspan="3"></th> -->
+                                        <th>From </th>
+                                        <th> To</th>
+                                        
+											<c:if test="${sessionScope['scopedTarget.userPreference'].planVersion > 1 and not empty innovativeActivity.innovativeActivityDetails}">
+												<th >
+													<div align="center">
+														<strong>State Previous Comments <span style="color: #396721;">&nbsp;<i class="fa fa-circle"></i></span></strong>
+													</div>
+												</th>
+												<th>
+													<div align="center">
+														<strong>MOPR's Feedback <span style="color: #bc6317;">&nbsp;<i class="fa fa-circle"></i></span></strong>
+													</div>
+												</th>
+											</c:if>
                                     </tr>
 								</thead>
 								<tbody id="newBody">
@@ -393,11 +413,35 @@ function validateYear(index){
 													</c:otherwise>
 												</c:choose>
 											</td>
-										 	
-											<td><input type="text"  name="innovativeActivityDetails[${count.index}].remarks" value="${innovativeActivityDetails.remarks}" onkeyup="this.value=this.value.replace(/[^a-zA-Z0-9 ]/g,'');" Class="form-control" rows="2" cols="4" maxlength="1000" />
-										</td>
-											
 										   </c:if>
+										   <td><input type="text"  name="innovativeActivityDetails[${count.index}].remarks" value="${innovativeActivityDetails.remarks}" onkeyup="this.value=this.value.replace(/[^a-zA-Z0-9 ]/g,'');" Class="form-control" rows="2" cols="4" maxlength="1000" /></td>
+										  <c:if test="${sessionScope['scopedTarget.userPreference'].planVersion > 1}">
+														<td>
+															<ol>
+															<c:forEach items="${STATE_PRE_COMMENTS[index.index]}" varStatus="indexInner" var="stateComments">
+															<li style="color: #396721;font-weight: bold;">
+																<c:choose>
+																	<c:when test="${not empty stateComments}">${stateComments}</c:when>
+																	<c:otherwise>No comments by state</c:otherwise>
+																</c:choose>
+															</li><br>
+															</c:forEach>
+														</ol>
+														</td>
+													
+													<td>
+														<ol>
+															<c:forEach items="${MOPR_PRE_COMMENTS[index.index]}" varStatus="indexMopr" var="moprComments">
+															<li style="color: #bc6317;font-weight: bold;">
+																<c:choose>
+																	<c:when test="${not empty moprComments}">${moprComments}</c:when>
+																	<c:otherwise>No comments by MOPR</c:otherwise>
+																</c:choose>
+															</li><br>
+															</c:forEach>
+														</ol>
+													</td>
+													</c:if>	
 										  <c:if test = "${fn:containsIgnoreCase(userTypeSwitch, 'S')}">
 										 	<td><input id="delete${innovativeActivityDetails.id}" type="button" value="Delete" class="btn bg-red waves-effect"   onclick='toDelete("${innovativeActivityDetails.id}","${innovativeActivityDetails.fileLocation}","${innovativeActivityDetails.fileName}");'/></td>
 										 </c:if>
@@ -440,7 +484,7 @@ function validateYear(index){
 			                              	</select>
                                        	</td>
 										<td><input type="file" name="innovativeActivityDetails[0].file" required="required" id="file"><br/></td>
-										<!-- <td><input type="text" name="innovativeActivityDetails[0].remarks" required="required" Class="form-control" rows="2" cols="4" maxlength="1000"/></td> -->
+										<td><input type="text" name="innovativeActivityDetails[0].remarks" required="required" Class="form-control" rows="2" cols="4" maxlength="1000"/></td>
 										<td><input type="button" value="Delete" class="btn bg-red waves-effect"/></td>
 									</tr>
 										</c:if>

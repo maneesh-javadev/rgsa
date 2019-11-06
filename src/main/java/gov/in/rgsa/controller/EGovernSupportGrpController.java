@@ -90,6 +90,9 @@ public class EGovernSupportGrpController {
 			eGovActivityDetails = eGovernanceSupportService
 					.fetchEGovActivityDetails(eGovActivity.get(0).geteGovSupportActivityId());
 			form.seteGovSupportActivityDetails(eGovActivityDetails);
+			Map<String, List<List<String>>> map = basicInfoService.fetchStateAndMoprPreComments(eGovActivityDetails.size(),15);
+			model.addAttribute("STATE_PRE_COMMENTS", map.get("statePreviousComments"));
+			model.addAttribute("MOPR_PRE_COMMENTS", map.get("moprPreviousComments"));
 			form.setAdditionalRequirementSpmu(eGovActivity.get(0).getAdditionalRequirementSpmu());
 			form.setAdditionalRequirementDpmu(eGovActivity.get(0).getAdditionalRequirementDpmu());
 			form.setNoOfDistrictSupported(eGovActivity.get(0).getNoOfDistrictSupported());

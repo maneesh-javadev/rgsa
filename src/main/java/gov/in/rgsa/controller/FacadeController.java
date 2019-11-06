@@ -14,6 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -32,7 +33,9 @@ import gov.in.rgsa.service.FacadeService;
 import gov.in.rgsa.service.FileUploadService;
 import gov.in.rgsa.service.NodalOfficerService;
 import gov.in.rgsa.service.PlanAllocationService;
+import gov.in.rgsa.service.PlanDetailsService;
 import gov.in.rgsa.serviceImpl.FacadeServiceImpl;
+import gov.in.rgsa.serviceImpl.PlanDetailsServiceImpl;
 import gov.in.rgsa.user.preference.UserPreference;
 import gov.in.rgsa.utils.Message;
 import gov.in.rgsa.validater.CaptchaValidator;
@@ -66,7 +69,8 @@ public class FacadeController {
 	@Autowired
 	private PlanAllocationService planAllocationService; 
 	
-	
+	@Autowired
+	private PlanDetailsService planDetailsService;
 
 	@Autowired
 	EGovernanceSupportService eGovernanceSupportService;
@@ -221,6 +225,16 @@ public class FacadeController {
 			re.addFlashAttribute(Message.ERROR_KEY,"Please fill the Nodal Officer's deatils first before forwarding plan.");
 		}
 		
+		return param;
+	}
+	
+	@ResponseBody
+	@PostMapping(value = "revertPlan")
+	private Map<String, Object> revertPlan(@RequestParam(name = "stateCode" ,required = false) Integer stateCode){
+		Map<String, Object> param=new HashMap<String, Object>();
+		boolean result = service.revertPlan(stateCode);
+		_userPreference.setCountPlanSubmittedByState(planDetailsService.countPlanSubmittedByState("M"));
+		param.put("result", result);
 		return param;
 	}
 	

@@ -292,7 +292,7 @@ function calculateTotalFundDprc() {
 							<div class="row clearfix">
 								<div class="form-group">
 									<div class="col-sm-4">
-										<label for="District"><spring:message
+										<label for="districtSupportedId"><spring:message
 												code="Label.DistrictsupportedDprc" htmlEscape="true" /><span><sup style="color: red;">*</sup></span>
 										</label>
 									</div>
@@ -310,14 +310,35 @@ function calculateTotalFundDprc() {
 								<table class="table table-bordered" id="tab">
 									<thead>
 										<tr>
-											<th><div align="center"><spring:message code="Label.TypeOfCenter" htmlEscape="true" /></div></th>
-											<th><div align="center"><spring:message code="Label.Faculty&Staff" htmlEscape="true" /></div></th>
-											<th><div align="center"><spring:message code="Label.NoofUnits" htmlEscape="true" /></div></th>
-											<th><div align="center"><spring:message code="Label.NoOfMonths" htmlEscape="true" /></div></th>
-											<th><div align="center"><spring:message code="Label.Funds" htmlEscape="true" /></div></th>
-											<th><div align="center"><spring:message code="Label.DomainDetails" htmlEscape="true" /></div></th>
-											<c:if test="${USER_TYPE eq 'M' or USER_TYPE eq 'C'}"><th><div align="center"><spring:message code="Label.IsApproved" htmlEscape="true" /></div></th></c:if>
-											<th><div align="center"><spring:message code="Label.Remarks" htmlEscape="true" /></div></th>
+											<th rowspan="2"><div align="center"><spring:message code="Label.TypeOfCenter" htmlEscape="true" /></div></th>
+											<th rowspan="2"><div align="center"><spring:message code="Label.Faculty&Staff" htmlEscape="true" /></div></th>
+											<th rowspan="2"><div align="center"><spring:message code="Label.NoofUnits" htmlEscape="true" /></div></th>
+											<th rowspan="2"><div align="center"><spring:message code="Label.NoOfMonths" htmlEscape="true" /></div></th>
+											<th rowspan="2"><div align="center"><spring:message code="Label.Funds" htmlEscape="true" /></div></th>
+											<th rowspan="2"><div align="center"><spring:message code="Label.DomainDetails" htmlEscape="true" /></div></th>
+											<c:if test="${USER_TYPE eq 'M' or USER_TYPE eq 'C'}"><th rowspan="2"><div align="center"><spring:message code="Label.IsApproved" htmlEscape="true" /></div></th></c:if>
+											<th rowspan="2"><div align="center"><spring:message code="Label.Remarks" htmlEscape="true" /></div></th>
+											<c:if test="${sessionScope['scopedTarget.userPreference'].planVersion > 1}">
+											<th colspan="2" rowspan="1">
+												<div align="center">
+													<strong>Previous comment history</strong>
+												</div>
+											</th>
+											</c:if>
+										</tr>
+										<tr>
+											<c:if test="${sessionScope['scopedTarget.userPreference'].planVersion > 1}">
+												<th >
+													<div align="center">
+														<strong>State Previous Comments <span style="color: #396721;">&nbsp;<i class="fa fa-circle"></i></span></strong>
+													</div>
+												</th>
+												<th>
+													<div align="center">
+														<strong>MOPR's Feedback <span style="color: #bc6317;">&nbsp;<i class="fa fa-circle"></i></span></strong>
+													</div>
+												</th>
+											</c:if>
 										</tr>
 									</thead>
 									<tbody id="tbodyMainTableId">
@@ -371,8 +392,36 @@ function calculateTotalFundDprc() {
 											</c:choose>
 											<c:if test="${USER_TYPE eq 'M'}"><td><form:checkbox path="institueInfraHrActivityDetails[${index.index}].isApproved" class="active12 form-control-check" /></td></c:if>
 											<td><form:textarea path="institueInfraHrActivityDetails[${index.index}].remarks" rows="3" cols="5" class="active12 form-control" /></td>
+											
+											<c:if test="${sessionScope['scopedTarget.userPreference'].planVersion > 1}">
+														<td>
+															<ol>
+															<c:forEach items="${STATE_PRE_COMMENTS[index.index]}" varStatus="indexInner" var="stateComments">
+															<li style="color: #396721;font-weight: bold;">
+																<c:choose>
+																	<c:when test="${not empty stateComments}">${stateComments}</c:when>
+																	<c:otherwise>No comments by state</c:otherwise>
+																</c:choose>
+															</li><br>
+															</c:forEach>
+														</ol>
+														</td>
+													
+													<td>
+														<ol>
+															<c:forEach items="${MOPR_PRE_COMMENTS[index.index]}" varStatus="indexMopr" var="moprComments">
+															<li style="color: #bc6317;font-weight: bold;">
+																<c:choose>
+																	<c:when test="${not empty moprComments}">${moprComments}</c:when>
+																	<c:otherwise>No comments by MOPR</c:otherwise>
+																</c:choose>
+															</li><br>
+															</c:forEach>
+														</ol>
+													</td>
+													</c:if>	
 										</tr>
-										<c:set var="countSprc" value="${countSprc + 1}" scope="page" />
+										<c:set var="	`" value="${countSprc + 1}" scope="page" />
 									</c:forEach>
 									<tr>
 										<td><div align="center">
@@ -439,6 +488,34 @@ function calculateTotalFundDprc() {
 											</c:choose>
 											<c:if test="${USER_TYPE eq 'M'}"><td><form:checkbox path="institueInfraHrActivityDetails[${index.index}].isApproved" class="active12 form-control-check" /></td></c:if>
 											<td><form:textarea path="institueInfraHrActivityDetails[${index.index}].remarks" rows="3" cols="5" class="active12 form-control" /></td>
+											
+											<c:if test="${sessionScope['scopedTarget.userPreference'].planVersion > 1}">
+														<td>
+															<ol>
+															<c:forEach items="${STATE_PRE_COMMENTS[index.index]}" varStatus="indexInner" var="stateComments">
+															<li style="color: #396721;font-weight: bold;">
+																<c:choose>
+																	<c:when test="${not empty stateComments}">${stateComments}</c:when>
+																	<c:otherwise>No comments by state</c:otherwise>
+																</c:choose>
+															</li><br>
+															</c:forEach>
+														</ol>
+														</td>
+													
+													<td>
+														<ol>
+															<c:forEach items="${MOPR_PRE_COMMENTS[index.index]}" varStatus="indexMopr" var="moprComments">
+															<li style="color: #bc6317;font-weight: bold;">
+																<c:choose>
+																	<c:when test="${not empty moprComments}">${moprComments}</c:when>
+																	<c:otherwise>No comments by MOPR</c:otherwise>
+																</c:choose>
+															</li><br>
+															</c:forEach>
+														</ol>
+													</td>
+													</c:if>	
 										</tr>
 										<c:set var="countDprc" value="${countDprc + 1}" scope="page" />
 									</c:forEach>
@@ -661,7 +738,7 @@ function calculateTotalFundDprc() {
 								<c:choose>
 									<c:when test="${initial_status eq true}">
 										<button type="button"
-											class="freeze btn bg-green waves-effect"
+											class="freeze btn bg-orange waves-effect"
 											onclick='freezeAndUnfreeze("freeze")'
 											disabled="disabled">
 											<spring:message code="Label.FREEZE" htmlEscape="true" />
@@ -669,7 +746,7 @@ function calculateTotalFundDprc() {
 									</c:when>
 									<c:otherwise>
 										<button type="button"
-											class="freeze btn bg-green waves-effect"
+											class="freeze btn bg-orange waves-effect"
 											onclick='freezeAndUnfreeze("freeze")'>
 											<spring:message code="Label.FREEZE" htmlEscape="true" />
 										</button>
@@ -685,13 +762,13 @@ function calculateTotalFundDprc() {
 								
 								<c:if test="${ISFREEZE eq true}">
 								<c:if test="${Plan_Status eq true}">
-								<button type="button" class="unfreeze btn bg-green waves-effect"
+								<button type="button" class="unfreeze btn bg-orange waves-effect"
 									onclick='freezeAndUnfreeze("unfreeze")'>
 									<spring:message code="Label.UNFREEZE" htmlEscape="true" />
 								</button>
 							</c:if>
 							</c:if>
-								<button type="button" onclick="onClose('home.html?<csrf:token uri='home.html'/>')" class="btn bg-orange waves-effect">
+								<button type="button" onclick="onClose('home.html?<csrf:token uri='home.html'/>')" class="btn bg-red waves-effect">
 									<spring:message code="Label.CLOSE" htmlEscape="true" />
 								</button>
 

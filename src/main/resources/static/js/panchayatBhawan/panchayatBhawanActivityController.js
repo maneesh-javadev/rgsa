@@ -26,6 +26,8 @@ $scope.userType = null;
 			$scope.panchayatWithBhawan= response.data.panchayatWithBhawan;
 			$scope.userType = response.data.userType;
 			if(response.data.PANCHAYAT_BHAWAN_ACTIVITY!=null && response.data.PANCHAYAT_BHAWAN_ACTIVITY!=undefined){
+				$scope.statePreComment = response.data.STATE_PRE_COMMENTS;
+				$scope.moprPreComment = response.data.MOPR_PRE_COMMENTS;
 				$scope.panchayatBhawanActivity=response.data.PANCHAYAT_BHAWAN_ACTIVITY;
 				$scope.panchatayBhawanActivityDetails=response.data.PANCHAYAT_BHAWAN_ACTIVITY.panchatayBhawanActivityDetails;
 				$scope.panchatayBhawanActivityDetailsSort=[];

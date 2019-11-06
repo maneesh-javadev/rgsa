@@ -76,6 +76,9 @@ publicModule.controller("institutionalInfraActivityPlanController", [ '$scope', 
 			if($scope.institutionalInfraActivityPlan != '' && $scope.institutionalInfraActivityPlan.institutionalInfraActivityPlanDetails.length > 0){
 				$('#sprcCarryBlock').hide();
 				$('#sprcNewBlock').hide();
+				
+				$scope.statePreviousComments = $scope.institutionalInfraActivityPlan.statePreviousComments;
+				$scope.moprPreviousComments = $scope.institutionalInfraActivityPlan.moprPreviousComments;
 			}
 			$scope.institutionalInfraActivityPlan=response.data;
 			$scope.institutionalInfraActivityPlan.institutionalInfraActivityPlanDetails=response.data.institutionalInfraActivityPlanDetails;

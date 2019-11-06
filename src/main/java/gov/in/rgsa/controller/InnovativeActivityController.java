@@ -10,6 +10,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
@@ -66,6 +67,9 @@ public class InnovativeActivityController {
 		List<InnovativeActivity> innovativeAcitivityList = innovativeActivityService.findAllActivity(userPreference.getUserType().charAt(0));
 		model.addAttribute("STATE_CODE", userPreference.getStateCode());
 		if(!CollectionUtils.isEmpty(innovativeAcitivityList)) {
+			Map<String, List<List<String>>> map = basicInfoService.fetchStateAndMoprPreComments(innovativeAcitivityList.get(0).getInnovativeActivityDetails().size(),9);
+			model.addAttribute("STATE_PRE_COMMENTS", map.get("statePreviousComments"));
+			model.addAttribute("MOPR_PRE_COMMENTS", map.get("moprPreviousComments"));
 			if(userPreference.getUserType().equalsIgnoreCase("M") && innovativeAcitivityList.get(0).getUserType().equals('S')){
 				innovativeAcitivityList.get(0).setIsFreeze(false);
 				model.addAttribute("innovativeAcitivityList",innovativeAcitivityList);

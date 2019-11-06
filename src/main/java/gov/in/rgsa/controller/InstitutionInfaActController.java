@@ -207,7 +207,10 @@ public class InstitutionInfaActController {
 			/*List<InstitutionalInfraActivityPlanDetails> institutionalInfraActivityPlanDetails=institutionalInfraActivityPlanService.fetchAllDetails(institutionalInfraActivityPlan.getInstitutionalInfraActivityId());
 			institutionalInfraActivityPlan.setInstitutionalInfraActivityPlanDetails(institutionalInfraActivityPlanDetails);*/
 			//institutionaInfraResponseMap.put("institutionalInfraActivityPlan", institutionalInfraActivityPlan);
-			
+			List<InstitutionalInfraActivityPlanDetails> commentDetailsList = institutionalInfraActivityPlanService.fetchAllDetailsExceptCurrentVersion();
+			//institutionalInfraActivityPlan.setStatePreviousComments( map.get("statePreviousComments"));
+			//institutionalInfraActivityPlan.setMoprPreviousComments( map.get("moprPreviousComments"));
+			institutionalInfraActivityPlan.setDetailsForComments(commentDetailsList);
 		}
 		return institutionalInfraActivityPlan;
 		

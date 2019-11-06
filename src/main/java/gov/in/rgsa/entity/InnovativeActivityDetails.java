@@ -13,6 +13,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 
 /**
@@ -20,7 +21,11 @@ import javax.persistence.NamedQuery;
  */
 
 @Entity
-@NamedQuery(name="FETCH_INNOVATIVE_ACTIVITY_BY_ID",query="Delete FROM InnovativeActivityDetails where id=:id")
+@NamedQueries({
+	@NamedQuery(name="FETCH_INNOVATIVE_ACTIVITY_BY_ID",query="Delete FROM InnovativeActivityDetails where id=:id"),
+	@NamedQuery(name="FETCH_ALL_INNOVATIVE_DETAILS_EXCEPT_CURRENT_VERSION",query="from InnovativeActivityDetails where innovativeActivity.stateCode=:stateCode and innovativeActivity.versionId !=:versionNo and innovativeActivity.userType in('S','M') order by id")
+})
+
 @Table(name="innovative_activity_details" , schema="rgsa")
 public class InnovativeActivityDetails  implements Serializable{
 	private static final long serialVersionUID =1L;

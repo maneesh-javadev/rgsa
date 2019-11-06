@@ -32,7 +32,7 @@ public class ActionPlanServiceImpl implements ActionPlanService{
 			params.put("stateCode", userPreference.getStateCode());
 			params.put("yearId", userPreference.getFinYearId());
 			params.put("planStatusId", PLAN_STATUS_DRAFT);
-			
+			params.put("planVersion", userPreference.getPlanVersion());
 			List<Plan>  planStatus= commonRepository.findAll("PLAN_STATUS", params);	
 			if(planStatus==null || planStatus.isEmpty()){
 				System.out.println(" plan exist");

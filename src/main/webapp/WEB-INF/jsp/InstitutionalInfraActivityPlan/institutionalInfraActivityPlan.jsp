@@ -68,21 +68,21 @@ function isNumber(evt) {
 										<table id="trainingActivityTblId" class="table table-hover dashboard-task-infos">
 											<thead>
 												<tr>
-													<th>
+													<th rowspan="2">
 														<div align="center">
 															<strong>
 																<spring:message code="Label.BuildingType" htmlEscape="true" />
 															</strong>
 														</div>
 													</th>
-													<th>
+													<th rowspan="2">
 														<div align="center">
 															<strong>
 																<spring:message code="Label.District" htmlEscape="true" />
 															</strong>
 														</div>
 													</th>
-													<th>
+													<th rowspan="2">
 														<div align="center">
 															<strong>
 																<spring:message code="Label.Funds" htmlEscape="true" />
@@ -91,20 +91,31 @@ function isNumber(evt) {
 													</th>
 													<!-- <th><div align="center"><strong>Total Fund<br>(B = A + Funds required <br>in carry forward section)
 														</strong></div></th> -->
-													<th data-ng-if="userType == 'M'">
+													<th rowspan="2" data-ng-if="userType == 'M'">
 														<div align="center">
 															<strong>
 																<spring:message code="Label.IsApproved" htmlEscape="true" />
 															</strong>
 														</div>
 													</th>
-													<th>
+													<th rowspan="2">
 														<div align="center">
 															<strong>
 																<spring:message code="Label.Remarks" htmlEscape="true" />
 															</strong>
 														</div>
 													</th>
+													
+													<c:if test="${sessionScope['scopedTarget.userPreference'].planVersion > 1}">
+														<th colspan="2">
+															<div align="center">
+																<strong>
+																	Previous comment history
+																</strong>
+															</div>
+														</th> 
+													</c:if>
+													
 													<th>
 													 	<div align="center" data-ng-show="haveSprcNewRecord">
 															<strong>
@@ -113,6 +124,24 @@ function isNumber(evt) {
 														</div>
 													</th>
 												</tr>
+												<tr>
+													<c:if test="${sessionScope['scopedTarget.userPreference'].planVersion > 1}">
+														<th>
+															<div align="center">
+																<strong>State Previous Comments <span
+																	style="color: #396721;">&nbsp;<i
+																		class="fa fa-circle"></i></span></strong>
+															</div>
+														</th>
+														<th>
+															<div align="center">
+																<strong>MOPR's Feedback <span
+																	style="color: #bc6317;">&nbsp;<i
+																		class="fa fa-circle"></i></span></strong>
+															</div>
+														</th>
+													</c:if>
+											</tr>
 											</thead>
 											<tbody>
 												<tr data-ng-repeat="details in institutionalInfraActivityPlanDetailsNBState | orderBy : 'trainingInstitueType.trainingInstitueTypeId'">
@@ -136,6 +165,28 @@ function isNumber(evt) {
 																<textarea rows="2" class="form-control" data-ng-show="!institutionalInfraActivityPlan.isFreeze" data-ng-model="institutionalInfraActivityPlanDetailsNBState[$index].remarks" cols="10" data-ng-keyup="hideSectionsInSprc('new')"></textarea>
 																<textarea rows="2" class="form-control" data-ng-show="institutionalInfraActivityPlan.isFreeze" data-ng-model="institutionalInfraActivityPlanDetailsNBState[$index].remarks" cols="10" readonly="readonly" autocomplete="off"></textarea>
 															</td>
+															
+															<c:if test="${sessionScope['scopedTarget.userPreference'].planVersion > 1}">
+															<td>
+																<ol>
+																	<li data-ng-repeat="details in detailsForComments">
+																		<div data-ng-show="details.workType == 'N' && details.trainingInstitueType.trainingInstitueTypeId == 2 && details.institutionalInfraActivityPlan.userType == 'S'">
+																			{{details.remarks}}
+																		</div>
+																	</li>
+																</ol>
+															</td>
+															<td>
+																<ol>
+																	<li data-ng-repeat="details in detailsForComments">
+																		<div data-ng-show="details.workType == 'N' && details.trainingInstitueType.trainingInstitueTypeId == 2 && details.institutionalInfraActivityPlan.userType == 'M'">
+																			{{details.remarks}}
+																		</div>
+																	</li>
+																</ol>
+															</td>
+															</c:if>
+															
 															<td align="center" data-ng-show="haveSprcNewRecord">
 																<i class="fa fa-trash-o fa-lg delete-color" aria-hidden="true" data-ng-click="deleteRecord(institutionalInfraActivityPlanDetailsNBState[$index].institutionalInfraActivityDetailsId)" data-ng-show="!institutionalInfraActivityPlan.isFreeze"></i>
 																<i class="fa fa-trash-o fa-lg delete-color" aria-hidden="true" data-ng-show="institutionalInfraActivityPlan.isFreeze"></i>
@@ -219,21 +270,21 @@ function isNumber(evt) {
 												<table id="trainingActivityTblId" class="table table-hover dashboard-task-infos">
 													<thead>
 														<tr>
-															<th>
+															<th rowspan="2">
 																<div align="center">
 																	<strong>
 																		<spring:message code="Label.BuildingType" htmlEscape="true" />
 																	</strong>
 																</div>
 															</th>
-															<th>
+															<th rowspan="2">
 																<div align="center">
 																	<strong>
 																		<spring:message code="Label.District" htmlEscape="true" />
 																	</strong>
 																</div>
 															</th>
-															<th>
+															<th rowspan="2">
 																<div align="center">
 																	<strong>
 																		<spring:message code="Label.Funds" htmlEscape="true" />
@@ -242,7 +293,7 @@ function isNumber(evt) {
 															</th>
 															<!-- <th><div align="center"><strong>Total Fund<br>(B = A + Funds required <br>in carry forward section)
 														</strong></div></th> -->
-															<th data-ng-if="userType == 'M'">
+															<th rowspan="2" data-ng-if="userType == 'M'">
 																<div align="center">
 																	<strong>
 																		<spring:message code="Label.IsApproved" htmlEscape="true" />
@@ -250,22 +301,51 @@ function isNumber(evt) {
 																</div>
 															</th>
 														
-															<th>
+															<th rowspan="2">
 																<div align="center">
 																	<strong>
 																		<spring:message code="Label.Remarks" htmlEscape="true" />
 																	</strong>
 																</div>
 															</th>
-																 <th>
-													 	<div align="center" data-ng-show="haveDprcNewRecord">
-															<strong>
-																<spring:message code="Delete" htmlEscape="true" />
-															</strong>
-														</div>
-													</th>
-														</tr>
-													</thead>
+
+															<c:if
+																test="${sessionScope['scopedTarget.userPreference'].planVersion > 1}">
+																<th colspan="2">
+																	<div align="center">
+																		<strong> Previous comment history </strong>
+																	</div>
+																</th>
+															</c:if>
+
+														<th rowspan="2">
+														 	<div align="center" data-ng-show="haveDprcNewRecord">
+																<strong>
+																	<spring:message code="Delete" htmlEscape="true" />
+																</strong>
+															</div>
+														</th>
+													</tr>
+													<tr>
+														<c:if
+															test="${sessionScope['scopedTarget.userPreference'].planVersion > 1}">
+															<th>
+																<div align="center">
+																	<strong>State Previous Comments <span
+																		style="color: #396721;">&nbsp;<i
+																			class="fa fa-circle"></i></span></strong>
+																</div>
+															</th>
+															<th>
+																<div align="center">
+																	<strong>MOPR's Feedback <span
+																		style="color: #bc6317;">&nbsp;<i
+																			class="fa fa-circle"></i></span></strong>
+																</div>
+															</th>
+														</c:if>
+													</tr>
+												</thead>
 													<tbody>
 														<tr data-ng-repeat="details in institutionalInfraActivityPlanDetailsNBDistrict | orderBy : 'trainingInstitueType.trainingInstitueTypeId'">
 															<td align="center">
@@ -288,10 +368,32 @@ function isNumber(evt) {
 																		<textarea rows="2" class="form-control"  data-ng-show="!institutionalInfraActivityPlan.isFreeze" data-ng-model="institutionalInfraActivityPlanDetailsNBDistrict[$index].remarks" cols="10" autocomplete="off"></textarea>
 																		<textarea rows="2" class="form-control"  data-ng-show="institutionalInfraActivityPlan.isFreeze" data-ng-model="institutionalInfraActivityPlanDetailsNBDistrict[$index].remarks" cols="10" readonly="readonly"></textarea>
 																	</td>
-																	
+
+																	<c:if
+																		test="${sessionScope['scopedTarget.userPreference'].planVersion > 1}">
+																		<td>
+																			<ol>
+																				<li data-ng-repeat="details in detailsForComments">
+																					<div
+																						data-ng-show="details.workType == 'N' && details.trainingInstitueType.trainingInstitueTypeId == 4 && details.institutionalInfraActivityPlan.userType == 'S'">
+																						{{details.remarks}}</div>
+																				</li>
+																			</ol>
+																		</td>
+																		<td>
+																			<ol>
+																				<li data-ng-repeat="details in detailsForComments">
+																					<div
+																						data-ng-show="details.workType == 'N' && details.trainingInstitueType.trainingInstitueTypeId == 4 && details.institutionalInfraActivityPlan.userType == 'M'">
+																						{{details.remarks}}</div>
+																				</li>
+																			</ol>
+																		</td>
+																	</c:if>
+
 																	<td  align="center" data-ng-show="haveDprcNewRecord"> 
-																	<i class="fa fa-trash-o fa-lg delete-color" aria-hidden="true" data-ng-click="deleteRecord(institutionalInfraActivityPlanDetailsNBDistrict[$index].institutionalInfraActivityDetailsId)" data-ng-show="!institutionalInfraActivityPlan.isFreeze"></i> 
-																	<i class="fa fa-trash-o fa-lg delete-color" aria-hidden="true" data-ng-show="institutionalInfraActivityPlan.isFreeze"></i> 
+																		<i class="fa fa-trash-o fa-lg delete-color" aria-hidden="true" data-ng-click="deleteRecord(institutionalInfraActivityPlanDetailsNBDistrict[$index].institutionalInfraActivityDetailsId)" data-ng-show="!institutionalInfraActivityPlan.isFreeze"></i> 
+																		<i class="fa fa-trash-o fa-lg delete-color" aria-hidden="true" data-ng-show="institutionalInfraActivityPlan.isFreeze"></i> 
 																	</td>
 																</tr>
 															</tbody>

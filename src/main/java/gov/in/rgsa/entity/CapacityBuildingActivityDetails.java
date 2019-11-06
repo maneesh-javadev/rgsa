@@ -1,5 +1,7 @@
 package gov.in.rgsa.entity;
 
+import java.io.Serializable;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -8,6 +10,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQuery;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
@@ -21,8 +24,11 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 
 @Entity
 @Table(name="cb_activity_details", schema = "rgsa")
-public class CapacityBuildingActivityDetails {
+@NamedQuery(name="FETCH_ALL_TRAINING_ACTIVITY_DETAILS_EXCEPT_CURRENT_VERSION",query="From CapacityBuildingActivityDetails where capacityBuildingActivity.stateCode=:stateCode and capacityBuildingActivity.versionNo !=:versionNo and capacityBuildingActivity.userType in('S','M') order by capacityBuildingActivityDetailsId")
+public class CapacityBuildingActivityDetails implements Serializable {
 	
+	private static final long serialVersionUID = 1L;
+
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	@Column(name="cb_activity_detail_id",updatable=false,nullable=false)

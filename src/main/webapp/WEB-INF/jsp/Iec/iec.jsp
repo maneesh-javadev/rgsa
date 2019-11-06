@@ -74,7 +74,55 @@
                                             id="isApprovedId"/>
                             </div>
                             </c:if>
+                            <div class="row clearfix">
                             <div class="form-group">
+                            <div class="col-sm-2">
+                                <label for="remarksId"><spring:message code="Label.Remarks"
+                                                                        htmlEscape="true"/>:</label>
+                                                                        </div>
+                              <div class="col-sm-4">   
+                              <div class="form-line">                                       
+                                <form:textarea path="remarks" class="form-control"
+                                            disabled="${ IEC_ACTIVITY.getFreeze() ? 'true' : 'false'}"
+                                            id="remarksId" />
+                                            </div></div>
+                            </div>
+                            </div>
+							<c:if
+								test="${sessionScope['scopedTarget.userPreference'].planVersion > 1}">
+								<div class="row clearfix">
+									<div class="col-sm-2">
+										<label>Previous Comments : </label>
+									</div>
+									<div class="col-sm-8 table-responsive">
+										<table class="table table-hover">
+											<tr>
+												<th>State remarks <span style="color: #396721;">&nbsp;<i class="fa fa-circle"></i></span></th>
+												<th>MOPR feedback<span style="color: #bc6317;">&nbsp;<i class="fa fa-circle"></i></span></th>
+											</tr>
+											<c:forEach items="${STATE_PRE_COMMENTS[0]}" var="stateComment" varStatus="index">
+												<tr>
+												<td style="color: #396721;font-weight: bold;">
+													<c:choose>
+														<c:when test="${not empty stateComment}">${stateComment}</c:when>
+														<c:otherwise>No remarks by state
+														</c:otherwise>
+													</c:choose>
+												</td>
+												<td style="color: #bc6317;font-weight: bold;">
+													<c:choose>
+														<c:when test="${not empty MOPR_PRE_COMMENTS[0][index.index]}">${MOPR_PRE_COMMENTS[0][index.index]}</c:when>
+														<c:otherwise>No feedback by MOPR
+														</c:otherwise>
+													</c:choose>
+												</td>
+											</tr>											
+											</c:forEach>
+										</table>
+									</div>
+								</div>
+							</c:if>
+							<div class="form-group">
                                 <div class="col-md-4">
                                     <c:if test="${ userPreference.isMOPR() }">
                                         <button type="button"
@@ -91,9 +139,9 @@
                                                                                        class="btn bg-green waves-effect"/></c:if>
                                     <c:if test="${  IEC_ACTIVITY.getOwnData() }"><input type="submit" name="action"
                                                                                         value="${ IEC_ACTIVITY.getFreeze() ? 'UNFREEZE':'FREEZE'}"
-                                                                                        class="btn bg-green waves-effect"/></c:if></c:if> 
+                                                                                        class="btn bg-orange waves-effect"/></c:if></c:if> 
                                     <button type="button" onclick="onClose('home.html?<csrf:token uri='home.html'/>')"
-                                            class="btn bg-orange waves-effect">
+                                            class="btn bg-red waves-effect">
                                         <spring:message code="Label.CLOSE" text="Close" htmlEscape="true"/>
                                     </button>
                                 </div>

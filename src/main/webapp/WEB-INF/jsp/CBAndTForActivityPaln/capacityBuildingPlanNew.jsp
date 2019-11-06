@@ -90,28 +90,50 @@ table.dataTable thead > tr > th, table.dataTable thead > tr > td {
 										class="table table-hover dashboard-task-infos">
 										<thead>
 											<tr>
-												<th width="5%"><spring:message code="Sr. No." htmlEscape="true" /></th>
-												<th width="15%"> <spring:message code="Training Category"
+												<th width="5%" rowspan="2"><spring:message code="Sr. No." htmlEscape="true" /></th>
+												<th width="15%" rowspan="2"> <spring:message code="Training Category"
 														htmlEscape="true" /></th>
-												<th width="15%"><spring:message code="Training Subjects"
+												<th width="15%" rowspan="2"><spring:message code="Training Subjects"
 														htmlEscape="true" /></th>
-												<th width="15%"><spring:message code="Training Target Group"
+												<th width="15%" rowspan="2"><spring:message code="Training Target Group"
 														htmlEscape="true" /></th>
-												<th width="10%"><spring:message code="Venue Level"
+												<th width="10%" rowspan="2"><spring:message code="Venue Level"
 														htmlEscape="true" /></th>
-												<th width="10%"><spring:message text="Mode Of Training"
+												<th width="10%" rowspan="2"><spring:message text="Mode Of Training"
 														htmlEscape="true" /></th>
-												<th width="5%" class="element_right"><spring:message code="No. of Participants"
+												<th width="5%" class="element_right" rowspan="2"><spring:message code="No. of Participants"
 														htmlEscape="true" /></th>
-												<th width="5%" class="element_right"><spring:message code="No.of Days" htmlEscape="true" /></th>
-												<th width="5%" class="element_right"><spring:message code="Unit Cost" htmlEscape="true" /></th>
-												<th width="5%" class="element_right"><spring:message code="Funds Proposed" htmlEscape="true"/></th>
-												<th width="5%" align="center"><spring:message code="Modify" htmlEscape="true" /></th>
-												<th width="5%" align="center"><spring:message code="Delete" htmlEscape="true" /></th>
+												<th width="5%" class="element_right" rowspan="2"><spring:message code="No.of Days" htmlEscape="true" /></th>
+												<th width="5%" class="element_right" rowspan="2"><spring:message code="Unit Cost" htmlEscape="true" /></th>
+												<th width="5%" class="element_right" rowspan="2"><spring:message code="Funds Proposed" htmlEscape="true"/></th>
+												<th width="5%" class="element_right" rowspan="2"><spring:message code="Remarks" htmlEscape="true"/></th>
+												<c:if test="${sessionScope['scopedTarget.userPreference'].planVersion > 1}">
+													<th colspan="2" rowspan="1">
+														<div align="center">
+														<strong>Previous comment history</strong>
+													</div>
+													</th>
+												</c:if>
+												<th width="5%" align="center" rowspan="2"><spring:message code="Modify" htmlEscape="true" /></th>
+												<th width="5%" align="center" rowspan="2"><spring:message code="Delete" htmlEscape="true" /></th>
+											</tr>
+											<tr>
+											<c:if test="${sessionScope['scopedTarget.userPreference'].planVersion > 1}">
+												<th >
+													<div align="center">
+														<strong>State Previous Comments <span style="color: #396721;">&nbsp;<i class="fa fa-circle"></i></span></strong>
+													</div>
+												</th>
+												<th>
+													<div align="center">
+														<strong>MOPR's Feedback <span style="color: #bc6317;">&nbsp;<i class="fa fa-circle"></i></span></strong>
+													</div>
+												</th>
+											</c:if>
 											</tr>
 										</thead>
 										<tbody>
-										<tr data-ng-repeat="obj in training.trainingDetailList">
+										<tr data-ng-repeat="obj in training.trainingDetailList" data-ng-init="outerIndex = $index">
 										<td>{{$index+1}}</td>
 										<td>{{obj.trainingCategoryName}} </td>
 										<td>{{obj.subjectName}} </td>
@@ -122,8 +144,26 @@ table.dataTable thead > tr > th, table.dataTable thead > tr > td {
 										<td align="right">{{obj.noOfDays}} </td>
 										<td align="right">{{obj.unitCost}} </td>
 										<td align="right">{{obj.funds}} </td>
+										<td align="right">{{obj.remarks}} </td>
+										<c:if
+											test="${sessionScope['scopedTarget.userPreference'].planVersion > 1}">
+											<td>
+												<ol>
+														<li data-ng-repeat="stateComments in statePreComments[outerIndex] track by $index" style="color: #396721; font-weight: bold;">
+															{{stateComments}}
+															</li><br>
+												</ol>
+											</td>
+
+											<td>
+												<ol>
+													<li data-ng-repeat="moprComments in moprPreComments[outerIndex] track by $index" style="color: #bc6317; font-weight: bold;">
+													{{moprComments}}</li><br>
+												</ol>
+											</td>
+										</c:if>
 										<td align="center">
-											<a ng-click="toModify(obj.trainingId);" ng-show="training.isFreeze==false" >
+											<a ng-click="toModify(obj.trainingId);" data-ng-show="training.isFreeze==false" >
 												<span class="glyphicon glyphicon-edit"></span>
 											</a> 
 											<span class="glyphicon glyphicon-edit" ng-show="training.isFreeze" ></span>

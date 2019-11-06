@@ -1,5 +1,6 @@
 package gov.in.rgsa.entity;
 
+import java.io.Serializable;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -11,6 +12,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.persistence.Transient;
@@ -23,8 +25,14 @@ import org.springframework.web.multipart.MultipartFile;
  */
 @Entity
 @Table(name="income_enhancement_details",schema="rgsa")
-@NamedQuery(name="DELETE_INCM_ENHNCMNT_DETAILS_BY_ID",query="delete from IncomeEnhancementDetails where incomeEnhancementDetailsId=:incomeEnhancementDetailsId")
-public class IncomeEnhancementDetails {
+@NamedQueries({
+	@NamedQuery(name="FETCH_ALL_INCOME_DETAILS_EXCEPT_CURRENT_VERSION",query = "from IncomeEnhancementDetails where incomeEnhancementActivity.stateCode=:stateCode and incomeEnhancementActivity.versionNo !=:versionNo and incomeEnhancementActivity.userType in('S','M') order by incomeEnhancementDetailsId"),
+	@NamedQuery(name="DELETE_INCM_ENHNCMNT_DETAILS_BY_ID",query="delete from IncomeEnhancementDetails where incomeEnhancementDetailsId=:incomeEnhancementDetailsId")
+})
+
+public class IncomeEnhancementDetails implements Serializable{
+	
+	private static final long serialVersionUID = 1L;
 	
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)

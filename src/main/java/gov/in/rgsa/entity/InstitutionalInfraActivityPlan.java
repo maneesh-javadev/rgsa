@@ -79,14 +79,15 @@ public class InstitutionalInfraActivityPlan {
 	@Column(name="additional_requirement_dprc")
 	private int additionalRequirementDPRC;
 	
-	
 	@Transient
 	private Integer detailsListLength;
 	
 	@Transient
 	private String dataFor;
 	
-
+	@Transient
+	private List<InstitutionalInfraActivityPlanDetails> detailsForComments;
+	
 	public Integer getDetailsListLength() {
 		return detailsListLength;
 	}
@@ -215,6 +216,13 @@ public class InstitutionalInfraActivityPlan {
 	public void setIsActive(Boolean isActive) {
 		this.isActive = isActive;
 	}
-	
+
+	public List<InstitutionalInfraActivityPlanDetails> getDetailsForComments() {
+		return detailsForComments;
+	}
+
+	public void setDetailsForComments(List<InstitutionalInfraActivityPlanDetails> detailsForComments) {
+		this.detailsForComments = detailsForComments;
+	}
 	
 }

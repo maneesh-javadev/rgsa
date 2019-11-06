@@ -51,4 +51,6 @@ public interface InstitutionalInfraActivityPlanService {
 
 	public void deleteRecord(Integer detailId);
 
+	public List<InstitutionalInfraActivityPlanDetails> fetchAllDetailsExceptCurrentVersion();
+
 }

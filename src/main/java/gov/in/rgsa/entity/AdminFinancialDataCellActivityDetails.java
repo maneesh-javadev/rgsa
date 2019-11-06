@@ -7,6 +7,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.persistence.Transient;
@@ -14,7 +15,11 @@ import javax.persistence.Transient;
 
 @Entity
 @Table(name="admin_financial_data_cell_activity_details",schema="rgsa")
-@NamedQuery(name="FETCH_ADMIN_FIN_DATA_DETAILS",query="select AD from AdminFinancialDataCellActivityDetails AD where adminAndFinancialDataActivity.adminFinancialDataActivityId=:adminFinancialDataActivityId order by adminFinancialDataActivityDetailId")
+@NamedQueries({
+	@NamedQuery(name="FETCH_ALL_ADMIN_ACTIVITY_DETAILS_EXCEPT_CURRENT_VERSION",query="from AdminFinancialDataCellActivityDetails where adminAndFinancialDataActivity.stateCode=:stateCode and adminAndFinancialDataActivity.versionNo !=:versionNo and adminAndFinancialDataActivity.userType in('S','M') order by adminFinancialDataActivityDetailId"),
+	@NamedQuery(name="FETCH_ADMIN_FIN_DATA_DETAILS",query="select AD from AdminFinancialDataCellActivityDetails AD where adminAndFinancialDataActivity.adminFinancialDataActivityId=:adminFinancialDataActivityId order by adminFinancialDataActivityDetailId")
+})
+
 public class AdminFinancialDataCellActivityDetails {
 
 	@Id
@@ -57,7 +62,7 @@ public class AdminFinancialDataCellActivityDetails {
 	
 	@Column(name="is_approved")
 	private Boolean isApproved;
-
+	
 	public Integer getAdminFinancialDataActivityDetailId() {
 		return adminFinancialDataActivityDetailId;
 	}

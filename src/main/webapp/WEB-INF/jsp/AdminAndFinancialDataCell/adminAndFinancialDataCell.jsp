@@ -109,33 +109,33 @@ function validatingTotalProposedFund(){
 								<table class="table table-bordered">
 									<thead>
 										<tr>
-											<th>
+											<th rowspan="2">
 												<div align="center">
 													<strong><spring:message code="Label.TypeOfCenter" htmlEscape="true" /></strong>
 												</div>
 											</th>
 												
-											<th>
+											<th rowspan="2">
 												<div align="center">
 													<strong><spring:message code="Label.DomainExperts" htmlEscape="true" /></strong>
 												</div>
 											</th>
-											<th>
+											<th rowspan="2">
 												<div align="center">
 													<strong><spring:message code="Label.NoOfStaffProposed" htmlEscape="true" /><br>(A)</strong>
 												</div>
 											</th>
-											<th>
+											<th rowspan="2">
 												<div align="center">
 													<strong><spring:message code="Label.UnitCost" htmlEscape="true" /><br>(B)</strong>
 												</div>
 											</th>
-											<th>
+											<th rowspan="2">
 												<div align="center">
 													<strong><spring:message code="Label.NoOfMonths" htmlEscape="true" /><br>(C)</strong>
 												</div>
 											</th>
-											<th>
+											<th rowspan="2">
 												<div align="center">
 													<strong><spring:message code="Label.Funds" htmlEscape="true" /><br>D= (A*B*C)</strong>
 												</div>
@@ -151,17 +151,39 @@ function validatingTotalProposedFund(){
 												</div>
 											</th> --%>
 											<c:if test="${USER_TYPE eq 'M' or USER_TYPE eq 'C'}">
-											<th>
+											<th rowspan="2">
 												<div align="center">
 													<strong><spring:message code="Label.IsApproved" htmlEscape="true" /></strong>
 												</div>
 											</th>
 											</c:if>
-											<th>
+											<th rowspan="2">
 												<div align="center">
 													<strong><spring:message code="Label.Remarks" htmlEscape="true" /></strong>
 												</div>
 											</th>
+											
+											<c:if test="${sessionScope['scopedTarget.userPreference'].planVersion > 1}">
+											<th colspan="2" rowspan="1">
+												<div align="center">
+													<strong>Previous comment history</strong>
+												</div>
+											</th>
+											</c:if>
+										</tr>
+										<tr>
+											<c:if test="${sessionScope['scopedTarget.userPreference'].planVersion > 1}">
+												<th >
+													<div align="center">
+														<strong>State Previous Comments <span style="color: #396721;">&nbsp;<i class="fa fa-circle"></i></span></strong>
+													</div>
+												</th>
+												<th>
+													<div align="center">
+														<strong>MOPR's Feedback <span style="color: #bc6317;">&nbsp;<i class="fa fa-circle"></i></span></strong>
+													</div>
+												</th>
+											</c:if>
 										</tr>
 									</thead>
 									<tbody>
@@ -188,6 +210,33 @@ function validatingTotalProposedFund(){
 													</td>
 													</c:if>
 													<td><form:textarea path="adminFinancialDataCellActivityDetails[${index.index}].remarks" rows="2" cols="5" readonly="${IS_FREEZE eq true}"/></td>
+													<c:if test="${sessionScope['scopedTarget.userPreference'].planVersion > 1}">
+														<td>
+															<ol>
+															<c:forEach items="${STATE_PRE_COMMENTS[index.index]}" varStatus="indexInner" var="stateComments">
+															<li style="color: #396721;font-weight: bold;">
+																<c:choose>
+																	<c:when test="${not empty stateComments}">${stateComments}</c:when>
+																	<c:otherwise>No comments by state</c:otherwise>
+																</c:choose>
+															</li><br>
+															</c:forEach>
+														</ol>
+														</td>
+													
+													<td>
+														<ol>
+															<c:forEach items="${MOPR_PRE_COMMENTS[index.index]}" varStatus="indexMopr" var="moprComments">
+															<li style="color: #bc6317;font-weight: bold;">
+																<c:choose>
+																	<c:when test="${not empty moprComments}">${moprComments}</c:when>
+																	<c:otherwise>No comments by MOPR</c:otherwise>
+																</c:choose>
+															</li><br>
+															</c:forEach>
+														</ol>
+													</td>
+													</c:if>	
 												</tr>
 												<c:set var="count" value="${count+1}"></c:set>
 											</c:if>
@@ -229,7 +278,7 @@ function validatingTotalProposedFund(){
 											</c:if>
 											<c:if test="${IS_FREEZE eq true}">
 												<c:if test="${Plan_Status eq true}">
-													<button type="submit" class="btn bg-green waves-effect"
+													<button type="submit" class="btn bg-orange waves-effect"
 														id="unfreezeId" onclick="isFreezeFunction('unfreeze')">
 														<spring:message code="Label.UNFREEZE" text="Unfreeze"
 															htmlEscape="true" />
@@ -239,7 +288,7 @@ function validatingTotalProposedFund(){
 											<c:if test="${Plan_Status eq true}">
 												<c:if test="${IS_FREEZE eq false or empty IS_FREEZE}">
 													<c:if test="${DISABLE_FREEZE_INTIALLY eq true}">
-														<button type="submit" class="btn bg-green waves-effect"
+														<button type="submit" class="btn bg-orange waves-effect"
 															id="freezeId" onclick="isFreezeFunction('freeze')"
 															disabled="disabled">
 															<spring:message code="Label.FREEZE" text="Freeze"
@@ -247,7 +296,7 @@ function validatingTotalProposedFund(){
 														</button>
 													</c:if>
 													<c:if test="${DISABLE_FREEZE_INTIALLY eq false}">
-														<button type="submit" class="btn bg-green waves-effect"
+														<button type="submit" class="btn bg-orange waves-effect"
 															id="freezeId" onclick="isFreezeFunction('freeze')"
 															onsubmit="return validatingTotalProposedFund()">
 															<spring:message code="Label.FREEZE" text="Freeze"
@@ -263,7 +312,7 @@ function validatingTotalProposedFund(){
 											</c:if>
 											<button type="button"
 												onclick="onClose('home.html?<csrf:token uri='home.html'/>')"
-												class="btn bg-orange waves-effect">
+												class="btn bg-red waves-effect">
 												<spring:message code="Label.CLOSE" text="Close"
 													htmlEscape="true" />
 											</button>

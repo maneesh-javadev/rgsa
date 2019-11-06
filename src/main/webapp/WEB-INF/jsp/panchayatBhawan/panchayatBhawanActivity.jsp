@@ -83,7 +83,7 @@
                                        	htmlEscape="true" /></strong>
                                        </div>
                                        </th> --%>
-                                    <th>
+                                    <th rowspan="2">
                                        <div align="center">
                                           <strong>
                                              <spring:message code="Label.Activities"
@@ -96,7 +96,7 @@
                                        	<strong>District</strong><br>
                                        </div>
                                        </th> -->
-                                    <th>
+                                    <th rowspan="2">
                                        <div align="center">
                                           <strong>
                                              <spring:message code="Label.NoOfGPs"
@@ -105,7 +105,7 @@
                                           <br> A
                                        </div>
                                     </th>
-                                    <th>
+                                    <th rowspan="2">
                                        <div align="center">
                                           <strong>
                                              <spring:message
@@ -114,7 +114,7 @@
                                           </strong>
                                        </div>
                                     </th>
-                                    <th>
+                                    <th rowspan="2">
                                        <div align="center">
                                           <strong>
                                              <spring:message code="Label.UnitCost"
@@ -124,7 +124,7 @@
                                           <br> B
                                        </div>
                                     </th>
-                                    <th>
+                                    <th rowspan="2">
                                        <div align="center">
                                           <strong>
                                              <spring:message code="Label.Funds"
@@ -133,7 +133,8 @@
                                           <br> C = A * B
                                        </div>
                                     </th>
-                                    <th data-ng-if="userType == 'M' || userType == 'C'">
+                                    
+                                    <th rowspan="2" data-ng-if="userType == 'M'">
                                        <div align="center">
                                           <strong>
                                              <spring:message code="Label.IsApproved"
@@ -141,20 +142,48 @@
                                           </strong>
                                        </div>
                                     </th>
-                                    <th data-ng-if="userType == 'S'" style="display: none">
+                                    <th rowspan="2">
                                        <div align="center" >
                                           <strong>
-                                             <spring:message code="Label.IsApproved"
+                                             <spring:message code="Label.Remarks"
                                                 htmlEscape="true" />
                                           </strong>
                                        </div>
                                     </th>
+                                    
+                                    <c:if test="${sessionScope['scopedTarget.userPreference'].planVersion > 1}">
+										<th colspan="2">
+											<div align="center">
+												<strong>
+													Previous comment history
+												</strong>
+											</div>
+										</th> 
+									</c:if>
                                  </tr>
+                                 <tr>
+									<c:if test="${sessionScope['scopedTarget.userPreference'].planVersion > 1}">
+										<th>
+											<div align="center">
+												<strong>State Previous Comments <span
+													style="color: #396721;">&nbsp;<i
+														class="fa fa-circle"></i></span></strong>
+											</div>
+										</th>
+										<th>
+											<div align="center">
+												<strong>MOPR's Feedback <span
+													style="color: #bc6317;">&nbsp;<i
+														class="fa fa-circle"></i></span></strong>
+											</div>
+										</th>
+									</c:if>
+								</tr>
                               </thead>
                               <tbody>
                               
                              
-                                 <tr ng-repeat="activity in activityList" ng-if="[1, 2,3].indexOf(activity.activityId) > -1 ">
+                                 <tr data-ng-repeat="activity in activityList" data-ng-if="[1, 2,3].indexOf(activity.activityId) > -1 " data-ng-init="outerIndex = $index">
                                     <%--  <td><select class="form-control col-sm-1"   ng-model="panchayatBhawanActivity.panchatayBhawanActivityDetails[$index].workType" data-ng-disabled="panchayatBhawanActivity.status == 'F'" data-ng-selected="selected">
                                        <option value="0">select</option>
                                        <option value="N"><spring:message code="Label.NewBuilding" htmlEscape="true" /></option>
@@ -166,7 +195,7 @@
                                         
                                        
                                     <td>{{activity.activityName}}
-                                       <input type="hidden"  ng-model="panchayatBhawanActivity.panchatayBhawanActivityDetails[$index].activity.activityId" ng-init="panchayatBhawanActivity.panchatayBhawanActivityDetails[$index].activity.activityId=activity.activityId"/>
+                                       <input type="hidden"  data-ng-model="panchayatBhawanActivity.panchatayBhawanActivityDetails[$index].activity.activityId" data-ng-init="panchayatBhawanActivity.panchatayBhawanActivityDetails[$index].activity.activityId=activity.activityId"/>
                                     </td>
                                     <!-- 	<td>
                                        <select data-ng-show="panchayatBhawanActivity.status == 'F'"  class="form-control col-sm-1" ng-model="districtCode" disabled="disabled"
@@ -198,13 +227,29 @@
                                     <td>
                                        <input type="text" class="form-control" ng-model="panchayatBhawanActivity.panchatayBhawanActivityDetails[$index].funds" style="text-align:right;" disabled="disabled"/>
                                     </td>
-                                   <td  data-ng-if="userType == 'M' || userType == 'C'" align="center">
+                                   <td  data-ng-if="userType == 'M'" align="center">
 													         <input type="checkbox" data-ng-disabled="panchayatBhawanActivity.status == 'F'"  data-ng-model="panchayatBhawanActivity.panchatayBhawanActivityDetails[$index].isApproved"  />
 									</td>
-							        <td data-ng-if="userType == 'M'" style="display: none">
-								         <input type="checkbox" data-ng-disabled="panchayatBhawanActivity.status == 'F'" class="form-control" data-ng-model="panchayatBhawanActivity.panchatayBhawanActivityDetails[$index].isApproved" class="form-control" />
-							     	</td>
-							     	</div>
+									<td>
+									<textarea class="form-control" data-ng-model="panchayatBhawanActivity.panchatayBhawanActivityDetails[$index].remarks" rows="2" cols="5" data-ng-readonly="panchayatBhawanActivity.status == 'F'"></textarea>
+                                    </td>
+                                    <c:if
+											test="${sessionScope['scopedTarget.userPreference'].planVersion > 1}">
+											<td>
+												<ol>
+														<li data-ng-repeat="stateComments in statePreComment[outerIndex] track by $index" style="color: #396721; font-weight: bold;">
+															{{stateComments}}
+															</li>
+												</ol>
+											</td>
+
+											<td>
+												<ol>
+													<li data-ng-repeat="moprComments in moprPreComment[outerIndex] track by $index" style="color: #bc6317; font-weight: bold;">
+													{{moprComments}}</li>
+												</ol>
+											</td>
+										</c:if>
                                  </tr>
                               </tbody>
                               <tfoot>
@@ -369,10 +414,10 @@
                            <button type="button" data-ng-show="panchayatBhawanActivity.status != 'F'"  ng-disabled="btn_disabled" ng-click="saveData('S')" class="btn bg-green waves-effect">
                               <spring:message code="Label.SAVE" htmlEscape="true" />
                            </button>
-                           <button data-ng-show=" panchayatBhawanActivity.status != undefined  && panchayatBhawanActivity.status != 'F' "  ng-disabled="btn_disabled" data-ng-click="saveData('F')" type="button" class="btn bg-green waves-effect">
+                           <button data-ng-show=" panchayatBhawanActivity.status != undefined  && panchayatBhawanActivity.status != 'F' "  ng-disabled="btn_disabled" data-ng-click="saveData('F')" type="button" class="btn bg-orange waves-effect">
                               <spring:message code="Label.FREEZE" htmlEscape="true" />
                            </button>
-                           <button data-ng-show=" panchayatBhawanActivity.status == 'F'" type="button" data-ng-click="saveData('UF')"  ng-disabled="btn_disabled" class="btn bg-green waves-effect">
+                           <button data-ng-show=" panchayatBhawanActivity.status == 'F'" type="button" data-ng-click="saveData('UF')"  ng-disabled="btn_disabled" class="btn bg-orange waves-effect">
                               <spring:message code="Label.UNFREEZE" htmlEscape="true" />
                            </button>
                  <%--           <button type="button" data-ng-show="panchayatBhawanActivity.status == 'F'"  class="btn bg-light-blue waves-effect" disabled="disabled">
@@ -382,10 +427,11 @@
                               <spring:message code="Label.CLEAR" htmlEscape="true" />
                            </button> --%>
                         </c:if>
-                        <button type="button" onclick="onClose('home.html?<csrf:token uri='home.html'/>')" class="btn bg-orange waves-effect">
+                        <button type="button" onclick="onClose('home.html?<csrf:token uri='home.html'/>')" class="btn bg-red waves-effect">
                            <spring:message code="Label.CLOSE" htmlEscape="true" />
                         </button>
                      </div>
+                     <br>
                   </form>
                </div>
             </div>

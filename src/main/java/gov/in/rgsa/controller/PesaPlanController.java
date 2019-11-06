@@ -39,9 +39,9 @@ public class PesaPlanController {
 	@Autowired
 	private PesaPlanService pesaPlanService;
 	@Autowired
-	UserPreference userPreference;
+	private UserPreference userPreference;
 	@Autowired
-	BasicInfoService basicInfoService;
+	private BasicInfoService basicInfoService;
 
 	public String userType=null;
 	
@@ -118,6 +118,7 @@ public class PesaPlanController {
 	@RequestMapping(value="fetchPesaPost", method = RequestMethod.GET, produces=MediaType.APPLICATION_JSON_VALUE)
 	private Map<String, Object> fetchPesaDetails() {
 		List<PesaPlan> pesaPlan = new ArrayList<>();
+		Map<String, Object> pesaPlanResponseMap = new HashMap<>();
 		pesaPlan = pesaPlanService.fetchPesaPlan(userPreference.getUserType().charAt(0));
 		if(userPreference.getUserType().equalsIgnoreCase("M") && pesaPlan.size() == 0){
 			List<PesaPlan> pesaPlans =  pesaPlanService.fetchPesaPlan('S');
@@ -135,12 +136,17 @@ public class PesaPlanController {
 			pesaPlanDetails = pesaPlanService.fetchPesaDetails(pesaPlan.get(0).getPesaPlanId());
 		}
 		
-		Map<String, Object> pesaPlanResponseMap = new HashMap<>();
+		
 		if(pesaPlan!=null)
 			pesaPlanResponseMap.put("pesaPlanResponseMap", pesaPlan.get(0));
 		pesaPlanResponseMap.put("pesaPosts", pesaPosts);
 		pesaPlanResponseMap.put("pesaPlanDetails", pesaPlanDetails);
 		pesaPlanResponseMap.put("userType", userPreference.getUserType());
+		if(!CollectionUtils.isEmpty(pesaPlanDetails)) {
+			Map<String, List<List<String>>> commentMap = basicInfoService.fetchStateAndMoprPreComments(pesaPlanDetails.size(),6);
+			pesaPlanResponseMap.put("STATE_PRE_COMMENTS", commentMap.get("statePreviousComments"));
+			pesaPlanResponseMap.put("MOPR_PRE_COMMENTS", commentMap.get("moprPreviousComments"));
+		}
 		return pesaPlanResponseMap;
 	}
 	

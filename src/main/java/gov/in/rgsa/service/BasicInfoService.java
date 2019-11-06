@@ -1,6 +1,7 @@
 package gov.in.rgsa.service;
 
 import java.util.List;
+import java.util.Map;
 
 import gov.in.rgsa.entity.BasicInfo;
 import gov.in.rgsa.entity.BasicInfoDefination;
@@ -18,5 +19,6 @@ public interface BasicInfoService {
 	public void delete(BasicInfoModel info);
 	public void freezeBasicInfoDetails(Integer basicInfoId);
 	public String fillFirstBasicInfo();
+	public Map<String, List<List<String>>> fetchStateAndMoprPreComments(int detailSize , int componentId);
 	
 }

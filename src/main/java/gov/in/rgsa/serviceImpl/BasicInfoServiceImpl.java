@@ -7,18 +7,35 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import javax.servlet.jsp.jstl.sql.Result;
+
 import org.apache.commons.collections.CollectionUtils;
 import org.owasp.esapi.util.CollectionsUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import gov.in.rgsa.dao.CommonRepository;
+import gov.in.rgsa.entity.AdminFinancialDataCellActivityDetails;
+import gov.in.rgsa.entity.AdministrativeTechnicalSupportDetails;
 import gov.in.rgsa.entity.BasicInfo;
 import gov.in.rgsa.entity.BasicInfoDefination;
 import gov.in.rgsa.entity.BasicInfoDetails;
+import gov.in.rgsa.entity.CapacityBuildingActivityDetails;
+import gov.in.rgsa.entity.EEnablementDetails;
+import gov.in.rgsa.entity.EGovSupportActivityDetails;
 import gov.in.rgsa.entity.FinYear;
 import gov.in.rgsa.entity.FocusArea;
+import gov.in.rgsa.entity.IecActivityDetails;
+import gov.in.rgsa.entity.IncomeEnhancementDetails;
+import gov.in.rgsa.entity.InnovativeActivityDetails;
+import gov.in.rgsa.entity.InstitueInfraHrActivityDetails;
+import gov.in.rgsa.entity.PanchatayBhawanActivityDetails;
+import gov.in.rgsa.entity.PesaPlanDetails;
 import gov.in.rgsa.entity.Plan;
+import gov.in.rgsa.entity.PmuActivityDetails;
+import gov.in.rgsa.entity.PmuProgress;
+import gov.in.rgsa.entity.SatcomActivityDetails;
+import gov.in.rgsa.entity.SatcomActivityProgress;
 import gov.in.rgsa.model.BasicInfoModel;
 import gov.in.rgsa.service.ActionPlanService;
 import gov.in.rgsa.service.BasicInfoService;
@@ -218,5 +235,255 @@ public class BasicInfoServiceImpl implements BasicInfoService {
 		return _preference;
 	}
 	
+	
+	@Override
+	public Map<String, List<List<String>>> fetchStateAndMoprPreComments(int detailSize ,int componentId) {
+		List<List<String>> statePreviousComments = new ArrayList<List<String>>();
+		List<List<String>> moprPreviousComments = new ArrayList<List<String>>();
+		int index = 0;
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("stateCode", userPreference.getStateCode());
+		params.put("versionNo", userPreference.getPlanVersion());
+		
+		for (int i = 0; i < detailSize; i++) {
+			statePreviousComments.add(new ArrayList<String>());
+			moprPreviousComments.add(new ArrayList<String>());
+		}
+		
+		switch(componentId) {
+		case 1:
+			List<Object[]> trainingDetails = dao.findAllByNativeQuery("select ta.user_type,tad.remarks from rgsa.training_activity  ta inner join rgsa.training_activity_details tad on(ta.training_activity_id = tad.training_activity_id) where ta.state_code=:stateCode and ta.version_no !=:versionNo and ta.user_type in('S','M') order by tad.training_id", params);
+			if (!CollectionUtils.isEmpty(trainingDetails )) {
+				for (int i = 0; i < trainingDetails.size(); i++) {
+					if (index == detailSize) {
+						index = 0;
+					}
+					if (trainingDetails .get(i)[0].toString().equalsIgnoreCase("S")) {
+						statePreviousComments.get(index).add((trainingDetails.get(i)[1] != null) ? trainingDetails.get(i)[1].toString() : "");
+					} else {
+						moprPreviousComments.get(index).add((trainingDetails.get(i)[1] != null) ? trainingDetails.get(i)[1].toString() : "");
+					}
+					index ++;
+				}
+			}
+			break;
+		case 3 :
+			List<PanchatayBhawanActivityDetails> panchDetails= dao.findAll("FETCH_ALL_PANCH_DETAILS_EXCEPT_CURRENT_VERSION", params);
+			if(!CollectionUtils.isEmpty(panchDetails)) {
+				for(int i = 0; i < panchDetails.size() ; i++) {
+					 if(index == detailSize) {
+						 index = 0;
+					 }
+					if(panchDetails.get(i).getPanchatayBhawanActivity().getUserType().toString().equalsIgnoreCase("S")) {
+						statePreviousComments.get(index).add(panchDetails.get(i).getRemarks());
+					}else {
+						moprPreviousComments.get(index).add(panchDetails.get(i).getRemarks());
+					}
+					 index ++;
+				}
+			}
+			break;
+		case 4 :
+			List<AdministrativeTechnicalSupportDetails> adminTechDetails= dao.findAll("FETCH_ALL_ADMIN_TECH_DETAILS_EXCEPT_CURRENT_VERSION", params);
+			if(!CollectionUtils.isEmpty(adminTechDetails)) {
+				for(int i = 0; i < adminTechDetails.size() ; i++) {
+					 if(index == detailSize) {
+						 index = 0;
+					 }
+					if(adminTechDetails.get(i).getAdministrativeTechnicalSupport().getUserType().toString().equalsIgnoreCase("S")) {
+						statePreviousComments.get(index).add(adminTechDetails.get(i).getRemarks());
+					}else {
+						moprPreviousComments.get(index).add(adminTechDetails.get(i).getRemarks());
+					}
+					 index ++;
+				}
+			}
+			break;
+		case 5 :
+			List<EEnablementDetails> eEnablementDetails= dao.findAll("FETCH_ALL_EENABLEMENT_DETAILS_EXCEPT_CURRENT_VERSION", params);
+			if(!CollectionUtils.isEmpty(eEnablementDetails)) {
+				for(int i = 0; i < eEnablementDetails.size() ; i++) {
+					 if(index == detailSize) {
+						 index = 0;
+					 }
+					if(eEnablementDetails.get(i).geteEnablement().getUserType().toString().equalsIgnoreCase("S")) {
+						statePreviousComments.get(index).add(eEnablementDetails.get(i).getRemarks());
+					}else {
+						moprPreviousComments.get(index).add(eEnablementDetails.get(i).getRemarks());
+					}
+					 index ++;
+				}
+			}
+			break;
+		case 6 : 
+			List<Object[]> pesaResult = dao.findAllByNativeQuery("select p.user_type,pd.remarks from rgsa.pesa_plan p inner join rgsa.pesa_plan_details pd on (p.pesa_plan_id = pd.pesa_plan_id) where p.state_code =:stateCode and p.version_no !=:versionNo and p.user_type in('S','M') order by pd.id", params);
+			if (!CollectionUtils.isEmpty(pesaResult )) {
+				for (int i = 0; i < pesaResult.size(); i++) {
+					if (index == detailSize) {
+						index = 0;
+					}
+					if (pesaResult .get(i)[0].toString().equalsIgnoreCase("S")) {
+						statePreviousComments.get(index).add((pesaResult .get(i)[1] != null) ? pesaResult .get(i)[1].toString() : "");
+					} else {
+						moprPreviousComments.get(index).add((pesaResult .get(i)[1] != null) ? pesaResult .get(i)[1].toString() : "");
+					}
+					index ++;
+				}
+			}
+			break;
+		case 7 :
+			List<SatcomActivityDetails> satcomActivityDetails = dao.findAll("FETCH_ALL_SATCOM_DETAILS_EXCEPT_CURRENT_VERSION", params);
+			if(!CollectionUtils.isEmpty(satcomActivityDetails)) {
+				for(int i = 0; i < satcomActivityDetails.size() ; i++) {
+					 if(index == detailSize) {
+						 index = 0;
+					 }
+					if(satcomActivityDetails.get(i).getSatcomActivity().getUserType().equalsIgnoreCase("S")) {
+						statePreviousComments.get(index).add(satcomActivityDetails.get(i).getRemarks());
+					}else {
+						moprPreviousComments.get(index).add(satcomActivityDetails.get(i).getRemarks());
+					}
+					 index ++;
+				}
+			}
+			break;	
+		case 8 :
+			List<AdminFinancialDataCellActivityDetails> adminActivityDetails = dao.findAll("FETCH_ALL_ADMIN_ACTIVITY_DETAILS_EXCEPT_CURRENT_VERSION", params);
+			if(!CollectionUtils.isEmpty(adminActivityDetails)) {
+				for(int i = 0; i < adminActivityDetails.size() ; i++) {
+					 if(index == detailSize) {
+						 index = 0;
+					 }
+					if(adminActivityDetails.get(i).getAdminAndFinancialDataActivity().getUserType().equalsIgnoreCase("S")) {
+						statePreviousComments.get(index).add(adminActivityDetails.get(i).getRemarks());
+					}else {
+						moprPreviousComments.get(index).add(adminActivityDetails.get(i).getRemarks());
+					}
+					 index ++;
+				}
+			}
+			break;
+		case 9 :
+			List<InnovativeActivityDetails> innovativeActivityDetails = dao.findAll("FETCH_ALL_INNOVATIVE_DETAILS_EXCEPT_CURRENT_VERSION", params);
+			if(!CollectionUtils.isEmpty(innovativeActivityDetails)) {
+				for(int i = 0; i < innovativeActivityDetails.size() ; i++) {
+					 if(index == detailSize) {
+						 index = 0;
+					 }
+					if(innovativeActivityDetails.get(i).getInnovativeActivity().getUserType().toString().equalsIgnoreCase("S")) {
+						statePreviousComments.get(index).add(innovativeActivityDetails.get(i).getRemarks());
+					}else {
+						moprPreviousComments.get(index).add(innovativeActivityDetails.get(i).getRemarks());
+					}
+					 index ++;
+				}
+			}
+			break;
+		case 10 : 
+			List<IncomeEnhancementDetails> incomeDetails = dao.findAll("FETCH_ALL_INCOME_DETAILS_EXCEPT_CURRENT_VERSION", params);
+			if(!CollectionUtils.isEmpty(incomeDetails)) {
+				for(int i = 0; i < incomeDetails.size() ; i++) {
+					 if(index == detailSize) {
+						 index = 0;
+					 }
+					if(incomeDetails.get(i).getIncomeEnhancementActivity().getUserType().toString().equalsIgnoreCase("S")) {
+						statePreviousComments.get(index).add(incomeDetails.get(i).getRemarks());
+					}else {
+						moprPreviousComments.get(index).add(incomeDetails.get(i).getRemarks());
+					}
+					 index++;
+				}
+			}
+			break;
+		case 11 : 
+			List<IecActivityDetails> iecDetails = dao.findAll("FETCH_ALL_IEC_DETAILS_EXCEPT_CURRENT_VERSION", params);
+			if(!CollectionUtils.isEmpty(iecDetails)) {
+				for(int i = 0; i < iecDetails.size() ; i++) {
+					 if(index == detailSize) {
+						 index = 0;
+					 }
+					if(iecDetails.get(i).getIecActivity().getUserType().toString().equalsIgnoreCase("S")) {
+						statePreviousComments.get(index).add(iecDetails.get(i).getRemarks());
+					}else {
+						moprPreviousComments.get(index).add(iecDetails.get(i).getRemarks());
+					}
+					 index++;
+				}
+			}
+			break;
+		case 12 :
+			List<PmuActivityDetails> pmuActivityDetails = dao.findAll("FETCH_ALL_PMU_DETAILS_EXCEPT_CURRENT_VERSION", params);
+			if(!CollectionUtils.isEmpty(pmuActivityDetails)) {
+				for(int i = 0; i < pmuActivityDetails.size() ; i++) {
+					 if(index == detailSize) {
+						 index = 0;
+					 }
+					if(pmuActivityDetails.get(i).getPmuActivity().getUserType().toString().equalsIgnoreCase("S")) {
+						statePreviousComments.get(index).add(pmuActivityDetails.get(i).getRemarks());
+					}else {
+						moprPreviousComments.get(index).add(pmuActivityDetails.get(i).getRemarks());
+					}
+					 index ++;
+				}
+			}
+			break;	
+		case 13 :
+			List<CapacityBuildingActivityDetails> trainingActivityDetails= dao.findAll("FETCH_ALL_TRAINING_ACTIVITY_DETAILS_EXCEPT_CURRENT_VERSION", params);
+			if(!CollectionUtils.isEmpty(trainingActivityDetails)) {
+				for(int i = 0; i < trainingActivityDetails.size() ; i++) {
+					 if(index == detailSize) {
+						 index = 0;
+					 }
+					if(trainingActivityDetails.get(i).getCapacityBuildingActivity().getUserType().toString().equalsIgnoreCase("S")) {
+						statePreviousComments.get(index).add(trainingActivityDetails.get(i).getRemarks());
+					}else {
+						moprPreviousComments.get(index).add(trainingActivityDetails.get(i).getRemarks());
+					}
+					 index ++;
+				}
+			}
+			break;
+		case 14 :
+			List<Object[]> result=dao.findAllByNativeQuery("select ih.user_type,ihd.remarks from rgsa.institue_infra_hr_activity ih inner join rgsa.institue_infra_hr_activity_details ihd on (ihd.institue_infra_hr_activity_id = ih.institue_infra_hr_activity_id) where ih.state_code =:stateCode and ih.version_no !=:versionNo and ih.user_type in('S','M')order by ihd.institue_infra_hr_activity_details_id", params);
+			
+			if (!CollectionUtils.isEmpty(result)) {
+				for (int i = 0; i < result.size(); i++) {
+					if (index == detailSize) {
+						index = 0;
+					}
+					if (result.get(i)[0].toString().equalsIgnoreCase("S")) {
+						statePreviousComments.get(index).add( result.get(i)[1].toString());
+					} else {
+						moprPreviousComments.get(index).add(result.get(i)[1].toString());
+					}
+					index ++;
+				}
+			}
+			 
+			break;	
+		case 15 :
+			List<EGovSupportActivityDetails> egovDetails= dao.findAll("FETCH_ALL_EGOV_DETAILS_EXCEPT_CURRENT_VERSION", params);
+			if(!CollectionUtils.isEmpty(egovDetails)) {
+				for(int i = 0; i < egovDetails.size() ; i++) {
+					 if(index == detailSize) {
+						 index = 0;
+					 }
+					if(egovDetails.get(i).geteGovSupportActivity().getUserType().toString().equalsIgnoreCase("S")) {
+						statePreviousComments.get(index).add(egovDetails.get(i).getRemarks());
+					}else {
+						moprPreviousComments.get(index).add(egovDetails.get(i).getRemarks());
+					}
+					 index ++;
+				}
+			}
+			break;
+		default : 
+		}
+		
+		Map<String, List<List<String>>> response=new HashMap<String, List<List<String>>>();
+		response.put("statePreviousComments", statePreviousComments);
+		response.put("moprPreviousComments", moprPreviousComments);
+		return response;
+	}
 
 }
