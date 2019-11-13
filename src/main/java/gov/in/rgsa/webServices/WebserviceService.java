@@ -7,6 +7,7 @@ import gov.in.rgsa.dto.ERRepresentativeHundredDayProgLastWeekWise;
 import gov.in.rgsa.dto.ERRepresentativeHundredDayProgStateWise;
 import gov.in.rgsa.dto.HundredDaysWebServiceDTO;
 import gov.in.rgsa.dto.StatewiseNoOfParticipants;
+import gov.in.rgsa.entity.CapacityBuildingErForOoms;
 import gov.in.rgsa.entity.FetchPlanStatusCount;
 
 public interface WebserviceService {
@@ -18,4 +19,5 @@ public interface WebserviceService {
 	List<ERRepresentativeHundredDayProgLastWeekWise> fetchERRepresentativeHundredDayProgLASTWEEKWISE();
 	List<ERRepresentativeHundredDayProgStateWise> fetchERRepresentativeHundredDayProgStateWise(String fin_year,String stDate,String endDate);
 	List<HundredDaysWebServiceDTO> fetchHundredDayWSData(String fieldType);
+	List<CapacityBuildingErForOoms> fetchCapacityBuildingErForOoms(String finYear ,String type);
 }

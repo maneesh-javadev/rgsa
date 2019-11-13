@@ -7,16 +7,15 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import gov.in.rgsa.dao.CommonRepository;
 import gov.in.rgsa.dto.ERRepresentativeHundredDayProg;
 import gov.in.rgsa.dto.ERRepresentativeHundredDayProgLastWeekWise;
 import gov.in.rgsa.dto.ERRepresentativeHundredDayProgStateWise;
 import gov.in.rgsa.dto.HundredDaysWebServiceDTO;
 import gov.in.rgsa.dto.StatewiseNoOfParticipants;
+import gov.in.rgsa.entity.CapacityBuildingErForOoms;
 import gov.in.rgsa.entity.FetchPlanStatusCount;
 
 
@@ -140,5 +139,29 @@ public class WebserviceServiceImpl implements WebserviceService {
 		return detail;
 	}
 
-
+	
+	@Override
+	public List<CapacityBuildingErForOoms> fetchCapacityBuildingErForOoms(String finYear,String type) {
+		List<CapacityBuildingErForOoms> capacityBuildingErForOomsList=null;
+		Map<String, Object> params=new HashMap<>();
+		params.put("finYear", finYear);
+		if("CB".equals(type))
+		capacityBuildingErForOomsList= commonRepository.findAll("FETCH_CAPACITY_BUILDING_ER_OOMS",params);
+		
+		else if("NT".equals(type)) {
+		capacityBuildingErForOomsList= commonRepository.findAll("FETCH_NO_OF_TRAINING_OOMS",params);
+		}
+		else if("EV".equals(type)) {
+			capacityBuildingErForOomsList= commonRepository.findAll("NO_OF_EXPOSURE_VIEW_OOMS",params);
+			}
+		else if("GP".equals(type)) {
+			capacityBuildingErForOomsList= commonRepository.findAll("NO_OF_GP_BUILDING_SUPPORT_OOMS",params);
+			}
+		else if("SD".equals(type)) {
+			capacityBuildingErForOomsList= commonRepository.findAll("NO_OF_SPRC_DPRC_SUPPORT_OOMS",params);
+			}
+		
+		return capacityBuildingErForOomsList;
+	}
+	
 }

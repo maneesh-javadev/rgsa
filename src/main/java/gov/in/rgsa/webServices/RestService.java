@@ -1,12 +1,21 @@
 package gov.in.rgsa.webServices;
 
 
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.ws.rs.Consumes;
+import javax.ws.rs.DefaultValue;
+import javax.ws.rs.FormParam;
 import javax.ws.rs.GET;
+import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
@@ -14,19 +23,30 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import org.apache.jasper.tagplugins.jstl.core.ForEach;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
+import org.springframework.http.HttpEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.context.support.WebApplicationContextUtils;
+
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
 
 import gov.in.rgsa.dto.ERRepresentativeHundredDayProg;
 import gov.in.rgsa.dto.ERRepresentativeHundredDayProgLastWeekWise;
 import gov.in.rgsa.dto.ERRepresentativeHundredDayProgStateWise;
 import gov.in.rgsa.dto.HundredDaysWebServiceDTO;
 import gov.in.rgsa.dto.StatewiseNoOfParticipants;
+import gov.in.rgsa.dto.WebServiceOoms;
+import gov.in.rgsa.entity.CapacityBuildingErForOoms;
 import gov.in.rgsa.entity.FetchPlanStatusCount;
 
 
@@ -169,5 +189,115 @@ public Response getTotalSubmittedPlans(@Context ServletContext servletContext,@Q
 }
 
 
-	
+@PostMapping("/webService/noOfCapacityBuilding")
+@Produces(MediaType.APPLICATION_JSON)
+public String getTotalSubmittedPlan(@QueryParam(value = "finYear") String finYear,
+		@RequestParam("frequencyCode") String freqCode,@RequestParam("measurementAreaCode") String measureAreaCode,
+		@RequestParam("indicatorCode") String indicatorCode,@RequestParam("schemeCode") String schemeCode) throws JsonProcessingException{
+	       List<CapacityBuildingErForOoms> capacityBuildingErForOomsList= null;
+	       String type ="CB";
+	       String capacityBuildingList = null ;
+	       if( ("FR01").equals(freqCode) && !("").equals(freqCode) && ("AR002").equals(measureAreaCode) && !("").equals(measureAreaCode) &&
+	    		   ("PR01").equals(indicatorCode)  && !("").equals(indicatorCode) &&("PR1624").equals(schemeCode) && !("").equals(schemeCode) &&
+	    		   finYear !=null && !("").equals(finYear)) {
+			 capacityBuildingErForOomsList = webserviceService.fetchCapacityBuildingErForOoms(finYear,type);
+			 capacityBuildingErForOomsList.stream().forEach(u ->{ u.setValue(u.getFieldGenricName());  u.setFieldGenricName(null);});
+			 ObjectMapper mapper = new ObjectMapper();
+		     mapper.enable(SerializationFeature.INDENT_OUTPUT);
+		     capacityBuildingList = mapper.writeValueAsString(capacityBuildingErForOomsList);
+		      
+		   }
+	 return capacityBuildingList;
+		}
+		
+
+
+@PostMapping("/webService/noOfTraining")
+@Produces(MediaType.APPLICATION_JSON)
+public String noOfTraining(@QueryParam(value = "finYear") String finYear,
+		@RequestParam("frequencyCode") String freqCode,@RequestParam("measurementAreaCode") String measureAreaCode,
+		@RequestParam("indicatorCode") String indicatorCode,@RequestParam("schemeCode") String schemeCode) throws JsonProcessingException{
+	       List<CapacityBuildingErForOoms> capacityBuildingErForOomsList= null;
+	       String type ="NT";
+	       String capacityBuildingList = null ;
+	       if( ("FR01").equals(freqCode) && !("").equals(freqCode) && ("AR002").equals(measureAreaCode) && !("").equals(measureAreaCode) &&
+	    		   ("PR02").equals(indicatorCode)  && !("").equals(indicatorCode) &&("PR1624").equals(schemeCode) && !("").equals(schemeCode) &&
+	    		   finYear !=null && !("").equals(finYear)) {
+			 capacityBuildingErForOomsList = webserviceService.fetchCapacityBuildingErForOoms(finYear,type);
+			 capacityBuildingErForOomsList.stream().forEach(u ->{ u.setNoOfTraining(u.getFieldGenricName());  u.setFieldGenricName(null);});
+			 ObjectMapper mapper = new ObjectMapper();
+		     mapper.enable(SerializationFeature.INDENT_OUTPUT);
+		     capacityBuildingList = mapper.writeValueAsString(capacityBuildingErForOomsList);
+		   }
+     return capacityBuildingList;
+}
+
+@PostMapping("/webService/noOfExposureView")
+@Produces(MediaType.APPLICATION_JSON)
+public String noOfExposureView(@QueryParam(value = "finYear") String finYear,
+		@RequestBody WebServiceOoms capacityBuildingErForOoms) throws JsonProcessingException{
+	       List<CapacityBuildingErForOoms> capacityBuildingErForOomsList= null;
+	       String type ="EV";
+	       String capacityBuildingList = null ;
+	       if( ("FR01").equals(capacityBuildingErForOoms.getFrequencyCode()) && !("").equals(capacityBuildingErForOoms.getFrequencyCode()) && ("AR002").equals(capacityBuildingErForOoms.getMeasurementAreaCode()) && !("").equals(capacityBuildingErForOoms.getMeasurementAreaCode()) &&
+	    		   ("PR04").equals(capacityBuildingErForOoms.getIndicatorCode())  && !("").equals(capacityBuildingErForOoms.getIndicatorCode()) &&("PR1624").equals(capacityBuildingErForOoms.getSchemeCode()) && !("").equals(capacityBuildingErForOoms.getSchemeCode()) &&
+	    		   capacityBuildingErForOoms.getYear() !=null && !("").equals(capacityBuildingErForOoms.getYear())) {
+	    	   capacityBuildingErForOomsList = webserviceService.fetchCapacityBuildingErForOoms(capacityBuildingErForOoms.getYear(),type);
+	    	   capacityBuildingErForOomsList.stream().forEach(u ->{ u.setValue(u.getFieldGenricName());  u.setFieldGenricName(null);
+	    	   u.setMeasurementAreaCode(capacityBuildingErForOoms.getMeasurementAreaCode()); u.setSchemeCode(capacityBuildingErForOoms.getSchemeCode()); u.setYear(capacityBuildingErForOoms.getYear()); u.setIndicatorCode(capacityBuildingErForOoms.getIndicatorCode()); u.setFrequencyCode(capacityBuildingErForOoms.getFrequencyCode());
+	    	   u.setDistrictCode("N/A"); u.setMeasurementFreqCode("FR01_001");});
+	    	   ObjectMapper mapper = new ObjectMapper();
+			   mapper.enable(SerializationFeature.INDENT_OUTPUT);
+			   capacityBuildingList = mapper.writeValueAsString(capacityBuildingErForOomsList);
+			    
+		}
+	  return capacityBuildingList;
+}
+@PostMapping("/webService/noOfGpBuildingSupport")
+@Produces(MediaType.APPLICATION_JSON)
+
+public String noOfGpBuildingSupport(
+	@RequestBody WebServiceOoms capacityBuildingErForOoms) throws JsonProcessingException{
+			       List<CapacityBuildingErForOoms> capacityBuildingErForOomsList= null;
+	      //String str= httpEntity.getBody();
+	       String type ="GP";
+	       String capacityBuildingList = null ;  
+	       if( ("FR01").equals(capacityBuildingErForOoms.getFrequencyCode()) && !("").equals(capacityBuildingErForOoms.getFrequencyCode()) && ("AR002").equals(capacityBuildingErForOoms.getMeasurementAreaCode()) && !("").equals(capacityBuildingErForOoms.getMeasurementAreaCode()) &&
+	    		   ("PR05").equals(capacityBuildingErForOoms.getIndicatorCode())  && !("").equals(capacityBuildingErForOoms.getIndicatorCode()) &&("PR1624").equals(capacityBuildingErForOoms.getSchemeCode()) && !("").equals(capacityBuildingErForOoms.getSchemeCode()) &&
+	    		   capacityBuildingErForOoms.getYear() !=null && !("").equals(capacityBuildingErForOoms.getYear())) {
+	    	   capacityBuildingErForOomsList = webserviceService.fetchCapacityBuildingErForOoms(capacityBuildingErForOoms.getYear(),type);
+	    	   capacityBuildingErForOomsList.stream().forEach(u ->{ u.setValue(u.getFieldGenricName());  u.setFieldGenricName(null);
+	    	   u.setMeasurementAreaCode(capacityBuildingErForOoms.getMeasurementAreaCode()); u.setSchemeCode(capacityBuildingErForOoms.getSchemeCode()); u.setYear(capacityBuildingErForOoms.getYear()); u.setIndicatorCode(capacityBuildingErForOoms.getIndicatorCode()); u.setFrequencyCode(capacityBuildingErForOoms.getFrequencyCode());
+	    	   u.setDistrictCode("N/A"); u.setMeasurementFreqCode("FR01_001");
+	    	   
+	    	   });
+	    	   ObjectMapper mapper = new ObjectMapper();
+			   mapper.enable(SerializationFeature.INDENT_OUTPUT);
+			   capacityBuildingList = mapper.writeValueAsString(capacityBuildingErForOomsList);
+		}
+	 return capacityBuildingList;
+}
+@PostMapping("/webService/noOfSprcDprcSupport")
+@Produces(MediaType.APPLICATION_JSON)
+public String noOfSprcDprcSupport(@QueryParam(value = "finYear") String finYear,
+		@RequestParam("frequencyCode") String freqCode,@RequestParam("measurementAreaCode") String measureAreaCode,
+		@RequestParam("indicatorCode") String indicatorCode,@RequestParam("schemeCode") String schemeCode) throws JsonProcessingException{
+	       List<CapacityBuildingErForOoms> capacityBuildingErForOomsList= null;
+	       String type ="SD";
+	       String capacityBuildingList = null ;  
+	       if( ("FR01").equals(freqCode) && !("").equals(freqCode) && ("AR002").equals(measureAreaCode) && !("").equals(measureAreaCode) &&
+	    		   ("PR10").equals(indicatorCode)  && !("").equals(indicatorCode) &&("PR1624").equals(schemeCode) && !("").equals(schemeCode) &&
+	    		   finYear !=null && !("").equals(finYear)) {
+	    	   capacityBuildingErForOomsList = webserviceService.fetchCapacityBuildingErForOoms(finYear,type);
+	    	   capacityBuildingErForOomsList.stream().forEach(u ->{u.setValue(u.getFieldGenricName().substring(0, u.getFieldGenricName().lastIndexOf(',')));
+	    		  u.setValue(u.getFieldGenricName().substring( u.getFieldGenricName().lastIndexOf(',')+1,u.getFieldGenricName().length())); u.setFieldGenricName(null);});
+	    	   
+	    	   ObjectMapper mapper = new ObjectMapper();
+			   mapper.enable(SerializationFeature.INDENT_OUTPUT);
+			   capacityBuildingList = mapper.writeValueAsString(capacityBuildingErForOomsList);
+		}
+	 return capacityBuildingList;
+}
+
+
 }
