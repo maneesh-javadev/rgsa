@@ -1,8 +1,8 @@
 <%@include file="../taglib/taglib.jsp"%>
 <html ng-app="publicModule">
 
-<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/plugins/dataTables/css/dataTables.bootstrap.min.css">
-<script type="text/javascript" src="${pageContext.request.contextPath}/resources/plugins/dataTables/js/jquery.dataTables.js"></script>
+<%-- <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/plugins/dataTables/css/dataTables.bootstrap.min.css">
+<script type="text/javascript" src="${pageContext.request.contextPath}/resources/plugins/dataTables/js/jquery.dataTables.js"></script> --%>
 	
 <script
 	src="<c:out value='${pageContext.request.contextPath}'/>/resources/plugins/bootstrap/js/bootstrap.min.js"></script>
@@ -17,7 +17,7 @@
 	<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/angular/toastr.css">
 	
 <script>
-$('document').ready(function(){
+/* $('document').ready(function(){
 	$('#trainingActivityTblId').dataTable({
 		 "bInfo" : false,
 		 "lengthChange": false,
@@ -25,7 +25,7 @@ $('document').ready(function(){
 		 "bSort": false,
 		 "bPaginate":false
 	});	
-});
+}); */
 
 function isNumber(evt) {
     evt = (evt) ? evt : window.event;
@@ -74,7 +74,7 @@ table.dataTable thead > tr > th, table.dataTable thead > tr > td {
 						
 							
 							<div class="records">
-								<div class="">
+								<div class="table-responsive">
 									<table id="trainingActivityTblId"
 										class="table table-hover dashboard-task-infos">
 										<thead>
@@ -136,7 +136,7 @@ table.dataTable thead > tr > th, table.dataTable thead > tr > td {
 											  <input type="checkbox" data-ng-disabled="fetchTrainingMOPR.isFreeze" data-ng-model="training.trainingDetailList[$index].isApproved"  />
 										</td>
 										<td align="center">
-											 <textarea cols="40" data-ng-disabled="fetchTrainingMOPR.isFreeze" data-ng-model="training.trainingDetailList[$index].remarks" rows="2" class="element-width">{{trainingDetails.remarks}}</textarea>
+											 <textarea cols="40" data-ng-disabled="fetchTrainingMOPR.isFreeze" data-ng-model="training.trainingDetailList[$index].remarks" rows="2" class=" form-control element-width">{{trainingDetails.remarks}}</textarea>
 										</td>
 										<c:if
 											test="${sessionScope['scopedTarget.userPreference'].planVersion > 1}">
@@ -144,14 +144,14 @@ table.dataTable thead > tr > th, table.dataTable thead > tr > td {
 												<ol>
 														<li data-ng-repeat="stateComments in statePreComments[outerIndex] track by $index" style="color: #396721; font-weight: bold;">
 															{{stateComments}}
-															</li><br>
+															</li>
 												</ol>
 											</td>
 
 											<td>
 												<ol>
 													<li data-ng-repeat="moprComments in moprPreComments[outerIndex] track by $index" style="color: #bc6317; font-weight: bold;">
-													{{moprComments}}</li><br>
+													{{moprComments}}</li>
 												</ol>
 											</td>
 										</c:if>
@@ -228,18 +228,18 @@ table.dataTable thead > tr > th, table.dataTable thead > tr > td {
 										class="btn bg-green waves-effect">SAVE</button>
 										
 									<button type="button" ng-show="!fetchTrainingMOPR.isFreeze" ng-disabled="capacityBuilding.isFreeze" ng-click="saveTrainingDetails('F')"
-										class="btn bg-green waves-effect">FREEZE</button>
+										class="btn bg-orange waves-effect">FREEZE</button>
 										
 										<button type="button" ng-show="fetchTrainingMOPR.isFreeze"  ng-disabled="capacityBuilding.isFreeze" ng-click="saveTrainingDetails('U')"
-										class="btn bg-green waves-effect">UNFREEZE</button>
+										class="btn bg-orange waves-effect">UNFREEZE</button>
 										
-									<button ng-click="resetLoading()" type="button"   class="btn bg-light-blue waves-effect"  >
+									<button ng-click="resetLoading()" type="button" ng-show="!fetchTrainingMOPR.isFreeze" class="btn bg-light-blue waves-effect"  >
 									   			<spring:message code="Label.CLEAR" htmlEscape="true" />
 									   		</button>
 								
 									<button type="button"
 										onclick="onClose('home.html?<csrf:token uri='home.html'/>')"
-										class="btn bg-orange waves-effect">CLOSE</button><br />
+										class="btn bg-red waves-effect">CLOSE</button><br />
 								</div>
 								<br/>
 

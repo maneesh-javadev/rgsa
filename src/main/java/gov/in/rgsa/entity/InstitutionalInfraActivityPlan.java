@@ -86,7 +86,16 @@ public class InstitutionalInfraActivityPlan {
 	private String dataFor;
 	
 	@Transient
-	private List<InstitutionalInfraActivityPlanDetails> detailsForComments;
+	private List<String> detailsForStateSprcComments;
+	
+	@Transient
+	private List<List<String>> detailsForStateDprcComments;
+	
+	@Transient
+	private List<String> detailsForMoprSprcComments;
+	
+	@Transient
+	private List<List<String>> detailsForMoprDprcComments;
 	
 	public Integer getDetailsListLength() {
 		return detailsListLength;
@@ -217,12 +226,36 @@ public class InstitutionalInfraActivityPlan {
 		this.isActive = isActive;
 	}
 
-	public List<InstitutionalInfraActivityPlanDetails> getDetailsForComments() {
-		return detailsForComments;
+	public List<String> getDetailsForStateSprcComments() {
+		return detailsForStateSprcComments;
 	}
 
-	public void setDetailsForComments(List<InstitutionalInfraActivityPlanDetails> detailsForComments) {
-		this.detailsForComments = detailsForComments;
+	public void setDetailsForStateSprcComments(List<String> detailsForStateSprcComments) {
+		this.detailsForStateSprcComments = detailsForStateSprcComments;
+	}
+
+	public List<List<String>> getDetailsForStateDprcComments() {
+		return detailsForStateDprcComments;
+	}
+
+	public void setDetailsForStateDprcComments(List<List<String>> detailsForStateDprcComments) {
+		this.detailsForStateDprcComments = detailsForStateDprcComments;
+	}
+
+	public List<String> getDetailsForMoprSprcComments() {
+		return detailsForMoprSprcComments;
+	}
+
+	public void setDetailsForMoprSprcComments(List<String> detailsForMoprSprcComments) {
+		this.detailsForMoprSprcComments = detailsForMoprSprcComments;
+	}
+
+	public List<List<String>> getDetailsForMoprDprcComments() {
+		return detailsForMoprDprcComments;
+	}
+
+	public void setDetailsForMoprDprcComments(List<List<String>> detailsForMoprDprcComments) {
+		this.detailsForMoprDprcComments = detailsForMoprDprcComments;
 	}
 	
 }

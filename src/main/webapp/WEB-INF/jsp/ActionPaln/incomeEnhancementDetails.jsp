@@ -899,10 +899,10 @@ select option:first-child{
 												class="btn bg-green waves-effect save-button">SAVE</button>
 											<c:if test="${dbActivitiesList.isFreeze != undefined}">
 												<button type="button" id="frzButtn" onclick="toFreeze();"
-													class="btn bg-green waves-effect">FREEZE</button>
+													class="btn bg-orange waves-effect">FREEZE</button>
 											</c:if>
 											<button type="button" id="unFrzButtn" onclick="toFreeze();"
-												class="btn bg-green waves-effect">UNFREEZE</button>
+												class="btn bg-orange waves-effect">UNFREEZE</button>
 											<button type="button" id="clearButtn"
 												class="btn bg-light-blue waves-effect reset">CLEAR</button>
 										</c:if>
@@ -913,7 +913,7 @@ select option:first-child{
 											onclick="$('input,select').prop('disabled', false);"
 											class="btn bg-green waves-effect">SAVE</button>
 										<button type="button" id="frzButtn" onclick="toFreeze();"
-											class="btn bg-green waves-effect">FREEZE</button>
+											class="btn bg-orange waves-effect">FREEZE</button>
 										<button type="button" id="clearButtn"
 											class="btn bg-light-blue waves-effect reset">CLEAR</button>
 									</c:otherwise>
@@ -921,7 +921,7 @@ select option:first-child{
 								 
 								<button type="button"
 									onclick="onClose('home.html?<csrf:token uri='home.html'/>')"
-									class="btn bg-orange waves-effect">CLOSE</button>
+									class="btn bg-red waves-effect">CLOSE</button>
 							</div>
 						</form:form>
 					</div>

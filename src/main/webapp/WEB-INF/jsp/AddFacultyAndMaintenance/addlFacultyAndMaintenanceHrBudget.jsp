@@ -421,7 +421,7 @@ function calculateTotalFundDprc() {
 													</td>
 													</c:if>	
 										</tr>
-										<c:set var="	`" value="${countSprc + 1}" scope="page" />
+										<c:set var="countSprc" value="${countSprc + 1}" scope="page" />
 									</c:forEach>
 									<tr>
 										<td><div align="center">
@@ -528,7 +528,7 @@ function calculateTotalFundDprc() {
 									</tr>
 									<tr>
 										<td><div align="center">
-												<strong>DPMU <spring:message code="Label.AdditionalRequirement" htmlEscape="true" /></strong>
+												<strong>DPRC <spring:message code="Label.AdditionalRequirement" htmlEscape="true" /></strong>
 											</div></td>
 										<td colspan="3"></td>
 										<td><form:input path="additionalRequirementDprc" type="text" onkeypress="return isNumber(event)" class="active12 form-control Align-Right" id="additionalRequirementDprcId" onkeyup="calculateGrandTotal()"/></td>
@@ -793,7 +793,7 @@ function calculateTotalFundDprc() {
 								<c:choose>
 									<c:when test="${initial_status eq true}">
 										<button type="button"
-											class="freeze btn bg-green waves-effect"
+											class="freeze btn bg-orange waves-effect"
 											onclick='freezeAndUnfreeze("freeze")'
 											disabled="disabled">
 											<spring:message code="Label.FREEZE" htmlEscape="true" />
@@ -801,7 +801,7 @@ function calculateTotalFundDprc() {
 									</c:when>
 									<c:otherwise>
 										<button type="button"
-											class="freeze btn bg-green waves-effect"
+											class="freeze btn bg-orange waves-effect"
 											onclick='freezeAndUnfreeze("freeze")'>
 											<spring:message code="Label.FREEZE" htmlEscape="true" />
 										</button>
@@ -816,13 +816,13 @@ function calculateTotalFundDprc() {
 								
 								<c:if test="${ISFREEZE eq true}">
 								<c:if test="${Plan_Status eq true}">
-								<button type="button" class="unfreeze btn bg-green waves-effect"
+								<button type="button" class="unfreeze btn bg-orange waves-effect"
 									onclick='freezeAndUnfreeze("unfreeze")'>
 									<spring:message code="Label.UNFREEZE" htmlEscape="true" />
 								</button>
 							</c:if>
 							</c:if>
-								<button type="button" onclick="onClose('home.html?<csrf:token uri='home.html'/>')" class="btn bg-orange waves-effect">
+								<button type="button" onclick="onClose('home.html?<csrf:token uri='home.html'/>')" class="btn bg-red waves-effect">
 									<spring:message code="Label.CLOSE" htmlEscape="true" />
 								</button>
 

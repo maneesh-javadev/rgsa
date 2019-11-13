@@ -53,12 +53,12 @@ function isNumber(evt) {
                               class="table table-hover dashboard-task-infos">
                              <thead>
 											<tr>
-													<th class="padding_left_local"><div >
+													<th class="padding_left_local" rowspan="2"><div >
 														<strong><spring:message code="Label.BuildingType" htmlEscape="true" />
 														</strong>
 													</div></th>
 													
-													<th>
+													<th rowspan="2">
 														<div align="center">
 															<strong><spring:message code="Label.District" htmlEscape="true" /> 
 															</strong>
@@ -67,7 +67,7 @@ function isNumber(evt) {
 													
 														
 											
-												<th><div align="center">
+												<th rowspan="2"><div align="center">
 														<strong><spring:message code="Label.Funds" htmlEscape="true" />
 														</strong>
 													</div></th>
@@ -75,19 +75,46 @@ function isNumber(evt) {
 														<strong>Total Fund<br>(B = A + Funds required <br>in carry forward section)
 														</strong>
 													</div></th> -->
-												<th > 
+												<th rowspan="2"> 
 													<div align="center">
 														<strong><spring:message code="Label.IsApproved" htmlEscape="true" />
 														</strong>
 													</div>
 												</th>	
 													
-												<th> 
+												<th rowspan="2"> 
 													<div align="center">
 														<strong><spring:message code="Label.Remarks" htmlEscape="true" />
 														</strong>
 													</div>
 												</th>
+												<c:if test="${sessionScope['scopedTarget.userPreference'].planVersion > 1}">
+														<th colspan="2">
+															<div align="center">
+																<strong>
+																	Previous comment history
+																</strong>
+															</div>
+														</th> 
+													</c:if>
+											</tr>
+											<tr>
+													<c:if test="${sessionScope['scopedTarget.userPreference'].planVersion > 1}">
+														<th>
+															<div align="center">
+																<strong>State Previous Comments <span
+																	style="color: #396721;">&nbsp;<i
+																		class="fa fa-circle"></i></span></strong>
+															</div>
+														</th>
+														<th>
+															<div align="center">
+																<strong>MOPR's Feedback <span
+																	style="color: #bc6317;">&nbsp;<i
+																		class="fa fa-circle"></i></span></strong>
+															</div>
+														</th>
+													</c:if>
 											</tr>
 							  </thead>
                               <tbody>
@@ -109,9 +136,25 @@ function isNumber(evt) {
 													<input type="checkbox" data-ng-show="institutionalInfraActivityPlan.isFreeze" data-ng-model="institutionalInfraActivityPlanDetailsNBState[$index].isApproved" disabled="disabled">
 												</td>
 												<td align="center">
-													<textarea rows="2" data-ng-show="!institutionalInfraActivityPlan.isFreeze" data-ng-model="institutionalInfraActivityPlanDetailsNBState[$index].remarks" cols="10"></textarea>
-													<textarea rows="2" data-ng-show="institutionalInfraActivityPlan.isFreeze" data-ng-model="institutionalInfraActivityPlanDetailsNBState[$index].remarks" cols="10" readonly="readonly" autocomplete="off"></textarea>
+													<textarea rows="2" data-ng-show="!institutionalInfraActivityPlan.isFreeze" data-ng-model="institutionalInfraActivityPlanDetailsNBState[$index].remarks" cols="10" class="form-control"></textarea>
+													<textarea rows="2" data-ng-show="institutionalInfraActivityPlan.isFreeze" data-ng-model="institutionalInfraActivityPlanDetailsNBState[$index].remarks" cols="10" readonly="readonly" autocomplete="off" class="form-control"></textarea>
 												</td>
+												<c:if test="${sessionScope['scopedTarget.userPreference'].planVersion > 1}">
+															<td>
+																<ol>
+																	<li data-ng-repeat="details in stateSprcComments track by $index">
+																			{{details}}
+																	</li>
+																</ol>
+															</td>
+															<td>
+																<ol>
+																	<li data-ng-repeat="details in moprSprcComments track by $index" >
+																			{{details}}
+																	</li>
+																</ol>
+															</td>
+															</c:if>
 											</tr>
 											
 											
@@ -167,12 +210,12 @@ function isNumber(evt) {
                               class="table table-hover dashboard-task-infos">
                              <thead>
 											<tr>
-													<th><div  class="padding_left_local">
+													<th rowspan="2"><div  class="padding_left_local">
 														<strong><spring:message code="Label.BuildingType" htmlEscape="true" />
 														</strong>
 													</div></th>
 													
-													<th>
+													<th rowspan="2">
 														<div align="center">
 															<strong><spring:message code="Label.District" htmlEscape="true" /> 
 															</strong>
@@ -181,7 +224,7 @@ function isNumber(evt) {
 													
 														
 											
-												<th><div align="center">
+												<th rowspan="2"><div align="center">
 														<strong><spring:message code="Label.Funds" htmlEscape="true" />  
 														</strong>
 													</div></th>
@@ -189,20 +232,48 @@ function isNumber(evt) {
 														<strong>Total Fund<br>(B = A + Funds required <br>in carry forward section)
 														</strong>
 													</div></th> -->
-												<th > 
+												<th rowspan="2"> 
 													<div align="center">
 														<strong><spring:message code="Label.IsApproved" htmlEscape="true" />
 														</strong>
 													</div>
 												</th>	
 													
-												<th> 
+												<th rowspan="2"> 
 													<div align="center">
 														<strong><spring:message code="Label.Remarks" htmlEscape="true" />
 														</strong>
 													</div>
 												</th>
+												
+												<c:if
+																test="${sessionScope['scopedTarget.userPreference'].planVersion > 1}">
+																<th colspan="2">
+																	<div align="center">
+																		<strong> Previous comment history </strong>
+																	</div>
+																</th>
+															</c:if>
 											</tr>
+											<tr>
+														<c:if
+															test="${sessionScope['scopedTarget.userPreference'].planVersion > 1}">
+															<th>
+																<div align="center">
+																	<strong>State Previous Comments <span
+																		style="color: #396721;">&nbsp;<i
+																			class="fa fa-circle"></i></span></strong>
+																</div>
+															</th>
+															<th>
+																<div align="center">
+																	<strong>MOPR's Feedback <span
+																		style="color: #bc6317;">&nbsp;<i
+																			class="fa fa-circle"></i></span></strong>
+																</div>
+															</th>
+														</c:if>
+													</tr>
 							  </thead>
                               <tbody>
                                  <tr data-ng-repeat="details in institutionalInfraActivityPlanDetailsNBDistrict | orderBy : 'trainingInstitueType.trainingInstitueTypeId'">
@@ -223,9 +294,26 @@ function isNumber(evt) {
 													<input type="checkbox" data-ng-show="institutionalInfraActivityPlan.isFreeze" data-ng-model="institutionalInfraActivityPlanDetailsNBDistrict[$index].isApproved" disabled="disabled">
 												</td>
 												<td align="center">
-													<textarea rows="2" data-ng-show="!institutionalInfraActivityPlan.isFreeze" data-ng-model="institutionalInfraActivityPlanDetailsNBDistrict[$index].remarks" cols="10" autocomplete="off"></textarea>
-													<textarea rows="2" data-ng-show="institutionalInfraActivityPlan.isFreeze" data-ng-model="institutionalInfraActivityPlanDetailsNBDistrict[$index].remarks" cols="10" readonly="readonly"></textarea>
+													<textarea rows="2" data-ng-show="!institutionalInfraActivityPlan.isFreeze" data-ng-model="institutionalInfraActivityPlanDetailsNBDistrict[$index].remarks" cols="10" autocomplete="off" class="form-control"></textarea>
+													<textarea rows="2" data-ng-show="institutionalInfraActivityPlan.isFreeze" data-ng-model="institutionalInfraActivityPlanDetailsNBDistrict[$index].remarks" cols="10" readonly="readonly" class="form-control"></textarea>
 												</td>
+												<c:if
+																		test="${sessionScope['scopedTarget.userPreference'].planVersion > 1}">
+																		<td>
+																			<ol>
+																				<li data-ng-repeat="details in stateDprcComments[outerIndex] track by $index">
+																						{{details}}
+																				</li>
+																			</ol>
+																		</td>
+																		<td>
+																			<ol>
+																				<li data-ng-repeat="details in moprDprcComments[outerIndex] track by $index">
+																						{{details}}
+																				</li>
+																			</ol>
+																		</td>
+																	</c:if>
 											</tr>
 											
 											
@@ -337,13 +425,6 @@ function isNumber(evt) {
 														</strong>
 													</div>
 												</th>	
-													
-												<th> 
-													<div align="center">
-														<strong><spring:message code="Label.Remarks" htmlEscape="true" />
-														</strong>
-													</div>
-												</th>
 											</tr>
 										</thead>
                               <tbody>
@@ -374,10 +455,6 @@ function isNumber(evt) {
 												<td align="center">
 													<input type="checkbox" data-ng-show="!institutionalInfraActivityPlan.isFreeze" data-ng-model="institutionalInfraActivityPlanDetailsCFState[$index].isApproved">
 													<input type="checkbox" data-ng-show="institutionalInfraActivityPlan.isFreeze" data-ng-model="institutionalInfraActivityPlanDetailsCFState[$index].isApproved" disabled="disabled">
-												</td>
-												<td>
-													<textarea rows="2" data-ng-show="!institutionalInfraActivityPlan.isFreeze" data-ng-model="institutionalInfraActivityPlanDetailsCFState[$index].remarks" cols="10" autocomplete="off"></textarea>
-													<textarea rows="2" data-ng-show="institutionalInfraActivityPlan.isFreeze" data-ng-model="institutionalInfraActivityPlanDetailsCFState[$index].remarks" cols="10" readonly="readonly"></textarea>
 												</td>
 												
 											</tr>
@@ -468,13 +545,6 @@ function isNumber(evt) {
 														</strong>
 													</div>
 												</th>	
-													
-												<th> 
-													<div align="center">
-														<strong><spring:message code="Label.Remarks" htmlEscape="true" />
-														</strong>
-													</div>
-												</th>
 											</tr>
 										</thead>
                               <tbody>
@@ -504,10 +574,6 @@ function isNumber(evt) {
 												<td align="center">
 													<input type="checkbox" data-ng-show="!institutionalInfraActivityPlan.isFreeze" data-ng-model="institutionalInfraActivityPlanDetailsCFDistrict[$index].isApproved">
 													<input type="checkbox" data-ng-show="institutionalInfraActivityPlan.isFreeze" data-ng-model="institutionalInfraActivityPlanDetailsCFDistrict[$index].isApproved" disabled="disabled">
-												</td>
-												<td align="center">
-													<textarea rows="2" data-ng-show="!institutionalInfraActivityPlan.isFreeze" data-ng-model="institutionalInfraActivityPlanDetailsCFDistrict[$index].remarks" cols="10" autocomplete="off"></textarea>
-													<textarea rows="2" data-ng-show="institutionalInfraActivityPlan.isFreeze" data-ng-model="institutionalInfraActivityPlanDetailsCFDistrict[$index].remarks" cols="10" readonly="readonly"></textarea>
 												</td>
 											</tr>
 											
@@ -572,10 +638,10 @@ function isNumber(evt) {
 									 
 								<button data-ng-show="institutionalInfraActivityPlan.isFreeze" type="button" class="btn bg-green waves-effect" disabled="disabled"><spring:message code="Label.SAVE" htmlEscape="true"/></button>
 								<button data-ng-show="!institutionalInfraActivityPlan.isFreeze" ng-disabled="btn_disabled" data-ng-click="save_data('S')" type="button" class="btn bg-green waves-effect"><spring:message code="Label.SAVE" htmlEscape="true" /></button>
-								<button data-ng-show="institutionalInfraActivityPlan.isFreeze" ng-disabled="btn_disabled" type="button" data-ng-click="save_data('U')" class="btn bg-green waves-effect">
+								<button data-ng-show="institutionalInfraActivityPlan.isFreeze" ng-disabled="btn_disabled" type="button" data-ng-click="save_data('U')" class="btn bg-orange waves-effect">
 									<spring:message code="UNFREEZE" htmlEscape="true" />
 								</button>
-								<button data-ng-show="!institutionalInfraActivityPlan.isFreeze "  ng-disabled="btn_disabled"  data-ng-click="save_data('F')" class="btn bg-green waves-effect">
+								<button data-ng-show="!institutionalInfraActivityPlan.isFreeze "  ng-disabled="btn_disabled"  data-ng-click="save_data('F')" class="btn bg-orange waves-effect">
 									<spring:message code="FREEZE" htmlEscape="true" />
 								</button>
 							
@@ -584,7 +650,7 @@ function isNumber(evt) {
 								
 								<button type="button"
 									onclick="onClose('home.html?<csrf:token uri='home.html'/>')"
-									class="btn bg-orange waves-effect">
+									class="btn bg-red waves-effect">
 									<spring:message code="Label.CLOSE" htmlEscape="true" />
 								</button>
 								<br/>

@@ -134,6 +134,7 @@ function addRow() {
 		 tds+='<td><select required="required" class="form-control" id="yearOne_'+i+'" onchange="validateYear('+i+');"  name="innovativeActivityDetails['+i+'].yearFrom"><option value=""> From Year</option><option value="2018">2018</option><option value="2019">2019</option><option value="2020">2020</option><option value="2021">2021</option><option value="2022">2022</option></select></td>';
 		 tds+='<td><select required="required" class="form-control" id="yearTwo_'+i+'" onchange="validateYear('+i+');" name="innovativeActivityDetails['+i+'].yearTo"><option value=""> To Year </option><option value="2018">2018</option><option value="2019">2019</option><option value="2020">2020</option><option value="2021">2021</option><option value="2022">2022</option></select></td>';
 		 tds+='<td><input type="file" id="" name="innovativeActivityDetails['+i+'].file" required="required" ></td>';
+		 tds+='<td><input type="text" id="" name="innovativeActivityDetails['+i+'].remarks"  class="form-control" ></td>';
 		 tds+='<td><input type="button" value="Delete" onclick="deleteRow();" class="btn bg-red waves-effect"/></td>';
 		tds += '</tr>';
 	i++;
@@ -540,7 +541,7 @@ function validateYear(index){
 								<spring:message text="SAVE" htmlEscape="true" />
 							</button>
 							
-							<button type="button" id="unfreeze" onclick='freezUnfreez("Unf");' class="btn bg-green waves-effect">
+							<button type="button" id="unfreeze" onclick='freezUnfreez("Unf");' class="btn bg-orange waves-effect">
 								<spring:message code="Label.UNFREEZE" text="Unfreeze" htmlEscape="true" />
 							</button>
 							
@@ -554,7 +555,7 @@ function validateYear(index){
 								<spring:message text="SAVE" htmlEscape="true" />
 							</button>
 							
-							<button type="button" id="freeze" onclick='freezUnfreez("Frz");' class="btn bg-green waves-effect">
+							<button type="button" id="freeze" onclick='freezUnfreez("Frz");' class="btn bg-orange waves-effect">
 								<spring:message code="Label.FREEZE" text="Freeze" htmlEscape="true" />
 							</button>
 							
@@ -567,7 +568,7 @@ function validateYear(index){
 							<c:if test="${ not empty innovativeAcitivityList}">
 							<button type="button"
 								onclick="onClose('home.html?<csrf:token uri='home.html'/>')"
-								class="btn bg-orange waves-effect">
+								class="btn bg-red waves-effect">
 								<spring:message code="Label.CLOSE" htmlEscape="true" />
 							</button>
 							</c:if>

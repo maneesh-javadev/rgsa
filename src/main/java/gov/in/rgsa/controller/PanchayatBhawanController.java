@@ -104,9 +104,11 @@ public class PanchayatBhawanController {
 		map.put("DISTRICT_LIST", lgdService.getAllDistrictBasedOnState(userPreference.getStateCode()));
 		PanchatayBhawanActivity activity= panchayatBhawanService.getPanchatayBhawanActivity(userPreference.getUserType());
 		map.put("PANCHAYAT_BHAWAN_ACTIVITY", activity);
-		Map<String, List<List<String>>> mapComments = basicInfoService.fetchStateAndMoprPreComments(activity.getPanchatayBhawanActivityDetails().size(),3);
-		map.put("STATE_PRE_COMMENTS", mapComments.get("statePreviousComments"));
-		map.put("MOPR_PRE_COMMENTS", mapComments.get("moprPreviousComments"));
+		if(activity != null) {
+			Map<String, List<List<String>>> mapComments = basicInfoService.fetchStateAndMoprPreComments(activity.getPanchatayBhawanActivityDetails().size(),3);
+			map.put("STATE_PRE_COMMENTS", mapComments.get("statePreviousComments"));
+			map.put("MOPR_PRE_COMMENTS", mapComments.get("moprPreviousComments"));
+		}
 		map.put("panchayatWithBhawan", panchayatBhawanService.fetchBasicInfoKeyValue(userPreference.getStateCode(),"27_gp"));
 		map.put("panchayatWithoutBhawan", panchayatBhawanService.findNumberOfPnchayatWithOutBhawanByState(userPreference.getStateCode()).getDefinationValue());
 		map.put("userType", userPreference.getUserType());

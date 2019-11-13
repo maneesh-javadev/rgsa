@@ -144,7 +144,7 @@ function isNumber(evt) {
 											</tr>
 											</thead>
 											<tbody>
-												<tr data-ng-repeat="details in institutionalInfraActivityPlanDetailsNBState | orderBy : 'trainingInstitueType.trainingInstitueTypeId'">
+												<tr data-ng-repeat="details in institutionalInfraActivityPlanDetailsNBState | orderBy : 'trainingInstitueType.trainingInstitueTypeId'" data-ng-init="outerIndex = $index">
 													<td align="center">
 														<strong>{{details.trainingInstitueType.trainingInstitueTypeName}}</strong>
 													</td>
@@ -169,19 +169,15 @@ function isNumber(evt) {
 															<c:if test="${sessionScope['scopedTarget.userPreference'].planVersion > 1}">
 															<td>
 																<ol>
-																	<li data-ng-repeat="details in detailsForComments">
-																		<div data-ng-show="details.workType == 'N' && details.trainingInstitueType.trainingInstitueTypeId == 2 && details.institutionalInfraActivityPlan.userType == 'S'">
-																			{{details.remarks}}
-																		</div>
+																	<li data-ng-repeat="details in stateSprcComments track by $index">
+																			{{details}}
 																	</li>
 																</ol>
 															</td>
 															<td>
 																<ol>
-																	<li data-ng-repeat="details in detailsForComments">
-																		<div data-ng-show="details.workType == 'N' && details.trainingInstitueType.trainingInstitueTypeId == 2 && details.institutionalInfraActivityPlan.userType == 'M'">
-																			{{details.remarks}}
-																		</div>
+																	<li data-ng-repeat="details in moprSprcComments track by $index" >
+																			{{details}}
 																	</li>
 																</ol>
 															</td>
@@ -347,7 +343,7 @@ function isNumber(evt) {
 													</tr>
 												</thead>
 													<tbody>
-														<tr data-ng-repeat="details in institutionalInfraActivityPlanDetailsNBDistrict | orderBy : 'trainingInstitueType.trainingInstitueTypeId'">
+														<tr data-ng-repeat="details in institutionalInfraActivityPlanDetailsNBDistrict | orderBy : 'trainingInstitueType.trainingInstitueTypeId'" data-ng-init="outerIndex = $index">
 															<td align="center">
 																<strong>{{details.trainingInstitueType.trainingInstitueTypeName}}</strong>
 															</td>
@@ -373,19 +369,15 @@ function isNumber(evt) {
 																		test="${sessionScope['scopedTarget.userPreference'].planVersion > 1}">
 																		<td>
 																			<ol>
-																				<li data-ng-repeat="details in detailsForComments">
-																					<div
-																						data-ng-show="details.workType == 'N' && details.trainingInstitueType.trainingInstitueTypeId == 4 && details.institutionalInfraActivityPlan.userType == 'S'">
-																						{{details.remarks}}</div>
+																				<li data-ng-repeat="details in stateDprcComments[outerIndex] track by $index">
+																						{{details}}
 																				</li>
 																			</ol>
 																		</td>
 																		<td>
 																			<ol>
-																				<li data-ng-repeat="details in detailsForComments">
-																					<div
-																						data-ng-show="details.workType == 'N' && details.trainingInstitueType.trainingInstitueTypeId == 4 && details.institutionalInfraActivityPlan.userType == 'M'">
-																						{{details.remarks}}</div>
+																				<li data-ng-repeat="details in moprDprcComments[outerIndex] track by $index">
+																						{{details}}
 																				</li>
 																			</ol>
 																		</td>
@@ -768,10 +760,10 @@ function isNumber(evt) {
 																				<button data-ng-show="!institutionalInfraActivityPlan.isFreeze" data-ng-click="save_data('S')" ng-disabled="btn_disabled" type="button" class="btn bg-green waves-effect">
 																					<spring:message code="Label.SAVE" htmlEscape="true" />
 																				</button>
-																				<button data-ng-show="institutionalInfraActivityPlan.isFreeze" type="button" data-ng-click="save_data('U')" ng-disabled="btn_disabled" class="btn bg-green waves-effect">
+																				<button data-ng-show="institutionalInfraActivityPlan.isFreeze" type="button" data-ng-click="save_data('U')" ng-disabled="btn_disabled" class="btn bg-orange waves-effect">
 																					<spring:message code="UNFREEZE" htmlEscape="true" />
 																				</button>
-																				<button data-ng-show="!institutionalInfraActivityPlan.isFreeze "    data-ng-click="save_data('F')"  ng-disabled="btn_disabled" class="btn bg-green waves-effect">
+																				<button data-ng-show="!institutionalInfraActivityPlan.isFreeze"    data-ng-click="save_data('F')"  ng-disabled="btn_disabled" class="btn bg-orange waves-effect">
 																					<spring:message code="FREEZE" htmlEscape="true" />
 																				</button>
 																				<button type="button" data-ng-show="institutionalInfraActivityPlan.isFreeze" data-ng-click="load_data()" class="btn bg-light-blue waves-effect" disabled="disabled">
@@ -781,7 +773,7 @@ function isNumber(evt) {
 																					<spring:message code="Label.CLEAR" htmlEscape="true" />
 																				</button>
 																			</c:if>
-																			<button type="button" onclick="onClose('home.html?<csrf:token uri='home.html'/>')" class="btn bg-orange waves-effect">
+																			<button type="button" onclick="onClose('home.html?<csrf:token uri='home.html'/>')" class="btn bg-red waves-effect">
 																				<spring:message code="Label.CLOSE" htmlEscape="true" />
 																			</button>
 																			<br/>

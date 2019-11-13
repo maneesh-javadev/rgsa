@@ -204,15 +204,15 @@ $('document').ready(function(){
 									<spring:message code="Label.BACK" htmlEscape="true" />
 								</button><br>
 							</div>
-					<div class="form-group text-right">
+					<div class="form-group text-right" style="padding-bottom: 10px;padding-right: 10px;">
 					 <c:if test="${Plan_Status eq true}"> 
 				     	<button type="button" data-ng-click="savePesaPlan()" data-ng-disabled="pesaPlan.isFreez" class="btn bg-green waves-effect">
 							<spring:message code="Label.SAVE" htmlEscape="true" />
 						</button>
-						<button data-ng-show=" pesaPlan.isFreez" type="button" data-ng-click="freezUnFreezPesaPlan('unfreez')" class="btn bg-green waves-effect">
+						<button data-ng-show=" pesaPlan.isFreez" type="button" data-ng-click="freezUnFreezPesaPlan('unfreez')" class="btn bg-orange waves-effect">
 							<spring:message code="UNFREEZE" htmlEscape="true" />
 						</button>
-						<button data-ng-show="(typeof(pesaPlan.isFreez) !== 'undefined') && !pesaPlan.isFreez" type="button" data-ng-click="freezUnFreezPesaPlan('freez')" class="btn bg-green waves-effect">
+						<button data-ng-show="(typeof(pesaPlan.isFreez) !== 'undefined') && !pesaPlan.isFreez" type="button" data-ng-click="freezUnFreezPesaPlan('freez')" class="btn bg-orange waves-effect">
 							<spring:message code="FREEZE" htmlEscape="true" />
 						</button>
 						
@@ -220,7 +220,7 @@ $('document').ready(function(){
 							<spring:message code="Label.CLEAR" htmlEscape="true" />
 						</button>
 						</c:if>
-						<button type="button" onclick="onClose('home.html?<csrf:token uri='home.html'/>')" class="btn bg-orange waves-effect">
+						<button type="button" onclick="onClose('home.html?<csrf:token uri='home.html'/>')" class="btn bg-red waves-effect">
 							<spring:message code="Label.CLOSE" htmlEscape="true" />
 						</button>
 					</div>

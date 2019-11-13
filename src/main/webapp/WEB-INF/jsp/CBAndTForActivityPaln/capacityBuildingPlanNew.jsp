@@ -240,22 +240,22 @@ table.dataTable thead > tr > th, table.dataTable thead > tr > td {
 										class="btn bg-green waves-effect">SAVE</button>
 										
 									<button type="button" ng-show="training.isFreeze==false" ng-disabled="btn_disabled" ng-click="saveTrainingDetails('F')"
-										class="btn bg-green waves-effect">FREEZE</button>
+										class="btn bg-orange waves-effect">FREEZE</button>
 										
 										<button type="button" ng-show="training.isFreeze==true" ng-disabled="btn_disabled" ng-click="saveTrainingDetails('U')"
-										class="btn bg-green waves-effect">UNFREEZE</button>
+										class="btn bg-orange waves-effect">UNFREEZE</button>
 								
 								</span>
 									 
 									
 										
-									<button ng-click="resetLoading()" type="button"   class="btn bg-light-blue waves-effect"  >
+									<button ng-click="resetLoading()" type="button" ng-show="!training.isFreeze" class="btn bg-light-blue waves-effect"  >
 									   			<spring:message code="Label.CLEAR" htmlEscape="true" />
 									   		</button>
 								
 									<button type="button"
 										onclick="onClose('home.html?<csrf:token uri='home.html'/>')"
-										class="btn bg-orange waves-effect">CLOSE</button><br />
+										class="btn bg-red waves-effect">CLOSE</button><br />
 								</div>
 
 							

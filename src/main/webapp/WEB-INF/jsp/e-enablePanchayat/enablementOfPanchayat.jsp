@@ -218,7 +218,7 @@ function calculateGrandTotal(){
 								<button type="submit" onclick="setStatus('f')" class="btn bg-orange waves-effect"><spring:message code="Label.FREEZE" htmlEscape="true" /></button>
 							</c:if>
 							<c:if test="${enablement.status eq 'f'}">
-								<button type="submit" onclick="setStatus('u')" class="btn bg-green waves-effect"><spring:message code="Label.UNFREEZE" htmlEscape="true" /></button>
+								<button type="submit" onclick="setStatus('u')" class="btn bg-orange waves-effect"><spring:message code="Label.UNFREEZE" htmlEscape="true" /></button>
 							</c:if>
 							</c:if>
 							<c:if test="${enablement.status eq 's' || enablement.status eq 'u' || enablement.status == undefined || enablement.status eq 'U'}">

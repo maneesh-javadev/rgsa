@@ -599,12 +599,12 @@
 								</button>
 								<button data-ng-show=" satcomActivityObject.status != undefined && satcomActivityObject.status != 'F' "
 									data-ng-click="saveData('F')" type="button"
-									class="btn bg-green waves-effect">
+									class="btn bg-orange waves-effect">
 									<spring:message code="Label.FREEZE" htmlEscape="true" />
 								</button>
 								<button data-ng-show="satcomActivityObject.status == 'F'"
 									type="button" data-ng-click="saveData('UF')"
-									class="btn bg-green waves-effect">
+									class="btn bg-orange waves-effect">
 									<spring:message code="Label.UNFREEZE" htmlEscape="true" />
 								</button>
 								<button type="button"
@@ -620,7 +620,7 @@
 								</c:if>
 								<button type="button"
 									onclick="onClose('home.html?<csrf:token uri='home.html'/>')"
-									class="btn bg-orange waves-effect">
+									class="btn bg-red waves-effect">
 									<spring:message code="Label.CLOSE" htmlEscape="true" />
 								</button>
 							</div>

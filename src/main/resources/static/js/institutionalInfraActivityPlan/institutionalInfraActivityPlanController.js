@@ -36,6 +36,10 @@ publicModule.controller("institutionalInfraActivityPlanController", [ '$scope', 
 		$scope.flag=false;
 		let total_fund=0;
 		let total=0;//sprc+dprc
+		$scope.stateSprcComments=[];
+		$scope.stateDprcComments=[];
+		$scope.moprSprcComments = [];
+		$scope.moprDprcComments = [];
 		
 		institutionalInfraActivityPlanService.fetchDistrictListBasedOnState().then(function(response){
 			$scope.districtList = response.data;
@@ -89,7 +93,10 @@ publicModule.controller("institutionalInfraActivityPlanController", [ '$scope', 
 				$('#carryForwardCheck').hide();
 			}
 			if($scope.institutionalInfraActivityPlan!=null  && $scope.institutionalInfraActivityPlan!=""){
-				$scope.detailsForComments = $scope.institutionalInfraActivityPlan.detailsForComments;
+				$scope.stateSprcComments = $scope.institutionalInfraActivityPlan.detailsForStateSprcComments;
+				$scope.stateDprcComments = $scope.institutionalInfraActivityPlan.detailsForStateDprcComments;
+				$scope.moprSprcComments = $scope.institutionalInfraActivityPlan.detailsForMoprSprcComments;
+				$scope.moprDprcComments = $scope.institutionalInfraActivityPlan.detailsForMoprDprcComments;
 				$scope.institutionalInfraActivityPlan.institutionalInfraActivityPlanDetails=response.data.institutionalInfraActivityPlanDetails;
 				for (var i = 0; i < $scope.institutionalInfraActivityPlan.institutionalInfraActivityPlanDetails.length; i++) { 
 					workType=$scope.institutionalInfraActivityPlan.institutionalInfraActivityPlanDetails[i].workType;

@@ -209,7 +209,7 @@ function validatingTotalProposedFund(){
 														<c:if test="${IS_FREEZE }"><form:hidden path="adminFinancialDataCellActivityDetails[${index.index}].isApproved" /></c:if>
 													</td>
 													</c:if>
-													<td><form:textarea path="adminFinancialDataCellActivityDetails[${index.index}].remarks" rows="2" cols="5" readonly="${IS_FREEZE eq true}"/></td>
+													<td><form:textarea path="adminFinancialDataCellActivityDetails[${index.index}].remarks" class="form-control" rows="2" cols="5" readonly="${IS_FREEZE eq true}"/></td>
 													<c:if test="${sessionScope['scopedTarget.userPreference'].planVersion > 1}">
 														<td>
 															<ol>
@@ -342,7 +342,7 @@ function validatingTotalProposedFund(){
 											</c:if>
 											<c:if test="${IS_FREEZE eq true}">
 												<c:if test="${Plan_Status eq true}">
-													<button type="submit" class="btn bg-green waves-effect"
+													<button type="submit" class="btn bg-orange waves-effect"
 														id="unfreezeId" onclick="isFreezeFunction('unfreeze')">
 														<spring:message code="Label.UNFREEZE" text="Unfreeze"
 															htmlEscape="true" />
@@ -352,7 +352,7 @@ function validatingTotalProposedFund(){
 											<c:if test="${Plan_Status eq true}">
 												<c:if test="${IS_FREEZE eq false or empty IS_FREEZE}">
 													<c:if test="${DISABLE_FREEZE_INTIALLY eq true}">
-														<button type="submit" class="btn bg-green waves-effect"
+														<button type="submit" class="btn bg-orange waves-effect"
 															id="freezeId" onclick="isFreezeFunction('freeze')"
 															disabled="disabled">
 															<spring:message code="Label.FREEZE" text="Freeze"
@@ -360,7 +360,7 @@ function validatingTotalProposedFund(){
 														</button>
 													</c:if>
 													<c:if test="${DISABLE_FREEZE_INTIALLY eq false}">
-														<button type="submit" class="btn bg-green waves-effect"
+														<button type="submit" class="btn bg-orange waves-effect"
 															id="freezeId" onclick="isFreezeFunction('freeze')"
 															onsubmit="return validatingTotalProposedFund()">
 															<spring:message code="Label.FREEZE" text="Freeze"
@@ -376,7 +376,7 @@ function validatingTotalProposedFund(){
 											</c:if>
 											<button type="button"
 												onclick="onClose('home.html?<csrf:token uri='home.html'/>')"
-												class="btn bg-orange waves-effect">
+												class="btn bg-red waves-effect">
 												<spring:message code="Label.CLOSE" text="Close"
 													htmlEscape="true" />
 											</button>

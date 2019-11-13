@@ -1,6 +1,7 @@
 package gov.in.rgsa.controller;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -207,13 +208,55 @@ public class InstitutionInfaActController {
 			/*List<InstitutionalInfraActivityPlanDetails> institutionalInfraActivityPlanDetails=institutionalInfraActivityPlanService.fetchAllDetails(institutionalInfraActivityPlan.getInstitutionalInfraActivityId());
 			institutionalInfraActivityPlan.setInstitutionalInfraActivityPlanDetails(institutionalInfraActivityPlanDetails);*/
 			//institutionaInfraResponseMap.put("institutionalInfraActivityPlan", institutionalInfraActivityPlan);
-			List<InstitutionalInfraActivityPlanDetails> commentDetailsList = institutionalInfraActivityPlanService.fetchAllDetailsExceptCurrentVersion();
+			if(userPreference.getPlanVersion() > 1) {
+				List<InstitutionalInfraActivityPlanDetails> commentDetailsList = institutionalInfraActivityPlanService.fetchAllDetailsExceptCurrentVersion();
+				institutionalInfraActivityPlan = settingCommentsInActivity(institutionalInfraActivityPlan,commentDetailsList);
+			}
 			//institutionalInfraActivityPlan.setStatePreviousComments( map.get("statePreviousComments"));
 			//institutionalInfraActivityPlan.setMoprPreviousComments( map.get("moprPreviousComments"));
-			institutionalInfraActivityPlan.setDetailsForComments(commentDetailsList);
+			
 		}
 		return institutionalInfraActivityPlan;
 		
+	}
+	
+	private InstitutionalInfraActivityPlan settingCommentsInActivity(InstitutionalInfraActivityPlan activity,List<InstitutionalInfraActivityPlanDetails> commentList) {
+		int counterState=0,counterMopr=0;
+		List<String> moprSprcRemarks = new LinkedList<String>();
+		List<String> stateSprcRemarks = new LinkedList<String>();
+		List<List<String>> stateDprcRemarks = new LinkedList<List<String>>();
+		List<List<String>> moprDprcRemarks = new LinkedList<List<String>>();
+		for (InstitutionalInfraActivityPlanDetails detail : commentList) {
+			if(detail.getInstitutionalInfraActivityPlan().getUserType().equalsIgnoreCase("s") && detail.getTrainingInstitueType().getTrainingInstitueTypeId() == 4 && detail.getInstitutionalInfraActivityPlan().getVersionNumber() == userPreference.getPlanVersion() - 1) {
+				stateDprcRemarks.add(new LinkedList<String>());
+				moprDprcRemarks.add(new LinkedList<String>());
+			}
+		}
+		for(InstitutionalInfraActivityPlanDetails detail : commentList) {
+			if(counterState == stateDprcRemarks.size()) {
+				counterState = 0;
+			}else if(counterMopr == moprDprcRemarks.size()) {
+				counterMopr = 0;
+			}
+			
+			if(detail.getInstitutionalInfraActivityPlan().getUserType().equalsIgnoreCase("s") && detail.getTrainingInstitueType().getTrainingInstitueTypeId() == 2) {
+				stateSprcRemarks.add(detail.getRemarks());
+			}else if(detail.getInstitutionalInfraActivityPlan().getUserType().equalsIgnoreCase("s") && detail.getTrainingInstitueType().getTrainingInstitueTypeId() == 4) {
+				stateDprcRemarks.get(counterState).add(detail.getRemarks());
+				counterState++;
+			}else if(detail.getInstitutionalInfraActivityPlan().getUserType().equalsIgnoreCase("m") && detail.getTrainingInstitueType().getTrainingInstitueTypeId() == 2) {
+				moprSprcRemarks.add(detail.getRemarks());
+			}else if(detail.getInstitutionalInfraActivityPlan().getUserType().equalsIgnoreCase("m") && detail.getTrainingInstitueType().getTrainingInstitueTypeId() == 4) {
+				moprDprcRemarks.get(counterMopr).add(detail.getRemarks());
+				counterMopr++;
+			}
+		}
+		
+		activity.setDetailsForStateSprcComments(stateSprcRemarks);
+		activity.setDetailsForMoprSprcComments(moprSprcRemarks);
+		activity.setDetailsForStateDprcComments(stateDprcRemarks);
+		activity.setDetailsForMoprDprcComments(moprDprcRemarks);
+		return activity;
 	}
 	
 	@RequestMapping(value = "institutionalInfraActivityPlanMOPR", method = RequestMethod.GET)

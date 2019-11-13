@@ -27,6 +27,11 @@ publicModule.controller("institutionalInfraActivityPlanController", [ '$scope', 
 	$scope.flag=false;
 	let total_fund=0;
 	let total=0;//sprc+dprc
+	
+	$scope.stateSprcComments=[];
+	$scope.stateDprcComments=[];
+	$scope.moprSprcComments = [];
+	$scope.moprDprcComments = [];
 	init();
 	
 	function init(){
@@ -76,9 +81,10 @@ publicModule.controller("institutionalInfraActivityPlanController", [ '$scope', 
 			if($scope.institutionalInfraActivityPlan != '' && $scope.institutionalInfraActivityPlan.institutionalInfraActivityPlanDetails.length > 0){
 				$('#sprcCarryBlock').hide();
 				$('#sprcNewBlock').hide();
-				
-				$scope.statePreviousComments = $scope.institutionalInfraActivityPlan.statePreviousComments;
-				$scope.moprPreviousComments = $scope.institutionalInfraActivityPlan.moprPreviousComments;
+				$scope.stateSprcComments = $scope.institutionalInfraActivityPlan.detailsForStateSprcComments;
+				$scope.stateDprcComments = $scope.institutionalInfraActivityPlan.detailsForStateDprcComments;
+				$scope.moprSprcComments = $scope.institutionalInfraActivityPlan.detailsForMoprSprcComments;
+				$scope.moprDprcComments = $scope.institutionalInfraActivityPlan.detailsForMoprDprcComments;
 			}
 			$scope.institutionalInfraActivityPlan=response.data;
 			$scope.institutionalInfraActivityPlan.institutionalInfraActivityPlanDetails=response.data.institutionalInfraActivityPlanDetails;
@@ -398,6 +404,12 @@ publicModule.controller("institutionalInfraActivityPlanController", [ '$scope', 
 					institutionalInfraActivityPlanDetails : []
 			};
 		}
+		
+		if($scope.institutionalInfraActivityPlan.detailsForComments == null){
+			$scope.institutionalInfraActivityPlan = {
+					detailsForComments : []
+			};
+		}
 		index=0;
 		if($scope.institutionalInfraActivityPlan.additionalRequirementNBS != undefined){
 			$scope.institutionalInfraActivityPlan.additionalRequirement=$scope.institutionalInfraActivityPlan.additionalRequirementNBS;
@@ -436,6 +448,7 @@ publicModule.controller("institutionalInfraActivityPlanController", [ '$scope', 
 		}*/
 		/*if(saveStatus){*/
 			$scope.institutionalInfraActivityPlan.isFreeze=false;
+			$scope.institutionalInfraActivityPlan.detailsForComments=null;
 			if(status=='F'){
 				$scope.institutionalInfraActivityPlan.isFreeze=true;
 			}
