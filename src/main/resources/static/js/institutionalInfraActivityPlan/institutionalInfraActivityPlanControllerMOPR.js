@@ -405,11 +405,11 @@ publicModule.controller("institutionalInfraActivityPlanController", [ '$scope', 
 			};
 		}
 		
-		if($scope.institutionalInfraActivityPlan.detailsForComments == null){
+		/*if($scope.institutionalInfraActivityPlan.detailsForComments == null){
 			$scope.institutionalInfraActivityPlan = {
 					detailsForComments : []
 			};
-		}
+		}*/
 		index=0;
 		if($scope.institutionalInfraActivityPlan.additionalRequirementNBS != undefined){
 			$scope.institutionalInfraActivityPlan.additionalRequirement=$scope.institutionalInfraActivityPlan.additionalRequirementNBS;
