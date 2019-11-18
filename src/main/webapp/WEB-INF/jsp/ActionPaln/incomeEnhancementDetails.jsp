@@ -574,33 +574,7 @@ select option:first-child{
 															onkeyup="this.value=this.value.replace(/[^a-zA-Z0-9 ]/g,'');"
 															Class="form-control exclud" rows="2" cols="4"
 															maxlength="1000" /></td>
-												<c:if test="${sessionScope['scopedTarget.userPreference'].planVersion > 1}">
-														<td>
-															<ol>
-															<c:forEach items="${STATE_PRE_COMMENTS[index.index]}" varStatus="indexInner" var="stateComments">
-															<li style="color: #396721;font-weight: bold;">
-																<c:choose>
-																	<c:when test="${not empty stateComments}">${stateComments}</c:when>
-																	<c:otherwise>No comments by state</c:otherwise>
-																</c:choose>
-															</li><br>
-															</c:forEach>
-														</ol>
-														</td>
-													
-													<td>
-														<ol>
-															<c:forEach items="${MOPR_PRE_COMMENTS[index.index]}" varStatus="indexMopr" var="moprComments">
-															<li style="color: #bc6317;font-weight: bold;">
-																<c:choose>
-																	<c:when test="${not empty moprComments}">${moprComments}</c:when>
-																	<c:otherwise>No comments by MOPR</c:otherwise>
-																</c:choose>
-															</li><br>
-															</c:forEach>
-														</ol>
-													</td>
-													</c:if>				
+															
 												<td><a id="deleteButtn" class="not-active"
 													href='javascript:toDelete("${incomeEnhancementDetails.id}","${incomeEnhancementDetails.fileLocation}","${incomeEnhancementDetails.fileName}");'>
 														<span id="delete${incomeEnhancementDetails.id}" class="glyphicon glyphicon-trash"></span>
@@ -775,6 +749,34 @@ select option:first-child{
 															onkeyup="this.value=this.value.replace(/[^a-zA-Z0-9 ]/g,'');"
 															Class="form-control exclud" rows="2" cols="4"
 															maxlength="1000" /></td>	
+															
+													<c:if test="${sessionScope['scopedTarget.userPreference'].planVersion > 1}">
+														<td>
+															<ol>
+															<c:forEach items="${STATE_PRE_COMMENTS[count.index]}" varStatus="indexInner" var="stateComments">
+															<li style="color: #396721;font-weight: bold;">
+																<c:choose>
+																	<c:when test="${not empty stateComments}">${stateComments}</c:when>
+																	<c:otherwise>No comments by state</c:otherwise>
+																</c:choose>
+															</li><br>
+															</c:forEach>
+														</ol>
+														</td>
+													
+													<td>
+														<ol>
+															<c:forEach items="${MOPR_PRE_COMMENTS[count.index]}" varStatus="indexMopr" var="moprComments">
+															<li style="color: #bc6317;font-weight: bold;">
+																<c:choose>
+																	<c:when test="${not empty moprComments}">${moprComments}</c:when>
+																	<c:otherwise>No comments by MOPR</c:otherwise>
+																</c:choose>
+															</li><br>
+															</c:forEach>
+														</ol>
+													</td>
+													</c:if>			
 													<c:if
 														test="${USER_TYPE eq 'S'}">
 														<td><%-- <input type="button" value="Delete"

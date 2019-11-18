@@ -365,6 +365,7 @@ public class BasicInfoServiceImpl implements BasicInfoService {
 			break;
 		case 9 :
 			List<InnovativeActivityDetails> innovativeActivityDetails = dao.findAll("FETCH_ALL_INNOVATIVE_DETAILS_EXCEPT_CURRENT_VERSION", params);
+			detailSize = innovativeActivityDetails.size() / (userPreference.getPlanVersion());
 			if(!CollectionUtils.isEmpty(innovativeActivityDetails)) {
 				for(int i = 0; i < innovativeActivityDetails.size() ; i++) {
 					 if(index == detailSize) {
@@ -381,6 +382,7 @@ public class BasicInfoServiceImpl implements BasicInfoService {
 			break;
 		case 10 : 
 			List<IncomeEnhancementDetails> incomeDetails = dao.findAll("FETCH_ALL_INCOME_DETAILS_EXCEPT_CURRENT_VERSION", params);
+			detailSize = incomeDetails.size() / (userPreference.getPlanVersion());
 			if(!CollectionUtils.isEmpty(incomeDetails)) {
 				for(int i = 0; i < incomeDetails.size() ; i++) {
 					 if(index == detailSize) {

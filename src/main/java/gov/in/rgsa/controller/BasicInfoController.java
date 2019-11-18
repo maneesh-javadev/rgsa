@@ -89,7 +89,7 @@ public class BasicInfoController {
 		
 		
 		re.addFlashAttribute(Message.SUCCESS_KEY, Message.SAVE_SUCCESS);
-		if(basicInfoModel.getStatus()!=null && basicInfoModel.getStatus().charAt(0)=='F'){
+		if(basicInfoModel.getStatus()!=null && basicInfoModel.getStatus().charAt(0)=='F') {
 			re.addFlashAttribute(Message.UPDATE_KEY, Message.FRIZEE_SUCESS);
 		}
 		return REDIRECT_BASIC_INFO;

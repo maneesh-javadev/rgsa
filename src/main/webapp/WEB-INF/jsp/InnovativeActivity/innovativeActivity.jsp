@@ -306,11 +306,11 @@ function validateYear(index){
 						<c:if test = "${fn:containsIgnoreCase(userTypeSwitch, 'S')}">
 						<c:if test="${innovativeAcitivityList[0].isFreeze == false}">
 							<button type="button" onclick="addRow()"
-								class="btn bg-green waves-effect"><i class="fa fa-plus"></i>Add New Row</button>
+								class="btn bg-green waves-effect"><i class="fa fa-plus"></i>Add New Row</button><br>
 						</c:if>
 						<c:if test="${empty innovativeAcitivityList}">
 							<button type="button" onclick="addRow()"
-								class="btn bg-green waves-effect"><i class="fa fa-plus"></i>Add New Row</button>
+								class="btn bg-green waves-effect"><i class="fa fa-plus"></i>Add New Row</button><br>
 						</c:if>
 						</c:if>
 							<input type="hidden" name="<csrf:token-name/>" value="<csrf:token-value uri="innovativeActivity.html"/>" />
@@ -341,7 +341,7 @@ function validateYear(index){
 												<spring:message code="Label.Remarks" text="Remarks" htmlEscape="true" />
 													</div></th>	
 													
-										<c:if test="${sessionScope['scopedTarget.userPreference'].planVersion > 1 and not empty innovativeActivity.innovativeActivityDetails}">
+										<c:if test="${sessionScope['scopedTarget.userPreference'].planVersion > 1}">
 											<th colspan="2" >
 												<div align="center">
 													<strong>Previous comment history</strong>
@@ -359,7 +359,7 @@ function validateYear(index){
                                         <th>From </th>
                                         <th> To</th>
                                         
-											<c:if test="${sessionScope['scopedTarget.userPreference'].planVersion > 1 and not empty innovativeActivity.innovativeActivityDetails}">
+											<c:if test="${sessionScope['scopedTarget.userPreference'].planVersion > 1}">
 												<th >
 													<div align="center">
 														<strong>State Previous Comments <span style="color: #396721;">&nbsp;<i class="fa fa-circle"></i></span></strong>
@@ -419,7 +419,7 @@ function validateYear(index){
 										  <c:if test="${sessionScope['scopedTarget.userPreference'].planVersion > 1}">
 														<td>
 															<ol>
-															<c:forEach items="${STATE_PRE_COMMENTS[index.index]}" varStatus="indexInner" var="stateComments">
+															<c:forEach items="${STATE_PRE_COMMENTS[count.index]}" varStatus="indexInner" var="stateComments">
 															<li style="color: #396721;font-weight: bold;">
 																<c:choose>
 																	<c:when test="${not empty stateComments}">${stateComments}</c:when>
@@ -432,7 +432,7 @@ function validateYear(index){
 													
 													<td>
 														<ol>
-															<c:forEach items="${MOPR_PRE_COMMENTS[index.index]}" varStatus="indexMopr" var="moprComments">
+															<c:forEach items="${MOPR_PRE_COMMENTS[count.index]}" varStatus="indexMopr" var="moprComments">
 															<li style="color: #bc6317;font-weight: bold;">
 																<c:choose>
 																	<c:when test="${not empty moprComments}">${moprComments}</c:when>
