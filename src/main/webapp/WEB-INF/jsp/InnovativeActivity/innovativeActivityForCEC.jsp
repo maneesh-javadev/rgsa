@@ -257,10 +257,10 @@ function saveSubmit(){
 							value="<csrf:token-value uri="innovativeActivity.html"/>" />
 
 						<ul class="nav nav-tabs">
-							<li class="nav-item"><a class="nav-link active"
+							<li class="nav-item"><a class="nav-link"
 								data-toggle="tab" href="#state"><spring:message
 										code="Label.STATE" htmlEscape="true" /></a></li>
-							<li class="nav-item"><a class="nav-link" data-toggle="tab"
+							<li class="nav-item  active"><a class="nav-link" data-toggle="tab"
 								href="#MOPR"><spring:message code="Label.MOPR"
 										htmlEscape="true" /></a></li>
 						</ul>
@@ -608,22 +608,18 @@ function saveSubmit(){
 											</tr>
 										</thead>
 										<tbody id="newBody">
-											<c:forEach var="innovativeActivity"
-												items="${innovativeAcitivityList}">
-												<c:if
-													test="${not empty innovativeActivity.innovativeActivityDetails}">
-													<c:forEach var="innovativeActivityDetails"
-														items="${innovativeActivity.innovativeActivityDetails}"
+													<c:forEach var="state_data"
+														items="${innovativeActivityDetailState}"
 														varStatus="count">
 														<tr id="newRow">
-															<td><strong>${innovativeActivityDetailState[count.index].activityName}</strong></td>
-															<td><strong>${innovativeActivityDetailState[count.index].aboutActivity}</strong></td>
-															<td><strong>${innovativeActivityDetailState[count.index].yearFrom}</strong>
+															<td><strong>${state_data.activityName}</strong></td>
+															<td><strong>${state_data.aboutActivity}</strong></td>
+															<td><strong>${state_data.yearFrom}</strong>
 															</td>
-															<td><strong>${innovativeActivityDetailState[count.index].yearTo}</strong>
+															<td><strong>${state_data.yearTo}</strong>
 															</td>
 
-															<td><div align="center"><strong>${innovativeActivityDetailState[count.index].fundsName}</strong></div>
+															<td><div align="center"><strong>${state_data.fundsName}</strong></div>
 
 																<%-- <td> 
 												<input type="file" name="innovativeActivityDetails[${count.index}].file" id="file" onclick='pathImage("${innovativeActivityDetails.fileLocation}","${innovativeActivityDetails.fileName}");' >
@@ -645,9 +641,6 @@ function saveSubmit(){
 										<input type="hidden" name="dbFileName" id="dbFileName" >
 									 --%>
 													</c:forEach>
-												</c:if>
-											</c:forEach>
-
 											<tr>
 												<td colspan="8"></td>
 											</tr>

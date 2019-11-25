@@ -135,7 +135,12 @@
                                 </div>
                                 <div class="col-md-offset-2 text-right">
                                 
-                                    <c:if test="${planUtil.isNotSubmitted() or planUtil.pendingAtMOPR()}"><c:if test="${ !IEC_ACTIVITY.getFreeze() }"><input type="submit" name="action" value="SAVE"
+                                    <c:if test="${planUtil.isNotSubmitted() and userPreference.isState() and planUtil.pendingAtMOPR()}"><c:if test="${ !IEC_ACTIVITY.getFreeze() }"><input type="submit" name="action" value="SAVE"
+                                                                                       class="btn bg-green waves-effect"/></c:if>
+                                    <c:if test="${  IEC_ACTIVITY.getOwnData() }"><input type="submit" name="action"
+                                                                                        value="${ IEC_ACTIVITY.getFreeze() ? 'UNFREEZE':'FREEZE'}"
+                                                                                        class="btn bg-orange waves-effect"/></c:if></c:if>
+                                    <c:if test="${userPreference.isMOPR() and planUtil.pendingAtMOPR()}"><c:if test="${ !IEC_ACTIVITY.getFreeze() }"><input type="submit" name="action" value="SAVE"
                                                                                        class="btn bg-green waves-effect"/></c:if>
                                     <c:if test="${  IEC_ACTIVITY.getOwnData() }"><input type="submit" name="action"
                                                                                         value="${ IEC_ACTIVITY.getFreeze() ? 'UNFREEZE':'FREEZE'}"

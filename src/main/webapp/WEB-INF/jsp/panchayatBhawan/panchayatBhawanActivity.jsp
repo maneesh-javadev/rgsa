@@ -102,7 +102,6 @@
                                              <spring:message code="Label.NoOfGPs"
                                                 htmlEscape="true" />
                                           </strong>
-                                          <br> A
                                        </div>
                                     </th>
                                     <th rowspan="2">
@@ -121,7 +120,6 @@
                                                 htmlEscape="true" />
                                              (in Rs) 
                                           </strong>
-                                          <br> B
                                        </div>
                                     </th>
                                     <th rowspan="2">
@@ -130,7 +128,6 @@
                                              <spring:message code="Label.Funds"
                                                 htmlEscape="true" />
                                           </strong>
-                                          <br> C = A * B
                                        </div>
                                     </th>
                                     
@@ -281,7 +278,7 @@
                         <div class="">
                            <table id="trainingActivityTblId" class="table table-hover dashboard-task-infos">
                               <thead>
-                                 <%-- 	<tr><th colspn="4"  class="xyz"><spring:message code="Label.CarryForward" htmlEscape="true" /></th>	<tr> --%>
+                                 <tr><%-- 	<th colspn="4"  class="xyz"><spring:message code="Label.CarryForward" htmlEscape="true" /></th>	<tr> --%>
                                  <th>
                                     <div align="center">
                                        <strong>
@@ -304,7 +301,6 @@
                                           <spring:message code="Label.fund.release"
                                              htmlEscape="true" />
                                        </strong>
-                                       <br> A
                                     </div>
                                  </th>
                                  <th>
@@ -313,7 +309,6 @@
                                           <spring:message code="Label.fund.utilize"
                                              htmlEscape="true" />
                                        </strong>
-                                       <br> B
                                     </div>
                                  </th>
                                  <th>
@@ -322,7 +317,6 @@
                                           <spring:message code="Label.fund.required"
                                              htmlEscape="true" />
                                        </strong>
-                                       <br>C=A-B
                                     </div>
                                  </th>
                                   <th data-ng-if="userType == 'M' || userType == 'C'">

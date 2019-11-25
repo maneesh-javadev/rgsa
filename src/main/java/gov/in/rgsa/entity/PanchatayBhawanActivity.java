@@ -21,7 +21,7 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Entity
 @Table(name="panhcayat_bhawan_activity" , schema="rgsa")
-@NamedQuery(name="FETCH_PANCHAYAT_DETAILS",query="select pb from PanchatayBhawanActivity pb left outer join fetch pb.panchatayBhawanActivityDetails where pb.stateCode=:stateCode and pb.yearId=:yearId and pb.userType=:userType and pb.versionNo=:versionNo and pb.isActive=true")
+@NamedQuery(name="FETCH_PANCHAYAT_DETAILS",query="select pb from PanchatayBhawanActivity pb left outer join fetch pb.panchatayBhawanActivityDetails pbd where pb.stateCode=:stateCode and pb.yearId=:yearId and pb.userType=:userType and pb.versionNo=:versionNo and pb.isActive=true order by pbd.activity.activityId asc")
 public class PanchatayBhawanActivity implements Serializable {
 	
 	/**

@@ -461,8 +461,7 @@ function calculateTotal(obj){
                                  </tr>
                               </thead>
                               <tbody>
-                                 <tr data-ng-repeat="activity in activityList" data-ng-if="[1, 2,3].indexOf(activity.activityId) > -1">
-                                   
+                                 <tr data-ng-repeat="activity in activityList track by $index" data-ng-if="[1,2,3].indexOf(activity.activityId) > -1"> 
                                     		<td><div align="center">{{activity.activityName}}</div></td>
 												<td><div align="center">{{panchayatBhawanActivityState.panchatayBhawanActivityDetails[$index].noOfGPs}}</div></td>
 												<td><div align="center">{{panchayatBhawanActivityState.panchatayBhawanActivityDetails[$index].aspirationalGps}}</div></td>
@@ -552,7 +551,7 @@ function calculateTotal(obj){
                                  </tr>
                               </thead>
                               <tbody>
-                                 <tr data-ng-repeat="activity in activityList" data-ng-if="[4,5,6].indexOf(activity.activityId) > -1">
+                                 <tr data-ng-repeat="activity in activityList " data-ng-if="[4,5,6].indexOf(activity.activityId) > -1">
                                   
                                    
                                     		<td><div align="center">{{activity.activityName}}</div></td>
@@ -595,16 +594,7 @@ function calculateTotal(obj){
 					
 					</div>
 				 </div>
-				
-					
-					
 					</form>
-					
-					
-					
-					
-					
-					
 				</div>
 			</div>
 		</div>

@@ -31,14 +31,14 @@ $(document).ready(function() {
 	if(myBoolean == "true"){
 		 $("input").prop('disabled', true);
 		 $("select").prop('disabled', true);
-		 $("#saveButtn").prop('disabled', true);
+		 $("#saveButtn").hide();
 		 $("#frzButtn").hide();
 		 $("#addNewRowBtn").hide();
 		 $("#unFrzButtn").show();
 		 $("#clearButtn").prop('disabled', true);
 	 }
 	
-	if(myBoolean == "false"){
+	if(myBoolean == "false" || myBoolean == "false"){
 		 $("input").prop('disabled', false);
 		 $("select").prop('disabled', false);
 		 $("#saveButtn").prop('disabled', false);

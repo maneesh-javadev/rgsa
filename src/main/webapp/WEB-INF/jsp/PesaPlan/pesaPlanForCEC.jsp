@@ -175,7 +175,7 @@ $('document').ready(function(){
 													
 													
 													data-ng-model="pesaPlanForCEC.pesaPlanDetails[$index].remarks"
-													maxlength="7" data-ng-disabled="isFreezeOrUnfreeze"
+													data-ng-disabled="isFreezeOrUnfreeze"
 													style="text-align: right; border: none; border-color: transparent;" />
 												</td>
 									
