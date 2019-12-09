@@ -68,7 +68,7 @@
 											<div><strong>Approved Amount by CEC</strong></div>
 										</th>
 										<th>
-											<div style="text-align:center;"><strong>Amount Allocation ({{totalFund}} of <span data-ng-style="{'color':(totalFundRemaining > 0) ? '#00cc00' : 'red'}">{{totalFundRemaining}}</span> reamining) </strong></div>
+											<div style="text-align:center;"><strong>Amount Allocation ({{totalFund}} of <span data-ng-style="{'color':(totalFundRemaining > 0) ? '#00cc00' : 'red'}">{{totalFundRemaining}}</span> remaining) </strong></div>
 										</th>
 									</tr>
 								</thead>

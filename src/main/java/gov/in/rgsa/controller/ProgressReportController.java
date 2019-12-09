@@ -146,20 +146,25 @@ public class ProgressReportController {
     }
 
     @RequestMapping(value = "fetchDetailsForGramPanchayatProgressReport", method = RequestMethod.GET)
-    private @ResponseBody
-    Map<String, Object> fetchDetailsForGramPanchayatProgressReport() {
+    private @ResponseBody  Map<String, Object> fetchDetailsForGramPanchayatProgressReport() {
         Map<String, Object> detailsMaps = new HashMap<>();
+        try {
         detailsMaps.put("quarterDuration", progressReportService.getQuarterDurations());
         detailsMaps.put("panchayatActivity", panchayatBhawanService.fetchPanchayatBhawanActivity());
         detailsMaps.put("districtList", lgdService.getAllDistrictBasedOnState(userPreference.getStateCode()));
-        return detailsMaps;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return detailsMaps;
     }
 
     @ResponseBody
     @RequestMapping(value = "fetchGpBhawanStatus", method = RequestMethod.GET)
     private List<GPBhawanStatus> fetchGPBhawanStatus(
             @RequestParam(value = "PanchayatBhawanActvityId", required = false) Integer PanchayatBhawanActvityId) {
+     
         return panchayatBhawanService.fetchGPBhawanStatus(PanchayatBhawanActvityId);
+    	 
     }
 
     @ResponseBody
@@ -187,8 +192,7 @@ public class ProgressReportController {
 */
     @ResponseBody
     @RequestMapping(value = "saveQprPanchayatBhawanData", method = RequestMethod.POST)
-    private QprPanchayatBhawan saveQprPanchayatBhawanData(@RequestBody final QprPanchayatBhawan qprPanchayatBhawan,
-                                                          @RequestParam(value = "file", required = false) MultipartFile filepath) {
+    private QprPanchayatBhawan saveQprPanchayatBhawanData(@RequestBody final QprPanchayatBhawan qprPanchayatBhawan,   @RequestParam(value = "file", required = false) MultipartFile filepath) {
         panchayatBhawanService.saveQprPanchayatBhawanData(qprPanchayatBhawan);
         return qprPanchayatBhawan;
     }
@@ -200,8 +204,7 @@ public class ProgressReportController {
     }
 
     @RequestMapping(value = "iecQtrProgressReport", method = RequestMethod.GET)
-    public String qprGetFormIecQtrProgressReport1(@ModelAttribute("IEC_ACTIVITY_QUATER") IecQuater iecQuater,
-                                                  Model model) {
+    public String qprGetFormIecQtrProgressReport1(@ModelAttribute("IEC_ACTIVITY_QUATER") IecQuater iecQuater,  Model model) {
         int quarterId = 0;
         if (iecQuater.getQtrId() != null) {
             quarterId = iecQuater.getQtrId();
@@ -1781,7 +1784,8 @@ public class ProgressReportController {
     private String fetchDetailsForInstitutionalInfraProgressReport(
             @ModelAttribute("QPR_INSTITUTIONALINFRAQUATERLY") QprInstitutionalInfrastructure qprInstitutionalInfrastructure,
             Model model) {
-        Integer activityId = null;
+    	try{
+    		Integer activityId = null;
         Integer additionalRequirement = null;
         Integer additionalRequirementDPRC = null;
         Integer quaterId = qprInstitutionalInfrastructure.getQtrId();
@@ -1826,7 +1830,10 @@ public class ProgressReportController {
         } else {
             model.addAttribute("isError", "Data not Found");
         }
-
+    } catch(Exception e)
+ 	{
+		e.printStackTrace();
+ 	}
 
         return INSTITUTIONAL_INFRA_REPORT;
     }
@@ -1842,16 +1849,21 @@ public class ProgressReportController {
 
     @RequestMapping(value = "downloadFileNew", method = RequestMethod.GET)
     private void downloadFileNew(Integer fileNodeId, HttpServletResponse response) {
-        FileNode fileNode = progressReportService.getUploadedFile(fileNodeId);
+      try { 
+    	FileNode fileNode = progressReportService.getUploadedFile(fileNodeId);
         if (fileNode == null)
             throw new RuntimeException("No file exists in databse.");
         FileNodeUtils.streamFileNode(fileNode, response);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
     }
     
    // @RequestMapping(value = "trainingProgressReport", method = RequestMethod.GET)
     public String qprGetFormTrainingProgressReport(
             @ModelAttribute("TRAINING_DETAILS") TrainingProgressReport progressReportJsp, Model model) {
-        /*
+    	try {
+    	/*
          * public String trainingProgressReport(@ModelAttribute("TRAINING_DETAILS")
          * TrainingProgressReportModel progressReportModel, Model model) BY Monty
          */
@@ -1891,13 +1903,19 @@ public class ProgressReportController {
         } else {
             model.addAttribute("approved", false);
         }
+        
+    } catch(Exception e)
+ 	{
+		e.printStackTrace();
+ 	}
         return TRAINING_PROGRESS_REPORT;
     }
 
     @RequestMapping(value = "trainingProgressRptQtr", method = RequestMethod.POST)
     public String trainingProgressReportByQtr(
             @ModelAttribute("TRAINING_DETAILS") TrainingProgressReport progressReportJsp, Model model) {
-        /*
+       
+    	try{/*
          * public String trainingProgressReport(@ModelAttribute("TRAINING_DETAILS")
          * TrainingProgressReportModel progressReportModel, Model model) BY Monty
          */
@@ -1937,24 +1955,34 @@ public class ProgressReportController {
         } else {
             model.addAttribute("approved", false);
         }
+        } catch(Exception e)
+     	{
+    		e.printStackTrace();
+     	}
         return TRAINING_PROGRESS_REPORT;
     }
 
     @RequestMapping(value = "trainingProgressReport", method = RequestMethod.GET)
     public String trainingProgressReport(@ModelAttribute("QPR_TRAINING_DETAILS") QuarterTrainings quarterTrainings, Model model, RedirectAttributes redirectAttributes) {
-    	 List<StateAllocation> stateAllocationList = planAllocationService.fetchStateAllocationListMaxINSTALLMENTNO();
+    	try {
+    	List<StateAllocation> stateAllocationList = planAllocationService.fetchStateAllocationListMaxINSTALLMENTNO();
          if (!(stateAllocationList != null && !stateAllocationList.isEmpty())) {
              redirectAttributes.addFlashAttribute("isPlanAllocationNotExist", Boolean.TRUE);
              return REDIRECT_PLAN_ALLOCATION;
          }
          model.addAttribute("quarterDuration", progressReportService.getQuarterDurations());
-         return TRAINING_DETAILS_PROGRESS_REPORT;
+    	} catch(Exception e)
+     	{
+    		e.printStackTrace();
+     	}
+    	return TRAINING_DETAILS_PROGRESS_REPORT;
     }
     
     
     @SuppressWarnings("unchecked")
 	@RequestMapping(value = "trainingProgressReportGETData",method = { RequestMethod.GET, RequestMethod.POST })
     public String trainingProgressReportGETData(@ModelAttribute("QPR_TRAINING_DETAILS") QuarterTrainings quarterTrainings, Model model, RedirectAttributes redirectAttributes) {
+    	try {
     	Integer qtrId=quarterTrainings.getQtrId();
     	
     	Map<String,Object> data =progressReportService.fetchTrainingDetailsCEC(qtrId);
@@ -2023,30 +2051,63 @@ public class ProgressReportController {
               model.addAttribute("installementExist", Boolean.FALSE);
           }
           model.addAttribute("QPR_TRAINING_DETAILS", quarterTrainings);
-         return TRAINING_DETAILS_PROGRESS_REPORT;
+        
+    }catch(Exception e)
+    	{
+    	e.printStackTrace();
+    	}
+    	 return TRAINING_DETAILS_PROGRESS_REPORT;
     }
     
-    @ResponseBody
-    @PostMapping(value = "fetchTrainingBreakUpData", produces= MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> fetchTrainingBreakUpData(@RequestParam(value = "detailId" , required = false) Integer detailId){
-    	System.out.println("In Java side function fetch training breakup data.");
-    	List<QprTrainingBreakup> breakUpList= new ArrayList<QprTrainingBreakup>();
-    	breakUpList = progressReportService.fetchTrainingBreakUpData(detailId);
-    	Map<String, Object> result=new HashMap<String, Object>();
-    	result.put("breakUpData", breakUpList);
-    	return result;
-    }
+	/*
+	 * @ResponseBody
+	 * 
+	 * @PostMapping(value = "fetchTrainingBreakUpData", produces =
+	 * MediaType.APPLICATION_JSON_VALUE) public Map<String, Object>
+	 * fetchTrainingBreakUpData(
+	 * 
+	 * @RequestParam(value = "detailId", required = false) Integer detailId) {
+	 * Map<String, Object> result = new HashMap<String, Object>(); try {
+	 * System.out.println("In Java side function fetch training breakup data.");
+	 * List<QprTrainingBreakup> breakUpList = new ArrayList<QprTrainingBreakup>();
+	 * breakUpList = progressReportService.fetchTrainingBreakUpData(detailId);
+	 * result.put("breakUpData", breakUpList); } catch (Exception ex) {
+	 * ex.printStackTrace(); } return result; }
+	 */
+ 
+	@ResponseBody
+	@RequestMapping(value = "trainingBreakUpData", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
+	public Map<String, Object> fetchTrainingBreakUpData(
+			@RequestParam(value = "detailId", required = false) Integer detailId) {
+		Map<String, Object> result = new HashMap<String, Object>();
+		try {
+			//System.out.println("In Java side function fetch training breakup data.");
+			List<QprTrainingBreakup> breakUpList = new ArrayList<QprTrainingBreakup>();
+			breakUpList = progressReportService.fetchTrainingBreakUpData(detailId);
+			System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>=============="+breakUpList.size());
+			 
+			result.put("breakUpData", breakUpList);
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		}
+		return result;
+	}
+    
+    
     
     @RequestMapping(value = "savetrainingProgressReport", method = RequestMethod.POST)
     public String savetrainingProgressReport(@ModelAttribute("QPR_TRAINING_DETAILS") QuarterTrainings quarterTrainings, Model model, RedirectAttributes redirectAttributes) {
-    	 
-    	if(quarterTrainings.getMsg().equalsIgnoreCase("modalSave")) {
-    		 progressReportService.savetrainingBreakUpData(quarterTrainings);
-    	}else {
-    		 progressReportService.savetrainingProgressReport(quarterTrainings);
-    	}
-    	 redirectAttributes.addAttribute("isError", "Data save successfully");
-    	 redirectAttributes.addAttribute("qtrId",quarterTrainings.getQtrId());
+		try {
+			if (quarterTrainings.getMsg().equalsIgnoreCase("modalSave")) {
+				progressReportService.savetrainingBreakUpData(quarterTrainings);
+			} else {
+				progressReportService.savetrainingProgressReport(quarterTrainings);
+			}
+			redirectAttributes.addAttribute("isError", "Data save successfully");
+			redirectAttributes.addAttribute("qtrId", quarterTrainings.getQtrId());
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
          return REDIRECT_TRAINING_DETAILS_PROGRESS_REPORT;
     }
     
@@ -2058,12 +2119,22 @@ public class ProgressReportController {
     	// 2. activity_id
     	// 3. quater_id
     	// 4. msg
-    	Boolean isFreeze = msg.equalsIgnoreCase("freeze")? true : false;
+    	Boolean isFreeze =false;
+    	 
+    	if(msg.contains(",")) // for sometime msg contains comma 
+    	{
+    		isFreeze= msg.equalsIgnoreCase(",freeze")? true : false;	
+    	}else {
+    		isFreeze= msg.equalsIgnoreCase("freeze")? true : false;
+    	}
+    	
     		String view = null;
+    		try {
     	switch (componentId) {
     	case 1 :
     		progressReportService.freezeAndUnfreezeReport(QuarterTrainings.class, qprActivityId, isFreeze);
-    		view = trainingProgressReport(new QuarterTrainings(),model,redirectAttributes);
+    		//view = trainingProgressReport(new QuarterTrainings(),model,redirectAttributes);
+    		view=REDIRECT_TRAINING_PROGRESS_REPORT;
 			break;
 		case 2 :
 			progressReportService.freezeAndUnfreezeReport(QprInstitutionalInfrastructure.class, qprActivityId, isFreeze);
@@ -2117,11 +2188,12 @@ public class ProgressReportController {
 			break;
     	}
     	
-    	if(msg.equalsIgnoreCase("freeze")) {
+    	if(isFreeze) {
 			redirectAttributes.addFlashAttribute(Message.SUCCESS_KEY, Message.FRIZEE_SUCESS);
 		}else {
 			redirectAttributes.addFlashAttribute(Message.SUCCESS_KEY, "Unfreeze successfully");
 		}
+    		}catch(Exception e) {e.printStackTrace();}
     	return view;
     }
 }

@@ -30,7 +30,7 @@ public class QuarterTrainings implements IFreezable{
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name="qpr_trainings_id")
+	@Column(name="qpr_trainings_id",nullable = false,updatable = false)
 	private Integer qprTrainingsId;
 	
 	@Column(name="training_activity_id")

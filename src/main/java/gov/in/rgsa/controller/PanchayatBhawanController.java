@@ -99,7 +99,9 @@ public class PanchayatBhawanController {
 	@ResponseBody
 	@RequestMapping(value="getPanchayatBhawanActivity", method = RequestMethod.GET, produces=MediaType.APPLICATION_JSON_VALUE)
 	private Map<String, Object> getPanchayatBhawanActivity() {
+		
 		Map<String, Object> map=new HashMap<>();
+		try {
 		map.put("PANCHAYAT_ACTIVITY", panchayatBhawanService.fetchPanchayatBhawanActivity());
 		map.put("DISTRICT_LIST", lgdService.getAllDistrictBasedOnState(userPreference.getStateCode()));
 		PanchatayBhawanActivity activity= panchayatBhawanService.getPanchatayBhawanActivity(userPreference.getUserType());
@@ -116,6 +118,7 @@ public class PanchayatBhawanController {
 			map.put("PANCHAYAT_BHAWAN_ACTIVITY_STATE", panchayatBhawanService.getPanchatayBhawanActivity("S"));
 			map.put("PANCHAYAT_BHAWAN_ACTIVITY_MOPR", panchayatBhawanService.getPanchatayBhawanActivity("M"));
 		}
+		}catch(Exception e) {e.printStackTrace();}
 		return map;
 	}
 	

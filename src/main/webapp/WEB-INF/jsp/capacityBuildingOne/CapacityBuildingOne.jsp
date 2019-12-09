@@ -84,17 +84,17 @@
 													</div></th>
 												<th rowspan="2" data-ng-if="userType == 'M'">
 													<div align="center">
-														<strong>Is Approved</strong>
+														<strong>Recommended</strong>
 													</div>
 												</th>
 												<th rowspan="2" data-ng-if="userType == 'C'">
 													<div align="center">
-														<strong>Is Approved</strong>
+														<strong>Recommended</strong>
 													</div>
 												</th>
 												<th rowspan="2" data-ng-if="userType == 'S'" style="display: none">
 													<div align="center" >
-														<strong>Is Approved</strong>
+														<strong>Recommended</strong>
 													</div>
 												</th>	
 												<th rowspan="2">
@@ -271,7 +271,7 @@
 							<div class="col-md-12 text-right ex1" data-ng-show="userType =='S'">
 							 <c:if test="${Plan_Status eq true}">
 							<button ng-click="saveCapacityBuildingActivityAndDetails()" ng-disabled="capacityBuilding.isFreeze || btn_disabled"  type="button" class="btn bg-green waves-effect">
-									<spring:message code="Label.SAVE" htmlEscape="true" />
+									<spring:message code="Label.SAVEss" htmlEscape="true" />
 								</button>
 								<button ng-show="capacityBuilding.isFreeze" type="button" data-ng-click="freezUnFreezCapacityBuilding('unfreeze')" class="btn bg-orange waves-effect">
 									<spring:message code="UNFREEZE" htmlEscape="true" />

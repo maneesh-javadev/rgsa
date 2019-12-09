@@ -77,7 +77,6 @@ public class PlanDetailsController {
 	
 	@RequestMapping(value = "submitedPlanByState", method = RequestMethod.GET)
 	public String viewPlanList(@ModelAttribute("FACADE_MODEL") FacadeModel form, Model model, RedirectAttributes re) {
-		
 		return MOPR_PLAN_DETAILS;
 	}
 	

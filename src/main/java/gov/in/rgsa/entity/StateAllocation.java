@@ -1,5 +1,7 @@
 package gov.in.rgsa.entity;
 
+import java.io.Serializable;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -26,11 +28,17 @@ import javax.persistence.Table;
 
 
 @Table(name="state_allocation",schema="rgsa")
-public class StateAllocation {
+public class StateAllocation implements Serializable{
+
+/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 
 @Id
 @GeneratedValue(strategy=GenerationType.IDENTITY)
-@Column(name="sr_no")
+@Column(name="sr_no",nullable = false,updatable = false)
 private Integer srNo;
 
 
@@ -52,6 +60,8 @@ private Double fundsAllocated;
 
 @Column(name="status")
 private String status;
+
+ 
 
 public Integer getSrNo() {
 	return srNo;
@@ -109,5 +119,7 @@ public void setStatus(String status) {
 	this.status = status;
 }
 
+ 
+ 
 
 }

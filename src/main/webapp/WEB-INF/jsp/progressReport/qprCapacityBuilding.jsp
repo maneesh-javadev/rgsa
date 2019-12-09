@@ -16,7 +16,16 @@ $('document').ready(function(){
 	if(qtr_1_2_filled == "false"){
 		alert('Please fill the quater 1 and 2 progress report first.');
 	}
+	
+	setTimeout(function(){ 
+		if($("#disabledID").val()=="true"){ 
+			 $(".disableClass").attr("disabled", "disabled"); 
+			$("#trainingSubIdDiseable").prop("disabled", true);
+		}
+	}, 1000);  
+	
 });
+
 
 function showTablediv(){
 	if($('#quaterDropDownId').val() > 0){
@@ -120,6 +129,9 @@ function FreezeAndUnfreeze(msg){
 }
 </script>
 <section class="content">
+
+<input type="hidden" id="disabledID" value="${QPR_CB_ACT_DATA.isFreeze}" />
+
 	<div class="container-fluid">
 		<div class="row clearfix">
 			<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
@@ -293,9 +305,9 @@ function FreezeAndUnfreeze(msg){
 																			<tr>
 																				<td><form:input path="qprCbActivityDetails[0].qprTnaTrgEvaluation.noOfPersons"
 																					value="${QPR_CB_ACT_DATA.qprCbActivityDetails[0].qprTnaTrgEvaluation.noOfPersons}"
-																					class="active12 form-control Align-Right" readonly="${QPR_CB_ACT_DATA.isFreeze}"/></td>
-																				<td><select class="form-control"
-																					name="qprCbActivityDetails[0].qprTnaTrgEvaluation.trngSubject" disabled="${QPR_CB_ACT_DATA.isFreeze}">
+																					class="active12 form-control Align-Right disableClass"  /></td>
+																				<td><select class="form-control" id="trainingSubIdDiseable"
+																					name="qprCbActivityDetails[0].qprTnaTrgEvaluation.trngSubject" >
 																						<option value="">select</option>
 																						<c:forEach items="${SUBJECTS_LIST}" var="sbjctLst">
 																					<c:choose>
@@ -311,8 +323,8 @@ function FreezeAndUnfreeze(msg){
 																				</select></td>
 																				<td>
 																					<c:choose>
-																						<c:when test="${QPR_CB_ACT_DATA.isFreeze}"><input name="qprCbActivityDetails[0].qprTnaTrgEvaluation.file" type="file" class="active12 form-control" disabled="disabled"/></c:when>
-																						<c:otherwise><input name="qprCbActivityDetails[0].qprTnaTrgEvaluation.file" type="file" class="active12 form-control" disabled="disabled"/></c:otherwise>
+																						<c:when test="${QPR_CB_ACT_DATA.isFreeze}"><input name="qprCbActivityDetails[0].qprTnaTrgEvaluation.file" type="file" class="active12 form-control disableClass" /></c:when>
+																						<c:otherwise><input name="qprCbActivityDetails[0].qprTnaTrgEvaluation.file" type="file" class="active12 form-control disableClass" /></c:otherwise>
 																					</c:choose>
 																					<c:if test="${not empty QPR_CB_ACT_DATA and not empty QPR_CB_ACT_DATA.qprCbActivityDetails[0].qprTnaTrgEvaluation.fileNode.uploadName}">
 																						<input type="button" value="Download File" class="btn bg-grey waves-effect" onclick='showImage("TnaTrgEvaluation",${QPR_CB_ACT_DATA.qprCbActivityDetails[0].qprTnaTrgEvaluation.qprTnaTrgEvaluationId});' />

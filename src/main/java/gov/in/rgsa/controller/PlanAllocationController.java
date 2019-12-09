@@ -50,14 +50,14 @@ public class PlanAllocationController {
 	
 
 	@RequestMapping(value = "planAllocation", method = RequestMethod.GET)
-	private String planAllocation(@ModelAttribute("PLAN_ALLOCATION") StateAllocationModal stateAllocationModal, Model model) {
+	public String planAllocation(@ModelAttribute("PLAN_ALLOCATION") StateAllocationModal stateAllocationModal, Model model) {
 		
 		return PLAN_ALLOCATION;
 	}
 	
 	@ResponseBody
 	@RequestMapping(value="fetchPlanAllocation",method=RequestMethod.GET)
-	private Map<String, Object> fetchPlanAllocation(){
+	public Map<String, Object> fetchPlanAllocation(){
 		Map<String, Object> map=new HashMap<>();
 		Map<String, Object> parameter = new HashMap<String, Object>();
 		parameter.put("stateCode", userPreference.getStateCode());
@@ -72,7 +72,7 @@ public class PlanAllocationController {
 	
 	
 	@RequestMapping(value = "planAllocationQPR", method = RequestMethod.GET)
-	private String planAllocationQPR(@ModelAttribute("PLAN_ALLOCATION") StateAllocationModal stateAllocationModal, Model model) {
+	public String planAllocationQPR(@ModelAttribute("PLAN_ALLOCATION") StateAllocationModal stateAllocationModal, Model model) {
 		stateAllocationModal.setPlanAllocationNotExist(Boolean.TRUE);
 		model.addAttribute("isPlanAllocationNotExist",Boolean.TRUE);
 		return PLAN_ALLOCATION;
@@ -85,6 +85,7 @@ public class PlanAllocationController {
 		if (result.hasErrors()) {
 			return PLAN_ALLOCATION;	
 		}*/
+		 
 		if(stateAllocationModal.getStatus()!=null && stateAllocationModal.getStatus().length()>0) {
 			if(stateAllocationModal.getStatus().charAt(0)=='U') {
 				response=allocationService.unfreezePlanAllocation(stateAllocationModal,installmentNo);
@@ -103,7 +104,8 @@ public class PlanAllocationController {
 	
 	@ResponseBody
 	@RequestMapping(value="fetchFundReleased",method=RequestMethod.GET)
-	private Map<String, Object> fetchFundReleased(@RequestParam(value="installmentNo", required = false) Integer installmentNo){
+	public Map<String, Object> fetchFundReleased(@RequestParam(value="installmentNo", required = false) String installmentNum){
+		Integer installmentNo=Integer.parseInt(installmentNum);
 		Map<String, Object> map=new HashMap<>();
 		FundReleasedDetails fundReleasedDetail = fundReleasedService.fetchFundReleasedDetailByInstallmentNo(installmentNo);
 		Map<String, Object> parameter = new HashMap<String, Object>();

@@ -111,13 +111,14 @@ public class MOPRController {
 						response1.setResponseCode(500);
 						return response1;
 					}
-					else if(!mFile.getContentType().equals("application/vnd.openxmlformats-officedocument.wordprocessingml.document")) {
-						response1.setResponseMessage("File Upload Type Required(doc,docx)");
+					 
+					else if(!mFile.getContentType().equalsIgnoreCase("application/pdf") ) {
+						response1.setResponseMessage("File Upload Type Required(PDF)");
 						response1.setResponseCode(500);
 						return response1;
 					}
 					else if(mFile.getSize() > 2097152) {
-						response1.setResponseMessage("Max File Size is 2MB");
+						response1.setResponseMessage("Max File Size is 5MB");
 						response1.setResponseCode(500);
 						return response1;
 					}

@@ -140,14 +140,13 @@ planAllocation.controller("planAllocationController",['$scope','planAllocationSe
 		$scope.planAllocationModel.status=status;
 		$scope.planAllocationModel.planCode=$scope.planCode;
 		$scope.planAllocationModel.installmentNo=$scope.installmentNo;
-		$scope.planAllocationModel.installmentNo=$scope.installmentNo;
+		//$scope.planAllocationModel.installmentNo=$scope.installmentNo;
 		$scope.planAllocationModel.stateShare=$scope.stateShare;
 		$scope.planAllocationModel.fundReleasedDetailId=$scope.fundReleasedDetailId;
 		if($scope.totalAllocatedFund == 0){
 			flag=true;
 		}
 		if(!flag){
-			alert("data saved");
 			planAllocationService.savePlanAllocation($scope.planAllocationModel,$scope.installmentNo).then(function(response){
 				if(response!=null && response.status==200){
 					toastr.success(response.data.responseMessage);

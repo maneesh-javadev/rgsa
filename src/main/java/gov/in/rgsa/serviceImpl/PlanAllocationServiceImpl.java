@@ -156,22 +156,21 @@ public class PlanAllocationServiceImpl implements PlanAllocationService{
 					commonRepository.excuteUpdate("UPDATE_STATE_SHARE", params);
 				}
 				
-				for(StateAllocation obj: stateAllocationModal.getStateAllocationList()) {
-					
-					obj.setInstallmentNo(stateAllocationModal.getInstallmentNo());
-					obj.setPlanCode(stateAllocationModal.getPlanCode());
-					obj.setStatus(stateAllocationModal.getStatus());
-					if(obj.getSrNo()!=null) {
-						Map<String, Object> params=new HashMap<String, Object>();
-						params.put("srNo",obj.getSrNo());
-						params.put("status",obj.getStatus());
-						params.put("fundsAllocated",obj.getFundsAllocated());
-						commonRepository.excuteUpdate("UPDATE_STATUS_STATE_ALLOCATION", params);
+				 for(StateAllocation obj: stateAllocationModal.getStateAllocationList()) {
+				 
+				  obj.setInstallmentNo(stateAllocationModal.getInstallmentNo());
+				  obj.setPlanCode(stateAllocationModal.getPlanCode());
+				  obj.setStatus(stateAllocationModal.getStatus());
+
+				if (obj.getSrNo() != null) {
+					Map<String, Object> params = new HashMap<String, Object>();
+					params.put("srNo", obj.getSrNo());
+					params.put("status", obj.getStatus());
+					params.put("fundsAllocated", obj.getFundsAllocated());
+					commonRepository.excuteUpdate("UPDATE_STATUS_STATE_ALLOCATION", params);
+				} else {
+					commonRepository.save(obj);
 					}
-					else {
-						commonRepository.save(obj);
-					}
-					
 				}
 				
 				String msg="Something is wrong";

@@ -891,6 +891,10 @@ public class ProgressReportServiceImpl implements ProgressReportService {
         if(quarterTrainings.getDetailsListsIndex() != null)
         	 index = quarterTrainings.getDetailsListsIndex();
 
+        if(quarterTrainings.getAdditionalRequirement()==null || "".equals(quarterTrainings.getAdditionalRequirement()))
+        {
+        	quarterTrainings.setAdditionalRequirement(0);
+        }
         try {
 
             String uploadPath = innovativeActivityService.findfilePath().getFileLocation();

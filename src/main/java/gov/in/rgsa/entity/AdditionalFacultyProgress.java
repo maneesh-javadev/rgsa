@@ -35,7 +35,7 @@ public class AdditionalFacultyProgress  implements IFreezable{
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name="qpr_inst_infra_hr_id")
+	@Column(name="qpr_inst_infra_hr_id",nullable = false,updatable = false)
 	private Integer qprInstInfraHrId;
 			
 	@ManyToOne(fetch=FetchType.LAZY)

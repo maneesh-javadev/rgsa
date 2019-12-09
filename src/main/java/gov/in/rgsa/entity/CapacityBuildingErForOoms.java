@@ -14,11 +14,11 @@ import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
 @Entity
 @NamedNativeQueries({
-@NamedNativeQuery(name="FETCH_CAPACITY_BUILDING_ER_OOMS", query="select * from rgsa.get_capacity_building_er_for_ooms(:finYear)" ,resultClass=CapacityBuildingErForOoms.class),
-@NamedNativeQuery(name="FETCH_NO_OF_TRAINING_OOMS", query="select * from rgsa.get_no_of_training_for_ooms(:finYear)" ,resultClass=CapacityBuildingErForOoms.class),
-@NamedNativeQuery(name="NO_OF_EXPOSURE_VIEW_OOMS", query="select * from rgsa.get_no_of_exposure_visit_for_ooms(:finYear)" ,resultClass=CapacityBuildingErForOoms.class),
-@NamedNativeQuery(name="NO_OF_GP_BUILDING_SUPPORT_OOMS", query="select * from rgsa.get_no_of_gp_building_support_for_ooms(:finYear)" ,resultClass=CapacityBuildingErForOoms.class),
-@NamedNativeQuery(name="NO_OF_SPRC_DPRC_SUPPORT_OOMS", query="select * from rgsa.no_of_sprc_dprc_support_ooms(:finYear)" ,resultClass=CapacityBuildingErForOoms.class)
+@NamedNativeQuery(name="FETCH_CAPACITY_BUILDING_ER_OOMS", query="select * from rgsa_demo.get_capacity_building_er_for_ooms(:finYear)" ,resultClass=CapacityBuildingErForOoms.class),
+@NamedNativeQuery(name="FETCH_NO_OF_TRAINING_OOMS", query="select * from rgsa_demo.get_no_of_training_for_ooms(:finYear)" ,resultClass=CapacityBuildingErForOoms.class),
+@NamedNativeQuery(name="NO_OF_EXPOSURE_VIEW_OOMS", query="select * from rgsa_demo.get_no_of_exposure_visit_for_ooms(:finYear)" ,resultClass=CapacityBuildingErForOoms.class),
+@NamedNativeQuery(name="NO_OF_GP_BUILDING_SUPPORT_OOMS", query="select * from rgsa_demo.get_no_of_gp_building_support_for_ooms(:finYear)" ,resultClass=CapacityBuildingErForOoms.class),
+@NamedNativeQuery(name="NO_OF_SPRC_DPRC_SUPPORT_OOMS", query="select * from rgsa_demo.no_of_sprc_dprc_support_ooms(:finYear)" ,resultClass=CapacityBuildingErForOoms.class)
 
 })
 public class CapacityBuildingErForOoms {
@@ -40,6 +40,7 @@ public class CapacityBuildingErForOoms {
 	private String year;
 	
 	
+	
 	@JsonInclude(Include.NON_NULL)
 	@Transient
 	private String measurementAreaCode;
@@ -54,7 +55,7 @@ public class CapacityBuildingErForOoms {
 	
 	@Id
 	@Column(name="state_code")
-	private String stateCode;
+	private Integer stateCode;
 	
 	
 	
@@ -95,13 +96,7 @@ public class CapacityBuildingErForOoms {
 		this.frequencyCode = frequencyCode;
 	}
 
-	public String getYear() {
-		return year;
-	}
-
-	public void setYear(String year) {
-		this.year = year;
-	}
+	
 
 	public String getMeasurementAreaCode() {
 		return measurementAreaCode;
@@ -127,14 +122,7 @@ public class CapacityBuildingErForOoms {
 		this.value = value;
 	}
 
-	public String getStateCode() {
-		return stateCode;
-	}
-
-	public void setStateCode(String stateCode) {
-		this.stateCode = stateCode;
-	}
-
+	
 
 	public String getDistrictCode() {
 		return districtCode;
@@ -183,5 +171,25 @@ public class CapacityBuildingErForOoms {
 	public void setNoOfExposureView(String noOfExposureView) {
 		this.noOfExposureView = noOfExposureView;
 	}
+
+	public String getYear() {
+		return year;
+	}
+
+	public void setYear(String year) {
+		this.year = year;
+	}
+
+	public Integer getStateCode() {
+		return stateCode;
+	}
+
+	public void setStateCode(Integer stateCode) {
+		this.stateCode = stateCode;
+	}
+
+	
+
+	
 
 }

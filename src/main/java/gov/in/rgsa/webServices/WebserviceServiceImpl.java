@@ -19,6 +19,7 @@ import gov.in.rgsa.entity.CapacityBuildingErForOoms;
 import gov.in.rgsa.entity.FetchPlanStatusCount;
 
 
+
 @Service
 public class WebserviceServiceImpl implements WebserviceService {
 
@@ -164,4 +165,16 @@ public class WebserviceServiceImpl implements WebserviceService {
 		return capacityBuildingErForOomsList;
 	}
 	
+	
+	/*
+	 * @Override public WebserviceUsers fetchWebserviceUsers() {
+	 * 
+	 * WebserviceUsers webserviceUsers = null; try { Map<String, Object> params=new
+	 * HashMap<>();
+	 * 
+	 * params.put("userId",1); webserviceUsers= (WebserviceUsers)
+	 * commonRepository.findAll("FETCH_WEBSERVICE_USERS", params);
+	 * 
+	 * }catch(Exception e) { e.printStackTrace(); } return webserviceUsers; }
+	 */
 }

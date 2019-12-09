@@ -1,8 +1,10 @@
 package gov.in.rgsa.dto;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public class WebServiceOoms {
 	
-	private String year;
+	@JsonProperty("Year") String year;
 	
 	private String frequencyCode;
 	
@@ -21,13 +23,7 @@ public class WebServiceOoms {
 		this.frequencyCode = frequencyCode;
 	}
 
-	public String getYear() {
-		return year;
-	}
-
-	public void setYear(String year) {
-		this.year = year;
-	}
+	
 
 	public String getMeasurementAreaCode() {
 		return measurementAreaCode;
@@ -52,6 +48,16 @@ public class WebServiceOoms {
 	public void setSchemeCode(String schemeCode) {
 		this.schemeCode = schemeCode;
 	}
+
+	public String getYear() {
+		return year;
+	}
+
+	public void setYear(String year) {
+		this.year = year;
+	}
+
+	
 	
 	
 	

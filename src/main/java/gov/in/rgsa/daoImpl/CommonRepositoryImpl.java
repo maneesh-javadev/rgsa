@@ -20,6 +20,7 @@ import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 
 import gov.in.rgsa.dao.CommonRepository;
+import gov.in.rgsa.entity.StateAllocation;
 
 
 @Repository
@@ -31,8 +32,8 @@ public class CommonRepositoryImpl implements CommonRepository {
 
 	@Override
 	public <T> void save(T entity) {
-
 		entityManager.persist(entity);
+		
 	}
 
 	@Override
