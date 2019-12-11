@@ -6,6 +6,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -95,7 +96,11 @@ public class MOPRServiceImpl implements MOPRService {
 	public List<SanctionOrderCompomentAmount>  fetchAllSanctionOrderCompomentAmount(Integer planCode){
 		Map<String, Object> params=new HashMap<>();
 		params.put("planCode", planCode);
-		List<SanctionOrderCompomentAmount> soCompomentAmountList = commonRepository.findAll("soComponentAmount",params);
+		List<SanctionOrderCompomentAmount> soCompomentAmountList = null;
+				soCompomentAmountList=	commonRepository.findAll("alreadySanctionComponentAmount",params);
+				if(soCompomentAmountList.size()==0) {
+				soCompomentAmountList=	commonRepository.findAll("soComponentAmount",params);
+				}
 		return soCompomentAmountList;
 	}
 	
@@ -105,16 +110,15 @@ public class MOPRServiceImpl implements MOPRService {
 	
 	public Response saveSanctionOrderDetails(SnactionOrderModel snactionOrderModel) {
 		Response response1=new Response();
-		System.out.println("sanction 1");
 		try {
 		Map<String, Object> params=new HashMap<>();
 		params.put("yearId", snactionOrderModel.getYearId());
 		params.put("stateCode", snactionOrderModel.getStateCode());
 		params.put("planStatusId", 5);
 		List<Plan> planList = commonRepository.findAll("CURRENT_PLAN_STATUS",params);
-		System.out.println("sanction 2");
+		 
 		if(planList!=null && !planList.isEmpty()) {
-			System.out.println("sanction 3");
+			 
 			Plan plan=planList.get(0);
 			params=new HashMap<>();
 			
@@ -152,6 +156,7 @@ public class MOPRServiceImpl implements MOPRService {
 				sanctionOrder.setSoComponentId(obj.getComponentId());
 				sanctionOrder.setFilePath(obj.getFilePath());
 				sanctionOrder.setAmountUnderComponent(obj.getComponentAmount());
+				sanctionOrder.setPlanCode(plan.getPlanCode());
 				if(obj.getSanctionOrderSno()!=null){
 					commonRepository.update(sanctionOrder);
 				}else{

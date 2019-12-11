@@ -107,6 +107,10 @@ sanctionOrder.controller("sanctionOrderController",['$scope','sanctionOrderServi
 		}
 	}*/
 	
+	
+	 
+	
+	
 	$scope.dataUpload = true;
 	 $scope.errVisibility = false;
 	 
@@ -202,20 +206,19 @@ sanctionOrder.controller("sanctionOrderController",['$scope','sanctionOrderServi
 					sanctionOrderSno=existDataMap.get("SanctionOrderSno"+item.componentId);
 				}
 				
-				
+				var componentAmountVal=$("#"+item.componentId+"_componentAmount").val();
 				
 				mySubObj= {
 		    			"componentId":item.componentId,
 					    "componentName" : item.componentName,    //your artist variable
-					    "componentAmount" :item.componentAmount ,  //your title variable
+					    //"componentAmount" :item.componentAmount ,  //your title variable
+					    "componentAmount" :componentAmountVal,
 					    "filePath":filePath,
 					    "sanctionOrderSno":sanctionOrderSno
-					    
 					};
 				
 				pbProposedInfo.push(mySubObj);
 			});
-			
 			
 			myObj= {
 	    			"stateCode":stateCode,
@@ -226,8 +229,6 @@ sanctionOrder.controller("sanctionOrderController",['$scope','sanctionOrderServi
 				    "status":isFreeze,
 				    "installmentNo":installmentNo
 				};
-			
-			
 	    	
 			sanctionOrderService.saveSanctionOrder(myObj).then(function(response){
 				if(response!=null && response.data.responseCode==200){

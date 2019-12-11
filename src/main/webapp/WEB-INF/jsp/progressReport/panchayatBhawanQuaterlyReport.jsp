@@ -26,7 +26,7 @@
 										<input type="hidden" name="${status.expression}" value="${status.value}" id="qprActivityId"/> 
 									</spring:bind>
 									
-									<span class="errormsg show" ><c:out value='${isError}' /></span>
+									<span class="" ><c:out value='${msg}' /></span>
 									
 										<!-- nav bar -->
 										<div class="row" >
@@ -113,7 +113,7 @@
 																	<spring:message code="Label.ExpenditureIncurred" htmlEscape="true" />
 																</strong>
 															</div>
-														</th>
+														</th>	
 														<th>
 															<div align="center">
 																<strong>
@@ -124,7 +124,7 @@
 													</tr>
 												</thead>
 												<tbody>
-													<c:if test="${isExistQprPanchayatBhawan}">
+													<c:if test="${isExistQprPanchayatBhawan}">	
 														<c:forEach items="${QprPanchayatBhawanDto}" var="bhawanDto" varStatus="count">
 															<tr>
 															
@@ -145,7 +145,7 @@
 																<td>${bhawanDto.localBodyNameEnglish}</td>
 																<td>
 																		<spring:bind path="QPR_PANCHAYAT_BHAWAN.qprPanhcayatBhawanDetails[${count.index}].gpBhawanStatusId" >
-																			<select class="form-control" name="${status.expression}" id="gpBhawanStatusId_${count.index}" disabled="${QPR_PANCHAYAT_BHAWAN.isFreeze}">
+																			<select class="form-control" name="${status.expression}" id="gpBhawanStatusId_${count.index}"  >
 																		<option value="0">Please select gp status</option>
 																		<c:forEach items="${GPBhawanStatus}" var="status" >
 																			<option value="${status.gpBhawanStatusId}" >${status.gpBhawanStatusName}</option>
@@ -156,14 +156,14 @@
 																<td>
 																	<spring:bind path="QPR_PANCHAYAT_BHAWAN.qprPanhcayatBhawanDetails[${count.index}].expenditureIncurred" >
 																	<form:input class="form-control" id="expenditureIncurred_${count.index}" path="${status.expression}"  value="${status.value}"
-																	autocomplete="off" onblur="validate_expenditureIncurred('${subcomponentwiseQuaterBalance}',this,null)" onkeypress="return isNumber(event)" readonly="${QPR_PANCHAYAT_BHAWAN.isFreeze}"/>
+																	autocomplete="off" onblur="validate_expenditureIncurred('${subcomponentwiseQuaterBalance}',this,null)" onkeypress="return isNumber(event)"  />
 																	</spring:bind>
 																	<span class="errormsg" id="error_expenditureIncurred_${count.index}"></span>
 																</td>
 																<td>
 																	<spring:bind path="QPR_PANCHAYAT_BHAWAN.qprPanhcayatBhawanDetails[${count.index}].file" >
 																	<c:choose>
-																		<c:when test="${QPR_PANCHAYAT_BHAWAN.isFreeze}"><input type="file" name="${status.expression}" class="form-control" disabled="disabled"/></c:when>
+																		<c:when test="${QPR_PANCHAYAT_BHAWAN.isFreeze}"><input type="file" name="${status.expression}" class="form-control"  /></c:when>
 																		<c:otherwise><input type="file" name="${status.expression}" class="form-control"/></c:otherwise>
 																	</c:choose>
 																	</spring:bind>

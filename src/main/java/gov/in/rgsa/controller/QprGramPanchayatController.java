@@ -20,6 +20,7 @@ import gov.in.rgsa.dto.SubcomponentwiseQuaterBalance;
 import gov.in.rgsa.entity.QprPanchayatBhawan;
 import gov.in.rgsa.entity.QprPanhcayatBhawanDetails;
 import gov.in.rgsa.entity.StateAllocation;
+import gov.in.rgsa.model.Response;
 import gov.in.rgsa.service.IncomeEnhancementService;
 import gov.in.rgsa.service.LGDService;
 import gov.in.rgsa.service.PanchayatBhawanService;
@@ -173,9 +174,16 @@ public class QprGramPanchayatController {
 	}
 	
 	@RequestMapping(value="saveQprPanchayatBhawanData1" , method=RequestMethod.POST)
-	private String saveQprPanchayatBhawanData(@ModelAttribute("QPR_GRAM_PANCHAYAT") QprPanchayatBhawan qprPanchayatBhawan,Model model ,RedirectAttributes redirectAttributes) throws IOException{
+	private String saveQprPanchayatBhawanData(@ModelAttribute("QPR_GRAM_PANCHAYAT") QprPanchayatBhawan qprPanchayatBhawan,Model model ,RedirectAttributes redirectAttributes) {
+		
+		Response response = new Response();
+		try {
 		progressReportService.saveQprPanchayatBhawan(qprPanchayatBhawan);
-		redirectAttributes.addAttribute("isError", "Data save successfully");
+		 
+		redirectAttributes.addAttribute("msg", "Data Save Successfully!");
+		}catch(Exception e) {
+			redirectAttributes.addAttribute("msg", "Oop's There are Some Error!");
+		}
 		return REDIRECT_GRAM_PANCHAYAT_PROGRESS_REPORT;
 	}
 	

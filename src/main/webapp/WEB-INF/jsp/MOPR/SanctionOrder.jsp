@@ -113,10 +113,11 @@
     							{{$index+1}}
     							</td>
     							<td>
-    							{{obj.componentName}}
+    							{{obj.componentName}} 
     							</td>
     							<td align="right" >
-    							{{obj.componentAmount}}
+    							
+    							<input type="text" id="{{$index+1}}_componentAmount" class="form-control"  value="{{obj.componentAmount}}" />
     							</td>
     							<td>
     							<div ng-show="isfileupload_{{obj.componentId}}" >

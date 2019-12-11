@@ -53,6 +53,8 @@ public class QprPanhcayatBhawanDetails {
 	@Column(name="district_code")
 	private Integer districtCode;
 	
+	 
+	
 	@OneToOne(fetch=FetchType.EAGER,cascade=CascadeType.ALL)
 	@JoinColumn(name="file_node_id")
 	private FileNode fileNode;
@@ -136,7 +138,5 @@ public class QprPanhcayatBhawanDetails {
 	public void setFile(MultipartFile file) {
 		this.file = file;
 	}
-	
-	
 
 }

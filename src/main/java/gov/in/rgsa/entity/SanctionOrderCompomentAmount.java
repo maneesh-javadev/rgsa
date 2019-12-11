@@ -9,7 +9,9 @@ import javax.persistence.Transient;
 
 @Entity
 @NamedNativeQueries({
-@NamedNativeQuery(name="soComponentAmount",query="select * from rgsa.get_sanction_order_compoment_amount_new(:planCode)",resultClass=SanctionOrderCompomentAmount.class) 
+@NamedNativeQuery(name="soComponentAmount",query="select * from rgsa.get_sanction_order_compoment_amount_new(:planCode)",resultClass=SanctionOrderCompomentAmount.class),
+@NamedNativeQuery(name="alreadySanctionComponentAmount",query="select * from rgsa.get_sanction_order_compoment_amount(:planCode)",resultClass=SanctionOrderCompomentAmount.class) 
+
 })
 public class SanctionOrderCompomentAmount {
 	

@@ -34,7 +34,9 @@ public class SanctionOrder {
 	@Column(name="file_path")
 	private String filePath;
 
-	
+	@Column(name="plan_code")
+	private Integer planCode;
+
 
 	public Integer getSanctionOrderSno() {
 		return sanctionOrderSno;
@@ -77,7 +79,13 @@ public class SanctionOrder {
 		this.filePath = filePath;
 	}
 
+	public Integer getPlanCode() {
+		return planCode;
+	}
 
+	public void setPlanCode(Integer planCode) {
+		this.planCode = planCode;
+	}
 	 
 
 }
