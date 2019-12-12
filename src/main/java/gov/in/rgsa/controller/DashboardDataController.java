@@ -11,10 +11,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import com.fasterxml.jackson.databind.JsonNode;
 
 import gov.in.rgsa.dao.CommonRepository;
@@ -27,11 +24,12 @@ public class DashboardDataController {
     private CommonRepository commonRepository;
 
     @ResponseBody
-    @RequestMapping(value="dashboardBasicInformation", method = RequestMethod.GET, produces= MediaType.APPLICATION_JSON_VALUE)
-    public JsonNode basicInformation(@RequestParam("stateCode") Integer stateCode){
+    @CrossOrigin(origins = "http://localhost:4200")
+    @RequestMapping(value="dashboardDataFor", method = RequestMethod.GET, produces= MediaType.APPLICATION_JSON_VALUE)
+    public JsonNode basicInformation(@RequestParam("pageReferenceName") String pageReferenceName ,@RequestParam("stateCode") Integer stateCode){
     	Map<String, Object> passParams = new HashMap<>();
     	passParams.put("stateCode", stateCode);
-    	passParams.put("pageReferenceName", "basic-information");
+    	passParams.put("pageReferenceName", pageReferenceName);
     	DashboardData dashboardData = commonRepository.find(DashboardData.class, passParams);
     	if(dashboardData == null)
     		return null;
