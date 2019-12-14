@@ -1,3 +1,6 @@
+ 
+
+ 
 <section id="featured" class="bg">
 	<div class="row">
 		<div class="col-lg-12">
@@ -94,7 +97,7 @@
 						<div class="counter_item text-center">
 							<div class="sigle_counter_item">
 								<div class="counter_text pinkbg">
-									<a href="#">
+									<a href="#" >
 										<p class="underline ">Panchayat Stakeholders Trained</p>	<span class="counter ng-binding" >0000</span>
 									</a>
 								</div>
@@ -106,7 +109,7 @@
 							<div class="sigle_counter_item">
 								<a href="#">
 									<div class="counter_text lightcyanbg">
-										<p class="underline ">Basic Orientation Trainings to ERs</p>	<span class="counter ng-binding" >0000</span>
+										<p class="underline ">Basic Orientation Training to ERs</p>	<span class="counter ng-binding" id="basicOrientationTrainingofERId">0000</span>
 									</div>
 								</a>
 							</div>
@@ -117,7 +120,7 @@
 							<div class="sigle_counter_item">
 								<div class="counter_text lightbluebg">
 									<a href="#">
-										<p class="underline ">Refresher Trainings to ERs</p>	<span class="counter ng-binding" >0000</span>
+										<p class="underline ">Refresher Training to ERs</p>	<span class="counter ng-binding" id="refreshertraningtoERId" >0000</span>
 									</a>
 								</div>
 							</div>
@@ -131,7 +134,7 @@
 										<p class="underline ">SHG-PRI Convergence
 											<br />
 											<br />
-										</p>	<span class="counter ng-binding" >0000</span>
+										</p>	<span class="counter ng-binding" id="shg_pri_convergenceID"  >0000</span>
 										<!--<img src="/resources/welcome/images/icons/clock.png" title="icon" class="center-block img-responsive">-->
 									</div>
 								</a>
@@ -377,3 +380,28 @@
 		src="${pageContext.request.contextPath}/resources/js/index/index-model.js"></script>
 		<script type="text/javascript"
 		src="${pageContext.request.contextPath}/resources/js/utils/captcha.js"></script>
+		
+		
+<script type="text/javascript"> 
+
+setTimeout(function(){ voteViaAjax(0); }, 100);
+function voteViaAjax(detailId){ 
+   $.ajax({
+   type : "POST",
+   contentType : "application/json",
+   url : "basicOrientationTrainingofER.html?<csrf:token uri='basicOrientationTrainingofER.html'/>&detailId="+detailId,
+   dataType : 'json',
+   cache : false,
+   timeout : 100000,
+   success : function(data) {
+	$("#basicOrientationTrainingofERId").html(data[0]);
+	$("#refreshertraningtoERId").html(data[1]);
+	$("#shg_pri_convergenceID").html(data[2]);
+   },
+   error : function(e) {
+    console.log(e);
+   }
+  });
+}
+</script>
+		

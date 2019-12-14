@@ -139,7 +139,7 @@ table#mytable tbody tr td {
 										<th rowspan="2">Unit Cost  <br/>  (B)</th>
 										<th rowspan="2">No. of Months <br/> (C)</th>
 										<th rowspan="2">Funds &nbsp;&nbsp;&nbsp;(in <strong><i style="font-size: 15px" class="fa">&#xf156;</i></strong>) <br/> D= (A*B*C)</th>
-										<th rowspan="2" data-ng-if="userType != 'S'">Is Approved</th>
+										<th rowspan="2" data-ng-if="userType != 'S'">Recommended</th>
 										<th rowspan="2"><strong>Remarks</strong></th>
 										<c:if test="${sessionScope['scopedTarget.userPreference'].planVersion > 1}">
 										<th colspan="2">Previous comment history</th></c:if>

@@ -163,7 +163,7 @@ function FreezeAndUnfreeze(msg){
 									   <th><div align="center"><strong>No. of Units<br>A</strong></div></th>
 									   <th><div align="center"><strong>Unit Cost (in Rs)<br>B</strong></div></th>
 									   <th><div align="center"><strong>Fund Proposed (in Rs)<br>C = A * B</strong></div></th>
-									   <th><div align="center">No. of units completed/Persons involved </div></th>
+									   <th><div align="center">No. of Persons Trained</div></th>
 									   <th><div align="center">Expenditure incurred</div></th>
 									</tr>
 								</thead>

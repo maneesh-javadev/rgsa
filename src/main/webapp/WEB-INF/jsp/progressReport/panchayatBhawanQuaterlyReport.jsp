@@ -146,7 +146,7 @@
 																<td>
 																		<spring:bind path="QPR_PANCHAYAT_BHAWAN.qprPanhcayatBhawanDetails[${count.index}].gpBhawanStatusId" >
 																			<select class="form-control" name="${status.expression}" id="gpBhawanStatusId_${count.index}"  >
-																		<option value="0">Please select gp status</option>
+																		<option value="0">Please Select GP Status</option>
 																		<c:forEach items="${GPBhawanStatus}" var="status" >
 																			<option value="${status.gpBhawanStatusId}" >${status.gpBhawanStatusName}</option>
 																		</c:forEach>

@@ -126,7 +126,7 @@ function FreezeAndUnfreeze(msg){
 			<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
 				<div class="card">
 					<div class="header">
-						<h2>e-Enablement Quarter Progress Report</h2>
+						<h2>e-Enablement Quarter Progress Report(GP Computerized) </h2>
 					</div>
 					<form:form method="post" name="qprEnablement"
 						action="enablementQuaterly.html" modelAttribute="Enablement">
@@ -225,7 +225,7 @@ function FreezeAndUnfreeze(msg){
 											<tr>
 												<th>
 													<div align="center">
-														<strong>Gp Name.</strong>
+														<strong>GP Name</strong>
 													</div>
 												</th>
 												

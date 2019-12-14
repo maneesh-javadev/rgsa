@@ -77,7 +77,7 @@ function isNumber(evt) {
 													</div></th> -->
 												<th rowspan="2"> 
 													<div align="center">
-														<strong><spring:message code="Label.IsApproved" htmlEscape="true" />
+														<strong><spring:message code="Label.IsApproved"  htmlEscape="true" />
 														</strong>
 													</div>
 												</th>	

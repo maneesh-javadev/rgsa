@@ -2084,8 +2084,6 @@ public class ProgressReportController {
 			//System.out.println("In Java side function fetch training breakup data.");
 			List<QprTrainingBreakup> breakUpList = new ArrayList<QprTrainingBreakup>();
 			breakUpList = progressReportService.fetchTrainingBreakUpData(detailId);
-			System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>=============="+breakUpList.size());
-			 
 			result.put("breakUpData", breakUpList);
 		} catch (Exception ex) {
 			ex.printStackTrace();

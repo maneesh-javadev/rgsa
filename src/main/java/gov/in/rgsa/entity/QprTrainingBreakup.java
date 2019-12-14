@@ -7,12 +7,15 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
 @Entity
 @Table(name="qpr_training_breakup",schema="rgsa")
+ 
 @NamedQuery(name="FETCH_BREAK_UP_BY_QPR_TRAINING_DETAIL_ID",query="from QprTrainingBreakup where quarterTrainingsDetails.qprTrainingsDetailsId=:qprTrainingsDetailsId order by qprTrainingBreakupId")
+
 public class QprTrainingBreakup {
 	
 	@Id
@@ -44,7 +47,7 @@ public class QprTrainingBreakup {
 	
 	@Column(name="others_females")
 	private Integer othersFemales;
-
+	
 	public Integer getQprTrainingBreakupId() {
 		return qprTrainingBreakupId;
 	}

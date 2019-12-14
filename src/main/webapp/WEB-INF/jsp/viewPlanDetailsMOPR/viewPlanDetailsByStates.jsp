@@ -140,7 +140,7 @@ toggleInstInfraAndPanchayatBhawan=function(id,msg){
 												<c:set var="totalUnitCarryForwardMoprInstInfra" value="0"/>
 												
 												<c:set var="totalNewBuildingStatePanchayat" value="0"/> 
-												<c:set var="totalCarryForwardStatePacnhayat" value="0"/>
+												<c:set var="totalCarryForwardStatePacnhayat" value="0"/>l
 												
 												<c:set var="totalNewBuildingMoprPanchayat" value="0"/>
 												<c:set var="totalCarryForwardMoprPacnhayat" value="0"/>

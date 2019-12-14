@@ -57,7 +57,7 @@ $('document').ready(function(){
 													<strong>Funds (in Rs) <br>D = A * B * C
 													</strong>
 												</div></th>
-											<th rowspan="2" data-ng-if="userType != 'S'">Is Approved</th>
+											<th rowspan="2" data-ng-if="userType != 'S'">Recommended</th>
 											<th rowspan="2"><div align="center"><strong>Remarks</strong></div></th>
 											
 											<c:if test="${sessionScope['scopedTarget.userPreference'].planVersion > 1}">

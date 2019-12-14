@@ -95,7 +95,7 @@ table.dataTable thead > tr > th, table.dataTable thead > tr > td {
 												<th width="8%" rowspan="2" class="element_right"><spring:message code="No.of Days" htmlEscape="true" /></th>
 												<th width="8%" rowspan="2" class="element_right"><spring:message code="Unit Cost" htmlEscape="true" /></th>
 												<th width="8%" rowspan="2" class="element_right"><spring:message code="Funds Proposed" htmlEscape="true"/></th>
-												<th width="4%" rowspan="2" align="center"><spring:message text="Is Approved" htmlEscape="true" /></th>
+												<th width="4%" rowspan="2" align="center"><spring:message text="Recommended" htmlEscape="true" /></th>
 												<th width="10%" rowspan="2" align="center"><spring:message text="Remarks" htmlEscape="true" /></th>
 												<c:if test="${sessionScope['scopedTarget.userPreference'].planVersion > 1}">
 													<th colspan="2" rowspan="1">
