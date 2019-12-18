@@ -106,6 +106,8 @@ public class EGovQtlServiceImpl implements EGovQtlService {
     }
 
     public void save(QprEGovReq qprEGovReq) {
+    	 Double maxAllowedExpenditure=0.0;
+    	try {
         // Check whether an update or new instance
         QprEGov qprEGov = null;
         if(qprEGovReq.getQprEGovId() == -1) {
@@ -152,7 +154,8 @@ public class EGovQtlServiceImpl implements EGovQtlService {
                 if(otherQprDetail.getQprEgov().getQprQuarterDetail().getQtrId() < qprEGovReq.getQuarterId())
                     amountSpent += otherQprDetail.getExpenditureIncurred();
             }
-            Double maxAllowedExpenditure = eGovSAD.getFunds() - amountSpent;
+            if(eGovSAD.getFunds()!=null && !"null".equals(eGovSAD.getFunds()))						
+            maxAllowedExpenditure = eGovSAD.getFunds() - amountSpent;
 
             if(exp.getQprEGovDetailsId() == -1) {
                 qprEGovDetails = new QprEGovDetails();
@@ -171,6 +174,9 @@ public class EGovQtlServiceImpl implements EGovQtlService {
             qprEGovDetails.seteGovSupportActivityDetails(eGovSAD);
             commonRepository.save(qprEGovDetails);
         }
+    	}catch(Exception e) {
+    		e.printStackTrace();
+    	}
     }
 
     public void unFreeze(QprEGovReq qprEGovReq) {

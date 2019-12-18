@@ -23,7 +23,7 @@ public class OtherAchievementsDetailServiceImpl implements OtherAchievementsDeta
 		 String data=null;
 		try {
 		   StringBuilder  query=new StringBuilder();
-		   query.append(" select sum(qtb.sc_males+qtb.sc_females+qtb.st_males+qtb.st_females+qtb.others_males+qtb.others_females ) from rgsa.qpr_training_breakup qtb ");
+		   query.append(" select sum( COALESCE(qtb.sc_males,0)+COALESCE(qtb.sc_females,0)+COALESCE(qtb.st_males,0)+COALESCE(qtb.st_females,0)+COALESCE(qtb.others_males,0)+COALESCE(qtb.others_females,0) ) from rgsa.qpr_training_breakup qtb ");
 		   query.append(" inner join rgsa.qpr_trainings_details qtd on qtb.qpr_trainings_details_id=qtd.qpr_trainings_details_id");
 		   query.append(" inner join rgsa.training_wise_category twc on  qtd.training_activity_details_id=twc.training_id"	   );
 		   query.append(" inner join rgsa.qpr_trainings qt on qt.qpr_trainings_id=qtd.qpr_trainings_id ");

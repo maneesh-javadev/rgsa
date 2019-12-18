@@ -13,6 +13,7 @@ import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
+import javax.persistence.OrderBy;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
@@ -23,7 +24,8 @@ import org.hibernate.annotations.UpdateTimestamp;
 @Table(name="qpr_trainings",schema="rgsa")
 
 @NamedQueries({
-@NamedQuery(name="FETCH_QPR_TRAINING_DETAIL_DEPEND_ON_QUATOR",query ="SELECT Q FROM QuarterTrainings Q WHERE Q.qtrId=:qtrId and Q.trainingActivityId=:trainingActivityId"),
+@NamedQuery(name="FETCH_QPR_TRAINING_DETAIL_DEPEND_ON_QUATOR",query ="SELECT Q FROM QuarterTrainings Q LEFT JOIN FETCH Q.quarterTrainingsDetailsList QT "
+		+ " WHERE Q.qtrId=:qtrId and Q.trainingActivityId=:trainingActivityId order by QT.qprTrainingsDetailsId"),
 @NamedQuery(name="UPDATE_QPR_TRAINING_DETAIL_DEPEND_ON_QUATOR",query="UPDATE QuarterTrainings SET additionalRequirement=:additionalRequirement where qprTrainingsId=:qprTrainingsId"),
 })
 public class QuarterTrainings implements IFreezable{
@@ -60,6 +62,7 @@ public class QuarterTrainings implements IFreezable{
 	private Boolean isFreeze;
 	
 	@OneToMany(fetch=FetchType.EAGER,cascade=CascadeType.ALL,mappedBy="quarterTrainings")
+	//@OrderBy("QuarterTrainingsDetails.qprTrainingsDetailsId ")
 	private List<QuarterTrainingsDetails> quarterTrainingsDetailsList;
 
 	@Transient

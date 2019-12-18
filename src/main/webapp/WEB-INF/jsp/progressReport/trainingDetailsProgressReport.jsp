@@ -142,9 +142,20 @@
 								<td align="left">
 								
 										 <spring:bind path="QPR_TRAINING_DETAILS.quarterTrainingsDetailsList[${count.index}].expenditureIncurred" >
-												<form:input id="expenditureIncurred_${count.index}" onkeypress="return isNumber(event)"  path="${status.expression}"  class="form-control"  value="${status.value}" 
-										maxlength="8" style="text-align:right;" required="required" autocomplete="off" onblur="validate_expenditureIncurred('${subcomponentwiseQuaterBalanceList[0].balanceAmount}',this)" readonly="${QPR_TRAINING_DETAILS.isFreeze}"/>
-										</spring:bind>
+										 
+										 <c:choose>
+										 <c:when test="${status.value== null}">
+										 <form:input id="expenditureIncurred_${count.index}" onkeypress="return isNumber(event)"  path="${status.expression}"  class="form-control"  value="0" 
+											maxlength="8" style="text-align:right;" required="required" autocomplete="off" onblur="validate_expenditureIncurred('${subcomponentwiseQuaterBalanceList[0].balanceAmount}',this)" readonly="${QPR_TRAINING_DETAILS.isFreeze}"/>
+										 </c:when>
+										 <c:otherwise>
+										 <form:input id="expenditureIncurred_${count.index}" onkeypress="return isNumber(event)"  path="${status.expression}"  class="form-control"  value="${status.value}" 
+											maxlength="8" style="text-align:right;" required="required" autocomplete="off" onblur="validate_expenditureIncurred('${subcomponentwiseQuaterBalanceList[0].balanceAmount}',this)" readonly="${QPR_TRAINING_DETAILS.isFreeze}"/>
+										
+										 
+										 </c:otherwise>
+										 </c:choose>
+											</spring:bind>	
 										<span class="errormsg" id="error_expenditureIncurred_${count.index}"></span>
 								
 										
@@ -333,34 +344,34 @@ function voteViaAjax(detailId,index) {
     		 tableBuilder +="<th align='center' style='width: 6%'>"+(count + 1)+"</th>"; 
     		 tableBuilder += "<th align='center' style='width: 139px;'>"+listItems[key]+"</th>";
     		 if(data.breakUpData[count].scMales != null){
-    			tableBuilder +=" <td style='width: 97px;'><input type='text' name='quarterTrainingsDetailsList["+index+"].qprTrainingBreakup["+count+"].scMales' onkeypress='return isNumber(event)' class='form-control Align-Right' onkeyup='getTotalNoOfParticipants("+index+","+count+",this.id)' value='"+data.breakUpData[count].scMales+"' id='scMale_"+count+"' readonly='"+flag+"'/></td>"; 
+    			tableBuilder +=" <td style='width: 97px;'><input type='text' name='quarterTrainingsDetailsList["+index+"].qprTrainingBreakup["+count+"].scMales' onkeypress='return isNumber(event)' class='form-control Align-Right' onkeyup='getTotalNoOfParticipants("+index+","+count+",this.id)' value='"+data.breakUpData[count].scMales+"' id='scMale_"+count+"' /></td>"; 
     		 }else{
-    			tableBuilder +=" <td style='width: 97px;'><input type='text' name='quarterTrainingsDetailsList["+index+"].qprTrainingBreakup["+count+"].scMales' onkeypress='return isNumber(event)' class='form-control Align-Right' onkeyup='getTotalNoOfParticipants("+index+","+count+",this.id)' id='scMale_"+count+"' readonly='"+flag+"'/></td>";
+    			tableBuilder +=" <td style='width: 97px;'><input type='text' name='quarterTrainingsDetailsList["+index+"].qprTrainingBreakup["+count+"].scMales' onkeypress='return isNumber(event)' class='form-control Align-Right' onkeyup='getTotalNoOfParticipants("+index+","+count+",this.id)' id='scMale_"+count+"' /></td>";
     		 }
     		 if(data.breakUpData[count].scFemales != null){
-    			tableBuilder +="<td style='width: 123px;' ><input type='text' name='quarterTrainingsDetailsList["+index+"].qprTrainingBreakup["+count+"].scFemales' onkeypress='return isNumber(event)' class='form-control Align-Right' onkeyup='getTotalNoOfParticipants("+index+","+count+",this.id)' value='"+data.breakUpData[count].scFemales+"' id='scFemale_"+count+"' readonly='"+flag+"'/></td>"; 
+    			tableBuilder +="<td style='width: 123px;' ><input type='text' name='quarterTrainingsDetailsList["+index+"].qprTrainingBreakup["+count+"].scFemales' onkeypress='return isNumber(event)' class='form-control Align-Right' onkeyup='getTotalNoOfParticipants("+index+","+count+",this.id)' value='"+data.breakUpData[count].scFemales+"' id='scFemale_"+count+"' /></td>"; 
      		 }else{
-     			tableBuilder +=" <td style='width: 97px;' ><input type='text' name='quarterTrainingsDetailsList["+index+"].qprTrainingBreakup["+count+"].scFemales' onkeypress='return isNumber(event)' class='form-control Align-Right' onkeyup='getTotalNoOfParticipants("+index+","+count+",this.id)' id='scFemale_"+count+"' readonly='"+flag+"'/></td>";
+     			tableBuilder +=" <td style='width: 97px;' ><input type='text' name='quarterTrainingsDetailsList["+index+"].qprTrainingBreakup["+count+"].scFemales' onkeypress='return isNumber(event)' class='form-control Align-Right' onkeyup='getTotalNoOfParticipants("+index+","+count+",this.id)' id='scFemale_"+count+"' /></td>";
      		 }
     		if(data.breakUpData[count].stMales != null){
-    			tableBuilder +="<td style='width: 97px;'><input type='text' name='quarterTrainingsDetailsList["+index+"].qprTrainingBreakup["+count+"].stMales' onkeypress='return isNumber(event)' class='form-control Align-Right' onkeyup='getTotalNoOfParticipants("+index+","+count+",this.id)' value='"+data.breakUpData[count].stMales+"' id='stMale_"+count+"' readonly='"+flag+"'/></td>"; 
+    			tableBuilder +="<td style='width: 97px;'><input type='text' name='quarterTrainingsDetailsList["+index+"].qprTrainingBreakup["+count+"].stMales' onkeypress='return isNumber(event)' class='form-control Align-Right' onkeyup='getTotalNoOfParticipants("+index+","+count+",this.id)' value='"+data.breakUpData[count].stMales+"' id='stMale_"+count+"' /></td>"; 
      		 }else{
-     			tableBuilder +=" <td style='width: 97px;'><input type='text' name='quarterTrainingsDetailsList["+index+"].qprTrainingBreakup["+count+"].stMales' onkeypress='return isNumber(event)' class='form-control Align-Right' onkeyup='getTotalNoOfParticipants("+index+","+count+",this.id)' id='stMale_"+count+"' readonly='"+flag+"'/></td>";
+     			tableBuilder +=" <td style='width: 97px;'><input type='text' name='quarterTrainingsDetailsList["+index+"].qprTrainingBreakup["+count+"].stMales' onkeypress='return isNumber(event)' class='form-control Align-Right' onkeyup='getTotalNoOfParticipants("+index+","+count+",this.id)' id='stMale_"+count+"' /></td>";
      		 }
     		if(data.breakUpData[count].stFemales != null){
-    			 tableBuilder +="<td style='width: 123px;'><input type='text' name='quarterTrainingsDetailsList["+index+"].qprTrainingBreakup["+count+"].stFemales' onkeypress='return isNumber(event)' class='form-control Align-Right' onkeyup='getTotalNoOfParticipants("+index+","+count+",this.id)' value='"+data.breakUpData[count].stFemales+"' id='stFemale_"+count+"' readonly='"+flag+"'/></td>"; 
+    			 tableBuilder +="<td style='width: 123px;'><input type='text' name='quarterTrainingsDetailsList["+index+"].qprTrainingBreakup["+count+"].stFemales' onkeypress='return isNumber(event)' class='form-control Align-Right' onkeyup='getTotalNoOfParticipants("+index+","+count+",this.id)' value='"+data.breakUpData[count].stFemales+"' id='stFemale_"+count+"' /></td>"; 
      		 }else{
-     			tableBuilder +=" <td style='width: 97px;'><input type='text' name='quarterTrainingsDetailsList["+index+"].qprTrainingBreakup["+count+"].stFemales' onkeypress='return isNumber(event)' class='form-control Align-Right' onkeyup='getTotalNoOfParticipants("+index+","+count+",this.id)' id='stFemale_"+count+"' readonly='"+flag+"'/></td>";
+     			tableBuilder +=" <td style='width: 97px;'><input type='text' name='quarterTrainingsDetailsList["+index+"].qprTrainingBreakup["+count+"].stFemales' onkeypress='return isNumber(event)' class='form-control Align-Right' onkeyup='getTotalNoOfParticipants("+index+","+count+",this.id)' id='stFemale_"+count+"' /></td>";
      		 }
     		if(data.breakUpData[count].othersMales != null){
-    			tableBuilder +="<td style='width: 97px;'><input type='text' name='quarterTrainingsDetailsList["+index+"].qprTrainingBreakup["+count+"].othersMales' onkeypress='return isNumber(event)' class='form-control Align-Right' onkeyup='getTotalNoOfParticipants("+index+","+count+",this.id)' value='"+data.breakUpData[count].othersMales+"' id='othersMale_"+count+"' readonly='"+flag+"'/></td>"; 
+    			tableBuilder +="<td style='width: 97px;'><input type='text' name='quarterTrainingsDetailsList["+index+"].qprTrainingBreakup["+count+"].othersMales' onkeypress='return isNumber(event)' class='form-control Align-Right' onkeyup='getTotalNoOfParticipants("+index+","+count+",this.id)' value='"+data.breakUpData[count].othersMales+"' id='othersMale_"+count+"' /></td>"; 
     		 }else{
-    			tableBuilder +=" <td style='width: 97px;'><input type='text' name='quarterTrainingsDetailsList["+index+"].qprTrainingBreakup["+count+"].othersMales' onkeypress='return isNumber(event)' class='form-control Align-Right' onkeyup='getTotalNoOfParticipants("+index+","+count+",this.id)' id='othersMale_"+count+"' readonly='"+flag+"'/></td>";
+    			tableBuilder +=" <td style='width: 97px;'><input type='text' name='quarterTrainingsDetailsList["+index+"].qprTrainingBreakup["+count+"].othersMales' onkeypress='return isNumber(event)' class='form-control Align-Right' onkeyup='getTotalNoOfParticipants("+index+","+count+",this.id)' id='othersMale_"+count+"' /></td>";
     		 }
     		if(data.breakUpData[count].othersFemales != null){
-    			tableBuilder +="<td><input type='text' name='quarterTrainingsDetailsList["+index+"].qprTrainingBreakup["+count+"].othersFemales' class='form-control Align-Right' onkeypress='return isNumber(event)' onkeyup='getTotalNoOfParticipants("+index+","+count+",this.id)' value='"+data.breakUpData[count].othersFemales+"' id='othersFemale_"+count+"' readonly='"+flag+"'/></td>"; 
+    			tableBuilder +="<td><input type='text' name='quarterTrainingsDetailsList["+index+"].qprTrainingBreakup["+count+"].othersFemales' class='form-control Align-Right' onkeypress='return isNumber(event)' onkeyup='getTotalNoOfParticipants("+index+","+count+",this.id)' value='"+data.breakUpData[count].othersFemales+"' id='othersFemale_"+count+"' /></td>"; 
     		 }else{
-    			tableBuilder +=" <td><input type='text' name='quarterTrainingsDetailsList["+index+"].qprTrainingBreakup["+count+"].othersFemales' class='form-control Align-Right' onkeypress='return isNumber(event)' onkeyup='getTotalNoOfParticipants("+index+","+count+",this.id)' id='othersFemale_"+count+"' readonly='"+flag+"'/></td>";
+    			tableBuilder +=" <td><input type='text' name='quarterTrainingsDetailsList["+index+"].qprTrainingBreakup["+count+"].othersFemales' class='form-control Align-Right' onkeypress='return isNumber(event)' onkeyup='getTotalNoOfParticipants("+index+","+count+",this.id)' id='othersFemale_"+count+"' /></td>";
     		 }
     		 tableBuilder +="<input type='hidden' name='quarterTrainingsDetailsList["+index+"].qprTrainingBreakup["+count+"].targetGroupMasterId' value='"+key+"' />";
    			 tableBuilder +="<input type='hidden' name='quarterTrainingsDetailsList["+index+"].qprTrainingBreakup["+count+"].quarterTrainingsDetails.qprTrainingsDetailsId' value='"+detailId+"' />";
@@ -427,6 +438,15 @@ function calTotalParticipantsFilled(){
 	return totalParticipantsFilled;
 }
 
+function FreezeAndUnfreeze(msg){
+	var componentId=1;
+	var qprActivityId=$('#qprActivityId').val();
+	var quaterId = $('#qtrId').val();
+	document.quarterTrainings.method = "post";
+	document.quarterTrainings.action = "freezeAndUnfreezeReport.html?<csrf:token uri='freezeAndUnfreezeReport.html'/>&componentId="+componentId+"&qprActivityId="+qprActivityId+"&quaterId="+quaterId+"&msg="+msg;
+	document.quarterTrainings.submit();
+}
+
 function isNumber(evt) {
     evt = (evt) ? evt : window.event;
     var charCode = (evt.which) ? evt.which : evt.keyCode;
@@ -436,12 +456,5 @@ function isNumber(evt) {
     return true;
 }
 
-function FreezeAndUnfreeze(msg){
-	var componentId=1;
-	var qprActivityId=$('#qprActivityId').val();
-	var quaterId = $('#qtrId').val();
-	document.quarterTrainings.method = "post";
-	document.quarterTrainings.action = "freezeAndUnfreezeReport.html?<csrf:token uri='freezeAndUnfreezeReport.html'/>&componentId="+componentId+"&qprActivityId="+qprActivityId+"&quaterId="+quaterId+"&msg="+msg;
-	document.quarterTrainings.submit();
-}
+
 </script>
