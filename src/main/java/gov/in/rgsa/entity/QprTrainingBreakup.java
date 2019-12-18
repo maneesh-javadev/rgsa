@@ -1,5 +1,7 @@
 package gov.in.rgsa.entity;
 
+import java.io.Serializable;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -16,10 +18,11 @@ import javax.persistence.Table;
  
 @NamedQuery(name="FETCH_BREAK_UP_BY_QPR_TRAINING_DETAIL_ID",query="from QprTrainingBreakup where quarterTrainingsDetails.qprTrainingsDetailsId=:qprTrainingsDetailsId order by qprTrainingBreakupId")
 
-public class QprTrainingBreakup {
-	
+public class QprTrainingBreakup implements Serializable {
+	private static final long serialVersionUID = 1L;
+
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@GeneratedValue(strategy=GenerationType.IDENTITY )
 	@Column(name="qpr_training_breakup_id")
 	private Integer qprTrainingBreakupId;
 	

@@ -1,5 +1,6 @@
 package gov.in.rgsa.entity;
 
+import java.io.Serializable;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -13,9 +14,11 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
+import javax.persistence.OrderBy;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
+import org.springframework.core.annotation.Order;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
@@ -23,12 +26,15 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name="qpr_trainings_details",schema="rgsa")
-public class QuarterTrainingsDetails {
-	
+public class QuarterTrainingsDetails implements Serializable {
+	 
+	private static final long serialVersionUID = 1L;
+
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	@Column(name="qpr_trainings_details_id")
-	private Integer qprTrainingsDetailsId;
+	@Column(name="qpr_trainings_details_id" )
+	@OrderBy(value = "ASC")
+	private Integer qprTrainingsDetailsId ;
 	
 	@JsonBackReference
 	@ManyToOne

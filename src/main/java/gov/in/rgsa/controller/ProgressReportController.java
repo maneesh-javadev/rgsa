@@ -2001,7 +2001,7 @@ public class ProgressReportController {
     	List<QuarterTrainings> quarterTrainingsList=(List<QuarterTrainings>)data.get("quarterTrainings");
     	if(quarterTrainingsList!=null && !quarterTrainingsList.isEmpty()) {
     		quarterTrainings=quarterTrainingsList.get(0);
-    		List<QuarterTrainingsDetails> details = new ArrayList<QuarterTrainingsDetails>();
+    		List<QuarterTrainingsDetails> details = new LinkedList<QuarterTrainingsDetails>();
     		details=quarterTrainings.getQuarterTrainingsDetailsList();
     		for(QuarterTrainingsDetails detail : details) {
     			if(CollectionUtils.isNotEmpty(detail.getQprTrainingBreakup())) {

@@ -850,12 +850,12 @@ public class ProgressReportServiceImpl implements ProgressReportService {
     	
     	List<FetchTrainingDetails> fetchTrainingDetailsList=new ArrayList<FetchTrainingDetails>();
 		FetchTraining fetchTraining=null;
-		Map<String,Object> data = new HashMap<>();
+		Map<String,Object> data = new LinkedHashMap<>();
 		Map<String,Object> params = null;
     	
 			fetchTraining=new FetchTraining();
 			fetchTrainingDetailsList=new ArrayList<FetchTrainingDetails>();
-			params = new HashMap<>();
+			params = new LinkedHashMap<>();
 			params.put("yearId", userPreference.getFinYearId());
 			params.put("versionId", userPreference.getPlanVersion());
 			params.put("stateCode", userPreference.getStateCode());
@@ -865,7 +865,7 @@ public class ProgressReportServiceImpl implements ProgressReportService {
 			if(fetchTrainingList!=null && !fetchTrainingList.isEmpty()) {
 				fetchTraining=fetchTrainingList.get(0);
 				Integer trainingActivityId=fetchTraining.getTrainingActivityId();
-				params = new HashMap<>();
+				params = new LinkedHashMap<>();
 				params.put("trainingActivityId", trainingActivityId);
 				params.put("isactive", Boolean.TRUE);
 				fetchTrainingDetailsList = commonRepository.findAll("Fetch_Training_Details", params);
@@ -873,7 +873,7 @@ public class ProgressReportServiceImpl implements ProgressReportService {
 				data.put("fetchTrainingDetailsListCEC", fetchTrainingDetailsList);
 			}
 			
-			 params = new HashMap<>();
+			 params = new LinkedHashMap<>();
 			 params.put("qtrId", qtrId);
 			 params.put("trainingActivityId", fetchTraining.getTrainingActivityId());
 			List<QuarterTrainings> quarterTrainingsList = commonRepository.findAll("FETCH_QPR_TRAINING_DETAIL_DEPEND_ON_QUATOR", params);
