@@ -12,6 +12,8 @@ if(quator_id > 2){
 }
 var fund_used='${FUND_USED_IN_OTHER_QUATOR}';
 $( document ).ready(function() {
+	$("#enablementStatus").val('0');
+	
 	if(qtr_1_2_filled == "false"){
 		alert('Please fill the quater 1 and 2 progress report first.');
 	}
@@ -41,7 +43,7 @@ function saveAndGetDataQtrRprt(msg){
 	 $('#qrtId').val(quaterId);
 	 $('#origin').val(msg);
 	 	document.qprEnablement.method = "post";
-		document.qprEnablement.action = "enablementQuaterly.html?<csrf:token uri='enablementQuaterly.html'/>";
+		document.qprEnablement.action = "enablementQuaterlySave.html?<csrf:token uri='enablementQuaterlySave.html'/>";
 		if(msg == 'save'){
 			for (var index = 0; index < (+$("#tbodyId tr").length -2); index++) {
 				if($('#expenditureIncurred_'+index).val() == "" || $('#expenditureIncurred_'+index).val() == null){
@@ -126,7 +128,7 @@ function FreezeAndUnfreeze(msg){
 			<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
 				<div class="card">
 					<div class="header">
-						<h2>e-Enablement Quarter Progress Report(GP Computerized) </h2>
+						<h2>e-Enablement Quarter Progress Report</h2>
 					</div>
 					<form:form method="post" name="qprEnablement"
 						action="enablementQuaterly.html" modelAttribute="Enablement">
@@ -143,7 +145,7 @@ function FreezeAndUnfreeze(msg){
 									</div>
 									<div align="center" class="col-lg-4">
 										<select id="quaterId" name="quarterDuration.qtrId"
-											class="form-control" onchange="saveAndGetDataQtrRprt('qtrChange');showDistrictDropDown()" >
+											class="form-control" onchange="showDistrictDropDown()" >
 											<option value="0">Select</option>
 											<c:choose>
 												<c:when test="${not empty Qpr_Enablement}">
@@ -161,6 +163,7 @@ function FreezeAndUnfreeze(msg){
 													</c:forEach>
 												</c:when>
 												<c:when test="${not empty SetNewQtrId1}">
+											
 													<c:forEach items="${QUATER_DETAILS}" var="duration">
 														<c:choose>
 															<c:when test="${duration.qtrId == SetNewQtrId1}">
@@ -185,10 +188,7 @@ function FreezeAndUnfreeze(msg){
 									</div>
 								</div>
 							</div>
-							<br>
-							<div id="mainDivId" style="display: none">
-							<c:choose>
-							<c:when test="${not empty eEnablementReportDto}">
+							
 							<div class="row clearfix">
 								<div class="form-group" id="districtDropDownId">
 									<div class="col-lg-2">
@@ -196,14 +196,14 @@ function FreezeAndUnfreeze(msg){
 									</div>
 									<div align="center" class="col-lg-4">
 										<select class="form-control" name="districtId"
-											multiple="multiple" id="districtId"
-											onchange="getSelelctedQtrRprt();">
+											onchange="saveAndGetDataQtrRprt();" id="districtId"
+											>
 											<option value="">Select</option>
 											
 												<c:forEach items="${LGD_DISTRICT}" var="district">
 													<c:choose>
 														<c:when
-															test="${district.districtCode == eEnablementGPs[0].districtCode}">
+															test="${district.districtCode == eEnablementReportDto[0].districtCode}">
 															<option value="${district.districtCode}"
 																selected="selected">${district.districtNameEnglish}</option>
 														</c:when>
@@ -218,6 +218,11 @@ function FreezeAndUnfreeze(msg){
 								</div>
 							</div>
 							<br>
+							<div id="mainDivId" style="display: none">
+							<c:choose>
+							<c:when test="${not empty eEnablementReportDto}">
+							
+							<br>
 							<c:choose>
 								<c:when test="${approved}">
 									<table class="table table-bordered">
@@ -225,7 +230,7 @@ function FreezeAndUnfreeze(msg){
 											<tr>
 												<th>
 													<div align="center">
-														<strong>GP Name</strong>
+														<strong>Gp Name.</strong>
 													</div>
 												</th>
 												
@@ -243,6 +248,11 @@ function FreezeAndUnfreeze(msg){
 												<th>
 													<div align="center">
 														<strong>Expenditure Incurred(in Rs.)</strong>
+													</div>
+												</th>
+												<th>
+													<div align="center">
+														<strong>Status</strong>
 													</div>
 												</th>
 											</tr>
@@ -278,24 +288,37 @@ function FreezeAndUnfreeze(msg){
 
 																	<input type="hidden" name="eEnablement.eEnablementId"
 															value="${Qpr_Enablement.eEnablement.eEnablementId}">
-														<%-- <input type="hidden" name="qprEEnablementId"
-															value="${Qpr_Enablement.qprEEnablementId}" id="qprActivityId"> --%>
+														 <input type="hidden" name="qprEEnablementId"
+															value="${Qpr_Enablement.qprEEnablementId}" id="qprActivityId"> 
 														<input type="hidden"
 															name="qprEnablementDetails[${count.index}].qprEEenablementDetailsId"
 															value="${EnablementDtlsList[count.index].qprEEenablementDetailsId}">
 														<input type="hidden"
 															name="qprEnablementDetails[${count.index}].localBodyCode"
 															value="${EnablementDtlsList[count.index].localBodyCode}">
+															<input type="hidden" id="enablementStatus_${count.index}"
+															
+															value="${EnablementDtlsList[count.index].enablementStatus}">
+															
 														<tr>
 															<td><div align="center"><strong>${eEnablementReportDto[count.index].localBodyNameEnglish}</strong></div></td>
 															<%-- <td><div align="center" id="noOfUnitCecId_${count.index}"><strong>${eEnablementReportDto[count.index].noOfUnit}</strong></div></td> --%>
-															<td><div align="center" id="fundCecId_${count.index}"><strong>${eEnablementReportDto[count.index].fund}</strong></div></td>
+															<td><div align="center" id="fundCecId_${count.index}"><strong>${eEnablementReportDto[count.index].unitCost}</strong></div></td>
 
 															<td><form:input class="form-control Align-Right"
 																path="qprEnablementDetails[${count.index}].expenditureIncurred"
 																value="${obj.expenditureIncurred}"
 																onkeyup="validateFundByAllocatedFund(${count.index});validateWithCorrespondingFund(${count.index});calTotalExpenditure()"
 																id="expenditureIncurred_${count.index}" required="required" readonly="${Qpr_Enablement.isFreeze}" /></td>
+																
+																<td><form:select id="enablementStatus"  path ="qprEnablementDetails[${count.index}].enablementStatus" readonly="${Qpr_Enablement.isFreeze}"  class="form-control">
+																<option value="-1">select</option>
+															
+                                                                   <option value="0">Tendering process</option>
+                                                                     <option value="1">Computer procured</option>
+                                                                    <option value="2">GP Computerized</option>
+                                                                     
+                                                                        </form:select></td>
 														</tr>
 													</c:forEach>
 													<tr>
@@ -340,7 +363,7 @@ function FreezeAndUnfreeze(msg){
 														<input type="hidden" name="eEnablement.eEnablementId"
 															value="${idEEnablement}">
 														<input type="hidden" name="qprEEnablementId"
-															value="${Qpr_Enablement.qprEEnablementId}" id="qprActivityId">	
+															value="${fetchQprEnablementId.qprEEnablementId}" id="qprActivityId">	
 														<input type="hidden"
 															name="qprEnablementDetails[${count.index}].localBodyCode"
 															value="${localbody.localBodyCode}">
@@ -352,13 +375,20 @@ function FreezeAndUnfreeze(msg){
 															<td><div align="center"><strong>${localbody.localBodyNameEnglish}</strong></div>
 															</td>
 															<%-- <td><div align="center" id="noOfUnitCecId_${count.index}"><strong>${localbody.noOfUnit}</strong></div></td> --%>
-															<td><div align="center" id="fundCecId_${count.index}"><strong>${localbody.fund}</strong></div></td>
-															<td><form:input
+															<td><div align="center" id="fundCecId_${count.index}"><strong>${localbody.unitCost}</strong></div></td>
+															<td><input
 																class="form-control Align-Right"
-																path="qprEnablementDetails[${count.index}].expenditureIncurred"
+																name="qprEnablementDetails[${count.index}].expenditureIncurred"
 																onkeyup="validateFundByAllocatedFund(${count.index});validateWithCorrespondingFund(${count.index});calTotalExpenditure()"
 																id="expenditureIncurred_${count.index}"
-																required="required" readonly="${Qpr_Enablement.isFreeze}" /></td>
+																required="required"  /></td>
+																<td><select name ="qprEnablementDetails[${count.index}].enablementStatus" class="form-control">
+																<option value="-1">select</option>
+                                                                   <option value="0">Tendering process</option>
+                                                                     <option value="1">Computer procured</option>
+                                                                    <option value="2">GP Computerized</option>
+                                                                      
+                                                                        </select></td>
 														</tr>
 													</c:forEach>
 													<tr>
@@ -376,14 +406,14 @@ function FreezeAndUnfreeze(msg){
 																		disabled="disabled" /></td>
 																</tr>
 															</c:when>
-												<c:otherwise>
+											<%-- 	<c:otherwise>
 													<div class="form-group">
 														<div align="center" class="Alert">
 															<i class="fa fa-meh-o fa-lg" aria-hidden="true"></i><span>
 																Oops! Fund is not allocated for this component.</span><br />
 														</div>
 													</div>
-												</c:otherwise>
+												</c:otherwise> --%>
 											</c:choose>
 										</tbody>
 									</table>
@@ -396,13 +426,14 @@ function FreezeAndUnfreeze(msg){
 								</c:otherwise>
 							</c:choose>
 							</c:when>
-							<c:otherwise>
+							<c:otherwise><%-- <c:when test="${not empty eEnablementReportDto}">
 									<div class="form-group">
 										<div align="center" class="Alert">
 											<i class="fa fa-meh-o fa-lg" aria-hidden="true"></i><span>
 												Oops! No record is available for this district.</span><br />
 										</div>
 									</div>
+									</c:when> --%>
 								</c:otherwise>
 							</c:choose>
 							<c:choose>

@@ -432,18 +432,16 @@ public class ProgressReportServiceImpl implements ProgressReportService {
         saveQprWiseFundData(userPreference.getStateCode(), userPreference.getFinYearId(), qprCbActivity.getQuarterDuration().getQtrId(), 13);
     }
 
-    @Override
-    public QprEnablement fetchQprEnablement(Integer eEnablementId, int quarterId) {
-        Map<String, Object> params = new HashMap<String, Object>();
-        params.put("eEnablementId", eEnablementId);
-        params.put("qtrId", quarterId);
-
-        List<QprEnablement> qprEnablement = commonRepository.findAll("FETCH_QPR_ENABLEMENT_REPORT_DETAILS", params);
-        if (!qprEnablement.isEmpty() && qprEnablement.get(0) != null) {
-            return qprEnablement.get(0);
-        } else
-            return null;
-    }
+	/*
+	 * @Override public QprEnablement fetchQprEnablement(Integer eEnablementId, int
+	 * quarterId) { Map<String, Object> params = new HashMap<String, Object>();
+	 * params.put("eEnablementId", eEnablementId); params.put("qtrId", quarterId);
+	 * 
+	 * List<QprEnablement> qprEnablement =
+	 * commonRepository.findAll("FETCH_QPR_ENABLEMENT_REPORT_DETAILS", params); if
+	 * (!qprEnablement.isEmpty() && qprEnablement.get(0) != null) { return
+	 * qprEnablement.get(0); } else return null; }
+	 */
 
     @Override
     public QprEnablement fetchEEnablementProgressToGeReportId1(Integer id) {
@@ -578,12 +576,12 @@ public class ProgressReportServiceImpl implements ProgressReportService {
         return commonRepository.findAll("FETCH_QUATOR_WISE_FUND", params);
     }
 
-    @Override
-    public List<QprEnablementDetails> fetchQprEnablementDetails(Integer qprEEnablementId) {
-        Map<String, Object> params = new HashMap<>();
-        params.put("qprEEnablementId", qprEEnablementId);
-        return commonRepository.findAll("FETCH_EENABLEMENT_QPR_DETAILS", params);
-    }
+	/*
+	 * @Override public List<QprEnablementDetails> fetchQprEnablementDetails(Integer
+	 * qprEEnablementId) { Map<String, Object> params = new HashMap<>();
+	 * params.put("qprEEnablementId", qprEEnablementId); return
+	 * commonRepository.findAll("FETCH_EENABLEMENT_QPR_DETAILS", params); }
+	 */
 
     @Override
     public List<QuaterWiseFund> fetchTotalQuaterWiseFundData(Integer stateCode, int componentId) {
@@ -1137,6 +1135,44 @@ public class ProgressReportServiceImpl implements ProgressReportService {
 		
 		
 	}
-    
+	 @Override
+	    public List<QprEnablementDetails> fetchQprEnablementDetails(Integer qprEEnablementId ,int quarterId ,int dlc) {
+	        Map<String, Object> params = new HashMap<>();
+	        params.put("qprEEnablementId", qprEEnablementId);
+	        //params.put("quarterId", quarterId);
+	        params.put("dlc", dlc);
+	        return commonRepository.findAll("FETCH_EENABLEMENT_QPR_DETAILS", params);
+	    }
+		
+		
+		
+		 @Override
+	    public QprEnablement fetchQprEnablement(Integer eEnablementId, int quarterId ,int districtCode) {
+	        Map<String, Object> params = new HashMap<String, Object>();
+	        params.put("eEnablementId", eEnablementId);
+	        params.put("qtrId", quarterId);
+	        
+	        params.put("districtCode", districtCode);
+	        List<QprEnablement> qprEnablement = commonRepository.findAll("FETCH_QPR_ENABLEMENT_REPORT_DETAILS", params);
+	        if (!qprEnablement.isEmpty() && qprEnablement.get(0) != null) {
+	            return qprEnablement.get(0);
+	        } else
+	            return null;
+	    }
+		
+		 @Override
+		    public QprEnablement fetchQprEnablementId(Integer eEnablementId, int quarterId ) {
+		        Map<String, Object> params = new HashMap<String, Object>();
+		        params.put("eEnablementId", eEnablementId);
+		        params.put("qtrId", quarterId);
+		        
+		        
+		        List<QprEnablement> qprEnablement = commonRepository.findAll("FETCH_QPR_ENABLEMENT_REPORT_DETAILS_ID", params);
+		        if (!qprEnablement.isEmpty() && qprEnablement.get(0) != null) {
+		            return qprEnablement.get(0);
+		        } else
+		            return null;
+		    }
+		
 
 }
