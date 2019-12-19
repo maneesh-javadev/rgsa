@@ -247,7 +247,13 @@ capacityBuildingGPs.controller("capacityBuildingGPsController",['$scope','capaci
 		 
 		 tr=$("<TR/>");
 		 
+		 th=createLabel("Action");
+		 tr.append(th);
+		 
 		 th=createLabel("Garam Panchayat");
+		 tr.append(th);
+		 
+		/* th=createLabel("Garam Panchayat");
 		 tr.append(th);
 		 
 		 th=createLabel("Garam Panchayat");
@@ -257,13 +263,7 @@ capacityBuildingGPs.controller("capacityBuildingGPsController",['$scope','capaci
 		 tr.append(th);
 		 
 		 th=createLabel("Garam Panchayat");
-		 tr.append(th);
-		 
-		 th=createLabel("Garam Panchayat");
-		 tr.append(th);
-		 
-		 th=createLabel("Garam Panchayat");
-		 tr.append(th);
+		 tr.append(th);*/
 		 
 		
 		 
@@ -272,10 +272,11 @@ capacityBuildingGPs.controller("capacityBuildingGPsController",['$scope','capaci
 		 table.append(thead);
 		 
 		 tbody=$("<tbody/>");
-		 
+		
+		 tr=$("<TR/>");
 		 angular.forEach($scope.lbCodes,function(item,key){
 			
-			 if(key>0 && key%6==0){
+			/* if(key>0 && key%6==0){
 				 tbody.append(tr);
 				 table.append(tbody);
 				}
@@ -284,6 +285,11 @@ capacityBuildingGPs.controller("capacityBuildingGPsController",['$scope','capaci
 				tr=$("<TR/>");
 			}
 			 
+*/
+			 tbody.append(tr);
+			 table.append(tbody);
+			 
+			 var tdnext;
 			 
 			 td=$("<TD/>");
 			 templateInput = $("<input/>");
@@ -300,19 +306,18 @@ capacityBuildingGPs.controller("capacityBuildingGPsController",['$scope','capaci
 			 }
 			 templateInput.attr("id", "chkEntity_"+$scope.selectDistrictCode.districtCode+"_"+item[0]);
 			 
+			 //td=$("<td>"+templateInput+"</td>");
 			
 			 td.append(templateInput);
-			 templateLabel = $("<label/>");
-			 templateLabel.html(item[1]);
-			 td.append(templateLabel);
 			 tr.append(td);
-			 
+			 //templateLabel = $("<label/>");
+			 //templateLabel.html(item[1]);
+			 //td.append(templateLabel);
+			 tdnext=$("<td>"+item[1]+"</td>");
+			 tr.append(tdnext);
+			 tr=$("<TR/>");
 			
-			 
 			
-			
-			 
-			 
 			 
 			 
 		});
@@ -430,7 +435,7 @@ capacityBuildingGPs.controller("capacityBuildingGPsController",['$scope','capaci
 	        "lengthMenu": [[ 25,50,100, -1], [25, 50,100, "All"]],
 	         
 	    });	
-		$('INPUT[name=chkEntity]').change(function(){
+		$('body').on('change','INPUT[name=chkEntity]',function(){
 				idArr=$(this).attr('id').split("_");
 			
 			
