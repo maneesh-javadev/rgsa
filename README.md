@@ -22,11 +22,12 @@
 - [ ] Get the code (***change as per your codendi username***), enter the codendi password if prompted:
 
   ```bash
-  git clone git@10.1.11.141:kkundan/rgsa.git
+  git clone git@10.248.213.226:kkundan/rgsa.git
   # if ssh times out use:
-  # git clone http://10.1.11.141/kkundan/rgsa.git 
+  # git clone http://10.248.213.226/kkundan/rgsa.git 
   cd rgsa
   git checkout dev
+  git submodule update --init --recursive
   ```
 
 - [ ] To create a new branch use the following command assuming your branch name is `features/cec_dashboard`
@@ -45,6 +46,30 @@
 ##### Prerequisites:
 
 - [ ] Find all `*.properties.example` files mostly located in the `src/main/resources/` directory. Copy the file and paste it again by removing `.example` extension. Example `application.properties.example` has to be renamed as `application.properties`. Update the values as per your build environment.
+
+- [ ] Checklist:
+
+  + `./src/main/resources/config/application-security.properties.example`
+  + `./src/main/resources/config/application.properties.example`
+  + `./src/main/resources/log4j.properties.example`
+  + `./src/main/webapp/WEB-INF/configs/Owasp.CsrfGuard.properties.template`
+
+- [ ] To auto generate your `Owasp.CsrfGuard.properties ` grab the `annoter-tool.jar` and run following command
+
+  ```bash
+  # Linux
+  COLLECTION_DIR="/home/kyk/Documents/Progs/Java/deploy/rgsa"
+  CODE_DIR="${COLLECTION_DIR}/live/rgsa"
+  java -jar "${COLLECTION_DIR}/deploy/tool/annoter-tool.jar" -tool=owasp -mount="/rgsa/" -basedir="${CODE_DIR}/src/main/java/gov/in/rgsa/controller" -t="${CODE_DIR}/src/main/webapp/WEB-INF/configs/Owasp.CsrfGuard.properties.template" -o="${CODE_DIR}/src/main/webapp/WEB-INF/configs/Owasp.CsrfGuard.properties" 2>&1 > /dev/null
+  
+  # Windows (Change path as per system also cd to root dir i.e. rgsa)
+  
+  java -jar "D:\annoter-tool.jar" -tool=owasp -mount="/rgsa/" -basedir="src\main\java\gov\in\rgsa\controller" -t="src\main\webapp\WEB-INF\configs\Owasp.CsrfGuard.properties.template" -o="src\main\webapp\WEB-INF\configs\Owasp.CsrfGuard.properties" > nul 2>&1
+  
+  ```
+
+  
+
 - [ ] To compile and run the code issue following command from root directory (rgsa):
   `mvn spring-boot:run`
 
