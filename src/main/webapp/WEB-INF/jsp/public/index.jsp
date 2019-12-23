@@ -98,7 +98,7 @@
 							<div class="sigle_counter_item">
 								<div class="counter_text pinkbg">
 									<a href="#" >
-										<p class="underline ">Panchayat Stakeholders Trained</p>	<span class="counter ng-binding" >0000</span>
+										<p class="underline ">Panchayat Stakeholders Trained</p>	<span class="counter ng-binding" >0</span>
 									</a>
 								</div>
 							</div>
@@ -146,7 +146,7 @@
 							<div class="sigle_counter_item">
 								<div class="counter_text lightredbg">
 									<a href="#">
-										<p class="underline ">Technical support to GPs</p>	<span class="counter ng-binding" >0000</span>
+										<p class="underline ">Technical support to GPs</p>	<span class="counter ng-binding" >0</span>
 									</a>
 								</div>
 							</div>
@@ -169,7 +169,7 @@
 								<div class="row">
 									<div class="col-sm-12">
 										<a href="#">
-											<br />	<span class="counter ng-binding" >0000</span>
+											<br />	<span class="counter ng-binding" id="withinStateId">0000</span>
 											<p>Within State</p>
 										</a>
 									</div>
@@ -177,7 +177,7 @@
 								<div class="row">
 									<div class="col-sm-12">
 										<a href="#">
-											<br />	<span class="counter ng-binding" >0000</span>
+											<br />	<span class="counter ng-binding" id="OutsideStateId" >0000</span>
 											<p>Outside State</p>
 										</a>
 									</div>
@@ -193,21 +193,21 @@
 								<p class="underline ">Support for Panchayat Assets</p>
 								<div class="row">
 									<div class="col-lg-12">
-										<a href="#">	<span class="counter ng-binding" >0000</span>
+										<a href="#">	<span class="counter ng-binding" id="bhawansConstructedId" >0000</span>
 											<p>Bhawans Constructed</p>
 										</a>
 									</div>
 								</div>
 								<div class="row">
 									<div class="col-lg-12">
-										<a href="#">	<span class="counter ng-binding" >0000</span>
+										<a href="#">	<span class="counter ng-binding" id="bhawansRepairedId" >0000</span>
 											<p>Bhawans Repaired</p>
 										</a>
 									</div>
 								</div>
 								<div class="row">
 									<div class="col-lg-12">
-										<a href="#">	<span class="counter ng-binding" >0000</span>
+										<a href="#">	<span class="counter ng-binding" id="CSCsId">0000</span>
 											<p>CSCs co-located in Bhawans</p>
 										</a>
 									</div>
@@ -223,21 +223,21 @@
 								<p class="underline ">e- enablement of Panchayats</p>
 								<div class="row">
 									<div class="col-lg-12">
-										<a href="#">	<span class="counter ng-binding" data-ng-value="0000">0000</span>
+										<a href="#">	<span class="counter ng-binding" data-ng-value="0000" id="eSPMUId">0000</span>
 											<p>e- SPMU</p>
 										</a>
 									</div>
 								</div>
 								<div class="row">
 									<div class="col-lg-12">
-										<a href="#">	<span class="counter ng-binding" >0000</span>
+										<a href="#">	<span class="counter ng-binding" id="eDPMUId">0000</span>
 											<p>e- DPMU</p>
 										</a>
 									</div>
 								</div>
 								<div class="row">
 									<div class="col-lg-12">
-										<a href="#">	<span class="counter ng-binding" >0000</span>
+										<a href="#">	<span class="counter ng-binding" id="eComputerizationId" >0000</span>
 											<p>Computerization</p>
 										</a>
 									</div>
@@ -397,6 +397,14 @@ function voteViaAjax(detailId){
 	$("#basicOrientationTrainingofERId").html(data[0]);
 	$("#refreshertraningtoERId").html(data[1]);
 	$("#shg_pri_convergenceID").html(data[2]);
+	$("#eSPMUId").html(data[3]);
+	$("#eDPMUId").html(data[4]);
+	$("#eComputerizationId").html(data[5]);
+	$("#bhawansConstructedId").html(data[6]);
+	$("#bhawansRepairedId").html(data[7]);
+	$("#CSCsId").html(data[8]);
+	$("#withinStateId").html(data[9]);
+	$("#OutsideStateId").html(data[10]);
    },
    error : function(e) {
     console.log(e);
