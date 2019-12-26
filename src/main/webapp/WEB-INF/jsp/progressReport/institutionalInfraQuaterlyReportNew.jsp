@@ -463,7 +463,7 @@
 								 			<option value="0">Select Status</option>
 											<c:forEach items="${InstInfraStatus}" var="obj">
 												<c:if test="${obj.trainingInstitueType.trainingInstitueTypeId==bhawanDto.institutionalActivityTypeId }">
-													<option  value="${obj.instInfraStatusId}" >${obj.instInfraStatusName}</option>
+													<option  value="${obj.instInfraStatusId} selected =selected " >${obj.instInfraStatusName}</option>
 												</c:if>
 											</c:forEach>
 										</form:select>
