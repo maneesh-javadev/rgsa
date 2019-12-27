@@ -33,8 +33,11 @@ for (var i = 0; i < NBdprc; i++) {
 
 function get_quater_wise_data()
 {
+	
+	var qprInstInfraId=$('#qprInstInfraId').val();
+	
 	document.qprInstitutionalInfrastructure.method = "post";
-	document.qprInstitutionalInfrastructure.action = "fetchDetailsForInstitutionalInfraProgressReport.html?<csrf:token uri='fetchDetailsForInstitutionalInfraProgressReport.html'/>";
+	document.qprInstitutionalInfrastructure.action = "fetchDetailsForInstitutionalInfraProgressReport.html?<csrf:token uri='fetchDetailsForInstitutionalInfraProgressReport.html'/>&qprInstInfraId="+qprInstInfraId;
 	document.qprInstitutionalInfrastructure.submit();
 }
 

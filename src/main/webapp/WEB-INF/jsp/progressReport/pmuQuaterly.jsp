@@ -236,7 +236,7 @@ function FreezeAndUnfreeze(msg){
 												<th><div align="center">Type of Center</div></th>
 												<th><div align="center">Faculty and Staff</div></th>
 												<th><div align="center">No. of Units Approved</div></th>
-												<th><div align="center">Unit Cost Approved</div></th>
+												<!-- <th><div align="center">Unit Cost Approved</div></th> -->
 												<th><div align="center">Fund Sanctioned</div></th>
 												<th><div align="center">No. of units
 														completed/Persons involved</div></th>
@@ -268,7 +268,7 @@ function FreezeAndUnfreeze(msg){
 													<td align="center"><strong>${obj.pmuActivityType.pmuType.pmuTypeName}</strong></td>
 													<td align="center"><strong>${obj.pmuActivityType.pmuActivityName}</strong></td>
 													<td><div id="noOfUnitCecId_${count.index}" align="center"><strong>${obj.noOfUnits}</strong></div></td>
-													<td><div align="center"><strong>${obj.unitCost}</strong></div></td>
+													
 													<td><div id="fundCecId_${count.index}" align="center"><strong>${obj.fund}</strong></div></td>
 													<c:choose>
 														<c:when test="${not empty PMU_PROGRESS}">
@@ -334,7 +334,7 @@ function FreezeAndUnfreeze(msg){
 											</c:forEach>
 												<tr>
 											<th colspan="2"><div align="center">Total Expenditure Incurred</div></th>
-											<td colspan="4"></td>
+											<td colspan="2"></td>
 											<td><input type="text" id="totalExpenditureId"  class="form-control validate Align-Right" disabled="disabled" style="text-align: right"/></td>
 										</tr>
 										</tbody>

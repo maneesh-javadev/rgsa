@@ -698,12 +698,17 @@ public class ProgressReportController {
             List<AdministrativeTechnicalDetailProgress> adminTechReportDetailOfRestQuater = adminTechSupportService
                     .getadminTechProgressActBasedOnActIdAndQtrId(
                             administrativeTechnicalApproved.get(0).getAdministrativeTechnicalSupportId(), quarterId);
+            
             if (adminTechReportDetailOfRestQuater != null) {
+            	Integer getExpenditureDetailsOfQpr = adminTechSupportService.getExpenditureDetailsOfQpr(administrativeTechnicalApproved.get(0).getAdministrativeTechnicalSupportId(), quarterId);
+
                 Collections.sort(adminTechReportDetailOfRestQuater,
                         (o1, o2) -> o1.getAtsDetailsProgressId() - o2.getAtsDetailsProgressId());
                 detailForTotalNoOfUnit = getTotalUnitAndExpIncurredInAllQtrAdminTech(detailForTotalNoOfUnit,
                         adminTechReportDetailOfRestQuater);
                 model.addAttribute("DEATIL_FOR_TOTAL_NO_OF_UNIT", detailForTotalNoOfUnit);
+                model.addAttribute("GET_EXPENDITURE_DETAILS_OF_QPR", getExpenditureDetailsOfQpr);
+                
             } else {
                 model.addAttribute("DEATIL_FOR_TOTAL_NO_OF_UNIT", null);
             }
@@ -1800,6 +1805,7 @@ public class ProgressReportController {
 
             if (qprInstitutionalInfrastructureList != null && !qprInstitutionalInfrastructureList.isEmpty()) {
                 qprInstitutionalInfrastructure = qprInstitutionalInfrastructureList.get(0);
+                model.addAttribute("qprInstInfraId", qprInstitutionalInfrastructureList.get(0).getQprInstInfraId());
                 model.addAttribute("DISABLE_FREEZE", false);
             } else {
                 qprInstitutionalInfrastructure = new QprInstitutionalInfrastructure();

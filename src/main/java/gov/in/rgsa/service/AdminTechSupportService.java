@@ -23,5 +23,8 @@ public interface AdminTechSupportService {
 
 	public List<AdministrativeTechnicalDetailProgress> getadminTechProgressActBasedOnActIdAndQtrId(
 			Integer administrativeTechnicalSupportId, int quarterId);
+	
+	public Integer getExpenditureDetailsOfQpr(
+			Integer administrativeTechnicalSupportId, int quarterId);
 }
 	

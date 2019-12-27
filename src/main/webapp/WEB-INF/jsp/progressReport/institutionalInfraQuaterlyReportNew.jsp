@@ -24,13 +24,12 @@
 						<form:form method="POST" name="qprInstitutionalInfrastructure" action="saveQprInstitutionalInfrastructureData.html"
 						modelAttribute="QPR_INSTITUTIONALINFRAQUATERLY" enctype="multipart/form-data" >
 						<input type="hidden" name="<csrf:token-name/>"value="<csrf:token-value uri="saveQprInstitutionalInfrastructureData.html" />" />
-						<input type="hidden" name="qprInstInfraId" value="${QPR_INSTITUTIONALINFRAQUATERLY.qprInstitutionalInfraDetails[0].qprInstitutionalInfrastructure.qprInstInfraId}" id="qprInstInfraId" />
 						<spring:bind path="QPR_INSTITUTIONALINFRAQUATERLY.institutionalInfraActivivtyId" >
 										<input type="hidden" name="${status.expression}" value="${status.value}" /> 
 						</spring:bind>
-						 <%-- <spring:bind path="QPR_INSTITUTIONALINFRAQUATERLY.qprInstInfraId" >
-										<input type="hidden" name="${status.expression}" value="${status.value}" /> 
-						</spring:bind> --%>
+						 
+						 
+					<input type="hidden" name="qprInstInfraId" value="${qprInstInfraId}" id="qprInstInfraId" />
 										
 					 
  					

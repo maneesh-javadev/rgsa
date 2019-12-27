@@ -285,4 +285,32 @@ public AdministrativeTechnicalSupport fetchAdministrativeTechnicalSupport(final 
 			return null;
 		}
 	}
-}
+
+	@Override
+	public Integer getExpenditureDetailsOfQpr(Integer administrativeTechnicalSupportId, int quarterId) {
+		 Integer data=null;
+		 String sum =null;
+			try {
+			   StringBuilder  query=new StringBuilder();
+			   query.append("select sum(expenditure_incurred) from rgsa.qpr_ats qa inner join rgsa.qpr_ats_details qad  on qa.qpr_ats_id=qad.qpr_ats_id");
+			 	   query.append(" where qa.qtr_id !="+quarterId+" ");
+			 	  query.append(" and qa.administrative_technical_support_id= "+administrativeTechnicalSupportId+" ");
+			 	  
+			  List<Object> list= commonRepository.findAllByNativeQuery(query.toString(), null);
+			  if( list.get(0)!=null && !"null".equals(list.get(0)) )
+			  {
+				  sum= String.valueOf(list.get(0));
+				  data =Integer.valueOf(sum);
+			  }else {
+				  data=0;
+			  }
+			  
+			 
+				 
+			}catch(Exception e) {e.printStackTrace(); }
+			
+			return data;
+		}
+
+	}
+
