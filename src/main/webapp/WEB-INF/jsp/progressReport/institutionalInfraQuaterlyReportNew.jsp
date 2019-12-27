@@ -24,13 +24,16 @@
 						<form:form method="POST" name="qprInstitutionalInfrastructure" action="saveQprInstitutionalInfrastructureData.html"
 						modelAttribute="QPR_INSTITUTIONALINFRAQUATERLY" enctype="multipart/form-data" >
 						<input type="hidden" name="<csrf:token-name/>"value="<csrf:token-value uri="saveQprInstitutionalInfrastructureData.html" />" />
+						<input type="hidden" name="qprInstInfraId" value="${QPR_INSTITUTIONALINFRAQUATERLY.qprInstitutionalInfraDetails[0].qprInstitutionalInfrastructure.qprInstInfraId}" id="qprInstInfraId" />
 						<spring:bind path="QPR_INSTITUTIONALINFRAQUATERLY.institutionalInfraActivivtyId" >
 										<input type="hidden" name="${status.expression}" value="${status.value}" /> 
 						</spring:bind>
-						<spring:bind path="QPR_INSTITUTIONALINFRAQUATERLY.qprInstInfraId" >
-										<input type="hidden" name="${status.expression}" value="${status.value}" id="qprActivityId" /> 
-						</spring:bind>
-						
+						 <%-- <spring:bind path="QPR_INSTITUTIONALINFRAQUATERLY.qprInstInfraId" >
+										<input type="hidden" name="${status.expression}" value="${status.value}" /> 
+						</spring:bind> --%>
+										
+					 
+ 					
 						<span class="errormsg show" ><c:out value='${isError}' /></span>
 						
 						
@@ -102,7 +105,7 @@
 										</th> 
 									</tr>
 							  </thead>
-                              <tbody>
+                              <tbody id="tbodyId">
                               <c:set var="mindex" value="0" />
                               <c:set var="sindex" value="0" />
                               <c:forEach items="${instInfraStateDataForProgressReport}" var="bhawanDto" varStatus="count">
@@ -135,7 +138,17 @@
 								 			<form:option value="0">Select Status</form:option>
 											<c:forEach items="${InstInfraStatus}" var="obj">
 												<c:if test="${obj.trainingInstitueType.trainingInstitueTypeId==bhawanDto.institutionalActivityTypeId }">
-													<form:option  value="${obj.instInfraStatusId}" >${obj.instInfraStatusName}</form:option>
+													
+													
+													<c:choose>
+												<c:when test="${QPR_INSTITUTIONALINFRAQUATERLY.qprInstitutionalInfraDetails[mindex].instInfraStatusId == obj.instInfraStatusId}">
+												<form:option value="${obj.instInfraStatusId}" selected="selected">${obj.instInfraStatusName}</form:option>
+												</c:when>
+												<c:otherwise>
+												<form:option  value="${obj.instInfraStatusId}" >${obj.instInfraStatusName}</form:option>
+												</c:otherwise>
+												</c:choose>
+													
 												</c:if>
 											</c:forEach>
 										</form:select>
@@ -269,10 +282,11 @@
 										</th> 
 									</tr>
 							  </thead>
-                              <tbody>
+                              <tbody id=tbodyIdNdprc">
                                   <c:set var="sindex" value="0" />
-                               	    <c:forEach items="${instInfraStateDataForProgressReport}" var="bhawanDto" varStatus="count">
+                               	    <c:forEach items="${instInfraStateDataForProgressReport}" var="bhawanDto" >
                        		<c:if test="${bhawanDto.workType eq 'N' and bhawanDto.institutionalActivityTypeId==4}">
+                       		
 								<tr>
 								<td align="center">
 										<strong>${bhawanDto.districtName}</strong>
@@ -291,16 +305,24 @@
 										<spring:bind path="QPR_INSTITUTIONALINFRAQUATERLY.qprInstitutionalInfraDetails[${mindex}].fileNode.fileNodeId" >
 										<input type="hidden" name="${status.expression}" value="${status.value}" /> 
 										</spring:bind>
- 							 				
+ 							 			
 								</td>
 								<td align="center">
 									<spring:bind path="QPR_INSTITUTIONALINFRAQUATERLY.qprInstitutionalInfraDetails[${mindex}].instInfraStatusId" >
-											<form:select id="instInfraStatusId${mindex}"
+											<form:select id="instInfraStatusIdNdprc${mindex}"
 											 class="form-control"  path="${status.expression}" disabled="${QPR_INSTITUTIONALINFRAQUATERLY.isFreeze}">
 								 			<option value="0">Select Status</option>
-											<c:forEach items="${InstInfraStatus}" var="obj">
+											<c:forEach items="${InstInfraStatus}" var="obj" varStatus="count">
 												<c:if test="${obj.trainingInstitueType.trainingInstitueTypeId==bhawanDto.institutionalActivityTypeId }">
-													<option  value="${obj.instInfraStatusId}" >${obj.instInfraStatusName}</option>
+												<c:choose>
+												<c:when test="${QPR_INSTITUTIONALINFRAQUATERLY.qprInstitutionalInfraDetails[mindex].instInfraStatusId == obj.instInfraStatusId}">
+													<option  value="${obj.instInfraStatusId}" selected="selected" >${obj.instInfraStatusName}</option>
+												</c:when>
+												<c:otherwise>
+												<option  value="${obj.instInfraStatusId}" >${obj.instInfraStatusName}</option>
+												</c:otherwise>
+												</c:choose>
+													
 												</c:if>
 											</c:forEach>
 										</form:select>
@@ -431,7 +453,7 @@
 										</th> 
 									</tr>
 										</thead>
-                              <tbody>
+                              <tbody id="tbodyIdCsprc">
                                   <c:set var="sindex" value="0" />
                                 <c:forEach items="${instInfraStateDataForProgressReport}" var="bhawanDto" varStatus="count">
                        		<c:if test="${bhawanDto.workType eq 'C' and bhawanDto.institutionalActivityTypeId==2}">
@@ -454,6 +476,10 @@
 										<input type="hidden" name="${status.expression}" value="${status.value}" /> 
 										</spring:bind>
 										
+										<spring:bind path="QPR_INSTITUTIONALINFRAQUATERLY.qprInstitutionalInfraDetails[${mindex}].fileNode.fileNodeId" >
+										<input type="hidden" name="${status.expression}" value="${status.value}" /> 
+										</spring:bind>
+										
  							 				
 								</td>
 								<td align="center">
@@ -463,7 +489,15 @@
 								 			<option value="0">Select Status</option>
 											<c:forEach items="${InstInfraStatus}" var="obj">
 												<c:if test="${obj.trainingInstitueType.trainingInstitueTypeId==bhawanDto.institutionalActivityTypeId }">
-													<option  value="${obj.instInfraStatusId}" >${obj.instInfraStatusName}</option>
+												<c:choose>
+												<c:when test="${QPR_INSTITUTIONALINFRAQUATERLY.qprInstitutionalInfraDetails[sindex].instInfraStatusId == obj.instInfraStatusId}">
+												<option  value="${obj.instInfraStatusId} selected ="selected" >${obj.instInfraStatusName}</option>
+												</c:when>
+												<c:otherwise>
+												<option  value="${obj.instInfraStatusId}  " >${obj.instInfraStatusName}</option>
+												</c:otherwise>
+												</c:choose>
+												
 												</c:if>
 											</c:forEach>
 										</form:select>
@@ -567,7 +601,7 @@
 										</th> 
 									</tr>
 										</thead>
-                              <tbody>
+                              <tbody id="tbodyId">
                                     <c:set var="sindex" value="0" />
 									<c:forEach items="${instInfraStateDataForProgressReport}" var="bhawanDto" varStatus="count">
                        		<c:if test="${bhawanDto.workType eq 'C' and bhawanDto.institutionalActivityTypeId==4}">
@@ -599,7 +633,17 @@
 								 			<option value="0">Select Status</option>
 											<c:forEach items="${InstInfraStatus}" var="obj">
 												<c:if test="${obj.trainingInstitueType.trainingInstitueTypeId==bhawanDto.institutionalActivityTypeId }">
-													<option  value="${obj.instInfraStatusId}" >${obj.instInfraStatusName}</option>
+													
+													<c:choose>
+												<c:when test="${QPR_INSTITUTIONALINFRAQUATERLY.qprInstitutionalInfraDetails[mindex].instInfraStatusId == obj.instInfraStatusId}">
+												<option  value="${obj.instInfraStatusId}" selected="selected">${obj.instInfraStatusName}</option>
+												</c:when>
+												<c:otherwise>
+												<option  value="${obj.instInfraStatusId}" >${obj.instInfraStatusName}</option>
+												</c:otherwise>
+												</c:choose>
+													
+													
 												</c:if>
 											</c:forEach>
 										</form:select>

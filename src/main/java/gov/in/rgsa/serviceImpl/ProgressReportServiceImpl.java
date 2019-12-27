@@ -413,9 +413,10 @@ public class ProgressReportServiceImpl implements ProgressReportService {
         qprCbActivity.setIsFreeze(false);
 
         List<QprCbActivityDetails> qprCbActivityDetails = qprCbActivity.getQprCbActivityDetails();
-        for (QprCbActivityDetails details : qprCbActivityDetails) {
+       for (QprCbActivityDetails details : qprCbActivityDetails) {
             details.setQprCbActivity(qprCbActivity);
         }
+     
         qprCbActivity.getQprCbActivityDetails().get(0).getQprTnaTrgEvaluation().setCbActivityDetails(qprCbActivityDetails.get(0));
         qprCbActivity.getQprCbActivityDetails().get(1).getQprTrgMaterialAndModule().setCbActivityDetails(qprCbActivityDetails.get(1));
         qprCbActivity.getQprCbActivityDetails().get(2).getQprTrgMaterialAndModule().setCbActivityDetails(qprCbActivityDetails.get(2));

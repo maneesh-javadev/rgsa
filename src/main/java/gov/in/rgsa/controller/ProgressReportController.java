@@ -806,14 +806,14 @@ public class ProgressReportController {
     @RequestMapping(value = "additionalfacultyProgress", method = RequestMethod.GET)
     public String qprGetFormAdditionalFacalltyHr(@ModelAttribute("HR_SUPPORT_SPRC_DPRC_QUATER") AdditionalFacultyProgress additionalFacultyProgress, Model model) {
         int quarterId = 0;
-        int installmentNo = (quarterId < 3) ? 1 : 2; // installment number for qtrId 1 & 2 = 1 and 3 & 4 = 2
+       
         Map<String, Object> map = new HashMap<String, Object>();
         if (additionalFacultyProgress.getQtrIdJsp3() != null) {
             quarterId = additionalFacultyProgress.getQtrIdJsp3();
         } else {
             quarterId = 0;
         }
-        
+        int installmentNo = (quarterId < 3) ? 1 : 2; // installment number for qtrId 1 & 2 = 1 and 3 & 4 = 2
         List<Domains> domains=new ArrayList<>();
         List<District> districtName=new ArrayList<>();
         List<StateAllocation> stateAllocation = new ArrayList<>();
@@ -830,7 +830,9 @@ public class ProgressReportController {
             totalQuatorWiseFund = progressReportService.fetchTotalQuaterWiseFundData(userPreference.getStateCode(), 14);
             if (CollectionUtils.isNotEmpty(totalQuatorWiseFund)) {
                 map = calTotalFundUsedInFirstInstallHRSprcDprc(totalQuatorWiseFund);
-                if(((Integer)map.get("total_sprc_subcomp") + (Integer)map.get("total_dprc_subcomp")) == 0) {
+                String sprcAnddprs =String.valueOf((Double)map.get("total_sprc_subcomp")+ (Double)map.get("total_dprc_subcomp"));
+               
+                if("0.0".equals( sprcAnddprs)){
                 	model.addAttribute("QTR_ID", 0);
     				model.addAttribute("QTR_ONE_TWO_FILLED", false);
     				return ADDITIONAL_FACULTY_QUADERLY;
