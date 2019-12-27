@@ -2176,9 +2176,10 @@ public class ProgressReportController {
 			break;
 		case 11 :
 			progressReportService.freezeAndUnfreezeReport(IecQuater.class, qprActivityId, isFreeze);
-			IecQuater iecQuater=new IecQuater();
-			iecQuater.setQtrId(quaterId);
-			view = qprGetFormIecQtrProgressReport1(iecQuater, model);
+			//IecQuater iecQuater=new IecQuater();
+			//iecQuater.setQtrId(quaterId);
+			/*view = qprGetFormIecQtrProgressReport1(iecQuater, model);*/
+			view = REDIRECT_IEC_PROGRESS_REPORT;
 			break;
 		case 12 :
 			progressReportService.freezeAndUnfreezeReport(PmuProgress.class, qprActivityId, isFreeze);
