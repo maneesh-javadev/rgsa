@@ -9,9 +9,27 @@ function isNumber(evt) {
     return true;
 }
 
+/* $( document ).ready(function() {
+  
+var rowCount = $('#tbodyIdNdprc tr').length-2;
+var NBdprc = $('#tbodyIdNdprc tr').length-2;
+
+for (var i = 0; i < rowCount; i++) {
+	
+	$("#instInfraStatusId"+i).val($("#instInfraStatusIdSel"+i).val());
+	alert($("#instInfraStatusId"+i).val());
+
+}
+for (var i = 0; i < NBdprc; i++) {
+	
+	$("#instInfraStatusIdNdprc"+i).val($("#instInfraStatusIdSel"+i).val());
+	
+
+}
 
 
 
+}); */
 
 function get_quater_wise_data()
 {
@@ -36,8 +54,11 @@ loadElement=function(){
 };
 
 loadSubElement=function(instInfraStatusId,index){
-	$("#instInfraStatusId"+index+" option[value='"+instInfraStatusId+"']").attr("selected", "selected");
-	
+/* 	$("#instInfraStatusId"+index+" option[value='"+instInfraStatusId+"']").attr("selected", "selected");
+ */
+ alert($("#instInfraStatusId"+index).val());
+ 
+ 
 };
 
 function save_data()
