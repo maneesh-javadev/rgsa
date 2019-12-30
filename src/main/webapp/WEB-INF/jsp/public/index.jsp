@@ -98,7 +98,7 @@
 							<div class="sigle_counter_item">
 								<div class="counter_text pinkbg">
 									<a href="#" >
-										<p class="underline ">Panchayat Stakeholders Trained</p>	<span class="counter ng-binding" >0</span>
+										<p class="underline ">Panchayat Stakeholders Trained</p>	<span class="counter ng-binding"  id="panchyatStakeholderId">0000</span>
 									</a>
 								</div>
 							</div>
@@ -146,7 +146,7 @@
 							<div class="sigle_counter_item">
 								<div class="counter_text lightredbg">
 									<a href="#">
-										<p class="underline ">Technical support to GPs</p>	<span class="counter ng-binding" >0</span>
+										<p class="underline ">Technical support to GPs</p>	<span class="counter ng-binding" >0000</span>
 									</a>
 								</div>
 							</div>
@@ -405,6 +405,7 @@ function voteViaAjax(detailId){
 	$("#CSCsId").html(data[8]);
 	$("#withinStateId").html(data[9]);
 	$("#OutsideStateId").html(data[10]);
+	$("#panchyatStakeholderId").html(data[11]);
    },
    error : function(e) {
     console.log(e);

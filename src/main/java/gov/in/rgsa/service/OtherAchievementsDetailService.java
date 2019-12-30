@@ -12,5 +12,6 @@ public interface OtherAchievementsDetailService {
     
     public String supportForPanchayatAsset(String bhawanStatus,String activityId);
     
+    public String panchyatStakehlderTrained();
 
 }

@@ -1,5 +1,7 @@
 package gov.in.rgsa.entity;
 
+import java.io.Serializable;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -21,232 +23,266 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
  *
  */
 @Entity
-@Table(name="institutional_infra_activity_details", schema = "rgsa")
-@NamedQueries({
-	@javax.persistence.NamedQuery(name="FETCH_ALL_INSTITUTIONAL_ACTIVITY_DETAILS",query="FROM InstitutionalInfraActivityPlanDetails where institutionalInfraActivityPlan.institutionalInfraActivityId=:institutionalInfraActivityId and trainingInstitueType.trainingInstitueTypeId=:instituteType order by institutionalInfraActivityDetailsId asc"),
-	@javax.persistence.NamedQuery(name="FETCH_ALL_DETAILS",query="FROM InstitutionalInfraActivityPlanDetails where institutionalInfraActivityPlan.institutionalInfraActivityId=:institutionalInfraActivityId order by institutionalInfraActivityDetailsId asc"),
-	@javax.persistence.NamedQuery(name="UPDATE_DELETE_STATUS_BY_MULTIPLE_ID_Institutional",query="UPDATE InstitutionalInfraActivityPlanDetails SET isactive = false where institutionalInfraActivityPlan.institutionalInfraActivityId=:institutionalInfraActivityId"),
-	@javax.persistence.NamedQuery(name="FETCH_ALL_DETAILS_EXCEPT_CURRENT_VERSION",query="from InstitutionalInfraActivityPlanDetails where institutionalInfraActivityPlan.stateCode=:stateCode and institutionalInfraActivityPlan.versionNumber !=:versionNo and institutionalInfraActivityPlan.userType in('S','M') order by institutionalInfraActivityDetailsId")
-})
+@Table(name = "institutional_infra_activity_details", schema = "rgsa")
+@NamedQueries(
+{ @javax.persistence.NamedQuery(name = "FETCH_ALL_INSTITUTIONAL_ACTIVITY_DETAILS", query = "FROM InstitutionalInfraActivityPlanDetails where institutionalInfraActivityPlan.institutionalInfraActivityId=:institutionalInfraActivityId and trainingInstitueType.trainingInstitueTypeId=:instituteType order by institutionalInfraActivityDetailsId asc"), @javax.persistence.NamedQuery(name = "FETCH_ALL_DETAILS", query = "FROM InstitutionalInfraActivityPlanDetails where institutionalInfraActivityPlan.institutionalInfraActivityId=:institutionalInfraActivityId order by institutionalInfraActivityDetailsId asc"),
+		@javax.persistence.NamedQuery(name = "UPDATE_DELETE_STATUS_BY_MULTIPLE_ID_Institutional", query = "UPDATE InstitutionalInfraActivityPlanDetails SET isactive = false where institutionalInfraActivityPlan.institutionalInfraActivityId=:institutionalInfraActivityId"), @javax.persistence.NamedQuery(name = "FETCH_ALL_DETAILS_EXCEPT_CURRENT_VERSION", query = "from InstitutionalInfraActivityPlanDetails where institutionalInfraActivityPlan.stateCode=:stateCode and institutionalInfraActivityPlan.versionNumber !=:versionNo and institutionalInfraActivityPlan.userType in('S','M') order by institutionalInfraActivityDetailsId") })
 
-public class InstitutionalInfraActivityPlanDetails {
-	
+public class InstitutionalInfraActivityPlanDetails implements Serializable
+{
+
+	private static final long serialVersionUID = -7716039245406235549L;
+
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	@Column(name="institutional_infra_activity_details_id")
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "institutional_infra_activity_details_id")
 	private Integer institutionalInfraActivityDetailsId;
-	
+
 	@JsonBackReference
 	@ManyToOne
-	@JoinColumn(name="institutional_infra_activity_id")
+	@JoinColumn(name = "institutional_infra_activity_id")
 	private InstitutionalInfraActivityPlan institutionalInfraActivityPlan;
-	
+
 	@ManyToOne
-	@JoinColumn(name="institutional_activity_type_id")
+	@JoinColumn(name = "institutional_activity_type_id")
 	private TrainingInstitueType trainingInstitueType;
 
-	@Column(name="fund_proposed")
+	@Column(name = "fund_proposed")
 	private int fundProposed;
-	
-	@Column(name="total_fund")
+
+	@Column(name = "total_fund")
 	private int totalFund;
-	
-	@Column(name="land_indentified")
+
+	@Column(name = "land_indentified")
 	private Boolean landIndentified = Boolean.FALSE;
-	
-	@Column(name="source_of_funding")
+
+	@Column(name = "source_of_funding")
 	private Boolean anyOtherSourceOfFunding = Boolean.FALSE;
-	
-	@Column(name="design_and_layout_of_building")
+
+	@Column(name = "design_and_layout_of_building")
 	private Boolean designAndLayoutOfBuilding = Boolean.FALSE;
-		
-	@Column(name="remarks")
+
+	@Column(name = "remarks")
 	private String remarks;
-	
-	@Column(name="institutional_infra_location")
+
+	@Column(name = "institutional_infra_location")
 	private int institutionalInfraLocation;
-	
+
 	@Transient
 	private String[] locationName;
-	
-	@Column(name="is_approved")
+
+	@Column(name = "is_approved")
 	private Boolean isApproved;
-	
+
 	@Transient
 	private String districtName;
-	
-	@Column(name="work_type")
+
+	@Column(name = "work_type")
 	private Character workType;
-	
-	@Column(name="fund_sanctioned")
+
+	@Column(name = "fund_sanctioned")
 	private Integer fundSanctioned;
-	
-	@Column(name="fund_released")
+
+	@Column(name = "fund_released")
 	private Integer fundReleased;
-	
-	@Column(name="fund_utilized")
+
+	@Column(name = "fund_utilized")
 	private Integer fundUtilized;
-	
-	@Column(name="fund_required")
+
+	@Column(name = "fund_required")
 	private Integer fundRequired;
-	
-	@Column(name="is_active")
+
+	@Column(name = "is_active")
 	private Boolean isactive;
 
-	public Integer getInstitutionalInfraActivityDetailsId() {
+	public Integer getInstitutionalInfraActivityDetailsId()
+	{
 		return institutionalInfraActivityDetailsId;
 	}
 
-	public void setInstitutionalInfraActivityDetailsId(Integer institutionalInfraActivityDetailsId) {
+	public void setInstitutionalInfraActivityDetailsId(Integer institutionalInfraActivityDetailsId)
+	{
 		this.institutionalInfraActivityDetailsId = institutionalInfraActivityDetailsId;
 	}
 
-	public InstitutionalInfraActivityPlan getInstitutionalInfraActivityPlan() {
+	public InstitutionalInfraActivityPlan getInstitutionalInfraActivityPlan()
+	{
 		return institutionalInfraActivityPlan;
 	}
 
-	public void setInstitutionalInfraActivityPlan(InstitutionalInfraActivityPlan institutionalInfraActivityPlan) {
+	public void setInstitutionalInfraActivityPlan(InstitutionalInfraActivityPlan institutionalInfraActivityPlan)
+	{
 		this.institutionalInfraActivityPlan = institutionalInfraActivityPlan;
 	}
 
-	public TrainingInstitueType getTrainingInstitueType() {
+	public TrainingInstitueType getTrainingInstitueType()
+	{
 		return trainingInstitueType;
 	}
 
-	public void setTrainingInstitueType(TrainingInstitueType trainingInstitueType) {
+	public void setTrainingInstitueType(TrainingInstitueType trainingInstitueType)
+	{
 		this.trainingInstitueType = trainingInstitueType;
 	}
 
-	public Boolean getLandIndentified() {
+	public Boolean getLandIndentified()
+	{
 		return landIndentified;
 	}
 
-	public void setLandIndentified(Boolean landIndentified) {
+	public void setLandIndentified(Boolean landIndentified)
+	{
 		this.landIndentified = landIndentified;
 	}
 
-	public Boolean getAnyOtherSourceOfFunding() {
+	public Boolean getAnyOtherSourceOfFunding()
+	{
 		return anyOtherSourceOfFunding;
 	}
 
-	public void setAnyOtherSourceOfFunding(Boolean anyOtherSourceOfFunding) {
+	public void setAnyOtherSourceOfFunding(Boolean anyOtherSourceOfFunding)
+	{
 		this.anyOtherSourceOfFunding = anyOtherSourceOfFunding;
 	}
 
-	public Boolean getDesignAndLayoutOfBuilding() {
+	public Boolean getDesignAndLayoutOfBuilding()
+	{
 		return designAndLayoutOfBuilding;
 	}
 
-	public void setDesignAndLayoutOfBuilding(Boolean designAndLayoutOfBuilding) {
+	public void setDesignAndLayoutOfBuilding(Boolean designAndLayoutOfBuilding)
+	{
 		this.designAndLayoutOfBuilding = designAndLayoutOfBuilding;
 	}
 
-	public int getFundProposed() {
+	public int getFundProposed()
+	{
 		return fundProposed;
 	}
 
-	public void setFundProposed(int fundProposed) {
+	public void setFundProposed(int fundProposed)
+	{
 		this.fundProposed = fundProposed;
 	}
 
-	public int getTotalFund() {
+	public int getTotalFund()
+	{
 		return totalFund;
 	}
 
-	public void setTotalFund(int totalFund) {
+	public void setTotalFund(int totalFund)
+	{
 		this.totalFund = totalFund;
 	}
 
-	public String getRemarks() {
+	public String getRemarks()
+	{
 		return remarks;
 	}
 
-	public void setRemarks(String remarks) {
+	public void setRemarks(String remarks)
+	{
 		this.remarks = remarks;
 	}
 
-	public int getInstitutionalInfraLocation() {
+	public int getInstitutionalInfraLocation()
+	{
 		return institutionalInfraLocation;
 	}
 
-	public void setInstitutionalInfraLocation(int institutionalInfraLocation) {
+	public void setInstitutionalInfraLocation(int institutionalInfraLocation)
+	{
 		this.institutionalInfraLocation = institutionalInfraLocation;
 	}
 
-	public String[] getLocationName() {
+	public String[] getLocationName()
+	{
 		return locationName;
 	}
 
-	public void setLocationName(String[] locationName) {
+	public void setLocationName(String[] locationName)
+	{
 		this.locationName = locationName;
 	}
 
-	public Boolean getIsApproved() {
+	public Boolean getIsApproved()
+	{
 		return isApproved;
 	}
 
-	public void setIsApproved(Boolean isApproved) {
+	public void setIsApproved(Boolean isApproved)
+	{
 		this.isApproved = isApproved;
 	}
 
-	public String getDistrictName() {
+	public String getDistrictName()
+	{
 		return districtName;
 	}
 
-	public void setDistrictName(String districtName) {
+	public void setDistrictName(String districtName)
+	{
 		this.districtName = districtName;
 	}
 
-	public Character getWorkType() {
+	public Character getWorkType()
+	{
 		return workType;
 	}
 
-	public void setWorkType(Character workType) {
+	public void setWorkType(Character workType)
+	{
 		this.workType = workType;
 	}
 
-	public Integer getFundSanctioned() {
+	public Integer getFundSanctioned()
+	{
 		return fundSanctioned;
 	}
 
-	public void setFundSanctioned(Integer fundSanctioned) {
+	public void setFundSanctioned(Integer fundSanctioned)
+	{
 		this.fundSanctioned = fundSanctioned;
 	}
 
-	public Integer getFundReleased() {
+	public Integer getFundReleased()
+	{
 		return fundReleased;
 	}
 
-	public void setFundReleased(Integer fundReleased) {
+	public void setFundReleased(Integer fundReleased)
+	{
 		this.fundReleased = fundReleased;
 	}
 
-	public Integer getFundUtilized() {
+	public Integer getFundUtilized()
+	{
 		return fundUtilized;
 	}
 
-	public void setFundUtilized(Integer fundUtilized) {
+	public void setFundUtilized(Integer fundUtilized)
+	{
 		this.fundUtilized = fundUtilized;
 	}
 
-	public Integer getFundRequired() {
+	public Integer getFundRequired()
+	{
 		return fundRequired;
 	}
 
-	public void setFundRequired(Integer fundRequired) {
+	public void setFundRequired(Integer fundRequired)
+	{
 		this.fundRequired = fundRequired;
 	}
 
-	public Boolean getIsactive() {
+	public Boolean getIsactive()
+	{
 		return isactive;
 	}
 
-	public void setIsactive(Boolean isactive) {
+	public void setIsactive(Boolean isactive)
+	{
 		this.isactive = isactive;
 	}
 
-	
-	
-	
-	
 }

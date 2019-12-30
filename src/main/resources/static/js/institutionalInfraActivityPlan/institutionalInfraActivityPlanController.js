@@ -3,9 +3,10 @@ publicModule.controller("institutionalInfraActivityPlanController", [ '$scope', 
 		function($scope, institutionalInfraActivityPlanService) {
 	
 	
-	
-	init();
-	initialMsg();
+	 $(document).ready(function() {
+		 	init();
+			initialMsg();
+       });
 	
 	function initialMsg(){
 		alert('Incase of SPRC you can fill only 1 section. It could be either New building or Carry forward.');

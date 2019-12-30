@@ -1,3 +1,4 @@
+
 var publicModule = angular.module("publicModule", []);
 publicModule.controller("capacityBuildingController", [ '$scope', "capacityBuildingService",
 		function($scope, capacityBuildingService) {
@@ -8,12 +9,14 @@ publicModule.controller("capacityBuildingController", [ '$scope', "capacityBuild
 	$scope.capacityBuilding.additionalRequirement;
 	$scope.userType = null;
 	
-	fetchCBMastersAndCapacityBuildingData();
-	
+	//fetchCBMastersAndCapacityBuildingData();
+	$( document ).ready(function() {
+		fetchCBMastersAndCapacityBuildingData();
+	});
 	function fetchCBMastersAndCapacityBuildingData(){
 		$scope.btn_disabled=false;
 		capacityBuildingService.fetchCBMastersAndCapacityBuildingData().then(function(response){
-			console.log(response.data);
+			//console.log(response.data);
 			$scope.cbmasters = response.data.cbMasters;
 			$scope.userType =  response.data.userType;
 			if(response.data.capacityBuildingDetails != null){
@@ -35,24 +38,22 @@ publicModule.controller("capacityBuildingController", [ '$scope', "capacityBuild
 						}
 					}
 				}
-				console.log($scope.cbToCurrentStatusDetails);
+				//console.log($scope.cbToCurrentStatusDetails);
 				
 				$scope.capacityBuilding.capacityBuildingActivityDetails = [];
 				
 				for (var i = 0; i < $scope.cbmasters.length; i++) {
-					var obj ={};
+					  var obj ={};
 					if($scope.cbToCurrentStatusDetails.get($scope.cbmasters[i].cbMasterId) == null){
 						obj.noOfDays ='';
-						obj.noOfUnits ='';
-						obj.unitCost ='';
-						
-						obj.cbMaster = '';
+						obj.noOfUnits ='0';
+						obj.unitCost ='0';
+						obj.cbMaster = $scope.cbmasters[i].cbMasterId;
 						$scope.capacityBuilding.capacityBuildingActivityDetails.push(obj);
 					}else{
 						$scope.capacityBuilding.capacityBuildingActivityDetails.push($scope.cbToCurrentStatusDetails.get($scope.cbmasters[i].cbMasterId));
-					}
+					} 
 				}
-				
 			}
 		},function(error){
 			
@@ -60,8 +61,10 @@ publicModule.controller("capacityBuildingController", [ '$scope', "capacityBuild
 	}
 	
 	$scope.insertCBMasterInScope=function(index){
-		console.log("inside insertCBMasterInScope");
-		$scope.capacityBuilding.capacityBuildingActivityDetails[index].cbMaster=$('#cbMaster'+'_'+index).val();
+		//console.log("inside insertCBMasterInScope");
+		if(index!==''){
+			$scope.capacityBuilding.capacityBuildingActivityDetails[index].cbMaster=$('#cbMaster'+'_'+index).val();
+		} 
 //		$scope.adminAndTechStaffStatus.administrativeAndTechnicalStaffStatusDetails[index].postType.postId = $('#cbMaster'+'_'+index).val();
 	}
 	
@@ -76,7 +79,7 @@ publicModule.controller("capacityBuildingController", [ '$scope', "capacityBuild
 		}
 		
 		$scope.calculateSubTotal($scope.capacityBuilding.capacityBuildingActivityDetails);
-		
+		 
 	}
 	
 	$scope.checkForCellingValue=function(index){

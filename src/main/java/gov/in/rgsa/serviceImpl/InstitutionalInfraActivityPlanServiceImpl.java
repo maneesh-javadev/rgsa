@@ -179,31 +179,34 @@ public class InstitutionalInfraActivityPlanServiceImpl implements InstitutionalI
 	}
 
 	@Override
-	public List<InstitutionalInfraActivityPlan> fetchInstitutionalInfraActivity(String userType) {
-		Map<String, Object> params=new HashMap<>();
-		List<InstitutionalInfraActivityPlan> activity=new ArrayList<>();
+	public List<InstitutionalInfraActivityPlan> fetchInstitutionalInfraActivity(String userType)
+	{
+		Map<String, Object> params = new HashMap<>();
+		List<InstitutionalInfraActivityPlan> activity = new ArrayList<>();
 		params.put("stateCode", userPreference.getStateCode());
-		params.put("yearId", userPreference.getFinYearId());	
+		params.put("yearId", userPreference.getFinYearId());
 		params.put("versionNumber", userPreference.getPlanVersion());
-		params.put("userType",(userType != null) ? userType : userPreference.getUserType());
-		activity= commonRepository.findAll("FETCH_ALL_INSTITUTIONAL_ACTIVITY", params);
-		if(userPreference.getUserType().equalsIgnoreCase("M") && CollectionUtils.isEmpty(activity)){
+		params.put("userType", (userType != null) ? userType : userPreference.getUserType());
+		activity = commonRepository.findAll("FETCH_ALL_INSTITUTIONAL_ACTIVITY", params);
+		if (userPreference.getUserType().equalsIgnoreCase("M") && CollectionUtils.isEmpty(activity))
+		{
 			params.put("userType", "S");
-			activity= commonRepository.findAll("FETCH_ALL_INSTITUTIONAL_ACTIVITY", params);
-			if(activity!=null && !activity.isEmpty()) {
-				InstitutionalInfraActivityPlan institutionalInfraActivityPlan=activity.get(0);
+			activity = commonRepository.findAll("FETCH_ALL_INSTITUTIONAL_ACTIVITY", params);
+			if (activity != null && !activity.isEmpty())
+			{
+				InstitutionalInfraActivityPlan institutionalInfraActivityPlan = activity.get(0);
 				institutionalInfraActivityPlan.setInstitutionalInfraActivityId(null);
-				for(InstitutionalInfraActivityPlanDetails institutionalInfraActivityPlanDetails:institutionalInfraActivityPlan.getInstitutionalInfraActivityPlanDetails()) {
+				for (InstitutionalInfraActivityPlanDetails institutionalInfraActivityPlanDetails : institutionalInfraActivityPlan.getInstitutionalInfraActivityPlanDetails())
+				{
 					institutionalInfraActivityPlanDetails.setInstitutionalInfraActivityDetailsId(null);
-					
+
 				}
-				
+
 				activity.set(0, institutionalInfraActivityPlan);
 			}
-			
-			
+
 		}
-		
+
 		return activity;
 	}
 
@@ -447,6 +450,7 @@ public class InstitutionalInfraActivityPlanServiceImpl implements InstitutionalI
 
 	@Override
 	public List<InstitutionalInfraActivityPlanDetails> fetchAllDetailsExceptCurrentVersion() {
+		 
 		Map<String, Object> parameters=new HashMap<String, Object>();
 		parameters.put("stateCode",userPreference.getStateCode());
 		parameters.put("versionNo",userPreference.getPlanVersion());
