@@ -51,30 +51,35 @@ public class InstitutionInfaActController {
 	
 
 	@RequestMapping(value = "institutionalInfraActivityPlan", method = RequestMethod.GET)
-	private String institutionInfaActivityGet(Model model,RedirectAttributes redirectAttributes) {
-	
-		 model.addAttribute("STATE_CODE", userPreference.getStateCode());
-		if (userPreference.getUserType().equalsIgnoreCase("C")) {
-		return INSTITUTION_INFRA_ACT_CEC;
-		} else {
-		String status = basicInfoService.fillFirstBasicInfo();
-		if(status.equals("create")) {
-			redirectAttributes.addFlashAttribute(Message.EXCEPTION_KEY, "Please fill the Basic Info Details first");
-			return REDIRECT_BAISC_INFO_DETAILS;
-		}
-		else if(status.equals("modify")) {
-			redirectAttributes.addFlashAttribute(Message.EXCEPTION_KEY, "Please fill the Required Basic Info Details");
-			return REDIRECT_MODIFY_BAISC_INFO_DETAILS;
-		}
-		
-		Integer planStatus=0;
-		List<Plan> planList = planAllocationService.showHidePlanStatus(userPreference.getStateCode());
-		if(planList!=null && !planList.isEmpty())
+	private String institutionInfaActivityGet(Model model, RedirectAttributes redirectAttributes)
+	{
+
+		model.addAttribute("STATE_CODE", userPreference.getStateCode());
+		if (userPreference.getUserType().equalsIgnoreCase("C"))
 		{
-			planStatus=planList.get(0).getPlanStatusId();
-		}
-		model.addAttribute("Plan_Status", planStatus==1);
-		return INSTITUTION_INFRA_ACT ;
+			return INSTITUTION_INFRA_ACT_CEC;
+		} else
+		{
+			String status = basicInfoService.fillFirstBasicInfo();
+			if (status.equals("create"))
+			{
+				redirectAttributes.addFlashAttribute(Message.EXCEPTION_KEY, "Please fill the Basic Info Details first");
+				return REDIRECT_BAISC_INFO_DETAILS;
+			} else if (status.equals("modify"))
+			{
+				redirectAttributes.addFlashAttribute(Message.EXCEPTION_KEY, "Please fill the Required Basic Info Details");
+				return REDIRECT_MODIFY_BAISC_INFO_DETAILS;
+			}
+
+			Integer planStatus = 0;
+			List<Plan> planList = planAllocationService.showHidePlanStatus(userPreference.getStateCode());
+			if (planList != null && !planList.isEmpty())
+			{
+				planStatus = planList.get(0).getPlanStatusId();
+			}
+			//model.addAttribute("Plan_Status", planStatus == 1);
+			model.addAttribute("Plan_Status", planStatus);
+			return INSTITUTION_INFRA_ACT;
 		}
 	}
 	
@@ -208,10 +213,14 @@ public class InstitutionInfaActController {
 			/*List<InstitutionalInfraActivityPlanDetails> institutionalInfraActivityPlanDetails=institutionalInfraActivityPlanService.fetchAllDetails(institutionalInfraActivityPlan.getInstitutionalInfraActivityId());
 			institutionalInfraActivityPlan.setInstitutionalInfraActivityPlanDetails(institutionalInfraActivityPlanDetails);*/
 			//institutionaInfraResponseMap.put("institutionalInfraActivityPlan", institutionalInfraActivityPlan);
-			if(userPreference.getPlanVersion() > 1) {
-				List<InstitutionalInfraActivityPlanDetails> commentDetailsList = institutionalInfraActivityPlanService.fetchAllDetailsExceptCurrentVersion();
-				institutionalInfraActivityPlan = settingCommentsInActivity(institutionalInfraActivityPlan,commentDetailsList);
-			}
+			/*
+			 * if(userPreference.getPlanVersion() > 1) {
+			 * List<InstitutionalInfraActivityPlanDetails> commentDetailsList =
+			 * institutionalInfraActivityPlanService.fetchAllDetailsExceptCurrentVersion();
+			 * institutionalInfraActivityPlan =
+			 * settingCommentsInActivity(institutionalInfraActivityPlan,commentDetailsList);
+			 * }
+			 */
 			//institutionalInfraActivityPlan.setStatePreviousComments( map.get("statePreviousComments"));
 			//institutionalInfraActivityPlan.setMoprPreviousComments( map.get("moprPreviousComments"));
 			

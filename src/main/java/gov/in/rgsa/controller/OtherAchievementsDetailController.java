@@ -49,6 +49,8 @@ public class OtherAchievementsDetailController {
 			list.add(result);
 			result= otherAchievementsDetailService.supportForPanchayatAsset("11","3");
 			list.add(result);
+			result=  otherAchievementsDetailService.panchyatStakehlderTrained();
+			list.add(result);
 			
 		} catch (Exception ex) {
 			ex.printStackTrace();

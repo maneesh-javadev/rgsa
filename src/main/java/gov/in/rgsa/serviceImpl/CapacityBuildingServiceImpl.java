@@ -3,6 +3,7 @@ package gov.in.rgsa.serviceImpl;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -23,6 +24,7 @@ import gov.in.rgsa.service.CapacityBuildingService;
 import gov.in.rgsa.service.FacadeService;
 import gov.in.rgsa.user.preference.UserPreference;
 
+
 @Service
 public class CapacityBuildingServiceImpl implements CapacityBuildingService{
 	
@@ -37,6 +39,9 @@ public class CapacityBuildingServiceImpl implements CapacityBuildingService{
 	
 	@Autowired
 	FacadeService facadeService;
+	
+	@Autowired
+	private CapacityBuildingService capacityBuildingService;
 
 	@Override
 	public CapacityBuildingActivity fetchCapacityBuildingActivity(final Character userType) {
@@ -91,14 +96,19 @@ public class CapacityBuildingServiceImpl implements CapacityBuildingService{
 	
 
 	@Override
-	public void saveCapacityBuildingActivityAndDetails(CapacityBuildingActivity capacityBuildingActivity) {
+	public void saveCapacityBuildingActivityAndDetails(CapacityBuildingActivity capacityBuildingActivity)
+	{
 
-		if(userPreference.getUserType().equalsIgnoreCase('s'+"") || userPreference.getUserType().equalsIgnoreCase('c'+"")){
+		if (userPreference.getUserType().equalsIgnoreCase('s' + "") || userPreference.getUserType().equalsIgnoreCase('c' + ""))
+		{
 			saveCapacityBuildingActivityAndDetailsForStateAndCec(capacityBuildingActivity);
-		}else{
-			if(capacityBuildingActivity.getUserType() == 'S'){
+		} else
+		{
+			if (capacityBuildingActivity.getUserType() == 'S')
+			{
 				saveCapacityBuildingActivityAndDetailsForMopr(capacityBuildingActivity);
-			}else{
+			} else
+			{
 				capacityBuildingActivity.setCreatedBy(userPreference.getUserId());
 				capacityBuildingActivity.setStateCode(userPreference.getStateCode());
 				capacityBuildingActivity.setYearId(userPreference.getFinYearId());
@@ -107,140 +117,111 @@ public class CapacityBuildingServiceImpl implements CapacityBuildingService{
 				capacityBuildingActivity.setVersionNo(userPreference.getPlanVersion());
 				capacityBuildingActivity.setIsActive(true);
 
-				//commonRepository.update(capacityBuildingActivity);
+				// commonRepository.update(capacityBuildingActivity);
 				List<CapacityBuildingActivityDetails> capacityBuildingActivityDetails = capacityBuildingActivity.getCapacityBuildingActivityDetails();
-				for (CapacityBuildingActivityDetails capacityBuildingActivityDetail : capacityBuildingActivityDetails) {
+				for (CapacityBuildingActivityDetails capacityBuildingActivityDetail : capacityBuildingActivityDetails)
+				{
 					capacityBuildingActivityDetail.setCapacityBuildingActivity(capacityBuildingActivity);
-					
+
 				}
 				commonRepository.update(capacityBuildingActivity);
 			}
 		}
-		
-		/*
-		capacityBuildingActivity= setCapacityBuildingActivityObject(capacityBuildingActivity);
+
+	}
+
+	// Save or Update of Training Activity State and CEC
+	private void saveCapacityBuildingActivityAndDetailsForStateAndCec(CapacityBuildingActivity capacityBuildingActivity)
+	{
+
+		capacityBuildingActivity = setCapacityBuildingActivityObject(capacityBuildingActivity);
 		List<CapacityBuildingActivityDetails> capacityBuildingActivityDetails = capacityBuildingActivity.getCapacityBuildingActivityDetails();
 		final CapacityBuildingActivity capacityActivity = capacityBuildingActivity;
-		
-		capacityBuildingActivityDetails.forEach(
-				(capacityBuildingActivityDetail)-> {
-					if(capacityBuildingActivityDetail != null) {
-						capacityBuildingActivityDetail.setCapacityBuildingActivity(capacityActivity);
-					}
-				}
-			);
-		List<CapacityBuildingActivityDetails> CapacityBuildingActivityDetails2  = new ArrayList<>();
-		for (CapacityBuildingActivityDetails capacityBuildingActivityDetails3 : capacityBuildingActivityDetails) {
-			if(capacityBuildingActivityDetails3.getFunds() != null)
-				CapacityBuildingActivityDetails2.add(capacityBuildingActivityDetails3);
-			
-		}
-		
-		capacityBuildingActivity.setCapacityBuildingActivityDetails(CapacityBuildingActivityDetails2);
-		
-		if(capacityBuildingActivity.getCbActivityId() == null || capacityBuildingActivity.getCbActivityId() == 0 ) {
+
+		capacityBuildingActivityDetails.forEach((capacityBuildingActivityDetail) ->
+		{
+			if (capacityBuildingActivityDetail != null)
+			{
+				capacityBuildingActivityDetail.setCapacityBuildingActivity(capacityActivity);
+			}
+		});
+
+		capacityBuildingActivity.setCapacityBuildingActivityDetails(capacityBuildingActivityDetails);
+
+		if (capacityBuildingActivity.getCbActivityId() == null || capacityBuildingActivity.getCbActivityId() == 0)
+		{
 			commonRepository.save(capacityBuildingActivity);
-		}else {
-			
-					commonRepository.update(capacityBuildingActivity);
-			}*/
-			
+		} else
+		{
+			commonRepository.update(capacityBuildingActivity);
 		}
 
-private void saveCapacityBuildingActivityAndDetailsForStateAndCec(CapacityBuildingActivity capacityBuildingActivity){
-		
-		capacityBuildingActivity= setCapacityBuildingActivityObject(capacityBuildingActivity);
-		List<CapacityBuildingActivityDetails> capacityBuildingActivityDetails = capacityBuildingActivity.getCapacityBuildingActivityDetails();
-		final CapacityBuildingActivity capacityActivity = capacityBuildingActivity;
-		
-		capacityBuildingActivityDetails.forEach(
-				(capacityBuildingActivityDetail)-> {
-					if(capacityBuildingActivityDetail != null) {
-						capacityBuildingActivityDetail.setCapacityBuildingActivity(capacityActivity);
-					}
-				}
-			);
-		/*
-		 * List<CapacityBuildingActivityDetails> CapacityBuildingActivityDetails2 = new
-		 * ArrayList<>(); for (CapacityBuildingActivityDetails
-		 * capacityBuildingActivityDetails3 : capacityBuildingActivityDetails) {
-		 * if(capacityBuildingActivityDetails3.getFunds() != null){
-		 * if(capacityBuildingActivityDetails3.getIsApproved() == null)
-		 * capacityBuildingActivityDetails3.setIsApproved(false);
-		 * CapacityBuildingActivityDetails2.add(capacityBuildingActivityDetails3);
-		 * 
-		 * } }
-		 */
-		
-		capacityBuildingActivity.setCapacityBuildingActivityDetails(capacityBuildingActivityDetails);
-		
-		if(capacityBuildingActivity.getCbActivityId() == null || capacityBuildingActivity.getCbActivityId() == 0 ) {
-			commonRepository.save(capacityBuildingActivity);
-		}else {
-			
-					commonRepository.update(capacityBuildingActivity);
-			}
-			
-		if(capacityBuildingActivity!=null && capacityBuildingActivity.getIsFreeze()==true && userPreference.getUserType().charAt(0)=='C') {
+		if (capacityBuildingActivity != null && capacityBuildingActivity.getIsFreeze() == true && userPreference.getUserType().charAt(0) == 'C')
+		{
 			facadeService.populateStateFunds("13");
 		}
 	}
-	
-	private void saveCapacityBuildingActivityAndDetailsForMopr(CapacityBuildingActivity capacityBuildingActivity){
-		capacityBuildingActivity.setCbActivityId(null);
-		
-		/*capacityBuildingActivity = setCapacityBuildingActivityObject(capacityBuildingActivity);
-		
-		List<CapacityBuildingActivityDetails> capacityBuildingActivityDetails = capacityBuildingActivity.getCapacityBuildingActivityDetails();
-		
-		List<PesaPost> pesaPostList = fetchPesaPost();
-		for (int i = 0; i < capacityBuildingActivityDetails.size(); i++) {
-			if(capacityBuildingActivityDetails.get(i) != null) {
-				capacityBuildingActivityDetails.get(i).setPesaPostId(pesaPostList.get(i).getPesaPostId());
-			}
-		}
-		
-		if(capacityBuildingActivity.getPesaPlanId() == null || capacityBuildingActivity.getPesaPlanId() == 0) {
 
-			commonRepository.save(pesaPlan);
-			
-			for (PesaPlanDetails planDetails : pesaPlanDetails) {
-				if(planDetails != null) {
-					planDetails.setPesaPlanDetailsId(null);
-					planDetails.setPesaPlanId(pesaPlan.getPesaPlanId());
-					commonRepository.save(planDetails);
-				}
-			}
-		}*/
-		capacityBuildingActivity= setCapacityBuildingActivityObject(capacityBuildingActivity);
+	private void saveCapacityBuildingActivityAndDetailsForMopr(CapacityBuildingActivity capacityBuildingActivity)
+	{
+		capacityBuildingActivity.setCbActivityId(null);
+
+		/*
+		 * capacityBuildingActivity =
+		 * setCapacityBuildingActivityObject(capacityBuildingActivity);
+		 * 
+		 * List<CapacityBuildingActivityDetails> capacityBuildingActivityDetails =
+		 * capacityBuildingActivity.getCapacityBuildingActivityDetails();
+		 * 
+		 * List<PesaPost> pesaPostList = fetchPesaPost(); for (int i = 0; i <
+		 * capacityBuildingActivityDetails.size(); i++) {
+		 * if(capacityBuildingActivityDetails.get(i) != null) {
+		 * capacityBuildingActivityDetails.get(i).setPesaPostId(pesaPostList.get(i).
+		 * getPesaPostId()); } }
+		 * 
+		 * if(capacityBuildingActivity.getPesaPlanId() == null ||
+		 * capacityBuildingActivity.getPesaPlanId() == 0) {
+		 * 
+		 * commonRepository.save(pesaPlan);
+		 * 
+		 * for (PesaPlanDetails planDetails : pesaPlanDetails) { if(planDetails != null)
+		 * { planDetails.setPesaPlanDetailsId(null);
+		 * planDetails.setPesaPlanId(pesaPlan.getPesaPlanId());
+		 * commonRepository.save(planDetails); } } }
+		 */
+		capacityBuildingActivity = setCapacityBuildingActivityObject(capacityBuildingActivity);
 		List<CapacityBuildingActivityDetails> capacityBuildingActivityDetails = capacityBuildingActivity.getCapacityBuildingActivityDetails();
 		final CapacityBuildingActivity capacityActivity = capacityBuildingActivity;
-		
-		capacityBuildingActivityDetails.forEach(
-				(capacityBuildingActivityDetail)-> {
-					if(capacityBuildingActivityDetail != null) {
-						capacityBuildingActivityDetail.setCapacityBuildingActivity(capacityActivity);
-					}
-				}
-			);
-		List<CapacityBuildingActivityDetails> CapacityBuildingActivityDetails2  = new ArrayList<>();
-		for (CapacityBuildingActivityDetails capacityBuildingActivityDetails3 : capacityBuildingActivityDetails) {
-			if(capacityBuildingActivityDetails3.getFunds() != null){
+
+		capacityBuildingActivityDetails.forEach((capacityBuildingActivityDetail) ->
+		{
+			if (capacityBuildingActivityDetail != null)
+			{
+				capacityBuildingActivityDetail.setCapacityBuildingActivity(capacityActivity);
+			}
+		});
+		List<CapacityBuildingActivityDetails> CapacityBuildingActivityDetails2 = new ArrayList<>();
+		for (CapacityBuildingActivityDetails capacityBuildingActivityDetails3 : capacityBuildingActivityDetails)
+		{
+			if (capacityBuildingActivityDetails3.getFunds() != null)
+			{
 				capacityBuildingActivityDetails3.setCapacityBuildingActivityDetailsId(null);
 				CapacityBuildingActivityDetails2.add(capacityBuildingActivityDetails3);
-			
-		}
-		}
-		
-		capacityBuildingActivity.setCapacityBuildingActivityDetails(CapacityBuildingActivityDetails2);
-		
-		if(capacityBuildingActivity.getCbActivityId() == null || capacityBuildingActivity.getCbActivityId() == 0 ) {
-			commonRepository.save(capacityBuildingActivity);
-		}else {
-			
-					commonRepository.update(capacityBuildingActivity);
+
 			}
-			
+		}
+
+		capacityBuildingActivity.setCapacityBuildingActivityDetails(CapacityBuildingActivityDetails2);
+
+		if (capacityBuildingActivity.getCbActivityId() == null || capacityBuildingActivity.getCbActivityId() == 0)
+		{
+			commonRepository.save(capacityBuildingActivity);
+		} else
+		{
+
+			commonRepository.update(capacityBuildingActivity);
+		}
+
 	}
 	
 	@Override

@@ -210,7 +210,7 @@
 											<th colspan="5">
 											Total Proposed Fund
 											</th>
-											<td ><input type="text" data-ng-disabled="true" data-ng-model="grandTotal" maxlength="5"  class="form-control" style="text-align:right;" /></td>
+											<td ><input type="text" data-ng-disabled="true" data-ng-model="grandTotal" maxlength="5"  class=" " style="text-align:right;" /></td>
 											<td></td>
 											<td></td>
 											</tr>
@@ -218,51 +218,7 @@
 									</table>
 									</div>
 									
-									<!-- <div class="table-responsive">
-										<table class="table table-hover dashboard-task-infos"  >
-											<tr>
-											
-												<td colspan="1"><div>Sub Total</div></td>
-												
-												<td>
-												<div class="col-sm-3" style="margin-left: 300px;">
-													<input type="text" maxlength="5" data-ng-disabled="true" data-ng-model="subTotal" class="form-control" style="text-align:right;" />
-												</div>
-												</td>
-											</tr>
-										</table>
-									</div> -->
-									
-									<!-- <div class="table-responsive">
-										<table class="table table-hover dashboard-task-infos"  >
-											<tr>
-												
-												<td><div class="col-sm-9">Additional Requirement</div></td>
-												
-												<td>
-													<div class="col-sm-3" style="margin-left: 203px;">
-														<input type="text" maxlength="5" restrict-input="{type: 'numberGreaterThanZero',index: $index}" data-ng-change="validateAmount()"
-														data-ng-model="capacityBuilding.additionalRequirement" class="form-control" placeholder="25% of Total Cost " style="text-align:right;" />
-													</div>
-												</td>
-											</tr>
-										</table>
-									</div> -->
-									
-									<!-- <div class="table-responsive">
-										<table class="table table-hover dashboard-task-infos"  >
-											<tr>
-												
-												<td><div class="col-sm-9">Grand Total</div></td>
-												
-												<td>
-												<div class="col-sm-3" style="margin-left: 300px;">
-													<input type="text" data-ng-disabled="true" data-ng-model="grandTotal" maxlength="5"  class="form-control" style="text-align:right;" />
-												</div>
-												</td>
-											</tr>
-										</table>
-									</div> -->
+									 
 									
 							</div>
 							
