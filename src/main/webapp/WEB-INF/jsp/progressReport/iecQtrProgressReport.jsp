@@ -81,7 +81,7 @@ function FreezeAndUnfreeze(msg){
 		var qprActivityId=$('#qprActivityId').val();
 		var quaterId = $('#quaterId').val();
 		document.iecQuater.method = "post";
-		document.iecQuater.action = "freezeAndUnfreezeReport.html?<csrf:token uri='freezeAndUnfreezeReport.html'/>&componentid="+componentid+"&qprActivityId="+qprActivityId+"&quaterId="+quaterId+"&msg="+msg;
+		document.iecQuater.action = "freezeAndUnfreezeReport.html?<csrf:token uri='freezeAndUnfreezeReport.html'/>&componentId="+componentid+"&qprActivityId="+qprActivityId+"&quaterId="+quaterId+"&msg="+msg;
 		document.iecQuater.submit();
 }
 </script>

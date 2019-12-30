@@ -108,12 +108,18 @@ function validateAddReq(){
 function calTotalExpenditure(){
 	var rowCount=$('#tbodyId tr').length -2;
 	var total_expenditure=0;
+	var prevQtr =0;
+	var getExpDetail =0;
+	 getExpDetail=$('#getExpDetail').val();
 	for( var i=0;i < rowCount; i++){
 		if($('#expenditureIncurred_'+i).val() != null && $('#expenditureIncurred_'+i).val() != undefined){
 			total_expenditure += +$('#expenditureIncurred_'+i).val();
 		}
+		
 	}
-	$('#totalExpenditureId').val(total_expenditure + +$('#additionalReqId').val());
+	prevQtr = total_expenditure + + getExpDetail;
+	
+	$('#totalExpenditureId').val(prevQtr  + +$('#additionalReqId').val());
 }
 
 function FreezeAndUnfreeze(msg){
@@ -200,6 +206,8 @@ function FreezeAndUnfreeze(msg){
 												value="${ADMINISTRATIVE_TECHNICAL_PROGRESS.administrativeTechnicalDetailProgress[count.index].atsDetailsProgressId}">
 											<input type="hidden" name="administrativeTechnicalDetailProgress[${count.index}].postType.postId"
 												value="${obj.postType.postId}">
+												<input type="hidden" id ="getExpDetail"
+												value="${GET_EXPENDITURE_DETAILS_OF_QPR}">
 											<tr>
 												<td><strong>${count.index+1}.</strong></td>
 												<td><strong>${obj.postType.master.postTypeName}</strong></td>
