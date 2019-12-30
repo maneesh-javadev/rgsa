@@ -18,7 +18,6 @@ import javax.persistence.Transient;
 
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
-import org.hibernate.annotations.Where;
 
 /**
  * 
@@ -27,238 +26,304 @@ import org.hibernate.annotations.Where;
  */
 
 @Entity
-@Table(name="institutional_infra_activity", schema = "rgsa")
-@NamedQueries({
-@NamedQuery(name="FETCH_ALL_INSTITUTIONAL_ACTIVITY",query="SELECT I FROM InstitutionalInfraActivityPlan I where stateCode =:stateCode and yearId =:yearId and userType =:userType and versionNumber=:versionNumber and isActive=true"),
-@NamedQuery(name="UPDATE_FREEZE_UNFREEZE_STATUS_Institutional",query="UPDATE InstitutionalInfraActivityPlan SET isFreeze = :isFreeze,additionalRequirement=:additionalRequirement,additionalRequirementDPRC=:additionalRequirementDPRC  where institutionalInfraActivityId=:institutionalInfraActivityId"),
-})
-public class InstitutionalInfraActivityPlan implements Serializable{
-	
+@Table(name = "institutional_infra_activity", schema = "rgsa")
+@NamedQueries(
+{ @NamedQuery(name = "FETCH_ALL_INSTITUTIONAL_ACTIVITY", query = "SELECT I FROM InstitutionalInfraActivityPlan I where stateCode =:stateCode and yearId =:yearId and userType =:userType and versionNumber=:versionNumber and isActive=true"), @NamedQuery(name = "UPDATE_FREEZE_UNFREEZE_STATUS_Institutional", query = "UPDATE InstitutionalInfraActivityPlan SET isFreeze = :isFreeze,additionalRequirement=:additionalRequirement,additionalRequirementDPRC=:additionalRequirementDPRC  where institutionalInfraActivityId=:institutionalInfraActivityId"), })
+public class InstitutionalInfraActivityPlan implements Serializable
+{
+
 	private static final long serialVersionUID = 3389836119666245072L;
 
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	@Column(name="institutional_infra_activity_id",updatable=false,nullable=false)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "institutional_infra_activity_id", updatable = false, nullable = false)
 	private Integer institutionalInfraActivityId;
-	
-	@Column(name="state_code")
+
+	@Column(name = "state_code")
 	private Integer stateCode;
-	
-	@Column(name="year_id")
+
+	@Column(name = "year_id")
 	private Integer yearId;
-	
-	@Column(name="version_no")
+
+	@Column(name = "version_no")
 	private int versionNumber;
-	
-	@Column(name="user_type")
+
+	@Column(name = "user_type")
 	private String userType;
-	
-	@Column(name="additional_requirement")
+
+	@Column(name = "additional_requirement")
 	private int additionalRequirement;
-	
-	@Column(name="created_by")
+
+	@Column(name = "created_by")
 	private Integer createdBy;
-	
+
 	@CreationTimestamp
-	@Column(name="created_on",updatable=false)
+	@Column(name = "created_on", updatable = false)
 	private Timestamp createdOn;
-	
-	@Column(name="last_updated_by")
+
+	@Column(name = "last_updated_by")
 	private Integer lastUpdatedBy;
-	
+
 	@UpdateTimestamp
-	@Column(name="last_updated_on")
+	@Column(name = "last_updated_on")
 	private Timestamp lastUpdatedOn;
-	
-	@OneToMany(mappedBy="institutionalInfraActivityPlan",cascade=CascadeType.ALL)
+
+	@OneToMany(mappedBy = "institutionalInfraActivityPlan", cascade = CascadeType.ALL)
 	private List<InstitutionalInfraActivityPlanDetails> institutionalInfraActivityPlanDetails;
-	
-	@Column(name="is_freeze")
+
+	@Column(name = "is_freeze")
 	private Boolean isFreeze;
-	
-	@Column(name="is_active")
+
+	@Column(name = "is_active")
 	private Boolean isActive;
-	
-	@Column(name="additional_requirement_dprc")
+
+	@Column(name = "additional_requirement_dprc")
 	private int additionalRequirementDPRC;
-	
+
 	@Transient
 	private Integer detailsListLength;
-	
+
 	@Transient
 	private String dataFor;
-	
+
 	@Transient
 	private List<String> detailsForStateSprcComments;
-	
+
 	@Transient
 	private List<List<String>> detailsForStateDprcComments;
-	
+
 	@Transient
 	private List<String> detailsForMoprSprcComments;
-	
+
 	@Transient
 	private List<List<String>> detailsForMoprDprcComments;
-	
-	public Integer getDetailsListLength() {
+
+	public Integer getDetailsListLength()
+	{
 		return detailsListLength;
 	}
 
-	public void setDetailsListLength(Integer detailsListLength) {
+	public void setDetailsListLength(Integer detailsListLength)
+	{
 		this.detailsListLength = detailsListLength;
 	}
 
-	public Integer getInstitutionalInfraActivityId() {
+	public Integer getInstitutionalInfraActivityId()
+	{
 		return institutionalInfraActivityId;
 	}
 
-	public void setInstitutionalInfraActivityId(Integer institutionalInfraActivityId) {
+	public void setInstitutionalInfraActivityId(Integer institutionalInfraActivityId)
+	{
 		this.institutionalInfraActivityId = institutionalInfraActivityId;
 	}
 
-	public Integer getStateCode() {
+	public Integer getStateCode()
+	{
 		return stateCode;
 	}
 
-	public void setStateCode(Integer stateCode) {
+	public void setStateCode(Integer stateCode)
+	{
 		this.stateCode = stateCode;
 	}
 
-	public Integer getYearId() {
+	public Integer getYearId()
+	{
 		return yearId;
 	}
 
-	public void setYearId(Integer yearId) {
+	public void setYearId(Integer yearId)
+	{
 		this.yearId = yearId;
 	}
 
-	public int getVersionNumber() {
+	public int getVersionNumber()
+	{
 		return versionNumber;
 	}
 
-	public void setVersionNumber(int versionNumber) {
+	public void setVersionNumber(int versionNumber)
+	{
 		this.versionNumber = versionNumber;
 	}
 
-	public int getAdditionalRequirement() {
+	public int getAdditionalRequirement()
+	{
 		return additionalRequirement;
 	}
 
-	public void setAdditionalRequirement(int additionalRequirement) {
+	public void setAdditionalRequirement(int additionalRequirement)
+	{
 		this.additionalRequirement = additionalRequirement;
 	}
 
-	public Integer getCreatedBy() {
+	public Integer getCreatedBy()
+	{
 		return createdBy;
 	}
 
-	public void setCreatedBy(Integer createdBy) {
+	public void setCreatedBy(Integer createdBy)
+	{
 		this.createdBy = createdBy;
 	}
 
-	public Timestamp getCreatedOn() {
+	public Timestamp getCreatedOn()
+	{
 		return createdOn;
 	}
 
-	public void setCreatedOn(Timestamp createdOn) {
+	public void setCreatedOn(Timestamp createdOn)
+	{
 		this.createdOn = createdOn;
 	}
 
-	public Integer getLastUpdatedBy() {
+	public Integer getLastUpdatedBy()
+	{
 		return lastUpdatedBy;
 	}
 
-	public void setLastUpdatedBy(Integer lastUpdatedBy) {
+	public void setLastUpdatedBy(Integer lastUpdatedBy)
+	{
 		this.lastUpdatedBy = lastUpdatedBy;
 	}
 
-	public Timestamp getLastUpdatedOn() {
+	public Timestamp getLastUpdatedOn()
+	{
 		return lastUpdatedOn;
 	}
 
-	public void setLastUpdatedOn(Timestamp lastUpdatedOn) {
+	public void setLastUpdatedOn(Timestamp lastUpdatedOn)
+	{
 		this.lastUpdatedOn = lastUpdatedOn;
 	}
 
-	public List<InstitutionalInfraActivityPlanDetails> getInstitutionalInfraActivityPlanDetails() {
+	public List<InstitutionalInfraActivityPlanDetails> getInstitutionalInfraActivityPlanDetails()
+	{
 		return institutionalInfraActivityPlanDetails;
 	}
 
-	public void setInstitutionalInfraActivityPlanDetails(
-			List<InstitutionalInfraActivityPlanDetails> institutionalInfraActivityPlanDetails) {
+	public void setInstitutionalInfraActivityPlanDetails(List<InstitutionalInfraActivityPlanDetails> institutionalInfraActivityPlanDetails)
+	{
 		this.institutionalInfraActivityPlanDetails = institutionalInfraActivityPlanDetails;
 	}
 
-	public Boolean getIsFreeze() {
+	public Boolean getIsFreeze()
+	{
 		return isFreeze;
 	}
 
-	public void setIsFreeze(Boolean isFreeze) {
+	public void setIsFreeze(Boolean isFreeze)
+	{
 		this.isFreeze = isFreeze;
 	}
 
-	public String getUserType() {
+	public String getUserType()
+	{
 		return userType;
 	}
 
-	public void setUserType(String userType) {
+	public void setUserType(String userType)
+	{
 		this.userType = userType;
 	}
 
-	public String getDataFor() {
+	public String getDataFor()
+	{
 		return dataFor;
 	}
 
-	public void setDataFor(String dataFor) {
+	public void setDataFor(String dataFor)
+	{
 		this.dataFor = dataFor;
 	}
 
-	public int getAdditionalRequirementDPRC() {
+	public int getAdditionalRequirementDPRC()
+	{
 		return additionalRequirementDPRC;
 	}
 
-	public void setAdditionalRequirementDPRC(int additionalRequirementDPRC) {
+	public void setAdditionalRequirementDPRC(int additionalRequirementDPRC)
+	{
 		this.additionalRequirementDPRC = additionalRequirementDPRC;
 	}
 
-	public Boolean getIsActive() {
+	public Boolean getIsActive()
+	{
 		return isActive;
 	}
 
-	public void setIsActive(Boolean isActive) {
+	public void setIsActive(Boolean isActive)
+	{
 		this.isActive = isActive;
 	}
 
-	public List<String> getDetailsForStateSprcComments() {
+	public List<String> getDetailsForStateSprcComments()
+	{
 		return detailsForStateSprcComments;
 	}
 
-	public void setDetailsForStateSprcComments(List<String> detailsForStateSprcComments) {
+	public void setDetailsForStateSprcComments(List<String> detailsForStateSprcComments)
+	{
 		this.detailsForStateSprcComments = detailsForStateSprcComments;
 	}
 
-	public List<List<String>> getDetailsForStateDprcComments() {
+	public List<List<String>> getDetailsForStateDprcComments()
+	{
 		return detailsForStateDprcComments;
 	}
 
-	public void setDetailsForStateDprcComments(List<List<String>> detailsForStateDprcComments) {
+	public void setDetailsForStateDprcComments(List<List<String>> detailsForStateDprcComments)
+	{
 		this.detailsForStateDprcComments = detailsForStateDprcComments;
 	}
 
-	public List<String> getDetailsForMoprSprcComments() {
+	public List<String> getDetailsForMoprSprcComments()
+	{
 		return detailsForMoprSprcComments;
 	}
 
-	public void setDetailsForMoprSprcComments(List<String> detailsForMoprSprcComments) {
+	public void setDetailsForMoprSprcComments(List<String> detailsForMoprSprcComments)
+	{
 		this.detailsForMoprSprcComments = detailsForMoprSprcComments;
 	}
 
-	public List<List<String>> getDetailsForMoprDprcComments() {
+	public List<List<String>> getDetailsForMoprDprcComments()
+	{
 		return detailsForMoprDprcComments;
 	}
 
-	public void setDetailsForMoprDprcComments(List<List<String>> detailsForMoprDprcComments) {
+	public void setDetailsForMoprDprcComments(List<List<String>> detailsForMoprDprcComments)
+	{
 		this.detailsForMoprDprcComments = detailsForMoprDprcComments;
 	}
-	
+
+	@Override
+	public int hashCode()
+	{
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((institutionalInfraActivityId == null) ? 0 : institutionalInfraActivityId.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj)
+	{
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		InstitutionalInfraActivityPlan other = (InstitutionalInfraActivityPlan) obj;
+		if (institutionalInfraActivityId == null)
+		{
+			if (other.institutionalInfraActivityId != null)
+				return false;
+		} else if (!institutionalInfraActivityId.equals(other.institutionalInfraActivityId))
+			return false;
+		return true;
+	}
+
 }

@@ -77,8 +77,8 @@ public class InstitutionInfaActController {
 			{
 				planStatus = planList.get(0).getPlanStatusId();
 			}
-			model.addAttribute("Plan_Status", planStatus == 1);
-			//model.addAttribute("Plan_Status", planStatus);
+			//model.addAttribute("Plan_Status", planStatus == 1);
+			model.addAttribute("Plan_Status", planStatus);
 			return INSTITUTION_INFRA_ACT;
 		}
 	}
@@ -213,6 +213,7 @@ public class InstitutionInfaActController {
 			/*List<InstitutionalInfraActivityPlanDetails> institutionalInfraActivityPlanDetails=institutionalInfraActivityPlanService.fetchAllDetails(institutionalInfraActivityPlan.getInstitutionalInfraActivityId());
 			institutionalInfraActivityPlan.setInstitutionalInfraActivityPlanDetails(institutionalInfraActivityPlanDetails);*/
 			//institutionaInfraResponseMap.put("institutionalInfraActivityPlan", institutionalInfraActivityPlan);
+			
 			/*
 			 * if(userPreference.getPlanVersion() > 1) {
 			 * List<InstitutionalInfraActivityPlanDetails> commentDetailsList =
@@ -221,6 +222,7 @@ public class InstitutionInfaActController {
 			 * settingCommentsInActivity(institutionalInfraActivityPlan,commentDetailsList);
 			 * }
 			 */
+			
 			//institutionalInfraActivityPlan.setStatePreviousComments( map.get("statePreviousComments"));
 			//institutionalInfraActivityPlan.setMoprPreviousComments( map.get("moprPreviousComments"));
 			

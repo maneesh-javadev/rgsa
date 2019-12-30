@@ -13,8 +13,6 @@ import javax.persistence.NamedQueries;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
-import org.hibernate.annotations.NamedQuery;
-
 import com.fasterxml.jackson.annotation.JsonBackReference;
 
 /**
@@ -283,6 +281,34 @@ public class InstitutionalInfraActivityPlanDetails implements Serializable
 	public void setIsactive(Boolean isactive)
 	{
 		this.isactive = isactive;
+	}
+
+	@Override
+	public int hashCode()
+	{
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((institutionalInfraActivityDetailsId == null) ? 0 : institutionalInfraActivityDetailsId.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj)
+	{
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		InstitutionalInfraActivityPlanDetails other = (InstitutionalInfraActivityPlanDetails) obj;
+		if (institutionalInfraActivityDetailsId == null)
+		{
+			if (other.institutionalInfraActivityDetailsId != null)
+				return false;
+		} else if (!institutionalInfraActivityDetailsId.equals(other.institutionalInfraActivityDetailsId))
+			return false;
+		return true;
 	}
 
 }
