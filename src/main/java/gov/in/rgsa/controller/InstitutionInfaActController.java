@@ -77,8 +77,7 @@ public class InstitutionInfaActController {
 			{
 				planStatus = planList.get(0).getPlanStatusId();
 			}
-			//model.addAttribute("Plan_Status", planStatus == 1);
-			model.addAttribute("Plan_Status", planStatus);
+			model.addAttribute("Plan_Status", planStatus == 1);
 			return INSTITUTION_INFRA_ACT;
 		}
 	}
@@ -220,7 +219,7 @@ public class InstitutionInfaActController {
 			 * institutionalInfraActivityPlanService.fetchAllDetailsExceptCurrentVersion();
 			 * institutionalInfraActivityPlan =
 			 * settingCommentsInActivity(institutionalInfraActivityPlan,commentDetailsList);
-			 * }
+			 * } 
 			 */
 			
 			//institutionalInfraActivityPlan.setStatePreviousComments( map.get("statePreviousComments"));
