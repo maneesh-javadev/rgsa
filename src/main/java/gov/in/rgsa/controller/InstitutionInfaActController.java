@@ -77,8 +77,8 @@ public class InstitutionInfaActController {
 			{
 				planStatus = planList.get(0).getPlanStatusId();
 			}
-			//model.addAttribute("Plan_Status", planStatus == 1);
-			model.addAttribute("Plan_Status", planStatus);
+			model.addAttribute("Plan_Status", planStatus == 1);
+			//model.addAttribute("Plan_Status", planStatus);
 			return INSTITUTION_INFRA_ACT;
 		}
 	}
