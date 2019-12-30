@@ -45,8 +45,10 @@ public interface ProgressReportService {
 
 	public void savePmu(PmuProgress pmuProgress);
 
-	public QprEnablement fetchQprEnablement(Integer eEnablementId, int quarterId);
-
+	/*
+	 * public QprEnablement fetchQprEnablement(Integer eEnablementId, int
+	 * quarterId);
+	 */
 	public QprEnablement fetchEEnablementProgressToGeReportId1(Integer id);
 
 	public void saveQprIncomeEnhancement(QprIncomeEnhancement qprIncomeEnhancement);
@@ -81,8 +83,10 @@ public interface ProgressReportService {
 
 	public List<QuaterWiseFund> fetchQuaterWiseFundData(Integer stateCode, int quarterId, int componentId);
 
-	public List<QprEnablementDetails> fetchQprEnablementDetails(Integer qprEEnablementId);
-
+	/*
+	 * public List<QprEnablementDetails> fetchQprEnablementDetails(Integer
+	 * qprEEnablementId);
+	 */
 	public List<QuaterWiseFund> fetchTotalQuaterWiseFundData(Integer stateCode, int componentId);
 
 	public List<StateAllocation> fetchStateAllocationData(int componentId, int installmentNo, int planCode);
@@ -123,4 +127,10 @@ public interface ProgressReportService {
 	public void freezeAndUnfreezeReport(Integer componentId, Integer activityId, Integer quaterId, String msg);
 
 	public <T extends IFreezable> void freezeAndUnfreezeReport(Class<T> clazz, Integer qprActivityId, Boolean isFreeze);
+	
+    public List<QprEnablementDetails> fetchQprEnablementDetails(Integer qprEEnablementId ,int quarterId ,int dlc);
+	
+	public QprEnablement fetchQprEnablement(Integer eEnablementId, int quarterId ,int districtCode);
+	
+	public QprEnablement fetchQprEnablementId(Integer eEnablementId, int quarterId);
 }

@@ -33,6 +33,23 @@ public class OtherAchievementsDetailController {
 			list.add(result);
 			result=otherAchievementsDetailService.basicOrientationTrainingofER(7);
 			list.add(result);
+			result=otherAchievementsDetailService.enablementsOfPanchat(1);
+			list.add(result);
+			result=otherAchievementsDetailService.enablementsOfPanchat(2);
+			list.add(result);
+			result= otherAchievementsDetailService.enablementsOfPanchatComputerization(1);
+			list.add(result);
+			result= otherAchievementsDetailService.exposureVisit(5);
+			list.add(result);
+			result= otherAchievementsDetailService.exposureVisit(6);
+			list.add(result);
+			result= otherAchievementsDetailService.supportForPanchayatAsset("5","1");
+			list.add(result);
+			result= otherAchievementsDetailService.supportForPanchayatAsset("8","2");
+			list.add(result);
+			result= otherAchievementsDetailService.supportForPanchayatAsset("11","3");
+			list.add(result);
+			
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		}

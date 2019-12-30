@@ -923,14 +923,20 @@ public void save(TrainingActivity activity) {
 						trainingActivityDetails.setTrainingSubjectsList(newList);
 						
 						 TrainingWiseCategory trainingWiseCategory=null;
+						 trainingWiseCategory=new TrainingWiseCategory();
 						List<TrainingWiseCategory> trainingWiseCategoryList=new ArrayList<TrainingWiseCategory>();
 						for(TrainingWiseCategory preTrainingWiseCategory:trainingActivityDetailsPreLvl.getTrainingWiseCategoryList()) {
 							params1 = new HashMap<>();
+							
+						 
+						if( !"null".equals(preTrainingWiseCategory.getTrainingCategories().getTrainingCategoryId()) &&  preTrainingWiseCategory.getTrainingCategories().getTrainingCategoryId()!=null && !"".equals(preTrainingWiseCategory.getTrainingCategories().getTrainingCategoryId()))
+						{
 							params1.put("trainingCategoryId", preTrainingWiseCategory.getTrainingCategories().getTrainingCategoryId());
 							TrainingCategories trainingCategories = commonRepository.find("Fetch_Training_Categories_BY_Id", params1);
-							trainingWiseCategory=new TrainingWiseCategory();
-							trainingWiseCategory.setTargetTrainingActivityDetails(trainingActivityDetails);
 							trainingWiseCategory.setTrainingCategories(trainingCategories);
+						}
+							
+							trainingWiseCategory.setTargetTrainingActivityDetails(trainingActivityDetails);
 							trainingWiseCategoryList.add(trainingWiseCategory);
 							
 						}
@@ -989,6 +995,7 @@ public void save(TrainingActivity activity) {
 			}
 			
 			}catch(Exception e) {
+				e.printStackTrace();
 			response1.setResponseMessage(e.getMessage());
 			response1.setResponseCode(500);
 		}
