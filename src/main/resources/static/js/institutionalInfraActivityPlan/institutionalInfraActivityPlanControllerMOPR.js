@@ -32,7 +32,10 @@ publicModule.controller("institutionalInfraActivityPlanController", [ '$scope', 
 	$scope.stateDprcComments=[];
 	$scope.moprSprcComments = [];
 	$scope.moprDprcComments = [];
-	init();
+	
+	 $(document).ready(function() {
+		 	init();
+	 	});
 	
 	function init(){
 		institutionalInfraActivityPlanService.fetchDistrictListBasedOnState().then(function(response){

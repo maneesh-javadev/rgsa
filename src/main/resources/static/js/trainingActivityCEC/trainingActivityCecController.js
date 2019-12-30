@@ -18,7 +18,9 @@ trgModuleCEC.controller("trainingActivityCEC",['$scope','trgActivityCecService',
 	$scope.cecData={};
 	$scope.cecData.capacityBuildingActivityDetails=[];
 	
-	fetchOnLoad();
+	$( document ).ready(function() {
+		fetchOnLoad();
+	});
 	function fetchOnLoad(){
 		$scope.btn_disabled=false;
 		trgActivityCecService.getActivityList().then(function(response){

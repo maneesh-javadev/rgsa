@@ -108,7 +108,8 @@ trainingDetail.controller("trainingDetailMoprController",['$scope','trainingDeta
 			}
 			
 			if(isUnitCost){
-				venueId=parseInt($scope.fetchTrainingDetailsListState[index].trainingVenueLevelId);
+				venueId=parseInt($scope.fetchTrainingDetailsListMOPR[index].trainingVenueLevelId);
+				/*venueId=parseInt($scope.fetchTrainingDetailsListState[index].trainingVenueLevelId); commented by Rajeev on 22-12-2019*/
 				switch(venueId){
 				case 1:limit= 1900;break;
 				case 2:limit= 1100;break;

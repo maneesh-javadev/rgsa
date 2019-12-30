@@ -1,5 +1,6 @@
 package gov.in.rgsa.entity;
 
+import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.List;
 
@@ -31,8 +32,10 @@ import org.hibernate.annotations.Where;
 @NamedQuery(name="FETCH_ALL_INSTITUTIONAL_ACTIVITY",query="SELECT I FROM InstitutionalInfraActivityPlan I where stateCode =:stateCode and yearId =:yearId and userType =:userType and versionNumber=:versionNumber and isActive=true"),
 @NamedQuery(name="UPDATE_FREEZE_UNFREEZE_STATUS_Institutional",query="UPDATE InstitutionalInfraActivityPlan SET isFreeze = :isFreeze,additionalRequirement=:additionalRequirement,additionalRequirementDPRC=:additionalRequirementDPRC  where institutionalInfraActivityId=:institutionalInfraActivityId"),
 })
-public class InstitutionalInfraActivityPlan {
+public class InstitutionalInfraActivityPlan implements Serializable{
 	
+	private static final long serialVersionUID = 3389836119666245072L;
+
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	@Column(name="institutional_infra_activity_id",updatable=false,nullable=false)

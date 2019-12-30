@@ -57,47 +57,50 @@ public class CapacityBuildingOneController {
 	@Autowired
 	BasicInfoService basicInfoService;
 	
-	@RequestMapping(value="capacitybuild",method=RequestMethod.GET)
-	private String capacityBuildingGet(Model model,RedirectAttributes redirectAttributes)
+	
+	// update on 26-12-2019 shivam
+	@RequestMapping(value = "capacitybuild", method = RequestMethod.GET)
+	private String capacityBuildingGet(Model model, RedirectAttributes redirectAttributes)
 	{
-		/*
-		 * userPreference.setMenuId(menuId); commented becoz it is stopping the url
-		 * during forward plan @RequestParam(value = "menuId") int menuId , paste this
-		 * in the argument if used in future
-		 */
-		
+
 		String status = basicInfoService.fillFirstBasicInfo();
-		if(status.equals("create")) {
+		if (status.equals("create"))
+		{
 			redirectAttributes.addFlashAttribute(Message.EXCEPTION_KEY, "Please fill the Basic Info Details first");
 			return REDIRECT_BAISC_INFO_DETAILS;
-		}
-		else if(status.equals("modify")) {
+		} else if (status.equals("modify"))
+		{
 			redirectAttributes.addFlashAttribute(Message.EXCEPTION_KEY, "Please fill the Required Basic Info Details");
 			return REDIRECT_MODIFY_BAISC_INFO_DETAILS;
 		}
-		
-		Integer planStatus=userPreference.getPlanStatus();	
-	    Boolean flag= false;
-        if(planStatus!=null && planStatus==1 && userPreference.getUserType().equalsIgnoreCase("S")) {
-        	flag = true;
-		}else if(planStatus!=null && planStatus==2 && userPreference.getUserType().equalsIgnoreCase("M")) {
+
+		Integer planStatus = userPreference.getPlanStatus();
+		Boolean flag = false;
+		if (planStatus != null && planStatus == 1 && userPreference.getUserType().equalsIgnoreCase("S"))
+		{
 			flag = true;
+		} else if (planStatus != null && planStatus == 2 && userPreference.getUserType().equalsIgnoreCase("M"))
+		{
+			flag = true;
+		} else
+		{
+			flag = false;
 		}
-      	else {
-      		flag= false;
-      	}
-	      model.addAttribute("Plan_Status", flag);
-	      model.addAttribute("STATE_CODE", userPreference.getStateCode());
-	      
-	      
-		if(userPreference.getUserType().equalsIgnoreCase("C")){
-			
+		model.addAttribute("Plan_Status", flag);
+		model.addAttribute("STATE_CODE", userPreference.getStateCode());
+
+		if (userPreference.getUserType().equalsIgnoreCase("C"))
+		{
+
 			return CAPACITY_BUILDING_CEC;
-		}else{
+		} else
+		{
 			return CAPACITY_BUILDING;
 		}
 	}
 
+	
+	// update on 26-12-2019 by shivam
 	@ResponseBody
 	@RequestMapping(value="fetchCBMastersAndCapacityBuildingData",method=RequestMethod.GET)
 	private Map<String, Object> fetchCBMasters(){
@@ -117,17 +120,21 @@ public class CapacityBuildingOneController {
 		}
 		map.put("capacityBuildingDetails", capacityBuildingList);
 		map.put("userType", userPreference.getUserType().charAt(0));
-		map.put("capacityBuildingDetails", capacityBuildingService.fetchCapacityBuildingActivity(null));
+		//map.put("capacityBuildingDetails", capacityBuildingService.fetchCapacityBuildingActivity(null));
 		return map;
 	}
 	
-	@RequestMapping(value="saveCapacityBuildingActivityAndDetails",method=RequestMethod.POST)
-	private String saveCapacityBuildingActivityAndDetails(@RequestBody final CapacityBuildingActivity capacityBuildingActivity,RedirectAttributes re) {
+	@RequestMapping(value = "saveCapacityBuildingActivityAndDetails", method = RequestMethod.POST)
+	private String saveCapacityBuildingActivityAndDetails(@RequestBody final CapacityBuildingActivity capacityBuildingActivity, RedirectAttributes re)
+	{
 		capacityBuildingService.saveCapacityBuildingActivityAndDetails(capacityBuildingActivity);
 		re.addFlashAttribute(Message.SUCCESS_KEY, Message.SAVE_SUCCESS);
-		if(userPreference.getUserType().equalsIgnoreCase("C")){
+		/* if(userPreference.getUserType().equalsIgnoreCase("C")){ */
+		if (userPreference.isCEC())
+		{
 			return CAPACITY_BUILDING_CEC;
-		}else{
+		} else
+		{
 			return CAPACITY_BUILDING;
 		}
 	}
