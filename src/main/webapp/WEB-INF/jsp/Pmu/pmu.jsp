@@ -351,9 +351,15 @@ function calculateTotalFundSpmu() {
 											<tr>
 												<td><div align="center"><strong>${ACTIVITY.pmuType.pmuTypeName}</strong></div></td>
 												<td><div align="center"><strong>${ACTIVITY.pmuActivityName}</strong></div></td>
+												<c:if test="${ACTIVITY.pmuActivityTypeId ne 3}">
 												<td><input value="${pmuActivity.pmuActivityDetails[srl.index].noOfUnits}"	name="pmuActivityDetails[${srl.index}].noOfUnits" min="1" maxlength="3"  onkeypress="return isNumber(event)" oninput="validity.valid||(value='');"	type="text" class="active12 form-control" id="noOfUnits_${srl.index}" onkeyup="" style="text-align:right;" onchange="calculateValueAcDomain('noOfUnits_${srl.index}')"/></td>
 												<%-- <td><input value="${pmuActivity.pmuActivityDetails[srl.index].unitCost}"	name="pmuActivityDetails[${srl.index}].unitCost" min="1" maxlength="7"  onkeypress="return isNumber(event)" oninput="validity.valid||(value='');" type="text" class="active12 form-control"	id="unitCost_${srl.index}" onkeyup="calculate(${srl.index});" style="text-align:right;"/></td> --%>
 												<td><input value="${pmuActivity.pmuActivityDetails[srl.index].noOfMonths}" 	name="pmuActivityDetails[${srl.index}].noOfMonths" onkeypress="return isNumber(event)" oninput="validity.valid||(value='');" type="text" class="active12 form-control" id="noOfMonths_${srl.index}" style="text-align:right;" onkeyup="validateMonth(${srl.index})"/></td>
+												</c:if>
+												<c:if test="${ACTIVITY.pmuActivityTypeId eq 3}">
+												<td></td>
+												<td></td>
+													</c:if>
 												<c:set var="totalFundToCalc" value="${pmuActivity.pmuActivityDetails[srl.index].fund}"></c:set>
 												<td><input value="${pmuActivity.pmuActivityDetails[srl.index].fund}" name="pmuActivityDetails[${srl.index}].fund" onkeypress="return isNumber(event);" oninput="validity.valid||(value='');" type="text" min="1" class="active12 form-control txtCal" id="fund_${srl.index}" style="text-align:right;" onkeyup="calculateTotalFundSpmu();validateFund(${srl.index});"/></td>
 													<c:choose>
@@ -668,8 +674,8 @@ function calculateTotalFundSpmu() {
 										<button type="button" class="freeze btn bg-orange waves-effect"	id="frzButtn" onclick="toFreeze();"><spring:message code="Label.FREEZE" htmlEscape="true" /></button>
 										<button type="button" class="unfreeze btn bg-orange waves-effect" id="unFrzButtn" onclick="toFreeze();"><spring:message code="Label.UNFREEZE" htmlEscape="true" /></button>
 										</c:if>
-										<button type="button" id="clearButtn" onclick="onClear(this)"	class="btn bg-light-blue waves-effect"><spring:message code="Label.CLEAR" htmlEscape="true" /></button>
-										</c:if>
+<%-- 										<button type="button" id="clearButtn" onclick="onClear(this)"	class="btn bg-light-blue waves-effect"><spring:message code="Label.CLEAR" htmlEscape="true" /></button>
+ --%>										</c:if>
 										<button type="button" onclick="onClose('home.html?<csrf:token uri='home.html'/>')"	class="btn bg-red waves-effect"><spring:message code="Label.CLOSE" htmlEscape="true" /></button>
 										
 									</div>

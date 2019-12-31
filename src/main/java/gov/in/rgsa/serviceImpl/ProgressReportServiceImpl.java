@@ -700,6 +700,7 @@ public class ProgressReportServiceImpl implements ProgressReportService {
 
             if (qprInstitutionalInfrastructure.getQprInstInfraId() == null) {
                 qprInstitutionalInfrastructure.setQprInstitutionalInfraDetails(updateQprInstitutionalInfraDetailsList);
+              
                 commonRepository.save(qprInstitutionalInfrastructure);
 
 

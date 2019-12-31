@@ -29,7 +29,7 @@
 						</spring:bind>
 						 
 						 
-					<input type="hidden" name="qprInstInfraId" value="${qprInstInfraId}" id="qprInstInfraId" />
+					<input type="hidden" name="qprInstInfraId" value="${QPR_INSTITUTIONALINFRAQUATERLY.qprInstInfraId}" id="qprInstInfraId" />
 										
 					 
  					
@@ -490,7 +490,7 @@
 												<c:if test="${obj.trainingInstitueType.trainingInstitueTypeId==bhawanDto.institutionalActivityTypeId }">
 												<c:choose>
 												<c:when test="${QPR_INSTITUTIONALINFRAQUATERLY.qprInstitutionalInfraDetails[sindex].instInfraStatusId == obj.instInfraStatusId}">
-												<option  value="${obj.instInfraStatusId} selected ="selected" >${obj.instInfraStatusName}</option>
+												<option  value="${obj.instInfraStatusId}" selected ="selected" >${obj.instInfraStatusName}</option>
 												</c:when>
 												<c:otherwise>
 												<option  value="${obj.instInfraStatusId}  " >${obj.instInfraStatusName}</option>
