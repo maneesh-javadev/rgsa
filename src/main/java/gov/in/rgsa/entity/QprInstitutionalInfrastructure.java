@@ -23,7 +23,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 
 
 @NamedQueries({
-@NamedQuery(name="FETCH_QPR_INST_ACTIVITY_DEPEND_ON_QUATOR",query ="SELECT Q FROM QprInstitutionalInfrastructure Q WHERE Q.qtrId=:quatorId and Q.institutionalInfraActivivtyId=:activityId"),
+@NamedQuery(name="FETCH_QPR_INST_ACTIVITY_DEPEND_ON_QUATOR",query ="SELECT Q FROM QprInstitutionalInfrastructure Q inner join Q.qprInstitutionalInfraDetails QD ON Q.qprInstInfraId=QD.qprInstitutionalInfrastructure.qprInstInfraId  WHERE Q.qtrId=:quatorId and Q.institutionalInfraActivivtyId=:activityId"),
 @NamedQuery(name="UPDATE_QPR_INST_ACTIVITY_DEPEND_ON_QUATOR",query="UPDATE QprInstitutionalInfrastructure SET additionalRequirement=:additionalRequirement,additionalRequirementDPRC=:additionalRequirementDPRC  where qprInstInfraId=:qprInstInfraId"),
 })
 public class QprInstitutionalInfrastructure  implements IFreezable{
