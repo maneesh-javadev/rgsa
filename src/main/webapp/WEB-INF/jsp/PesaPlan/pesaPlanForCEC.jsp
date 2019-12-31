@@ -101,7 +101,6 @@ $('document').ready(function(){
 													data-ng-keyup="calculateFundsAndTotalWithoutAdditionaRequirement($index)" 
 													data-ng-disabled="isFreezeOrUnfreeze"
 													data-ng-model="pesaPlanForCEC.pesaPlanDetails[$index].noOfUnits"
-													maxlength="7"
 													style="text-align: right; border: none; border-color: transparent;" />
 											
 												
@@ -119,7 +118,7 @@ $('document').ready(function(){
 													data-ng-keyup="calculateFundsAndTotalWithoutAdditionaRequirement($index)" 
 													data-ng-disabled="isFreezeOrUnfreeze"
 													data-ng-model="pesaPlanForCEC.pesaPlanDetails[$index].unitCostPerMonth"
-													maxlength="7"
+													
 													style="text-align: right; border: none; border-color: transparent;" />
 												
 											</td>
@@ -137,7 +136,7 @@ $('document').ready(function(){
 													style="text-align: right; border: none; border-color: transparent;" />
 											
 												
-												<input type="text"  data-ng-if="designation.pesaPostId == 4" data-ng-disabled="true"  data-ng-disabled="true"
+												<input type="text"  data-ng-if="designation.pesaPostId == 4" data-ng-disabled="true" 
 													    style="background: #dddddd; text-align:right;margin-top: 15px;" class="form-control" placeholder="1" />	
 												
 											</td>
@@ -154,7 +153,7 @@ $('document').ready(function(){
 													
 													data-ng-disabled="true"
 													data-ng-model="pesaPlanForCEC.pesaPlanDetails[$index].funds"
-													maxlength="7"
+													
 													style="text-align: right; border: none; border-color: transparent;" />
 											
 												
@@ -222,9 +221,9 @@ $('document').ready(function(){
 														<strong> <i style="font-size: 15px" class="fa">&#xf156;</i>
 															{{pesaPlanForMOPR.additionalRequirement}}
 														</strong>
-													</div>
+												</div>
 												<div>
-													<input type="text" data-ng-disabled="isFreezeOrUnfreeze" restrict-input="{type: 'digitsOnly',index: $index}" maxlength="6" data-ng-keyUp="calculateGrandTotal()"  class="form-control" data-ng-model="pesaPlanForCEC.additionalRequirement" placeholder="25% of Total Cost " style="text-align:right;"/>
+													<input type="text" data-ng-disabled="isFreezeOrUnfreeze" restrict-input="{type: 'digitsOnly',index: $index}"   data-ng-keyUp="calculateGrandTotal()"  class="form-control" data-ng-model="pesaPlanForCEC.additionalRequirement" placeholder="25% of Total Cost " style="text-align:right;"/>
 												</div>
 											</td>
 											<td>
