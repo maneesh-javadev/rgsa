@@ -286,10 +286,10 @@ $('document').ready(function(){
 											class="btn bg-green waves-effect">
 											<spring:message code="FREEZE" htmlEscape="true" />
 										</button>
-										<button type="button" data-ng-click="onClear()"
+										<%-- <button type="button" data-ng-click="onClear()"
 											class="btn bg-light-blue waves-effect" data-ng-disabled="isFreezeOrUnfreeze">
 											<spring:message code="Label.CLEAR" htmlEscape="true" />
-										</button>
+										</button> --%>
 										<button type="button"
 											onclick="onClose('home.html?<csrf:token uri='home.html'/>')"
 											class="btn bg-orange waves-effect">

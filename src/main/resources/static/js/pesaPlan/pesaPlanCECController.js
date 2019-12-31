@@ -207,15 +207,15 @@ publicModule.controller("pesaPlanCECController", [ '$scope', "pesaPlanService",
 	}
 	
 	$scope.calculateFundsAndTotalWithoutAdditionaRequirement=function(index){
-		if(index == 4)
-			$scope.pesaPlan.pesaPlanDetails[index].noOfMonths=1;
+	/*	if(index==3)
+			$scope.pesaPlan.pesaPlanDetails[index].noOfMonths=1;*/
 		
 		if($scope.pesaPlanForCEC.pesaPlanDetails[index].unitCostPerMonth == ''){
 			/*$scope.pesaPlanForCEC.pesaPlanDetails[index].unitCostPerMonth ='';*/
 			return false;
 		}
 		
-		if($scope.pesaPlanForCEC.pesaPlanDetails[index].noOfMonths > 12 || $scope.pesaPlanForCEC.pesaPlanDetails[index].noOfMonths < 1){
+		if(($scope.pesaPlanForCEC.pesaPlanDetails[index].noOfMonths > 12 || $scope.pesaPlanForCEC.pesaPlanDetails[index].noOfMonths < 1) && $scope.pesaPlanForCEC.pesaPlanDetails[index].noOfMonths!=null){
 			toastr.error('Number of months should be greater than 0 or less than or equal to 12.');
 			$scope.pesaPlanForCEC.pesaPlanDetails[index].noOfMonths='';
 		}
