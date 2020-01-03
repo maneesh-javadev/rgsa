@@ -5,13 +5,13 @@ var trainingDetail=angular.module("publicModule",[]);
 trainingDetail.controller("trainingDetailMoprController",['$scope','trainingDetailService',function($scope,trainingDetailService ){
 	
 	
-	
-	
 	$scope.training={};
 	$scope.training.trainingDetailList=[];
 	$scope.trainingDetails={};
 	
-	fetchOnLoad();
+	$(document).ready(function() {
+		fetchOnLoad();
+      });
 	
 	function fetchOnLoad(){
 		$scope.btn_disabled=false;
