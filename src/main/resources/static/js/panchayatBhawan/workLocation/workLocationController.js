@@ -16,7 +16,11 @@ workLocation.controller("workLocationController",['$scope','workLocationService'
 	
 	var selActivityId=null;
 	
-	fetchOnLoad();
+	
+	$(document).ready(function() {
+		fetchOnLoad();
+	});
+	
 	
 	$scope.clearPage=function(){
 		fetchOnLoad();
@@ -303,8 +307,10 @@ workLocation.controller("workLocationController",['$scope','workLocationService'
 		 thead=$("<thead/>");
 		 
 		 tr=$("<TR/>");
-		 
-		 th=createLabel("Select Panchayat");
+		 		
+		 th=createLabel("Select Panchayat")    ;
+		/* th = $("<input/>");
+		 th.attr("type", "text");*/
 		 tr.append(th);
 		 
 		 th=createLabel("Panchayat Name");
@@ -339,6 +345,7 @@ workLocation.controller("workLocationController",['$scope','workLocationService'
 		 table.append(thead);
 		 
 		 tbody=$("<tbody/>");
+		 
 		 
 		 angular.forEach($scope.filterLbCodes,function(item){
 			

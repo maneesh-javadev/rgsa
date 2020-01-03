@@ -96,6 +96,7 @@ public class PanchayatBhawanController {
 		return PANCHAYAT_BHAWAN_CURR_STATUS;
 	}
 	
+	
 	@ResponseBody
 	@RequestMapping(value="getPanchayatBhawanActivity", method = RequestMethod.GET, produces=MediaType.APPLICATION_JSON_VALUE)
 	private Map<String, Object> getPanchayatBhawanActivity() {
