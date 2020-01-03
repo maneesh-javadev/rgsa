@@ -307,10 +307,8 @@ workLocation.controller("workLocationController",['$scope','workLocationService'
 		 thead=$("<thead/>");
 		 
 		 tr=$("<TR/>");
-		 		
-		 th=createLabel("Select Panchayat")    ;
-		/* th = $("<input/>");
-		 th.attr("type", "text");*/
+		 
+		 th=createLabel("Select Panchayat");
 		 tr.append(th);
 		 
 		 th=createLabel("Panchayat Name");
@@ -345,7 +343,6 @@ workLocation.controller("workLocationController",['$scope','workLocationService'
 		 table.append(thead);
 		 
 		 tbody=$("<tbody/>");
-		 
 		 
 		 angular.forEach($scope.filterLbCodes,function(item){
 			
