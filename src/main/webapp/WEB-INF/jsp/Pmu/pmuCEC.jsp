@@ -378,6 +378,9 @@ function validateFund(index){
 														<td><div align="center">
 																<strong>${ACTIVITY.pmuActivityName}</strong>
 															</div></td>
+														
+														<c:if test="${ACTIVITY.pmuActivityTypeId ne 3}">
+												
 														<td>
 														<div align="center" id="noOfUnitsMopr_${srl.index}">${pmuActivityMOPR.pmuActivityDetails[srl.index].noOfUnits}</div>
 														<input
@@ -406,6 +409,11 @@ function validateFund(index){
 															class="active12 form-control" onkeyup="calculate(${srl.index});onLoadChangeColor()"
 															oninput="validity.valid||(value='');" onkeypress="return isNumber(event)"
 															id="noOfMonths_${srl.index}" style="text-align: right;"/></td>
+															</c:if>
+																<c:if test="${ACTIVITY.pmuActivityTypeId eq 3}">
+															<td></td>
+												<td></td>
+													</c:if>
 														<c:set var="totalFundToCalc"
 															value="${pmuActivity.pmuActivityDetails[srl.index].fund}"></c:set>
 														<td>
@@ -789,8 +797,8 @@ function validateFund(index){
 										</c:otherwise>
 										</c:choose>
 										<button type="button" class="unfreeze btn bg-green waves-effect" id="unFrzButtn" onclick="toFreeze();"><spring:message code="Label.UNFREEZE" htmlEscape="true" /></button>
-										<button type="button" id="clearButtn" onclick="onClear(this)"	class="btn bg-light-blue waves-effect"><spring:message code="Label.CLEAR" htmlEscape="true" /></button>
-										<button type="button" onclick="onClose('home.html?<csrf:token uri='home.html'/>')"	class="btn bg-orange waves-effect"><spring:message code="Label.CLOSE" htmlEscape="true" /></button>
+<%-- 										<button type="button" id="clearButtn" onclick="onClear(this)"	class="btn bg-light-blue waves-effect"><spring:message code="Label.CLEAR" htmlEscape="true" /></button>
+ --%>										<button type="button" onclick="onClose('home.html?<csrf:token uri='home.html'/>')"	class="btn bg-orange waves-effect"><spring:message code="Label.CLOSE" htmlEscape="true" /></button>
 										
 									</div>
 									</div>
@@ -850,9 +858,17 @@ function validateFund(index){
 											<tr>
 												<td><div align="center"><strong>${ACTIVITY.pmuType.pmuTypeName}</strong></div></td>
 												<td><div align="center"><strong>${ACTIVITY.pmuActivityName}</strong></div></td>
+												
+												<c:if test="${ACTIVITY.pmuActivityTypeId ne 3}">
+												
 												<td><div align="center">${pmuActivityState.pmuActivityDetails[srl.index].noOfUnits}</div></td>
 												<%-- <td><div align="center"> ${pmuActivityMOPR.pmuActivityDetails[srl.index].unitCost }</div></td> --%>
 												<td><div align="center">${pmuActivityState.pmuActivityDetails[srl.index].noOfMonths}</div></td>
+												</c:if>
+												<c:if test="${ACTIVITY.pmuActivityTypeId eq 3}">
+												<td></td>
+												<td></td>
+													</c:if>
 												<td><div align="center" id="fundMOPR_${srl.index}">${pmuActivityState.pmuActivityDetails[srl.index].fund}</div></td>
 													<c:choose>
 														<c:when test="${srl.index eq 0 }">

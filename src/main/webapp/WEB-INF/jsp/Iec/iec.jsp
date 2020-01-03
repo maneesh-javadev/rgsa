@@ -134,9 +134,11 @@
                                     </c:if>
                                 </div>
                                 <div class="col-md-offset-2 text-right">
-                                <input type="submit" name="action" value="SAVE"  class="btn bg-green waves-effect"/>
+                                <c:if test="${planUtil.isNotSubmitted()}">
+                                <c:if test="${ !IEC_ACTIVITY.getFreeze() }">
+                                <input type="submit" name="action" value="SAVE"  class="btn bg-green waves-effect"/></c:if>
                                 <input type="submit" name="action" value="${ IEC_ACTIVITY.getFreeze() ? 'UNFREEZE':'FREEZE'}"  class="btn bg-orange waves-effect"/>
-                                
+                                </c:if>
                                     <%-- <c:if test="${planUtil.isNotSubmitted() and userPreference.isState() and planUtil.pendingAtMOPR() || true }">
                                     <c:if test="${!IEC_ACTIVITY.getFreeze()} ">
                                    	 <input type="submit" name="action" value="SAVE"  class="btn bg-green waves-effect"/>

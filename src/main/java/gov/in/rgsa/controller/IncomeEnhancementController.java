@@ -207,8 +207,8 @@ public class IncomeEnhancementController {
 			}
 		}
 		enhancementService.saveDetailsWithUsertype(incomeEnhancementActivity);
-		redirectAttributes.addFlashAttribute(Message.SUCCESS_KEY, "Save Successfully");
-		
+		//redirectAttributes.addFlashAttribute(Message.SUCCESS_KEY, "Save Successfully");
+		redirectAttributes.addFlashAttribute(Message.SUCCESS_KEY, Message.SAVE_SUCCESS);
 		
 		if(incomeEnhancementActivity.getDbFileName() != null && incomeEnhancementActivity.getDbFileName().length()>0 && incomeEnhancementActivity.getDbFileName().contains("@")) 
 		{
@@ -231,13 +231,15 @@ public class IncomeEnhancementController {
 	}
 	
 	@RequestMapping(value="frzUnfrzIncomeEnhancementActivity" , method=RequestMethod.POST)
-	public String frzUnfrzIncomeEnhncmntMethod(@ModelAttribute("Income_Enhancement") IncomeEnhancementActivity incomeEnhancementActivity,HttpServletResponse httpResponse,Model model,RedirectAttributes redirectAttributes) {
+	public String frzUnfrzIncomeEnhncmntMethod(@ModelAttribute("Income_Enhancement") IncomeEnhancementActivity incomeEnhancementActivity,Model model,RedirectAttributes redirectAttributes) {
 		enhancementService.FrzUnfrz(incomeEnhancementActivity);
 		if(incomeEnhancementActivity.getIsFreeze() == false) {
-		redirectAttributes.addFlashAttribute(Message.SUCCESS_KEY, "Freeze Successfully");
+		//redirectAttributes.addFlashAttribute(Message.SUCCESS_KEY, "Freeze Successfully");
+			redirectAttributes.addFlashAttribute(Message.SUCCESS_KEY,Message.FRIZEE_SUCESS);
 		}else
 		{
-			redirectAttributes.addFlashAttribute(Message.SUCCESS_KEY, "Unfreeze Successfully");
+			//redirectAttributes.addFlashAttribute(Message.SUCCESS_KEY, "Unfreeze Successfully");
+			redirectAttributes.addFlashAttribute(Message.SUCCESS_KEY, Message.UNFRIZEE_SUCESS);
 		}
 		
 		return REDIRECT_INCOME_ENHANCEMENT_PROJECT;
