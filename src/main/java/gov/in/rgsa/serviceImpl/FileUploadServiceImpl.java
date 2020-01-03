@@ -28,6 +28,7 @@ import javax.imageio.ImageIO;
 import javax.imageio.ImageWriteParam;
 import javax.imageio.ImageWriter;
 import javax.imageio.stream.ImageOutputStream;
+import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -470,16 +471,16 @@ public class FileUploadServiceImpl implements FileUploadService {
 	}
 	
 	@Override
-    public void downloadFiles(HttpServletRequest request,HttpServletResponse response,String filePath) throws IOException {
+    public String downloadFiles(HttpServletRequest request,HttpServletResponse response,String filePath) throws IOException {
 	 
 			
 	try {		
 	
 			
-File file = new File(filePath);
-if(file.exists()){
+File file1 = new File(filePath);
+if(file1.exists()){
 		
-		String mimeType= URLConnection.guessContentTypeFromName(file.getName());
+		/*String mimeType= URLConnection.guessContentTypeFromName(file.getName());
 		if(mimeType==null){
 			System.out.println("mimetype is not detectable, will take default");
 			mimeType = "application/octet-stream";
@@ -489,12 +490,12 @@ if(file.exists()){
 		
         response.setContentType(mimeType);
         
-        /* "Content-Disposition : inline" will show viewable types [like images/text/pdf/anything viewable by browser] right on browser 
-            while others(zip e.g) will be directly downloaded [may provide save as popup, based on your browser setting.]*/
+         "Content-Disposition : inline" will show viewable types [like images/text/pdf/anything viewable by browser] right on browser 
+            while others(zip e.g) will be directly downloaded [may provide save as popup, based on your browser setting.]
         response.setHeader("Content-Disposition", String.format("inline; filename=\"" + file.getName() +"\""));
 
         
-        /* "Content-Disposition : attachment" will be directly download, may provide save as popup, based on your browser setting*/
+         "Content-Disposition : attachment" will be directly download, may provide save as popup, based on your browser setting
         //response.setHeader("Content-Disposition", String.format("attachment; filename=\"%s\"", file.getName()));
         
         response.setContentLength((int)file.length());
@@ -507,10 +508,29 @@ if(file.exists()){
 		
         }else{
         	
-        }
+        	 }*/
+	response.setContentType("application/pdf");
+	ServletOutputStream sos =response.getOutputStream();
+	String dispatchHeader="attachment;filename=\""+file1.getName()+"\"";
+	response.setHeader("Content-Disposition",dispatchHeader);
+	/*fileUploadLocation=fileUploadLocation.replace("\\\\", "/");
+	String rootPath = fileUploadLocation.replace("\\", "/");
+	*/
+	
+	FileInputStream fis=new FileInputStream(file1);
+	byte[] output=new byte[4096];
+	while(fis.read(output,0,4096)!=-1){
+		sos.write(output,0,4096);
+	}
+	sos.flush();
+	sos.close();
+	fis.close();
+	
+}
 	}catch(Exception e) {
 		e.printStackTrace();
 	}
+	return null; 
     }
 	
 	

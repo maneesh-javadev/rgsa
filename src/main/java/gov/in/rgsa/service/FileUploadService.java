@@ -36,7 +36,7 @@ public interface FileUploadService {
 	
 	public StatewiseEntitiesCount getDataFromJsonFile(); 
 	
-	public void downloadFiles(HttpServletRequest request,HttpServletResponse response,String filePath) throws IOException ;
+	public String downloadFiles(HttpServletRequest request,HttpServletResponse response,String filePath) throws IOException ;
 
 
 	

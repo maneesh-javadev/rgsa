@@ -18,7 +18,7 @@ query=	"	select tad.training_id,tad.training_activity_id,tad.training_venue_leve
 	+ 	"	join rgsa.target_group_master tgm on ttg.target_group_master_id= tgm.target_group_master_id where ttg.training_id =tad.training_id),',') as char varying) "
 	+ 	"	target_group_master_name ) from rgsa.training_activity_details tad inner join rgsa.training_venue_level tvl on tad.training_venue_level_id="
 	+ 	"	tvl.training_venue_level_id inner join rgsa.training_mode tm on tad.training_mode_id=tm.training_mode_id where tad.training_activity_id=:trainingActivityId "
-	+ 	"	and tad.is_active=:isactive"
+	+ 	"	and tad.is_active=:isactive order by tad.training_id"
 ,resultClass=FetchTrainingDetails.class)
 public class FetchTrainingDetails {
 	

@@ -37,6 +37,9 @@ public class SanctionOrder {
 	@Column(name="plan_code")
 	private Integer planCode;
 
+	@Column(name="installment_no")
+	private Integer installmentNo;
+
 
 	public Integer getSanctionOrderSno() {
 		return sanctionOrderSno;
@@ -85,6 +88,14 @@ public class SanctionOrder {
 
 	public void setPlanCode(Integer planCode) {
 		this.planCode = planCode;
+	}
+
+	public Integer getInstallmentNo() {
+		return installmentNo;
+	}
+
+	public void setInstallmentNo(Integer installmentNo) {
+		this.installmentNo = installmentNo;
 	}
 	 
 

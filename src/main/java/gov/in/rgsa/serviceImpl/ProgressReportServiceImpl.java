@@ -464,6 +464,7 @@ public class ProgressReportServiceImpl implements ProgressReportService {
 
             List<QprEnablementDetails> qprEnablementDetails = qprEnablement.getQprEnablementDetails();
             for (QprEnablementDetails qprEnablementDetail : qprEnablementDetails) {
+            	 qprEnablementDetail.setDistrictCode(qprEnablement.getDistrictId());
                 qprEnablementDetail.setQprEnablement(qprEnablement);
             }
             commonRepository.save(qprEnablement);
@@ -472,6 +473,7 @@ public class ProgressReportServiceImpl implements ProgressReportService {
             qprEnablement.setLastUpdatedBy(userPreference.getUserId());
             List<QprEnablementDetails> qprEnablementDetails = qprEnablement.getQprEnablementDetails();
             for (QprEnablementDetails qprEnablementDetail : qprEnablementDetails) {
+            	 qprEnablementDetail.setDistrictCode(qprEnablement.getDistrictId());
                 qprEnablementDetail.setQprEnablement(qprEnablement);
             }
             commonRepository.update(qprEnablement);

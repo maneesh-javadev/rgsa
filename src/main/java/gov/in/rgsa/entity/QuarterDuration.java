@@ -8,7 +8,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name="qpr_quarter_detail",schema="rgsa")
-@NamedQuery(name="FETCH_QUARTER_DURATION",query="from QuarterDuration")
+@NamedQuery(name="FETCH_QUARTER_DURATION",query="from QuarterDuration order by qtrId")
 public class QuarterDuration {
 
 	@Id

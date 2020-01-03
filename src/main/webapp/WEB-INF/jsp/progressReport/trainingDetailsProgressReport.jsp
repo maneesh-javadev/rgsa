@@ -33,7 +33,7 @@
 										<input type="hidden" name="${status.expression}" value="${fetchTrainingCEC.trainingActivityId}" /> 
 						</spring:bind>
 						
-						<span class="errormsg show" ><c:out value='${isError}' /></span>
+						<%-- <span class="errormsg show" ><c:out value='${isError}' /></span> --%>
 						
 						
 						<div class="row" >

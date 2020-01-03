@@ -4,7 +4,7 @@
  * 
  * 
  */
-var installmentNo=1;
+/*var installmentNo=1;*/
 var compFileMap =new Map();
 var uploadFileMap=new Map();
 var existDataMap=new Map();
@@ -219,7 +219,7 @@ sanctionOrder.controller("sanctionOrderController",['$scope','sanctionOrderServi
 				
 				pbProposedInfo.push(mySubObj);
 			});
-			
+			//var intallmentNo = $scope.installmentModel;
 			myObj= {
 	    			"stateCode":stateCode,
 				    "yearId" : yid,    //your artist variable
@@ -227,7 +227,7 @@ sanctionOrder.controller("sanctionOrderController",['$scope','sanctionOrderServi
 				    "sanctionOrderCompomentAmountList":pbProposedInfo,
 				    "releaseIntallmentSno":releaseIntallmentSno,
 				    "status":isFreeze,
-				    "installmentNo":installmentNo
+				    "installmentNo":$scope.installmentModel
 				};
 	    	
 			sanctionOrderService.saveSanctionOrder(myObj).then(function(response){
@@ -246,25 +246,37 @@ sanctionOrder.controller("sanctionOrderController",['$scope','sanctionOrderServi
 		
 	}
 	
-	$scope.selectCurrentState=function(selected,list){
+	/*$scope.selectCurrentState=function(selected,list){
 		console.log("inside fetchState fn");
 		angular.forEach(list,function(item){
 		  	if(item.stateCode == selected)
 		  		$scope.currentObjectState = item;
 		  		$scope.fetchApprovePlanDetail(); 
 		  });
+	}*/
+	
+	$scope.selectCurrentInstallment=function(){
+		
+		
+		  		$scope.stateModel;
+		  		$scope.installmentModel;
+		  		
+		  		
+		  		$scope.fetchApprovePlanDetail(); 
+		 
 	}
+	
 	
 	$scope.fetchApprovePlanDetail = function(){
 		
 		  
-		if($scope.currentObjectState!=null && $scope.currentObjectState.stateVersion!=null){
-			sanctionOrderService.getAllSanctionOrderComponentAmount($scope.currentObjectState.stateVersion).then(function(response){
+		if($scope.stateModel!=null){
+			sanctionOrderService.getAllSanctionOrderComponentAmount($scope.stateModel ,$scope.installmentModel).then(function(response){
 				$scope.sanctionOrderCompomentAmountList=response.data;
 				$scope.divShow=true;
 				$scope.btnShow=true;
 				
-				sanctionOrderService.fetchSanctionOrderData($scope.currentObjectState.stateVersion,installmentNo).then(function(response){
+				sanctionOrderService.fetchSanctionOrderData($scope.stateModel ,$scope.installmentModel).then(function(response){
 					$scope.sanctionOrderData=response.data;
 					//alert($scope.sanctionOrderData.releaseIntallment.releaseDate);
 					if($scope.sanctionOrderData.releaseIntallment!=null){
