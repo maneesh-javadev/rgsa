@@ -213,6 +213,8 @@ public class InstitutionInfaActController {
 			institutionalInfraActivityPlan.setInstitutionalInfraActivityPlanDetails(institutionalInfraActivityPlanDetails);*/
 			//institutionaInfraResponseMap.put("institutionalInfraActivityPlan", institutionalInfraActivityPlan);
 			
+			
+			// fetch previous version of data 
 			/*
 			 * if(userPreference.getPlanVersion() > 1) {
 			 * List<InstitutionalInfraActivityPlanDetails> commentDetailsList =
@@ -221,6 +223,9 @@ public class InstitutionInfaActController {
 			 * settingCommentsInActivity(institutionalInfraActivityPlan,commentDetailsList);
 			 * } 
 			 */
+			
+			
+			
 			
 			//institutionalInfraActivityPlan.setStatePreviousComments( map.get("statePreviousComments"));
 			//institutionalInfraActivityPlan.setMoprPreviousComments( map.get("moprPreviousComments"));

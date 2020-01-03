@@ -543,16 +543,16 @@ public void save(TrainingActivity activity) {
 				
 			}else {
 				
-			
+			    
 				TrainingActivityDetails trainingActivityDetails=null;
 				if(fetchTrainingDetails.getTrainingId()==null) {
-					
+					 
 					Map<String,Object> param = new HashMap<>();
 					param.put("trainingActivityId", fetchTrainingDetails.getTrainingActivityId());
 					TrainingActivity trainingActivity = commonRepository.find("FIND_ALL_TRAINING_ACTIVITY_BY_ID", param);
 					
 					
-					trainingActivityDetails=new TrainingActivityDetails();
+					trainingActivityDetails=new TrainingActivityDetails(); 
 					trainingActivityDetails.setRemarks(fetchTrainingDetails.getRemarks());
 					trainingActivityDetails.setNoOfDays(fetchTrainingDetails.getNoOfDays());
 					trainingActivityDetails.setNoOfParticipants(fetchTrainingDetails.getNoOfParticipants());
