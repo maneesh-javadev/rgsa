@@ -9,8 +9,12 @@ import javax.persistence.Transient;
 
 @Entity
 @NamedNativeQueries({
-@NamedNativeQuery(name="soComponentAmount",query="select * from rgsa.get_sanction_order_compoment_amount_new(:planCode)",resultClass=SanctionOrderCompomentAmount.class),
-@NamedNativeQuery(name="alreadySanctionComponentAmount",query="select * from rgsa.get_sanction_order_compoment_amount(:planCode)",resultClass=SanctionOrderCompomentAmount.class) 
+/*@NamedNativeQuery(name="soComponentAmount",query="select * from rgsa.get_sanction_order_compoment_amount_new(:planCode,:installmentNo)",resultClass=SanctionOrderCompomentAmount.class),
+@NamedNativeQuery(name="alreadySanctionComponentAmount",query="select * from rgsa.get_sanction_order_compoment_amount(:planCode,:installmentNo)",resultClass=SanctionOrderCompomentAmount.class) 
+*/
+	
+	@NamedNativeQuery(name="soComponentAmount",query="select soc.so_component_id  component_id ,soc.so_component_name component_name ,0.0 component_amount , 0 installment_no , 0 file_Path from rgsa.sanction_order_component  soc",resultClass=SanctionOrderCompomentAmount.class),
+	@NamedNativeQuery(name="alreadySanctionComponentAmount",query="select soc.so_component_id component_id,soc.so_component_name component_name,so.amount_under_component component_amount,so.installment_no ,so.file_Path  from rgsa.sanction_order so inner join rgsa.sanction_order_component soc on soc.so_component_id=so.sanction_order_component_id where so.plan_code=:planCode and so.installment_no =:installmentNo",resultClass=SanctionOrderCompomentAmount.class) 
 
 })
 public class SanctionOrderCompomentAmount {
@@ -27,11 +31,14 @@ public class SanctionOrderCompomentAmount {
 	@Column(name="component_amount")
 	private Double componentAmount;
 	
-	@Transient
+	@Column(name="file_Path")
 	private String filePath;
 	
 	@Transient
 	private Integer sanctionOrderSno;
+
+	@Column(name="installment_no")  
+	private Integer installmentNo;
 
 	public Integer getComponentId() {
 		return componentId;
@@ -57,6 +64,8 @@ public class SanctionOrderCompomentAmount {
 		this.componentAmount = componentAmount;
 	}
 
+	
+
 	public String getFilePath() {
 		return filePath;
 	}
@@ -71,6 +80,14 @@ public class SanctionOrderCompomentAmount {
 
 	public void setSanctionOrderSno(Integer sanctionOrderSno) {
 		this.sanctionOrderSno = sanctionOrderSno;
+	}
+
+	public Integer getInstallmentNo() {
+		return installmentNo;
+	}
+
+	public void setInstallmentNo(Integer installmentNo) {
+		this.installmentNo = installmentNo;
 	}
 
 	

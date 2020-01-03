@@ -80,11 +80,11 @@ public class QprTrainingActivityController {
 			stateAllocation.add(progressReportService.fetchStateAllocationData(13, 1,progressReportService.getCurrentPlanCode()).get(0)); // total fund allocated in first installment
 			totalQuatorWiseFund = progressReportService.fetchTotalQuaterWiseFundData(userPreference.getStateCode(), 13);
 			double total_fund_used_in_qtr_1_2 = new ProgressReportController().calTotalFundUsedInQtr1And2(totalQuatorWiseFund);
-			if(total_fund_used_in_qtr_1_2 == 0) {
+			/*if(total_fund_used_in_qtr_1_2 == 0) {
 				model.addAttribute("QTR_ID", 0);
 				model.addAttribute("QTR_ONE_TWO_FILLED", false);
 				return QPR_CAPACITY_BUILDING;
-			}
+			}*/
 			model.addAttribute("TOTAL_FUND_USED_IN_QTR_1_AND_2", total_fund_used_in_qtr_1_2);
 		}
 		

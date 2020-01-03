@@ -12,7 +12,16 @@ if(quator_id > 2){
 }
 var fund_used='${FUND_USED_IN_OTHER_QUATOR}';
 $( document ).ready(function() {
-	$("#enablementStatus").val('0');
+	
+	
+	var rowCount=$('#tbodyId tr').length -2;
+	
+	for( var i=0;i < rowCount; i++){
+		
+			$("#enablement_"+i).val($("#enablementStatus_"+i).val());
+		
+	}
+	
 	
 	if(qtr_1_2_filled == "false"){
 		alert('Please fill the quater 1 and 2 progress report first.');
@@ -230,7 +239,7 @@ function FreezeAndUnfreeze(msg){
 											<tr>
 												<th>
 													<div align="center">
-														<strong>Gp Name.</strong>
+														<strong>GP Name</strong>
 													</div>
 												</th>
 												
@@ -311,7 +320,7 @@ function FreezeAndUnfreeze(msg){
 																onkeyup="validateFundByAllocatedFund(${count.index});validateWithCorrespondingFund(${count.index});calTotalExpenditure()"
 																id="expenditureIncurred_${count.index}" required="required" readonly="${Qpr_Enablement.isFreeze}" /></td>
 																
-																<td><form:select id="enablementStatus"  path ="qprEnablementDetails[${count.index}].enablementStatus" readonly="${Qpr_Enablement.isFreeze}"  class="form-control">
+																<td><form:select id="enablement_${count.index}"  path ="qprEnablementDetails[${count.index}].enablementStatus" readonly="${Qpr_Enablement.isFreeze}"  class="form-control">
 																<option value="-1">select</option>
 															
                                                                    <option value="0">Tendering process</option>

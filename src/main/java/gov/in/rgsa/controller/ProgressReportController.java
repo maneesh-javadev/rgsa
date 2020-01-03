@@ -230,11 +230,11 @@ public class ProgressReportController {
 																											// installment
 			totalQuatorWiseFund = progressReportService.fetchTotalQuaterWiseFundData(userPreference.getStateCode(), 11);
 			double fund_used_in_one_two_qtr = calTotalFundUsedInQtr1And2(totalQuatorWiseFund);
-			if (fund_used_in_one_two_qtr == 0) {
+			/*if (fund_used_in_one_two_qtr == 0) {
 				model.addAttribute("QTR_ID", 0);
 				model.addAttribute("QTR_ONE_TWO_FILLED", false);
 				return IEC_PROGRESS_REPORT;
-			}
+			}*/
 			model.addAttribute("TOTAL_FUND_USED_IN_QTR_1_AND_2", fund_used_in_one_two_qtr);
 		}
 		if (CollectionUtils.isNotEmpty(stateAllocation) && CollectionUtils.isNotEmpty(iecActivitiesApproved)) {
@@ -441,11 +441,11 @@ public class ProgressReportController {
 																											// quator
 			totalQuatorWiseFund = progressReportService.fetchTotalQuaterWiseFundData(userPreference.getStateCode(), 10);
 			double fund_used_in_one_two_qtr = calTotalFundUsedInQtr1And2(totalQuatorWiseFund);
-			if (fund_used_in_one_two_qtr == 0) {
+			/*if (fund_used_in_one_two_qtr == 0) {
 				model.addAttribute("QTR_ID", 0);
 				model.addAttribute("QTR_ONE_TWO_FILLED", false);
 				return INCOMEENHANCEMENT_QUATERLY;
-			}
+			}*/
 			model.addAttribute("TOTAL_FUND_USED_IN_QTR_1_AND_2", fund_used_in_one_two_qtr);
 		}
 
@@ -598,11 +598,11 @@ public class ProgressReportController {
 																											// quator
 			totalQuatorWiseFund = progressReportService.fetchTotalQuaterWiseFundData(userPreference.getStateCode(), 7);
 			double fund_used_in_one_two_qtr = calTotalFundUsedInQtr1And2(totalQuatorWiseFund);
-			if (fund_used_in_one_two_qtr == 0) {
+		/*	if (fund_used_in_one_two_qtr == 0) {
 				model.addAttribute("QTR_ID", 0);
 				model.addAttribute("QTR_ONE_TWO_FILLED", false);
 				return CURRENT_SATCOM_QUATERLY;
-			}
+			}*/
 			model.addAttribute("TOTAL_FUND_USED_IN_QTR_1_AND_2", fund_used_in_one_two_qtr);
 		}
 
@@ -778,11 +778,11 @@ public class ProgressReportController {
 																											// quator
 			totalQuatorWiseFund = progressReportService.fetchTotalQuaterWiseFundData(userPreference.getStateCode(), 4);
 			double fund_used_in_one_two_qtr = calTotalFundUsedInQtr1And2(totalQuatorWiseFund);
-			if (fund_used_in_one_two_qtr == 0) {
+			/*if (fund_used_in_one_two_qtr == 0) {
 				model.addAttribute("QTR_ID", 0);
 				model.addAttribute("QTR_ONE_TWO_FILLED", false);
 				return ADMIN_QUADERLY;
-			}
+			}*/
 			model.addAttribute("TOTAL_FUND_USED_IN_QTR_1_AND_2", fund_used_in_one_two_qtr);
 		}
 		if (CollectionUtils.isNotEmpty(stateAllocation)
@@ -1174,7 +1174,7 @@ public class ProgressReportController {
 		List<PmuActivity> pmuCecApprovedActivities = pmuActivityService.fetchApprovedPmu();
 		stateAllocation = progressReportService.fetchStateAllocationData(12, installmentNo,
 				progressReportService.getCurrentPlanCode());
-		model.addAttribute("QUATER_DETAILS", progressReportService.getQuarterDurations());
+		model.addAttribute("QUATER_DETAI LS", progressReportService.getQuarterDurations());
 		model.addAttribute("LIST_OF_PMU_DOMAINS", domainList);
 		model.addAttribute("LIST_OF_PMU_DOMAINS_LIST", domainList.size() / 2);
 		model.addAttribute("LIST_OF_DISTRICT", pmuActivityService.fetchDistrictName());
@@ -1186,11 +1186,11 @@ public class ProgressReportController {
 																											// quator
 			totalQuatorWiseFund = progressReportService.fetchTotalQuaterWiseFundData(userPreference.getStateCode(), 12);
 			double fund_used_in_one_two_qtr = calTotalFundUsedInQtr1And2(totalQuatorWiseFund);
-			if (fund_used_in_one_two_qtr == 0) {
+			/*if (fund_used_in_one_two_qtr == 0) {
 				model.addAttribute("QTR_ID", 0);
 				model.addAttribute("QTR_ONE_TWO_FILLED", false);
 				return TRAINING_PROGRESS_PMU;
-			}
+			}*/
 			model.addAttribute("TOTAL_FUND_USED_IN_QTR_1_AND_2", fund_used_in_one_two_qtr);
 		}
 		if (CollectionUtils.isNotEmpty(stateAllocation) && CollectionUtils.isNotEmpty(pmuCecApprovedActivities)) {
@@ -1471,11 +1471,11 @@ public class ProgressReportController {
             stateAllocation.add(progressReportService.fetchStateAllocationData(5, 16, 1,progressReportService.getCurrentPlanCode()).get(0)); // total fund allocated in first quator
             totalQuatorWiseFund = progressReportService.fetchTotalQuaterWiseFundData(userPreference.getStateCode(), 5);
             double fund_used_in_one_two_qtr=calTotalFundUsedInQtr1And2(totalQuatorWiseFund);
-            if(fund_used_in_one_two_qtr == 0) {
+           /* if(fund_used_in_one_two_qtr == 0) {
             	model.addAttribute("QTR_ID", 0);
 				model.addAttribute("QTR_ONE_TWO_FILLED", false);
 				return ENABLEMENT_PROGRESS_REPORT;
-            }
+            }*/
             model.addAttribute("TOTAL_FUND_USED_IN_QTR_1_AND_2",fund_used_in_one_two_qtr);
         }
         if (CollectionUtils.isNotEmpty(stateAllocation) && CollectionUtils.isNotEmpty(eEnablementsApproved)) {
@@ -1650,11 +1650,12 @@ public class ProgressReportController {
 																											// quator
 			totalQuatorWiseFund = progressReportService.fetchTotalQuaterWiseFundData(userPreference.getStateCode(), 9);
 			double fund_used_in_one_two_qtr = calTotalFundUsedInQtr1And2(totalQuatorWiseFund);
-			if (fund_used_in_one_two_qtr == 0) {
+			// hide by rajeev regarding 3& 4 quater can be shown in 1 installment
+			/*if (fund_used_in_one_two_qtr == 0) {
 				model.addAttribute("QTR_ID", 0);
 				model.addAttribute("QTR_ONE_TWO_FILLED", false);
 				return INNOVATIVE_PROGRESS_REPORT;
-			}
+			}*/
 			model.addAttribute("TOTAL_FUND_USED_IN_QTR_1_AND_2", fund_used_in_one_two_qtr);
 		}
 
@@ -1806,11 +1807,11 @@ public class ProgressReportController {
 																											// quator
 			totalQuatorWiseFund = progressReportService.fetchTotalQuaterWiseFundData(userPreference.getStateCode(), 8);
 			double fund_used_in_one_two_qtr = calTotalFundUsedInQtr1And2(totalQuatorWiseFund);
-			if (fund_used_in_one_two_qtr == 0) {
+			/*if (fund_used_in_one_two_qtr == 0) {
 				model.addAttribute("QTR_ID", 0);
 				model.addAttribute("QTR_ONE_TWO_FILLED", false);
 				return ADMIN_DATA_FIN_QUATERLY;
-			}
+			}*/
 			model.addAttribute("TOTAL_FUND_USED_IN_QTR_1_AND_2", fund_used_in_one_two_qtr);
 		}
 		if (CollectionUtils.isNotEmpty(stateAllocation)
@@ -2422,8 +2423,8 @@ public class ProgressReportController {
 					model.addAttribute("balAddiReq", Integer.parseInt(addReqirmentDetails));
 				}
 			} else {
-				model.addAttribute("isError", "2nd installement not released");
-				model.addAttribute("installementExist", Boolean.FALSE);
+				//model.addAttribute("isError", "2nd installement not released");
+				//model.addAttribute("installementExist", Boolean.FALSE);
 			}
 			model.addAttribute("QPR_TRAINING_DETAILS", quarterTrainings);
 

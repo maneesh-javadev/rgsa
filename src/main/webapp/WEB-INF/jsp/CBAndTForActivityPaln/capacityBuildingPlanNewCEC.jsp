@@ -202,7 +202,12 @@ table.dataTable thead > tr > th, table.dataTable thead > tr > td {
 															style="color: red"></i>
 													</div>
 												</td> -->
-												<td><div align="center"><input type="text" class="form-control element_style"	data-ng-disabled="training.isFreeze"
+												<td><div align="center">
+												       <!--  <strong> 
+															
+														</strong> -->
+														<button class="addMore btn bg-green waves-effect" title="{{fetchTrainingDetailsListMOPR[$index].remarks}}">Remark By Mopr</button>
+												<input type="text" class="form-control element_style"	data-ng-disabled="training.isFreeze"
 													data-ng-model="training.trainingDetailList[$index].remarks" style="text-align: right; border: none; border-color: transparent;" /></div></td>
 										</tr>
 										
@@ -344,7 +349,7 @@ table.dataTable thead > tr > th, table.dataTable thead > tr > td {
 												<th width="8%" class="element_right"><spring:message code="No.of Days" htmlEscape="true" /></th>
 												<th width="8%" class="element_right"><spring:message code="Unit Cost" htmlEscape="true" /></th>
 												<th width="8%" class="element_right"><spring:message code="Funds Proposed" htmlEscape="true"/></th>
-												
+												<th width="10%" align="center"><spring:message text="Remarks By state" htmlEscape="true" /></th>
 											</tr>
 										</thead>
 
@@ -360,6 +365,7 @@ table.dataTable thead > tr > th, table.dataTable thead > tr > td {
 													<td>{{obj.noOfDays}} </td>
 													<td>{{obj.unitCost}} </td>
 													<td>{{obj.funds}} </td>
+													<td>{{obj.remarks}} </td>
 												
 											</tr>
 											

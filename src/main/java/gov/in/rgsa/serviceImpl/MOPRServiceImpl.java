@@ -93,15 +93,18 @@ public class MOPRServiceImpl implements MOPRService {
 	
 	
 	@Override
-	public List<SanctionOrderCompomentAmount>  fetchAllSanctionOrderCompomentAmount(Integer planCode){
+	public List<SanctionOrderCompomentAmount>  fetchAllSanctionOrderCompomentAmount(Integer planCode ,Integer installmentNo){
 		Map<String, Object> params=new HashMap<>();
 		params.put("planCode", planCode);
+		params.put("installmentNo", installmentNo);		
 		List<SanctionOrderCompomentAmount> soCompomentAmountList = null;
+		
 				soCompomentAmountList=	commonRepository.findAll("alreadySanctionComponentAmount",params);
 				if(soCompomentAmountList.size()==0) {
-				soCompomentAmountList=	commonRepository.findAll("soComponentAmount",params);
+				soCompomentAmountList=	commonRepository.findAll("soComponentAmount",null);
 				}
-		return soCompomentAmountList;
+		
+				return soCompomentAmountList;
 	}
 	
 	
@@ -157,6 +160,7 @@ public class MOPRServiceImpl implements MOPRService {
 				sanctionOrder.setFilePath(obj.getFilePath());
 				sanctionOrder.setAmountUnderComponent(obj.getComponentAmount());
 				sanctionOrder.setPlanCode(plan.getPlanCode());
+				sanctionOrder.setInstallmentNo(snactionOrderModel.getInstallmentNo());
 				if(obj.getSanctionOrderSno()!=null){
 					commonRepository.update(sanctionOrder);
 				}else{

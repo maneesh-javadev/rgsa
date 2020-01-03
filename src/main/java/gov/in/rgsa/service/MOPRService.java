@@ -17,7 +17,7 @@ public interface MOPRService {
 	public List<SanctionOrderComponent> fetchAllSanctionOrderComponent();
 	public String saveAttachment( MultipartFile mFile, String uploadLocation) ;
 	public Response saveSanctionOrderDetails(SnactionOrderModel snactionOrderModel);
-	public List<SanctionOrderCompomentAmount>  fetchAllSanctionOrderCompomentAmount(Integer planCode);
+	public List<SanctionOrderCompomentAmount>  fetchAllSanctionOrderCompomentAmount(Integer planCode ,Integer installmentNo);
 	public SnactionOrderModel fetchSanctionOrderData(Integer planCode,Integer installmentNo);
 	public List<ReleaseIntallment> fetchReleaseIntallment(Integer planCode,Integer installmentNo);
 

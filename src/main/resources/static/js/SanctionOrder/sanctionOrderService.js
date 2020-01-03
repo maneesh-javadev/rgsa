@@ -37,8 +37,8 @@ sanctionOrder.service('sanctionOrderService', ['$q','$http', function($q,$http) 
 	};
 	
 	
-	this.getAllSanctionOrderComponentAmount = function(planCode) {
-		return $http.get("fetchAllSanctionOrderCompomentAmount.html?<csrf:token uri=fetchAllSanctionOrderCompomentAmount.htm/>&planCode="+planCode);
+	this.getAllSanctionOrderComponentAmount = function(planCode,installmentNo) {
+		return $http.get("fetchAllSanctionOrderCompomentAmount.html?<csrf:token uri=fetchAllSanctionOrderCompomentAmount.htm/>&planCode="+planCode+"&installmentNo="+installmentNo);
 	};
 	
 	this.fetchSanctionOrderData = function(planCode,installmentNo) {

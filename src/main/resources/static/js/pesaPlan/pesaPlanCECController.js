@@ -207,7 +207,8 @@ publicModule.controller("pesaPlanCECController", [ '$scope', "pesaPlanService",
 	}
 	
 	$scope.calculateFundsAndTotalWithoutAdditionaRequirement=function(index){
-	 	if(index==3)
+
+		if(index == 3)
 			$scope.pesaPlanForCEC.pesaPlanDetails[index].noOfMonths=1;
 		
 		if($scope.pesaPlanForCEC.pesaPlanDetails[index].unitCostPerMonth == ''){

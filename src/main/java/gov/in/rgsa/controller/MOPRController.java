@@ -1,9 +1,11 @@
 package gov.in.rgsa.controller;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.util.Iterator;
 import java.util.List;
 
+import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -88,8 +90,8 @@ public class MOPRController {
 	
 	@ResponseBody
 	@RequestMapping(value="fetchAllSanctionOrderCompomentAmount",method=RequestMethod.GET)
-	public List<SanctionOrderCompomentAmount>  fetchAllSanctionOrderCompomentAmount(Integer planCode){
-		return moprService.fetchAllSanctionOrderCompomentAmount(planCode);
+	public List<SanctionOrderCompomentAmount>  fetchAllSanctionOrderCompomentAmount(Integer planCode,Integer installmentNo){
+		return moprService.fetchAllSanctionOrderCompomentAmount(planCode,installmentNo);
 	}
 	
 	@ResponseBody
@@ -153,12 +155,67 @@ public class MOPRController {
 		return moprService.fetchSanctionOrderData(planCode,installmentNo);
 	}
 	
-	@RequestMapping(value="downloadSanctionOrder",method=RequestMethod.GET)
-	public void  downloadSanctionOrder(String fileName,HttpServletRequest request,HttpServletResponse response) throws Exception{
+	@RequestMapping(value="downloadSanctionOrder")
+	public String  downloadSanctionOrder(String fileName,HttpServletRequest request,HttpServletResponse response) throws Exception{
 		AttachmentMaster attachmentMaster = enhancementService.findDetailsofAttachmentMaster();
 		String uploadLocation = attachmentMaster.getFileLocation();
-		String filePath = uploadLocation + File.separator +fileName;
-		fileUploadService.downloadFiles(request, response, filePath);
+		//String filePath = uploadLocation + File.separator +fileName;
+		//fileUploadService.downloadFiles(request, response, filePath);
+		
+		//File file1 = new File(filePath);
+		
+	
+				
+				/*String mimeType= URLConnection.guessContentTypeFromName(file.getName());
+				if(mimeType==null){
+					System.out.println("mimetype is not detectable, will take default");
+					mimeType = "application/octet-stream";
+				}
+				
+				System.out.println("mimetype : "+mimeType);
+				
+		        response.setContentType(mimeType);
+		        
+		         "Content-Disposition : inline" will show viewable types [like images/text/pdf/anything viewable by browser] right on browser 
+		            while others(zip e.g) will be directly downloaded [may provide save as popup, based on your browser setting.]
+		        response.setHeader("Content-Disposition", String.format("inline; filename=\"" + file.getName() +"\""));
+
+		        
+		         "Content-Disposition : attachment" will be directly download, may provide save as popup, based on your browser setting
+		        //response.setHeader("Content-Disposition", String.format("attachment; filename=\"%s\"", file.getName()));
+		        
+		        response.setContentLength((int)file.length());
+
+				InputStream inputStream = new BufferedInputStream(new FileInputStream(file));
+
+		        //Copy bytes from source to destination(outputstream in this example), closes both streams.
+		        FileCopyUtils.copy(inputStream, response.getOutputStream());
+				 
+				
+		        }else{
+		        	
+		        	 }*/
+		ServletOutputStream sos =response.getOutputStream();
+			
+			
+			String dispatchHeader="attachment;filename=\""+fileName+"\"";
+			response.setHeader("Content-Disposition",dispatchHeader);
+			response.setContentType("application/pdf");
+			uploadLocation=uploadLocation.replace("\\\\", "/");
+			String rootPath = uploadLocation.replace("\\", "/");
+			
+			File file1 = new File(rootPath, fileName);
+			FileInputStream fis=new FileInputStream(file1);
+			byte[] output=new byte[4096];
+			while(fis.read(output,0,4096)!=-1){
+				sos.write(output,0,4096);
+			}
+			sos.flush();
+			sos.close();
+			fis.close();
+			
+	
+		return null; 
 	}
 
 }

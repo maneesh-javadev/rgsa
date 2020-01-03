@@ -65,8 +65,22 @@
     							<label for="state"><c:out value="Select State Name" /></label>
     							</div>
 								<div class="col-xs-4">
-									<select  class="form-control" data-ng-model="stateModel" data-ng-change="selectCurrentState(stateModel,states)" ng-options="item.stateCode as item.stateNameEnglish for item in states" >
+									<select  class="form-control" data-ng-model="stateModel"  ng-options="item.stateVersion as item.stateNameEnglish for item in states" >
 									 <option  value="">Select State</option>
+									</select>
+									 
+								</div>		
+							</div>
+							
+							<div class="row">
+    							<div class="col-xs-4">
+    							<label for="installment"><c:out value="Select installment" /></label>
+    							</div>
+								<div class="col-xs-4">
+									<select  class="form-control" data-ng-model="installmentModel" data-ng-change="selectCurrentInstallment()"  >
+									 <option  value="">Select installment</option>
+									 <option  value="1"> installment 1</option>
+									 <option  value="2"> installment 2</option>
 									</select>
 									 
 								</div>		
