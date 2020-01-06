@@ -316,7 +316,7 @@ function validateFund(index){
 										htmlEscape="true" /></a></li>
 						</ul>
 						<div class="tab-content">
-							<div role="tabpanel" class="container tab-pane " id="MOPR"
+							<div role="tabpanel" class="container tab-pane active" id="MOPR"
 								style="width: auto;">
 								<form:form method="post" name="pmuController"
 									action="addUpdatePmu.html" modelAttribute="PMU_ACTIVITY" onsubmit=" return validationOnSubmit()">
@@ -452,10 +452,16 @@ function validateFund(index){
 														   </c:otherwise>
 													</c:choose>
 												</td> --%>
-												<td><textarea
+												<td>
+												
+												<div align="center">
+													          <label class="addMore btn bg-green waves-effect" title="${pmuActivityMOPR.pmuActivityDetails[srl.index].remarks}">Remark by MoPR</label>
+                                                
+												<textarea
 																name="pmuActivityDetails[${srl.index}].remarks" rows="3"
 																class="form-control" cols="5"><c:out
-																	value="${pmuActivity.pmuActivityDetails[srl.index].remarks}"></c:out></textarea></td>
+																	value="${pmuActivity.pmuActivityDetails[srl.index].remarks}"></c:out></textarea>
+																	</div></td>
 										   		
 													</tr>
 													<c:set var="countSpmu" value="${countSpmu + 1}" scope="page" />
@@ -813,7 +819,7 @@ function validateFund(index){
 								</form:form>
 							</div>
 						<!-- MOPR TAB STARTS -->		
-							<div class="container tab-pane active  " id="state"
+							<div class="container tab-pane   " id="state"
 								style="width: auto;">
 								<div class="table-responsive">
 									<table class="table table-bordered">

@@ -473,7 +473,9 @@ function changeColor() {
 																</strong>
 															</div></th>
 
-														
+														<th rowspan="2"><div align="center">
+																<strong><spring:message code="Label.Remarks" htmlEscape="true" /></strong>
+															</div></th>
 
 													</tr>
 												</thead>
@@ -493,8 +495,8 @@ function changeColor() {
 															<td><div align="center">${eGovActivityForState.eGovSupportActivityDetails[index.index].unitCost }</div></td>
 															<td><div align="center">${eGovActivityForState.eGovSupportActivityDetails[index.index].months }</div></td>
 															<td><div align="center">${eGovActivityForState.eGovSupportActivityDetails[index.index].funds }</div></td>
-															
-														</tr>
+															<td><div align="center">${eGovActivityForState.eGovSupportActivityDetails[index.index].remarks }</div></td>
+														</tr>  
 													</c:forEach>
 
 											<tr>
@@ -531,7 +533,7 @@ function changeColor() {
 														<td><div align="center">${eGovActivityForState.eGovSupportActivityDetails[index.index].unitCost }</div></td>
 														<td><div align="center">${eGovActivityForState.eGovSupportActivityDetails[index.index].months }</div></td>
 														<td><div align="center">${eGovActivityForState.eGovSupportActivityDetails[index.index].funds }</div></td>
-														
+														<td><div align="center">${eGovActivityForState.eGovSupportActivityDetails[index.index].remarks }</div></td>
 													</tr>
 												</c:forEach>
 												

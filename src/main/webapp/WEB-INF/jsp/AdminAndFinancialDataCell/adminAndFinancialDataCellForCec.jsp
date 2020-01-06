@@ -260,9 +260,14 @@ function validatingTotalProposedFund(){
 																		class="form-check-input"
 																		disabled="${IS_FREEZE eq true}" /></td>
 															</c:if>
-															<td><form:textarea
+															<td>
+															<div align="center">
+													           <button class="addMore btn bg-green waves-effect" title="${activityDetailsForMopr[index.index].remarks}">Remark by MoPR</button>
+															</div><form:textarea
 																	path="adminFinancialDataCellActivityDetails[${index.index}].remarks"
-																	rows="2" cols="5" readonly="${IS_FREEZE eq true}" /></td>
+																	 readonly="${IS_FREEZE eq true}" />
+																	
+																	</td>
 														</tr>
 														<c:set var="count" value="${count+1}"></c:set>
 													</c:if>

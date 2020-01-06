@@ -147,7 +147,9 @@ function changeColor(txt){
 															<strong><spring:message code="Label.Funds" htmlEscape="true" />(in Rs.) <br> C = A*B
 															</strong>
 														</div></th>
-													
+													<th rowspan="2"><div align="center">
+															<strong><spring:message code="Label.Remarks" htmlEscape="true" /></strong>
+														</div></th>
 												</tr>
 											</thead>
 											<tbody>
@@ -161,6 +163,7 @@ function changeColor(txt){
 														<td><div align="center">${enablementDetailsForState[index.index].aspirationalGps}</div></td>
 														<td><div align="center">${enablementDetailsForState[index.index].unitCost}</div></td>
 														<td><div align="center">${enablementDetailsForState[index.index].fund}</div></td>
+														<td><div align="center">${enablementDetailsForState[index.index].remarks}</div></td>
 														
 													</tr>
 												</c:forEach>

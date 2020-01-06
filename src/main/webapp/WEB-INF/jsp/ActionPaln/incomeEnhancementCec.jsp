@@ -271,7 +271,7 @@ function changeColor(){
 													<th rowspan="2">Brief about the Activity</th>
 													<th rowspan="2">Download File(PDF)</th>
 													<th rowspan="2">Plan approved by DPC</th>
-
+                                                   <th rowspan="2">Remarks</th>
 
 												</tr>
 												<tr>
@@ -460,7 +460,16 @@ function changeColor(){
 																	</c:otherwise>
 																</c:choose></td>
 
-
+                                                             <td><div align="center" >
+                                                             
+													          <label class="addMore btn bg-green waves-effect" title="  ${state_data.remarks}">Remark by MoPR</label>
+                                                               
+                                                             
+                                                           </div>
+																<form:input 
+																path="incomeEnhancementDetails[${count.index}].remarks"
+																
+																class="form-control Align-Right exclud" /></td>
 														</tr>
 														<input type="hidden" name="setBlockId" />
 														<c:choose>
@@ -586,8 +595,8 @@ function changeColor(){
 										
 										<button type="button" id="unFrzButtn" onclick="toFreeze();"
 											class="btn bg-green waves-effect">UNFREEZE</button>
-										<button type="button" id="clearButtn"
-											class="btn bg-light-blue waves-effect reset">CLEAR</button>
+										<!-- <button type="button" id="clearButtn"
+											class="btn bg-light-blue waves-effect reset">CLEAR</button> -->
 										<button type="button"
 											onclick="onClose('home.html?<csrf:token uri='home.html'/>')"
 											class="btn bg-orange waves-effect">CLOSE</button>

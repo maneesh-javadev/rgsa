@@ -478,7 +478,12 @@ function validateUnitCost(index){
 												<th><div align="center">
 														Funds(in Rs.) <br> D= (A*B*C)
 													</div></th>
-												
+												<th scope="col">
+													<div align="center">
+														<strong><spring:message code="Label.Remarks"
+																htmlEscape="true" /></strong>
+													</div>
+												</th>
 											</tr>
 										</thead>
 										<tbody>
@@ -510,7 +515,7 @@ function validateUnitCost(index){
 													</td>
 
 													<td><div align="center"><strong>${detailsForState[index.index].funds}</strong></div>
-													
+													<td><div align="center"><strong>${detailsForState[index.index].remarks}</strong></div>
 												</tr>
 												</td>
 												<%-- <td><form:input path="adminFinancialDataCellActivityDetails[${index.index}].otherExpenses" type="text" class="form-control Align-Right" onkeypress="return isNumber(event)" onkeyup="calculateSubTotal(${index.index})" id="otherExpensesId_${index.index}" readonly="${IS_FREEZE eq true}"/></td>

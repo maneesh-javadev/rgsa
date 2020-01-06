@@ -68,6 +68,12 @@
 														</strong>
 													</div>
 												</th>
+												<th>
+													<div align="center">
+														<strong><spring:message code="Label.Remarks" htmlEscape="true" />  
+														</strong>
+													</div>
+												</th>
 											</tr>
 										</thead>
 										<tbody>
@@ -136,6 +142,17 @@
 													data-ng-disabled="satcomActivityObject.status == 'F'"
 													data-ng-model="satcomActivityObject.activityDetails[$index].funds"
 													class="form-control" style="text-align: right;" /> </td>
+													
+													<td>
+												<div align="center">
+													          <label class="addMore btn bg-green waves-effect" title="{{satcomActivityObjectMOPR.activityDetails[$index].remarks}}">Remark by MoPR</label>
+                                                               
+												<input type="text"
+													data-ng-disabled="satcomActivityObject.status == 'F'"
+													data-ng-model="satcomActivityObject.activityDetails[$index].remarks"
+													class="form-control" style="text-align: right;" /> 
+													</div>
+													</td>
 											</tr>
 
 											<tr>

@@ -959,14 +959,14 @@ public class ProgressReportController {
 				/*if (((Integer) map.get("total_sprc_subcomp") + (Integer) map.get("total_dprc_subcomp")) == 0) {*/
 				String sprcAnddprs =String.valueOf((Double)map.get("total_sprc_subcomp")+ (Double)map.get("total_dprc_subcomp"));
 	               
-                if("0.0".equals( sprcAnddprs)){
+               /* if("0.0".equals( sprcAnddprs)){
 					model.addAttribute("QTR_ID", 0);
 					model.addAttribute("QTR_ONE_TWO_FILLED", false);
 					return ADDITIONAL_FACULTY_QUADERLY;
-				} else {
+				} else {*/
 					model.addAttribute("TOTAL_SPRC_FUND_USED_IN_QTR_1_AND_2", map.get("total_sprc_subcomp"));
 					model.addAttribute("TOTAL_DPRC_FUND_USED_IN_QTR_1_AND_2", map.get("total_dprc_subcomp"));
-				}
+				/*}*/
 			}
 		}
 
