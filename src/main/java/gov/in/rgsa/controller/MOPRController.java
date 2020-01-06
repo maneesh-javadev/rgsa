@@ -2,6 +2,8 @@ package gov.in.rgsa.controller;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.OutputStream;
 import java.util.Iterator;
 import java.util.List;
 
@@ -159,7 +161,7 @@ public class MOPRController {
 	public String  downloadSanctionOrder(String fileName,HttpServletRequest request,HttpServletResponse response) throws Exception{
 		AttachmentMaster attachmentMaster = enhancementService.findDetailsofAttachmentMaster();
 		String uploadLocation = attachmentMaster.getFileLocation();
-		//String filePath = uploadLocation + File.separator +fileName;
+		String filePath = uploadLocation + File.separator +fileName;
 		//fileUploadService.downloadFiles(request, response, filePath);
 		
 		//File file1 = new File(filePath);
@@ -195,7 +197,38 @@ public class MOPRController {
 		        }else{
 		        	
 		        	 }*/
-		ServletOutputStream sos =response.getOutputStream();
+		 FileInputStream stream= null;
+		
+		try {
+	        // Get the directory and iterate them to get file by file...
+	     
+	        File file1 = new File(filePath);
+	        if (!file1.exists()) {
+	           
+	        } else {
+	            response.setContentType("APPLICATION/DOWNLOAD");
+	            response.setHeader("Content-Disposition", "attachment"+ 
+	                                     "filename=" + file1.getName());
+	            stream = new FileInputStream(file1);
+	            response.setContentLength(stream.available());
+	            OutputStream os = response.getOutputStream();      
+	            os.close();
+	            response.flushBuffer();
+	        }
+	    } catch (IOException e) {
+	        e.printStackTrace();
+	    } finally {
+	        if (stream != null) {
+	            try {
+	                stream.close();
+	            } catch (IOException e) {
+	                e.printStackTrace();
+	            }
+	        }
+	    }
+		
+		
+		/*ServletOutputStream sos =response.getOutputStream();
 			
 			
 			String dispatchHeader="attachment;filename=\""+fileName+"\"";
@@ -213,7 +246,7 @@ public class MOPRController {
 			sos.flush();
 			sos.close();
 			fis.close();
-			
+			*/
 	
 		return null; 
 	}

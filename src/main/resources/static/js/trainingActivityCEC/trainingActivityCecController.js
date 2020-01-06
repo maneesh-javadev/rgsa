@@ -44,12 +44,12 @@ trgModuleCEC.controller("trainingActivityCEC",['$scope','trgActivityCecService',
 				if($scope.cecData.isFreeze == true){
 					$scope.status="U";
 					$scope.isFreezeOrUnfreeze=true;
-					$("#btnfreezeUnfreeze").html("Unfreeze")
+					$("#btnfreezeUnfreeze").html("UNFREEZE")
 
 				}else{
 					$scope.status="F";
 					$scope.isFreezeOrUnfreeze=false;
-					$("#btnfreezeUnfreeze").html("Freeze")
+					$("#btnfreezeUnfreeze").html("FREEZE")
 				}
 				/*$scope.initial_status=false;
 				$scope.isFreezeOrUnfreeze=$scope.cecData.isFreeze;
@@ -222,13 +222,13 @@ trgModuleCEC.controller("trainingActivityCEC",['$scope','trgActivityCecService',
 				//$scope.cecData = response.data;
 				fetchOnLoad();
 				if(status == 'F'){
-					$(e.target).html("Unfreeze")
+					$(e.target).html("UNFREEZE")
 					fetchOnLoad();
-					toastr.success("CEC data freezed successfully");
+					toastr.success("Data freezed successfully");
 				}else{
 					fetchOnLoad();
-					$(e.target).html("Freeze")
-					toastr.success("CEC data unFreezed successfully");
+					$(e.target).html("FREEZE")
+					toastr.success("Data unFreezed successfully");
 				}
 			},function(error){
 				alert(error);

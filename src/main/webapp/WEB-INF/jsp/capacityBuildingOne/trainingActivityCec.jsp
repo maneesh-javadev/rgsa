@@ -23,7 +23,13 @@
 	    }
 	    return true;
 	}
+	
+	
+	
+	
+		
 	</script>
+	
 </head>
 <section class="content" data-ng-controller="trainingActivityCEC">
 	<div class="container-fluid">
@@ -104,7 +110,7 @@
 												</th> -->
 												<th>
 													<div align="center">
-														<strong>Remarks by State</strong>
+														<strong>Remarks </strong>
 													</div>
 												</th>
 											</tr>
@@ -189,10 +195,11 @@
 													</div>
 													</td>
 												<td>
-													<div align="center"
-														data-ng-model="cecData.capacityBuildingActivityDetails[$index].remarks"
+													<div align="center">
+													<button class="addMore btn bg-green waves-effect" title="{{moprData.capacityBuildingActivityDetails[$index].remarks}}">Remark By Mopr</button>
+													<input type="text"	data-ng-model="cecData.capacityBuildingActivityDetails[$index].remarks" class="form-control"
 														data-ng-init="cecData.capacityBuildingActivityDetails[$index].remarks=moprData.capacityBuildingActivityDetails[$index].remarks">
-														<strong>{{moprData.capacityBuildingActivityDetails[$index].remarks}}</strong>
+														
 													</div>
 													
 												</td>
@@ -267,7 +274,7 @@
 										 class="btn bg-green waves-effect" 
 										 id="btnfreezeUnfreeze"
 										 value="">
-										<spring:message code="Freeze" htmlEscape="true" />
+										<spring:message code="Label.FREEZE" htmlEscape="true" />
 									</button>
 									<%-- <button type="button" data-ng-click="onClear()"
 										class="btn bg-light-blue waves-effect" data-ng-disabled="isFreezeOrUnfreeze" > 

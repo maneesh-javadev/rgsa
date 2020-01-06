@@ -139,7 +139,15 @@ function calculateTotal(obj){
                                           <br> C = A * B
                                        </div>
                                     </th>
-                                    
+                                    <th>
+                                       <div align="center">
+                                          <strong>
+                                             <spring:message
+                                                code="Remarks" htmlEscape="true" />
+                                             
+                                          </strong>
+                                       </div>
+                                    </th>
                                  </tr>
                               </thead>
                               <tbody>
@@ -188,6 +196,16 @@ function calculateTotal(obj){
 														<strong>{{panchayatBhawanActivityMOPR.panchatayBhawanActivityDetails[$index].funds}}</strong>
 													</div> <input type="text" class="form-control" data-ng-model="panchayatBhawanActivity.panchatayBhawanActivityDetails[$index].funds"
 													style="text-align: right;" disabled="disabled"/> 
+												</td>
+												<td>
+													<div align="center">
+														<button class="addMore btn bg-green waves-effect" title="{{panchayatBhawanActivityMOPR.panchatayBhawanActivityDetails[$index].remarks}}">Remark By Mopr</button>
+														
+													 <input type="text" class="form-control" data-ng-show="panchayatBhawanActivity.status == 'F'" data-ng-model="panchayatBhawanActivity.panchatayBhawanActivityDetails[$index].remarks"
+													style="text-align: right;" disabled="disabled"/> 
+													 <input type="text" class="form-control" data-ng-show="panchayatBhawanActivity.status != 'F'" data-ng-model="panchayatBhawanActivity.panchatayBhawanActivityDetails[$index].remarks"
+													style="text-align: right;" />
+													</div>
 												</td>
                                  </tr>
                               </tbody>
@@ -273,6 +291,7 @@ function calculateTotal(obj){
                                        <br>C=A-B
                                     </div>
                                  </th>
+                                 
                                  </tr>
                               </thead>
                               <tbody>
@@ -322,6 +341,7 @@ function calculateTotal(obj){
 													 <input type="text" class="form-control" data-ng-model="panchayatBhawanActivity.panchatayBhawanActivityDetails[$index].funds"
 														style="text-align: right;" disabled="disabled"/>
 												</td>
+												
                                  </tr>
                               </tbody>
                               <tfoot>
@@ -457,7 +477,15 @@ function calculateTotal(obj){
                                           <br> C = A * B
                                        </div>
                                     </th>
-                                    
+                                     <th>
+                                       <div align="center">
+                                          <strong>
+                                             <spring:message
+                                                code="Remarks" htmlEscape="true" />
+                                             
+                                          </strong>
+                                       </div>
+                                    </th>
                                  </tr>
                               </thead>
                               <tbody>
@@ -467,6 +495,9 @@ function calculateTotal(obj){
 												<td><div align="center">{{panchayatBhawanActivityState.panchatayBhawanActivityDetails[$index].aspirationalGps}}</div></td>
 												<td><div align="center">{{panchayatBhawanActivityState.panchatayBhawanActivityDetails[$index].unitCost}}</div></td>
 												<td><div align="center">{{panchayatBhawanActivityState.panchatayBhawanActivityDetails[$index].funds}}</div></td>
+                               <td>
+												<div align="center">{{panchayatBhawanActivityState.panchatayBhawanActivityDetails[$index].remarks}}</div>
+												</td>
                                  </tr>
                               </tbody>
                               <tfoot>
@@ -548,6 +579,7 @@ function calculateTotal(obj){
                                        <br>C=A-B
                                     </div>
                                  </th>
+                               
                                  </tr>
                               </thead>
                               <tbody>
@@ -559,7 +591,11 @@ function calculateTotal(obj){
 												<td><div align="center">{{panchayatBhawanActivityState.panchatayBhawanActivityDetails[$index].aspirationalGps}}</div></td>
 												<td><div align="center">{{panchayatBhawanActivityState.panchatayBhawanActivityDetails[$index].unitCost}}</div></td>
 												<td><div align="center">{{panchayatBhawanActivityState.panchatayBhawanActivityDetails[$index].funds}}</div></td>
-                                
+                               <td> <div align="center">
+														<strong>{{panchayatBhawanActivityState.additionalRequirement}}</strong>
+									</div> 
+                                      
+                                    </td>
                                  </tr>
                               </tbody>
                               <tfoot>

@@ -120,7 +120,7 @@ function changeColor(txt){
 							</ul>
 
 							<div class="tab-content">
-							<div class="container tab-pane active" id="state" 
+							<div class="container tab-pane " id="state" 
 									style="width: auto;">
 									<div class="table-responsive">
 										<table class="table table-bordered"">
@@ -193,7 +193,7 @@ function changeColor(txt){
 										<button type="button"onclick="onClose('home.html?<csrf:token uri='home.html'/>')"class="btn bg-orange waves-effect"><spring:message code="Label.CLOSE" htmlEscape="true" /></button>
 									</div>
 								</div>
-								<div role="tabpanel" class="container tab-pane " id="MOPR" style="width: auto;">
+								<div role="tabpanel" class="container tab-pane active" id="MOPR" style="width: auto;">
 									<div class="table-responsive">
 										<table class="table table-bordered"">
 											<thead>
@@ -281,7 +281,20 @@ function changeColor(txt){
 																	</c:otherwise>
 																</c:choose>
 															</div></td> --%>
-														<td><div align="center">${enablementDetailsForMOPR[index.index].remarks}</div></td>
+														<td>
+												<div align="center">
+													          <label class="addMore btn bg-green waves-effect" title="${enablementDetailsForMOPR[index.index].remarks}">Remark by MoPR</label>
+                                                      
+                                                                 <form:textarea
+																	path="eEnablementDetails[${index.index }].remarks"
+																	type="text" 
+																	class="form-control" 
+																	readonly="${enablement.status == 'f'}"
+																	style="text-align:right;"
+																	/></div>		
+														
+														
+														<div align="center">${enablementDetailsForMOPR[index.index].remarks}</div></td>
 													</tr>
 													<form:hidden path="eEnablementDetails[${index.index }].eeMasterId" value="${INFRA_RESOURCE.eMasterId}" />
 												</c:forEach>
@@ -343,9 +356,9 @@ function changeColor(txt){
 											<c:if test="${enablement.status eq 'f'}">
 												<button type="submit" onclick="setStatus('u')" class="btn bg-green waves-effect" ><spring:message code="Label.UNFREEZE" htmlEscape="true" /></button>
 											</c:if>
-										<%-- <c:if test="${enablement.status eq 's' || enablement.status eq 'u' || enablement.status == undefined}">
-											<button type="button" class="btn bg-light-blue waves-effect reset"><spring:message code="Label.CLEAR" htmlEscape="true" /></button>
-										</c:if> --%>
+										<c:if test="${enablement.status eq 's' || enablement.status eq 'u' || enablement.status == undefined}">
+											<%-- <button type="button" class="btn bg-light-blue waves-effect reset"><spring:message code="Label.CLEAR" htmlEscape="true" /></button> --%>
+										</c:if>
 										<button type="button" onclick="onClose('home.html?<csrf:token uri='home.html'/>')" class="btn bg-orange waves-effect"><spring:message code="Label.CLOSE" htmlEscape="true" /></button>
 									</div>
 								</div>

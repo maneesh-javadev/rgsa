@@ -113,7 +113,9 @@ public class PlanAllocationServiceImpl implements PlanAllocationService{
 			}
 			
 			
+
 			 List<SanctionOrderCompomentAmount>  sanctionOrderCompomentAmountlist=moprService.fetchAllSanctionOrderCompomentAmount(plan.getPlanPK().getPlanCode() ,stateAllocationModal.getInstallmentNo());
+
 				if(sanctionOrderCompomentAmountlist!=null && !sanctionOrderCompomentAmountlist.isEmpty()){
 					double totalAmount=0;
 					for(SanctionOrderCompomentAmount obj:sanctionOrderCompomentAmountlist) {

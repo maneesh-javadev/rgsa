@@ -89,7 +89,7 @@ table.dataTable thead > tr > th, table.dataTable thead > tr > td {
 										htmlEscape="true" /></a></li>
 						</ul>
 						<div class="tab-content">
-							<div role="tabpanel" class="container tab-pane " id="MOPR"
+							<div role="tabpanel" class="container tab-pane active " id="MOPR"
 								style="width: auto;">
 								<div class="table-responsive">
 
@@ -316,8 +316,8 @@ table.dataTable thead > tr > th, table.dataTable thead > tr > td {
 										<button type="button" ng-show="training.isFreeze" ng-disabled="capacityBuilding.isFreeze||btn_disabled" ng-click="saveTrainingDetails('U')"
 										class="btn bg-green waves-effect">UNFREEZE</button>
 										
-									<button type="button" id="clearButtn" onclick="onClear(this)"
-										class="btn bg-light-blue waves-effect">CLEAR</button>
+									<!-- <button type="button" id="clearButtn" onclick="onClear(this)"
+										class="btn bg-light-blue waves-effect">CLEAR</button> -->
 								
 									<button type="button"
 										onclick="onClose('home.html?<csrf:token uri='home.html'/>')"
@@ -325,7 +325,7 @@ table.dataTable thead > tr > th, table.dataTable thead > tr > td {
 								</div>
 								
 							</div>
-							<div role="tabpanel" class="container tab-pane active" id="state"
+							<div role="tabpanel" class="container tab-pane" id="state"
 								style="width: auto;">
 								<div class="table-responsive">
 									<table class="table table-hover dashboard-task-infos"

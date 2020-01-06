@@ -48,7 +48,7 @@ function changeColor() {
 										htmlEscape="true" /></a></li>
 						</ul>
 						<div class="tab-content">
-							<div role="tabpanel" class="container tab-pane " id="MOPR"
+							<div role="tabpanel" class="container tab-pane active" id="MOPR"
 								style="width: auto;">
 
 								<form:form method="post" name="egovernance"
@@ -197,13 +197,17 @@ function changeColor() {
 																</c:otherwise>
 															</c:choose></td> --%>
 <%-- 														<td><div align="center">${eGovActivityForMOPR.eGovSupportActivityDetails[index.index].remarks }</div></td>
- --%>								                        <td>   <form:textarea
+ --%>								                        <td>
+ 	<div align="center">
+													          <button class="addMore btn bg-green waves-effect" title="${eGovActivityForMOPR.eGovSupportActivityDetails[index.index].remarks}">Remark by MoPR</button>
+                                                      
+    <form:textarea
 																	path="eGovSupportActivityDetails[${index.index}].remarks"
 																	type="text" 
 																	class="form-control" 
 																	disabled="${eGovActivity.status eq true}"
 																	style="text-align:right;"
-																	/>
+																	/></div>
 																	</td>
 													</tr>
 													<c:set var="countSpmuCec" value="${countSpmuCec + 1}" scope="page" />
@@ -325,13 +329,17 @@ function changeColor() {
 																		style="color: red"></i>
 																</c:otherwise>
 															</c:choose></td> --%>
-														 <td>   <form:textarea
+														 <td>  
+														 <div align="center">
+													          <button class="addMore btn bg-green waves-effect" title="${eGovActivityForMOPR.eGovSupportActivityDetails[index.index].remarks}">Remark by MoPR</button>
+                                                      
+														  <form:textarea
 																	path="eGovSupportActivityDetails[${index.index}].remarks"
 																	type="text" 
 																	class="form-control" 
 																	disabled="${eGovActivity.status eq true}"
 																	style="text-align:right;"
-																	 />
+																	 /></div>
 																	</td>		
 													</tr>
 													<c:set var="countDpmuCec" value="${countDpmuCec + 1}" scope="page" />
@@ -408,8 +416,8 @@ function changeColor() {
 										</c:if>
 										
 										<c:if test="${eGovActivity.status eq false || empty eGovActivity.status}">
-											<button type="button" class="btn bg-light-blue waves-effect reset" id="clearId"><spring:message code="Label.CLEAR" htmlEscape="true" /></button>
-										</c:if>
+<%-- 											<button type="button" class="btn bg-light-blue waves-effect reset" id="clearId"><spring:message code="Label.CLEAR" htmlEscape="true" /></button>
+ --%>										</c:if>
 										<button type="button" onclick="onClose('home.html?<csrf:token uri='home.html'/>')" class="btn bg-orange waves-effect"><spring:message code="Label.CLOSE" htmlEscape="true" /></button>
 										<input type="hidden" name="dbFileName" id="dbFileName">
 										<input type="hidden" name="eGovSupportActivityId" value="${eGovActivity.eGovSupportActivityId}" />
@@ -420,7 +428,7 @@ function changeColor() {
 								</form:form>
 							</div>
 
-							<div class="container tab-pane active" id="state"
+							<div class="container tab-pane " id="state"
 								style="width: auto;"> 
 									<div class="row clearfix">
 										<div class="form-group">

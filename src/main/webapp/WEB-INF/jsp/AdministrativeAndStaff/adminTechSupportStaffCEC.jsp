@@ -153,7 +153,7 @@ function validateUnitCost(index){
 						</ul>
 
 						<div class="tab-content">
-							<div role="tabpanel" class="container tab-pane " id="MOPR"
+							<div role="tabpanel" class="container tab-pane active " id="MOPR"
 								style="width: auto;">
 								<div class="table-responsive">
 									<table class="table table-bordered">
@@ -164,7 +164,7 @@ function validateUnitCost(index){
 												<th>Post Name</th>
 												<th>Level</th>
 												<th><div align="center">
-														no Of Units <br> (A)
+														No. Of Units <br> (A)
 													</div></th>
 												<th><div align="center">
 														No. of Months <br> (C)
@@ -251,8 +251,15 @@ function validateUnitCost(index){
 															style="text-align: right;"
 														onchange="calculateFund()" onkeyup="onloadChangeColor()"
 														id="fundId_${index.index}" readonly="readonly" /></td>
-														<td><input type="text"  name="supportDetails[${index.index}].remarks"  readonly="readonly" style="height: 58px;" class="form-control Align-Right"  value="${details[index.index].remarks}"/></td>
-														</c:when>
+														<td>
+														<div align="center">
+													<button class="addMore btn bg-green waves-effect" title="${detailsForMOPR[index.index].remarks}">Remark By Mopr</button>
+												
+														<input type="text"  name="supportDetails[${index.index}].remarks"  readonly="readonly" style="height: 58px;" class="form-control Align-Right"  value="${details[index.index].remarks}"/>
+														</div>
+														</td>
+														
+													</c:when>
 														<c:otherwise>
 															<td><div align="center"
 																	id="noOfUnitsIdMopr_${index.index}">${detailsForMOPR[index.index].noOfUnits}</div>
@@ -291,7 +298,11 @@ function validateUnitCost(index){
 															style="text-align: right;"
 														onchange="calculateFund()" onkeyup="onloadChangeColor()"
 														id="fundId_${index.index}" readonly="readonly" /></td>
-                                                                 <td><input type="text" name="supportDetails[${index.index}].remarks" style="height: 58px;" class="form-control Align-Right"  value="${details[index.index].remarks}"/></td>
+														<td><div align="center">
+													          <label class="addMore btn bg-green waves-effect" title="${detailsForMOPR[index.index].remarks}">Remark by MoPR</label>
+                                                                 <input type="text" name="supportDetails[${index.index}].remarks" style="height: 58px;" class="form-control Align-Right"  value="${details[index.index].remarks}"/>
+                                                                 </div>
+                                                                 </td>
 														</c:otherwise>
 
 
@@ -445,7 +456,7 @@ function validateUnitCost(index){
 									value="${user_type}" />
  --%>
 
-							<div class="container tab-pane active " id="state"
+							<div class="container tab-pane  " id="state"
 								style="width: auto;">
 								<div class="table-responsive">
 									<table class="table table-bordered">
