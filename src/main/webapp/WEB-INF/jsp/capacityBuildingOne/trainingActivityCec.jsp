@@ -127,8 +127,15 @@
 												<td>
 													<div align="center"
 														data-ng-model="cecData.capacityBuildingActivityDetails[$index].noOfDays"
-														data-ng-init="cecData.capacityBuildingActivityDetails[$index].noOfDays=moprData.capacityBuildingActivityDetails[$index].noOfDays">
-														<strong>{{moprData.capacityBuildingActivityDetails[$index].noOfDays}}</strong>
+														data-ng-init="cecData.capacityBuildingActivityDetails[$index].noOfDays=moprData.capacityBuildingActivityDetails[$index].noOfDays"
+														data-ng-show="$index+1==5 || $index+1==6" >
+														<strong>{{moprData.capacityBuildingActivityDetails[$index].noOfDays}} </strong>
+													</div>
+													<div align="center"
+														data-ng-model="cecData.capacityBuildingActivityDetails[$index].noOfDays"
+														data-ng-init="cecData.capacityBuildingActivityDetails[$index].noOfDays=moprData.capacityBuildingActivityDetails[$index].noOfDays"
+														data-ng-show="$index+1==1 || $index+1==2 || $index+1==3 || $index+1==4 || $index+1==7 || $index+1==8 ">
+														<strong>1</strong>
 													</div>
 													
 												</td>
@@ -180,7 +187,7 @@
 																
 													
 													</td>
-												<td>
+													<td>
 													<div align="center"
 														data-ng-model="cecData.capacityBuildingActivityDetails[$index].collabInstitute"
 														data-ng-init="cecData.capacityBuildingActivityDetails[$index].collabInstitute=moprData.capacityBuildingActivityDetails[$index].collabInstitute">
@@ -345,23 +352,13 @@
 											<tr data-ng-repeat="cbMaster in cbmasters">
 												<td><div align="center">{{$index+1}}</div></td>
 												<td><div align="center">{{cbMaster.cbName}}</div></td>
-												<td><div align="center">{{stateData.capacityBuildingActivityDetails[$index].noOfDays}}</div></td>
+												<td><div align="center" data-ng-show="$index+1==5 || $index+1==6">{{stateData.capacityBuildingActivityDetails[$index].noOfDays}}</div>
+													<div align="center" data-ng-show="$index+1==1 || $index+1==2 || $index+1==3 || $index+1==4 || $index+1==7 || $index+1==8 ">1</div>
+												</td>
 												<td><div align="center">{{stateData.capacityBuildingActivityDetails[$index].noOfUnits}}</div></td>
 												<td><div align="center">{{stateData.capacityBuildingActivityDetails[$index].unitCost}}</div></td>
 												<td><div align="center">{{stateData.capacityBuildingActivityDetails[$index].funds}}</div></td>
 												<td><div align="center">{{stateData.capacityBuildingActivityDetails[$index].collabInstitute}}</div></td>
-												<!-- <td>
-													<div align="center"
-														data-ng-if="moprData.capacityBuildingActivityDetails[$index].isApproved">
-														<i class="fa fa-check" aria-hidden="true"
-															style="color: #00cc00"></i>
-													</div>
-													<div align="center"
-														data-ng-if="!moprData.capacityBuildingActivityDetails[$index].isApproved">
-														<i class="fa fa-times" aria-hidden="true"
-															style="color: red"></i>
-													</div>
-												</td> -->
 												<td><div align="center">{{stateData.capacityBuildingActivityDetails[$index].remarks}}</div></td>
 											</tr>
 											<tr>
@@ -380,7 +377,7 @@
 											</tr>
 											<tr>
 												<th colspan="5" align="center">Total Proposed Fund</th>
-												<td><div align="center">{{stateGrandTotalInCEC}}</div></td>
+												<td><div align="center">{{stateGrandTotalInCEC}}</div></td> 
 												<td></td>
 												<td></td>
 												<td></td>

@@ -24,6 +24,7 @@ trgModuleCEC.controller("trainingActivityCEC",['$scope','trgActivityCecService',
 	function fetchOnLoad(){
 		$scope.btn_disabled=false;
 		trgActivityCecService.getActivityList().then(function(response){
+			//console.log(">>>><<="+response.data.cbMasters);
 			//For MOPR
 			$scope.cbmasters = response.data.cbMasters;
 			$scope.userType =  response.data.userType;
@@ -63,10 +64,6 @@ trgModuleCEC.controller("trainingActivityCEC",['$scope','trgActivityCecService',
 				
 				$scope.status="F";
 			}
-			
-			
-			
-		
 		});
 	}
 	
