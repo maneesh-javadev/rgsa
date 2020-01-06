@@ -126,9 +126,9 @@
 									   	<div class="form-group text-right">
 									   	    <button ng-click="savePanchayatBhawanData()" ng-show = "IsVisible" type="button" class="btn bg-green waves-effect" ><spring:message code="Label.SAVE" htmlEscape="true"/></button> 
 									   		
-									   		<button type="button" data-ng-show="panchayatBhawanActivity.status != 'F'"  class="btn bg-light-blue waves-effect" data-ng-click="claerAll()">
+									   		<%-- <button type="button" data-ng-show="panchayatBhawanActivity.status != 'F'"  class="btn bg-light-blue waves-effect" data-ng-click="claerAll()">
 									   			<spring:message code="Label.CLEAR" htmlEscape="true" />
-									   		</button>
+									   		</button> --%>
 											<button type="button" onclick="onClose('home.html?<csrf:token uri='home.html'/>')" class="btn bg-orange waves-effect">
 												<spring:message code="Label.CLOSE" htmlEscape="true" />
 											</button>

@@ -460,7 +460,7 @@ function isNumber(evt) {
 							
 																<div class="col-lg-3" align="right" style="color: #3b1576;display: none;" id="carryForwardCheck">
 																	<input type="checkbox" id="checkboxCarry" class="form-check-input"
-																		data-ng-click="hideSectionsInSprc('new')" /> : Want to fill Carry Forward Section instead ? &nbsp;&nbsp;
+																		data-ng-click="hideSectionsInSprc('new')" /> : Want to fill New Building Section instead ? &nbsp;&nbsp;
 																</div>
 															</div>
 														<div class="row">
@@ -766,12 +766,7 @@ function isNumber(evt) {
 																				<button data-ng-show="!institutionalInfraActivityPlan.isFreeze"    data-ng-click="save_data('F')"  ng-disabled="btn_disabled" class="btn bg-orange waves-effect">
 																					<spring:message code="FREEZE" htmlEscape="true" />
 																				</button>
-																				<button type="button" data-ng-show="institutionalInfraActivityPlan.isFreeze" data-ng-click="load_data()" class="btn bg-light-blue waves-effect" disabled="disabled">
-																					<spring:message code="Label.CLEAR" htmlEscape="true"/>
-																				</button>
-																				<button type="button" data-ng-show="!institutionalInfraActivityPlan.isFreeze" data-ng-click="load_data()" class="btn bg-light-blue waves-effect">
-																					<spring:message code="Label.CLEAR" htmlEscape="true" />
-																				</button>
+																				 
 																			</c:if>
 																			<button type="button" onclick="onClose('home.html?<csrf:token uri='home.html'/>')" class="btn bg-red waves-effect">
 																				<spring:message code="Label.CLOSE" htmlEscape="true" />

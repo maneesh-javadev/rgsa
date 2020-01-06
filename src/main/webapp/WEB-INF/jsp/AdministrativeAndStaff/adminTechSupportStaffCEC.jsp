@@ -413,12 +413,12 @@ function validateUnitCost(index){
 														id="isFreeze" class="btn bg-green waves-effect">FREEZE</button>
 												</c:otherwise>
 											</c:choose>
-											<button type="button"
+											<%-- <button type="button"
 												class="btn bg-light-blue waves-effect reset" id="clearId"
 												onclick="onClear(this)">
 												<spring:message code="Label.CLEAR" text="Clear"
 													htmlEscape="true" />
-											</button>
+											</button> --%>
 
 										</c:if>
 										<c:if test="${ISFREEZE eq 'F'}">
