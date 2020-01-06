@@ -266,7 +266,7 @@ function saveSubmit(){
 						</ul>
 
 						<div class="tab-content">
-							<div role="tabpanel" class="container tab-pane " id="MOPR"
+							<div role="tabpanel" class="container tab-pane active " id="MOPR"
 								style="width: auto;">
 								<div class="table-responsive">
 									<table class="table table-bordered" id="supportStaff">
@@ -571,7 +571,7 @@ function saveSubmit(){
 								</div>
 							</div>
 
-							<div class="container tab-pane active" id="state"
+							<div class="container tab-pane " id="state"
 								style="width: auto;">
 								<div class="table-responsive">
 									<table class="table table-bordered" id="supportStaff">

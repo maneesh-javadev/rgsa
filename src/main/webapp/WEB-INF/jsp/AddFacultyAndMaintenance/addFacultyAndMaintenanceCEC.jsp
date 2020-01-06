@@ -434,9 +434,15 @@ function calculateTotalFundDprc() {
 																<td></td>
 															</c:otherwise>
 														</c:choose>
-														<td><form:textarea
+														<td>
+														<div align="center">
+													          <label class="addMore btn bg-green waves-effect" title="${institueInfraHrActivityDetailsMopr[index.index].remarks}">Remark by MoPR</label>
+                                                      
+														<form:textarea
 																path="institueInfraHrActivityDetails[${index.index}].remarks"
-																rows="3" cols="5" class="active12 form-control" /></td>
+																rows="3" cols="5" class="active12 form-control" />
+																</div>
+																</td>
 													</tr>
 													<c:set var="countSprc" value="${countSprc + 1}" scope="page" />
 												</c:forEach>
@@ -537,9 +543,13 @@ function calculateTotalFundDprc() {
 																<td></td>
 															</c:otherwise>
 														</c:choose>
-														<td><form:textarea
+														<td>
+														<div align="center">
+													          <label class="addMore btn bg-green waves-effect" title="${institueInfraHrActivityDetailsMopr[index.index].remarks}">Remark by MoPR</label>
+                                                      
+														<form:textarea
 																path="institueInfraHrActivityDetails[${index.index}].remarks"
-																rows="3" cols="5" class="active12 form-control" /></td>
+																rows="3" cols="5" class="active12 form-control" /></div></td>
 													</tr>
 													<c:set var="countDprc" value="${countDprc + 1}" scope="page" />
 												</c:forEach>
@@ -834,10 +844,10 @@ function calculateTotalFundDprc() {
 											</button>
 										</c:otherwise>
 										</c:choose>
-											<button type="button" onclick="onClear(this)"
+											<%-- <button type="button" onclick="onClear(this)"
 												class="btn bg-light-blue waves-effect" id="clear">
 												<spring:message code="Label.CLEAR" htmlEscape="true" />
-											</button>
+											</button> --%>
 										</c:if>
 
 										<c:if test="${ISFREEZE eq true}">

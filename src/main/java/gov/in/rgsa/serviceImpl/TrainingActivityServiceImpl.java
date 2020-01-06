@@ -986,9 +986,10 @@ public void save(TrainingActivity activity) {
 					commonRepository.update(activity);
 					if(activity.getIsFreeze()) {
 						facadeService.populateStateFunds("1");
-					}
-					response1.setResponseMessage("Training Details update sucessfully");
-					response1.setResponseCode(200);
+						response1.setResponseMessage("Training Details Freeze sucessfully");
+					}else {
+					response1.setResponseMessage("Training Details UnFreeze sucessfully");
+					}	response1.setResponseCode(200);
 			
 			
 			
