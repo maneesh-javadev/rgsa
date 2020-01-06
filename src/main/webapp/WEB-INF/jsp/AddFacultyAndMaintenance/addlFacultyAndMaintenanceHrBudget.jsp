@@ -753,10 +753,10 @@ function calculateTotalFundDprc() {
 									</c:otherwise>
 								</c:choose>
 								
-									<button type="button" onclick="onClear(this)"
+								<%-- 	<button type="button" onclick="onClear(this)"
 									class="btn bg-light-blue waves-effect" id="clear">
 									<spring:message code="Label.CLEAR" htmlEscape="true" />
-								</button>
+								</button> --%>
 								</c:if>
 								</c:if>
 								
@@ -807,10 +807,10 @@ function calculateTotalFundDprc() {
 										</button>
 									</c:otherwise>
 								</c:choose>
-									<button type="button" onclick="onClear(this)"
+									<%-- <button type="button" onclick="onClear(this)"
 									class="btn bg-light-blue waves-effect" id="clear">
 									<spring:message code="Label.CLEAR" htmlEscape="true" />
-								</button>
+								</button> --%>
 								</c:if>
 								</c:if>
 								

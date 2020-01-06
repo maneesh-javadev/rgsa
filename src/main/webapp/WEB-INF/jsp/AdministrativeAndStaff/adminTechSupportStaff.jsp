@@ -264,8 +264,8 @@ table#mytable tbody tr td {
 							<button data-ng-click="saveData('S')" data-ng-disabled="adminTechStaffObject.status == 'F' || btn_disabled" type="button" class="btn bg-green waves-effect"><spring:message code="SAVE" htmlEscape="true" /></button>
 							<button data-ng-click="saveData('U')" data-ng-if='adminTechStaffObject.status == "F"' type="button" class="btn bg-orange waves-effect">UNFREEZE</button>
 							<button data-ng-click="saveData('F')" data-ng-if='adminTechStaffObject.status == "S" || adminTechStaffObject.status == "U"' type="button" class="btn bg-orange waves-effect">FREEZE</button>
-							<button data-ng-click="onClear()" type="button" data-ng-disabled="adminTechStaffObject.status == 'F'" class="btn bg-light-blue waves-effect"><spring:message code="Label.CLEAR" htmlEscape="true" /></button>
-							</c:if>
+							<%-- <button data-ng-click="onClear()" type="button" data-ng-disabled="adminTechStaffObject.status == 'F'" class="btn bg-light-blue waves-effect"><spring:message code="Label.CLEAR" htmlEscape="true" /></button>
+							 --%></c:if>
 							<button type="button" onclick="onClose('home.html?<csrf:token uri='home.html'/>')"class="btn bg-red waves-effect"><spring:message code="Label.CLOSE" htmlEscape="true" /></button>
 						</div>
 					</div>

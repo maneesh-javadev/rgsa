@@ -14,6 +14,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.PlatformTransactionManager;
 
+import com.fasterxml.jackson.annotation.JsonInclude.Value;
+
 import gov.in.rgsa.dao.CommonRepository;
 import gov.in.rgsa.entity.Plan;
 import gov.in.rgsa.entity.PlanComponents;
@@ -151,48 +153,47 @@ public class PlanAllocationServiceImpl implements PlanAllocationService{
 	public Response  savePlanAllocation(StateAllocationModal stateAllocationModal) {
 		Response response = new Response();
 		try {
-				if(stateAllocationModal.getFundReleasedDetailId() != null) {
+				if(stateAllocationModal.getFundReleasedDetailId() != null && !"null".equals( String.valueOf(stateAllocationModal.getStateShare())) && !"".equals( String.valueOf(stateAllocationModal.getStateShare()))) {
 					Map<String, Object> params=new HashMap<String, Object>();
 					params.put("fundReleasedDetailsId",stateAllocationModal.getFundReleasedDetailId());
 					params.put("stateShare",stateAllocationModal.getStateShare());
 					commonRepository.excuteUpdate("UPDATE_STATE_SHARE", params);
-				}
-				
-				 for(StateAllocation obj: stateAllocationModal.getStateAllocationList()) {
-				 
-				  obj.setInstallmentNo(stateAllocationModal.getInstallmentNo());
-				  obj.setPlanCode(stateAllocationModal.getPlanCode());
-				  obj.setStatus(stateAllocationModal.getStatus());
+					
+					 for(StateAllocation obj: stateAllocationModal.getStateAllocationList()) {
+						 
+						  obj.setInstallmentNo(stateAllocationModal.getInstallmentNo());
+						  obj.setPlanCode(stateAllocationModal.getPlanCode());
+						  obj.setStatus(stateAllocationModal.getStatus());
 
-				if (obj.getSrNo() != null) {
-					Map<String, Object> params = new HashMap<String, Object>();
-					params.put("srNo", obj.getSrNo());
-					params.put("status", obj.getStatus());
-					params.put("fundsAllocated", obj.getFundsAllocated());
-					commonRepository.excuteUpdate("UPDATE_STATUS_STATE_ALLOCATION", params);
-				} else {
-					commonRepository.save(obj);
-					}
+						if (obj.getSrNo() != null) {
+							params = new HashMap<String, Object>();
+							params.put("srNo", obj.getSrNo());
+							params.put("status", obj.getStatus());
+							params.put("fundsAllocated", obj.getFundsAllocated());
+							commonRepository.excuteUpdate("UPDATE_STATUS_STATE_ALLOCATION", params);
+						} else {
+							commonRepository.save(obj);
+							}
+						}
+					 	
+					 	String msg="Something is wrong";
+						if(stateAllocationModal.getStatus()!=null && stateAllocationModal.getStatus().length()>0) {
+							switch(stateAllocationModal.getStatus().charAt(0)) {
+							case 'S':
+								msg="Data Saved Successfully";
+								break;
+							case 'M':
+								msg="Data Updated Successfully";
+								break;
+							case 'F':
+								msg="Data Freezed Successfully";
+							}
+						}
+						response.setResponseMessage(msg);
+						response.setResponseCode(200);
 				}
-				
-				String msg="Something is wrong";
-				if(stateAllocationModal.getStatus()!=null && stateAllocationModal.getStatus().length()>0) {
-					switch(stateAllocationModal.getStatus().charAt(0)) {
-					case 'S':
-						msg="Data Saved Successfully";
-						break;
-					case 'M':
-						msg="Data Updated Successfully";
-						break;
-					case 'F':
-						msg="Data Freezed Successfully";
-					}
-				}
-				
-				response.setResponseMessage(msg);
-				response.setResponseCode(200);
 		}catch(Exception e) {
-			response.setResponseMessage("Data Saved UnSuccessfully"+e.getMessage());
+			response.setResponseMessage("Data Saved UnSuccessfully!");
 			response.setResponseCode(500);
 		}
 		return response;

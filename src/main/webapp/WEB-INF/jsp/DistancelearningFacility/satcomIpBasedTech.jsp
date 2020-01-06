@@ -624,7 +624,7 @@
 									class="btn bg-orange waves-effect">
 									<spring:message code="Label.UNFREEZE" htmlEscape="true" />
 								</button>
-								<button type="button"
+							<%-- 	<button type="button"
 									data-ng-show="satcomActivityObject.status == 'F'"
 									class="btn bg-light-blue waves-effect" disabled="disabled">
 									<spring:message code="Label.CLEAR" htmlEscape="true" />
@@ -633,7 +633,7 @@
 									data-ng-show="satcomActivityObject.status != 'F'"
 									class="btn bg-light-blue waves-effect">
 									<spring:message code="Label.CLEAR" htmlEscape="true" />
-								</button>
+								</button> --%>
 								</c:if>
 								<button type="button"
 									onclick="onClose('home.html?<csrf:token uri='home.html'/>')"
