@@ -345,14 +345,12 @@ workLocation.controller("workLocationController",['$scope','workLocationService'
 		 tbody=$("<tbody/>");
 		 
 		 angular.forEach($scope.filterLbCodes,function(item){
-			
-			
 			 tr=$("<TR/>");
-			 
 			 td=$("<TD/>");
 			 templateInput = $("<input/>");
 			 templateInput.attr("type", "checkbox");
 			 templateInput.attr("name", "chkEntity");
+			 templateInput.attr("class", "chkClass");
 			 if(selActivityId==1 && lbCodes1.includes(item[0])){
 				 $( templateInput ).prop('checked', true);		 
 			 }else if(selActivityId==2 && lbCodes2.includes(item[0])){
@@ -419,7 +417,6 @@ workLocation.controller("workLocationController",['$scope','workLocationService'
 			 tr.append(td);
 			 tbody.append(tr);
 			 table.append(tbody);
-			 
 			 
 		});
 		
