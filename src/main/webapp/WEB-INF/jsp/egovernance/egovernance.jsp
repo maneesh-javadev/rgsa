@@ -427,12 +427,12 @@
 										</button>
 									</c:if>
 
-									<c:if test="${eGovActivity.status eq false}">
+									<%-- <c:if test="${eGovActivity.status eq false}">
 										<button type="button"
 											class="btn bg-light-blue waves-effect reset" id="clearId">
 											<spring:message code="Label.CLEAR" htmlEscape="true" />
 										</button>
-									</c:if>
+									</c:if> --%>
 								</c:if>
 								<button type="button"
 									onclick="onClose('home.html?<csrf:token uri='home.html'/>')"

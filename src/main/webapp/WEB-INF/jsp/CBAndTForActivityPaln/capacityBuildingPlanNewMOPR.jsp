@@ -233,9 +233,9 @@ table.dataTable thead > tr > th, table.dataTable thead > tr > td {
 										<button type="button" ng-show="fetchTrainingMOPR.isFreeze"  ng-disabled="capacityBuilding.isFreeze" ng-click="saveTrainingDetails('U')"
 										class="btn bg-orange waves-effect">UNFREEZE</button>
 										
-									<button ng-click="resetLoading()" type="button" ng-show="!fetchTrainingMOPR.isFreeze" class="btn bg-light-blue waves-effect"  >
+									<%-- <button ng-click="resetLoading()" type="button" ng-show="!fetchTrainingMOPR.isFreeze" class="btn bg-light-blue waves-effect"  >
 									   			<spring:message code="Label.CLEAR" htmlEscape="true" />
-									   		</button>
+									   		</button> --%>
 								
 									<button type="button"
 										onclick="onClose('home.html?<csrf:token uri='home.html'/>')"

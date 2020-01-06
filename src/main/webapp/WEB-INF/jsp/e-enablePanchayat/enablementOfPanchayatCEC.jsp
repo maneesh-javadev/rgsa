@@ -343,9 +343,9 @@ function changeColor(txt){
 											<c:if test="${enablement.status eq 'f'}">
 												<button type="submit" onclick="setStatus('u')" class="btn bg-green waves-effect" ><spring:message code="Label.UNFREEZE" htmlEscape="true" /></button>
 											</c:if>
-										<c:if test="${enablement.status eq 's' || enablement.status eq 'u' || enablement.status == undefined}">
+										<%-- <c:if test="${enablement.status eq 's' || enablement.status eq 'u' || enablement.status == undefined}">
 											<button type="button" class="btn bg-light-blue waves-effect reset"><spring:message code="Label.CLEAR" htmlEscape="true" /></button>
-										</c:if>
+										</c:if> --%>
 										<button type="button" onclick="onClose('home.html?<csrf:token uri='home.html'/>')" class="btn bg-orange waves-effect"><spring:message code="Label.CLOSE" htmlEscape="true" /></button>
 									</div>
 								</div>

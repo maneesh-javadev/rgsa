@@ -353,11 +353,11 @@ function validatingTotalProposedFund(){
 														htmlEscape="true" />
 												</button>
 											</c:if>
-											<button type="button" onclick="onClear(this)"
+											<%-- <button type="button" onclick="onClear(this)"
 												class="btn bg-light-blue waves-effect" id="clearId">
 												<spring:message code="Label.CLEAR" text="Clear"
 													htmlEscape="true" />
-											</button>
+											</button> --%>
 										</c:if>
 										<button type="button"
 											onclick="onClose('home.html?<csrf:token uri='home.html'/>')"

@@ -375,12 +375,12 @@ function calculateTotal(obj){
 								       <button data-ng-show="panchayatBhawanActivity.status == 'F'" type="button" data-ng-click="saveData('UF')"  data-ng-disabled="btn_disabled"  class="btn bg-green waves-effect">
 									      <spring:message code="Label.UNFREEZE" htmlEscape="true" />
 								       </button>
-			 						   		<button type="button" data-ng-show="panchayatBhawanActivity.status == 'F'"  class="btn bg-light-blue waves-effect" disabled="disabled">
+			 						   		<%-- <button type="button" data-ng-show="panchayatBhawanActivity.status == 'F'"  class="btn bg-light-blue waves-effect" disabled="disabled">
 									   			<spring:message code="Label.CLEAR" htmlEscape="true" />
 									   		</button>
 									   		<button type="button" data-ng-show="panchayatBhawanActivity.status != 'F'"  class="btn bg-light-blue waves-effect" data-ng-click="claerAll()">
 									   			<spring:message code="Label.CLEAR" htmlEscape="true" />
-									   		</button>
+									   		</button> --%>
 											<button type="button" onclick="onClose('home.html?<csrf:token uri='home.html'/>')" class="btn bg-orange waves-effect">
 												<spring:message code="Label.CLOSE" htmlEscape="true" />
 											</button>
