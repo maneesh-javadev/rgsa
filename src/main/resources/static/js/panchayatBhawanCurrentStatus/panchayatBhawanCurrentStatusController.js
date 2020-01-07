@@ -6,7 +6,13 @@ var publicModule=angular.module("publicModule",['ui.bootstrap']);
 publicModule.controller("panchyatBhawanCurrentStatusController",['$scope','panchayatBhawanCurrentStatusService','$modal',
 		function($scope,panchayatBhawanCurrentStatusService,$modal){
 	
-fetchServicesProvided();
+
+$(document).ready(function() {
+	fetchServicesProvided();
+	});
+
+
+
 $scope.panchayatBhawanCurrentStatus={};
 $scope.panchayatBhawanCurrentStatus.panchayatBhawanCurrentStatusDetails=[];
 

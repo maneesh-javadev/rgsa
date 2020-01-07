@@ -11,7 +11,9 @@ trainingDetail.controller("trainingDetailMoprController",['$scope','trainingDeta
 	$scope.training.trainingDetailList=[];
 	$scope.trainingDetails={};
 	
-	fetchOnLoad();
+	$( document ).ready(function() {
+		fetchOnLoad();
+	});
 	
 	$scope.resetLoading=function(){
 		fetchOnLoad();

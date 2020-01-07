@@ -10,7 +10,10 @@ publicModule.controller("consolidatedReportController", [ '$scope', "consolidate
 	$scope.capacityBuilding.capacityBuildingActivityDetails=[];
 	$scope.capacityBuilding.additionalRequirement;
 	
-	fetchConsolidatedReportDetails();
+	
+	$( document ).ready(function() {
+		fetchConsolidatedReportDetails();
+	});
 	
 	function fetchConsolidatedReportDetails(){
 		console.log("inside fetchConsolidatedReportDetails");

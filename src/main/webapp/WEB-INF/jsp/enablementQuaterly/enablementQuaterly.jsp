@@ -323,9 +323,9 @@ function FreezeAndUnfreeze(msg){
 																<td><form:select id="enablement_${count.index}"  path ="qprEnablementDetails[${count.index}].enablementStatus" readonly="${Qpr_Enablement.isFreeze}"  class="form-control">
 																<option value="-1">select</option>
 															
-                                                                   <option value="0">Tendering process</option>
-                                                                     <option value="1">Computer procured</option>
-                                                                    <option value="2">GP Computerized</option>
+                                                                   <option value="1">Tendering process</option>
+                                                                     <option value="2">Computer procured</option>
+                                                                    <option value="3">GP Computerized</option>
                                                                      
                                                                         </form:select></td>
 														</tr>
@@ -393,9 +393,9 @@ function FreezeAndUnfreeze(msg){
 																required="required"  /></td>
 																<td><select name ="qprEnablementDetails[${count.index}].enablementStatus" class="form-control">
 																<option value="-1">select</option>
-                                                                   <option value="0">Tendering process</option>
-                                                                     <option value="1">Computer procured</option>
-                                                                    <option value="2">GP Computerized</option>
+                                                                   <option value="1">Tendering process</option>
+                                                                     <option value="2">Computer procured</option>
+                                                                    <option value="3">GP Computerized</option>
                                                                       
                                                                         </select></td>
 														</tr>

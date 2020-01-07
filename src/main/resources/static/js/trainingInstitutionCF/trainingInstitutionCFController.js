@@ -11,7 +11,10 @@ publicModule.controller("trainingInstitutionCFController",['$scope','trgInstitut
 	$scope.trainingInstitutionCFObject={};
 	$scope.trainingInstitutionCFObject.cfDetails=[];
 	
-	fetchOnLoad();
+	$( document ).ready(function() {
+		fetchOnLoad();
+	});
+	
 	function fetchOnLoad(){
 		trgInstitutionCFService.getTrainingInstitutionLevel().then(function(response){
 			$scope.trainingInstitutionLevel=response.data.TRAINING_ACTIVITY_TYPE;

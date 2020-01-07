@@ -13,7 +13,13 @@ publicModule.controller("pesaPlanCECController", [ '$scope', "pesaPlanService",
 
 	$scope.maxLengthOfMonth = 12;
 	
-	fetchPesaPlanDetailsForStateAndMOPR();
+	
+
+	$(document).ready(function() {
+		fetchPesaPlanDetailsForStateAndMOPR();
+		});
+	
+	
 	function fetchPesaPlanDetailsForStateAndMOPR(){
 		console.log("inside pesaController");
 		pesaPlanService.fetchPesaPlanDetailsForStateAndMOPR().then(function(response) {

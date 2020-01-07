@@ -14,7 +14,10 @@ var capacityBuildingGPs=angular.module("publicModule",[]);
 capacityBuildingGPs.controller("capacityBuildingGPsController",['$scope','capacityBuildingGPsService',function($scope,capacityBuildingGPsService ){
 	
 	var selActivityId=null;
-	fetchOnLoad();
+	
+	$( document ).ready(function() {
+		fetchOnLoad();
+	});
 	
 	
 	$scope.clearPage=function(){

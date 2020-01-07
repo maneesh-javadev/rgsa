@@ -5,7 +5,9 @@ publicModule.controller("trainingInfrastructureController", [ '$scope',"training
 	$scope.trainingInstitute={};
 	$scope.trainingInstitute.trainingInstituteCurrentStatusDetails=[];
 	
-	fetchTrainingInstituteBasedOnFinYearAndStateCode();
+	$( document ).ready(function() {
+		fetchTrainingInstituteBasedOnFinYearAndStateCode();
+	});
 	
 	function fetchTrainingInstituteBasedOnFinYearAndStateCode(){
 		trainingInfrastructureService.fetchTrainingInstituteBasedOnFinYearAndStateCode().then(function(response){
