@@ -1,5 +1,7 @@
 package gov.in.rgsa.entity;
 
+import java.io.Serializable;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -21,8 +23,13 @@ import javax.persistence.Table;
 @NamedQuery(name="FETCH_TRAINING_MODES" ,query="from TrainingMode"),
 @NamedQuery(name="FETCH_TRAINING_MODES_by_Id",query="FROM TrainingMode where trainingModeId=:trainingModeId")
 })
-public class TrainingMode {
+public class TrainingMode implements Serializable {
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 531900526942016834L;
+
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	@Column(name="training_mode_id",nullable=false)

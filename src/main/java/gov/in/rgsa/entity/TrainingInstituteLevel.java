@@ -1,5 +1,7 @@
 package gov.in.rgsa.entity;
 
+import java.io.Serializable;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -7,7 +9,12 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name="training_institute_level",schema="rgsa")
-public class TrainingInstituteLevel {
+public class TrainingInstituteLevel implements Serializable {
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 5287333680715590633L;
 
 	@Id
 	@Column(name="training_institute_level_id")

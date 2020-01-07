@@ -1,5 +1,6 @@
 package gov.in.rgsa.entity;
 
+import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.List;
 
@@ -37,7 +38,12 @@ query="SELECT TA from TrainingActivity TA RIGHT OUTER JOIN FETCH TA.trainingActi
 @NamedQuery(name="UPDATE_Training_Activity",query="UPDATE TrainingActivity SET  isFreeze=:isFreeze,additionalRequirement =:additionalRequirement where trainingActivityId=:trainingActivityId"),
 @NamedQuery(name="FIND_ALL_TRAINING_ACTIVITY_BY_ID",query="from TrainingActivity WHERE trainingActivityId=:trainingActivityId")
 })
-public class TrainingActivity {
+public class TrainingActivity implements Serializable {
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 3723752023612486524L;
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)

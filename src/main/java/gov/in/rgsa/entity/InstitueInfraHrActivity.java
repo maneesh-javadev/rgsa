@@ -1,5 +1,6 @@
 package gov.in.rgsa.entity;
 
+import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.List;
 
@@ -30,8 +31,13 @@ import org.hibernate.annotations.UpdateTimestamp;
 	
 
 @Table(name="institue_infra_hr_activity",schema="rgsa")
-public class InstitueInfraHrActivity {
+public class InstitueInfraHrActivity implements Serializable{
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 4007710382543127223L;
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name="institue_infra_hr_activity_id")

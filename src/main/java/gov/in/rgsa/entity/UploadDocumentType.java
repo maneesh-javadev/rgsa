@@ -14,6 +14,11 @@ import javax.persistence.Table;
 @NamedNativeQueries({@NamedNativeQuery(query = "SELECT * FROM rgsa.upload_document_type  ORDER BY name", name = "DOCUMENT_TYPE_LIST", resultClass = UploadDocumentType.class)})
 public class UploadDocumentType implements Serializable{
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 6660418041942353524L;
+
 	@Id
 	@Column(name="type_id")
 	private Integer typeId;

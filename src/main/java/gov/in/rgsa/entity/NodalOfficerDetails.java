@@ -1,5 +1,7 @@
 package gov.in.rgsa.entity;
 
+import java.io.Serializable;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -11,7 +13,12 @@ import javax.persistence.Table;
 @Entity
 @Table(name="nodal_officer_details",schema="rgsa")
 @NamedQuery(name="FETCH_NODAL_DETAILS",query="from NodalOfficerDetails where stateCode=:stateCode")
-public class NodalOfficerDetails {
+public class NodalOfficerDetails implements Serializable {
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -4859412475203136314L;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)

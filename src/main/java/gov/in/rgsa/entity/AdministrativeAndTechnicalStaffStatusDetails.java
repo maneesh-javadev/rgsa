@@ -17,9 +17,9 @@ import javax.persistence.Table;
 public class AdministrativeAndTechnicalStaffStatusDetails implements Serializable	{
 	
 	/**
-	 * Sourabh rai
+	 * 
 	 */
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 3286259687359950487L;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)

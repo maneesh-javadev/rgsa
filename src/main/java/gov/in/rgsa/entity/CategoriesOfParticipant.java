@@ -1,5 +1,7 @@
 package gov.in.rgsa.entity;
 
+import java.io.Serializable;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -17,7 +19,12 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name="categories_of_participant", schema="rgsa")
-public class CategoriesOfParticipant {
+public class CategoriesOfParticipant implements Serializable{
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1757941648518176232L;
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)

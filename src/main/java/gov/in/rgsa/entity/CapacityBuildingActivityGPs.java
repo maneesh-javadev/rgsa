@@ -1,5 +1,7 @@
 package gov.in.rgsa.entity;
 
+import java.io.Serializable;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -18,10 +20,16 @@ import javax.persistence.Table;
 	
 })
 @Table(name="cb_activity_gps", schema = "rgsa")
-public class CapacityBuildingActivityGPs {
+public class CapacityBuildingActivityGPs implements Serializable {
 	
 	
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 8374711589946162345L;
+
+
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	@Column(name="cb_activity_gps_id",updatable=false,nullable=false)

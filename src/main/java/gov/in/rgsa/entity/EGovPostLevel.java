@@ -1,5 +1,6 @@
 package gov.in.rgsa.entity;
 
+import java.io.Serializable;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -13,8 +14,13 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name="egov_post_level",schema="rgsa")
-public class EGovPostLevel{
+public class EGovPostLevel implements Serializable{
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -5188261575209086738L;
+
 	@Id
 	@Column(name="egov_post_level_id")
 	private Integer postLevelId;

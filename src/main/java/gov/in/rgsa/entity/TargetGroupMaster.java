@@ -1,5 +1,6 @@
 package gov.in.rgsa.entity;
 
+import java.io.Serializable;
 import java.util.Date;
 
 import javax.persistence.Column;
@@ -25,7 +26,12 @@ import javax.persistence.Transient;
 @NamedQuery(name="FETCH_TARGET_GROUP_LIST" , query="From TargetGroupMaster where isActive=true and finYear=:finYear ORDER BY targetGroupMasterName"),
 @NamedQuery(name="FETCH_TARGET_GROUP_LIST_BY_ID" , query="From TargetGroupMaster where isActive=true and targetGroupMasterId=:targetGroupMasterId ORDER BY targetGroupMasterName")
 })
-public class TargetGroupMaster {
+public class TargetGroupMaster implements Serializable{
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -668549065771193990L;
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)

@@ -1,6 +1,8 @@
 package gov.in.rgsa.entity;
 
 import javax.persistence.*;
+
+import java.io.Serializable;
 import java.util.List;
 
 
@@ -13,9 +15,14 @@ import java.util.List;
         /*@NamedQuery(name="FETCH_Iec_DETAILS",query="SELECT IAD FROM IecActivityDetails IAD where idMain=:idMain")*/
 })
 
-public class IecActivityDetails {
+public class IecActivityDetails implements Serializable{
 
-    @Id
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 6242426608895931360L;
+
+	@Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "iec_activity_details_id", nullable = false)
     private Integer idMain;

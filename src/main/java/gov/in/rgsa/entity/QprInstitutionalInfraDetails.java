@@ -1,5 +1,7 @@
 package gov.in.rgsa.entity;
 
+import java.io.Serializable;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -21,11 +23,16 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 @Entity
 @Table(name="qpr_inst_infra_details",schema="rgsa")
 @NamedQuery(name="FETCH_QPR_INST_ACTIVITY_DETAILS_DEPEND_ON_QUATOR",query="SELECt D FROM QprInstitutionalInfraDetails D WHERE D.qprInstitutionalInfrastructure.qprInstInfraId=:qprInstInfraId AND D.trainingInstitueTypeId=:trainingInstituteTypeId")
-public class QprInstitutionalInfraDetails {
+public class QprInstitutionalInfraDetails implements Serializable {
 
 
 	
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 10860907875766767L;
+
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	@Column(name="qpr_inst_infra_details_id")

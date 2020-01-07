@@ -1,5 +1,7 @@
 package gov.in.rgsa.entity;
 
+import java.io.Serializable;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -17,7 +19,12 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name="qpr_cb_activity_details" , schema="rgsa")
-public class QprCbActivityDetails {
+public class QprCbActivityDetails implements Serializable{
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -2353155362067465703L;
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)

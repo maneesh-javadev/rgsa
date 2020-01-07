@@ -1,5 +1,7 @@
 package gov.in.rgsa.entity;
 
+import java.io.Serializable;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -17,7 +19,12 @@ import javax.persistence.Table;
 @Entity
 @Table(name="pesa_post", schema = "rgsa")
 @NamedQuery(name="FETCH_PESA_POST",query="SELECT PP FROM PesaPost PP")
-public class PesaPost {
+public class PesaPost implements Serializable{
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -7421410479952659682L;
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)

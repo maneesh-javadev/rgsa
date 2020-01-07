@@ -1,4 +1,6 @@
 package gov.in.rgsa.entity;
+import java.io.Serializable;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -11,8 +13,13 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name="qpr_pmu_wise_proposed_domain_experts",schema="rgsa")
-public class QprPmuWiseProposedDomainExperts {
+public class QprPmuWiseProposedDomainExperts implements Serializable {
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -8028868019756158736L;
+
 	@Id
 	@Column(name="qpr_pmu_wise_proposed_domain_experts_id")
 	@GeneratedValue(strategy =GenerationType.IDENTITY)

@@ -1,5 +1,7 @@
 package gov.in.rgsa.entity;
 
+import java.io.Serializable;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -19,8 +21,13 @@ import javax.persistence.Transient;
 ,@NamedQuery(name="FETCH_INSTITUTE_HR_APPROVED_ACTIVITY_DETAILS" ,query="FROM InstitueInfraHrActivityDetails where instituteInfraHrActivityId=:instituteInfraHrActivityId AND isApproved='TRUE' AND isActive='TRUE'")})
 
 @Table(name="institue_infra_hr_activity_details",schema="rgsa")
-public class InstitueInfraHrActivityDetails {
+public class InstitueInfraHrActivityDetails implements  Serializable{
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 3164157121997761384L;
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name="institue_infra_hr_activity_details_id")

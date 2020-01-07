@@ -1,5 +1,7 @@
 package gov.in.rgsa.entity;
 
+import java.io.Serializable;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -18,8 +20,14 @@ import javax.persistence.Table;
 	@NamedQuery(name="FETCH_EENABLEMENT_QPR_DETAILS",query="from QprEnablementDetails where qprEnablement.qprEEnablementId=:qprEEnablementId and districtCode=:dlc order by qprEEenablementDetailsId")
 })
 
-public class QprEnablementDetails {
+public class QprEnablementDetails implements Serializable{
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 2371260194506230445L;
+
+
 	@Id
 	@Column(name="qpr_e_enablement_details_id")
 	@GeneratedValue(strategy = GenerationType.IDENTITY)

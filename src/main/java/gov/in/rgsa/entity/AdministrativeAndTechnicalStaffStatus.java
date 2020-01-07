@@ -27,10 +27,13 @@ import org.hibernate.annotations.UpdateTimestamp;
 public class AdministrativeAndTechnicalStaffStatus implements Serializable{
 	
 	/**
-	 * Sourabh rai
+	 * 
 	 */
+	private static final long serialVersionUID = 7016785822143315290L;
+
 	
-	private static final long serialVersionUID = 1L;
+	
+
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)

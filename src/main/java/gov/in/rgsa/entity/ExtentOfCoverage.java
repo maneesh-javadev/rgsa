@@ -1,6 +1,7 @@
 package gov.in.rgsa.entity;
 
 
+import java.io.Serializable;
 import java.util.Date;
 
 import javax.persistence.Column;
@@ -15,7 +16,12 @@ import javax.persistence.Transient;
 @Entity
 @Table(name="trg_extend_coverage",schema="rgsa")
 @NamedQuery(name="FETCH_Extent_Of_Coverage", query="SELECT E FROM ExtentOfCoverage E where stateCode =:stateCode and yearId =:yearId and userType =:userType")
-public class ExtentOfCoverage {
+public class ExtentOfCoverage implements Serializable {
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1551748250176503124L;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
