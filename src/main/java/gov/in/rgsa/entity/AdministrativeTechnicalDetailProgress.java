@@ -1,5 +1,7 @@
 package gov.in.rgsa.entity;
 
+import java.io.Serializable;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -12,7 +14,12 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name="qpr_ats_details" , schema="rgsa")
-public class AdministrativeTechnicalDetailProgress {
+public class AdministrativeTechnicalDetailProgress implements Serializable {
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -2146067397941270659L;
 
 
 	@Id

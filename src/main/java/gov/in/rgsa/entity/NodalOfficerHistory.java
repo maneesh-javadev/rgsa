@@ -1,5 +1,6 @@
 package gov.in.rgsa.entity;
 
+import java.io.Serializable;
 import java.sql.Timestamp;
 
 import javax.persistence.Column;
@@ -14,7 +15,12 @@ import org.hibernate.annotations.UpdateTimestamp;
 
 @Entity
 @Table(name="nodal_officer_history",schema="rgsa")
-public class NodalOfficerHistory {
+public class NodalOfficerHistory implements Serializable{
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -5778818992831986029L;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)

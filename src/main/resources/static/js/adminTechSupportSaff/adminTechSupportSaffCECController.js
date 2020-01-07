@@ -10,7 +10,10 @@ publicModule.controller("adminTechSupportSaffController",['$scope','adminTechSup
 	$scope.fundTotalForMOPR=0;
 	$scope.levels=[];
 	
-	fetchOnLoad();
+	
+	$( document ).ready(function() {
+		fetchOnLoad();
+	});
 	function fetchOnLoad(){
 		adminTechSupportSaffService.fetchAdminTechSupportStaffForMOPRAndState().then(function(response){
 			$scope.postTypes = response.data.postType;

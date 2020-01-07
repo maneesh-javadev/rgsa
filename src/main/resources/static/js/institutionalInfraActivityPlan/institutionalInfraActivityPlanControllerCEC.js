@@ -26,7 +26,11 @@ publicModule.controller("institutionalInfraActivityPlanController", [ '$scope', 
 	
 	let total_fund=0;
 	let total=0;//sprc+dprc
-	init();
+	 
+	 $(document).ready(function() {
+		 init();
+    });
+	
 	
 	function init(){
 		institutionalInfraActivityPlanService.fetchDistrictListBasedOnState().then(function(response){

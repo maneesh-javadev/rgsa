@@ -1,5 +1,7 @@
 package gov.in.rgsa.entity;
 
+import java.io.Serializable;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -16,8 +18,15 @@ import com.fasterxml.jackson.databind.JsonNode;
 @Table(name="dashboard_data",schema="rgsa")
 // @NamedQuery(name="FETCH_EGOV_ACTIVITY", query="SELECT E FROM DashboardData E where stateCode =:stateCode and yearId =:yearId and userType =:userType")
 
-public class DashboardData {
+public class DashboardData implements Serializable{
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -2670115372162436683L;
+	
+	
+
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	@Column(name="dashboard_data_id", updatable=false, nullable=false)

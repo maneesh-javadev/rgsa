@@ -1,5 +1,7 @@
 package gov.in.rgsa.entity;
 
+import java.io.Serializable;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -15,7 +17,12 @@ import javax.persistence.Transient;
 @Entity
 @Table(name="plan_subcomponents",schema="rgsa")
 @NamedQuery(name="PLAN_SUB_COMPONENTS_LIST",query="from PlanSubcomponents order by sortOrder")
-public class PlanSubcomponents {
+public class PlanSubcomponents implements Serializable{
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 2966575518486771545L;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -1,5 +1,7 @@
 package gov.in.rgsa.entity;
 
+import java.io.Serializable;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -20,7 +22,12 @@ import org.springframework.web.multipart.MultipartFile;
  */
 @Entity
 @Table(name="qpr_tna_trg_evaluation" ,schema="rgsa")
-public class QprTnaTrgEvaluation {
+public class QprTnaTrgEvaluation implements Serializable{
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -5837604308031987220L;
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)

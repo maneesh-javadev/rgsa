@@ -1,5 +1,7 @@
 package gov.in.rgsa.entity;
 
+import java.io.Serializable;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -20,8 +22,13 @@ import org.springframework.web.multipart.MultipartFile;
  */
 @Entity
 @Table(name="qpr_panchayat_learning_center" ,schema="rgsa")
-public class QprPanchayatLearningCenter {
+public class QprPanchayatLearningCenter implements Serializable {
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -5962590235879552082L;
+
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	@Column(name="qpr_panchayat_learning_id",nullable=false,updatable=false)

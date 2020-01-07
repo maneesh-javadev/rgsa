@@ -1,5 +1,6 @@
 package gov.in.rgsa.entity;
 
+import java.io.Serializable;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -25,8 +26,13 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 
 @Entity
 @Table(name="satcom_cs_details", schema = "rgsa")
-public class SatcomCurrentStatusDetails {
+public class SatcomCurrentStatusDetails implements Serializable{
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 7467483747886823594L;
+
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	@Column(name="satcom_cs_details_id")

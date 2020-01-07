@@ -1,5 +1,7 @@
 package gov.in.rgsa.entity;
 
+import java.io.Serializable;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -20,7 +22,12 @@ import javax.persistence.Transient;
 	@NamedQuery(name="FETCH_ADMIN_FIN_DATA_DETAILS",query="select AD from AdminFinancialDataCellActivityDetails AD where adminAndFinancialDataActivity.adminFinancialDataActivityId=:adminFinancialDataActivityId order by adminFinancialDataActivityDetailId")
 })
 
-public class AdminFinancialDataCellActivityDetails {
+public class AdminFinancialDataCellActivityDetails implements Serializable{
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 9466993912377233L;
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)

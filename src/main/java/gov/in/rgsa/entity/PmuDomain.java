@@ -1,5 +1,7 @@
 package gov.in.rgsa.entity;
 
+import java.io.Serializable;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -16,7 +18,12 @@ import javax.persistence.Table;
 @Entity
 @NamedQuery(name="FIND_DOMAIN_PMU_TYPE",query ="SELECT D FROM PmuDomain D ORDER BY D.pmuDomainId")
 @Table(name="pmu_domains",schema="rgsa")
-public class PmuDomain {
+public class PmuDomain implements Serializable{
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -7092810785219125476L;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)

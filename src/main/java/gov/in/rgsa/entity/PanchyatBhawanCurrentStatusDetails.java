@@ -1,5 +1,6 @@
 package gov.in.rgsa.entity;
 
+import java.io.Serializable;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -25,8 +26,13 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 
 @Entity
 @Table(name="panchayat_bhawan_cs_details", schema = "rgsa")
-public class PanchyatBhawanCurrentStatusDetails {
+public class PanchyatBhawanCurrentStatusDetails implements Serializable{
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -1338077407666377298L;
+
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	@Column(name="panchayat_bhawan_cs_details_id")

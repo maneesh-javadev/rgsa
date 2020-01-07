@@ -1,5 +1,7 @@
 package gov.in.rgsa.entity;
 
+import java.io.Serializable;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -11,8 +13,13 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name="qpr_inst_infra_details", schema="rgsa")
-public class InstitutionalInfraActivityProgressDetails {
+public class InstitutionalInfraActivityProgressDetails implements Serializable {
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1978364757844986763L;
+
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	@Column(name="qpr_inst_infra_details_id",updatable=false,nullable=false)

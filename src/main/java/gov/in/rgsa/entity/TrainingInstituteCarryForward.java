@@ -1,5 +1,6 @@
 package gov.in.rgsa.entity;
 
+import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.List;
 
@@ -19,8 +20,14 @@ import org.hibernate.annotations.UpdateTimestamp;
 @Entity
 @Table(name="training_institute_carryforward",schema="rgsa")
 @NamedQuery(name="FETCH_TRAINING_INSTITUTION_CF_DETAILS",query="from TrainingInstituteCarryForward   where stateCode=:stateCode and yearId=:yearId and userType=:userType")
-public class TrainingInstituteCarryForward{
+public class TrainingInstituteCarryForward implements Serializable{
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -8293512466180016541L;
+
+
 	/**
 	 * Monty
 	 */

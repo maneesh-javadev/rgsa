@@ -1,6 +1,7 @@
 package gov.in.rgsa.entity;
 
-import java.sql.Date;
+import java.io.Serializable;
+import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -18,8 +19,13 @@ import javax.persistence.Table;
 	@NamedQuery(name="ReleaseInstallmentByYearState", query="SELECT ri from ReleaseIntallment ri JOIN Plan plan ON plan.planCode=ri.planCode WHERE"
 			+ " plan.yearId = :yearId AND plan.stateCode = :stateCode AND plan.isactive = true")
 	})
-public class ReleaseIntallment {
+public class ReleaseIntallment implements Serializable{
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -4420638749913997089L;
+
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	@Column(name="release_installment_sr_no")

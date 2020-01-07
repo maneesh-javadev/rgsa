@@ -1,5 +1,7 @@
 package gov.in.rgsa.entity;
 
+import java.io.Serializable;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -18,9 +20,14 @@ import javax.persistence.Table;
 @NamedQuery(name="FETCH_TRANGCATEGORY_TRAINING_ID" , query="from TrainingWiseCategory where targetTrainingActivityDetails.trainingActivityDetailsId=:trngId")
 })
 
-public class TrainingWiseCategory {
+public class TrainingWiseCategory implements Serializable {
 	
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -482060723024619061L;
+
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	@Column(name="id")

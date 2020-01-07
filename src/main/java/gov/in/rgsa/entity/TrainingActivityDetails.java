@@ -1,5 +1,6 @@
 package gov.in.rgsa.entity;
 
+import java.io.Serializable;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -34,7 +35,12 @@ import org.hibernate.annotations.LazyCollectionOption;
 
 })
 @DynamicUpdate
-public class TrainingActivityDetails {
+public class TrainingActivityDetails implements Serializable {
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 8616868302617161438L;
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)

@@ -1,5 +1,7 @@
 package gov.in.rgsa.entity;
 
+import java.io.Serializable;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -22,8 +24,13 @@ import javax.persistence.Table;
 @NamedQuery(name="DELETE_TRANGSUBJCT_TRAINING_ID" , query="delete from TrainingSubjects where subjectsTrainingActivityDetails.trainingActivityDetailsId=:trngId"),
 @NamedQuery(name="FETCH_TRANGSUBJCT_TRAINING_ID" , query="from TrainingSubjects where subjectsTrainingActivityDetails.trainingActivityDetailsId=:trngId")
 })
-public class TrainingSubjects {
+public class TrainingSubjects implements Serializable{
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -8383178913833085918L;
+
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	@Column(name="training_wise_subject_id")

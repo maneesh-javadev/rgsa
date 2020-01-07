@@ -1,5 +1,7 @@
 package gov.in.rgsa.entity;
 
+import java.io.Serializable;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -12,8 +14,13 @@ import javax.persistence.Table;
 @Entity
 @Table(name="egov_post",schema="rgsa")
 @NamedQuery(name="FIND_ALL_POST_LEVEL",query ="SELECT R FROM EGovPost R ORDER BY R.eGovPostId")
-public class EGovPost {
+public class EGovPost implements Serializable{
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -6225673020635083337L;
+
 	@Id
 	@Column(name="egov_post_id")
 	private Integer eGovPostId;

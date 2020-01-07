@@ -1,5 +1,7 @@
 package gov.in.rgsa.entity;
 
+import java.io.Serializable;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -12,8 +14,13 @@ import javax.persistence.Table;
 @Table(name="visitor_count",schema="rgsa")
 @NamedQuery(name="FIND_VISITOR_COUNT",
 query="FROM VisitorCount where id=:id")
-public class VisitorCount {
+public class VisitorCount implements Serializable {
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -3153747187596529266L;
+
 	@Id
 	@Column(name="id")
 	@GeneratedValue(strategy=GenerationType.IDENTITY)

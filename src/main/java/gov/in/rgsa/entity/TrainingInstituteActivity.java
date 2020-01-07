@@ -1,5 +1,6 @@
 package gov.in.rgsa.entity;
 
+import java.io.Serializable;
 import java.sql.Timestamp;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -16,8 +17,13 @@ import org.hibernate.annotations.UpdateTimestamp;
 @Entity
 @NamedQuery(name="FETCH_TRAINING_INSTITUTE_ACTIVITY",query="SELECT T FROM TrainingInstituteActivity T where stateCode =:stateCode and yearId =:yearId and userType =:userType")
 @Table(name="training_institute_activity",schema="rgsa")
-public class TrainingInstituteActivity {
+public class TrainingInstituteActivity implements Serializable {
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 4079903815281679536L;
+
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	@Column(name="training_institute_activity_id")

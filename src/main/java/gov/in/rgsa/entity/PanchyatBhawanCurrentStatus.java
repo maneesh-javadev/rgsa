@@ -1,5 +1,6 @@
 package gov.in.rgsa.entity;
 
+import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.List;
 
@@ -32,8 +33,13 @@ import org.hibernate.annotations.UpdateTimestamp;
 @NamedQuery(name="FETCH_PANCHAYAT_BHAWAN_CURRENTSTATUS_DETAILS",query="FROM PanchyatBhawanCurrentStatus PBCS left outer join fetch PBCS.panchayatBhawanCurrentStatusDetails pbcsd where pbcsd.localBodyCode in (:localBodyCodeList)")
 })
 
-public class PanchyatBhawanCurrentStatus {
+public class PanchyatBhawanCurrentStatus implements Serializable{
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 2661325247120724427L;
+
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	@Column(name="panchayat_bhawan_cs_id",updatable=false,nullable=false)

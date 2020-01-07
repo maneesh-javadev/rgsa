@@ -1,5 +1,7 @@
 package gov.in.rgsa.entity;
 
+import java.io.Serializable;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -9,7 +11,12 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "focusarea", schema = "rgsa")
 @NamedQuery(name="FATCH_FOCUS_AREAS",query="SELECT FA FROM FocusArea FA")
-public class FocusArea {
+public class FocusArea implements Serializable{
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 3511779411513471013L;
 
 	@Id
 	@Column(name = "s_no",nullable = false)

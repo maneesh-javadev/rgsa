@@ -11,7 +11,11 @@ publicModule.controller("currenStatusSatcomController", [ '$scope', "currenStatu
 	$scope.gpDisabled=true;
 	$scope.bpDisabled=true;
 	
-	fetchSatcomMastersAndSatcomStatus();
+	
+	$( document ).ready(function() {
+		fetchSatcomMastersAndSatcomStatus();
+	});
+	
 	
 	function fetchSatcomMastersAndSatcomStatus(){
 		

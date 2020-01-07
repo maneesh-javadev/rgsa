@@ -21,13 +21,12 @@ import com.fasterxml.jackson.annotation.JsonInclude.Include;
 @NamedNativeQuery(name="NO_OF_SPRC_DPRC_SUPPORT_OOMS", query="select * from rgsa_demo.no_of_sprc_dprc_support_ooms(:finYear)" ,resultClass=CapacityBuildingErForOoms.class)
 
 })
-public class CapacityBuildingErForOoms {
-	
-	
+public class CapacityBuildingErForOoms implements Serializable{
+
 	/**
 	 * 
 	 */
-	
+	private static final long serialVersionUID = -8731770897143560919L;
 
 
 	@JsonInclude(Include.NON_NULL)

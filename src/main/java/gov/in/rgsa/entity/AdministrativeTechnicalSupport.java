@@ -1,5 +1,6 @@
 package gov.in.rgsa.entity;
 
+import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.List;
 
@@ -24,12 +25,15 @@ import org.hibernate.annotations.UpdateTimestamp;
 @NamedQueries({@NamedQuery(name="GET_Admin_Technical_Support_APPROVED_TRAINING", 
 query="SELECT adm from AdministrativeTechnicalSupport adm RIGHT OUTER JOIN FETCH adm.supportDetails sd where adm.yearId=:yearId and adm.userType=:userType and adm.stateCode=:stateCode and adm.isActive=true"),
 @NamedQuery(query="FROM AdministrativeTechnicalSupport adm left outer join fetch adm.supportDetails sd where adm.stateCode=:stateCode and adm.userType=:userType and adm.yearId=:yearId and adm.versionNo=:versionNo and adm.isActive=true order by sd.id asc",name="FETCH_ADMIN_TECH_SUPPORT")})
-public class AdministrativeTechnicalSupport{
+public class AdministrativeTechnicalSupport implements Serializable{
+	
 	
 	/**
-	 * Monty Garg
+	 * 
 	 */
-	
+	private static final long serialVersionUID = -3594980536034090720L;
+
+	 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "administrative_technical_support_id")

@@ -1,5 +1,7 @@
 package gov.in.rgsa.entity;
 
+import java.io.Serializable;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -22,8 +24,13 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 @Entity
 @Table(name="training_institute_cs_fund_source", schema = "rgsa")
 @NamedQuery(query="delete from TrainingInstituteCurrentStatusFundSource where trainingInstituteCurrentStatusDetails.trainingInstituteCsDetailsId=:detailId",name="DELETE_FUND_SOURCE")
-public class TrainingInstituteCurrentStatusFundSource {
+public class TrainingInstituteCurrentStatusFundSource implements Serializable {
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -3022818898631745517L;
+
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	@Column(name="training_institute_cs_fs_id")

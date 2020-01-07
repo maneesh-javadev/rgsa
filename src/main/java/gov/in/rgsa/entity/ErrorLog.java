@@ -1,5 +1,6 @@
 package gov.in.rgsa.entity;
 
+import java.io.Serializable;
 import java.sql.Timestamp;
 
 import javax.persistence.Column;
@@ -16,8 +17,13 @@ import org.hibernate.annotations.GeneratorType;
 @Entity
 @Table(name="error_logs",schema="rgsa")
 @NamedQuery(name="FETCH_ERROR_LOG",query="from ErrorLog where stateCode=:stateCode and ipAddress=:ipAddress and requestUri=:requestURI order by errorLogTime desc")
-public class ErrorLog {
+public class ErrorLog implements Serializable{
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -1358293319394183844L;
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name="error_log_id")

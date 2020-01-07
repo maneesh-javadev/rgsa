@@ -1,5 +1,7 @@
 package gov.in.rgsa.entity;
 
+import java.io.Serializable;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -20,8 +22,13 @@ query=	"	select tad.training_id,tad.training_activity_id,tad.training_venue_leve
 	+ 	"	tvl.training_venue_level_id inner join rgsa.training_mode tm on tad.training_mode_id=tm.training_mode_id where tad.training_activity_id=:trainingActivityId "
 	+ 	"	and tad.is_active=:isactive order by tad.training_id"
 ,resultClass=FetchTrainingDetails.class)
-public class FetchTrainingDetails {
+public class FetchTrainingDetails implements Serializable {
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -8498533641141193525L;
+
 	@Id
 	@Column(name="training_id")
 	private Integer trainingId;

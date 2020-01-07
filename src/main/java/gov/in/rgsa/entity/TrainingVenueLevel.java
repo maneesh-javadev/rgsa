@@ -1,5 +1,7 @@
 package gov.in.rgsa.entity;
 
+import java.io.Serializable;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -19,7 +21,12 @@ import javax.persistence.Table;
 @NamedQuery(name="FETCH_ALL_VENUE_LEVEL",query="FROM TrainingVenueLevel "),
 @NamedQuery(name="FETCH_ALL_VENUE_LEVEL_by_Id",query="FROM TrainingVenueLevel where trainingVenueLevelId=:trainingVenueLevelId")
 })
-public class TrainingVenueLevel {
+public class TrainingVenueLevel  implements Serializable {
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 8792469177172083072L;
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)

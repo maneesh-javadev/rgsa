@@ -1,5 +1,7 @@
 package gov.in.rgsa.entity;
 
+import java.io.Serializable;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -9,7 +11,12 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "e_enablement_master" , schema = "rgsa")
 @NamedQuery(name = "FIND_ALL_INFRA_RESOURCES", query = "SELECT R FROM EEnablementMaster R ORDER BY R.eMasterId ")
-public class EEnablementMaster {
+public class EEnablementMaster implements Serializable{
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 4372473463006430955L;
 
 	@Id
 	@Column(name = "ee__master_id")

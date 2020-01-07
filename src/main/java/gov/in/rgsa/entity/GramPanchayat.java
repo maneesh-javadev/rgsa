@@ -1,5 +1,7 @@
 package gov.in.rgsa.entity;
 
+import java.io.Serializable;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -15,8 +17,13 @@ import javax.persistence.Table;
 	@NamedNativeQuery(name="GRAM_PANCHAYAT_BASED_ON_BLOCK",query="select entity_code,entity_name,entity_local_name from lgd.get_blockwise_grampanchayats(:blockCode) order by entity_name")
 })
 
-public class GramPanchayat {
+public class GramPanchayat implements Serializable{
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -6282544777318989767L;
+
 	@Id
 	@Column(name="entity_code")
 	private Integer entityCode;
