@@ -203,13 +203,21 @@
 								</div>	
 								</div>	
 							</div> 
+							
 									<div class="text-right">
+									<c:choose>
+									<c:when test="${fetchReleaseInstalment.releaseIntallment.status ne true}">
+									
 										<form:button onclick="selectCurrentInstallment('save')" class="btn bg-green waves-effect" >
 											SAVE</form:button>
 										
 											<form:button class="btn bg-green waves-effect" onclick="selectCurrentInstallment('freeze')">FREEZE</form:button>
 										
 										
+									</c:when>
+									
+									</c:choose>
+									
 										
 										<form:button
 											onclick="onClose('home.html?<csrf:token uri='home.html'/>')"

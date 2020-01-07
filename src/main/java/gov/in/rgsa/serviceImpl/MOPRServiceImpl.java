@@ -144,8 +144,9 @@ public class MOPRServiceImpl implements MOPRService {
 			releaseIntallment.setReleaseDate(sd);
 			if(snactionOrderModel.getOrigin().equalsIgnoreCase("freeze")) {
 				releaseIntallment.setStatus(true);
+			}else {
+			releaseIntallment.setStatus(false);
 			}
-			//releaseIntallment.setStatus(snactionOrderModel.getStatus());
 			if(releaseIntallmentSno!=null){
 				commonRepository.update(releaseIntallment);
 			}else
