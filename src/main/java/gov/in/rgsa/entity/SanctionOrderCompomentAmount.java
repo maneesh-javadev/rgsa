@@ -13,8 +13,8 @@ import javax.persistence.Transient;
 @NamedNativeQuery(name="alreadySanctionComponentAmount",query="select * from rgsa.get_sanction_order_compoment_amount(:planCode,:installmentNo)",resultClass=SanctionOrderCompomentAmount.class) 
 */
 	
-	@NamedNativeQuery(name="soComponentAmount",query="select soc.so_component_id  component_id ,soc.so_component_name component_name ,0.0 component_amount , 0 installment_no , 0 file_Path from rgsa.sanction_order_component  soc",resultClass=SanctionOrderCompomentAmount.class),
-	@NamedNativeQuery(name="alreadySanctionComponentAmount",query="select soc.so_component_id component_id,soc.so_component_name component_name,so.amount_under_component component_amount,so.installment_no ,so.file_Path  from rgsa.sanction_order so inner join rgsa.sanction_order_component soc on soc.so_component_id=so.sanction_order_component_id where so.plan_code=:planCode and so.installment_no =:installmentNo",resultClass=SanctionOrderCompomentAmount.class) 
+	@NamedNativeQuery(name="soComponentAmount",query="select soc.so_component_id  component_id ,soc.so_component_name component_name ,0.0 component_amount , 0 installment_no , 0 file_Path from rgsa.sanction_order_component  soc order by  order by component_id",resultClass=SanctionOrderCompomentAmount.class),
+	@NamedNativeQuery(name="alreadySanctionComponentAmount",query="select soc.so_component_id component_id,soc.so_component_name component_name,so.amount_under_component component_amount,so.installment_no ,so.file_Path  from rgsa.sanction_order so inner join rgsa.sanction_order_component soc on soc.so_component_id=so.sanction_order_component_id where so.plan_code=:planCode and so.installment_no =:installmentNo order by  order by component_id",resultClass=SanctionOrderCompomentAmount.class) 
 
 })
 public class SanctionOrderCompomentAmount {

@@ -78,6 +78,12 @@
 									<td><b><c:out value="${IEC_ACTIVITY_STATE.getTotalAmountProposed()}"/></b></td>
 									<td><b><c:out value="${IEC_ACTIVITY_MOPR.getTotalAmountProposed()}"/></b></td>
 								</tr>
+								
+								<tr>
+									<th scope="row"><spring:message code="Label.Remarks" htmlEscape="true"/></th>
+									<td><b><c:out value="${IEC_ACTIVITY_STATE.remarks}"/></b></td>
+									<td><b><c:out value="${IEC_ACTIVITY_MOPR.remarks}"/></b></td>
+								</tr>
 								</tbody>
 								<!--Table body-->
 							</table>
@@ -109,6 +115,23 @@
 												disabled="${ IEC_ACTIVITY.getFreeze() ? 'true' : 'false'}"
 												id="amount_box"/>
 								</div>
+								
+								 <div class="row clearfix">
+                            <div class="form-group">
+                            <div class="col-sm-2">
+                                <label><spring:message code="Label.Remarks" htmlEscape="true"/>:</label>
+                                                                        </div>
+                              <div class="col-sm-4">   
+                              <div class="form-line">                                       
+                                <form:textarea path="remarks" class="form-control"
+                                           disabled="${ IEC_ACTIVITY.getFreeze() ? 'true' : 'false'}"
+                                             />
+                                            </div></div>
+                            </div>
+                            </div>
+								
+								
+							
 								<div class="form-group">
 									<div class="col-md-4">
 										<button type="button"

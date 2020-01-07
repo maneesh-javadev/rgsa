@@ -375,10 +375,16 @@ function saveSubmit(){
 																		</c:otherwise>
 																	</c:choose>
 																</div></td> --%>
-														<td>	<input type="text" 
+														<td>
+														<div align="center">
+													          <label class="addMore btn bg-green waves-effect" title="${detailsForMOPR[index.index].remarks}">Remark by MoPR</label>
+                                                               
+															<input type="text" 
 																name="innovativeActivityDetails[${count.index}].remarks" class="form-control"
 																value="${innovativeAcitivityList[0].innovativeActivityDetails[count.index].remarks}"
-																 /></td>
+																 />
+																 </div>
+																 </td>
 														</tr>
 														
 														<c:choose>
@@ -596,7 +602,12 @@ function saveSubmit(){
 										<spring:message  text="Upload File(Pdf)" htmlEscape="true" />
 											</div></th> --%>
 
-												
+												<th>
+													<div align="center">
+														<strong><spring:message code="Label.Remarks" htmlEscape="true" />  
+														</strong>
+													</div>
+												</th>
 
 
 
@@ -620,7 +631,7 @@ function saveSubmit(){
 															</td>
 
 															<td><div align="center"><strong>${state_data.fundsName}</strong></div>
-
+                                                            <td><div align="center"><strong>${state_data.remarks}</strong></div>
 																<%-- <td> 
 												<input type="file" name="innovativeActivityDetails[${count.index}].file" id="file" onclick='pathImage("${innovativeActivityDetails.fileLocation}","${innovativeActivityDetails.fileName}");' >
 												<input type="button" value="Download File" class="btn bg-grey waves-effect" onclick='showImage("${innovativeActivityDetailsMopr[count.index].fileLocation}","${innovativeActivityDetailsMopr[count.index].fileName}");' />

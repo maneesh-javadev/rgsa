@@ -41,7 +41,7 @@ $('document').ready(function(){
 										htmlEscape="true" /></a></li>
 						</ul>
 						<div class="tab-content">
-							<div role="tabpanel" class="container tab-pane " id="MOPR"
+							<div role="tabpanel" class="container tab-pane active" id="MOPR"
 								style="width: auto;">
 								<div class="table-responsive">
 
@@ -70,7 +70,7 @@ $('document').ready(function(){
 													</strong>
 												</div></th>
 												<!-- <th data-ng-if="userType != 'S'">Is Approved</th> -->
-												<th data-ng-if="userType != 'S'"><div align="center"><strong>Remarks</strong></div></th>
+												<th><div align="center"><strong>Remarks</strong></div></th>
 										
 											<!-- <th data-ng-if="userType != 'S'">Is Approved</th>
 											<th data-ng-if="userType != 'S'"><div align="center"><strong>Remarks</strong></div></th> -->
@@ -170,8 +170,14 @@ $('document').ready(function(){
 															style="color: red"></i>
 													</div>
 												</td> -->
-												<td><input type="text" class="form-control"
-													
+												
+					<td><div align="center">
+													          
+												
+												
+												<td>
+												 <label class="addMore btn bg-green waves-effect" title="{{pesaPlanForMOPR.pesaPlanDetails[$index].remarks}}">Remark by MoPR</label>
+												<input type="text" class="form-control"
 													
 													data-ng-model="pesaPlanForCEC.pesaPlanDetails[$index].remarks"
 													data-ng-disabled="isFreezeOrUnfreeze"
@@ -298,7 +304,7 @@ $('document').ready(function(){
 									</div>
 								</div>
 							</div>
-							<div role="tabpanel" class="container tab-pane active" id="state"
+							<div role="tabpanel" class="container tab-pane " id="state"
 								style="width: auto;">
 								<div class="table-responsive">
 									<table class="table table-hover dashboard-task-infos"
@@ -327,6 +333,7 @@ $('document').ready(function(){
 												</div></th>
 												<!-- 	<th data-ng-if="userType != 'S'">Is Approved</th>
 											<th data-ng-if="userType != 'S'"><div align="center"><strong>Remarks</strong></div></th> -->
+											<th ><div align="center"><strong>Remarks</strong></div></th>
 										</tr>
 									</thead>
 
@@ -341,7 +348,7 @@ $('document').ready(function(){
 												<div align="center" data-ng-if="designation.pesaPostId == 4">1</div>
 												</td>
 												 <td><div align="center">{{pesaPlanForState.pesaPlanDetails[$index].funds}}</div></td>
-												
+												<td><div align="center">{{pesaPlanForState.pesaPlanDetails[$index].remarks}}</div></td>
 														</tr>
 											<tr>
 												<th colspan="4" align="center">Total Funds</th>
