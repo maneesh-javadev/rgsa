@@ -1,5 +1,6 @@
 package gov.in.rgsa.entity;
 
+import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.List;
 
@@ -16,9 +17,15 @@ import org.hibernate.annotations.UpdateTimestamp;
 @Entity
 @NamedNativeQuery(name="Fetch_Training",query="select * from rgsa.training_activity where state_code=:stateCode and year_id=:yearId and user_type=:userType and version_no=:versionId and is_active",resultClass=FetchTraining.class)
 
-public class FetchTraining {
+public class FetchTraining implements Serializable{
 	
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 6628775606203003687L;
+
+
 	@Id
 	@Column(name="training_activity_id")
 	private Integer trainingActivityId;

@@ -1,5 +1,7 @@
 package gov.in.rgsa.entity;
 
+import java.io.Serializable;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -9,7 +11,12 @@ import javax.persistence.Table;
 @Entity
 @Table(name="satcom_master",schema="rgsa")
 @NamedQuery(name="SATCOM_ACTIVTY_NAME",query="from SatcomMaster order by satcomMasterId asc")
-public class SatcomMaster {
+public class SatcomMaster implements Serializable {
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 2984106071390628012L;
 
 	@Id
 	@Column(name="satcom_master_id")

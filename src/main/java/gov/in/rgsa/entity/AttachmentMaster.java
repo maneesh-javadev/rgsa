@@ -1,5 +1,7 @@
 package gov.in.rgsa.entity;
 
+import java.io.Serializable;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -12,8 +14,15 @@ import javax.persistence.Table;
 @Table(name="attachment_master", schema="rgsa")
 @NamedQuery(name="FIND_FILE_PATH",
 query="FROM AttachmentMaster where fileId=:id")
-public class AttachmentMaster {
+public class AttachmentMaster implements Serializable {
+	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -5721206114830945394L;
 
+	
+	
 	@Id
 	@Column(name="file_master_id",nullable=false , updatable =false)
 	@GeneratedValue(strategy=GenerationType.IDENTITY)

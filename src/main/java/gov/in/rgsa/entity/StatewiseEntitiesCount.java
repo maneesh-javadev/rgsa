@@ -1,5 +1,7 @@
 package gov.in.rgsa.entity;
 
+import java.io.Serializable;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -24,7 +26,12 @@ name="getIndiaLevelEnitiesCount",resultClass=StatewiseEntitiesCount.class),
 
 
   
-public class StatewiseEntitiesCount {
+public class StatewiseEntitiesCount implements Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 2205466478917358080L;
+
 	@Id
 	@Column(name="state_code")
 	private Integer state_code;

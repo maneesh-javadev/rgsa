@@ -1,5 +1,6 @@
 package gov.in.rgsa.entity;
 
+import java.io.Serializable;
 import java.sql.Timestamp;
 
 import javax.persistence.AttributeOverride;
@@ -33,10 +34,11 @@ import org.hibernate.annotations.CreationTimestamp;
 	// @NamedNativeQuery(name="FETCH_PLAN_STAUS_COUNT",query="select cast(count(1)  ||','|| (select count(1)  from rgsa.plan pa where pa.plan_status_id=5 and  pa.year_id=ps.year_id )||','|| 0 as character varying)as meeting_by_cec_current_year from rgsa.plan ps left join rgsa.fin_year fy on ps.year_id=fy.year_id where ps.plan_status_id in(2,4,5) and fy.finyear ilike :fin_year group by ps.year_id")
 })
 @Table(name="plan",schema="rgsa")
-public class Plan {
+public class Plan implements Serializable{
 
-	
-	
+	 
+	private static final long serialVersionUID = 7654672052029681902L;
+
 	@EmbeddedId
 	@AttributeOverrides({
 		@AttributeOverride(name = "planCode", column = @Column(name = "plan_code", nullable = false)),

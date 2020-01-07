@@ -1,12 +1,19 @@
 package gov.in.rgsa.entity;
 
+import java.io.Serializable;
+
 import javax.persistence.*;
 
 @Entity
 @Table(name = "iec_details_dropdown", schema = "rgsa")
-public class IecDetailsDropdown {
+public class IecDetailsDropdown implements Serializable{
 
-    @Id
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 2099102661916853876L;
+
+	@Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     @Column(name="iec_details_dropdown_id",nullable=false)
     private Integer iecDetailsDropdownId;

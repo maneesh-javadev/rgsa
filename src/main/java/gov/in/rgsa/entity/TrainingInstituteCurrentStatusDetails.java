@@ -1,5 +1,6 @@
 package gov.in.rgsa.entity;
 
+import java.io.Serializable;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -35,8 +36,13 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 	@NamedQuery(name="FETCH_TRAINING_DETAILS_OF_DPRC",query="from TrainingInstituteCurrentStatusDetails where trainingInstitueType.trainingInstitueTypeId=:trainingInstitueTypeId")
 })
 @Table(name="training_institute_cs_details", schema = "rgsa")
-public class TrainingInstituteCurrentStatusDetails {
+public class TrainingInstituteCurrentStatusDetails implements Serializable {
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 2350579378182225790L;
+
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	@Column(name="training_institute_cs_details_id")

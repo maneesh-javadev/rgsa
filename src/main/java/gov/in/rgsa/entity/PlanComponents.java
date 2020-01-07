@@ -1,5 +1,6 @@
 package gov.in.rgsa.entity;
 
+import java.io.Serializable;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -21,7 +22,12 @@ import gov.in.rgsa.model.StatewisePlanStatus;
 @Table(name="plan_components",schema="rgsa")
 @NamedQuery(name="PLAN_COMPONENTS_LIST",query="from PlanComponents order by sortOrder")
 
-public class PlanComponents {
+public class PlanComponents implements Serializable{
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -4609901645372376532L;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)

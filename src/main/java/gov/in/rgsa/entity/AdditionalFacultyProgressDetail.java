@@ -16,7 +16,12 @@ import javax.persistence.Table;
 @Table(name="qpr_inst_infra_hr_details", schema="rgsa")
 public class AdditionalFacultyProgressDetail implements Serializable{
  
-	private static final long serialVersionUID = 1L;
+
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -3613121500633056746L;
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)

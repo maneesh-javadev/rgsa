@@ -4,12 +4,19 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
+
+import java.io.Serializable;
 import java.nio.file.Paths;
 import java.sql.Timestamp;
 
 @Entity
 @Table(name = "file_node", schema = "rgsa")
-public class FileNode {
+public class FileNode implements Serializable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 2033637006788223326L;
+
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	@Column(name="file_node_id")

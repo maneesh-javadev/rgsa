@@ -1,5 +1,7 @@
 package gov.in.rgsa.entity;
 
+import java.io.Serializable;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -39,8 +41,10 @@ import javax.persistence.Table;
 		
 		+ " union all"
 		+ " select is_freeze from rgsa.institue_infra_hr_activity where year_id=:yearId and state_code=:stateCode) a ",resultClass=ActionPlanStatus.class)
-public class ActionPlanStatus {
-
+public class ActionPlanStatus implements Serializable{
+ 
+	private static final long serialVersionUID = -5400900586553142707L;
+	
 	
 	@Id
 	@Column(name="is_freez")

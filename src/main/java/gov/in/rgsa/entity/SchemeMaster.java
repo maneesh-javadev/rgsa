@@ -1,5 +1,7 @@
 package gov.in.rgsa.entity;
 
+import java.io.Serializable;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -25,8 +27,13 @@ import javax.persistence.Table;
 	query = "from SchemeMaster where schemeId=:schemeId"),
 })
 
-public class SchemeMaster {
+public class SchemeMaster implements Serializable{
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 8120142901317193753L;
+
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	@Column(name="scheme_id")

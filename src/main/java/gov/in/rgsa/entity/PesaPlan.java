@@ -1,5 +1,6 @@
 package gov.in.rgsa.entity;
 
+import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.List;
 
@@ -29,8 +30,13 @@ import org.hibernate.annotations.UpdateTimestamp;
 @Table(name="pesa_plan", schema = "rgsa")
 
 @NamedQuery(name="FETCH_PESA_PLAN",query="SELECT PP FROM PesaPlan PP where stateCode=:stateCode and yearId=:yearId and userType=:userType and versionNo=:versionNo and isActive=true")
-public class PesaPlan {
+public class PesaPlan implements Serializable{
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 8749463751405252655L;
+
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	@Column(name="pesa_plan_id",updatable=false,nullable=false)

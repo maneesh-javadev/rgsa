@@ -1,5 +1,6 @@
 package gov.in.rgsa.entity;
 
+import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.List;
 
@@ -34,8 +35,13 @@ query="Delete FROM InnovativeActivity where innovativeActivityId=:innovativeActi
 
 
 })
-public class InnovativeActivity {
+public class InnovativeActivity implements Serializable{
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 6812320027455888198L;
+
 	@Id
 	@Column(name="innovative_activity_id" ,nullable=false , updatable =false)
 	@GeneratedValue(strategy=GenerationType.IDENTITY)

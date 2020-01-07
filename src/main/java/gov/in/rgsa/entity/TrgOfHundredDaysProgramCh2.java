@@ -1,5 +1,6 @@
 package gov.in.rgsa.entity;
 
+import java.io.Serializable;
 import java.sql.Timestamp;
 
 import javax.persistence.Column;
@@ -22,7 +23,12 @@ import org.hibernate.annotations.UpdateTimestamp;
 	@NamedQuery(name="FETCH_TRG_100_DAYS_CH2",query="from TrgOfHundredDaysProgramCh2 where stateCode=:stateCode and yearId=:yearId and trgDate=:trgDate")
 })
 
-public class TrgOfHundredDaysProgramCh2 {
+public class TrgOfHundredDaysProgramCh2 implements Serializable{
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -9163138248020625527L;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)

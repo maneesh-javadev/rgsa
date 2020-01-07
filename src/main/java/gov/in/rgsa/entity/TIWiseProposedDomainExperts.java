@@ -1,5 +1,7 @@
 package gov.in.rgsa.entity;
 
+import java.io.Serializable;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -18,8 +20,13 @@ import javax.persistence.Table;
 	@NamedQuery(name="FETCH_DOMAIN_EXPERT_TI_WISE_ACT_ID",query="FROM TIWiseProposedDomainExperts where institueInfraHrActivity.instituteInfraHrActivityId =:instituteInfraHrActivityId order by domainId asc")
 })
 
-public class TIWiseProposedDomainExperts {
+public class TIWiseProposedDomainExperts implements Serializable {
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -2624280354092066176L;
+
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	@Column(name="ti_wise_proposed_domain_experts_id")

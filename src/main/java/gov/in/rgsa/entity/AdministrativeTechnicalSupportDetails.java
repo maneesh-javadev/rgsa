@@ -1,5 +1,7 @@
 package gov.in.rgsa.entity;
 
+import java.io.Serializable;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -14,11 +16,13 @@ import javax.persistence.Table;
 @Entity
 @Table(name="administrative_technical_support_details",schema="rgsa")
 @NamedQuery(name="FETCH_ALL_ADMIN_TECH_DETAILS_EXCEPT_CURRENT_VERSION",query="From AdministrativeTechnicalSupportDetails where administrativeTechnicalSupport.stateCode=:stateCode and administrativeTechnicalSupport.versionNo !=:versionNo and administrativeTechnicalSupport.userType in('S','M') order by id")
-public class AdministrativeTechnicalSupportDetails{
-	
+public class AdministrativeTechnicalSupportDetails implements Serializable{
+	 
 	/**
-	 * Monty Garg
+	 * 
 	 */
+	private static final long serialVersionUID = -4410461456641826009L;
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id")

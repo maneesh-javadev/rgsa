@@ -1,5 +1,7 @@
 package gov.in.rgsa.entity;
 
+import java.io.Serializable;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -11,7 +13,12 @@ import javax.persistence.Table;
 @Entity
 @Table(name="gp_bhawan_status",schema="rgsa")
 @NamedQuery(name="FETCH_GP_BHAWAN_STATUS",query="SELECT gp FROM GPBhawanStatus gp WHERE activityId=:activityId")
-public class GPBhawanStatus {
+public class GPBhawanStatus implements Serializable{
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 7885713292593438561L;
 
 	@Id
 	@Column(name="gp_bhawan_status_id")

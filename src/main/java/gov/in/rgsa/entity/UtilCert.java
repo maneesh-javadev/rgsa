@@ -1,6 +1,7 @@
 package gov.in.rgsa.entity;
 
 
+import java.io.Serializable;
 import java.sql.Timestamp;
 
 import javax.persistence.Column;
@@ -19,7 +20,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 
 @Entity
 @Table(name = "util_cert", schema = "rgsa")
-public class UtilCert {
+public class UtilCert implements Serializable {
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	@Column(name="util_cert_id")

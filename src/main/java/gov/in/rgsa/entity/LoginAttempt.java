@@ -1,5 +1,6 @@
 package gov.in.rgsa.entity;
 
+import java.io.Serializable;
 import java.util.Date;
 
 import javax.persistence.Basic;
@@ -15,7 +16,12 @@ import org.hibernate.annotations.Parameter;
 
 @Entity
 @Table(name = "loginattempt", schema = "rgsa")
-public class LoginAttempt {
+public class LoginAttempt implements Serializable {
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1999433764714329579L;
 
 	@GenericGenerator(name = "sequence1", strategy = "sequence", parameters = {
 			@Parameter(name = "sequence1", value = "rgsa.loginattempt_seq") })

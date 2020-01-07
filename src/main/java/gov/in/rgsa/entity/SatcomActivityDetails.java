@@ -1,5 +1,7 @@
 package gov.in.rgsa.entity;
 
+import java.io.Serializable;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -16,7 +18,12 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 @Entity
 @Table(name="satcom_activity_details", schema="rgsa")
 @NamedQuery(name="FETCH_ALL_SATCOM_DETAILS_EXCEPT_CURRENT_VERSION",query="from SatcomActivityDetails where satcomActivity.stateCode=:stateCode and satcomActivity.versionNo !=:versionNo and  satcomActivity.userType in('S','M') order by satcomActivityDetailsId")
-public class SatcomActivityDetails {
+public class SatcomActivityDetails implements Serializable{
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 3164380403751472961L;
 
 	@Id
 	@Column(name="satcom_activity_details_id")

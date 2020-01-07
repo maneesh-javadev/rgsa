@@ -1,5 +1,7 @@
 package gov.in.rgsa.entity;
 
+import java.io.Serializable;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -17,7 +19,12 @@ import javax.persistence.Table;
 )
 
 
-public class Block{
+public class Block implements Serializable{
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -6628927593760180317L;
 
 	@Id
 	@Column(name="block_code")

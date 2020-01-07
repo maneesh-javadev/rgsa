@@ -1,5 +1,6 @@
 package gov.in.rgsa.entity;
 
+import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.List;
 
@@ -33,8 +34,13 @@ import org.hibernate.annotations.UpdateTimestamp;
 				
 })
 @Table(name="pmu_activity",schema="rgsa")
-public class PmuActivity {
+public class PmuActivity implements Serializable{
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 7137662884482787727L;
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name="pmu_activity_id")
