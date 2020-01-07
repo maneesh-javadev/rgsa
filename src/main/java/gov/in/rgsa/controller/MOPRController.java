@@ -1,19 +1,29 @@
 package gov.in.rgsa.controller;
 
+import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.text.SimpleDateFormat;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.io.FilenameUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -25,6 +35,12 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import gov.in.rgsa.entity.AttachmentMaster;
 import gov.in.rgsa.entity.FinYear;
+import gov.in.rgsa.entity.InnovativeActivity;
+import gov.in.rgsa.entity.InnovativeActivityDetails;
+import gov.in.rgsa.entity.QprAdminAndFinancialDataActivity;
+import gov.in.rgsa.entity.QprEnablement;
+import gov.in.rgsa.entity.QuarterTrainings;
+import gov.in.rgsa.entity.ReleaseIntallment;
 import gov.in.rgsa.entity.SanctionOrderCompomentAmount;
 import gov.in.rgsa.entity.SanctionOrderComponent;
 import gov.in.rgsa.entity.State;
@@ -36,6 +52,7 @@ import gov.in.rgsa.service.IncomeEnhancementService;
 import gov.in.rgsa.service.InnovativeActivityService;
 import gov.in.rgsa.service.MOPRService;
 import gov.in.rgsa.user.preference.UserPreference;
+import gov.in.rgsa.utils.Message;
 
 @Controller
 public class MOPRController {
@@ -63,7 +80,10 @@ public class MOPRController {
    
    public static final Integer SANCTION_ORDER_FILE_LOC_ID =2;
   
-  
+   public static final String SANCTION_ORDER_NEW = "senctionOrderForm";
+   
+	public static final String REDIRECT_SANCTION_ORDER_NEW = "redirect:senctionOrderForm.html";
+   
 	
 	@RequestMapping(value="sanctionOrder",method=RequestMethod.GET)
 	public String showGISStatewisePlanStatus( Model model, RedirectAttributes re) {
@@ -158,97 +178,138 @@ public class MOPRController {
 	}
 	
 	@RequestMapping(value="downloadSanctionOrder")
-	public String  downloadSanctionOrder(String fileName,HttpServletRequest request,HttpServletResponse response) throws Exception{
+	public String  downloadSanctionOrder(@ModelAttribute("SnactionOrderModel") SnactionOrderModel snactionOrderModel ,HttpServletRequest request,HttpServletResponse response) throws Exception{
+		
+		
+	String filename="",fileNameReal="",extnsn ="", path="";
+		
+		//path = innovativeActivity.getPath();
+		filename=snactionOrderModel.getDbFileName().replace(",", "");
+		
 		AttachmentMaster attachmentMaster = enhancementService.findDetailsofAttachmentMaster();
 		String uploadLocation = attachmentMaster.getFileLocation();
-		String filePath = uploadLocation + File.separator +fileName;
-		//fileUploadService.downloadFiles(request, response, filePath);
-		
-		//File file1 = new File(filePath);
-		
-	
+			// = fileUploadLocation.replace(",", "");
+					extnsn = FilenameUtils.getExtension(filename);
+					fileNameReal=filename;
+					fileNameReal=fileNameReal.substring(0, filename.length()-4);
+					fileNameReal=fileNameReal.substring(0,filename.indexOf("_")) + "."+ extnsn;
+					response.setContentType("application/octet-stream");
 				
-				/*String mimeType= URLConnection.guessContentTypeFromName(file.getName());
-				if(mimeType==null){
-					System.out.println("mimetype is not detectable, will take default");
-					mimeType = "application/octet-stream";
+				ServletOutputStream sos =response.getOutputStream();
+				String dispatchHeader="attachment;filename=\""+fileNameReal+"\"";
+				response.setHeader("Content-Disposition",dispatchHeader);
+				uploadLocation=uploadLocation.replace("\\\\", "/");
+				String rootPath = uploadLocation.replace("\\", "/");
+				
+				String dirPath=rootPath + File.separator + "innovativeActivityFiles";
+				File file=new File(dirPath,filename);
+				FileInputStream fis=new FileInputStream(file);
+				byte[] output=new byte[4096];
+				while(fis.read(output,0,4096)!=-1){
+					sos.write(output,0,4096);
 				}
+				sos.flush();
+				sos.close();
+				fis.close();
 				
-				System.out.println("mimetype : "+mimeType);
+				return null;
 				
-		        response.setContentType(mimeType);
-		        
-		         "Content-Disposition : inline" will show viewable types [like images/text/pdf/anything viewable by browser] right on browser 
-		            while others(zip e.g) will be directly downloaded [may provide save as popup, based on your browser setting.]
-		        response.setHeader("Content-Disposition", String.format("inline; filename=\"" + file.getName() +"\""));
-
-		        
-		         "Content-Disposition : attachment" will be directly download, may provide save as popup, based on your browser setting
-		        //response.setHeader("Content-Disposition", String.format("attachment; filename=\"%s\"", file.getName()));
-		        
-		        response.setContentLength((int)file.length());
-
-				InputStream inputStream = new BufferedInputStream(new FileInputStream(file));
-
-		        //Copy bytes from source to destination(outputstream in this example), closes both streams.
-		        FileCopyUtils.copy(inputStream, response.getOutputStream());
-				 
-				
-		        }else{
-		        	
-		        	 }*/
-		 FileInputStream stream= null;
 		
-		try {
-	        // Get the directory and iterate them to get file by file...
-	     
-	        File file1 = new File(filePath);
-	        if (!file1.exists()) {
-	           
-	        } else {
-	            response.setContentType("APPLICATION/DOWNLOAD");
-	            response.setHeader("Content-Disposition", "attachment"+ 
-	                                     "filename=" + file1.getName());
-	            stream = new FileInputStream(file1);
-	            response.setContentLength(stream.available());
-	            OutputStream os = response.getOutputStream();      
-	            os.close();
-	            response.flushBuffer();
-	        }
-	    } catch (IOException e) {
-	        e.printStackTrace();
-	    } finally {
-	        if (stream != null) {
-	            try {
-	                stream.close();
-	            } catch (IOException e) {
-	                e.printStackTrace();
-	            }
-	        }
-	    }
-		
-		
-		/*ServletOutputStream sos =response.getOutputStream();
-			
-			
-			String dispatchHeader="attachment;filename=\""+fileName+"\"";
-			response.setHeader("Content-Disposition",dispatchHeader);
-			response.setContentType("application/pdf");
-			uploadLocation=uploadLocation.replace("\\\\", "/");
-			String rootPath = uploadLocation.replace("\\", "/");
-			
-			File file1 = new File(rootPath, fileName);
-			FileInputStream fis=new FileInputStream(file1);
-			byte[] output=new byte[4096];
-			while(fis.read(output,0,4096)!=-1){
-				sos.write(output,0,4096);
-			}
-			sos.flush();
-			sos.close();
-			fis.close();
-			*/
+}
 	
-		return null; 
+	@RequestMapping(value="senctionOrderForm",method=RequestMethod.GET)
+	public String  senctionOrderForm(@ModelAttribute("SnactionOrderModel") SnactionOrderModel snactionOrderModel, Model model){
+		
+		
+		if(snactionOrderModel.getPlanCode() != null && snactionOrderModel.getInstallmentNo() != null ) {
+		List<SanctionOrderCompomentAmount> sanctionOrderCompomentAmount = fetchAllSanctionOrderCompomentAmount(snactionOrderModel.getPlanCode(), snactionOrderModel.getInstallmentNo());
+		model.addAttribute("sanctionOrderCompomentAmount",sanctionOrderCompomentAmount);
+		model.addAttribute("stateList", moprService.getStateListApprovedbyCEC(userPreference.getFinYearId())); 
+		model.addAttribute("yearId", userPreference.getFinYearId()); 
+		model.addAttribute("InstallmentNo",snactionOrderModel.getInstallmentNo() ); 
+		model.addAttribute("PlanCode",snactionOrderModel.getPlanCode()); 
+		SnactionOrderModel fetchReleaseInstalment =   moprService.fetchSanctionOrderData(snactionOrderModel.getPlanCode(),snactionOrderModel.getInstallmentNo());
+		if(fetchReleaseInstalment != null) {
+			model.addAttribute("fetchReleaseInstalment",fetchReleaseInstalment); 
+		}
+		}else {
+			model.addAttribute("stateList", moprService.getStateListApprovedbyCEC(userPreference.getFinYearId())); 
+			model.addAttribute("InstallmentNo",snactionOrderModel.getInstallmentNo() ); 
+			model.addAttribute("PlanCode",snactionOrderModel.getPlanCode());
+		}
+		//model.addAttribute("stateList", moprService.getStateListApprovedbyCEC(snactionOrderModel.getYearId())); 
+		
+		 
+		 return SANCTION_ORDER_NEW;
+		
+		
+	}
+	
+	
+	@RequestMapping(value = "senctionOrderForm", method = RequestMethod.POST)
+	public String saveadminDataFinQuaterly(
+			@ModelAttribute("SnactionOrderModel") SnactionOrderModel snactionOrderModel,
+			Model model, RedirectAttributes redirectAttributes)throws IOException {
+		if (snactionOrderModel.getOrigin().equalsIgnoreCase("onclick")) {
+			return senctionOrderForm(snactionOrderModel, model);
+		}
+		
+		for(int i =0;i<snactionOrderModel.getSanctionOrderCompomentAmountList().size();i++) { 
+			if(snactionOrderModel.getSanctionOrderCompomentAmountList().get(i).getFile() != null && snactionOrderModel.getSanctionOrderCompomentAmountList().get(i).getFile().getSize()!=0) {
+				
+				MultipartFile file =snactionOrderModel.getSanctionOrderCompomentAmountList().get(i).getFile();
+				
+			String filename = file.getOriginalFilename();
+			String filenameWithoutExtnsn = FilenameUtils.removeExtension(filename); 
+			String extnsn = FilenameUtils.getExtension(filename);
+			
+			 AttachmentMaster attachmentMaster = innovativeActivityService.findfilePath(SANCTION_ORDER_FILE_LOC_ID);
+			
+			String path = attachmentMaster.getFileLocation();
+			if(file.isEmpty()) {
+				redirectAttributes.addFlashAttribute(Message.ERROR_KEY,"File Upload Required");
+				return REDIRECT_SANCTION_ORDER_NEW;
+			}
+			else if(!file.getContentType().equals("application/pdf")) {
+				redirectAttributes.addFlashAttribute(Message.ERROR_KEY,"File Upload Type Required(Pdf)");
+				return REDIRECT_SANCTION_ORDER_NEW;
+			}
+			else if(file.getSize() > 2097152) {
+				redirectAttributes.addFlashAttribute(Message.ERROR_KEY,"Max File Size is 2MB");
+				return REDIRECT_SANCTION_ORDER_NEW;
+			}
+			
+			Date date = new Date() ;
+			SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMddHHmmss") ;
+			String newFilename = filenameWithoutExtnsn + "_" + dateFormat.format(date) + "." + extnsn;
+			
+			/*......................File Delete code.................
+			
+			File deleteFile = new File(innovativeActivity.getPath() + "/" + innovativeActivity.getDbFileName() );
+				if(deleteFile.exists()) {
+					deleteFile.delete();
+				}
+				......................File Delete code.................
+				*/
+			byte[] bytes = file.getBytes();
+			File dir = new File(path + File.separator + "innovativeActivityFiles");
+			if(!dir.exists())
+			dir.mkdir();
+			BufferedOutputStream stream = new BufferedOutputStream(new FileOutputStream(dir+"/"+newFilename));
+			stream.write(bytes);
+			stream.close();
+			
+			/*snactionOrderModel.getSanctionOrderCompomentAmountList().get(i).setFileContentType(file.getContentType());
+			snactionOrderModel.getSanctionOrderCompomentAmountList().get(i).setFileLocation(path);*/
+			snactionOrderModel.getSanctionOrderCompomentAmountList().get(i).setFilePath(newFilename);
+			}
+		}
+		moprService.saveSanctionOrderDetails(snactionOrderModel);
+		redirectAttributes.addFlashAttribute(Message.SUCCESS_KEY, Message.SAVE_SUCCESS);
+		return REDIRECT_SANCTION_ORDER_NEW;
 	}
 
+	
+	
+	
 }

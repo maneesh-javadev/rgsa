@@ -116,7 +116,7 @@ public class MOPRServiceImpl implements MOPRService {
 		try {
 		Map<String, Object> params=new HashMap<>();
 		params.put("yearId", snactionOrderModel.getYearId());
-		params.put("stateCode", snactionOrderModel.getStateCode());
+		params.put("planCode", snactionOrderModel.getPlanCode());
 		params.put("planStatusId", 5);
 		List<Plan> planList = commonRepository.findAll("CURRENT_PLAN_STATUS",params);
 		 
@@ -124,7 +124,9 @@ public class MOPRServiceImpl implements MOPRService {
 			 
 			Plan plan=planList.get(0);
 			params=new HashMap<>();
-			
+			DateFormat formater = new SimpleDateFormat("yyyy-MM-dd");
+			java.util.Date d = formater.parse(snactionOrderModel.getSactionDate());
+			java.sql.Date sd = new java.sql.Date(d.getTime());
 			Double statusCentralShare=releaseShareCalculation(plan.getCentralShare());
 			Double statusStateShare=releaseShareCalculation(plan.getStateShare());
 			
@@ -139,8 +141,11 @@ public class MOPRServiceImpl implements MOPRService {
 			releaseIntallment.setInstallmentNo(snactionOrderModel.getInstallmentNo());
 			releaseIntallment.setStatusCentralShare(statusCentralShare);
 			releaseIntallment.setStatusStateShare(statusStateShare);
-			releaseIntallment.setReleaseDate(snactionOrderModel.getSactionDate());
-			releaseIntallment.setStatus(snactionOrderModel.getStatus());
+			releaseIntallment.setReleaseDate(sd);
+			if(snactionOrderModel.getOrigin().equalsIgnoreCase("freeze")) {
+				releaseIntallment.setStatus(true);
+			}
+			//releaseIntallment.setStatus(snactionOrderModel.getStatus());
 			if(releaseIntallmentSno!=null){
 				commonRepository.update(releaseIntallment);
 			}else

@@ -842,5 +842,12 @@
 		value="/WEB-INF/jsp/fundReleased/fundReleased.jsp" />
 </definition> 
 
+
+<definition name="senctionOrderForm" extends="base.definition.admin">
+	<put-attribute name="title" value="fund Sanction Version 2" />
+	<put-attribute name="body"
+		value="/WEB-INF/jsp/MOPR/senctionOrderForm.jsp" />
+</definition> 
+
 </tiles-definitions>
 

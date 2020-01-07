@@ -18,7 +18,7 @@ import org.hibernate.annotations.CreationTimestamp;
 
 @Entity
 @NamedQueries({
-	@NamedQuery(name="CURRENT_PLAN_STATUS",query="from Plan where stateCode=:stateCode and planStatusId=:planStatusId and yearId=:yearId and isactive=true"),
+	@NamedQuery(name="CURRENT_PLAN_STATUS",query="from Plan where planCode=:planCode and planStatusId=:planStatusId and yearId=:yearId and isactive=true"),
 	@NamedQuery(name="PLAN_STATUS",query="from Plan where stateCode=:stateCode and planStatusId=:planStatusId and yearId=:yearId and planVersion=:planVersion"),
 	@NamedQuery(name="PLAN_STATUS_LIST",query="from Plan where yearId=:yearId and planStatusId=:planStatusId and isactive=:isactive"),
 	@NamedQuery(name="SHOW_HIDE_BUTTON_PLAN_STATUS",query="from Plan where stateCode=:stateCode  and yearId=:yearId and isactive=true"),
