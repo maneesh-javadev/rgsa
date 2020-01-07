@@ -1,5 +1,6 @@
 package gov.in.rgsa.entity;
 
+import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.List;
 
@@ -25,7 +26,12 @@ import org.hibernate.annotations.UpdateTimestamp;
 	@NamedQuery(name="FETCH_ADMIN_FIN_DATA_ACTIVITY",query="select A from AdminAndFinancialDataActivity A where stateCode=:stateCode and yearId=:yearId and userType=:userType and versionNo=:versionNo and isActive=true"),
 })
 
-public class AdminAndFinancialDataActivity implements IFreezable{
+public class AdminAndFinancialDataActivity implements Serializable{
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 4505453569499762217L;
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)

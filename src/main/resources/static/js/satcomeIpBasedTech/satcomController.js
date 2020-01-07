@@ -21,7 +21,11 @@ publicModule.controller("satcomController",['$scope','satcomService',function($s
 	};
 	
 	
-	fetchOnLoad();
+	
+	$(document).ready(function() {
+		fetchOnLoad();
+		});
+	
 	
 	function fetchOnLoad(){
 		$scope.disable_save=false;

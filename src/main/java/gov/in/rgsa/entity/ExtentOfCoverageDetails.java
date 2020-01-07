@@ -1,5 +1,7 @@
 package gov.in.rgsa.entity;
 
+import java.io.Serializable;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -11,8 +13,13 @@ import javax.persistence.Table;
 @Entity
 @Table(name="trg_extend_coverage_details",schema="rgsa")
 @NamedQuery(name="FIND_Extent_Of_Coverage_Details",query="FROM ExtentOfCoverageDetails where coverageId=:coverageId order by trainingCategoryId asc") 
-public class ExtentOfCoverageDetails {
+public class ExtentOfCoverageDetails implements Serializable{
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -8405630003018921559L;
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name="trg_extend_coverage_details_id")

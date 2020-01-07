@@ -1,5 +1,7 @@
 package gov.in.rgsa.entity;
 
+import java.io.Serializable;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -16,7 +18,12 @@ import javax.persistence.Table;
 @Table(name = "cb_master", schema = "rgsa")
 
 @NamedQuery(name = "FETCH_CB_MASTERS", query = "SELECT cbm FROM CBMaster cbm")
-public class CBMaster{
+public class CBMaster implements Serializable{
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 3792918839490621528L;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)

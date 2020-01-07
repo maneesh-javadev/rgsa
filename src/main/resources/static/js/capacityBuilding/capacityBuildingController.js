@@ -9,7 +9,7 @@ publicModule.controller("capacityBuildingController", [ '$scope', "capacityBuild
 	$scope.capacityBuilding.additionalRequirement;
 	$scope.userType = null;
 	
-	//fetchCBMastersAndCapacityBuildingData();
+	 
 	$( document ).ready(function() {
 		fetchCBMastersAndCapacityBuildingData();
 	});

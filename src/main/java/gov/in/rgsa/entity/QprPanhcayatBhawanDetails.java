@@ -1,5 +1,7 @@
 package gov.in.rgsa.entity;
 
+import java.io.Serializable;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -27,10 +29,15 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 			+ " left join rgsa.qpr_panhcayat_bhawan_details qacd on qac.qpr_panhcayat_bhawan_id=qacd.qpr_panhcayat_bhawan_id where ac.state_code=:stateCode and ac.year_id=:yearId and ac.user_type='C'"),
 	})
 
-public class QprPanhcayatBhawanDetails {
+public class QprPanhcayatBhawanDetails implements Serializable{
 	
 	
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -7622741600882402808L;
+
 	@Id
 	@Column(name="qpr_panhcayat_bhawan_details_id")
 	@GeneratedValue(strategy=GenerationType.IDENTITY)

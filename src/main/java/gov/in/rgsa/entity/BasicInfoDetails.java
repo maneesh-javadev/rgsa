@@ -1,5 +1,7 @@
 package gov.in.rgsa.entity;
 
+import java.io.Serializable;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -19,8 +21,13 @@ import javax.persistence.Table;
 @NamedNativeQuery(query="SELECT * from rgsa.basic_info_details where basic_info_id in (select basic_info_id from rgsa.basic_info where state_code =:stateCode) and defination_key = '27_bp'",name="PANCHAYAT_WITHOUT_BHAWAN",resultClass=BasicInfoDetails.class),
 @NamedNativeQuery(query="SELECT defination_value from rgsa.basic_info_details where basic_info_id in (select basic_info_id from rgsa.basic_info where state_code =:stateCode) and defination_key = :defination_key",name="BASIC_INFO_KEY_VALUE")
 })
-public class BasicInfoDetails {
+public class BasicInfoDetails implements Serializable{
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -6687379864015096025L;
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "basic_info_details_id",updatable = false, nullable = false)

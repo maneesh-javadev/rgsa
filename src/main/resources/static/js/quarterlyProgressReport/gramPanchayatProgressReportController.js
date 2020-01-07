@@ -9,7 +9,11 @@ publicModule.controller("gramPanchayatProgressReportController", [ '$scope', "gr
 	$scope.qprPanchayatBhawan.qprPanhcayatBhawanDetails=[];
 	$scope.GPBhawanData={};
 	
-	fetchDetailsForGramPanchayatProgressReport();
+	
+	$(document).ready(function() {
+		fetchDetailsForGramPanchayatProgressReport();
+		});
+	
 	
 	function fetchDetailsForGramPanchayatProgressReport(){
 		gramPanchayatProgressReportService.fetchDetailsForGramPanchayatProgressReport().then(function(response) {

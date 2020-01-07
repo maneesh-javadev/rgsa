@@ -1,5 +1,7 @@
 package gov.in.rgsa.entity;
 
+import java.io.Serializable;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -16,8 +18,13 @@ import javax.persistence.Table;
 @Entity
 @NamedQuery(name="FETCH_DOMAIN_EXPERT_PMU_WISE",query="FROM PmuWiseProposedDomainExperts order by domainId asc")
 @Table(name="pmu_wise_proposed_domain_experts",schema="rgsa")
-public class PmuWiseProposedDomainExperts {
+public class PmuWiseProposedDomainExperts implements Serializable{
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -6889131249962245225L;
+
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	@Column(name="pmu_wise_proposed_domain_experts_id")

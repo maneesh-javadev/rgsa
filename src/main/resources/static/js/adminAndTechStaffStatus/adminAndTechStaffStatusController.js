@@ -5,7 +5,9 @@ publicModule.controller("adminAndTechStaffStatusController", [ '$scope', "adminA
 	$scope.adminAndTechStaffStatus={};
 	$scope.adminAndTechStaffStatus.administrativeAndTechnicalStaffStatusDetails=[];
 	
-	fetchPosts();
+	$( document ).ready(function() {
+		fetchPosts();
+	});
 	
 	function fetchPosts(){
 		console.log("inside pesaController");

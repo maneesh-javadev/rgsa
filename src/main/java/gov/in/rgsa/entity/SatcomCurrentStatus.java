@@ -1,5 +1,6 @@
 package gov.in.rgsa.entity;
 
+import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.List;
 
@@ -25,8 +26,13 @@ import org.hibernate.annotations.UpdateTimestamp;
 @Entity
 @Table(name="satcom_currentstatus", schema = "rgsa")
 @NamedQuery(name="FETCH_SATCOM_CURRENTSTATUS",query="SELECT scs FROM SatcomCurrentStatus scs where stateCode=:stateCode and yearId=:yearId and userType=:userType")
-public class SatcomCurrentStatus {
+public class SatcomCurrentStatus implements Serializable{
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -4653856299119276208L;
+
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	@Column(name="satcom_cs_id",updatable=false,nullable=false)

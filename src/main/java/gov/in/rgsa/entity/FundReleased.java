@@ -1,5 +1,6 @@
 package gov.in.rgsa.entity;
 
+import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.List;
 
@@ -25,8 +26,13 @@ import org.hibernate.annotations.UpdateTimestamp;
 @Entity
 @Table(name="fund_released",schema="rgsa")
 @NamedQuery(name="FETCH_FUND_RELEASE_DATA",query="from FundReleased where planCode=:planCode")
-public class FundReleased {
+public class FundReleased implements Serializable{
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -8155867801441112491L;
+
 	@Id
 	@Column(name="fund_released_id" , updatable = false , nullable = false)
 	@GeneratedValue(strategy=GenerationType.IDENTITY)

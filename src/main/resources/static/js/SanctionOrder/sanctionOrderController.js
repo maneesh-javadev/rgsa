@@ -79,7 +79,12 @@ sanctionOrder.controller("sanctionOrderController",['$scope','sanctionOrderServi
 	
 	$scope.divShow=false;
 	
-	fetchOnLoad();
+	
+	
+	$(document).ready(function() {
+		fetchOnLoad();
+		});
+	
 	
 	function fetchOnLoad(){
 		/*sanctionOrderService.getAllFinYear().then(function(response){

@@ -13,7 +13,10 @@ trainingDetail.controller("trainingDetailController",['$scope','trainingDetailSe
 	$scope.trainingDetails={};
 	var delTrainingIdArr=[];
 	 $scope.melement={};
-	fetchOnLoad();
+	
+	 $( document ).ready(function() {
+		 fetchOnLoad();
+		});
 	
 	$scope.resetLoading=function(){
 		fetchOnLoad();

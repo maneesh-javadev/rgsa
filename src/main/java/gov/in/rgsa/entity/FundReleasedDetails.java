@@ -1,5 +1,6 @@
 package gov.in.rgsa.entity;
 
+import java.io.Serializable;
 import java.util.Date;
 
 import javax.persistence.CascadeType;
@@ -31,7 +32,12 @@ import org.springframework.web.multipart.MultipartFile;
 	@NamedQuery(name="UPDATE_STATE_SHARE",query="update FundReleasedDetails set stateShare=:stateShare where fundReleasedDetailsId=:fundReleasedDetailsId")
 })
 
-public class FundReleasedDetails {
+public class FundReleasedDetails implements Serializable{
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 2454116796990517964L;
 
 	@Id
 	@Column(name="fund_released_details_id" , updatable = false , nullable = false)

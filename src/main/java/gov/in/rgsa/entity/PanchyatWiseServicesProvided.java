@@ -1,5 +1,7 @@
 package gov.in.rgsa.entity;
 
+import java.io.Serializable;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -20,8 +22,13 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 
 @Entity
 @Table(name="panchyat_wise_services_provided", schema = "rgsa")
-public class PanchyatWiseServicesProvided {
+public class PanchyatWiseServicesProvided implements Serializable{
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -8764020522507584476L;
+
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	@Column(name="panchyat_wise_services_provided_id")

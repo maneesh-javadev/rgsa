@@ -1,5 +1,7 @@
 package gov.in.rgsa.entity;
 
+import java.io.Serializable;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -17,8 +19,13 @@ import javax.persistence.Table;
 @Entity
 @Table(name="service_master", schema = "rgsa")
 @NamedQuery(query="from ServiceMaster",name="FETCH_SERVICE_MASTER")
-public class ServiceMaster {
+public class ServiceMaster implements Serializable {
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -2085590099698825210L;
+
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	@Column(name="service_master_id")

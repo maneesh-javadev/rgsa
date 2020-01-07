@@ -1,5 +1,6 @@
 package gov.in.rgsa.entity;
 
+import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.List;
 
@@ -33,7 +34,12 @@ import org.hibernate.annotations.UpdateTimestamp;
 				@NamedQuery(name="DELETE_INCM_ENHNCMNT_ACTIVITY",
 					query="delete from IncomeEnhancementActivity where incomeEnhancementId=:incomeEnhancementId")
 })
-public class IncomeEnhancementActivity {
+public class IncomeEnhancementActivity implements Serializable{
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -4087507909162297729L;
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)

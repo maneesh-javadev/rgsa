@@ -30,7 +30,7 @@ public class OtherAchievementsDetailServiceImpl implements OtherAchievementsDeta
 			query.append(" inner join rgsa.qpr_trainings qt on qt.qpr_trainings_id=qtd.qpr_trainings_id ");
 			query.append(" where qt.is_freeze=true and twc.training_category_id=" + trCategory + " ");
 
-			if (trCategory == 2 && trCategory == 3)
+			if (trCategory == 2 || trCategory == 3)
 			{
 				query.append(" and qtb.target_group_master_id in(1,3,5,14,16,40,41) ");
 			}

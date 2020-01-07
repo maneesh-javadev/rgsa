@@ -10,7 +10,9 @@ publicModule.controller("pesaPlanController", [ '$scope', "pesaPlanService",
 
 	$scope.maxLengthOfMonth = 12;
 	
-	fetchDesignations();
+	$(document).ready(function() {
+		fetchDesignations();
+		});
 	
 	function fetchDesignations(){
 		console.log("inside pesaController");

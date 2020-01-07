@@ -1,5 +1,7 @@
 package gov.in.rgsa.entity;
 
+import java.io.Serializable;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -9,7 +11,12 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "fin_year", schema = "rgsa")
 @NamedQuery(name="FETCH_ALL_FIN_YEAR", query="FROM FinYear ORDER BY yearId DESC")
-public class FinYear {
+public class FinYear implements Serializable {
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -80487056594075403L;
 
 	@Id
 	@Column(name = "year_id")

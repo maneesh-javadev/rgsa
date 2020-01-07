@@ -5,7 +5,12 @@ var panchayatBhawanApp=angular.module("panchayatBhawanApp",['ui.bootstrap']);
 
 panchayatBhawanApp.controller("panchayatBhawanActivityCntrl",['$scope','panchayatBhawanActivityService','$modal',function($scope,panchayatBhawanActivityService,$modal,$compile,$https){
 	
-fetchOnLoad();
+
+
+$(document).ready(function() {
+	fetchOnLoad();
+	});
+
 
 $scope.panchayatBhawanActivity={};
 $scope.panchayatBhawanActivity.panchatayBhawanActivityDetails=[];

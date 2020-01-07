@@ -1,5 +1,7 @@
 package gov.in.rgsa.entity;
 
+import java.io.Serializable;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -18,9 +20,14 @@ import javax.persistence.NamedNativeQuery;
 			, name = "FETCH_ENABLEMENT_DETAILS_GPs", resultClass = EEnablemenEntity.class),
 	
 })
-public class EEnablemenEntity {
+public class EEnablemenEntity implements Serializable {
 	
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 362566949881594796L;
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name="e_enablement_details_id")

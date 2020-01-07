@@ -13,7 +13,14 @@ enablement.controller("enablementController",['$scope','enablementService', func
 	$scope.totGPS=0;
 	$scope.asSelGPs=0;
 	$scope.asTotGPS=0;
-	fetchOnLoad();
+	
+	
+	
+	$( document ).ready(function() {
+		fetchOnLoad();
+	});
+	
+	
 	
 	$scope.clearPage=function(){
 		fetchOnLoad();

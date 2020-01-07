@@ -1,5 +1,6 @@
 package gov.in.rgsa.entity;
 
+import java.io.Serializable;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -24,8 +25,13 @@ import javax.persistence.Transient;
 @NamedQuery(name="FETCH_INSTITUTIONAL_INFRAACTIVITY_PROGRESS_REPORT_BASED_ID", query="Select IIPP from InstitutionalInfraActivityPlanProgress IIPP  where IIPP.institutionalInfraActivityPlan.institutionalInfraActivityId=:institutionalInfraActivityId")
 })
 
-public class InstitutionalInfraActivityPlanProgress {
+public class InstitutionalInfraActivityPlanProgress implements Serializable{
 
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -2737763966779534608L;
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)

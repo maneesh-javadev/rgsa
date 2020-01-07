@@ -1,5 +1,7 @@
 package gov.in.rgsa.entity;
 
+import java.io.Serializable;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -14,8 +16,13 @@ import javax.persistence.Table;
 @Entity
 @NamedQuery(name="FETCH_ALL_ACTIVITY_PMU_TYPE",query="from PmuActivityType order by pmuActivityTypeId")
 @Table(name="pmu_activity_type",schema="rgsa")
-public class PmuActivityType {
+public class PmuActivityType implements Serializable{
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -8946217283475279119L;
+
 	@Id
 	@Column(name="pmu_activity_type_id")
 	private Integer pmuActivityTypeId;

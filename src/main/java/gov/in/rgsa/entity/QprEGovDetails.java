@@ -1,5 +1,7 @@
 package gov.in.rgsa.entity;
 
+import java.io.Serializable;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -14,8 +16,13 @@ import javax.persistence.Table;
 @Entity
 @NamedQuery(name="DETAILS_BY_QPR_EGOV_ACTIVITY_ID",query="from QprEGovDetails where qprEgov.qprEgovId=:qprEgovId")
 @Table(name="qpr_egov_details", schema="rgsa")
-public class QprEGovDetails
+public class QprEGovDetails implements Serializable
 {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 3288755517397824413L;
+
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	@Column(name="qpr_egov_details_id")

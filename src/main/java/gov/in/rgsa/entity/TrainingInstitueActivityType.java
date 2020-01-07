@@ -1,5 +1,7 @@
 package gov.in.rgsa.entity;
 
+import java.io.Serializable;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -14,9 +16,14 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 @Entity
 @Table(name="training_institue_activity_type",schema="rgsa")
 @NamedQuery(name="FETCH_TRAINING_INSTITUTION_ACTIVITY_TYPE",query="from TrainingInstitueActivityType order by trainingInstitueActivityTypeId")
-public class TrainingInstitueActivityType {
+public class TrainingInstitueActivityType implements Serializable {
 
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -5960536648459612739L;
+
 	@Id
 	@Column(name="training_institue_activity_type_id")
 	private Integer trainingInstitueActivityTypeId;

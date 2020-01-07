@@ -1,6 +1,8 @@
 
 package gov.in.rgsa.entity;
 
+import java.io.Serializable;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -15,7 +17,13 @@ import javax.persistence.Table;
 @Entity
 @Table(name="satcom_details_progress_report", schema="rgsa")
 @NamedQuery(name="FETCH_DETAILS_BY_QTR_ID_AND_ACT_ID",query="from SatcomActivityProgressDetails where satcomActivityProgress.satcomActivityProgressId=:satcomActivityProgressId and quarterDuration.qtrId !=:quarterId")
-public class SatcomActivityProgressDetails{
+public class SatcomActivityProgressDetails implements Serializable{
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -8719610590790983240L;
+
 
 	@Id
 	@Column(name="satcom_details_progress_report_id")

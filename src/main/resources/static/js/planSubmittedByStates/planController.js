@@ -6,9 +6,11 @@ var planStatus=angular.module("planStatus",[]);
 
 planStatus.controller("planStateDetailsController",['$scope','planStateDetailsService',function($scope,planStateDetailsService){
 
+	$(document).ready(function() {
+		fetchOnLoad();
+		});
 	
 	
-	fetchOnLoad();
 	
 	function fetchOnLoad(){
 		

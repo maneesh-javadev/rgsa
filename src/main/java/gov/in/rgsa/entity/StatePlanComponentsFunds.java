@@ -1,5 +1,7 @@
 package gov.in.rgsa.entity;
 
+import java.io.Serializable;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -7,7 +9,12 @@ import javax.persistence.NamedNativeQuery;
 
 @Entity
 @NamedNativeQuery(name="STATE_PLAN_FUNDS",query="select  ROW_NUMBER () OVER (),*  from rgsa.get_state_fund_details(:stateCode,:yearId,:userType)",resultClass=StatePlanComponentsFunds.class)
-public class StatePlanComponentsFunds {
+public class StatePlanComponentsFunds implements Serializable {
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 3003340792367641414L;
 
 	@Id
 	@Column(name="row_number")

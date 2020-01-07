@@ -1,5 +1,6 @@
 package gov.in.rgsa.entity;
 
+import java.io.Serializable;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -19,7 +20,12 @@ import javax.persistence.Table;
 @Entity
 @Table(name="domains",schema="rgsa")
 @NamedQuery(name="FIND_TRAINING_INSTITUTION_TYPE",query ="SELECT D FROM Domains D ORDER BY D.domainId")
-public class Domains {
+public class Domains implements Serializable{
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -580717128470912493L;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)

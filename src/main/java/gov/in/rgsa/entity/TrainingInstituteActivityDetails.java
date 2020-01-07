@@ -1,5 +1,7 @@
 package gov.in.rgsa.entity;
 
+import java.io.Serializable;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -11,8 +13,13 @@ import javax.persistence.Table;
 @Entity
 @NamedQuery(name="FIND_ALL_ACTIVITY_DETAILS",query="FROM TrainingInstituteActivityDetails where trainingInstituteActivityId=:trainingInstituteActivityId order by tiActivityDetailId asc")
 @Table(name="training_institute_activity_details",schema="rgsa")
-public class TrainingInstituteActivityDetails {
+public class TrainingInstituteActivityDetails implements Serializable {
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -7181554389484915091L;
+
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	@Column(name="ti_activity_details_id")

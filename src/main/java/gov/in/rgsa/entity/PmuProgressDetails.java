@@ -1,5 +1,7 @@
 package gov.in.rgsa.entity;
 
+import java.io.Serializable;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -12,9 +14,14 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name="qpr_pmu_details", schema="rgsa")
-public class PmuProgressDetails {
+public class PmuProgressDetails implements Serializable{
 
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 2039714720187080457L;
+
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	@Column(name="qpr_pmu_details_id")

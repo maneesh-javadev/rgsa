@@ -1,5 +1,7 @@
 package gov.in.rgsa.entity;
 
+import java.io.Serializable;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -18,7 +20,12 @@ import javax.persistence.Table;
 @Entity
 @Table(name="pmu_activity_details",schema="rgsa")
 @NamedQuery(name="FETCH_ALL_PMU_DETAILS_EXCEPT_CURRENT_VERSION" , query="from PmuActivityDetails where pmuActivity.stateCode=:stateCode and pmuActivity.versionNo !=:versionNo and pmuActivity.userType in('S','M') order by pmuDetailsId")
-public class PmuActivityDetails {
+public class PmuActivityDetails implements Serializable {
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 3237065656764513790L;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)

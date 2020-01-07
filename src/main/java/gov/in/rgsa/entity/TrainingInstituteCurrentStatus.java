@@ -1,5 +1,6 @@
 package gov.in.rgsa.entity;
 
+import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.List;
 
@@ -32,8 +33,13 @@ import org.hibernate.annotations.UpdateTimestamp;
 	@NamedQuery(name="TRAINING_INSTITUTE_CURRENTSTATUS_BY_LOCATION_LEVEL",
 		query="FROM TrainingInstituteCurrentStatus tics left outer join fetch tics.trainingInstituteCurrentStatusDetails tid where tid.tiLocation=:location and tid.trainingInstitueType.instituteLevel.trainingInstituteLevelId=:level")
 })
-public class TrainingInstituteCurrentStatus {
+public class TrainingInstituteCurrentStatus implements Serializable {
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -2343217763525771916L;
+
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	@Column(name="ti_cs_id",updatable=false,nullable=false)

@@ -1,5 +1,7 @@
 package gov.in.rgsa.entity;
 
+import java.io.Serializable;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -7,7 +9,12 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name="pmu_type",schema="rgsa")
-public class PmuType {
+public class PmuType implements Serializable{
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 6332011546295108956L;
 
 	@Id
 	@Column(name="pmu_type_id")

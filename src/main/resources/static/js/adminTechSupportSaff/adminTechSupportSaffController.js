@@ -8,7 +8,10 @@ publicModule.controller("adminTechSupportSaffController",['$scope','adminTechSup
 	$scope.fundTotal=0;
 	$scope.levels=[];
 	
-	fetchOnLoad();
+	
+	$( document ).ready(function() {
+		fetchOnLoad();
+	});
 	function fetchOnLoad(){
 		$scope.btn_disabled=false;
 		adminTechSupportSaffService.getPostTypeMaster().then(function(response){
