@@ -3,6 +3,8 @@ package gov.in.rgsa.model;
 import java.util.Date;
 import java.util.List;
 
+import javax.persistence.Transient;
+
 import gov.in.rgsa.entity.ReleaseIntallment;
 import gov.in.rgsa.entity.SanctionOrder;
 import gov.in.rgsa.entity.SanctionOrderCompomentAmount;
@@ -14,7 +16,7 @@ public class SnactionOrderModel {
 	
 	private Integer yearId;
 	
-	private Date sactionDate;
+	private String sactionDate;
 
 	private Integer installmentNo;
 	
@@ -26,9 +28,14 @@ public class SnactionOrderModel {
 	
 	private Integer releaseIntallmentSno;
 	
-	
+	private Integer planCode;
 	private Boolean status;
+	
+	@Transient
+	private String origin;
 
+	private String dbFileName;
+	
 	public Integer getStateCode() {
 		return stateCode;
 	}
@@ -45,11 +52,13 @@ public class SnactionOrderModel {
 		this.yearId = yearId;
 	}
 
-	public Date getSactionDate() {
+	
+
+	public String getSactionDate() {
 		return sactionDate;
 	}
 
-	public void setSactionDate(Date sactionDate) {
+	public void setSactionDate(String sactionDate) {
 		this.sactionDate = sactionDate;
 	}
 
@@ -99,6 +108,30 @@ public class SnactionOrderModel {
 
 	public void setStatus(Boolean status) {
 		this.status = status;
+	}
+
+	public Integer getPlanCode() {
+		return planCode;
+	}
+
+	public void setPlanCode(Integer planCode) {
+		this.planCode = planCode;
+	}
+
+	public String getOrigin() {
+		return origin;
+	}
+
+	public void setOrigin(String origin) {
+		this.origin = origin;
+	}
+
+	public String getDbFileName() {
+		return dbFileName;
+	}
+
+	public void setDbFileName(String dbFileName) {
+		this.dbFileName = dbFileName;
 	}
 	
 	
