@@ -180,23 +180,12 @@ public class MOPRController {
 	
 	@RequestMapping(value="downloadSanctionOrder")
 	public String  downloadSanctionOrder(@ModelAttribute("SnactionOrderModel") SnactionOrderModel snactionOrderModel ,HttpServletRequest request,HttpServletResponse response) throws Exception{
-		
-		
-	String filename="",fileNameReal="",extnsn ="", path="";
-		
-		//path = innovativeActivity.getPath();
-		filename=snactionOrderModel.getDbFileName().replace(",", "");
-		
-		AttachmentMaster attachmentMaster = innovativeActivityService.findfilePath(SANCTION_ORDER_FILE_LOC_ID);
-		String uploadLocation = attachmentMaster.getFileLocation();
-			// = fileUploadLocation.replace(",", "");
-					extnsn = FilenameUtils.getExtension(filename);
-					fileNameReal=filename;
-					fileNameReal=fileNameReal.substring(0, filename.length()-4);
-					fileNameReal=fileNameReal.substring(0,filename.indexOf("_")) + "."+ extnsn;
-					response.setContentType("application/octet-stream");
-				
-				ServletOutputStream sos =response.getOutputStream();
+		      String filename="",fileNameReal="";
+		      filename=snactionOrderModel.getDbFileName().replace(",", "");
+		       AttachmentMaster attachmentMaster = innovativeActivityService.findfilePath(SANCTION_ORDER_FILE_LOC_ID);
+		       String uploadLocation = attachmentMaster.getFileLocation();
+			   response.setContentType("application/octet-stream");
+			    ServletOutputStream sos =response.getOutputStream();
 				String dispatchHeader="attachment;filename=\""+fileNameReal+"\"";
 				response.setHeader("Content-Disposition",dispatchHeader);
 				uploadLocation=uploadLocation.replace("\\\\", "/");
@@ -290,16 +279,7 @@ public class MOPRController {
 			
 			Date date = new Date() ;
 			SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMddHHmmss") ;
-			String newFilename = filenameWithoutExtnsn + "_" + dateFormat.format(date) + "." + extnsn;
-			
-			/*......................File Delete code.................
-			
-			File deleteFile = new File(innovativeActivity.getPath() + "/" + innovativeActivity.getDbFileName() );
-				if(deleteFile.exists()) {
-					deleteFile.delete();
-				}
-				......................File Delete code.................
-				*/
+			String newFilename = filenameWithoutExtnsn +dateFormat.format(date) + "." + extnsn;
 			byte[] bytes = file.getBytes();
 			File dir = new File(path);
 			if(!dir.exists())
@@ -307,9 +287,6 @@ public class MOPRController {
 			BufferedOutputStream stream = new BufferedOutputStream(new FileOutputStream(dir+"/"+newFilename));
 			stream.write(bytes);
 			stream.close();
-			
-			/*snactionOrderModel.getSanctionOrderCompomentAmountList().get(i).setFileContentType(file.getContentType());
-			snactionOrderModel.getSanctionOrderCompomentAmountList().get(i).setFileLocation(path);*/
 			snactionOrderModel.getSanctionOrderCompomentAmountList().get(i).setFilePath(newFilename);
 			}
 		}
