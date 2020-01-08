@@ -31,6 +31,8 @@ public class SnactionOrderModel {
 	private Integer planCode;
 	private Boolean status;
 	
+	private Boolean flag;
+	
 	@Transient
 	private String origin;
 
@@ -132,6 +134,14 @@ public class SnactionOrderModel {
 
 	public void setDbFileName(String dbFileName) {
 		this.dbFileName = dbFileName;
+	}
+
+	public Boolean getFlag() {
+		return flag;
+	}
+
+	public void setFlag(Boolean flag) {
+		this.flag = flag;
 	}
 	
 	
