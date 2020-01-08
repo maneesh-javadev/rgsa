@@ -187,7 +187,7 @@ public class MOPRController {
 		//path = innovativeActivity.getPath();
 		filename=snactionOrderModel.getDbFileName().replace(",", "");
 		
-		AttachmentMaster attachmentMaster = enhancementService.findDetailsofAttachmentMaster();
+		AttachmentMaster attachmentMaster = innovativeActivityService.findfilePath(SANCTION_ORDER_FILE_LOC_ID);
 		String uploadLocation = attachmentMaster.getFileLocation();
 			// = fileUploadLocation.replace(",", "");
 					extnsn = FilenameUtils.getExtension(filename);
