@@ -119,7 +119,7 @@ public class MOPRServiceImpl implements MOPRService {
 		params.put("yearId", snactionOrderModel.getYearId());
 		params.put("planCode", snactionOrderModel.getPlanCode());
 		params.put("planStatusId", 5);
-		List<Plan> planList = commonRepository.findAll("CURRENT_PLAN_STATUS",params);
+		List<Plan> planList = commonRepository.findAll("CURRENT_PLAN_STATUS_BY_PLANCODE",params);
 		 
 		if(planList!=null && !planList.isEmpty()) {
 			 

@@ -54,7 +54,7 @@ public class FundReleasedController {
 
 	@GetMapping(value="fundReleased")
 	private String fundReleased(@ModelAttribute("FUND_RELEASED") FundReleased fundReleased, Model model , RedirectAttributes re) {
-		
+		try {
 		if(fundReleased.getFinYearId() != null) {
 			List<State> stateList = moprService.getStateListApprovedbyCEC(fundReleased.getFinYearId());
 			model.addAttribute("STATE_LIST", stateList);
@@ -84,12 +84,15 @@ public class FundReleasedController {
 				}
 			}
 		}
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
 		return FUND_SANCTION;
 	}
 	
 	@PostMapping(value="fundReleased")
 	private String fundReleasedPost(@ModelAttribute("FUND_RELEASED") FundReleased fundReleased, Model model,RedirectAttributes re) {
-	
+	try {
 		if(fundReleased.getMsg().equalsIgnoreCase("save")) {
 			System.out.println("in save block");
 			String uploadPath =innovativeActivityService.findfilePath().getFileLocation();
@@ -110,6 +113,9 @@ public class FundReleasedController {
 			fundReleasedService.save(fundReleased);
 		}else {
 			return fundReleased(fundReleased,model,re);
+		}
+	}catch(Exception e) {
+			e.printStackTrace();
 		}
 		return REDIRECT_FUND_SANCTION;
 	}

@@ -21,6 +21,11 @@ import org.hibernate.annotations.UpdateTimestamp;
 @Entity
 @Table(name = "util_cert", schema = "rgsa")
 public class UtilCert implements Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 8181296361301049149L;
+
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	@Column(name="util_cert_id")
