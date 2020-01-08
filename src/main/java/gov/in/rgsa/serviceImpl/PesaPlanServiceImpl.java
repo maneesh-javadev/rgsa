@@ -49,6 +49,7 @@ public class PesaPlanServiceImpl implements PesaPlanService {
 	@Override
 	public List<PesaPost> fetchPesaPost() {
 		Query query = entityManager.createNamedQuery("FETCH_PESA_POST");
+		@SuppressWarnings("unchecked")
 		List<PesaPost> pesaPosts = query.getResultList();
 		return pesaPosts;
 	}

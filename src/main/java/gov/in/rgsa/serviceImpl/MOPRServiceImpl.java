@@ -111,8 +111,9 @@ public class MOPRServiceImpl implements MOPRService {
 	
 	
 	
-	public Response saveSanctionOrderDetails(SnactionOrderModel snactionOrderModel) {
+	public Boolean saveSanctionOrderDetails(SnactionOrderModel snactionOrderModel) {
 		Response response1=new Response();
+		Boolean flag =false;
 		try {
 		Map<String, Object> params=new HashMap<>();
 		params.put("yearId", snactionOrderModel.getYearId());
@@ -176,19 +177,18 @@ public class MOPRServiceImpl implements MOPRService {
 				
 			}
 			
-			response1.setResponseMessage("Saction Order Saved Successfully");
-			response1.setResponseCode(200);
+			flag =true;
 			
-		}else {
+		}/*else {
 			response1.setResponseMessage("Saction Order Plan not ready");
 			response1.setResponseCode(500);
-		}
+		}*/
 		}catch(Exception e) {
 			e.printStackTrace();
 			response1.setResponseMessage(e.getMessage());
 			response1.setResponseCode(500);
 		}
-		return response1;
+		return flag;
 	}
 	
 	private Double releaseShareCalculation(Double totalEntityShare) {

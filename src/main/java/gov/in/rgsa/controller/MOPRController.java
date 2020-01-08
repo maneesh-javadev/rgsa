@@ -6,6 +6,7 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Collections;
 import java.util.Comparator;
@@ -165,11 +166,11 @@ public class MOPRController {
 			return response1;
 	}
 	
-	@ResponseBody
+	/*@ResponseBody
 	@RequestMapping(value="saveSanctionOrder",method=RequestMethod.POST)
 	public Response  saveSanctionOrder(@RequestBody final SnactionOrderModel snactionOrderModel,HttpServletRequest request, HttpServletResponse httpServletResponse){
 		return moprService.saveSanctionOrderDetails(snactionOrderModel);
-	}
+	}*/
 	
 	@ResponseBody
 	@RequestMapping(value="fetchSanctionOrderData",method=RequestMethod.GET)
@@ -201,7 +202,7 @@ public class MOPRController {
 				uploadLocation=uploadLocation.replace("\\\\", "/");
 				String rootPath = uploadLocation.replace("\\", "/");
 				
-				String dirPath=rootPath + File.separator + "innovativeActivityFiles";
+				String dirPath=rootPath;
 				File file=new File(dirPath,filename);
 				FileInputStream fis=new FileInputStream(file);
 				byte[] output=new byte[4096];
@@ -220,7 +221,7 @@ public class MOPRController {
 	@RequestMapping(value="senctionOrderForm",method=RequestMethod.GET)
 	public String  senctionOrderForm(@ModelAttribute("SnactionOrderModel") SnactionOrderModel snactionOrderModel, Model model){
 		
-		
+		try {
 		if(snactionOrderModel.getPlanCode() != null && snactionOrderModel.getInstallmentNo() != null ) {
 		List<SanctionOrderCompomentAmount> sanctionOrderCompomentAmount = fetchAllSanctionOrderCompomentAmount(snactionOrderModel.getPlanCode(), snactionOrderModel.getInstallmentNo());
 		model.addAttribute("sanctionOrderCompomentAmount",sanctionOrderCompomentAmount);
@@ -231,15 +232,20 @@ public class MOPRController {
 		SnactionOrderModel fetchReleaseInstalment =   moprService.fetchSanctionOrderData(snactionOrderModel.getPlanCode(),snactionOrderModel.getInstallmentNo());
 		if(fetchReleaseInstalment != null) {
 			model.addAttribute("fetchReleaseInstalment",fetchReleaseInstalment); 
+			String date = fetchReleaseInstalment.getReleaseIntallment().getReleaseDate().toString().split(" ")[0];
+			   model.addAttribute("date",date); 
 		}
 		}else {
 			model.addAttribute("stateList", moprService.getStateListApprovedbyCEC(userPreference.getFinYearId())); 
 			model.addAttribute("InstallmentNo",snactionOrderModel.getInstallmentNo() ); 
 			model.addAttribute("PlanCode",snactionOrderModel.getPlanCode());
 		}
+		model.addAttribute("msgFlag",snactionOrderModel.getFlag());
 		//model.addAttribute("stateList", moprService.getStateListApprovedbyCEC(snactionOrderModel.getYearId())); 
 		
-		 
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
 		 return SANCTION_ORDER_NEW;
 		
 		
@@ -253,7 +259,10 @@ public class MOPRController {
 		if (snactionOrderModel.getOrigin().equalsIgnoreCase("onclick")) {
 			return senctionOrderForm(snactionOrderModel, model);
 		}
-		
+		if("".equals(snactionOrderModel.getSactionDate()) ) {
+			snactionOrderModel.setFlag(true);
+			return senctionOrderForm(snactionOrderModel, model);
+		}
 		for(int i =0;i<snactionOrderModel.getSanctionOrderCompomentAmountList().size();i++) { 
 			if(snactionOrderModel.getSanctionOrderCompomentAmountList().get(i).getFile() != null && snactionOrderModel.getSanctionOrderCompomentAmountList().get(i).getFile().getSize()!=0) {
 				
@@ -292,7 +301,7 @@ public class MOPRController {
 				......................File Delete code.................
 				*/
 			byte[] bytes = file.getBytes();
-			File dir = new File(path + File.separator + "innovativeActivityFiles");
+			File dir = new File(path);
 			if(!dir.exists())
 			dir.mkdir();
 			BufferedOutputStream stream = new BufferedOutputStream(new FileOutputStream(dir+"/"+newFilename));
@@ -304,8 +313,13 @@ public class MOPRController {
 			snactionOrderModel.getSanctionOrderCompomentAmountList().get(i).setFilePath(newFilename);
 			}
 		}
-		moprService.saveSanctionOrderDetails(snactionOrderModel);
+		Boolean flag =moprService.saveSanctionOrderDetails(snactionOrderModel);
+		if(flag) {
 		redirectAttributes.addFlashAttribute(Message.SUCCESS_KEY, Message.SAVE_SUCCESS);
+		}else {
+			redirectAttributes.addFlashAttribute(Message.ERROR_KEY,"Saction Order Plan not ready");
+		}
+		
 		return REDIRECT_SANCTION_ORDER_NEW;
 	}
 

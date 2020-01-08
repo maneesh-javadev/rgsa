@@ -1,16 +1,30 @@
 <%@include file="../taglib/taglib.jsp"%>
-<script type="text/javascript"
-	src="${pageContext.request.contextPath}/resources/plugins/angular/angular.min.js"></script>
+<link rel="stylesheet" type="text/css"
+	href="<c:out value="<%=request.getContextPath()%>"/>/resources/bs/css_js/bootstrap.min.css" />
+<script
+	src="<c:out value="<%=request.getContextPath()%>"/>/resources/bs/css_js/bootstrap.min.js"></script>
+<script
+	src="<c:out value="<%=request.getContextPath()%>"/>/resources/bs/bs_dt/js/dataTables.responsive.min.js"></script>
+<script
+	src="<c:out value="<%=request.getContextPath()%>"/>/resources/bs/bs_dt/js/jquery.dataTables.min.js"></script>
+<link rel="stylesheet"
+	href="<c:out value="<%=request.getContextPath()%>"/>/resources/bs/bs_dt/css/jquery.dataTables.min.css" />
+	
+<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/plugins/datepicker/css/bootstrap-datetimepicker.min.css">
+
+<script type="text/javascript" src="${pageContext.request.contextPath}/resources/plugins/datepicker/js/bootstrap-datetimepicker.min.js"></script>
 <script>
 	var InstallmentNo = '${InstallmentNo}';
 	var PlanCode = '${PlanCode}';
 	var yearId = '${yearId}';
-	
+	var  msgFlag = '${msgFlag}';  
 	$(document).ready(function() {
 		
 		$("#installmentId").val(InstallmentNo);
 		$("#StateId").val(PlanCode);
-		
+		if(msgFlag){
+			alert("kindly Select Senction order detail First")
+		}
 	});
 	
 	function selectCurrentInstallment(msg) {
@@ -26,8 +40,8 @@
 		$('#origin').val(msg);
 		document.SnactionOrderModel.method = "post";
 		document.SnactionOrderModel.action = "senctionOrderForm.html?<csrf:token uri='senctionOrderForm.html'/>";
-
-		document.SnactionOrderModel.submit();
+		 document.SnactionOrderModel.submit(); 
+		
 	}
 	
 	
@@ -40,6 +54,17 @@
 		document.SnactionOrderModel.submit();
 		
 	}
+	
+	
+	$("#sanctionDatecr").datetimepicker({
+		format: 'dd-mm-yyyy',
+		startView : 'month',
+		endDate: cureffectiveDate,
+        autoclose: true,
+		minView : 'month',
+		pickerPosition : "bottom-left",
+		
+	});
 </script>
 <section class="content">
 	<div class="container-fluid">
@@ -193,9 +218,9 @@
     							<div class="form-group">
 								<div class="col-xs-4">
 									<div class="form-line">
-										<div class="input-group date datepicker" id="datetimepicker1">
-										<input type="date"  class="form-control"   data-date-format="DD MMMM YYYY"  name="sactionDate"
-																value="${fetchReleaseInstalment.releaseIntallment.releaseDate}" />
+										<div class="input-group date datepicker" id="sanctionDatecr">
+										<input type="date"  class="form-control"  id ="dateSanction"  name="sactionDate"
+													 value ="${date}"	/>
 										<span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
 										</div>
 										
@@ -206,7 +231,16 @@
 							
 									<div class="text-right">
 									<c:choose>
-									<c:when test="${fetchReleaseInstalment.releaseIntallment.status ne true}">
+									<c:when test="${fetchReleaseInstalment.releaseIntallment.status eq false}">
+									
+										<form:button onclick="selectCurrentInstallment('save')" class="btn bg-green waves-effect" >
+											SAVE</form:button>
+										
+											<form:button class="btn bg-green waves-effect" onclick="selectCurrentInstallment('freeze')">FREEZE</form:button>
+										
+										
+									</c:when>
+									<c:when test="${sanctionOrderCompomentAmount ne null && fetchReleaseInstalment.releaseIntallment.status eq null}">
 									
 										<form:button onclick="selectCurrentInstallment('save')" class="btn bg-green waves-effect" >
 											SAVE</form:button>
