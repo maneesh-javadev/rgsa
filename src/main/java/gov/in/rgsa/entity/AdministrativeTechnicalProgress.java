@@ -28,7 +28,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 @NamedQuery(name="FETCH_Admin_Tech_Progress_progress_report_BASED_ID", query="Select ATP from AdministrativeTechnicalProgress ATP  where ATP.administrativeTechnicalSupport.administrativeTechnicalSupportId=:administrativeTechnicalSupportId"),
 @NamedQuery(name="FETCH_ADMIN_TECH_ACT_QTR_ID_AND_ACT_ID",query="from AdministrativeTechnicalProgress where administrativeTechnicalSupport.administrativeTechnicalSupportId=:administrativeTechnicalSupportId and quarterDuration.qtrId !=:quarterId")
 })
-public class AdministrativeTechnicalProgress  implements Serializable{
+public class AdministrativeTechnicalProgress  implements IFreezable, Serializable{
 	
 	
 	/**
