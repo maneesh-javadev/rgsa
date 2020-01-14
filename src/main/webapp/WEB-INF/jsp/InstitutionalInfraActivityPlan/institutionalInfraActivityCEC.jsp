@@ -128,11 +128,11 @@ function isNumber(evt) {
 													<%-- <div align="center" data-ng-style="{'color':(institutionalPlanDetailsNBStateCEC[$index].remarks< details.remarks) ? 'red' : '#00cc00'}"> --%>
 																			<div align="center">			
 												 <label class="addMore btn bg-green waves-effect" title="{{details.remarks}}">Remark by MoPR</label>
-													</div>
+													
 													<!-- <strong>{{details.remarks}}</strong> -->
 													<textarea rows="2" data-ng-show="!institutionalInfraActivityPlan.isFreeze" data-ng-model="institutionalPlanDetailsNBStateCEC[$index].remarks" cols="10"></textarea>
 													<textarea rows="2" data-ng-show="institutionalInfraActivityPlan.isFreeze" data-ng-model="institutionalPlanDetailsNBStateCEC[$index].remarks" cols="10" readonly="readonly" autocomplete="off"></textarea>
-												</td>
+												</div></td>
 											</tr>
 											
 											
@@ -645,9 +645,9 @@ function isNumber(evt) {
 									<spring:message code="FREEZE" htmlEscape="true" />
 								</button>
 							
-								<%-- <button type="button" data-ng-show="institutionalInfraActivityPlan.isFreeze" data-ng-click="load_data()" class="btn bg-light-blue waves-effect" disabled="disabled"><spring:message code="Label.CLEAR" htmlEscape="true"/></button>
+			<%-- 				 <button type="button" data-ng-show="institutionalInfraActivityPlan.isFreeze" data-ng-click="load_data()" class="btn bg-light-blue waves-effect" disabled="disabled"><spring:message code="Label.CLEAR" htmlEscape="true"/></button>
 								<button type="button" data-ng-show="!institutionalInfraActivityPlan.isFreeze" data-ng-click="load_data()" class="btn bg-light-blue waves-effect"><spring:message code="Label.CLEAR" htmlEscape="true" /></button>
-
+ --%>
 
 								<button type="button"
 									onclick="onClose('home.html?<csrf:token uri='home.html'/>')"

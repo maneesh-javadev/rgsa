@@ -1174,7 +1174,7 @@ public class ProgressReportController {
 		List<PmuActivity> pmuCecApprovedActivities = pmuActivityService.fetchApprovedPmu();
 		stateAllocation = progressReportService.fetchStateAllocationData(12, installmentNo,
 				progressReportService.getCurrentPlanCode());
-		model.addAttribute("QUATER_DETAI LS", progressReportService.getQuarterDurations());
+		model.addAttribute("QUATER_DETAILS", progressReportService.getQuarterDurations());
 		model.addAttribute("LIST_OF_PMU_DOMAINS", domainList);
 		model.addAttribute("LIST_OF_PMU_DOMAINS_LIST", domainList.size() / 2);
 		model.addAttribute("LIST_OF_DISTRICT", pmuActivityService.fetchDistrictName());
