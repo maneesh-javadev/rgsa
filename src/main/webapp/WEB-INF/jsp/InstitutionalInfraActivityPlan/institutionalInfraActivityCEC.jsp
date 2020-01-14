@@ -379,12 +379,12 @@ function isNumber(evt) {
 													</div>
 												</th> --%>	
 													
-												<th> 
+												<%-- <th> 
 													<div align="center">
 														<strong><spring:message code="Label.Remarks" htmlEscape="true" />
 														</strong>
 													</div>
-												</th>
+												</th> --%>
 											</tr>
 										</thead>
                               <tbody>
@@ -423,12 +423,12 @@ function isNumber(evt) {
 													<input type="checkbox" data-ng-show="!institutionalInfraActivityPlan.isFreeze" data-ng-model="institutionalPlanDetailsCFStateCEC[$index].isApproved">
 													<input type="checkbox" data-ng-show="institutionalInfraActivityPlan.isFreeze" data-ng-model="institutionalPlanDetailsCFStateCEC[$index].isApproved" disabled="disabled">
 												</td> -->
-												<td>
+												<%-- <td>
 													<div align="center" data-ng-style="{'color':(institutionalPlanDetailsCFStateCEC[$index].remarks < details.remarks) ? 'red' : '#00cc00'}">
 													<strong>{{details.remarks}}</strong></div>
 													<textarea rows="2" data-ng-show="!institutionalInfraActivityPlan.isFreeze" data-ng-model="institutionalPlanDetailsCFStateCEC[$index].remarks" cols="10" autocomplete="off"></textarea>
 													<textarea rows="2" data-ng-show="institutionalInfraActivityPlan.isFreeze" data-ng-model="institutionalPlanDetailsCFStateCEC[$index].remarks" cols="10" readonly="readonly"></textarea>
-												</td>
+												</td> --%>
 												
 											</tr>
 											
@@ -523,12 +523,12 @@ function isNumber(evt) {
 													</div>
 												</th> --%>	
 													
-												<th> 
+												<%-- <th> 
 													<div align="center">
 														<strong><spring:message code="Label.Remarks" htmlEscape="true" />
 														</strong>
 													</div>
-												</th>
+												</th> --%>
 											</tr>
 										</thead>
                               <tbody>
@@ -567,12 +567,12 @@ function isNumber(evt) {
 													<input type="checkbox" data-ng-show="!institutionalInfraActivityPlan.isFreeze" data-ng-model="institutionalPlanDetailsCFDistrictCEC[$index].isApproved">
 													<input type="checkbox" data-ng-show="institutionalInfraActivityPlan.isFreeze" data-ng-model="institutionalPlanDetailsCFDistrictCEC[$index].isApproved" disabled="disabled">
 												</td> -->
-												<td align="center">
+												<%-- <td align="center">
 													<div align="center" data-ng-style="{'color':(institutionalPlanDetailsCFDistrictCEC[$index].remarks < details.remarks) ? 'red' : '#00cc00'}">
 													<strong>{{details.remarks}}</strong></div>
 													<textarea rows="2" data-ng-show="!institutionalInfraActivityPlan.isFreeze" data-ng-model="institutionalPlanDetailsCFDistrictCEC[$index].remarks" cols="10" autocomplete="off"></textarea>
 													<textarea rows="2" data-ng-show="institutionalInfraActivityPlan.isFreeze" data-ng-model="institutionalPlanDetailsCFDistrictCEC[$index].remarks" cols="10" readonly="readonly"></textarea>
-												</td>
+												</td> --%>
 											</tr>
 											
 											
@@ -946,12 +946,12 @@ function isNumber(evt) {
 										</div>
 									</th> --%>	
 													
-												<th> 
+												<%-- <th> 
 													<div align="center">
 														<strong><spring:message code="Label.Remarks" htmlEscape="true" />
 														</strong>
 													</div>
-												</th>
+												</th> --%>
 											</tr>
 										</thead>
                               <tbody>
@@ -972,9 +972,9 @@ function isNumber(evt) {
 													</td>
 												<!-- <td align="center">
 													<input type="checkbox"  data-ng-model="details.isApproved" disabled="disabled"></td> -->
-												<td align="center">
+												<!-- <td align="center">
 													<strong>{{details.remarks}}</strong>
-												</td>
+												</td> -->
 								</tr>
                               </tbody>
                               <tfoot>
@@ -1058,12 +1058,12 @@ function isNumber(evt) {
 													</div>
 												</th> --%>	
 													
-												<th> 
+												<%-- <th> 
 													<div align="center">
 														<strong><spring:message code="Label.Remarks" htmlEscape="true" />
 														</strong>
 													</div>
-												</th>
+												</th> --%>
 											</tr>
 										</thead>
                               <tbody>
@@ -1088,9 +1088,9 @@ function isNumber(evt) {
 													</td>
 												<!-- <td align="center">
 													<input type="checkbox"  data-ng-model="details.isApproved" disabled="disabled"></td> -->
-												<td align="center">
+												<!-- <td align="center">
 													<strong>{{details.remarks}}</strong>
-												</td>
+												</td> -->
 												
 											</tr>
 											
