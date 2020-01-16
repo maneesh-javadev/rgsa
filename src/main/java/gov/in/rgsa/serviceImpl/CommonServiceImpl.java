@@ -70,6 +70,16 @@ public class CommonServiceImpl implements CommonService {
 	}
 
 	@Override
+	public Map<Integer, String> getYearMap() {
+		Map<Integer, String> yearMap = new HashMap<>();
+		yearMap.put(0, " --- Select --- ");
+		for (FinYear finYear : commonRepository.findAll(FinYear.class)) {
+			yearMap.put(finYear.getYearId(), finYear.getFinYear());
+		}
+		return yearMap;
+	}
+
+	@Override
 	public Long saveErrorLog(RuntimeException err,HttpServletRequest request) {
 		ErrorLog errorLog = new ErrorLog();
 		errorLog.setStateCode(user.getStateCode());

@@ -107,5 +107,6 @@ public class DevQuirksInterceptor extends HandlerInterceptorAdapter {
         userPreference.setPlansAreFreezed(passedUserPreference.isPlansAreFreezed());
         userPreference.setCountPlanSubmittedByState(passedUserPreference.getCountPlanSubmittedByState());
         userPreference.setCountPlanSubmittedByMOPR(passedUserPreference.getCountPlanSubmittedByMOPR());
+        userPreference.setIsNodalFilled(true);
     }
 }

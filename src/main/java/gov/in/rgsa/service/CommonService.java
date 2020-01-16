@@ -1,6 +1,7 @@
 package gov.in.rgsa.service;
 
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -17,4 +18,5 @@ public interface CommonService {
 	public FinYear findActiveFinYear();
 	public List<MenuProfile> findMenuByParentId(Integer parentId);
 	public List<State> getStateListApprovedByCEC(Integer yearId);
+	public Map<Integer, String> getYearMap();
 }

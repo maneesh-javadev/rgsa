@@ -10,6 +10,7 @@ import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import gov.in.rgsa.service.CommonService;
 import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -47,6 +48,9 @@ public class UtilizationCertController {
 	
 	@Autowired
 	private UtilCertService utilCertService;
+
+	@Autowired
+	private CommonService commonService;
 	
 	@Autowired
 	private ViewResolver viewResolver;
@@ -183,7 +187,7 @@ public class UtilizationCertController {
 		if(ucertModel == null)
 			ucertModel = new UcertModel();
 		
-		ucertModel.setYearMap(utilCertService.getYearMap());		
+		ucertModel.setYearMap(commonService.getYearMap());
 		if(finYearId == null || finYearId == 0)
 			return ucertModel;
 		

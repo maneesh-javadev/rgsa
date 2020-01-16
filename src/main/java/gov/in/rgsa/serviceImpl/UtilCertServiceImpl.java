@@ -39,16 +39,6 @@ public class UtilCertServiceImpl implements UtilCertService {
 	@Autowired
 	private Environment environment;
 	
-	public Map<Integer, String> getYearMap() {
-		Map<Integer, String> yearMap = new HashMap<>();
-		
-		yearMap.put(0, " --- Select --- ");
-		for (FinYear finYear : commonRepository.findAll(FinYear.class)) {
-			yearMap.put(finYear.getYearId(), finYear.getFinYear());
-		}
-		return yearMap;
-	}
-	
 	public Map<Integer, String> getInstallmentMap(Integer finYearId) {
 		Map<Integer, String> installmentMap = new HashMap<>();
 		Map<String, Object> params = new HashMap<String, Object>();
@@ -164,10 +154,10 @@ public class UtilCertServiceImpl implements UtilCertService {
             return 0.0;
         if (installmentNumber == 1)
             return qprPlanFunds.getQtr1Expenditure() + qprPlanFunds.getQtr2Expenditure()
-            + qprPlanFunds.getQtr1AddtionalFund() + qprPlanFunds.getQtr2AddtionalFund();
+            + qprPlanFunds.getQtr1AdditionalFund() + qprPlanFunds.getQtr2AdditionalFund();
         else
             return qprPlanFunds.getQtr3Expenditure() + qprPlanFunds.getQtr4Expenditure()
-                + qprPlanFunds.getQtr3AddtionalFund() + qprPlanFunds.getQtr4AddtionalFund();
+                + qprPlanFunds.getQtr3AdditionalFund() + qprPlanFunds.getQtr4AdditionalFund();
 
     }
 

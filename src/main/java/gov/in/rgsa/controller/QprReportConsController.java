@@ -41,7 +41,6 @@ public class QprReportConsController {
         QprReportConsModel qprReportConsModel = getBasicModel(null, null, null);
         model.addAttribute("command", qprReportConsModel);
         model.addAttribute("userPreference", userPreference);
-        System.out.println("**>>> " + userPreference.getUserName());
         return VIEW_PAGE;
     }
 
@@ -65,12 +64,13 @@ public class QprReportConsController {
 
         qprReportConsModel.setYearId(chosenYearId);
 
-        qprReportConsModel.setYearMap(getYearMap());
+        qprReportConsModel.setYearMap(commonService.getYearMap());
         qprReportConsModel.setStateMap(getStateMap(chosenYearId));
 
         if(hasState) {
+            List<QprPlanFunds> qprPlanFundsList = getWithTotal(getQprPlanFunds(chosenYearId, stateCode));
             qprReportConsModel.setStateCode(stateCode);
-            qprReportConsModel.setQprPlanFundsList(getQprPlanFunds(chosenYearId, stateCode));
+            qprReportConsModel.setQprPlanFundsList(qprPlanFundsList);
         }
 
         return qprReportConsModel;
@@ -94,14 +94,29 @@ public class QprReportConsController {
         return commonRepository.findAllByCondition(QprPlanFunds.class, conditionMap);
     }
 
-    private Map<Integer, String> getYearMap() {
-        Map<Integer, String> yearMap = new HashMap<>();
-
-        yearMap.put(0, " --- Select --- ");
-        for (FinYear finYear : commonService.findAllFinYear()) {
-            yearMap.put(finYear.getYearId(), finYear.getFinYear());
+    private List<QprPlanFunds> getWithTotal(List<QprPlanFunds> qprPlanFundsList) {
+        QprPlanFunds qprPlanFunds = new QprPlanFunds();
+        qprPlanFunds.setQtr1Expenditure(0.0);
+        qprPlanFunds.setQtr2Expenditure(0.0);
+        qprPlanFunds.setQtr3Expenditure(0.0);
+        qprPlanFunds.setQtr4Expenditure(0.0);
+        qprPlanFunds.setQtr1AdditionalFund(0.0);
+        qprPlanFunds.setQtr2AdditionalFund(0.0);
+        qprPlanFunds.setQtr3AdditionalFund(0.0);
+        qprPlanFunds.setQtr4AdditionalFund(0.0);
+        qprPlanFunds.setPlanComponentName("Total");
+        for (QprPlanFunds qprPlanFundsSingle: qprPlanFundsList){
+            qprPlanFunds.setQtr1Expenditure(qprPlanFunds.getQtr1Expenditure() + qprPlanFundsSingle.getQtr1Expenditure());
+            qprPlanFunds.setQtr2Expenditure(qprPlanFunds.getQtr2Expenditure() + qprPlanFundsSingle.getQtr2Expenditure());
+            qprPlanFunds.setQtr3Expenditure(qprPlanFunds.getQtr3Expenditure() + qprPlanFundsSingle.getQtr3Expenditure());
+            qprPlanFunds.setQtr4Expenditure(qprPlanFunds.getQtr4Expenditure() + qprPlanFundsSingle.getQtr4Expenditure());
+            qprPlanFunds.setQtr1AdditionalFund(qprPlanFunds.getQtr1AdditionalFund() + qprPlanFundsSingle.getQtr1AdditionalFund());
+            qprPlanFunds.setQtr2AdditionalFund(qprPlanFunds.getQtr2AdditionalFund() + qprPlanFundsSingle.getQtr2AdditionalFund());
+            qprPlanFunds.setQtr3AdditionalFund(qprPlanFunds.getQtr3AdditionalFund() + qprPlanFundsSingle.getQtr3AdditionalFund());
+            qprPlanFunds.setQtr4AdditionalFund(qprPlanFunds.getQtr4AdditionalFund() + qprPlanFundsSingle.getQtr4AdditionalFund());
         }
-        return yearMap;
+        qprPlanFundsList.add(qprPlanFunds);
+        return qprPlanFundsList;
     }
 
 }
