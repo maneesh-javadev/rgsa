@@ -8,6 +8,7 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
+import gov.in.rgsa.entity.State;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -22,7 +23,7 @@ import gov.in.rgsa.user.preference.UserPreference;
 public class CommonServiceImpl implements CommonService {
 
 	@Autowired
-	private CommonRepository dao;
+	private CommonRepository commonRepository;
 	
 	@Autowired
 	private UserPreference user;
@@ -33,7 +34,7 @@ public class CommonServiceImpl implements CommonService {
 		Map<String, Object> params = new HashMap<String, Object>();
 		params.put("active", true);
 
-		return dao.findAll("FIND_ALL_FIN_YEARS", params);
+		return commonRepository.findAll("FIND_ALL_FIN_YEARS", params);
 	}
 
 	@Override
@@ -42,13 +43,13 @@ public class CommonServiceImpl implements CommonService {
 		Map<String, Object> params = new HashMap<String, Object>();
 		params.put("yearId", finYearId);
 
-		return dao.find("FIND_ALL_FIN_YEAR_BY_ID", params);
+		return commonRepository.find("FIND_ALL_FIN_YEAR_BY_ID", params);
 	}
 
 	@Override
 	public FinYear findActiveFinYear() {
 
-		return dao.find("FIND_ACTIVE_FIN_YEAR", null);
+		return commonRepository.find("FIND_ACTIVE_FIN_YEAR", null);
 	}
 
 	@Override
@@ -58,7 +59,14 @@ public class CommonServiceImpl implements CommonService {
 		param.put("parentId", parentId);
 		param.put("active",true);
 
-		return dao.findAll("FIND_MENU_PARENT_ID", param);
+		return commonRepository.findAll("FIND_MENU_PARENT_ID", param);
+	}
+
+	@Override
+	public List<State> getStateListApprovedByCEC(Integer yearId) {
+		Map<String, Object> params=new HashMap<>();
+		params.put("yearId", yearId);
+		return commonRepository.findAll("CEC_APPROVED_STATE",params);
 	}
 
 	@Override
@@ -74,7 +82,7 @@ public class CommonServiceImpl implements CommonService {
 		err.printStackTrace(new PrintWriter(errors));
 		String error = errors.toString();
 		errorLog.setErrorDescription(error);
-		dao.save(errorLog);
+		commonRepository.save(errorLog);
 		return errorLog.getErrorLogId();
 	}
 

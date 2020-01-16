@@ -35,6 +35,10 @@
     {
       "name": "rgsa.view.homepage",
       "type": "java.lang.String"
+    },
+    {
+      "name": "rgsa.filepath.util_cert_generated",
+      "type": "java.lang.String"
     }
   ]
 }
