@@ -39,6 +39,10 @@
     {
       "name": "rgsa.filepath.util_cert_generated",
       "type": "java.lang.String"
+    },
+    {
+      "name": "rgsa.filepath.util_cert_upload",
+      "type": "java.lang.String"
     }
   ]
 }
