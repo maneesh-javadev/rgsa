@@ -37,9 +37,9 @@ public class CommonRepositoryImpl implements CommonRepository {
 	}
 
 	@Override
-	public <T> T update(T enity) {
+	public <T> T update(T entity) {
 
-		return entityManager.merge(enity);
+		return entityManager.merge(entity);
 	}
 
 	@Override

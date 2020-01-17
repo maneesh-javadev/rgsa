@@ -12,7 +12,7 @@ public interface CommonRepository {
 
 	public <T> void save(T entity);
 
-	public <T> T update(T enity);
+	public <T> T update(T entity);
 
 	public <T> void delete(Class<T> entity, Object id);
 

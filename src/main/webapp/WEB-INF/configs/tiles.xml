@@ -1,853 +1,859 @@
 <?xml version="1.0" encoding="ISO-8859-1" ?>
 <!DOCTYPE tiles-definitions PUBLIC
-  "-//Apache Software Foundation//DTD Tiles Configuration 3.0//EN" 
-  "http://tiles.apache.org/dtds/tiles-config_3_0.dtd">
+        "-//Apache Software Foundation//DTD Tiles Configuration 3.0//EN"
+        "http://tiles.apache.org/dtds/tiles-config_3_0.dtd">
 <tiles-definitions>
 
-	<!-- Base Definition for private page -->
-	<definition name="base.definition.admin"
-		template="/WEB-INF/jsp/layout/layout.jsp">
-		<put-attribute name="title" value="" />
-		<put-attribute name="sidebar"
-			value="/WEB-INF/jsp/layout/sidebar.jsp" />
-		<put-attribute name="header"
-			value="/WEB-INF/jsp/layout/header.jsp" />
-		<put-attribute name="body" value="" />
-	</definition>
-	
-	
-	<definition name="base.definition.public"
-		template="/WEB-INF/jsp/public/layout.jsp">
-		<put-attribute name="title" value="" />
-		<put-attribute name="footer"
-			value="/WEB-INF/jsp/public/footer.jsp" />
-		<put-attribute name="header"
-			value="/WEB-INF/jsp/public/header.jsp" />
-		<put-attribute name="body" value="" />
-	</definition>
-
-	<definition name="base.definition.withoutSidBar"
-		template="/WEB-INF/jsp/layout/layout.jsp">
-		<put-attribute name="title" value="" />
-		<put-attribute name="header"
-			value="/WEB-INF/jsp/layout/header.jsp" />
-		<put-attribute name="body" value="" />
-	</definition>
-
-	<definition name="page.fin.year"
-		extends="base.definition.admin">
-		<put-attribute name="title" value="Fin Year" />
-		<put-attribute name="body"
-			value="/WEB-INF/jsp/finYear/finYear.jsp" />
-	</definition>
-	
-	<definition name="page.public" extends="base.definition.public">
-		<put-attribute name="title" value="Home" />
-		<put-attribute name="body"
-			value="/WEB-INF/jsp/public/index.jsp" />
-	</definition>
-
-	<definition name="page.home" extends="base.definition.admin">
-		<put-attribute name="title" value="Home" />
-		<put-attribute name="body"
-			value="/WEB-INF/jsp/layout/index.jsp" />
-	</definition>
-
-	<definition name="underdevelopment"
-		extends="base.definition.admin">
-		<put-attribute name="title" value="Home" />
-		<put-attribute name="body"
-			value="/WEB-INF/jsp/others/underdevelopment.jsp" />
-	</definition>
-
-	<definition name="basicinfo.add"
-		extends="base.definition.admin">
-		<put-attribute name="title" value="Basic info" />
-		<put-attribute name="body"
-			value="/WEB-INF/jsp/basicInformation/createBasicinfoDetails.jsp" />
-	</definition>
-
-	<definition name="basicinfo.manage"
-		extends="base.definition.admin">
-		<put-attribute name="title" value="Manage Basic info" />
-		<put-attribute name="body"
-			value="/WEB-INF/jsp/basicInformation/manageBasicInfoDetails.jsp" />
-	</definition>
-
-	<definition name="addSubjectTraining"
-		extends="base.definition.admin">
-		<put-attribute name="title" value="Subject Training" />
-		<put-attribute name="body"
-			value="/WEB-INF/jsp/SubjectTraining/subjectTraining.jsp" />
-	</definition>
-
-	<definition name="subject.manage"
-		extends="base.definition.admin">
-		<put-attribute name="title" value="Manage Subject" />
-		<put-attribute name="body"
-			value="/WEB-INF/jsp/SubjectTraining/manage.jsp" />
-	</definition>
-
-	<definition name="category.manage"
-		extends="base.definition.admin">
-		<put-attribute name="title" value="Manage Subject" />
-		<put-attribute name="body"
-			value="/WEB-INF/jsp/categorySubcategory/manage.jsp" />
-	</definition>
-
-	<definition name="basicinfo.view"
-		extends="base.definition.admin">
-		<put-attribute name="title" value="Manage Basic info" />
-		<put-attribute name="body"
-			value="/WEB-INF/jsp/basicInformation/viewBasicinfoDetails.jsp" />
-	</definition>
-	<definition name="basicinfo.update"
-		extends="base.definition.admin">
-		<put-attribute name="title" value="Modify Basic info" />
-		<put-attribute name="body"
-			value="/WEB-INF/jsp/basicInformation/modifyBasicinfoDetails.jsp" />
-	</definition>
-	<definition name="categorySubcategory"
-		extends="base.definition.admin">
-		<put-attribute name="title" value="" />
-		<put-attribute name="body"
-			value="/WEB-INF/jsp/categorySubcategory/categorySubcategory.jsp" />
-	</definition>
-
-	<definition name="category.view"
-		extends="base.definition.admin">
-		<put-attribute name="title" value="VIEW " />
-		<put-attribute name="body"
-			value="/WEB-INF/jsp/categorySubcategory/viewcategory.jsp" />
-	</definition>
-
-	<definition name="category.update"
-		extends="base.definition.admin">
-		<put-attribute name="title" value="Update " />
-		<put-attribute name="body"
-			value="/WEB-INF/jsp/categorySubcategory/updatecategory.jsp" />
-	</definition>
-
-	<definition name="category.delete"
-		extends="base.definition.admin">
-		<put-attribute name="title" value="Delete " />
-		<put-attribute name="body"
-			value="/WEB-INF/jsp/categorySubcategory/deletecatagory.jsp" />
-	</definition>
-
-	<definition name="essentialCondition.add"
-		extends="base.definition.admin">
-		<put-attribute name="title"
-			value="Essential Conditions " />
-		<put-attribute name="body"
-			value="/WEB-INF/jsp/basicInformation/createEssentialConditions.jsp" />
-	</definition>
-	<definition name="subject.modify"
-		extends="base.definition.admin">
-		<put-attribute name="title" value="Modify Subject" />
-		<put-attribute name="body"
-			value="/WEB-INF/jsp/SubjectTraining/modifySubjects.jsp" />
-	</definition>
-	<definition name="adminAndStaff.status"
-		extends="base.definition.admin">
-		<put-attribute name="title"
-			value="Essential Conditions " />
-		<put-attribute name="body"
-			value="/WEB-INF/jsp/AdministrativeAndStaff/statusOfAdminTechStaff.jsp" />
-	</definition>
-	<definition name="adminAndStaff.supportStaff"
-		extends="base.definition.admin">
-		<put-attribute name="title"
-			value="Essential Conditions " />
-		<put-attribute name="body"
-			value="/WEB-INF/jsp/AdministrativeAndStaff/adminTechSupportStaff.jsp" />
-	</definition>
-
-	<definition name="adminAndStaff.supportStaffForCEC"
-		extends="base.definition.admin">
-		<put-attribute name="title"
-			value="Essential Conditions " />
-		<put-attribute name="body"
-			value="/WEB-INF/jsp/AdministrativeAndStaff/adminTechSupportStaffCEC.jsp" />
-	</definition>
-
-	<definition name="subjects.delete"
-		extends="base.definition.admin">
-		<put-attribute name="title" value="Delete Subject" />
-		<put-attribute name="body"
-			value="/WEB-INF/jsp/SubjectTraining/deleteSubject.jsp" />
-	</definition>
-
-
-	<definition name="subject.view"
-		extends="base.definition.admin">
-		<put-attribute name="title" value="View Subject" />
-		<put-attribute name="body"
-			value="/WEB-INF/jsp/SubjectTraining/viewSubjects.jsp" />
-	</definition>
-
-
-	<definition name="changePassword"
-		extends="base.definition.admin">
-		<put-attribute name="title" value="View Subject" />
-		<put-attribute name="body"
-			value="/WEB-INF/jsp/changepassword/changePassword.jsp" />
-	</definition>
-
-	<definition name="essentialCondition.manage"
-		extends="base.definition.admin">
-		<put-attribute name="title"
-			value="Manage Essential Condition" />
-		<put-attribute name="body"
-			value="/WEB-INF/jsp/basicInformation/manageEssentialCondition.jsp" />
-	</definition>
-
-
-	<definition name="addFacultyAndMaintenanceHrBudget"
-		extends="base.definition.admin">
-		<put-attribute name="title" value="Current Status " />
-		<put-attribute name="body"
-			value="/WEB-INF/jsp/AddFacultyAndMaintenance/addlFacultyAndMaintenanceHrBudget.jsp" />
-	</definition>
-
-
-	<definition name="institutionalInfraAndCarryForward"
-		extends="base.definition.admin">
-		<put-attribute name="title" value=" Carry Forward " />
-		<put-attribute name="body"
-			value="/WEB-INF/jsp/InstitutionaiInfraAndCarryForward\institutionalInfraAndCarryForward.jsp" />
-	</definition>
-
-
-	<definition name="enablePanchayat"
-		extends="base.definition.admin">
-		<put-attribute name="title" value="Enable Panchayat" />
-		<put-attribute name="body"
-			value="/WEB-INF/jsp/e-enablePanchayat/enablementOfPanchayat.jsp" />
-	</definition>
-
-	<definition name="masterTrainer"
-		extends="base.definition.admin">
-		<put-attribute name="title" value="Master Trainer" />
-		<put-attribute name="body"
-			value="/WEB-INF/jsp/NoOfMasterTrainers/MasterTrainers.jsp" />
-	</definition>
-
-	<definition name="trainingInfra"
-		extends="base.definition.admin">
-		<put-attribute name="title"
-			value="Training Infrastructure" />
-		<put-attribute name="body"
-			value="/WEB-INF/jsp/trainingInfrastructure/TrainingInfrastructure.jsp" />
-	</definition>
-
-	<definition name="CBAndTForActivity.plan"
-		extends="base.definition.admin">
-		<put-attribute name="title"
-			value="Capacity Building Activity Paln" />
-		<put-attribute name="body"
-			value="/WEB-INF/jsp/CBAndTForActivityPaln/CBAndTForActivityPaln.jsp" />
-	</definition>
-
-	<definition name="institutionalInfraActivityPlan"
-		extends="base.definition.admin">
-		<put-attribute name="title" value=" Action Plain " />
-		<put-attribute name="body"
-			value="/WEB-INF/jsp/InstitutionalInfraActivityPlan/institutionalInfraActivityPlan.jsp" />
-	</definition>
-
-	<!-- <definition name="statusCurrentUsageSat" extends="base.definition.admin"> 
-		<put-attribute name="title" value=" Action Plain " /> <put-attribute name="body" 
-		value="/WEB-INF/jsp/StatusCurrentUsageSat/statusCurrentUsageSat.jsp" /> </definition> -->
-
-	<definition name="pesaPlan" extends="base.definition.admin">
-		<put-attribute name="title" value=" Action Plain " />
-		<put-attribute name="body"
-			value="/WEB-INF/jsp/PesaPlan/pesaPlan.jsp" />
-	</definition>
-
-	<definition name="pesaPlanForCEC"
-		extends="base.definition.admin">
-		<put-attribute name="title" value=" Action Plain " />
-		<put-attribute name="body"
-			value="/WEB-INF/jsp/PesaPlan/pesaPlanForCEC.jsp" />
-	</definition>
-
-	<definition name="panchayatBhawan"
-		extends="base.definition.admin">
-		<put-attribute name="title" value="Panchayat Bhawan" />
-		<put-attribute name="body"
-			value="/WEB-INF/jsp/panchayatBhawan/panchayatBhawanActivity.jsp" />
-	</definition>
-
-	<definition name="statusOfPanchayat"
-		extends="base.definition.admin">
-		<put-attribute name="title" value="statusOfPanchayat" />
-		<put-attribute name="body"
-			value="/WEB-INF/jsp/statusOfPanchayat/StatusOfPanchayat.jsp" />
-	</definition>
-	<definition name="facilityAndMaintainancePmu"
-		extends="base.definition.admin">
-		<put-attribute name="title" value="ACTION PLAN" />
-		<put-attribute name="body"
-			value="/WEB-INF/jsp/FacilityAndMaintainancePmu/facilityAndMaintainancePmu.jsp" />
-	</definition>
-
-
-	<definition name="distanceLearningFacility"
-		extends="base.definition.admin">
-		<put-attribute name="title"
-			value="distance Learning Facility" />
-		<put-attribute name="body"
-			value="/WEB-INF/jsp/DistancelearningFacility/satcomIpBasedTech.jsp" />
-	</definition>
-
-	<definition name="eGovernanceSupportGrp"
-		extends="base.definition.admin">
-		<put-attribute name="title"
-			value="facilityAndMaintainance" />
-		<put-attribute name="body"
-			value="/WEB-INF/jsp/egovernance/egovernance.jsp" />
-	</definition>
-
-
-	<definition name="innovativeActivity"
-		extends="base.definition.admin">
-		<put-attribute name="title"
-			value="facilityAndMaintainance" />
-		<put-attribute name="body"
-			value="/WEB-INF/jsp/InnovativeActivity/innovativeActivity.jsp" />
-	</definition>
-
-	<definition name="innovativeActivityForCEC"
-		extends="base.definition.admin">
-		<put-attribute name="title"
-			value="Innovative Activity For CEC" />
-		<put-attribute name="body"
-			value="/WEB-INF/jsp/InnovativeActivity/innovativeActivityForCEC.jsp" />
-	</definition>
-
-	<definition name="viewEssentialConditions.add"
-		extends="base.definition.admin">
-		<put-attribute name="title"
-			value="View Essential Conditions " />
-		<put-attribute name="body"
-			value="/WEB-INF/jsp/basicInformation/viewEssentialConditions.jsp" />
-	</definition>
-
-	<definition name="essentialCondition.update"
-		extends="base.definition.admin">
-		<put-attribute name="title"
-			value="Modify Essential Conditions " />
-		<put-attribute name="body"
-			value="/WEB-INF/jsp/basicInformation/updateEssentialConditions.jsp" />
-	</definition>
-
-	<definition name="incomeEnhancement.add"
-		extends="base.definition.admin">
-		<put-attribute name="title"
-			value="Project Based Income Enhancement" />
-		<put-attribute name="body"
-			value="/WEB-INF/jsp/ActionPaln/incomeEnhancementDetails.jsp" />
-	</definition>
-
-
-	<definition name="facultyMaintenancePmu.status"
-		extends="base.definition.admin">
-		<put-attribute name="title"
-			value="Current Status Faculty Maintenance PMU" />
-		<put-attribute name="body"
-			value="/WEB-INF/jsp/FacilityAndMaintainancePmu/statusFacultyMaintenancePmu.jsp" />
-	</definition>
-
-
-	<definition name="egovernancesupport"
-		extends="base.definition.admin">
-		<put-attribute name="title" value="Egovernance Support" />
-		<put-attribute name="body"
-			value="/WEB-INF/jsp/eGovernanceSupport/egovernanceSupport.jsp" />
-	</definition>
-
-	<definition name="egovernanceCEC"
-		extends="base.definition.admin">
-		<put-attribute name="title"
-			value="Essential Conditions " />
-		<put-attribute name="body"
-			value="/WEB-INF/jsp/egovernance/egovernanceCEC.jsp" />
-	</definition>
-
-	<definition name="pmu" extends="base.definition.admin">
-		<put-attribute name="title" value="PMU" />
-		<put-attribute name="body"
-			value="/WEB-INF/jsp/Pmu/pmu.jsp" />
-	</definition>
-
-	<definition name="eGovernSupport"
-		extends="base.definition.admin">
-		<put-attribute name="title" value="Egovernance Support" />
-		<put-attribute name="body"
-			value="/WEB-INF/jsp/esupport/esupport.jsp" />
-	</definition>
-
-	<definition name="capacityBuilding.plan"
-		extends="base.definition.admin">
-		<put-attribute name="title"
-			value="Capacity Building Paln" />
-		<put-attribute name="body"
-			value="/WEB-INF/jsp/CBAndTForActivityPaln/capacityBuildingPlanNew.jsp" />
-	</definition>
-
-	<definition name="cbaddTrainingDetails"
-		extends="base.definition.admin">
-		<put-attribute name="title"
-			value="Capacity Building Paln" />
-		<put-attribute name="body"
-			value="/WEB-INF/jsp/CBAndTForActivityPaln/cbaddTrainingDetails.jsp" />
-	</definition>
-
-	<definition name="report.center"
-		extends="base.definition.admin">
-		<put-attribute name="title" value="Center Report" />
-		<put-attribute name="body"
-			value="/WEB-INF/jsp/centerReport/centerReport.jsp" />
-	</definition>
-
-
-
-	<definition name="capacityBuildingOne"
-		extends="base.definition.admin">
-		<put-attribute name="title"
-			value="capacity Building One" />
-		<put-attribute name="body"
-			value="/WEB-INF/jsp/capacityBuildingOne/CapacityBuildingOne.jsp" />
-	</definition>
-
-
-
-	<definition name="iec" extends="base.definition.admin">
-		<put-attribute name="title" value="iec" />
-		<put-attribute name="body"
-			value="/WEB-INF/jsp/Iec/iec.jsp" />
-	</definition>
-
-	<definition name="getExtentOfCoverage"
-		extends="base.definition.admin">
-		<put-attribute name="title" value="extent Of Coverage" />
-		<put-attribute name="body"
-			value="/WEB-INF/jsp/ExtentOfCoverage/extentOfCoverage.jsp" />
-	</definition>
-	<!-- newly added -->
-	<definition name="currentUsageSatcom"
-		extends="base.definition.admin">
-		<put-attribute name="title" value="current Usage Satcom" />
-		<put-attribute name="body"
-			value="/WEB-INF/jsp/StatusCurrentUsageSat/currentUsageSatcom.jsp" />
-	</definition>
-
-	<definition name="statusPanchayat"
-		extends="base.definition.admin">
-		<put-attribute name="title" value="status Panchayat" />
-		<put-attribute name="body"
-			value="/WEB-INF/jsp/statusPanchayatBhawan/StatusPanchayatBhawan.jsp" />
-	</definition>
-
-	<definition name="trainingNeedAssess"
-		extends="base.definition.admin">
-		<put-attribute name="title" value="training Need Assess" />
-		<put-attribute name="body"
-			value="/WEB-INF/jsp/trainingNeedAssess/TrainingNeedAssess.jsp" />
-	</definition>
-
-	<!-- newly added entry in tiles -->
-	<definition name="base.definition.withoutSidBarAndHeader"
-		template="/WEB-INF/jsp/layout/layout.jsp">
-		<put-attribute name="title" value="" />
-		<put-attribute name="body" value="" />
-	</definition>
-
-	<definition name="home"
-		extends="base.definition.withoutSidBarAndHeader">
-		<put-attribute name="title" value="Home nav bar" />
-		<put-attribute name="body"
-			value="/WEB-INF/jsp/home/Home.jsp" />
-	</definition>
-
-	<definition name="panchayatBhawanCurrStatus"
-		extends="base.definition.admin">
-		<put-attribute name="title"
-			value="Panchayat Bhawan Current Status" />
-		<put-attribute name="body"
-			value="/WEB-INF/jsp/panchayatBhawan/panchayatBhawanCurrStatus.jsp" />
-	</definition>
-
-	<definition name="planSubmittedByStates"
-		extends="base.definition.admin">
-		<put-attribute name="title"
-			value="Plan Submitted By States" />
-		<put-attribute name="body"
-			value="/WEB-INF/jsp/viewPlanDetailsMOPR/plansSubmittedByStates.jsp" />
-	</definition>
-
-	<definition name="viewPlanDetailsByStates"
-		extends="base.definition.admin">
-		<put-attribute name="title"
-			value="Plan Submitted By States" />
-		<put-attribute name="body"
-			value="/WEB-INF/jsp/viewPlanDetailsMOPR/viewPlanDetailsByStates.jsp" />
-	</definition>
-
-	<definition name="viewPlanDetailsForCEC"
-		extends="base.definition.admin">
-		<put-attribute name="title"
-			value="Plan Submitted By States" />
-		<put-attribute name="body"
-			value="/WEB-INF/jsp/viewPlanDetailsCEC/viewPlanDetailsForCEC.jsp" />
-	</definition>
-
-	<definition name="nodalOfficerDetails"
-		extends="base.definition.admin">
-		<put-attribute name="title"
-			value="Nodal Officer Details" />
-		<put-attribute name="body"
-			value="/WEB-INF/jsp/nodalOfficer/nodalOfficerDetails.jsp" />
-	</definition>
-	<definition name="approvedadminTechQuaderly"
-		extends="base.definition.admin">
-		<put-attribute name="title"
-			value="Nodal Officer Details" />
-		<put-attribute name="body"
-			value="/WEB-INF/jsp/adminQuaderly/adminTechQuaderly.jsp" />
-	</definition>
-
-	<definition name="planAllocation.add"
-		extends="base.definition.admin">
-		<put-attribute name="title" value="Plan Allocation" />
-		<put-attribute name="body"
-			value="/WEB-INF/jsp/planSubComponent/planAllocation.jsp" />
-	</definition>
-
-	<definition name="approvedTrainingReport" extends="base.definition.admin">
-		<put-attribute name="title"	value="Quarterly Progress Report" />
-		<put-attribute name="body" value="/WEB-INF/jsp/progressReport/trainingProgressReport.jsp" />
-	</definition>
-
-	<definition name="pesaPlanQuaterly"
-		extends="base.definition.admin">
-		<put-attribute name="title"
-			value="Nodal Officer Details" />
-		<put-attribute name="body"
-			value="/WEB-INF/jsp/pesaPlanQuarterly/pesaPlanQuarterly.jsp" />
-	</definition>
-	<definition name="eGovtQuaderly"
-		extends="base.definition.admin">
-		<put-attribute name="title"
-			value="Nodal Officer Details" />
-		<put-attribute name="body"
-			value="/WEB-INF/jsp/eGovtQuaderly/eGovtQuaderly.jsp" />
-	</definition>
-	<definition name="approveEnablementQuaterly"
-		extends="base.definition.admin">
-		<put-attribute name="title"
-			value="Nodal Officer Details" />
-		<put-attribute name="body"
-			value="/WEB-INF/jsp/enablementQuaterly/enablementQuaterly.jsp" />
-	</definition>
-	<definition name="gramPanchayatProgressReport"
-		extends="base.definition.admin">
-		<put-attribute name="title"
-			value="Gram Panchayat Progress Report Details" />
-		<put-attribute name="body"
-			value="/WEB-INF/jsp/progressReport/gramPanchayatProgressReport.jsp" />
-	</definition>
-
-	<definition name="approvedIecQtrProgressReport"
-		extends="base.definition.admin">
-		<put-attribute name="title"
-			value="Quarterly Progress Report" />
-		<put-attribute name="body"
-			value="/WEB-INF/jsp/progressReport/iecQtrProgressReport.jsp" />
-	</definition>
-	<definition name="approvePmuQuaterly"
-		extends="base.definition.admin">
-		<put-attribute name="title"
-			value="Essential Conditions " />
-		<put-attribute name="body"
-			value="/WEB-INF/jsp/progressReport/pmuQuaterly.jsp" />
-	</definition>
-	<definition name="panchayatBhawanQuaterlyReport"
-		extends="base.definition.admin">
-		<put-attribute name="title"
-			value="Quarterly Progress Report" />
-		<put-attribute name="body"
-			value="/WEB-INF/jsp/progressReport/panchayatBhawanQuaterlyReport.jsp" />
-	</definition>
-	<definition name="adminAndFinancialDataCell"
-		extends="base.definition.admin">
-		<put-attribute name="title"
-			value="Admin And Financial DataCell" />
-		<put-attribute name="body"
-			value="/WEB-INF/jsp/AdminAndFinancialDataCell/adminAndFinancialDataCell.jsp" />
-	</definition>
-	<definition name="institutionalInfraQuaterlyReport"
-		extends="base.definition.admin">
-		<put-attribute name="title"
-			value="institutional Infra Quaterly Report" />
-		<put-attribute name="body"
-			value="/WEB-INF/jsp/progressReport/institutionalInfraQuaterlyReportNew.jsp" />
-	</definition>
-	<definition name="incomeEnhancementQuaterly" extends="base.definition.admin">
-		<put-attribute name="title" value="Essential Conditions " />
-		<put-attribute name="body" 	value="/WEB-INF/jsp/progressReport/incomeEnhancementQuaterly.jsp" />
-	</definition>
-
-	<definition name="approvedCurrentUsageSatcomQuaterly"
-		extends="base.definition.admin">
-		<put-attribute name="title"
-			value="Essential Conditions " />
-		<put-attribute name="body"
-			value="/WEB-INF/jsp/progressReport/currentUsageSatcomQuaterly.jsp" />
-	</definition>
-	
-	<definition name="finalizeWorkLocation"
-		extends="base.definition.admin">
-		<put-attribute name="title" value="Panchayat Bhawan" />
-		<put-attribute name="body"
-			value="/WEB-INF/jsp/panchayatBhawan/finalizeWorkLocation.jsp" />
-	</definition>
-	<definition name="ApprovePlanByCec"
-		extends="base.definition.admin">
-		<put-attribute name="title" value="Panchayat Bhawan" />
-		<put-attribute name="body"
-			value="/WEB-INF/jsp/viewPlanDetailsCEC/viewPlanDetailsForCEC.jsp" />
-	</definition>
-	
-	<definition name="cbActivityGPs"
-		extends="base.definition.admin">
-		<put-attribute name="title" value="fdgfdgdgdgdfgd" />
-		<put-attribute name="body"
-			value="/WEB-INF/jsp/capacityBuildingOne/capacityBuildingGPs.jsp" />
-	</definition>
-	
-		<definition name="enablePanchayatGPs" extends="base.definition.admin">
-		<put-attribute name="title" value="Enable Panchayat" />
-		<put-attribute name="body"	value="/WEB-INF/jsp/e-enablePanchayat/enablementOfPanchayatGPs.jsp" />
-	</definition>
-	
-	<definition name="sanctionOrder"
-		extends="base.definition.admin">
-		<put-attribute name="title" value="Sanction Order" />
-		<put-attribute name="body" value="/WEB-INF/jsp/MOPR/SanctionOrder.jsp" />
-	</definition>
-	
-	<definition name="approvedAdditionalfacultyProgress"
-		extends="base.definition.admin">
-		<put-attribute name="title" value="Sanction Order" />
-		<put-attribute name="body" value="/WEB-INF/jsp/progressReport/additionalfacultyProgress.jsp" />
-	</definition>
-	<definition name="qprCapacityBuilding" extends="base.definition.admin">
-		<put-attribute name="title" value="Qpr Capacity Building" />
-		<put-attribute name="body" value="/WEB-INF/jsp/progressReport/qprCapacityBuilding.jsp" />
-	</definition>
-	
-	<definition name="uploadImage" extends="base.definition.admin">
-		<put-attribute name="title" value="Upload File" />
-		<put-attribute name="body" value="/WEB-INF/jsp/fileUpload/uploadImage.jsp" />
-	</definition>
-	
-	<definition name="CMS.add" extends="base.definition.admin">
-		<put-attribute name="title" value="Add CMS" />
-		<put-attribute name="body" value="/WEB-INF/jsp/Cms/addCms.jsp" />
-	</definition>
-	
-	<definition name="CMS.manage" extends="base.definition.admin">
-		<put-attribute name="title" value="Add CMS" />
-		<put-attribute name="body" value="/WEB-INF/jsp/Cms/manageCms.jsp" />
-	</definition>
-
-	<definition name="CMS.modify" extends="base.definition.admin">
-		<put-attribute name="title" value="Add CMS" />
-		<put-attribute name="body" value="/WEB-INF/jsp/Cms/modifyCms.jsp" />
-	</definition>
-	 
-	<definition name="document.downloadUserWise" extends="base.definition.public">
-		<put-attribute name="title" value="Download File" />
-		<put-attribute name="body" value="/WEB-INF/jsp/document/downloadFileUserWise.jsp" />
-	</definition>
-	
-	<definition name="aboutRGSA" extends="base.definition.public">
-		<put-attribute name="title" value="About Rgsa" />
-		<put-attribute name="body" value="/WEB-INF/jsp/rgsaDoc/aboutRGSA.jsp" />
-	</definition>
-	
-	<definition name="aboutGPDP" extends="base.definition.public">
-		<put-attribute name="title" value="About GPDP" />
-		<put-attribute name="body" value="/WEB-INF/jsp/rgsaDoc/aboutGPDP.jsp" />
-	</definition>
-	
-	
-	<!-- <definition name="document.download" extends="base.definition.public">
-		<put-attribute name="title" value="Download Files" />
-		<put-attribute name="body" value="/WEB-INF/jsp/document/downloadFile.jsp" />
-	</definition> -->
-<definition name="approvedInnovativeActivityQpr"
-		extends="base.definition.admin">
-		<put-attribute name="title"
-			value="Quarterly Progress Report" />
-		<put-attribute name="body"
-			value="/WEB-INF/jsp/progressReport/innovativeActivityQprReport.jsp" />
-	</definition>
-	
-	<definition name="approvedadminDataFinQuaterlyGet"
-		extends="base.definition.admin">
-		<put-attribute name="title"
-			value="Quarterly Progress Report" />
-		<put-attribute name="body"
-			value="/WEB-INF/jsp/progressReport/adminDataFinQuaterly.jsp" />
-	</definition>
-	<!-- 
-	<definition name="errorBaseException" extends="base.definition.public">
-		<put-attribute name="title" value="RGSA" />
-		<put-attribute name="body" value="/WEB-INF/jsp/exception/baseException.jsp" />
-	</definition> -->
-	<!-- added by aashish barua related   -->
-	<definition name="enablementCEC" extends="base.definition.admin">
-		<put-attribute name="title" value="About Enablement CEC" />
-		<put-attribute name="body" value="/WEB-INF/jsp/e-enablePanchayat/enablementOfPanchayatCEC.jsp" />
-	</definition>
-	
-	<definition name="adminAndFinancialDataCellForCec" extends="base.definition.admin">
-		<put-attribute name="title" value="About ADMIN AND FINANCIAL DATA CELL FOR CEC" />
-		<put-attribute name="body" value="/WEB-INF/jsp/AdminAndFinancialDataCell/adminAndFinancialDataCellForCec.jsp" />
-	</definition>
-	
-		
-		<definition name="addFacultyAndMaintenanceHrBudgetCEC" extends="base.definition.admin">
-	<put-attribute name="title" value="About Additional Faculty And Maintenance Hr Budget CEC" />
-	<put-attribute name="body"
-		value="/WEB-INF/jsp/AddFacultyAndMaintenance/addFacultyAndMaintenanceCEC.jsp" />
-</definition>
-
-<definition name="iecCEC" extends="base.definition.admin">
-	<put-attribute name="title" value="About Additional Faculty And Maintenance Hr Budget CEC" />
-	<put-attribute name="body"
-		value="/WEB-INF/jsp/Iec/iecCEC.jsp" />
-</definition>
-
-<definition name="pmuCEC"
-	extends="base.definition.admin">
-	<put-attribute name="title"
-		value="About P.M.U CEC" />
-	<put-attribute name="body"
-		value="/WEB-INF/jsp/Pmu/pmuCEC.jsp" />
-</definition>
-
-<definition name="panchayatBhawanCec" extends="base.definition.admin">
-	<put-attribute name="title" value="Panchayat Bhawan CEC" />
-	<put-attribute name="body"
-		value="/WEB-INF/jsp/panchayatBhawan/PanchayatBhawanCECjsp.jsp" />
-</definition>
-
-<definition name="capacityBuildingCec" extends="base.definition.admin">
-	<put-attribute name="title" value="Training Activity CEC" />
-	<put-attribute name="body"
-		value="/WEB-INF/jsp/capacityBuildingOne/trainingActivityCec.jsp" />
-</definition>
-
-<definition name="capacityBuilding.planCEC" extends="base.definition.admin">
-	<put-attribute name="title" value="Training Activities CEC" />
-	<put-attribute name="body"
-		value="/WEB-INF/jsp/CBAndTForActivityPaln/capacityBuildingPlanNewCEC.jsp" />
-</definition>
-
-<definition name="institutionalInfraActivityPlanCec" extends="base.definition.admin">
-	<put-attribute name="title" value="institutional Infra CEC" />
-	<put-attribute name="body"
-		value="/WEB-INF/jsp/InstitutionalInfraActivityPlan/institutionalInfraActivityCEC.jsp" />
-</definition>
-
-<definition name="adminTechSupportStaffCEC" extends="base.definition.admin">
-	<put-attribute name="title" value="admin Tech Support Staff CEC" />
-	<put-attribute name="body"
-		value="/WEB-INF/jsp/AdministrativeAndStaff/adminTechSupportStaffCEC.jsp" />
-</definition>
-
-<definition name="incomeEnhancementCec" extends="base.definition.admin">
-	<put-attribute name="title" value="income Enhancement Cec" />
-	<put-attribute name="body"
-		value="/WEB-INF/jsp/ActionPaln/incomeEnhancementCec.jsp" />
-</definition>
-
-<definition name="noFundAlloctedJsp" extends="base.definition.admin">
-	<put-attribute name="title" value="no Fund Allocted Jsp" />
-	<put-attribute name="body"
-		value="/WEB-INF/jsp/error/qprNoFundAllocated.jsp" />
-</definition>
-
-<definition name="capacityBuilding.plan.mopr"
-		extends="base.definition.admin">
-		<put-attribute name="title"
-			value="Capacity Building Plan MOPR" />
-		<put-attribute name="body"
-			value="/WEB-INF/jsp/CBAndTForActivityPaln/capacityBuildingPlanNewMOPR.jsp" />
-</definition>
-
-
-<definition name="UtilizationCertificatePage" extends="base.definition.admin">
-	<put-attribute name="title" value="Utilization Certificate" />
-	<put-attribute name="body"
-		value="/WEB-INF/jsp/UtilizationCertificate/uchome.jsp" />
-</definition>
-
-<definition name="UtilizationCertificateTmpl" template="/WEB-INF/jsp/UtilizationCertificate/template.jsp"></definition>
-
-<definition name="institutionalInfraActivityPlanMopr" extends="base.definition.admin">
-	<put-attribute name="title" value="institutional Infra CEC" />
-	<put-attribute name="body"
-		value="/WEB-INF/jsp/InstitutionalInfraActivityPlan/institutionalInfraActivityPlanMopr.jsp" />
-</definition>
-
-<definition name="trainingDetailsProgressReport"
-		extends="base.definition.admin">
-		<put-attribute name="title"
-			value="Training Details Progress Quaterly Report" />
-		<put-attribute name="body"
-			value="/WEB-INF/jsp/progressReport/trainingDetailsProgressReport.jsp" />
-</definition>
-
-     <definition name="viewreportmopr" extends="base.definition.admin">
-		<put-attribute name="title" value="View Report Mopr" />
-		<put-attribute name="body" value="/WEB-INF/jsp/viewMoprReport/viewMoprReport.jsp" />
-		</definition>
-<definition name="hundredDayTrainingDetail" extends="base.definition.admin">
-	<put-attribute name="title" value="hundred Day Training Detail" />
-	<put-attribute name="body"
-		value="/WEB-INF/jsp/hundredDayTrainingDetails/hundredDayTrainingDetailsNew.jsp" />
-</definition>
-
-<definition name="newHundredDayTrainingDetails" extends="base.definition.admin">
-	<put-attribute name="title" value="hundred Day Training Detail" />
-	<put-attribute name="body"
-		value="/WEB-INF/jsp/hundredDayTrainingDetails/hundredDaysTrainingNewFormNo5.jsp" />
-</definition>  
-	
-<definition name="errorPage" extends="base.definition.withoutSidBar">
-	<put-attribute name="title" value="error Page" />
-	<put-attribute name="body"
-		value="/WEB-INF/jsp/error/500.jsp" />
-</definition>
-
-<definition name="fundReleased" extends="base.definition.admin">
-	<put-attribute name="title" value="fund Sanction Version 2" />
-	<put-attribute name="body"
-		value="/WEB-INF/jsp/fundReleased/fundReleased.jsp" />
-</definition> 
-
-
-<definition name="senctionOrderForm" extends="base.definition.admin">
-	<put-attribute name="title" value="fund Sanction Version 2" />
-	<put-attribute name="body"
-		value="/WEB-INF/jsp/MOPR/senctionOrderForm.jsp" />
-</definition> 
+    <!-- Base Definition for private page -->
+    <definition name="base.definition.admin"
+                template="/WEB-INF/jsp/layout/layout.jsp">
+        <put-attribute name="title" value=""/>
+        <put-attribute name="sidebar"
+                       value="/WEB-INF/jsp/layout/sidebar.jsp"/>
+        <put-attribute name="header"
+                       value="/WEB-INF/jsp/layout/header.jsp"/>
+        <put-attribute name="body" value=""/>
+    </definition>
+
+
+    <definition name="base.definition.public"
+                template="/WEB-INF/jsp/public/layout.jsp">
+        <put-attribute name="title" value=""/>
+        <put-attribute name="footer"
+                       value="/WEB-INF/jsp/public/footer.jsp"/>
+        <put-attribute name="header"
+                       value="/WEB-INF/jsp/public/header.jsp"/>
+        <put-attribute name="body" value=""/>
+    </definition>
+
+    <definition name="base.definition.withoutSidBar"
+                template="/WEB-INF/jsp/layout/layout.jsp">
+        <put-attribute name="title" value=""/>
+        <put-attribute name="header"
+                       value="/WEB-INF/jsp/layout/header.jsp"/>
+        <put-attribute name="body" value=""/>
+    </definition>
+
+    <definition name="page.fin.year"
+                extends="base.definition.admin">
+        <put-attribute name="title" value="Fin Year"/>
+        <put-attribute name="body"
+                       value="/WEB-INF/jsp/finYear/finYear.jsp"/>
+    </definition>
+
+    <definition name="page.public" extends="base.definition.public">
+        <put-attribute name="title" value="Home"/>
+        <put-attribute name="body"
+                       value="/WEB-INF/jsp/public/index.jsp"/>
+    </definition>
+
+    <definition name="page.home" extends="base.definition.admin">
+        <put-attribute name="title" value="Home"/>
+        <put-attribute name="body"
+                       value="/WEB-INF/jsp/layout/index.jsp"/>
+    </definition>
+
+    <definition name="underdevelopment"
+                extends="base.definition.admin">
+        <put-attribute name="title" value="Home"/>
+        <put-attribute name="body"
+                       value="/WEB-INF/jsp/others/underdevelopment.jsp"/>
+    </definition>
+
+    <definition name="basicinfo.add"
+                extends="base.definition.admin">
+        <put-attribute name="title" value="Basic info"/>
+        <put-attribute name="body"
+                       value="/WEB-INF/jsp/basicInformation/createBasicinfoDetails.jsp"/>
+    </definition>
+
+    <definition name="basicinfo.manage"
+                extends="base.definition.admin">
+        <put-attribute name="title" value="Manage Basic info"/>
+        <put-attribute name="body"
+                       value="/WEB-INF/jsp/basicInformation/manageBasicInfoDetails.jsp"/>
+    </definition>
+
+    <definition name="addSubjectTraining"
+                extends="base.definition.admin">
+        <put-attribute name="title" value="Subject Training"/>
+        <put-attribute name="body"
+                       value="/WEB-INF/jsp/SubjectTraining/subjectTraining.jsp"/>
+    </definition>
+
+    <definition name="subject.manage"
+                extends="base.definition.admin">
+        <put-attribute name="title" value="Manage Subject"/>
+        <put-attribute name="body"
+                       value="/WEB-INF/jsp/SubjectTraining/manage.jsp"/>
+    </definition>
+
+    <definition name="category.manage"
+                extends="base.definition.admin">
+        <put-attribute name="title" value="Manage Subject"/>
+        <put-attribute name="body"
+                       value="/WEB-INF/jsp/categorySubcategory/manage.jsp"/>
+    </definition>
+
+    <definition name="basicinfo.view"
+                extends="base.definition.admin">
+        <put-attribute name="title" value="Manage Basic info"/>
+        <put-attribute name="body"
+                       value="/WEB-INF/jsp/basicInformation/viewBasicinfoDetails.jsp"/>
+    </definition>
+    <definition name="basicinfo.update"
+                extends="base.definition.admin">
+        <put-attribute name="title" value="Modify Basic info"/>
+        <put-attribute name="body"
+                       value="/WEB-INF/jsp/basicInformation/modifyBasicinfoDetails.jsp"/>
+    </definition>
+    <definition name="categorySubcategory"
+                extends="base.definition.admin">
+        <put-attribute name="title" value=""/>
+        <put-attribute name="body"
+                       value="/WEB-INF/jsp/categorySubcategory/categorySubcategory.jsp"/>
+    </definition>
+
+    <definition name="category.view"
+                extends="base.definition.admin">
+        <put-attribute name="title" value="VIEW "/>
+        <put-attribute name="body"
+                       value="/WEB-INF/jsp/categorySubcategory/viewcategory.jsp"/>
+    </definition>
+
+    <definition name="category.update"
+                extends="base.definition.admin">
+        <put-attribute name="title" value="Update "/>
+        <put-attribute name="body"
+                       value="/WEB-INF/jsp/categorySubcategory/updatecategory.jsp"/>
+    </definition>
+
+    <definition name="category.delete"
+                extends="base.definition.admin">
+        <put-attribute name="title" value="Delete "/>
+        <put-attribute name="body"
+                       value="/WEB-INF/jsp/categorySubcategory/deletecatagory.jsp"/>
+    </definition>
+
+    <definition name="essentialCondition.add"
+                extends="base.definition.admin">
+        <put-attribute name="title"
+                       value="Essential Conditions "/>
+        <put-attribute name="body"
+                       value="/WEB-INF/jsp/basicInformation/createEssentialConditions.jsp"/>
+    </definition>
+    <definition name="subject.modify"
+                extends="base.definition.admin">
+        <put-attribute name="title" value="Modify Subject"/>
+        <put-attribute name="body"
+                       value="/WEB-INF/jsp/SubjectTraining/modifySubjects.jsp"/>
+    </definition>
+    <definition name="adminAndStaff.status"
+                extends="base.definition.admin">
+        <put-attribute name="title"
+                       value="Essential Conditions "/>
+        <put-attribute name="body"
+                       value="/WEB-INF/jsp/AdministrativeAndStaff/statusOfAdminTechStaff.jsp"/>
+    </definition>
+    <definition name="adminAndStaff.supportStaff"
+                extends="base.definition.admin">
+        <put-attribute name="title"
+                       value="Essential Conditions "/>
+        <put-attribute name="body"
+                       value="/WEB-INF/jsp/AdministrativeAndStaff/adminTechSupportStaff.jsp"/>
+    </definition>
+
+    <definition name="adminAndStaff.supportStaffForCEC"
+                extends="base.definition.admin">
+        <put-attribute name="title"
+                       value="Essential Conditions "/>
+        <put-attribute name="body"
+                       value="/WEB-INF/jsp/AdministrativeAndStaff/adminTechSupportStaffCEC.jsp"/>
+    </definition>
+
+    <definition name="subjects.delete"
+                extends="base.definition.admin">
+        <put-attribute name="title" value="Delete Subject"/>
+        <put-attribute name="body"
+                       value="/WEB-INF/jsp/SubjectTraining/deleteSubject.jsp"/>
+    </definition>
+
+
+    <definition name="subject.view"
+                extends="base.definition.admin">
+        <put-attribute name="title" value="View Subject"/>
+        <put-attribute name="body"
+                       value="/WEB-INF/jsp/SubjectTraining/viewSubjects.jsp"/>
+    </definition>
+
+
+    <definition name="changePassword"
+                extends="base.definition.admin">
+        <put-attribute name="title" value="View Subject"/>
+        <put-attribute name="body"
+                       value="/WEB-INF/jsp/changepassword/changePassword.jsp"/>
+    </definition>
+
+    <definition name="essentialCondition.manage"
+                extends="base.definition.admin">
+        <put-attribute name="title"
+                       value="Manage Essential Condition"/>
+        <put-attribute name="body"
+                       value="/WEB-INF/jsp/basicInformation/manageEssentialCondition.jsp"/>
+    </definition>
+
+
+    <definition name="addFacultyAndMaintenanceHrBudget"
+                extends="base.definition.admin">
+        <put-attribute name="title" value="Current Status "/>
+        <put-attribute name="body"
+                       value="/WEB-INF/jsp/AddFacultyAndMaintenance/addlFacultyAndMaintenanceHrBudget.jsp"/>
+    </definition>
+
+
+    <definition name="institutionalInfraAndCarryForward"
+                extends="base.definition.admin">
+        <put-attribute name="title" value=" Carry Forward "/>
+        <put-attribute name="body"
+                       value="/WEB-INF/jsp/InstitutionaiInfraAndCarryForward\institutionalInfraAndCarryForward.jsp"/>
+    </definition>
+
+
+    <definition name="enablePanchayat"
+                extends="base.definition.admin">
+        <put-attribute name="title" value="Enable Panchayat"/>
+        <put-attribute name="body"
+                       value="/WEB-INF/jsp/e-enablePanchayat/enablementOfPanchayat.jsp"/>
+    </definition>
+
+    <definition name="masterTrainer"
+                extends="base.definition.admin">
+        <put-attribute name="title" value="Master Trainer"/>
+        <put-attribute name="body"
+                       value="/WEB-INF/jsp/NoOfMasterTrainers/MasterTrainers.jsp"/>
+    </definition>
+
+    <definition name="trainingInfra"
+                extends="base.definition.admin">
+        <put-attribute name="title"
+                       value="Training Infrastructure"/>
+        <put-attribute name="body"
+                       value="/WEB-INF/jsp/trainingInfrastructure/TrainingInfrastructure.jsp"/>
+    </definition>
+
+    <definition name="CBAndTForActivity.plan"
+                extends="base.definition.admin">
+        <put-attribute name="title"
+                       value="Capacity Building Activity Paln"/>
+        <put-attribute name="body"
+                       value="/WEB-INF/jsp/CBAndTForActivityPaln/CBAndTForActivityPaln.jsp"/>
+    </definition>
+
+    <definition name="institutionalInfraActivityPlan"
+                extends="base.definition.admin">
+        <put-attribute name="title" value=" Action Plain "/>
+        <put-attribute name="body"
+                       value="/WEB-INF/jsp/InstitutionalInfraActivityPlan/institutionalInfraActivityPlan.jsp"/>
+    </definition>
+
+    <!-- <definition name="statusCurrentUsageSat" extends="base.definition.admin">
+        <put-attribute name="title" value=" Action Plain " /> <put-attribute name="body"
+        value="/WEB-INF/jsp/StatusCurrentUsageSat/statusCurrentUsageSat.jsp" /> </definition> -->
+
+    <definition name="pesaPlan" extends="base.definition.admin">
+        <put-attribute name="title" value=" Action Plain "/>
+        <put-attribute name="body"
+                       value="/WEB-INF/jsp/PesaPlan/pesaPlan.jsp"/>
+    </definition>
+
+    <definition name="pesaPlanForCEC"
+                extends="base.definition.admin">
+        <put-attribute name="title" value=" Action Plain "/>
+        <put-attribute name="body"
+                       value="/WEB-INF/jsp/PesaPlan/pesaPlanForCEC.jsp"/>
+    </definition>
+
+    <definition name="panchayatBhawan"
+                extends="base.definition.admin">
+        <put-attribute name="title" value="Panchayat Bhawan"/>
+        <put-attribute name="body"
+                       value="/WEB-INF/jsp/panchayatBhawan/panchayatBhawanActivity.jsp"/>
+    </definition>
+
+    <definition name="statusOfPanchayat"
+                extends="base.definition.admin">
+        <put-attribute name="title" value="statusOfPanchayat"/>
+        <put-attribute name="body"
+                       value="/WEB-INF/jsp/statusOfPanchayat/StatusOfPanchayat.jsp"/>
+    </definition>
+    <definition name="facilityAndMaintainancePmu"
+                extends="base.definition.admin">
+        <put-attribute name="title" value="ACTION PLAN"/>
+        <put-attribute name="body"
+                       value="/WEB-INF/jsp/FacilityAndMaintainancePmu/facilityAndMaintainancePmu.jsp"/>
+    </definition>
+
+
+    <definition name="distanceLearningFacility"
+                extends="base.definition.admin">
+        <put-attribute name="title"
+                       value="distance Learning Facility"/>
+        <put-attribute name="body"
+                       value="/WEB-INF/jsp/DistancelearningFacility/satcomIpBasedTech.jsp"/>
+    </definition>
+
+    <definition name="eGovernanceSupportGrp"
+                extends="base.definition.admin">
+        <put-attribute name="title"
+                       value="facilityAndMaintainance"/>
+        <put-attribute name="body"
+                       value="/WEB-INF/jsp/egovernance/egovernance.jsp"/>
+    </definition>
+
+
+    <definition name="innovativeActivity"
+                extends="base.definition.admin">
+        <put-attribute name="title"
+                       value="facilityAndMaintainance"/>
+        <put-attribute name="body"
+                       value="/WEB-INF/jsp/InnovativeActivity/innovativeActivity.jsp"/>
+    </definition>
+
+    <definition name="innovativeActivityForCEC"
+                extends="base.definition.admin">
+        <put-attribute name="title"
+                       value="Innovative Activity For CEC"/>
+        <put-attribute name="body"
+                       value="/WEB-INF/jsp/InnovativeActivity/innovativeActivityForCEC.jsp"/>
+    </definition>
+
+    <definition name="viewEssentialConditions.add"
+                extends="base.definition.admin">
+        <put-attribute name="title"
+                       value="View Essential Conditions "/>
+        <put-attribute name="body"
+                       value="/WEB-INF/jsp/basicInformation/viewEssentialConditions.jsp"/>
+    </definition>
+
+    <definition name="essentialCondition.update"
+                extends="base.definition.admin">
+        <put-attribute name="title"
+                       value="Modify Essential Conditions "/>
+        <put-attribute name="body"
+                       value="/WEB-INF/jsp/basicInformation/updateEssentialConditions.jsp"/>
+    </definition>
+
+    <definition name="incomeEnhancement.add"
+                extends="base.definition.admin">
+        <put-attribute name="title"
+                       value="Project Based Income Enhancement"/>
+        <put-attribute name="body"
+                       value="/WEB-INF/jsp/ActionPaln/incomeEnhancementDetails.jsp"/>
+    </definition>
+
+
+    <definition name="facultyMaintenancePmu.status"
+                extends="base.definition.admin">
+        <put-attribute name="title"
+                       value="Current Status Faculty Maintenance PMU"/>
+        <put-attribute name="body"
+                       value="/WEB-INF/jsp/FacilityAndMaintainancePmu/statusFacultyMaintenancePmu.jsp"/>
+    </definition>
+
+
+    <definition name="egovernancesupport"
+                extends="base.definition.admin">
+        <put-attribute name="title" value="Egovernance Support"/>
+        <put-attribute name="body"
+                       value="/WEB-INF/jsp/eGovernanceSupport/egovernanceSupport.jsp"/>
+    </definition>
+
+    <definition name="egovernanceCEC"
+                extends="base.definition.admin">
+        <put-attribute name="title"
+                       value="Essential Conditions "/>
+        <put-attribute name="body"
+                       value="/WEB-INF/jsp/egovernance/egovernanceCEC.jsp"/>
+    </definition>
+
+    <definition name="pmu" extends="base.definition.admin">
+        <put-attribute name="title" value="PMU"/>
+        <put-attribute name="body"
+                       value="/WEB-INF/jsp/Pmu/pmu.jsp"/>
+    </definition>
+
+    <definition name="eGovernSupport"
+                extends="base.definition.admin">
+        <put-attribute name="title" value="Egovernance Support"/>
+        <put-attribute name="body"
+                       value="/WEB-INF/jsp/esupport/esupport.jsp"/>
+    </definition>
+
+    <definition name="capacityBuilding.plan"
+                extends="base.definition.admin">
+        <put-attribute name="title"
+                       value="Capacity Building Paln"/>
+        <put-attribute name="body"
+                       value="/WEB-INF/jsp/CBAndTForActivityPaln/capacityBuildingPlanNew.jsp"/>
+    </definition>
+
+    <definition name="cbaddTrainingDetails"
+                extends="base.definition.admin">
+        <put-attribute name="title"
+                       value="Capacity Building Paln"/>
+        <put-attribute name="body"
+                       value="/WEB-INF/jsp/CBAndTForActivityPaln/cbaddTrainingDetails.jsp"/>
+    </definition>
+
+    <definition name="report.center"
+                extends="base.definition.admin">
+        <put-attribute name="title" value="Center Report"/>
+        <put-attribute name="body"
+                       value="/WEB-INF/jsp/centerReport/centerReport.jsp"/>
+    </definition>
+
+
+    <definition name="capacityBuildingOne"
+                extends="base.definition.admin">
+        <put-attribute name="title"
+                       value="capacity Building One"/>
+        <put-attribute name="body"
+                       value="/WEB-INF/jsp/capacityBuildingOne/CapacityBuildingOne.jsp"/>
+    </definition>
+
+
+    <definition name="iec" extends="base.definition.admin">
+        <put-attribute name="title" value="iec"/>
+        <put-attribute name="body"
+                       value="/WEB-INF/jsp/Iec/iec.jsp"/>
+    </definition>
+
+    <definition name="getExtentOfCoverage"
+                extends="base.definition.admin">
+        <put-attribute name="title" value="extent Of Coverage"/>
+        <put-attribute name="body"
+                       value="/WEB-INF/jsp/ExtentOfCoverage/extentOfCoverage.jsp"/>
+    </definition>
+    <!-- newly added -->
+    <definition name="currentUsageSatcom"
+                extends="base.definition.admin">
+        <put-attribute name="title" value="current Usage Satcom"/>
+        <put-attribute name="body"
+                       value="/WEB-INF/jsp/StatusCurrentUsageSat/currentUsageSatcom.jsp"/>
+    </definition>
+
+    <definition name="statusPanchayat"
+                extends="base.definition.admin">
+        <put-attribute name="title" value="status Panchayat"/>
+        <put-attribute name="body"
+                       value="/WEB-INF/jsp/statusPanchayatBhawan/StatusPanchayatBhawan.jsp"/>
+    </definition>
+
+    <definition name="trainingNeedAssess"
+                extends="base.definition.admin">
+        <put-attribute name="title" value="training Need Assess"/>
+        <put-attribute name="body"
+                       value="/WEB-INF/jsp/trainingNeedAssess/TrainingNeedAssess.jsp"/>
+    </definition>
+
+    <!-- newly added entry in tiles -->
+    <definition name="base.definition.withoutSidBarAndHeader"
+                template="/WEB-INF/jsp/layout/layout.jsp">
+        <put-attribute name="title" value=""/>
+        <put-attribute name="body" value=""/>
+    </definition>
+
+    <definition name="home"
+                extends="base.definition.withoutSidBarAndHeader">
+        <put-attribute name="title" value="Home nav bar"/>
+        <put-attribute name="body"
+                       value="/WEB-INF/jsp/home/Home.jsp"/>
+    </definition>
+
+    <definition name="panchayatBhawanCurrStatus"
+                extends="base.definition.admin">
+        <put-attribute name="title"
+                       value="Panchayat Bhawan Current Status"/>
+        <put-attribute name="body"
+                       value="/WEB-INF/jsp/panchayatBhawan/panchayatBhawanCurrStatus.jsp"/>
+    </definition>
+
+    <definition name="planSubmittedByStates"
+                extends="base.definition.admin">
+        <put-attribute name="title"
+                       value="Plan Submitted By States"/>
+        <put-attribute name="body"
+                       value="/WEB-INF/jsp/viewPlanDetailsMOPR/plansSubmittedByStates.jsp"/>
+    </definition>
+
+    <definition name="viewPlanDetailsByStates"
+                extends="base.definition.admin">
+        <put-attribute name="title"
+                       value="Plan Submitted By States"/>
+        <put-attribute name="body"
+                       value="/WEB-INF/jsp/viewPlanDetailsMOPR/viewPlanDetailsByStates.jsp"/>
+    </definition>
+
+    <definition name="viewPlanDetailsForCEC"
+                extends="base.definition.admin">
+        <put-attribute name="title"
+                       value="Plan Submitted By States"/>
+        <put-attribute name="body"
+                       value="/WEB-INF/jsp/viewPlanDetailsCEC/viewPlanDetailsForCEC.jsp"/>
+    </definition>
+
+    <definition name="nodalOfficerDetails"
+                extends="base.definition.admin">
+        <put-attribute name="title"
+                       value="Nodal Officer Details"/>
+        <put-attribute name="body"
+                       value="/WEB-INF/jsp/nodalOfficer/nodalOfficerDetails.jsp"/>
+    </definition>
+    <definition name="approvedadminTechQuaderly"
+                extends="base.definition.admin">
+        <put-attribute name="title"
+                       value="Nodal Officer Details"/>
+        <put-attribute name="body"
+                       value="/WEB-INF/jsp/adminQuaderly/adminTechQuaderly.jsp"/>
+    </definition>
+
+    <definition name="planAllocation.add"
+                extends="base.definition.admin">
+        <put-attribute name="title" value="Plan Allocation"/>
+        <put-attribute name="body"
+                       value="/WEB-INF/jsp/planSubComponent/planAllocation.jsp"/>
+    </definition>
+
+    <definition name="approvedTrainingReport" extends="base.definition.admin">
+        <put-attribute name="title" value="Quarterly Progress Report"/>
+        <put-attribute name="body" value="/WEB-INF/jsp/progressReport/trainingProgressReport.jsp"/>
+    </definition>
+
+    <definition name="pesaPlanQuaterly"
+                extends="base.definition.admin">
+        <put-attribute name="title"
+                       value="Nodal Officer Details"/>
+        <put-attribute name="body"
+                       value="/WEB-INF/jsp/pesaPlanQuarterly/pesaPlanQuarterly.jsp"/>
+    </definition>
+    <definition name="eGovtQuaderly"
+                extends="base.definition.admin">
+        <put-attribute name="title"
+                       value="Nodal Officer Details"/>
+        <put-attribute name="body"
+                       value="/WEB-INF/jsp/eGovtQuaderly/eGovtQuaderly.jsp"/>
+    </definition>
+    <definition name="approveEnablementQuaterly"
+                extends="base.definition.admin">
+        <put-attribute name="title"
+                       value="Nodal Officer Details"/>
+        <put-attribute name="body"
+                       value="/WEB-INF/jsp/enablementQuaterly/enablementQuaterly.jsp"/>
+    </definition>
+    <definition name="gramPanchayatProgressReport"
+                extends="base.definition.admin">
+        <put-attribute name="title"
+                       value="Gram Panchayat Progress Report Details"/>
+        <put-attribute name="body"
+                       value="/WEB-INF/jsp/progressReport/gramPanchayatProgressReport.jsp"/>
+    </definition>
+
+    <definition name="approvedIecQtrProgressReport"
+                extends="base.definition.admin">
+        <put-attribute name="title"
+                       value="Quarterly Progress Report"/>
+        <put-attribute name="body"
+                       value="/WEB-INF/jsp/progressReport/iecQtrProgressReport.jsp"/>
+    </definition>
+    <definition name="approvePmuQuaterly"
+                extends="base.definition.admin">
+        <put-attribute name="title"
+                       value="Essential Conditions "/>
+        <put-attribute name="body"
+                       value="/WEB-INF/jsp/progressReport/pmuQuaterly.jsp"/>
+    </definition>
+    <definition name="panchayatBhawanQuaterlyReport"
+                extends="base.definition.admin">
+        <put-attribute name="title"
+                       value="Quarterly Progress Report"/>
+        <put-attribute name="body"
+                       value="/WEB-INF/jsp/progressReport/panchayatBhawanQuaterlyReport.jsp"/>
+    </definition>
+    <definition name="adminAndFinancialDataCell"
+                extends="base.definition.admin">
+        <put-attribute name="title"
+                       value="Admin And Financial DataCell"/>
+        <put-attribute name="body"
+                       value="/WEB-INF/jsp/AdminAndFinancialDataCell/adminAndFinancialDataCell.jsp"/>
+    </definition>
+    <definition name="institutionalInfraQuaterlyReport"
+                extends="base.definition.admin">
+        <put-attribute name="title"
+                       value="institutional Infra Quaterly Report"/>
+        <put-attribute name="body"
+                       value="/WEB-INF/jsp/progressReport/institutionalInfraQuaterlyReportNew.jsp"/>
+    </definition>
+    <definition name="incomeEnhancementQuaterly" extends="base.definition.admin">
+        <put-attribute name="title" value="Essential Conditions "/>
+        <put-attribute name="body" value="/WEB-INF/jsp/progressReport/incomeEnhancementQuaterly.jsp"/>
+    </definition>
+
+    <definition name="approvedCurrentUsageSatcomQuaterly"
+                extends="base.definition.admin">
+        <put-attribute name="title"
+                       value="Essential Conditions "/>
+        <put-attribute name="body"
+                       value="/WEB-INF/jsp/progressReport/currentUsageSatcomQuaterly.jsp"/>
+    </definition>
+
+    <definition name="finalizeWorkLocation"
+                extends="base.definition.admin">
+        <put-attribute name="title" value="Panchayat Bhawan"/>
+        <put-attribute name="body"
+                       value="/WEB-INF/jsp/panchayatBhawan/finalizeWorkLocation.jsp"/>
+    </definition>
+    <definition name="ApprovePlanByCec"
+                extends="base.definition.admin">
+        <put-attribute name="title" value="Panchayat Bhawan"/>
+        <put-attribute name="body"
+                       value="/WEB-INF/jsp/viewPlanDetailsCEC/viewPlanDetailsForCEC.jsp"/>
+    </definition>
+
+    <definition name="cbActivityGPs"
+                extends="base.definition.admin">
+        <put-attribute name="title" value="fdgfdgdgdgdfgd"/>
+        <put-attribute name="body"
+                       value="/WEB-INF/jsp/capacityBuildingOne/capacityBuildingGPs.jsp"/>
+    </definition>
+
+    <definition name="enablePanchayatGPs" extends="base.definition.admin">
+        <put-attribute name="title" value="Enable Panchayat"/>
+        <put-attribute name="body" value="/WEB-INF/jsp/e-enablePanchayat/enablementOfPanchayatGPs.jsp"/>
+    </definition>
+
+    <definition name="sanctionOrder"
+                extends="base.definition.admin">
+        <put-attribute name="title" value="Sanction Order"/>
+        <put-attribute name="body" value="/WEB-INF/jsp/MOPR/SanctionOrder.jsp"/>
+    </definition>
+
+    <definition name="approvedAdditionalfacultyProgress"
+                extends="base.definition.admin">
+        <put-attribute name="title" value="Sanction Order"/>
+        <put-attribute name="body" value="/WEB-INF/jsp/progressReport/additionalfacultyProgress.jsp"/>
+    </definition>
+    <definition name="qprCapacityBuilding" extends="base.definition.admin">
+        <put-attribute name="title" value="Qpr Capacity Building"/>
+        <put-attribute name="body" value="/WEB-INF/jsp/progressReport/qprCapacityBuilding.jsp"/>
+    </definition>
+
+    <definition name="uploadImage" extends="base.definition.admin">
+        <put-attribute name="title" value="Upload File"/>
+        <put-attribute name="body" value="/WEB-INF/jsp/fileUpload/uploadImage.jsp"/>
+    </definition>
+
+    <definition name="CMS.add" extends="base.definition.admin">
+        <put-attribute name="title" value="Add CMS"/>
+        <put-attribute name="body" value="/WEB-INF/jsp/Cms/addCms.jsp"/>
+    </definition>
+
+    <definition name="CMS.manage" extends="base.definition.admin">
+        <put-attribute name="title" value="Add CMS"/>
+        <put-attribute name="body" value="/WEB-INF/jsp/Cms/manageCms.jsp"/>
+    </definition>
+
+    <definition name="CMS.modify" extends="base.definition.admin">
+        <put-attribute name="title" value="Add CMS"/>
+        <put-attribute name="body" value="/WEB-INF/jsp/Cms/modifyCms.jsp"/>
+    </definition>
+
+    <definition name="document.downloadUserWise" extends="base.definition.public">
+        <put-attribute name="title" value="Download File"/>
+        <put-attribute name="body" value="/WEB-INF/jsp/document/downloadFileUserWise.jsp"/>
+    </definition>
+
+    <definition name="aboutRGSA" extends="base.definition.public">
+        <put-attribute name="title" value="About Rgsa"/>
+        <put-attribute name="body" value="/WEB-INF/jsp/rgsaDoc/aboutRGSA.jsp"/>
+    </definition>
+
+    <definition name="aboutGPDP" extends="base.definition.public">
+        <put-attribute name="title" value="About GPDP"/>
+        <put-attribute name="body" value="/WEB-INF/jsp/rgsaDoc/aboutGPDP.jsp"/>
+    </definition>
+
+
+    <!-- <definition name="document.download" extends="base.definition.public">
+        <put-attribute name="title" value="Download Files" />
+        <put-attribute name="body" value="/WEB-INF/jsp/document/downloadFile.jsp" />
+    </definition> -->
+    <definition name="approvedInnovativeActivityQpr"
+                extends="base.definition.admin">
+        <put-attribute name="title"
+                       value="Quarterly Progress Report"/>
+        <put-attribute name="body"
+                       value="/WEB-INF/jsp/progressReport/innovativeActivityQprReport.jsp"/>
+    </definition>
+
+    <definition name="approvedadminDataFinQuaterlyGet"
+                extends="base.definition.admin">
+        <put-attribute name="title"
+                       value="Quarterly Progress Report"/>
+        <put-attribute name="body"
+                       value="/WEB-INF/jsp/progressReport/adminDataFinQuaterly.jsp"/>
+    </definition>
+    <!--
+    <definition name="errorBaseException" extends="base.definition.public">
+        <put-attribute name="title" value="RGSA" />
+        <put-attribute name="body" value="/WEB-INF/jsp/exception/baseException.jsp" />
+    </definition> -->
+    <!-- added by aashish barua related   -->
+    <definition name="enablementCEC" extends="base.definition.admin">
+        <put-attribute name="title" value="About Enablement CEC"/>
+        <put-attribute name="body" value="/WEB-INF/jsp/e-enablePanchayat/enablementOfPanchayatCEC.jsp"/>
+    </definition>
+
+    <definition name="adminAndFinancialDataCellForCec" extends="base.definition.admin">
+        <put-attribute name="title" value="About ADMIN AND FINANCIAL DATA CELL FOR CEC"/>
+        <put-attribute name="body" value="/WEB-INF/jsp/AdminAndFinancialDataCell/adminAndFinancialDataCellForCec.jsp"/>
+    </definition>
+
+
+    <definition name="addFacultyAndMaintenanceHrBudgetCEC" extends="base.definition.admin">
+        <put-attribute name="title" value="About Additional Faculty And Maintenance Hr Budget CEC"/>
+        <put-attribute name="body"
+                       value="/WEB-INF/jsp/AddFacultyAndMaintenance/addFacultyAndMaintenanceCEC.jsp"/>
+    </definition>
+
+    <definition name="iecCEC" extends="base.definition.admin">
+        <put-attribute name="title" value="About Additional Faculty And Maintenance Hr Budget CEC"/>
+        <put-attribute name="body"
+                       value="/WEB-INF/jsp/Iec/iecCEC.jsp"/>
+    </definition>
+
+    <definition name="pmuCEC"
+                extends="base.definition.admin">
+        <put-attribute name="title"
+                       value="About P.M.U CEC"/>
+        <put-attribute name="body"
+                       value="/WEB-INF/jsp/Pmu/pmuCEC.jsp"/>
+    </definition>
+
+    <definition name="panchayatBhawanCec" extends="base.definition.admin">
+        <put-attribute name="title" value="Panchayat Bhawan CEC"/>
+        <put-attribute name="body"
+                       value="/WEB-INF/jsp/panchayatBhawan/PanchayatBhawanCECjsp.jsp"/>
+    </definition>
+
+    <definition name="capacityBuildingCec" extends="base.definition.admin">
+        <put-attribute name="title" value="Training Activity CEC"/>
+        <put-attribute name="body"
+                       value="/WEB-INF/jsp/capacityBuildingOne/trainingActivityCec.jsp"/>
+    </definition>
+
+    <definition name="capacityBuilding.planCEC" extends="base.definition.admin">
+        <put-attribute name="title" value="Training Activities CEC"/>
+        <put-attribute name="body"
+                       value="/WEB-INF/jsp/CBAndTForActivityPaln/capacityBuildingPlanNewCEC.jsp"/>
+    </definition>
+
+    <definition name="institutionalInfraActivityPlanCec" extends="base.definition.admin">
+        <put-attribute name="title" value="institutional Infra CEC"/>
+        <put-attribute name="body"
+                       value="/WEB-INF/jsp/InstitutionalInfraActivityPlan/institutionalInfraActivityCEC.jsp"/>
+    </definition>
+
+    <definition name="adminTechSupportStaffCEC" extends="base.definition.admin">
+        <put-attribute name="title" value="admin Tech Support Staff CEC"/>
+        <put-attribute name="body"
+                       value="/WEB-INF/jsp/AdministrativeAndStaff/adminTechSupportStaffCEC.jsp"/>
+    </definition>
+
+    <definition name="incomeEnhancementCec" extends="base.definition.admin">
+        <put-attribute name="title" value="income Enhancement Cec"/>
+        <put-attribute name="body"
+                       value="/WEB-INF/jsp/ActionPaln/incomeEnhancementCec.jsp"/>
+    </definition>
+
+    <definition name="noFundAlloctedJsp" extends="base.definition.admin">
+        <put-attribute name="title" value="no Fund Allocted Jsp"/>
+        <put-attribute name="body"
+                       value="/WEB-INF/jsp/error/qprNoFundAllocated.jsp"/>
+    </definition>
+
+    <definition name="capacityBuilding.plan.mopr"
+                extends="base.definition.admin">
+        <put-attribute name="title"
+                       value="Capacity Building Plan MOPR"/>
+        <put-attribute name="body"
+                       value="/WEB-INF/jsp/CBAndTForActivityPaln/capacityBuildingPlanNewMOPR.jsp"/>
+    </definition>
+
+
+    <definition name="UtilizationCertificatePage" extends="base.definition.admin">
+        <put-attribute name="title" value="Utilization Certificate"/>
+        <put-attribute name="body"
+                       value="/WEB-INF/jsp/UtilizationCertificate/uchome.jsp"/>
+    </definition>
+
+    <definition name="UtilizationCertificateTmpl"
+                template="/WEB-INF/jsp/UtilizationCertificate/template.jsp"></definition>
+
+    <definition name="institutionalInfraActivityPlanMopr" extends="base.definition.admin">
+        <put-attribute name="title" value="institutional Infra CEC"/>
+        <put-attribute name="body"
+                       value="/WEB-INF/jsp/InstitutionalInfraActivityPlan/institutionalInfraActivityPlanMopr.jsp"/>
+    </definition>
+
+    <definition name="trainingDetailsProgressReport"
+                extends="base.definition.admin">
+        <put-attribute name="title"
+                       value="Training Details Progress Quaterly Report"/>
+        <put-attribute name="body"
+                       value="/WEB-INF/jsp/progressReport/trainingDetailsProgressReport.jsp"/>
+    </definition>
+
+    <definition name="viewreportmopr" extends="base.definition.admin">
+        <put-attribute name="title" value="View Report Mopr"/>
+        <put-attribute name="body" value="/WEB-INF/jsp/viewMoprReport/viewMoprReport.jsp"/>
+    </definition>
+    <definition name="hundredDayTrainingDetail" extends="base.definition.admin">
+        <put-attribute name="title" value="hundred Day Training Detail"/>
+        <put-attribute name="body"
+                       value="/WEB-INF/jsp/hundredDayTrainingDetails/hundredDayTrainingDetailsNew.jsp"/>
+    </definition>
+
+    <definition name="newHundredDayTrainingDetails" extends="base.definition.admin">
+        <put-attribute name="title" value="hundred Day Training Detail"/>
+        <put-attribute name="body"
+                       value="/WEB-INF/jsp/hundredDayTrainingDetails/hundredDaysTrainingNewFormNo5.jsp"/>
+    </definition>
+
+    <definition name="errorPage" extends="base.definition.withoutSidBar">
+        <put-attribute name="title" value="error Page"/>
+        <put-attribute name="body"
+                       value="/WEB-INF/jsp/error/500.jsp"/>
+    </definition>
+
+    <definition name="fundReleased" extends="base.definition.admin">
+        <put-attribute name="title" value="fund Sanction Version 2"/>
+        <put-attribute name="body"
+                       value="/WEB-INF/jsp/fundReleased/fundReleased.jsp"/>
+    </definition>
+
+
+    <definition name="senctionOrderForm" extends="base.definition.admin">
+        <put-attribute name="title" value="fund Sanction Version 2"/>
+        <put-attribute name="body"
+                       value="/WEB-INF/jsp/MOPR/senctionOrderForm.jsp"/>
+    </definition>
+
+
+    <definition name="qprReportConsolidated" extends="base.definition.admin">
+        <put-attribute name="title" value="Consolidated Quarterly Progress Report"/>
+        <put-attribute name="body"
+                       value="/WEB-INF/jsp/QprReport/consolidatedQpr.jsp"/>
+    </definition>
 
 </tiles-definitions>
 
