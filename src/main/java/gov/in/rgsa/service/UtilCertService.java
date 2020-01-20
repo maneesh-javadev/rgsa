@@ -14,8 +14,6 @@ import gov.in.rgsa.utils.FileNodeUtils;
 
 public interface UtilCertService {
 
-	Map<Integer, String> getYearMap();
-
 	Map<Integer, String> getInstallmentMap(Integer finYearId);
 	
 	FileNodeUtils uploadFile(MultipartFile multipartFile, Integer finYearId, Integer releaseInstallmentId);

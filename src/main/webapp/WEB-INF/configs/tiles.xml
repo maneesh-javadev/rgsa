@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="ISO-8859-1" ?>
 <!DOCTYPE tiles-definitions PUBLIC
-  "-//Apache Software Foundation//DTD Tiles Configuration 3.0//EN" 
-  "http://tiles.apache.org/dtds/tiles-config_3_0.dtd">
+        "-//Apache Software Foundation//DTD Tiles Configuration 3.0//EN"
+        "http://tiles.apache.org/dtds/tiles-config_3_0.dtd">
 <tiles-definitions>
+
 
 	<!-- Base Definition for private page -->
 	<definition name="base.definition.admin"
@@ -906,6 +907,13 @@
 		<put-attribute name="body"
 			value="/WEB-INF/jsp/MOPR/senctionOrderForm.jsp" />
 	</definition>
+
+    <definition name="qprReportConsolidated" extends="base.definition.admin">
+        <put-attribute name="title" value="Consolidated Quarterly Progress Report"/>
+        <put-attribute name="body"
+                       value="/WEB-INF/jsp/QprReport/consolidatedQpr.jsp"/>
+    </definition>
+
 
 </tiles-definitions>
 

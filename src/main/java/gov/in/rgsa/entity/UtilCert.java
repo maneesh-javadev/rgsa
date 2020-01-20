@@ -4,22 +4,49 @@ package gov.in.rgsa.entity;
 import java.io.Serializable;
 import java.sql.Timestamp;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 @Entity
 @Table(name = "util_cert", schema = "rgsa")
+@NamedNativeQueries({
+		@NamedNativeQuery(name = "INSTALLMENT_SANCTION_AMOUNT", query =
+				"SELECT \n" +
+				"  COALESCE(SUM(sanction_order.amount_under_component), 0) + 0.0 \"sanction_amount\" \n" +
+				"FROM \n" +
+				"  rgsa.sanction_order, \n" +
+				"  rgsa.plan, \n" +
+				"  rgsa.release_intallment \n" +
+				"WHERE \n" +
+				"  sanction_order.plan_code = plan.plan_code \n" +
+				"  AND release_intallment.release_installment_sr_no = sanction_order.release_installment_sr_no \n" +
+				"  AND plan.isactive = true \n" +
+				"  AND plan.state_code = :stateCode \n" +
+				"  AND plan.plan_status_id = 5 \n" +
+				"  AND release_intallment.installment_no = :installmentNumber \n" +
+				"  AND plan.year_id = :yearId \n" +
+				"GROUP BY plan.plan_code \n" +
+				"LIMIT 1"),
+		@NamedNativeQuery(name = "INSTALLMENT_UNSPENT_AMOUNT", query =
+				"SELECT  \n" +
+				"  COALESCE(MAX(fund_released_details.unspent_balance), 0) + 0.0 \"unspent_balance\" \n" +
+				"FROM \n" +
+				"  rgsa.fund_released, \n" +
+				"  rgsa.fund_released_details, \n" +
+				"  rgsa.plan \n" +
+				"WHERE \n" +
+				"  fund_released.fund_released_id = fund_released_details.fund_released_id AND \n" +
+				"  plan.plan_code = fund_released.plan_code \n" +
+				"  AND plan.isactive = true \n" +
+				"  AND plan.state_code = :stateCode \n" +
+				"  AND plan.plan_status_id = 5 \n" +
+				"  AND fund_released_details.installment_id = :installmentNumber \n" +
+				"  AND plan.year_id = :yearId \n" +
+				"GROUP BY plan.plan_code \n" +
+				"LIMIT 1")
+})
 public class UtilCert implements Serializable {
 	/**
 	 * 
