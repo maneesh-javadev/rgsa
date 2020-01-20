@@ -198,7 +198,7 @@
 													<div align="center">
 													<button class="addMore btn bg-green waves-effect" title="{{moprData.capacityBuildingActivityDetails[$index].remarks}}">Remark By Mopr</button>
 													<input type="text"	data-ng-model="cecData.capacityBuildingActivityDetails[$index].remarks" class="form-control"
-														data-ng-init="cecData.capacityBuildingActivityDetails[$index].remarks=moprData.capacityBuildingActivityDetails[$index].remarks">
+														>
 														
 													</div>
 													
