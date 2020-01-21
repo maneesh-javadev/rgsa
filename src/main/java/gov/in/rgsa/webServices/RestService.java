@@ -283,6 +283,7 @@ public class RestService {
 			throws JsonProcessingException {
 		List<CapacityBuildingErForOoms> capacityBuildingErForOomsList = null;
 		final OomsWebService oomsWebService = new OomsWebService();
+		@SuppressWarnings("unused")
 		final String type = "GP";
 		if ("RGSA_NITIAYOG".equals(username) && "NITIAYOG@123456".equals(password)) {
 			oomsWebService.setStatus(Boolean.valueOf(true));
