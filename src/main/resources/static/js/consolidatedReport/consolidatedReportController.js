@@ -11,9 +11,9 @@ publicModule.controller("consolidatedReportController", [ '$scope', "consolidate
 	$scope.capacityBuilding.additionalRequirement;
 	
 	
-	$( document ).ready(function() {
+	/*$( document ).ready(function() {
 		fetchConsolidatedReportDetails();
-	});
+	});*/
 	
 	function fetchConsolidatedReportDetails(){
 		console.log("inside fetchConsolidatedReportDetails");

@@ -545,10 +545,10 @@ function validateYear(index){
 								<spring:message code="Label.UNFREEZE" text="Unfreeze" htmlEscape="true" />
 							</button>
 							
-							<button type="button" id="clear" disabled="disabled" 
+							<%-- <button type="button" id="clear" disabled="disabled" 
 								class="btn bg-light-blue waves-effect">
 								<spring:message code="Label.CLEAR" htmlEscape="true" />
-							</button>
+							</button> --%>
 						</c:if>		
 						<c:if test="${innovativeAcitivityList[0].isFreeze == false}">
 							<button type="button" id="save" onclick="validate(); saveSubmit();" class="btn bg-green waves-effect save-button">
@@ -559,10 +559,10 @@ function validateYear(index){
 								<spring:message code="Label.FREEZE" text="Freeze" htmlEscape="true" />
 							</button>
 							
-							<button type="button" id="clear" 
+							<%-- <button type="button" id="clear" 
 								class="btn bg-light-blue waves-effect reset">
 								<spring:message code="Label.CLEAR" htmlEscape="true" />
-							</button>
+							</button> --%>
 						</c:if>
 						</c:if>
 							<c:if test="${ not empty innovativeAcitivityList}">
@@ -584,10 +584,10 @@ function validateYear(index){
 								<spring:message code="Label.FREEZE" text="Freeze" htmlEscape="true" />
 							</button> --%>
 							
-							<button type="button" id="clear"  
+							<%-- <button type="button" id="clear"  
 								class="btn bg-light-blue waves-effect">
 								<spring:message code="Label.CLEAR" htmlEscape="true" />
-							</button>
+							</button> --%>
 							</c:if>
 							<button type="button"
 								onclick="onClose('home.html?<csrf:token uri='home.html'/>')"

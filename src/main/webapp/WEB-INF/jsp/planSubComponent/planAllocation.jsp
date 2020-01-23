@@ -16,7 +16,7 @@
 			<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
 				<div class="card">
 					<div class="header">
-							<h2>Plan Allocation</h2>
+							<h2>Plan Allocation</h2> 
 					</div>
 					<div class="body">
 					<form:form method="post" action="savePlanAllocation.html" modelAttribute="PLAN_ALLOCATION" id="planAllocationForm">
@@ -53,7 +53,6 @@
 										<div class="col-sm-2" data-ng-model="totalFund"><strong>{{+centralShare + +stateShare}}</strong></div>
 									</div>
 								</div>
-							
 						<div class="table-responsive" data-ng-show="showPlanAllocationtable">
 							<table class="table table-bordered">
 								<thead>
@@ -70,7 +69,7 @@
 										<th>
 											<div style="text-align:center;"><strong>Amount Allocation ({{totalFund}} of <span data-ng-style="{'color':(totalFundRemaining > 0) ? '#00cc00' : 'red'}">{{totalFundRemaining}}</span> remaining) </strong></div>
 										</th>
-									</tr>
+									</tr> 
 								</thead>
 								<tbody id="tbodyId" data-ng-repeat="component in planAllocationComponentList | orderBy:'componentsId'" data-ng-if="component.eType == 'C'"  data-ng-init="parentIndex = $index">
 								<tr data-ng-style="{'background-color':'#f7f7e0'}">
@@ -78,7 +77,7 @@
 									<td style="text-align:center;"><strong>{{component.eName}}</strong></td>	
 									<td style="text-align:center;"><strong>{{component.amountProposedCEC}}</strong></td>
 									<td>
-										<input type="text" class="form-control Align-Right" readonly="readonly" data-ng-model="planAllocationModel.stateAllocationList[$index].fundsAllocated" value="" data-ng-show="component.status == 'F'"/>
+										<input type="text" class="form-control Align-Right" readonly="readonly" data-ng-model=" " value="" data-ng-show="component.status == 'F'"/>
 										<div data-ng-show="component.status == 'U'">
 										<input type="text" class="form-control Align-Right" data-ng-model="planAllocationModel.stateAllocationList[$index].fundsAllocated" id="fundAllocated_{{$index}}" placeholder="{{totalFundRemaining}}" data-ng-keyup="validateWithTotalAmountAndCecAmnt($index,component.amountProposedCEC)" data-ng-blur="calRemainingFund();calGrandTotal();" data-ng-readonly="planAllocationModel.stateAllocationList[0].status == 'F'"/>
 										<input type="hidden" data-ng-model="planAllocationModel.stateAllocationList[$index].componentId" data-ng-init="planAllocationModel.stateAllocationList[$index].componentId = component.componentsId"/>

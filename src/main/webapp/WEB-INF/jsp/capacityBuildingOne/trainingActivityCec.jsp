@@ -48,10 +48,10 @@
 					</div>
 					<div class="body">
 						<ul class="nav nav-tabs">
-							<li class="nav-item"><a class="nav-link active"
+							<li class="nav-item"><a class="nav-link "
 								data-toggle="tab" href="#state"><spring:message
 										code="Label.STATE" htmlEscape="true" /></a></li>
-							<li class="nav-item"><a class="nav-link" data-toggle="tab"
+							<li class="nav-item active"><a class="nav-link" data-toggle="tab"
 								href="#MOPR"><spring:message code="Label.MOPR"
 										htmlEscape="true" /></a></li>
 						</ul>
@@ -152,7 +152,7 @@
 													data-ng-disabled="isFreezeOrUnfreeze"
 													onkeypress="return isNumber(event)"
 													data-ng-model="cecData.capacityBuildingActivityDetails[$index].noOfUnits"
-													maxlength="7"
+													maxlength="10"
 													style="text-align: right; border: none; border-color: transparent;" />
 												</td>
 												<td>
@@ -166,42 +166,37 @@
 													data-ng-disabled="isFreezeOrUnfreeze"
 													onkeypress="return isNumber(event)"
 													data-ng-model="cecData.capacityBuildingActivityDetails[$index].unitCost"
-													maxlength="7"
+													maxlength="10"
 													style="text-align: right; border: none; border-color: transparent;" />
 													
 												
 												</td>
-												<td>
-													<div align="center"
-														data-ng-style="{'color':(moprData.capacityBuildingActivityDetails[$index].funds > cecData.capacityBuildingActivityDetails[$index].funds) ? 'red' : '#00cc00'}">
-														<strong> <i style="font-size: 15px" class="fa">&#xf156;</i>
-															{{moprData.capacityBuildingActivityDetails[$index].funds}}
-														</strong>
-													</div>
-													<input type="text" class="form-control"
-													data-ng-disabled="true"
-													data-ng-model="cecData.capacityBuildingActivityDetails[$index].funds"
-													style="text-align: right; border: none; border-color: transparent;" />
-													
-														
-																
-													
-													</td>
 													<td>
-													<div align="center"
-														data-ng-model="cecData.capacityBuildingActivityDetails[$index].collabInstitute"
-														data-ng-init="cecData.capacityBuildingActivityDetails[$index].collabInstitute=moprData.capacityBuildingActivityDetails[$index].collabInstitute">
-														<strong>{{moprData.capacityBuildingActivityDetails[$index].collabInstitute}}</strong>
-													</div>
-													</td>
-												<td>
+														<div align="center"
+																data-ng-style="{'color':(moprData.capacityBuildingActivityDetails[$index].funds > cecData.capacityBuildingActivityDetails[$index].funds) ? 'red' : '#00cc00'}">
+																<strong> <i style="font-size: 15px" class="fa">&#xf156;</i>
+																	{{moprData.capacityBuildingActivityDetails[$index].funds}}
+																</strong>
+														</div>
+															<input type="text" class="form-control"
+															data-ng-disabled="true"
+															data-ng-model="cecData.capacityBuildingActivityDetails[$index].funds"
+															style="text-align: right; border: none; border-color: transparent;" ></input>
+														</td>
+														<td>
+														<div align="center"
+															data-ng-model="cecData.capacityBuildingActivityDetails[$index].collabInstitute"
+															data-ng-init="cecData.capacityBuildingActivityDetails[$index].collabInstitute=moprData.capacityBuildingActivityDetails[$index].collabInstitute">
+															<strong>{{moprData.capacityBuildingActivityDetails[$index].collabInstitute}}</strong>
+														</div>
+														</td>
+													<td>
 													<div align="center">
 													<button class="addMore btn bg-green waves-effect" title="{{moprData.capacityBuildingActivityDetails[$index].remarks}}">Remark By Mopr</button>
-													<input type="text"	data-ng-model="cecData.capacityBuildingActivityDetails[$index].remarks" class="form-control"
-														data-ng-init="cecData.capacityBuildingActivityDetails[$index].remarks=moprData.capacityBuildingActivityDetails[$index].remarks">
-														
+													<!-- <input type="text"	data-ng-model="cecData.capacityBuildingActivityDetails[$index].remarks" class="form-control"
+														data-ng-init="cecData.capacityBuildingActivityDetails[$index].remarks=moprData.capacityBuildingActivityDetails[$index].remarks"></input> -->
+														<input type="text"	data-ng-model="cecData.capacityBuildingActivityDetails[$index].remarks" class="form-control"></input>
 													</div>
-													
 												</td>
 											</tr>
 											<tr>

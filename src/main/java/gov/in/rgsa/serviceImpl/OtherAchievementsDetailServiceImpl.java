@@ -19,7 +19,6 @@ public class OtherAchievementsDetailServiceImpl implements OtherAchievementsDeta
 	public String basicOrientationTrainingofER(Integer trCategory)
 	{
 
-		// List<DataRender> list =null;
 		String data = null;
 		try
 		{
@@ -76,7 +75,7 @@ public class OtherAchievementsDetailServiceImpl implements OtherAchievementsDeta
 		return data;
 	}
 
-	public String enablementsOfPanchatComputerization(Integer masterId)
+	public String enablementsOfPanchyatComputerization(Integer masterId)
 	{
 
 		String data = null;

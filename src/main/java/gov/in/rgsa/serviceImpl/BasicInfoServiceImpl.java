@@ -11,9 +11,12 @@ import javax.servlet.jsp.jstl.sql.Result;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.owasp.esapi.util.CollectionsUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import gov.in.rgsa.controller.DashboardDataController;
 import gov.in.rgsa.dao.CommonRepository;
 import gov.in.rgsa.entity.AdminFinancialDataCellActivityDetails;
 import gov.in.rgsa.entity.AdministrativeTechnicalSupportDetails;
@@ -44,7 +47,7 @@ import gov.in.rgsa.utils.DataUtils;
 
 @Service
 public class BasicInfoServiceImpl implements BasicInfoService {
-
+	static Logger logger = LoggerFactory.getLogger(BasicInfoServiceImpl.class);
 	@Autowired
 	private CommonRepository dao;
 
@@ -56,17 +59,22 @@ public class BasicInfoServiceImpl implements BasicInfoService {
 
 	@Override
 	public BasicInfoDefination getBasicInfoDefinationDetails(int finYearId,String type) {
-
+		try {
 		Map<String, Object> params = new HashMap<String, Object>();
 		params.put("yearId", finYearId);
 		params.put("formType", type);
 		return dao.find("FIND_BASIC_DEFINATION_BY_FIN_YEAR_ID", params);
+		}catch(Exception e) { e.printStackTrace();
+			logger.error("Error found in class=BasicInfoServiceImpl ,  method is getBasicInfoDefinationDetails ==of date "+new Date()+ "=" +e);
+		}
+		return null;
 	}
 
 	@Override
 	public UserPreference save(BasicInfoModel basicInfoModel) {
 
 			UserPreference _userPreference=null;
+			try {
 			BasicInfo _basicInfo = new BasicInfo();
 			FinYear _finYear = new FinYear();
 			_finYear.setYearId(userPreference.getFinYearId());
@@ -98,20 +106,25 @@ public class BasicInfoServiceImpl implements BasicInfoService {
 			if(plan!=null){
 			 _userPreference	=updatePlanDetailtoSession(plan);
 			}
+			}catch(Exception e) { e.printStackTrace();
+				logger.error("Error found in class=BasicInfoServiceImpl ,   method is save ==of date "+new Date()+ "=" +e);
+			}
 			return _userPreference;
 			
 	}
 
 	@Override
-	public BasicInfo getBasicInfoDetails(int finYearId, int stateCode,int basicInfoDefId) {
-		BasicInfo basicInfo = null;
-		
-			Map<String, Object> params = new HashMap<String, Object>();
-			params.put("yearId", finYearId);
-			params.put("stateCode", stateCode);
-			params.put("basicInfoDefinationId", basicInfoDefId);
-			basicInfo = dao.find("FIND_BASIC_INFO_DETAILS_BY_STATE", params);
-		
+		public BasicInfo getBasicInfoDetails(int finYearId, int stateCode,int basicInfoDefId) {
+			BasicInfo basicInfo = null;
+			try {
+				Map<String, Object> params = new HashMap<String, Object>();
+				params.put("yearId", finYearId);
+				params.put("stateCode", stateCode);
+				params.put("basicInfoDefinationId", basicInfoDefId);
+				basicInfo = dao.find("FIND_BASIC_INFO_DETAILS_BY_STATE", params);
+				}catch(Exception e) { e.printStackTrace();
+					logger.error("Error found in class=BasicInfoServiceImpl ,   method is save ==of date "+new Date()+ "=" +e);
+				}
 		return basicInfo;
 	}
 
@@ -122,6 +135,7 @@ public class BasicInfoServiceImpl implements BasicInfoService {
 
 	@Override
 	public BasicInfo findBesicInfo(Integer finYearId, Integer stateCode,Integer basicInfoDefId) {
+		try {
 		Map<String, Object> params = new HashMap<String, Object>();
 		params.put("yearId", finYearId);
 		params.put("stateCode", stateCode);
@@ -129,12 +143,15 @@ public class BasicInfoServiceImpl implements BasicInfoService {
 		List<BasicInfo> basicInfo = dao.findAll("FIND_BASIC_INFO_DETAILS_BY_STATE", params);
 		if (CollectionUtils.isNotEmpty(basicInfo))
 			return basicInfo.get(0);
-		else
+		}catch(Exception e) { e.printStackTrace();
+			logger.error("Error found in class=BasicInfoServiceImpl ,   method is findBesicInfo ==of date "+new Date()+ "=" +e);
+		}
 			return null;
 	}
 
 	@Override
 	public void delete(BasicInfoModel basicInfoModel) {
+		try {
 		List<BasicInfoDetails> basicInfoDetails = new ArrayList<BasicInfoDetails>();
 		Map<String, Object> params = new HashMap<String, Object>();
 		Integer id= basicInfoModel.getBasicInfoId();
@@ -157,19 +174,27 @@ public class BasicInfoServiceImpl implements BasicInfoService {
 		basicInfo.setBasicInfoDetails(basicInfoDetails);
 		basicInfo.setStatus(basicInfoModel.getStatus());		
 		dao.update(basicInfo);
+		
+	}catch(Exception e) { e.printStackTrace();
+		logger.error("Error found in class=BasicInfoServiceImpl ,   method is delete ==of date "+new Date()+ "=" +e);
+	}
 	}
 
 	@Override
 	public void freezeBasicInfoDetails(Integer basicInfoId) {
-		// TODO Auto-generated method stub
+		try {
 		Map<String, Object> params = new HashMap<String, Object>();
 		params.put("basicInfoId", basicInfoId);
 		BasicInfo basicInfo= dao.find("FIND_BASIC_INFO_BY_ID", params);
 		basicInfo.setStatus("F");
 		dao.update(basicInfo);
+		}catch(Exception e) { e.printStackTrace();
+			logger.error("Error found in class=BasicInfoServiceImpl ,   method is delete ==of date "+new Date()+ "=" +e);
+		}
 	}
 	
 	public String fillFirstBasicInfo() {
+		try {
 		Map<String, Object> params = new HashMap<String, Object>();
 		params.put("yearId", userPreference.getFinYearId());
 		params.put("stateCode", userPreference.getStateCode());
@@ -202,17 +227,19 @@ public class BasicInfoServiceImpl implements BasicInfoService {
 		}else {
 			return "create";
 		}
-		
-		
+		}catch(Exception e) { e.printStackTrace();
+			logger.error("Error found in class=BasicInfoServiceImpl ,   method is fillFirstBasicInfo ==of date "+new Date()+ "=" +e);
+		}
+		return null;
 	}
 	
 	public UserPreference updatePlanDetailtoSession(Plan plan) {
-		Map<String, Object> param=new HashMap<>();
-		param.put("yearId", userPreference.getFinYearId());
-		param.put("stateCode", userPreference.getStateCode());
-		//param.put("planStatusId", 1);
-	
 		UserPreference _preference = new UserPreference();
+		try {
+			Map<String, Object> param=new HashMap<>();
+			param.put("yearId", userPreference.getFinYearId());
+			param.put("stateCode", userPreference.getStateCode());
+			//param.put("planStatusId", 1);
 		_preference.setUserId(userPreference.getUserId());
 		_preference.setUserName(userPreference.getUserName());
 		_preference.setUserType(userPreference.getUserType());
@@ -232,6 +259,9 @@ public class BasicInfoServiceImpl implements BasicInfoService {
 		
 		_preference.setCountPlanSubmittedByState(userPreference.getCountPlanSubmittedByState());
 		_preference.setCountPlanSubmittedByMOPR(userPreference.getCountPlanSubmittedByMOPR());
+		}catch(Exception e) { e.printStackTrace();
+			logger.error("Error found in class=BasicInfoServiceImpl ,   method is updatePlanDetailtoSession ==of date "+new Date()+ "=" +e);
+		}
 		return _preference;
 	}
 	
@@ -240,6 +270,8 @@ public class BasicInfoServiceImpl implements BasicInfoService {
 	public Map<String, List<List<String>>> fetchStateAndMoprPreComments(int detailSize ,int componentId) {
 		List<List<String>> statePreviousComments = new ArrayList<List<String>>();
 		List<List<String>> moprPreviousComments = new ArrayList<List<String>>();
+		Map<String, List<List<String>>> response=new HashMap<String, List<List<String>>>();
+		try {
 		int index = 0;
 		Map<String, Object> params = new HashMap<String, Object>();
 		params.put("stateCode", userPreference.getStateCode());
@@ -481,10 +513,13 @@ public class BasicInfoServiceImpl implements BasicInfoService {
 			break;
 		default : 
 		}
-		
-		Map<String, List<List<String>>> response=new HashMap<String, List<List<String>>>();
 		response.put("statePreviousComments", statePreviousComments);
 		response.put("moprPreviousComments", moprPreviousComments);
+		}catch(Exception e) {
+			e.printStackTrace();
+			logger.error("Error found in class=BasicInfoServiceImpl ,   method is fetchStateAndMoprPreComments ==of date "+new Date()+ "=" +e);
+		}
+		
 		return response;
 	}
 

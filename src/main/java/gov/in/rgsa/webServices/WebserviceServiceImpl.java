@@ -22,7 +22,7 @@ import gov.in.rgsa.entity.FetchPlanStatusCount;
 
 @Service
 public class WebserviceServiceImpl implements WebserviceService {
-
+ 
 	@Autowired
 	private CommonRepository commonRepository;
 	
@@ -58,7 +58,7 @@ public class WebserviceServiceImpl implements WebserviceService {
 			return -1;
 		}
 		
-	}
+	} 
 	
 	
 	@Override

@@ -195,25 +195,31 @@ var $_checkEmptyObject = function(obj) {
 			                                
 			                                 			<div class="col-sm-4" >
 				                                    		<div class="form-group form-float"  id="data49_gp_date_div" style="display: none;">&nbsp;&nbsp;&nbsp;
+				                                    		 <label class="form-label">Date of Formation</label>
 				                                       		 <div class="form-line">
+				                                       		
 				                                            <form:input type="date" class="form-control" max="2050-05-20" path="data[${field.basicInfoDefinationDetailsId}_gp_date]" />
-				                                            <label class="form-label">Date of Formation</label>
+				                                            
 				                                            </div>
 				                                            </div>
 			                                			</div>
 			                                 			<div class="col-sm-4" >
 				                                    		<div class="form-group form-float" id="data49_bp_date_div" style="display: none;">&nbsp;&nbsp;&nbsp;
+				                                    		<label class="form-label">Date of Formation</label>
 				                                       		 <div class="form-line" >
-				                                            <form:input type="date" class="form-control" max="2050-05-20" path="data[${field.basicInfoDefinationDetailsId}_bp_date]" /> &nbsp;&nbsp;&nbsp;
-				                                            <label class="form-label">Date of Formation</label>
+				                                       		 
+				                                            <form:input type="date" class="form-control" max="2050-05-20" path="data[${field.basicInfoDefinationDetailsId}_bp_date]" />
+				                                            
 				                                            </div>
 				                                            </div>
 			                               				 </div>
 						                                 <div class="col-sm-4" >
 					                                    		<div class="form-group form-float" id="data49_dp_date_div" style="display: none;">&nbsp;&nbsp;&nbsp;
+					                                    		<label class="form-label">Date of Formation</label>
 					                                       		 <div class="form-line" >
-					                                          <form:input type="date" class="form-control" max="2050-05-20" path="data[${field.basicInfoDefinationDetailsId}_dp_date]" /> &nbsp;&nbsp;&nbsp;
-					                                            <label class="form-label">Date of Formation</label>
+					                                       		 
+					                                          	<form:input type="date" class="form-control" max="2050-05-20" path="data[${field.basicInfoDefinationDetailsId}_dp_date]" /> 
+					                                            
 					                                            </div>
 					                                            </div>
 						                       			 </div>

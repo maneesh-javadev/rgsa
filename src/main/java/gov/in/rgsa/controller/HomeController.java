@@ -11,6 +11,6 @@ public class HomeController {
 
 	@RequestMapping(value="Home.html",method=RequestMethod.GET)
 	private String homeGet(){
-		
+		  
 	return HOME;}
 }
