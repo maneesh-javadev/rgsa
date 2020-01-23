@@ -237,9 +237,9 @@
 									<spring:message code="FREEZE" htmlEscape="true" />
 								</button>
 								
-								<button type="button" ng-show="capacityBuilding.isFreeze != undefined && !capacityBuilding.isFreeze" data-ng-click="onClear()" data-ng-disabled="capacityBuilding.isFreeze"  class="btn bg-light-blue waves-effect">
+								<%-- <button type="button" ng-show="capacityBuilding.isFreeze != undefined && !capacityBuilding.isFreeze" data-ng-click="onClear()" data-ng-disabled="capacityBuilding.isFreeze"  class="btn bg-light-blue waves-effect">
 									<spring:message code="Label.CLEAR" htmlEscape="true" />
-								</button>
+								</button> --%>
 								</c:if>
 								<button type="button" onclick="onClose('home.html?<csrf:token uri='home.html'/>')" class="btn bg-red waves-effect">
 									<spring:message code="Label.CLOSE" htmlEscape="true" />

@@ -22,6 +22,8 @@
 				$('.js-basic-example').DataTable({
 					responsive: true
 				});
+				
+				//alert("Financial year is 2019-2020!");
 			});
 			
 			toggleSubComponent=function(id,flag){
@@ -540,7 +542,7 @@
 																	<td align="right"><c:if
 																			test="${innerData.amountProposed>0}">
 																			<fmt:formatNumber type="number" maxFractionDigits="3"
-																				value="${innerData.amountProposed}" />
+																				value="${innerData.amountProposed}" />==${innerData.amountProposed}
 																		</c:if></td>
 																	<td align="right" style="padding-right: 20px">${innerData.noOfUnits}</td>
 																</tr>

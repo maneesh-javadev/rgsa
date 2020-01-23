@@ -100,7 +100,7 @@ public class CapacityBuildingOneController {
 	}
 
 	
-	// update on 26-12-2019 by shivam
+	// update on 26-12-2019
 	@ResponseBody
 	@RequestMapping(value="fetchCBMastersAndCapacityBuildingData",method=RequestMethod.GET)
 	private Map<String, Object> fetchCBMasters(){

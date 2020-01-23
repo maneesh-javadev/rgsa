@@ -235,7 +235,7 @@ enablement.controller("enablementController",['$scope','enablementService', func
 	
 	function callDatatable(){
 		$('#example').dataTable({
-	        "lengthMenu": [[ 25,50,100, -1], [25, 50,100, "All"]],
+	        "lengthMenu": [[-1], ["All"]],
 	         
 	    });	
 		

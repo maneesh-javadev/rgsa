@@ -32,8 +32,8 @@ planAllocation.controller("planAllocationController",['$scope','planAllocationSe
 				$scope.stateShare = response.data.stateShare;
 				$scope.showPlanAllocationBlock=true;
 				$scope.planAllocationComponentList=response.data.planAllocationList;
-				$scope.showPlanAllocationtable=($scope.stateShare != '' && $scope.stateShare != null) ? true : false;
-				$scope.disableIsfreeze=response.data.disableIsfreeze;	
+			    $scope.showPlanAllocationtable=( $scope.stateShare !=null && $scope.stateShare >= '0' ) ? true : false;
+				$scope.disableIsfreeze=response.data.disableIsfreeze;
 				if($scope.stateShare != null){
 					$scope.reservedStateShare = $scope.stateShare;
 				}
@@ -47,7 +47,7 @@ planAllocation.controller("planAllocationController",['$scope','planAllocationSe
 				}
 				$scope.planCode = response.data.planCode;
 				$scope.planAllocationModel = response.data.model;
-				if(response.data.model.stateAllocationList.length != 0 && response.data.model.stateAllocationList[0].status == 'F'){ 
+				if(response.data.model.stateAllocationList.length != 0 && response.data.model.stateAllocationList[0].status == 'F'){
 					$scope.freezeButtonName='UNFREEZE';
 					$scope.saveButtonName='UPDATE';
 					$scope.freezeButtonValue='U';
@@ -79,7 +79,7 @@ planAllocation.controller("planAllocationController",['$scope','planAllocationSe
 	
 	$scope.calTotalFund=function(){
 		$scope.totalFund=+$scope.centralShare + +$scope.stateShare;
-		$scope.showPlanAllocationtable=($scope.stateShare != '' && $scope.stateShare != null) ? true : false;
+		$scope.showPlanAllocationtable=( $scope.stateShare !=null && $scope.stateShare >= '0' ) ? true : false;
 		$scope.calGrandTotal();
 		$scope.calRemainingFund();
 	}
@@ -144,7 +144,7 @@ planAllocation.controller("planAllocationController",['$scope','planAllocationSe
 		$scope.planAllocationModel.stateShare=$scope.stateShare;
 		$scope.planAllocationModel.fundReleasedDetailId=$scope.fundReleasedDetailId;
 		if($scope.totalAllocatedFund == 0){
-			flag=true;
+			//flag=true;
 		}
 		if(!flag){
 			planAllocationService.savePlanAllocation($scope.planAllocationModel,$scope.installmentNo).then(function(response){

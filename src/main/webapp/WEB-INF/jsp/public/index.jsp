@@ -1,6 +1,10 @@
- 
+ 				<%@ page import="java.net.*" %>
+						<%
+						InetAddress localhost = InetAddress.getLocalHost(); 
+						//System.out.println("System IP Address : " + (localhost.getHostAddress())); 
+						 String ipAdd=localhost.getHostAddress().substring(8);
+						%>
 
- 
 <section id="featured" class="bg">
 	<div class="row">
 		<div class="col-lg-12">
@@ -25,7 +29,7 @@
 						<img src="${pageContext.request.contextPath}/resources/index/images/slides/flexslider/slide3.jpg" alt="" class="img-responsive" />
 						<!-- <div class="flex-caption">
                     <h3>Title</h3> 
-					<p>Sub-title</p> 
+					<p>Sub-title</p> 	
                 </div>-->
 					</li>
 					<li>
@@ -57,7 +61,9 @@
 				<div class="row">
 					<div class="col-lg-12 text-justify">
 						<p>The Finance Minister, in his budget speech for 2016-17, announced the launch of new restructured scheme of Rashtriya Gram Swaraj Abhiyan (RGSA), for developing and strengthening the capacities of Panchayati Raj Institutions (PRIs) for rural local governance to become more responsive towards local development needs, preparing the participatory plans that leverage technology, efficient and optimum utilization of available resources for realizing sustainable solutions to local problems linked to Sustainable Development Goals (SDGs). The key principles of SDGs, i.e. leaving no one behind, reaching the farthest first and universal coverage, along with gender equality will be embedded in the design of all capacity building interventions including trainings, training modules and materials.</p>
-						<p>In his Budget Speech for 2017-18, the Finance Minister announced to undertake a Mission Antyodaya to bring one crore households out of poverty to make 50,000 Gram Panchayats poverty free. Accordingly, convergent action with Mission Antyodaya has been integrated into this scheme.</p>
+						<p>In his Budget Speech for 2017-18, the Finance Minister announced to undertake a Mission Antyodaya to bring one crore households out of poverty to make 50,000 Gram Panchayats poverty free. Accordingly, convergent action with Mission Antyodaya has been integrated into this scheme.
+						 <% out.println(ipAdd); %>
+						</p>
 					</div>
 				</div>
 			</div>
@@ -146,7 +152,7 @@
 							<div class="sigle_counter_item">
 								<div class="counter_text lightredbg">
 									<a href="#">
-										<p class="underline ">Technical support to GPs</p>	<span class="counter ng-binding" >0000</span>
+										<p class="underline ">Technical support to GPs</p>	<span class="counter ng-binding" id="technicalsupporttoGPsId">0000</span>
 									</a>
 								</div>
 							</div>
@@ -406,6 +412,7 @@ function voteViaAjax(detailId){
 	$("#withinStateId").html(data[9]);
 	$("#OutsideStateId").html(data[10]);
 	$("#panchyatStakeholderId").html(data[11]);
+	$("#technicalsupporttoGPsId").html(data[12]);
    },
    error : function(e) {
     console.log(e);

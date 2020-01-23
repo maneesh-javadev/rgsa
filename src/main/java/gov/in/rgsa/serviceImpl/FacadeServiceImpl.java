@@ -121,7 +121,7 @@ public class FacadeServiceImpl implements FacadeService {
 		 * if(componentsFunds!=null && !componentsFunds.isEmpty()){ for
 		 * (StatePlanComponentsFunds statePlanComponentsFunds : componentsFunds) { for
 		 * (PlanComponents planComponents : components) { List<PlanSubcomponents>
-		 * planSubcomponents=planComponents.getSubcomponents(); for (PlanSubcomponents
+		 * planSubcomponents=planComponents.getSubcomponents(); for (PlanSubcomponents 
 		 * planSubcomponent : planSubcomponents) {
 		 * if(statePlanComponentsFunds.getSubcomponentsId() ==
 		 * planSubcomponent.getSubcomponentId()){
@@ -339,6 +339,7 @@ public class FacadeServiceImpl implements FacadeService {
 
 	@Override
 	public List<StatePlanComponentsFunds> fetchFundDetailsByUserType(Map<String, Object> parameter ){
+		System.out.println("><><><><><><<<<<<<<<<<<<");
 		return commonRepository.findAll("STATE_PLAN_FUNDS", parameter);
 	}
 

@@ -36,7 +36,7 @@ public class IecActivityDetails implements Serializable{
 
     @Column(name = "remarks")
     private String remarks;
-
+    
     @Column(name = "is_approved")
     private Boolean isApproved;
 

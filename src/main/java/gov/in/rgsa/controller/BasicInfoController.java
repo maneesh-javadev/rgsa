@@ -1,11 +1,14 @@
 package gov.in.rgsa.controller;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import org.directwebremoting.guice.RequestParameters;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -26,6 +29,7 @@ import gov.in.rgsa.utils.Message;
 @Controller
 public class BasicInfoController {
 
+	static Logger logger = LoggerFactory.getLogger(BasicInfoController.class);
 	public static final String BASIC_INFO_DETAILS = "basicinfo.add";
 	public static final String MANAGE_BASIC_INFO_DETAILS = "basicinfo.manage";
 	public static final String VIEW_BASIC_INFO_DETAILS = "basicinfo.view";
@@ -45,17 +49,23 @@ public class BasicInfoController {
 
 	@RequestMapping(value = "basicinfo", method = RequestMethod.GET)
 	private String basicInfoDetails(@ModelAttribute("BASIC_INFO_MODEL") BasicInfoModel basicInfoModel, Model model) {
+		try {
 		BasicInfoDefination basicInfoDefination = basicInfoService.getBasicInfoDefinationDetails(userPreference.getFinYearId(),"BI");
 		List<FocusArea> focusAreas=basicInfoService.fetchFocusAreas();
 		model.addAttribute("STATE_CODE", userPreference.getStateCode());
 		model.addAttribute("BESIC_DEFINATION", basicInfoDefination);
 		model.addAttribute("FOCUS_AREAS_LIST", focusAreas);
 		model.addAttribute("isPesaState",isPesaEnabled(userPreference.getStateCode()));
+		}catch(Exception e) {
+			 e.printStackTrace();
+			logger.error("Error found in class=BasicInfoController , @basicinfo and method is basicInfoDetails ==of date "+new Date()+ "=" +e);
+		}
 		return BASIC_INFO_DETAILS;
 
 	}
 	
 	private void addCommonData(BasicInfoModel basicInfoModel,Model model) {
+		try {
 		BasicInfoDefination basicInfoDefination = basicInfoService.getBasicInfoDefinationDetails(userPreference.getFinYearId(),"BI");
 		BasicInfo basicInfo = basicInfoService.getBasicInfoDetails(userPreference.getFinYearId(), userPreference.getStateCode(),basicInfoDefination.getBasicInfoDefinationId());
 		List<FocusArea> focusAreas=basicInfoService.fetchFocusAreas();
@@ -78,19 +88,29 @@ public class BasicInfoController {
 		}
 		model.addAttribute("BESIC_DEFINATION", basicInfoDefination);
 		model.addAttribute("FOCUS_AREAS_LIST", focusAreas);
+		}catch(Exception e) {
+			 e.printStackTrace();
+			logger.error("Error found in class=BasicInfoController , method is addCommonData ==of date "+new Date()+ "=" +e);
+		}
 	}
 	
 
 	@RequestMapping(value = "basicinfo", method = RequestMethod.POST)
-	private String basicInfoDetailsPost(@ModelAttribute("BASIC_INFO_MODEL") BasicInfoModel basicInfoModel, Model model,
-			RedirectAttributes re) {
+	private String basicInfoDetailsPost(@ModelAttribute("BASIC_INFO_MODEL") BasicInfoModel basicInfoModel, Model model, RedirectAttributes re)
+	{
+		try
+		{
+			setPreference(basicInfoService.save(basicInfoModel));
 
-		setPreference(basicInfoService.save(basicInfoModel));
-		
-		
-		re.addFlashAttribute(Message.SUCCESS_KEY, Message.SAVE_SUCCESS);
-		if(basicInfoModel.getStatus()!=null && basicInfoModel.getStatus().charAt(0)=='F') {
-			re.addFlashAttribute(Message.UPDATE_KEY, Message.FRIZEE_SUCESS);
+			re.addFlashAttribute(Message.SUCCESS_KEY, Message.SAVE_SUCCESS);
+			if (basicInfoModel.getStatus() != null && basicInfoModel.getStatus().charAt(0) == 'F')
+			{
+				re.addFlashAttribute(Message.UPDATE_KEY, Message.FRIZEE_SUCESS);
+			}
+		} catch (Exception e)
+		{
+			 e.printStackTrace();
+			logger.error("Error found in class=BasicInfoController , @basicinfo and method is basicInfoDetailsPost ==of date " + new Date() + "=" + e);
 		}
 		return REDIRECT_BASIC_INFO;
 
@@ -115,8 +135,13 @@ public class BasicInfoController {
 	
 	@RequestMapping(value = "managebasicInfoDetails", method = RequestMethod.GET)
 	private String manageBasicInfoDetails(@ModelAttribute("BASIC_INFO_MODEL") BasicInfoModel basicInfoModel, Model model) {
+		try {
 		BasicInfoDefination basicInfoDefination = basicInfoService.getBasicInfoDefinationDetails(userPreference.getFinYearId(),"BI");
 		model.addAttribute("BASIC_INFO", basicInfoService.findBesicInfo(userPreference.getFinYearId(), userPreference.getStateCode(),basicInfoDefination.getBasicInfoDefinationId()));
+		}catch(Exception e) {
+			 e.printStackTrace();
+			logger.error("Error found in class=BasicInfoController , @managebasicInfoDetails and method is manageBasicInfoDetails ==of date "+new Date()+ "=" +e);
+		}
 		return MANAGE_BASIC_INFO_DETAILS;
 	}
 	
@@ -127,19 +152,28 @@ public class BasicInfoController {
 	}
 	
 	@RequestMapping(value = "updateBasicInfoDetails", method = RequestMethod.GET)
-	private String changeBasicInfoDetails(@ModelAttribute("BASIC_INFO_MODEL") BasicInfoModel basicInfoModel, Model model) {
-		BasicInfoDefination basicInfoDefination = basicInfoService.getBasicInfoDefinationDetails(userPreference.getFinYearId(),"BI");
-		List<FocusArea> focusAreas=basicInfoService.fetchFocusAreas();
-		model.addAttribute("BESIC_DEFINATION", basicInfoDefination);
-		model.addAttribute("isPesaState",isPesaEnabled(userPreference.getStateCode()));
-		model.addAttribute("FOCUS_AREAS_LIST", focusAreas);
-		model.addAttribute("STATE_CODE", userPreference.getStateCode());
-		addCommonData(basicInfoModel, model);
+	private String changeBasicInfoDetails(@ModelAttribute("BASIC_INFO_MODEL") BasicInfoModel basicInfoModel, Model model)
+	{
+		try
+		{
+			BasicInfoDefination basicInfoDefination = basicInfoService.getBasicInfoDefinationDetails(userPreference.getFinYearId(), "BI");
+			List<FocusArea> focusAreas = basicInfoService.fetchFocusAreas();
+			model.addAttribute("BESIC_DEFINATION", basicInfoDefination);
+			model.addAttribute("isPesaState", isPesaEnabled(userPreference.getStateCode()));
+			model.addAttribute("FOCUS_AREAS_LIST", focusAreas);
+			model.addAttribute("STATE_CODE", userPreference.getStateCode());
+			addCommonData(basicInfoModel, model);
+		} catch (Exception e)
+		{
+			 e.printStackTrace();
+			logger.error("Error found in class=BasicInfoController , @updateBasicInfoDetails and method is changeBasicInfoDetails ==of date " + new Date() + "=" + e);
+		}
 		return MODIFY_BASIC_INFO_DETAILS;
 	}
 	
 	@RequestMapping(value = "updateBasicInfoDetails", method = RequestMethod.POST)
 	private String updateBasicInfoDetails(@ModelAttribute("BASIC_INFO_MODEL") BasicInfoModel basicInfoModel, Model model,RedirectAttributes re) {
+		try {
 		basicInfoService.delete(basicInfoModel);
 		re.addFlashAttribute(Message.UPDATE_KEY, Message.UPDATE_SUCCESS);
 		if(basicInfoModel.getStatus().charAt(0)=='F'){
@@ -149,13 +183,24 @@ public class BasicInfoController {
 		}
 		model.addAttribute("STATE_CODE", userPreference.getStateCode());
 		model.addAttribute("isPesaState",isPesaEnabled(userPreference.getStateCode()));
+		} catch (Exception e)
+		{
+			 e.printStackTrace();
+			logger.error("Error found in class=BasicInfoController , @updateBasicInfoDetails and method is updateBasicInfoDetails ==of date " + new Date() + "=" + e);
+		}
 		return REDIRECT_BASIC_INFO;
 		
 	}
 	@RequestMapping(value = "freezeBasicInfoDetails", method = RequestMethod.GET)
 	private String freezeBasicInfoDetails(@ModelAttribute("BASIC_INFO_MODEL") BasicInfoModel basicInfoModel, Model model,@ RequestParameters int basicInfoId,RedirectAttributes re) {
+		try {
 		basicInfoService.freezeBasicInfoDetails(basicInfoId);
 		re.addFlashAttribute(Message.UPDATE_KEY, Message.UPDATE_SUCCESS);
+		}catch (Exception e)
+		{
+			 e.printStackTrace();
+			logger.error("Error found in class=BasicInfoController , @freezeBasicInfoDetails and method is freezeBasicInfoDetails ==of date " + new Date() + "=" + e);
+		}
 		return REDIRECT_VIEW_BASIC_INFO_DETAILS;
 		
 	}
@@ -168,7 +213,7 @@ public class BasicInfoController {
 		userPreference.setStateCode(_userPreference.getStateCode());
 		userPreference.setDistrictcode(_userPreference.getDistrictcode());
 		userPreference.setMenus(_userPreference.getMenus());
-		userPreference.setFinYearId(_userPreference.getFinYearId());
+		userPreference.setFinYearId(_userPreference.getFinYearId());	
 		userPreference.setFinYear(_userPreference.getFinYear());
 		userPreference.setActivityPlanStatus(_userPreference.getActivityPlanStatus());
 		userPreference.setPlanComponents((_userPreference.getPlanComponents()));
