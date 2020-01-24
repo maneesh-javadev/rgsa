@@ -50,7 +50,6 @@
 	       	$('#carryForwardPanchayatBhawanExpand'+id).show();
 	    	}
 		}
-
 	};
 	
 	toggleInstInfraAndPanchayatBhawan=function(id,msg){
@@ -248,8 +247,7 @@
 							<div id="demoGraphicBlock" style="display: none;">
 								<hr />
 								<div id="demoGraphicBlockPrint">
-									<table
-										class="table table-hover table-bordered dashboard-task-infos"
+									<table class="table table-hover table-bordered dashboard-task-infos"
 										id="demoTable">
 										<thead style="background-color: #9071bf; color: white;">
 											<tr>

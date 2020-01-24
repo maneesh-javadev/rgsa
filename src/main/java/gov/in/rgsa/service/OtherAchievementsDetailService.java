@@ -6,7 +6,7 @@ public interface OtherAchievementsDetailService {
     
     public String enablementsOfPanchat(Integer levelId);
     
-    public String enablementsOfPanchatComputerization(Integer trCategory);
+    public String enablementsOfPanchyatComputerization(Integer trCategory);
     
     public String exposureVisit(Integer cbMasterId);
     

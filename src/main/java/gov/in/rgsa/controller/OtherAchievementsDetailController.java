@@ -37,7 +37,7 @@ public class OtherAchievementsDetailController {
 			list.add(result);
 			result=otherAchievementsDetailService.enablementsOfPanchat(2);
 			list.add(result);
-			result= otherAchievementsDetailService.enablementsOfPanchatComputerization(1);
+			result= otherAchievementsDetailService.enablementsOfPanchyatComputerization(1);
 			list.add(result);
 			result= otherAchievementsDetailService.exposureVisit(5);
 			list.add(result);
@@ -50,6 +50,9 @@ public class OtherAchievementsDetailController {
 			result= otherAchievementsDetailService.supportForPanchayatAsset("11","3");
 			list.add(result);
 			result=  otherAchievementsDetailService.panchyatStakehlderTrained();
+			list.add(result);
+			// method for Technical support to GPs 
+			result= otherAchievementsDetailService.enablementsOfPanchyatComputerization(3);
 			list.add(result);
 			
 		} catch (Exception ex) {
