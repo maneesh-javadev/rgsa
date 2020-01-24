@@ -920,5 +920,24 @@
 		<put-attribute name="body"
 			value="/WEB-INF/jsp/viewMoprReport/viewReportAnnualAction.jsp" />
 	</definition>
+	
+	
+	<definition name="viewReportAnnualActionState"
+		extends="base.definition.admin">
+		<put-attribute name="title" value="View Report Mopr" />
+		<put-attribute name="body"
+			value="/WEB-INF/jsp/viewMoprReport/viewReportAnnualActionState.jsp" />
+	</definition>
+	
+	<definition name="viewReportDemographicProfileState"
+		extends="base.definition.admin">
+		<put-attribute name="title" value="View Report Mopr" />
+		<put-attribute name="body"
+			value="/WEB-INF/jsp/viewMoprReport/viewReportDemographicProfileState.jsp" />
+	</definition>
+	
+	
+	
+	
 </tiles-definitions>
 

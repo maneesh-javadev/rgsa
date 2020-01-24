@@ -22,9 +22,9 @@
 		$('#stateDropDownId').val('${VIEW_REPORT_MODEL.stateCode}');
 		var finYear=$('#finYearSelectId').val();
 		var stateCode=$('#stateDropDownId').val();
-		(finYear > 0) ? $('#stateDropDownBlock').show() : $('#stateDropDownBlock').hide() ;
+		/* (finYear > 0) ? $('#stateDropDownBlock').show() : $('#stateDropDownBlock').hide() ;
 		(stateCode > 0) ? $('#optionChoosingBlock').show() : $('#optionChoosingBlock').hide() ;
-		if ('${VIEW_REPORT_MODEL.isAnnualPlan}' == 'true') {
+	 */	if ('${VIEW_REPORT_MODEL.isAnnualPlan}' == 'true') {
 			$('#annualPlanBlock').show();
 			$('#demoGraphicBlock').hide();
 			$('#annualActionPlanId').attr("checked", true);
@@ -132,11 +132,11 @@
 		$('#demoGraphicBlock').hide();
 		$('#annualPlanBlock').hide();
 	}
-	function submitToPost() {
+	/* function submitToPost() {
 		document.viewReportAtMopr.method = "post";
 		document.viewReportAtMopr.action = "viewReportAnnualAction.html?<csrf:token uri='viewReportAnnualAction.html'/>";
 		document.viewReportAtMopr.submit();
-	}
+	} */
 	function showDemoGraphAndAnnualOption() {
 		$('#stateDropDownId').val() > 0 ? $('#optionChoosingBlock').show() : $('#optionChoosingBlock').hide();
 		$('#demoGraphicId').attr("checked", false);
@@ -196,37 +196,27 @@
 					<form:form method="post" name="viewReportAtMopr" action=""
 						modelAttribute="VIEW_REPORT_MODEL">
 						<div class="row">
+							<div class="col-sm-3">
+							</div>
 							<div class="col-sm-2">
-								<label for="finYear">&nbsp;&nbsp; Select financial year
-									: </label>
+								<label for="finYear">&nbsp;&nbsp; Financial year : </label>
 							</div>
 							<div class="col-sm-4">
-								<form:select class="form-control"
-									onchange="showStateDropDown();submitToPost()"
-									id="finYearSelectId" path="finYearId">
-									<option value="0">Select fin year</option>
-									<c:forEach items="${FIN_YEAR_LIST}" var="finYear">
-										<option value="${finYear.yearId}">${finYear.finYear}</option>
-									</c:forEach>
-								</form:select>
+								<span class="badge badge-success">${FIN_YEAR}</span>
 							</div>
 						</div>
 						<br />
 
 						<div class="row" id="stateDropDownBlock">
-							<div class="col-sm-2">
-								<label for="state">&nbsp;&nbsp; Select State : </label>
+							<div class="col-sm-3">
 							</div>
+							<div class="col-sm-2">
+								<label for="state">&nbsp;&nbsp; State : </label>
+							</div>
+							
 							<div class="col-sm-4">
-								<form:select class="form-control" id="stateDropDownId"
-									onchange="showDemoGraphAndAnnualOption();showTableContent('annual')"
-									path="stateCode">
-									<option value="0">Select State</option>
-									<c:forEach items="${STATE_LIST}" var="state">
-										<option value="${state.stateCode}">
-											${state.stateNameEnglish}</option>
-									</c:forEach>
-								</form:select>
+								<span class="badge badge-success"><strong>${STATE.stateNameEnglish}</strong>
+								</span>
 							</div>
 						</div>
 						<br />
@@ -239,18 +229,9 @@
 							<div id="annualPlanBlock">
 								<hr />
 								<div id="annualPlanBlockPrint">
-									<div id="toolbar" class="select">
-										<select class="form-control">
-											<option value="selected">Export Selected</option>
-										</select>
-									</div>
 									<table
 										class="table table-hover table-bordered dashboard-task-infos"
-										id="annualReportTable" data-show-export="true"
-										data-pagination="true" data-side-pagination="server"
-										data-click-to-select="true" data-toolbar="#toolbar"
-										data-show-toggle="true" data-show-columns="true"
-										data-url="https://examples.wenzhixin.net.cn/examples/bootstrap_table/data">
+										id="annualReportTable">
 
 										<thead style="background-color: #9071bf; color: white;">
 											<tr>
@@ -896,10 +877,10 @@
 									<button type="button" class="btn bg-blue waves-effect"
 										onclick="expandAll('collapse')" id="collapseButtonId"
 										style="display: none;">Collapse All</button>
-									<!-- <button type="button" class="btn bg-red waves-effect"
+								 <button type="button" class="btn bg-red waves-effect"
 										id="exportButtonId"
 										onclick="exportToPdf('annualPlanBlockPrint')">Export
-										File</button> -->
+										File</button> 
 								</div>
 							</div>
 						</div>
