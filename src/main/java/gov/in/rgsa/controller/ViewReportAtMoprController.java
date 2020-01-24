@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import gov.in.rgsa.dto.DemographicProfileDataDto;
 import gov.in.rgsa.model.ViewReportAtMoprModel;
 import gov.in.rgsa.service.FacadeService;
+import gov.in.rgsa.service.LGDService;
 import gov.in.rgsa.service.MOPRService;
 import gov.in.rgsa.service.ViewReportAtMoprService;
 import gov.in.rgsa.user.preference.UserPreference;
@@ -21,62 +22,107 @@ import gov.in.rgsa.user.preference.UserPreference;
 @Controller
 public class ViewReportAtMoprController {
 
-	private static final String MOPR_REPORT="viewreportmopr";
-	
+	private static final String VIEW_REPORT_DEMOGRAPHIC_PROFILE = "viewReportDemographicProfile";
+	private static final String VIEW_REPORT_ANNUAL_ACTION = "viewReportAnnualAction";
+
+	private static final String VIEW_REPORT_DEMOGRAPHIC_PROFILE_STATE = "viewReportDemographicProfileState";
+	private static final String VIEW_REPORT_ANNUAL_ACTION_STATE = "viewReportAnnualActionState";
+
 	@Autowired
-	private  ViewReportAtMoprService viewReportAtMoprService;
-	
+	private ViewReportAtMoprService viewReportAtMoprService;
+
 	@Autowired
 	UserPreference userPreference;
-	
+
 	@Autowired
 	FacadeService facadeService;
-	
+
 	@Autowired
-	private  MOPRService moprService;
-	
-	@GetMapping(value = "viewReportMopr")
-	private String getMoprReport(@ModelAttribute(name = "VIEW_REPORT_MODEL") ViewReportAtMoprModel viewReportModel, Model model) {
+	LGDService lGDService;
+
+	@Autowired
+	private MOPRService moprService;
+
+	@GetMapping(value = "viewReportDemographicProfile")
+	private String viewReportDemographicProfile(
+			@ModelAttribute(name = "VIEW_REPORT_MODEL") ViewReportAtMoprModel viewReportModel, Model model) {
 		model.addAttribute("FIN_YEAR_LIST", viewReportAtMoprService.getFinYearList());
-		if(viewReportModel.getFinYearId() != null) {
+		if (viewReportModel.getFinYearId() != null) {
 			model.addAttribute("STATE_LIST", moprService.getStateListApprovedbyCEC(viewReportModel.getFinYearId()));
 		}
-		
-		if(viewReportModel.getIsAnnualPlan()) {
+		if (viewReportModel.getIsDemoGraphic() != null && viewReportModel.getIsDemoGraphic()) {
+			List<DemographicProfileDataDto> demographicData = viewReportAtMoprService
+					.fetchDemographicData(viewReportModel);
+			model.addAttribute("DEMO_GRAPHIC_DATA", demographicData);
+		}
+
+		return VIEW_REPORT_DEMOGRAPHIC_PROFILE;
+	}
+
+	@PostMapping(value = "viewReportDemographicProfile")
+	private String fetchReportDemographicProfile(
+			@ModelAttribute(name = "VIEW_REPORT_MODEL") ViewReportAtMoprModel viewReportModel, Model model) {
+		System.out.println("i am in ....>>>>>>>>");
+		return viewReportDemographicProfile(viewReportModel, model);
+	}
+
+	@GetMapping(value = "viewReportAnnualAction")
+	private String viewReportAnnualAction(
+			@ModelAttribute(name = "VIEW_REPORT_MODEL") ViewReportAtMoprModel viewReportModel, Model model) {
+		model.addAttribute("FIN_YEAR_LIST", viewReportAtMoprService.getFinYearList());
+		if (viewReportModel.getFinYearId() != null) {
+			model.addAttribute("STATE_LIST", moprService.getStateListApprovedbyCEC(viewReportModel.getFinYearId()));
+		}
+		if (viewReportModel.getIsAnnualPlan() != null && viewReportModel.getIsAnnualPlan()) {
 			Map<String, Object> parameter = new HashMap<String, Object>();
 			parameter.put("stateCode", viewReportModel.getStateCode());
 			parameter.put("yearId", userPreference.getFinYearId());
-			parameter.put("userType","C");
+			parameter.put("userType", "C");
 			model.addAttribute("planComponentsFunds", facadeService.fetchFundDetailsByUserType(parameter));
 		}
-		
-		if(viewReportModel.getIsDemoGraphic()) {
-			List<DemographicProfileDataDto> demographicData=viewReportAtMoprService.fetchDemographicData(viewReportModel);
-			model.addAttribute("DEMO_GRAPHIC_DATA", demographicData);
-		}
-		return MOPR_REPORT;
+		return VIEW_REPORT_ANNUAL_ACTION;
 	}
-	
-	@PostMapping(value = "viewReportMopr")
-	private String fetchStateBasedOnFinYear(@ModelAttribute(name = "VIEW_REPORT_MODEL") ViewReportAtMoprModel viewReportModel,Model model){
+
+	@PostMapping(value = "viewReportAnnualAction")
+	private String fetchReportAnnualAction(
+			@ModelAttribute(name = "VIEW_REPORT_MODEL") ViewReportAtMoprModel viewReportModel, Model model) {
 		System.out.println("i am in ....>>>>>>>>");
-		return getMoprReport(viewReportModel , model );
+		return viewReportAnnualAction(viewReportModel, model);
 	}
-	
-	/*
-	 * @GetMapping(value = "viewReportMoprAjax") private String
-	 * getMoprReportAjax(@ModelAttribute(name = "VIEW_REPORT_MODEL")
-	 * ViewReportAtMoprModel viewReportModel,Model model) {
-	 * model.addAttribute("FIN_YEAR_LIST",
-	 * viewReportAtMoprService.getFinYearList()); return MOPR_REPORT; }
-	 * 
-	 * @ResponseBody
-	 * 
-	 * @PostMapping(value = "fetchStateList") private Map<String,Object>
-	 * getMoprReportAjax(@RequestParam(value = "finYear",required = false) Integer
-	 * finYear) { Map<String, Object> response=new HashMap<String,Object>();
-	 * response.put("StateList",moprService.getStateListApprovedbyCEC(finYear));
-	 * return response; }
-	 */
-	
+
+	@GetMapping(value = "viewReportDemographicProfileState")
+	private String viewReportDemographicProfileState(
+			@ModelAttribute(name = "VIEW_REPORT_MODEL") ViewReportAtMoprModel viewReportModel, Model model) {
+		model.addAttribute("FIN_YEAR", userPreference.getFinYear());
+		model.addAttribute("STATE", lGDService.getStateDetailsByCode(userPreference.getStateCode()));
+		viewReportModel.setFinYearId(userPreference.getFinYearId());
+		viewReportModel.setStateCode(userPreference.getStateCode());
+		List<DemographicProfileDataDto> demographicData = viewReportAtMoprService.fetchDemographicData(viewReportModel);
+		model.addAttribute("DEMO_GRAPHIC_DATA", demographicData);
+		return VIEW_REPORT_DEMOGRAPHIC_PROFILE_STATE;
+	}
+
+	@GetMapping(value = "viewReportAnnualActionState")
+	private String viewReportAnnualActionState(
+			@ModelAttribute(name = "VIEW_REPORT_MODEL") ViewReportAtMoprModel viewReportModel, Model model) {
+		return getReportAnnualActionState(viewReportModel, model);
+	}
+
+	@GetMapping(value = "viewReportAnnualStateDetail")
+	private String viewReportAnnualStateDetail(
+			@ModelAttribute(name = "VIEW_REPORT_MODEL") ViewReportAtMoprModel viewReportModel, Model model) {
+		viewReportModel.setIsDetailed(true);
+		return getReportAnnualActionState(viewReportModel, model);
+	}
+
+	private String getReportAnnualActionState(ViewReportAtMoprModel viewReportModel, Model model) {
+		model.addAttribute("FIN_YEAR", userPreference.getFinYear());
+		model.addAttribute("STATE", lGDService.getStateDetailsByCode(userPreference.getStateCode()));
+		Map<String, Object> parameter = new HashMap<String, Object>();
+		parameter.put("stateCode", userPreference.getStateCode());
+		parameter.put("yearId", userPreference.getFinYearId());
+		parameter.put("userType", "C");
+		model.addAttribute("planComponentsFunds", facadeService.fetchFundDetailsByUserType(parameter));
+		return VIEW_REPORT_ANNUAL_ACTION_STATE;
+	}
 }

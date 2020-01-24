@@ -862,11 +862,11 @@
 			value="/WEB-INF/jsp/progressReport/trainingDetailsProgressReport.jsp" />
 	</definition>
 
-	<definition name="viewreportmopr"
+	<definition name="viewReportDemographicProfile"
 		extends="base.definition.admin">
 		<put-attribute name="title" value="View Report Mopr" />
 		<put-attribute name="body"
-			value="/WEB-INF/jsp/viewMoprReport/viewMoprReport.jsp" />
+			value="/WEB-INF/jsp/viewMoprReport/viewReportDemographicProfile.jsp" />
 	</definition>
 	<definition name="hundredDayTrainingDetail"
 		extends="base.definition.admin">
@@ -914,6 +914,30 @@
                        value="/WEB-INF/jsp/QprReport/consolidatedQpr.jsp"/>
     </definition>
 
-
+<definition name="viewReportAnnualAction"
+		extends="base.definition.admin">
+		<put-attribute name="title" value="View Report Mopr" />
+		<put-attribute name="body"
+			value="/WEB-INF/jsp/viewMoprReport/viewReportAnnualAction.jsp" />
+	</definition>
+	
+	
+	<definition name="viewReportAnnualActionState"
+		extends="base.definition.admin">
+		<put-attribute name="title" value="View Report Mopr" />
+		<put-attribute name="body"
+			value="/WEB-INF/jsp/viewMoprReport/viewReportAnnualActionState.jsp" />
+	</definition>
+	
+	<definition name="viewReportDemographicProfileState"
+		extends="base.definition.admin">
+		<put-attribute name="title" value="View Report Mopr" />
+		<put-attribute name="body"
+			value="/WEB-INF/jsp/viewMoprReport/viewReportDemographicProfileState.jsp" />
+	</definition>
+	
+	
+	
+	
 </tiles-definitions>
 

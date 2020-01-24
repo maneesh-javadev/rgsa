@@ -273,10 +273,11 @@
                      </div>
                      <div class="form-group text-right">
 						<c:if test="${installementExist}">
+						<c:if test="${QPR_TRAINING_DETAILS.isFreeze eq false || QPR_TRAINING_DETAILS.isFreeze eq null}">
 							<button onclick="save_data('mainSsave')" type="button"
 								class="btn bg-green waves-effect">
 								<spring:message code="Label.SAVE" htmlEscape="true" />
-							</button>
+							</button></c:if>
 							<c:choose>
 								<c:when test="${QPR_TRAINING_DETAILS.isFreeze}">
 									<form:button class="btn bg-orange waves-effect"
@@ -288,12 +289,12 @@
 										onclick="FreezeAndUnfreeze('freeze')">FREEZE</form:button>
 								</c:otherwise>
 							</c:choose>
-							<button type="button"
+							<%-- <button type="button"
 								data-ng-show="!institutionalInfraActivityPlan.isFreeze"
 								data-ng-click="load_data()"
 								class="btn bg-light-blue waves-effect">
 								<spring:message code="Label.CLEAR" htmlEscape="true" />
-							</button>
+							</button> --%>
 						</c:if>
 						<button type="button"
 							onclick="onClose('home.html?<csrf:token uri='home.html'/>')"

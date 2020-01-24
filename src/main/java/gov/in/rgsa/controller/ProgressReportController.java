@@ -762,7 +762,7 @@ public class ProgressReportController {
 		} else {
 			quarterId = 0;
 		}
-
+		String balnceAmount = null;
 		int installmentNo = (quarterId < 3) ? 1 : 2; // installment number for qtrId 1 & 2 = 1 and 3 & 4 = 2
 		List<QuaterWiseFund> totalQuatorWiseFund = new ArrayList<>();
 		List<AdministrativeTechnicalSupport> administrativeTechnicalApproved = adminTechSupportService
@@ -855,9 +855,10 @@ public class ProgressReportController {
 			model.addAttribute("QTR_ID", quarterId);
 			model.addAttribute("QTR_ONE_TWO_FILLED", true);
 			model.addAttribute("APPROVED_ADMIN_TECH_ACT", administrativeTechnicalApproved.get(0));
-			if (quarterId != 0)
-				model.addAttribute("REMAINING_ADD_REQ",
-						Integer.parseInt(progressReportService.getBalanceAdditionalReqiurment(4, quarterId)));
+			if (quarterId != 0 ) {
+				 balnceAmount =(progressReportService.getBalanceAdditionalReqiurment(4, quarterId) == null)? "0": progressReportService.getBalanceAdditionalReqiurment(4, quarterId);
+					model.addAttribute("REMAINING_ADD_REQ",Integer.valueOf(balnceAmount));
+			}
 			return ADMIN_QUADERLY;
 		} else {
 			return NO_FUND_ALLOCATED_JSP;
@@ -953,6 +954,10 @@ public class ProgressReportController {
 		model.addAttribute("LIST_OF_DISTRICT", districtName);
 		model.addAttribute("QUATER_DETAILS", progressReportService.getQuarterDurations());
 		if (quarterId == 3 || quarterId == 4) {
+			if(CollectionUtils.isEmpty(stateAllocation)) {
+			stateAllocation.add(progressReportService
+					.fetchStateAllocationData(14, 1, progressReportService.getCurrentPlanCode()).get(0)); // total fund
+			}
 			totalQuatorWiseFund = progressReportService.fetchTotalQuaterWiseFundData(userPreference.getStateCode(), 14);
 			if (CollectionUtils.isNotEmpty(totalQuatorWiseFund)) {
 				map = calTotalFundUsedInFirstInstallHRSprcDprc(totalQuatorWiseFund);

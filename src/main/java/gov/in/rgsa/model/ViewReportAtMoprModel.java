@@ -6,6 +6,7 @@ public class ViewReportAtMoprModel {
 	private Integer stateCode=0;
 	private Boolean isDemoGraphic=false;
 	private Boolean isAnnualPlan=false;
+	private Boolean isDetailed =false;
 	public Integer getFinYearId() {
 		return finYearId;
 	}
@@ -30,4 +31,11 @@ public class ViewReportAtMoprModel {
 	public void setIsAnnualPlan(Boolean isAnnualPlan) {
 		this.isAnnualPlan = isAnnualPlan;
 	}
+	public Boolean getIsDetailed() {
+		return isDetailed;
+	}
+	public void setIsDetailed(Boolean isDetailed) {
+		this.isDetailed = isDetailed;
+	}
+	
 }
