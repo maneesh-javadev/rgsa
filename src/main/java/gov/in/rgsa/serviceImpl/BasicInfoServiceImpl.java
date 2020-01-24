@@ -61,7 +61,7 @@ public class BasicInfoServiceImpl implements BasicInfoService {
 	public BasicInfoDefination getBasicInfoDefinationDetails(int finYearId,String type) {
 		try {
 		Map<String, Object> params = new HashMap<String, Object>();
-		params.put("yearId", finYearId);
+		//params.put("yearId", finYearId);
 		params.put("formType", type);
 		return dao.find("FIND_BASIC_DEFINATION_BY_FIN_YEAR_ID", params);
 		}catch(Exception e) { e.printStackTrace();

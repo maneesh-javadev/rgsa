@@ -339,7 +339,7 @@ public class FacadeServiceImpl implements FacadeService {
 
 	@Override
 	public List<StatePlanComponentsFunds> fetchFundDetailsByUserType(Map<String, Object> parameter ){
-		System.out.println("><><><><><><<<<<<<<<<<<<");
+		//System.out.println("><><><><><><<<<<<<<<<<<<");
 		return commonRepository.findAll("STATE_PLAN_FUNDS", parameter);
 	}
 

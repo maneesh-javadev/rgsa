@@ -105,8 +105,10 @@ public class PlanAllocationController {
 	@ResponseBody
 	@RequestMapping(value="fetchFundReleased",method=RequestMethod.GET)
 	public Map<String, Object> fetchFundReleased(@RequestParam(value="installmentNo", required = false) String installmentNum){
-		Integer installmentNo=Integer.parseInt(installmentNum);
+		
 		Map<String, Object> map=new HashMap<>();
+		try {
+		Integer installmentNo=Integer.parseInt(installmentNum);
 		FundReleasedDetails fundReleasedDetail = fundReleasedService.fetchFundReleasedDetailByInstallmentNo(installmentNo);
 		Map<String, Object> parameter = new HashMap<String, Object>();
 		parameter.put("stateCode", userPreference.getStateCode());
@@ -115,8 +117,8 @@ public class PlanAllocationController {
 		map.put("planAllocationList", facadeService.fetchFundDetailsByUserType(parameter));
 		if(fundReleasedDetail != null) {
 			map.put("fundReleasedDetailId", fundReleasedDetail.getFundReleasedDetailsId());
-			map.put("centralShare", fundReleasedDetail.getCentralShare() + fundReleasedDetail.getUnspentBalance()); // here central share is equal to the central share +  unspent balance in the fund released
-			map.put("stateShare", fundReleasedDetail.getStateShare());
+			map.put("centralShare", nullChecker(fundReleasedDetail.getCentralShare()) + nullChecker(fundReleasedDetail.getUnspentBalance())); // here central share is equal to the central share +  unspent balance in the fund released
+			map.put("stateShare", nullChecker(fundReleasedDetail.getStateShare()));
 			map.put("planCode", fundReleasedDetail.getFundReleased().getPlanCode());
 			map.put("message", "success");
 		}else {
@@ -141,7 +143,20 @@ public class PlanAllocationController {
 		}else {
 			map.put("disableIsfreeze", false);
 		}
-
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
 		return map;
+	}
+
+
+	public Integer nullChecker(Integer integer) {
+		 
+		if(integer!=null && !"".equals(integer))
+		{
+		}else {
+			integer=0;
+		}
+		return integer;
 	}
 }

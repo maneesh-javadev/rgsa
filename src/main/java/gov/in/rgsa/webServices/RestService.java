@@ -73,7 +73,11 @@ public class RestService {
 
 	@GetMapping({ "/webService/totalERRepresentativeDetails/{finYear}" })
 	public List<ERRepresentativeHundredDayProg> totalERRepresentativeDetails(@PathVariable final String finYear,
-			final HttpServletResponse response, final HttpServletRequest request) {
+			final HttpServletResponse response, final HttpServletRequest request) {  
+		
+		
+		
+		  
 		response.setHeader("Access-Control-Allow-Origin", "*");
 		response.setHeader("Access-Control-Allow-Headers", request.getHeader("Access-Control-Request-Headers"));
 		response.setHeader("Access-Control-Allow-Methods", request.getHeader("Access-Control-Request-Method"));
@@ -83,7 +87,7 @@ public class RestService {
 
 	@GetMapping({ "/webService/totalERRepresentativeDetailsDateWise/{stDate}/{endDate}" })
 	public List<ERRepresentativeHundredDayProg> totalERRepresentativeDetailsDateWise(@PathVariable final String stDate,
-			@PathVariable final String endDate, final HttpServletResponse response, final HttpServletRequest request) {
+			@PathVariable final String endDate, final HttpServletResponse response, final HttpServletRequest request) {  
 		response.setHeader("Access-Control-Allow-Origin", "*");
 		response.setHeader("Access-Control-Allow-Headers", request.getHeader("Access-Control-Request-Headers"));
 		response.setHeader("Access-Control-Allow-Methods", request.getHeader("Access-Control-Request-Method"));

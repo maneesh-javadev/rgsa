@@ -17,7 +17,8 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "basic_info_defination", schema = "rgsa")
 @NamedQueries({@NamedQuery(name = "FIND_BASIC_DEFINATION_BY_FIN_YEAR_ID", 
-query = "SELECT B FROM BasicInfoDefination B LEFT OUTER JOIN FETCH B.basicInfoDefinationDetails BI WHERE B.finYearId=:yearId and B.formType=:formType ORDER BY BI.orderNo"),
+//query = "SELECT B FROM BasicInfoDefination B LEFT OUTER JOIN FETCH B.basicInfoDefinationDetails BI WHERE B.finYearId=:yearId and B.formType=:formType ORDER BY BI.orderNo"),
+	query = "SELECT B FROM BasicInfoDefination B LEFT OUTER JOIN FETCH B.basicInfoDefinationDetails BI WHERE B.formType=:formType ORDER BY BI.orderNo"),
 @NamedQuery(name = "FIND_BASIC_DEFINATION_BY_FIN_YEAR_ID_AND_ID", 
 query = "SELECT B FROM BasicInfoDefination B LEFT OUTER JOIN FETCH B.basicInfoDefinationDetails BI WHERE B.finYearId=:yearId and BI.basicInfoDefinationDetailsId=:basicInfoDefinationDetailsId ORDER BY BI.orderNo"),
 
