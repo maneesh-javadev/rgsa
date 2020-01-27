@@ -8,7 +8,7 @@ import javax.persistence.NamedNativeQuery;
 @Entity
 @NamedNativeQuery(name="FETCH_GRAM_PANCHAYAT_REPORT_DETAILS",query="SELECT t.panhcayat_bhawan_activity_id, t.id as panhcayat_bhawan_activity_details_id, t.district_code,t.local_body_code,"
 		+ "l.local_body_name_english from (select d.id,d.panhcayat_bhawan_activity_id,dg.district_code ,dg.local_body_code FROM rgsa.panhcayat_bhawan_activity_details d "
-		+ "LEFT OUTER JOIN rgsa.panhcayat_bhawan_activity_gps dg ON (d.id  = dg.panhcayat_bhawan_activity_details_id) WHERE d.activity_id=:activityId and "
+		+ "LEFT OUTER JOIN rgsa.panhcayat_bhawan_activity_gps dg ON (d.id  = dg.panhcayat_bhawan_activity_details_id and dg.isactive) WHERE d.activity_id=:activityId and "
 		+ "dg.district_code=:districtCode) t left outer join lgd.view_all_lb_details l on (t.local_body_code = l.local_body_code)",resultClass=GramPanchayatProgressReportDTO.class)
 public class GramPanchayatProgressReportDTO {
 

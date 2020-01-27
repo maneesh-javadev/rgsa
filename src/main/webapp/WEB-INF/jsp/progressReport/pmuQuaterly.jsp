@@ -11,6 +11,10 @@ if(quater_id > 2){
 let domain_list = '${LIST_OF_PMU_DOMAINS}';
 
 $('document').ready(function(){
+	
+	
+	 $('#noOfUnitCompleted_2').prop("disabled", true);
+
 	if(qtr_1_2_filled == "false"){
 		alert('Please fill the quater 1 and 2 progress report first.');
 	}
@@ -90,12 +94,13 @@ function validateWithCorrespondingFund(index){
 }
 
 function isNoOfUnitAndExpInurredFilled(index){
-	if($('#noOfUnitCompleted_'+index).val() == 0 || $('#noOfUnitCompleted_'+index).val() == null || $('#noOfUnitCompleted_'+index).val() ==''){
+	if(index <2){
+	if($('#noOfUnitCompleted_'+index).val() == null || $('#noOfUnitCompleted_'+index).val() ==''){
 		alert('Expenditure incurred cannot be filled if number of unit filled is zero or blank.');
 		$('#expenditureIncurred_'+index).val('');
 		$('#noOfUnitCompleted_'+index).focus();
 	}
-}
+}}
 
 function calTotalExpenditure(){
 	var rowCount=$('#tbodyId tr').length -1;
