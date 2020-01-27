@@ -60,9 +60,9 @@ public class EGovQtlServiceImpl implements EGovQtlService {
         		}
         	}
         }
-        if(totalExpendIncuuredInQtr1and2 == 0 && quarterId >= 3) {
+        /*if(totalExpendIncuuredInQtr1and2 == 0 && quarterId >= 3) {
         	qtrOneAndTwoNotPresent = true;
-        }
+        }*/
         for(QprEGovResponse qprEGov: qprEGovs) {
 
             if(!topInserted) {
