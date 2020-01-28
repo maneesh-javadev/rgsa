@@ -89,7 +89,7 @@ public interface ProgressReportService {
 	 */
 	public List<QuaterWiseFund> fetchTotalQuaterWiseFundData(Integer stateCode, int componentId);
 
-	public List<StateAllocation> fetchStateAllocationData(int componentId, int installmentNo, int planCode);
+	//public List<StateAllocation> fetchStateAllocationData(int componentId, int installmentNo, int planCode);
 	
 	public List<StateAllocation> fetchStateAllocationData(int componentId, int subComponentId ,int installmentNo, int planCode);
 
@@ -133,4 +133,7 @@ public interface ProgressReportService {
 	public QprEnablement fetchQprEnablement(Integer eEnablementId, int quarterId ,int districtCode);
 	
 	public QprEnablement fetchQprEnablementId(Integer eEnablementId, int quarterId);
+	
+	public List<StateAllocation> fetchStateAllocationData(int componentId, int planCode);
+
 }
