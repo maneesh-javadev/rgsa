@@ -937,7 +937,12 @@
 	</definition>
 	
 	
-	
+	<definition name="actionPlanPhysicalReport"
+		extends="base.definition.admin">
+		<put-attribute name="title" value="View Report Mopr" />
+		<put-attribute name="body"
+			value="/WEB-INF/jsp/viewPlanDetailsMOPR/actionPlanPhysicalReport.jsp" />
+	</definition>
 	
 </tiles-definitions>
 
