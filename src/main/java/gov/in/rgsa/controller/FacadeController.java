@@ -123,7 +123,7 @@ public class FacadeController {
 		try {
 			CaptchaValidator captchaValidator = new CaptchaValidator();	
 			boolean messageFlag = captchaValidator.validateCaptcha(httpSession, form.getCaptchaAnswer());
-			if (isCaptcha  && !messageFlag ) {
+			if (isCaptcha  && !messageFlag ) { 
 				re.addFlashAttribute(Message.CAPCHA_ERROR_KEY, "You Have Entered Wrong Captcha");
 				return REDIRECT_INDEX_VIEW;
 			} 
@@ -183,7 +183,7 @@ public class FacadeController {
 		_userPreference.setDistrictcode(userPreference.getDistrictcode());
 		_userPreference.setMenus(userPreference.getMenus());
 		_userPreference.setFinYearId(userPreference.getFinYearId());
-		_userPreference.setFinYear(userPreference.getFinYear());
+		//_userPreference.setFinYear(userPreference.getFinYear());
 		_userPreference.setActivityPlanStatus(userPreference.getActivityPlanStatus());
 		_userPreference.setPlanComponents((userPreference.getPlanComponents()));
 		_userPreference.setIsFreezeStatusList(userPreference.getIsFreezeStatusList());

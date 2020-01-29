@@ -269,7 +269,8 @@ public class PanchayatBhawanActivityServiceImpl implements PanchayatBhawanServic
 	@Override
 	public BasicInfoDetails findNumberOfPnchayatWithOutBhawanByState(Integer stateCode) {
 		Map<String, Object> map = new HashMap<String,Object>();
-		map.put("stateCode", stateCode);		
+		map.put("stateCode", stateCode);
+		map.put("yearId", userPreference.getFinYearId());
 	return commonRepository.find("PANCHAYAT_WITHOUT_BHAWAN", map);
 	}
 	
@@ -401,6 +402,7 @@ public class PanchayatBhawanActivityServiceImpl implements PanchayatBhawanServic
 		Map<String, Object> map = new HashMap<String,Object>();
 		map.put("stateCode", stateCode);	
 		map.put("defination_key", defination_key);
+		map.put("yearId", userPreference.getFinYearId());
 		String defination_value= commonRepository.find("BASIC_INFO_KEY_VALUE", map);
 		if(defination_value!=null && defination_value.length()>0) {
 			d=Integer.parseInt(defination_value);

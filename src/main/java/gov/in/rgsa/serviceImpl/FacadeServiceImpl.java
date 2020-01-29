@@ -343,23 +343,50 @@ public class FacadeServiceImpl implements FacadeService {
 		return commonRepository.findAll("STATE_PLAN_FUNDS", parameter);
 	}
 
+	
+	// update on 28-01-2020
 	@Override
 	public UserPreference changeAccToNewFinYearId(UserPreference _userPreference, String finYearId) {
+		try {
 		String newFinYear=null;
 		_userPreference.setFinYearId(Integer.parseInt(finYearId));
-		for(FinYear finyear : _userPreference.getFinYearList()) {
-			if(finyear.getYearId() == Integer.parseInt(finYearId)) {
+		for (FinYear finyear : _userPreference.getFinYearList())
+		{
+			if (finyear.getYearId() == Integer.parseInt(finYearId))
+			{
 				newFinYear = finyear.getFinYear();
 			}
-				
+
 		}
 		_userPreference.setFinYear(newFinYear);
+		Map<String, Object> param=new HashMap<>();
+		param.put("yearId", _userPreference.getFinYearId());
+		param.put("stateCode", _userPreference.getStateCode());
+		List<Plan> planList = commonRepository.findAll("SHOW_HIDE_BUTTON_PLAN_STATUS",param);
+		if(!CollectionUtils.isEmpty(planList)) {
+			_userPreference.setPlanCode(planList.get(0).getPlanCode());
+			_userPreference.setPlanStatus(planList.get(0).getPlanStatusId());
+			_userPreference.setPlanVersion(planList.get(0).getPlanVersion());
+			}
+		
+		
+		
 		Map<String, Object> parameter = new HashMap<String, Object>();
 		parameter.put("yearId",_userPreference.getFinYearId());
 		parameter.put("stateCode", _userPreference.getStateCode());
 		parameter.put("userType", _userPreference.getUserType());
 		List<StatePlanComponentsFunds> componentsFunds= commonRepository.findAll("STATE_PLAN_FUNDS", parameter);
 		_userPreference.setStatePlanComponentsFunds(componentsFunds);
+		Boolean plansAreFreezed = checkForFreezeStatus(parameter);
+		_userPreference.setPlansAreFreezed(plansAreFreezed);
+		
+		_userPreference.setCountPlanSubmittedByState(planDetailsService.countPlanSubmittedByState("M"));
+		_userPreference.setCountPlanSubmittedByMOPR(planDetailsService.countPlanSubmittedByState("C"));
+		List<IsFreezeStatusDto> isFreezeStatusDto = commonRepository.findAll("FETCH_FORMS_FREEZE_STATUS", parameter);
+		_userPreference.setIsFreezeStatusList(isFreezeStatusDto);
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
 		return _userPreference;
 	}
 

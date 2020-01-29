@@ -708,8 +708,7 @@ tbody tr td:nth-child(1) {  /*the first cell in each tr*/
  -->
 							</c:if>
 
-							<button type="button" id="clearButtn" onclick="onClear(this)"
-								class="btn bg-light-blue waves-effect">CLEAR</button>
+							 
 							</c:if>
 							<button type="button"
 								onclick="onClose('home.html?<csrf:token uri='home.html'/>')"

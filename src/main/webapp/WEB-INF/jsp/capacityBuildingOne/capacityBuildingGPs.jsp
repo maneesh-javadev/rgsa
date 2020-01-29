@@ -147,9 +147,9 @@
 									   	<div class="form-group text-right">
 									   	    <button ng-click="savePanchayatBhawanData()" ng-show="isSaveVisible" type="button" class="btn bg-green waves-effect" ><spring:message code="Label.SAVE" htmlEscape="true"/></button> 
 									   		
-									   		<button type="button"   class="btn bg-light-blue waves-effect"  onclick="onClose('capacitybuildGPs.html?<csrf:token uri='capacitybuildGPs.html'/>')">
+									   		<%-- <button type="button"   class="btn bg-light-blue waves-effect"  onclick="onClose('capacitybuildGPs.html?<csrf:token uri='capacitybuildGPs.html'/>')">
 									   			<spring:message code="Label.CLEAR" htmlEscape="true" />
-									   		</button>
+									   		</button> --%>
 											<button type="button" onclick="onClose('home.html?<csrf:token uri='home.html'/>')" class="btn bg-orange waves-effect">
 												<spring:message code="Label.CLOSE" htmlEscape="true" />
 											</button>

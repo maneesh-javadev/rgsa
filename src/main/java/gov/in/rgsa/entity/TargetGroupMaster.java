@@ -23,7 +23,7 @@ import javax.persistence.Transient;
 @Entity
 @Table(name="target_group_master" , schema="rgsa")
 @NamedQueries({
-@NamedQuery(name="FETCH_TARGET_GROUP_LIST" , query="From TargetGroupMaster where isActive=true and finYear=:finYear ORDER BY targetGroupMasterName"),
+@NamedQuery(name="FETCH_TARGET_GROUP_LIST" , query="From TargetGroupMaster where isActive=true  ORDER BY targetGroupMasterName"),
 @NamedQuery(name="FETCH_TARGET_GROUP_LIST_BY_ID" , query="From TargetGroupMaster where isActive=true and targetGroupMasterId=:targetGroupMasterId ORDER BY targetGroupMasterName")
 })
 public class TargetGroupMaster implements Serializable{

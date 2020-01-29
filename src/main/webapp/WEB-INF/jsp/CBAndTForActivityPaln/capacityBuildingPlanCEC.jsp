@@ -298,8 +298,7 @@ $('document').ready(function(){
 										
 										<button type="button" id="unFrzButtn" onclick="toFreeze();"
 											class="btn bg-green waves-effect">UNFREEZE</button>
-										<button type="button" id="clearButtn" onclick="onClear(this)"
-											class="btn bg-light-blue waves-effect">CLEAR</button>
+										 
 										<button type="button"
 											onclick="onClose('home.html?<csrf:token uri='home.html'/>')"
 											class="btn bg-orange waves-effect">CLOSE</button>

@@ -18,8 +18,8 @@ import javax.persistence.Table;
 @Table(name="basic_info_details",schema="rgsa")
 @NamedQuery(name="DELETE_BASICINFO_DETAILS",query="delete from BasicInfoDetails where basicInfo.basicInfoId=:basicInfoId")
 @NamedNativeQueries({
-@NamedNativeQuery(query="SELECT * from rgsa.basic_info_details where basic_info_id in (select basic_info_id from rgsa.basic_info where state_code =:stateCode) and defination_key = '27_bp'",name="PANCHAYAT_WITHOUT_BHAWAN",resultClass=BasicInfoDetails.class),
-@NamedNativeQuery(query="SELECT defination_value from rgsa.basic_info_details where basic_info_id in (select basic_info_id from rgsa.basic_info where state_code =:stateCode) and defination_key = :defination_key",name="BASIC_INFO_KEY_VALUE")
+@NamedNativeQuery(query="SELECT * from rgsa.basic_info_details where basic_info_id in (select basic_info_id from rgsa.basic_info where state_code =:stateCode and year_id=:yearId) and defination_key = '27_bp'",name="PANCHAYAT_WITHOUT_BHAWAN",resultClass=BasicInfoDetails.class),
+@NamedNativeQuery(query="SELECT defination_value from rgsa.basic_info_details where basic_info_id in (select basic_info_id from rgsa.basic_info where state_code =:stateCode and year_id=:yearId ) and defination_key = :defination_key",name="BASIC_INFO_KEY_VALUE")
 })
 public class BasicInfoDetails implements Serializable{
 	
