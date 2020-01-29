@@ -12,10 +12,28 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import gov.in.rgsa.dto.DemographicProfileDataDto;
+import gov.in.rgsa.entity.CapacityBuildingActivity;
 import gov.in.rgsa.model.ViewReportAtMoprModel;
+import gov.in.rgsa.service.AdditionalFacultyAndMainService;
+import gov.in.rgsa.service.AdminAndFinancialDataCellService;
+import gov.in.rgsa.service.AdminTechSupportService;
+import gov.in.rgsa.service.CapacityBuildingService;
+import gov.in.rgsa.service.EEnablementOfPanchayatService;
 import gov.in.rgsa.service.FacadeService;
+import gov.in.rgsa.service.IecService;
+import gov.in.rgsa.service.IncomeEnhancementService;
+import gov.in.rgsa.service.InnovativeActivityService;
+import gov.in.rgsa.service.InstitutionalInfraActivityPlanService;
 import gov.in.rgsa.service.LGDService;
 import gov.in.rgsa.service.MOPRService;
+import gov.in.rgsa.service.PanchayatBhawanService;
+import gov.in.rgsa.service.PlanAllocationService;
+import gov.in.rgsa.service.PmuActivityService;
+import gov.in.rgsa.service.ProgressReportService;
+import gov.in.rgsa.service.SatcomActivityProgressService;
+import gov.in.rgsa.service.SatcomFacilityService;
+import gov.in.rgsa.service.TrainingActivityService;
+import gov.in.rgsa.service.TrainingInstitutionService;
 import gov.in.rgsa.service.ViewReportAtMoprService;
 import gov.in.rgsa.user.preference.UserPreference;
 
@@ -27,10 +45,12 @@ public class ViewReportAtMoprController {
 
 	private static final String VIEW_REPORT_DEMOGRAPHIC_PROFILE_STATE = "viewReportDemographicProfileState";
 	private static final String VIEW_REPORT_ANNUAL_ACTION_STATE = "viewReportAnnualActionState";
+	private static final String Action_Plan_Physical_Report = "actionPlanPhysicalReport";
 
 	@Autowired
 	private ViewReportAtMoprService viewReportAtMoprService;
 
+	
 	@Autowired
 	UserPreference userPreference;
 
@@ -43,6 +63,76 @@ public class ViewReportAtMoprController {
 	@Autowired
 	private MOPRService moprService;
 
+	@Autowired
+	private TrainingActivityService trainingActivityService;
+
+	@Autowired
+	private PanchayatBhawanService panchayatBhawanService;
+
+	@Autowired
+	private TrainingInstitutionService trainingInstitutionService;
+
+	@Autowired
+	private ProgressReportService progressReportService;
+
+	@Autowired
+	private IecService iecService;
+
+	/*
+	 * @Autowired private PmuActivityService activityService;
+	 */
+
+	@Autowired
+	InnovativeActivityService innovativeActivityService;
+
+	@Autowired
+	private InstitutionalInfraActivityPlanService institutionalInfraActivityPlanService;
+
+	@Autowired
+	private IncomeEnhancementService enhancementService;
+
+	@Autowired
+	private SatcomFacilityService satcomFacilityService;
+
+	@Autowired
+	private LGDService lgdService;
+
+	@Autowired
+	private AdminTechSupportService adminTechSupportService;
+
+	@Autowired
+	private SatcomActivityProgressService satcomActivityProgressService;
+
+	@Autowired
+	private AdditionalFacultyAndMainService additionalFacultyAndMainService;
+
+	/*
+	 * @Autowired private CapacityBuildingService capacityBuildingService;
+	 */
+
+	@Autowired
+	private PmuActivityService pmuActivityService;
+
+	@Autowired
+	private EEnablementOfPanchayatService eEnablementOfPanchayatService;
+
+	/*
+	 * @Autowired private CBMasterService cbMasterService;
+	 */
+
+	@Autowired
+	private AdminAndFinancialDataCellService adminAndFinancialDataCellService;
+
+	@Autowired
+	InstitutionalInfraActivityPlanService InstitutionalInfraActivityPlanService;
+
+	@Autowired
+	PlanAllocationService planAllocationService;
+	
+	@Autowired
+	private CapacityBuildingService capacityBuildingService;
+	
+	
 	@GetMapping(value = "viewReportDemographicProfile")
 	private String viewReportDemographicProfile(
 			@ModelAttribute(name = "VIEW_REPORT_MODEL") ViewReportAtMoprModel viewReportModel, Model model) {
@@ -125,4 +215,21 @@ public class ViewReportAtMoprController {
 		model.addAttribute("planComponentsFunds", facadeService.fetchFundDetailsByUserType(parameter));
 		return VIEW_REPORT_ANNUAL_ACTION_STATE;
 	}
+	
+	@GetMapping({ "actionPlanPhysicalReport" })
+	public String getReportData(Model model) {
+		
+		return Action_Plan_Physical_Report;
+	}
+	
+	@PostMapping({ "actionPlanPhysicalReport" })
+	public String fetchReportData(String component, Model model) {
+		
+		if(("TRA").equals(component)) {
+		CapacityBuildingActivity capacityBuildingList = capacityBuildingService.fetchCapacityBuildingActivity(null);
+		
+		
+	}
+		return Action_Plan_Physical_Report;
+}
 }
