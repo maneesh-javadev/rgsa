@@ -68,10 +68,10 @@
 								<button type="button" class="btn bg-green waves-effect">
 									SAVE
 								</button>
-								<button type="button" onclick="onClear(this)"
+								<!-- <button type="button" onclick="onClear(this)"
 									class="btn bg-light-blue waves-effect">
 									CLEAR
-								</button>
+								</button> -->
 								<button type="button"
 									onclick="onClose('home.html?<csrf:token uri='home.html'/>')"
 									class="btn bg-orange waves-effect">

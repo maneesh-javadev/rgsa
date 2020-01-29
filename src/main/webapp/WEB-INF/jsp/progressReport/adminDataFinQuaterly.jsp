@@ -275,8 +275,8 @@ function FreezeAndUnfreeze(msg){
 												class="btn bg-green waves-effect">SAVE</button>
 										<button type="button" onclick="FreezeAndUnfreeze('unfreeze')"
 													class="btn bg-orange waves-effect">UNFREEZE</button>
-										<button type="button" id="clearButtn" onclick="onClear(this)"
-											class="btn bg-light-blue waves-effect" disabled="disabled">CLEAR</button>					
+										<!-- <button type="button" id="clearButtn" onclick="onClear(this)"
+											class="btn bg-light-blue waves-effect" disabled="disabled">CLEAR</button>	 -->				
 									</c:when>
 									<c:otherwise>
 										<button type="button" onclick="saveAndGetDataQtrRprt('save')" id="saveButtn"
@@ -289,8 +289,8 @@ function FreezeAndUnfreeze(msg){
 											<c:otherwise><button type="button" onclick="FreezeAndUnfreeze('freeze')"
 													class="btn bg-orange waves-effect">FREEZE</button></c:otherwise>
 										</c:choose>
-										<button type="button" id="clearButtn" onclick="onClear(this)"
-											class="btn bg-light-blue waves-effect">CLEAR</button>
+										<!-- <button type="button" id="clearButtn" onclick="onClear(this)"
+											class="btn bg-light-blue waves-effect">CLEAR</button> -->
 										</c:otherwise>
 								</c:choose>
 								<button type="button"

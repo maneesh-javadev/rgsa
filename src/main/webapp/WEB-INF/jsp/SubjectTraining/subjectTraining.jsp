@@ -39,8 +39,8 @@
 							</div>
 							<div class="form-group text-right">
 								<button type="submit" class="btn bg-green waves-effect">SAVE</button>
-								<button type="button" onclick="onClear(this)"
-									class="btn bg-light-blue waves-effect">CLEAR</button>
+							<!-- 	<button type="button" onclick="onClear(this)"
+									class="btn bg-light-blue waves-effect">CLEAR</button> -->
 								<button type="button"
 									onclick="onClose('managesubjects.html?<csrf:token uri='managesubjects.html'/>')"
 									class="btn bg-orange waves-effect">CLOSE</button>

@@ -749,13 +749,13 @@
 											onclick="FreezeAndUnfreeze('freeze')">FREEZE</form:button>
 									</c:otherwise>
 								</c:choose>
-								<form:button type="button"
+								<%-- <form:button type="button"
 									data-ng-show="!institutionalInfraActivityPlan.isFreeze"
 									data-ng-click="load_data()"
 									class="btn bg-light-blue waves-effect"
 									disabled="${QPR_INSTITUTIONALINFRAQUATERLY.isFreeze}">
 									<spring:message code="Label.CLEAR" htmlEscape="true" />
-								</form:button>
+								</form:button> --%>
 							</c:if>
 							<form:button type="button"
 								onclick="onClose('home.html?<csrf:token uri='home.html'/>')"

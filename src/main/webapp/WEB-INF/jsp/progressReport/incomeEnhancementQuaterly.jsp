@@ -214,8 +214,8 @@ function FreezeAndUnfreeze(msg){
 										<c:when test="${QPR_ENHANCEMENT.isFreeze}"><form:button class="btn bg-orange waves-effect" onclick="FreezeAndUnfreeze('unfreeze')">UNFREEZE</form:button></c:when>
 										<c:otherwise><form:button class="btn bg-orange waves-effect" disabled="${DISABLE_FREEZE}" onclick="FreezeAndUnfreeze('freeze')">FREEZE</form:button></c:otherwise>
 									</c:choose>	
-									<form:button id="clearButtn" onclick="onClear(this)"
-										class="btn bg-light-blue waves-effect" disabled="${QPR_ENHANCEMENT.isFreeze}">CLEAR</form:button>
+									<%-- <form:button id="clearButtn" onclick="onClear(this)"
+										class="btn bg-light-blue waves-effect" disabled="${QPR_ENHANCEMENT.isFreeze}">CLEAR</form:button> --%>
 									<button type="button"
 										onclick="onClose('home.html?<csrf:token uri='home.html'/>')"
 										class="btn bg-red waves-effect">CLOSE</button>

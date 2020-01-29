@@ -253,11 +253,11 @@ $(document).ready(function() {
 							<c:choose>
 								<c:when test="${FETCHED_DATA.fundReleasedDetails[1].isFreeze and FETCHED_DATA.fundReleasedDetails[0].isFreeze }">
 									<button class="btn bg-green waves-effect" id="saveId" onclick="submitToPost('save')" disabled="disabled"><spring:message code="Label.SAVE" text="Save" htmlEscape="true" /></button>
-									<button type="button" data-ng-click="onClear(this)" class="btn bg-light-blue waves-effect" disabled="disabled"><spring:message code="Label.CLEAR" htmlEscape="true" /></button>
+									<%-- <button type="button" data-ng-click="onClear(this)" class="btn bg-light-blue waves-effect" disabled="disabled"><spring:message code="Label.CLEAR" htmlEscape="true" /></button> --%>
 								</c:when>
 								<c:otherwise>
 									<button class="btn bg-green waves-effect save-button" id="saveId" onclick="submitToPost('save')"><spring:message code="Label.SAVE" text="Save" htmlEscape="true" /></button>
-									<button type="button" data-ng-click="onClear(this)" class="btn bg-light-blue waves-effect" ><spring:message code="Label.CLEAR" htmlEscape="true" /></button>
+									<%-- <button type="button" data-ng-click="onClear(this)" class="btn bg-light-blue waves-effect" ><spring:message code="Label.CLEAR" htmlEscape="true" /></button> --%>
 								</c:otherwise>
 							</c:choose>
 								<button type="button" onclick="onClose('home.html?<csrf:token uri='home.html'/>')" class="btn bg-orange waves-effect"><spring:message code="Label.CLOSE" htmlEscape="true" /></button>

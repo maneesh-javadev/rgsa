@@ -866,9 +866,9 @@ function FreezeAndUnfreeze(msg){
 									<c:when test="${QPR_CB_ACT_DATA.isFreeze}"><form:button class="btn bg-orange waves-effect" onclick="FreezeAndUnfreeze('unfreeze')">UNFREEZE</form:button></c:when>
 									<c:otherwise><form:button class="btn bg-orange waves-effect" disabled="${DISABLE_FREEZE}" onclick="FreezeAndUnfreeze('freeze')">FREEZE</form:button></c:otherwise>
 								</c:choose>
-								<form:button type="button" data-ng-click="onClear(this)" class="btn bg-light-blue waves-effect" disabled="${QPR_CB_ACT_DATA.isFreeze}">
+								<%-- <form:button type="button" data-ng-click="onClear(this)" class="btn bg-light-blue waves-effect" disabled="${QPR_CB_ACT_DATA.isFreeze}">
 									<spring:message code="Label.CLEAR" htmlEscape="true"/>
-								</form:button>
+								</form:button> --%>
 								<form:button type="button" onclick="onClose('home.html?<csrf:token uri='home.html'/>')" class="btn bg-red waves-effect">
 									<spring:message code="Label.CLOSE" htmlEscape="true" />
 								</form:button>

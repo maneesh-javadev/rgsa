@@ -108,8 +108,8 @@
 							<div class="form-group text-right">
 								<button data-ng-show="qprPanchayatBhawan.isFreeze" data-ng-click="saveQprPanchayatBhawanData()" type="button" class="btn bg-green waves-effect" disabled="disabled"><spring:message code="Label.SAVE" htmlEscape="true"/></button>
 								<button data-ng-show="!qprPanchayatBhawan.isFreeze" data-ng-click="saveQprPanchayatBhawanData()" type="button" class="btn bg-green waves-effect"><spring:message code="Label.SAVE" htmlEscape="true" /></button>
-								<button type="button" data-ng-show="qprPanchayatBhawan.isFreeze"  class="btn bg-light-blue waves-effect" disabled="disabled"><spring:message code="Label.CLEAR" htmlEscape="true"/></button>
-								<button type="button" data-ng-show="!qprPanchayatBhawan.isFreeze" class="btn bg-light-blue waves-effect"><spring:message code="Label.CLEAR" htmlEscape="true" /></button>
+								<%-- <button type="button" data-ng-show="qprPanchayatBhawan.isFreeze"  class="btn bg-light-blue waves-effect" disabled="disabled"><spring:message code="Label.CLEAR" htmlEscape="true"/></button> --%>
+								<%-- <button type="button" data-ng-show="!qprPanchayatBhawan.isFreeze" class="btn bg-light-blue waves-effect"><spring:message code="Label.CLEAR" htmlEscape="true" /></button> --%>
 								<button type="button"
 									onclick="onClose('home.html?<csrf:token uri='home.html'/>')"
 									class="btn bg-orange waves-effect">

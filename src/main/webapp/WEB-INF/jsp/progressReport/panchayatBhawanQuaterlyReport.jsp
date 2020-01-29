@@ -240,8 +240,8 @@
 													onclick="FreezeAndUnfreeze('freeze')">FREEZE</form:button>
 											</c:otherwise>
 										</c:choose>
-										<form:button type="button" onclick=""
-												class="btn bg-light-blue waves-effect reset" disabled="${QPR_PANCHAYAT_BHAWAN.isFreeze}">CLEAR ${districtCode}</form:button>
+										<%-- <form:button type="button" onclick=""
+												class="btn bg-light-blue waves-effect reset" disabled="${QPR_PANCHAYAT_BHAWAN.isFreeze}">CLEAR ${districtCode}</form:button> --%>
 											<form:button type="button"
 												onclick=" onClose('home.html?
 														<csrf:token uri='home.html'/>')"

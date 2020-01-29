@@ -489,8 +489,8 @@ function FreezeAndUnfreeze(msg){
 													onclick="FreezeAndUnfreeze('freeze')">FREEZE</form:button>
 											</c:otherwise>
 										</c:choose>
-										<form:button onclick="onClear(this)"
-												class="btn bg-light-blue waves-effect" disabled="${PMU_PROGRESS.isFreeze}">CLEAR</form:button>
+										<%-- <form:button onclick="onClear(this)"
+												class="btn bg-light-blue waves-effect" disabled="${PMU_PROGRESS.isFreeze}">CLEAR</form:button> --%>
 											<form:button
 												onclick="onClose('home.html?<csrf:token uri='home.html'/>')"
 												class="btn bg-red waves-effect">CLOSE</form:button>
