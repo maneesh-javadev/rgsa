@@ -62,7 +62,7 @@
 							</div>
 		  					<div class="form-group text-right">
 								<button type="button" class="btn bg-green waves-effect"><spring:message code="Label.SAVE" htmlEscape="true" /></button>
-								<button type="button" onclick="onClear(this)" class="btn bg-light-blue waves-effect"> <spring:message code="Label.CLEAR" htmlEscape="true" /></button>
+								 
 								<button type="button" onclick="onClose('home.html?<csrf:token uri='home.html'/>')" class="btn bg-orange waves-effect"> <spring:message code="Label.CLOSE" htmlEscape="true" /></button>
 							</div>
 						</div>

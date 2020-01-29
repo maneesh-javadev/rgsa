@@ -238,23 +238,27 @@ public void save(TrainingActivity activity) {
 
 	@Override
 	public List<TargetGroupMaster> targetGroupMastersList() {
-		Map<String,Object> params = new HashMap<>();
-		params.put("finYear", userPreference.getFinYearId());
-		return commonRepository.findAll("FETCH_TARGET_GROUP_LIST", params);
+		//Map<String,Object> params = new HashMap<>();
+		//params.put("finYear", userPreference.getFinYearId());
+		return commonRepository.findAll("FETCH_TARGET_GROUP_LIST", null);
 	}
 
 	@Override
 	public List<Subjects> subjectsList() {
-		Map<String,Object> params = new HashMap<>();
-		params.put("finYearId", userPreference.getFinYearId());
-		return commonRepository.findAll("FIND_SUBJECT_BY_FIN_YEAR_ID", params);
+		/*
+		 * Map<String,Object> params = new HashMap<>(); params.put("finYearId",
+		 * userPreference.getFinYearId());
+		 */
+		return commonRepository.findAll("FIND_SUBJECT_BY_FIN_YEAR_ID", null);
 	}
 
 	@Override
 	public List<TrainingCategories> trainingCategoriesList() {
-		Map<String,Object> params = new HashMap<>();
-		params.put("finYear", userPreference.getFinYearId());
-		return commonRepository.findAll("FETCH_ALL_TRAINING_CATEGORIES", params);
+		/*
+		 * Map<String,Object> params = new HashMap<>(); params.put("finYear",
+		 * userPreference.getFinYearId());
+		 */
+		return commonRepository.findAll("FETCH_ALL_TRAINING_CATEGORIES", null);
 	}
 
 	@Override

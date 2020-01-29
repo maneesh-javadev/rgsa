@@ -905,8 +905,7 @@ select option:first-child{
 											</c:if>
 											<button type="button" id="unFrzButtn" onclick="toFreeze();"
 												class="btn bg-orange waves-effect">UNFREEZE</button>
-											<button type="button" id="clearButtn"
-												class="btn bg-light-blue waves-effect reset">CLEAR</button>
+											 
 										</c:if>
 
 									</c:when>
@@ -916,8 +915,7 @@ select option:first-child{
 											class="btn bg-green waves-effect">SAVE</button>
 										<button type="button" id="frzButtn" onclick="toFreeze();"
 											class="btn bg-orange waves-effect">FREEZE</button>
-										<button type="button" id="clearButtn"
-											class="btn bg-light-blue waves-effect reset">CLEAR</button>
+										 
 									</c:otherwise>
 							</c:choose>
 								 

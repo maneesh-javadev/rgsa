@@ -48,10 +48,7 @@
 								<button type="submit" class="btn bg-green waves-effect">
 									<spring:message code="Label.SAVE" htmlEscape="true" />
 								</button>
-								<button type="button" onclick="onClear(this)"
-									class="btn bg-light-blue waves-effect">
-									<spring:message code="Label.CLEAR" htmlEscape="true" />
-								</button>
+								 
 								<button type="button"
 									onclick="onClose('manageCategory.html?<csrf:token uri='manageCategory.html'/>')"
 									class="btn bg-orange waves-effect">

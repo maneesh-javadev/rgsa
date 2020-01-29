@@ -246,7 +246,7 @@ function FreezeAndUnfreeze(msg){
 										<c:otherwise><form:button class="btn bg-orange waves-effect" disabled="${DISABLE_FREEZE}" onclick="FreezeAndUnfreeze('freeze')">FREEZE</form:button></c:otherwise>
 									</c:choose>
 									
-									<button type="button" onclick="onClear(this)" class="btn bg-light-blue waves-effect" disabled="${ADMINISTRATIVE_TECHNICAL_PROGRESS.isFreeze}">CLEAR</button>
+								 
 									<button type="button" onclick="onClose('home.html?<csrf:token uri='home.html'/>')"
 										class="btn bg-red waves-effect">CLOSE</button>
 								</div>

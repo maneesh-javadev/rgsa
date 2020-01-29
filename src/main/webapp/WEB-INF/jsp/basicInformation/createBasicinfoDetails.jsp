@@ -2110,8 +2110,6 @@ var errorFlag=false;
                                 	<button type="submit" class="btn bg-green waves-effect save-button" onclick="return removeDisabledAttr('S')">SAVE
                                 	</button>
                                 	<button type="submit" class="btn bg-green waves-effect" onclick="return removeDisabledAttr('F')">FREEZE</button>
-                              
-                                	<button type="button" onclick="onClear(this)" class="btn bg-light-blue waves-effect">CLEAR</button>
                                 	<button type="button" onclick="onClose('home.html?<csrf:token uri='home.html'/>')"  class="btn bg-orange waves-effect">CLOSE</button>
                                </div>
                               </div>

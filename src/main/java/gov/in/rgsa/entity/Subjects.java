@@ -21,7 +21,7 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "subjects", schema = "rgsa")
 @NamedQueries({@NamedQuery(name = "FIND_SUBJECT_BY_FIN_YEAR_ID", 
-	query = "SELECT S FROM Subjects S WHERE S.finYearId=:finYearId ORDER BY S.subjectName"),
+	query = "SELECT S FROM Subjects S WHERE S.isActive=true ORDER BY S.subjectName"),
 	@NamedQuery(name = "FIND_SUBJECT_ID", 
 	query = "SELECT S FROM Subjects S WHERE S.subjectId=:subjectId"),
 	@NamedQuery(name="FETCH_SUBJECT_LIST",
