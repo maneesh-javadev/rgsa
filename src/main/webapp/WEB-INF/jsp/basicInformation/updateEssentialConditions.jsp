@@ -123,6 +123,7 @@ var $_checkEmptyObject = function(obj) {
                         </div> 
                          <form:form action="updateEssentialConditions.html" class="form-inline" modelAttribute="BASIC_INFO_MODEL" method="POST" onsubmit="disablingSave()">
                          <form:hidden path="basicInfoDefinationId" value="${BESIC_DEFINATION.basicInfoDefinationId}"/>
+                         <form:hidden path="basicInfoId" value="${basicinfoId}"/>
                         <div class="body">
                           	<c:set var="sNo" value="1"/>
 							 <c:forEach items="${BESIC_DEFINATION.basicInfoDefinationDetails}" var="field" varStatus="count">

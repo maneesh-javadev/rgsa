@@ -155,9 +155,7 @@ public class BasicInfoServiceImpl implements BasicInfoService {
 		List<BasicInfoDetails> basicInfoDetails = new ArrayList<BasicInfoDetails>();
 		Map<String, Object> params = new HashMap<String, Object>();
 		Integer id= basicInfoModel.getBasicInfoId();
-		if(id==null){
-			id=basicInfoModel.getBasicInfoDefinationId();
-		}
+		 
 		params.put("basicInfoId",id);
 		dao.excuteUpdate("DELETE_BASICINFO_DETAILS", params);
 		BasicInfo basicInfo= dao.find("FIND_BASIC_INFO_BY_ID", params);
@@ -181,7 +179,7 @@ public class BasicInfoServiceImpl implements BasicInfoService {
 	}
 
 	@Override
-	public void freezeBasicInfoDetails(Integer basicInfoId) {
+	public void freezeBasicInfoDetails(Integer basicInfoId) {  
 		try {
 		Map<String, Object> params = new HashMap<String, Object>();
 		params.put("basicInfoId", basicInfoId);

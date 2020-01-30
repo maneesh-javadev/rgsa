@@ -364,7 +364,7 @@ public void save(TrainingActivity activity) {
 			activity.setIsActive(true);
 			commonRepository.update(activity);
 		}
-	}
+	} 
 
 	@Override
 	public List<TrainingMode> fetchModeOfTraining() {
@@ -403,7 +403,7 @@ public void save(TrainingActivity activity) {
 		}
 		
 		
-		Integer planStatus=0;
+	 	Integer planStatus=0;
 		List<Plan> planList = planAllocationService.showHidePlanStatus(userPreference.getStateCode());
 		if(planList!=null && !planList.isEmpty())
 		{
