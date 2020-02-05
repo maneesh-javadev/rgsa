@@ -52,6 +52,8 @@ $( document ).ready(function() {
 
 function getformDetail()
 {
+	var  imageCaptua=$("#img_Capatcha").attr("src");
+	alert(imageCaptua);
 	var slc =0;
 	var fin =0;
 	var answerCap =0;
@@ -67,8 +69,12 @@ function getformDetail()
 	else if(userType== ''){
 		 slc=$("#selectSLC option:selected").val();
 		 fin=$("#selectFin option:selected").val();
-		  
-		  imageCaptua=$("#img_Capatcha").val();
+		 if(slc != 0){
+			 $("#accordion").show();
+			}else{
+				alert('kindly select state list');
+			} 
+		  imageCaptua=$("#img_Capatcha").attr("src");
 		 answerCap=$("#captchaAnswer").val();
 			/* if(slc != 0 && fin != 0 && imageCaptua == answerCap){
 			 $("#accordion").show();
@@ -1365,8 +1371,8 @@ function collapseHide() {
 											</div>
 											<div class="row form-group" id ="trainDetails">
 											<div class="col-sm-12">
-											<div class="col-sm-6"></div>
-											<div class="col-sm-4">
+											
+											<div class="col-sm-9">
 											<label>Total No. of Participants</label>
 											</div>
 											<div class="col-sm-2" >
@@ -1374,8 +1380,8 @@ function collapseHide() {
 											</div>
 											</div>
 											<div class="col-sm-12">
-											<div class="col-sm-6"></div>
-											<div class="col-sm-4">
+											
+											<div class="col-sm-9">
 											<label>Total Funds</label>
 											</div>
 											<div class="col-sm-2" >
@@ -1383,8 +1389,8 @@ function collapseHide() {
 											</div>
 											</div>
 											<div class="col-sm-12">
-											<div class="col-sm-6"></div>
-											<div class="col-sm-4">
+											
+											<div class="col-sm-9">
 											
 											
 											<label>Additional Requirements</label>
@@ -1394,8 +1400,8 @@ function collapseHide() {
 											</div>
 											</div>
 											<div class="col-sm-12">
-											<div class="col-sm-6"></div>
-											<div class="col-sm-4">
+											
+											<div class="col-sm-9">
 											<label>Total Proposed Fund</label>
 											</div>
 											<div class="col-sm-2" id="">
@@ -1970,6 +1976,8 @@ function collapseHide() {
 	</div>
 </section>
 <style>
+
+
 .card {
     background: 
 #f0eaea;
