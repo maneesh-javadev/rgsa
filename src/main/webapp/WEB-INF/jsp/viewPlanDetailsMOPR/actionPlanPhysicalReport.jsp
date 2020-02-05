@@ -1163,6 +1163,7 @@ function collapseHide() {
 
 
 <section class="content">
+
 	<div class="container-fluid">
 		<div class="row clearfix">
 			<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
@@ -1252,7 +1253,7 @@ function collapseHide() {
 						</div>
 						</div>
 							<div class="container">
-
+<div id="print">
 								<main>
 								<article class="panel-group bs-accordion" id="accordion"
 									role="tablist" aria-multiselectable="true">
@@ -1864,16 +1865,21 @@ function collapseHide() {
 										<button  type="button"   class="btn bg-green waves-effect"  onclick="collapseShow();">Expand all</button>
 
 										<button  type="button" class="btn bg-red waves-effect" id=collapse_hide onclick="collapseHide();">Collapse all</button>
+										 <button type="button" class="btn bg-red waves-effect"
+										id="exportButtonId"
+										onclick="exportToPdf('print')">Print
+										File</button> 
 									</div>
 									</article>
 								</main>
-								
+								</div>
 									
 							</div>
 						
 					</form:form>
 				</div>
 			</div>
+		</div>
 		</div>
 	</div>
 </section>
