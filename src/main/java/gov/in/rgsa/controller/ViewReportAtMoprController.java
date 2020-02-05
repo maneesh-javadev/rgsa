@@ -237,7 +237,7 @@ public class ViewReportAtMoprController {
 		return VIEW_REPORT_ANNUAL_ACTION_STATE;
 	}
 
-	@GetMapping({ "actionPlanPhysicalReport" })
+	@GetMapping(value ="actionPlanPhysicalReport")
 	public String getReportData(Model model) {
 		List<State> getStateList = lgdService.getAllStateList();
 		model.addAttribute("user_type", userPreference.getUserType());
@@ -260,7 +260,7 @@ public class ViewReportAtMoprController {
 		return Action_Plan_Physical_Report;
 	}
 
-	@PostMapping({ "actionPlanPhysicalReport" })
+	@PostMapping(value ="actionPlanPhysicalReport")
 	@ResponseBody
 	public Map<String, List<AnualActionPlanPhysically>> fetchReportData(String component,String slc,String fin, Model model) {
 		Map<String, List<AnualActionPlanPhysically>> anualActionPlanPhysically = new HashMap<>();
@@ -275,7 +275,7 @@ public class ViewReportAtMoprController {
 		return anualActionPlanPhysically;
 	}
 	
-	@GetMapping({ "validateCaptcha" })
+	@GetMapping(value ="validateCaptcha")
 	@ResponseBody
 	public Boolean validateCaptcha(String captchaAnswer, Model model,HttpSession httpSession, RedirectAttributes re) {
 		
