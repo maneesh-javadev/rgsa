@@ -32,12 +32,14 @@ $( document ).ready(function() {
 	//alert(userType);
 	
 	if(userType== 'M'){
-		 $("#accordion").hide();
-			}
+		 $("#print").hide();
+		}
 	else if(userType== ''){
-		 $("#accordion").show();
+		 $("#print").show();
 	}
-	
+	if(userType== 'S'){
+		 $("#print").show();
+		}
 	
 	$("#trainDetails").hide();
 	$("#trainRA").hide();
@@ -52,39 +54,63 @@ $( document ).ready(function() {
 
 function getformDetail()
 {
-	var  imageCaptua=$("#img_Capatcha").attr("src");
-	alert(imageCaptua);
+
+	//alert(imageCaptua);
 	var slc =0;
 	var fin =0;
-	var answerCap =0;
+	var imageCaptua =0;
 	var imageCaptua=0;
+	var flag=0;
 	if(userType== 'M'){
 	 slc=$("#selectSLC option:selected").val();
 	if(slc != 0){
-	 $("#accordion").show();
+		$('.abcv').css("display","none");
+		$('#print').css("display","block");
+
 	}else{
 		alert('kindly select state list');
 	}
 	}
 	else if(userType== ''){
+		 imageCaptua=$("#captchaAnswer").val();
 		 slc=$("#selectSLC option:selected").val();
 		 fin=$("#selectFin option:selected").val();
-		 if(slc != 0){
-			 $("#accordion").show();
+		
+			if(slc != 0){
+				flag=1;
 			}else{
+				flag=0;
 				alert('kindly select state list');
+			}
+			 if(imageCaptua != null){
+				$
+				.ajax({
+					type : "GET",
+					contentType : "application/json",
+					url : "validateCaptcha.html?<csrf:token uri='validateCaptcha.html'/>&captcahAnswer="+imageCaptua,
+					dataType : 'json',
+					cache : false,
+					timeout : 100000,
+					success : function(data) {
+							
+							if (data == true) {
+								flag=1;
+								$('.abcv').css("display","none");
+								$('#print').css("display","block");
+							}else{
+								
+								alert("kindly enter captcha correctly");
+								flag =0;
+							}
+		 },error : function(e) {
+				console.log(e);
+			}
+				}); 	
 			} 
-		  imageCaptua=$("#img_Capatcha").attr("src");
-		 answerCap=$("#captchaAnswer").val();
-			/* if(slc != 0 && fin != 0 && imageCaptua == answerCap){
-			 $("#accordion").show();
-			}else{
-				alert('kindly select  Detail properlly');
-			} */
-			
-	}
+		
+		
 }
-	
+}
  function collapseShow() {
     
     $('.abc').addClass("in");
@@ -95,7 +121,7 @@ function getformDetail()
     collapseDetails('PB');		
     collapseDetails('ATS');	
     collapseDetails('EE');	
-    collapseDetails('EGOV');		
+    collapseDetails('EG');		
     collapseDetails('PP');	
     collapseDetails('PP');	
     collapseDetails('DLS');	
@@ -647,7 +673,7 @@ function collapseHide() {
 												th = createLabel("No. of Months ");
 												tr.append(th);
 
-												th = createLabel("Funds    (in ï) ");
+												th = createLabel("Funds    (in Ã¯ÂÂ) ");
 												tr.append(th);
 
 												thead.append(tr);
@@ -1121,7 +1147,7 @@ function collapseHide() {
 														value1) {
 													tbody.append(tr);
 													table.append(tbody);
-                                    
+                                     if(value1.column9 =='2'){
                                     	var tdnext;
 
 													td = $("<TD/>");
@@ -1149,7 +1175,7 @@ function collapseHide() {
 															+ "</td>");
 													tr.append(tdnext);
 													tr = $("<TR/>");
-                                    
+                                     }
 												});
 
 												divTemplate.append(table);
@@ -1203,7 +1229,7 @@ function collapseHide() {
 														value1) {
 													tbody.append(tr);
 													table.append(tbody);
-                                    
+                                     if(value1.column9 =='2'){
                                     	var tdnext;
 
 													td = $("<TD/>");
@@ -1218,16 +1244,16 @@ function collapseHide() {
 															+ "</td>");
 													tr.append(tdnext);
 													tdnext = $("<td>"
-															+ value1.column5
+															+ value1.column4
 															+ "</td>");
 													tr.append(tdnext);
 													tdnext = $("<td>"
-															+ value1.column4
+															+ value1.column5
 															+ "</td>");
 													tdnext.attr("id", "expenditureEGOV_"+key1);
 													tr.append(tdnext);
 													tdnext = $("<td>"
-															+ value1.column7
+															+ value1.column6
 															+ "</td>");
 													tr.append(tdnext);
 													tdnext = $("<td>"
@@ -1235,7 +1261,7 @@ function collapseHide() {
 															+ "</td>");
 													tr.append(tdnext);
 													tr = $("<TR/>");
-                                    
+                                     }
 												});
 
 												divTemplate.append(table);
@@ -1250,9 +1276,249 @@ function collapseHide() {
 				});
 
 	}
+												
+												
+												
+												
+	function rowCount(ind){
+		var noOfP=0;
+		var addRequi=0;
+		var unitFund=0;
+		
+		for (var i = 0; i < ind; i++) {
+			//var r=$('#table1':noOfParticipant_i).val();
+			// var r=$('#table1').children('noOfParticipant_'+i).text();
+			//alert(r);
+			noOfP += +$('#noOfParticipant_'+i).html();	
+			
+			unitFund +=+$('#unitFund_'+i).html();
+		}
+		$('#totalCost').val(+unitFund);
+		
+		$('#noOfPart').val(+noOfP);
+		addRequi= $('#addRequ').val();
+		$('#fund').val(+unitFund + +addRequi);
+		}
+	function rowCountTRA(ind){
+		var unitCost=0;
+		var addRequi=0;
+		var unitFund=0;
+		
+		for (var i = 0; i < ind; i++) {
+			//var r=$('#table1':noOfParticipant_i).val();
+			// var r=$('#table1').children('noOfParticipant_'+i).text();
+			//alert(r);
+			unitCost += +$('#unitFund_'+i).html();	
+			
+			//unitFund +=+$('#unitFund_'+i).html();
+		}
+		$('#taTotFund').val(+unitCost);
+		
+		//$('#noOfPart').val(+unitCost);
+		addRequi= $('#addRequTRA').html();
+		if(addRequi ==null){
+			addRequi=0;
+		}
+		$('#fundTa').val(+unitCost + +addRequi);
+		}
+	function rowCountATS(ind){
+		var unitCost=0;
+		var addRequi=0;
+		var unitFund=0;
+		
+		for (var i = 0; i < ind; i++) {
+			//var r=$('#table1':noOfParticipant_i).val();
+			// var r=$('#table1').children('noOfParticipant_'+i).text();
+			//alert(r);
+			unitCost = +$('#unitCost_'+i).html();	
+			if(isNaN(unitCost)) {
+				 unitCost = 0;
+				}
+			unitFund +=unitCost;
+			//unitFund +=+$('#unitFund_'+i).html();
+		}
+		$('#taTotFundATS').val(+unitFund);
+		
+		//$('#noOfPart').val(+unitCost);
+		addRequi= $('#addRequATS').html();
+		if(addRequi ==null){
+			addRequi=0;
+		}
+		$('#fundATS').val(+unitFund + +addRequi);
+		}
+	function rowCountPMU(ind){
+		var unitCost=0;
+		
+		for (var i = 0; i < ind; i++) {
+			unitCost += +$('#total_'+i).html();	
+			
+			//unitFund +=+$('#unitFund_'+i).html();
+		}
+		$('#fundPMU').val(+unitCost);
+		
+		
+		}
+
+	function rowCountIE(ind){
+		var noOfP=0;
+		var addRequi=0;
+		var unitFund=0;
+		
+		for (var i = 0; i < ind; i++) {
+			//var r=$('#table1':noOfParticipant_i).val();
+			// var r=$('#table1').children('noOfParticipant_'+i).text();
+			//alert(r);
+			unitFund += +$('#unitFundIE_'+i).html();	
+			
+			//unitFund +=+$('#unitFund_'+i).html();
+		}
+		//$('#totalCost').val(+unitFund);
+		
+		$('#taTotFundIE').val(+unitFund);
+		 addRequi= $('#addRequIE').val();
+		$('#fundIE').val(+unitFund + +addRequi);
+		}
+	function rowCountAF(ind){
+		var unitCost=0;
+		var addRequi=0;
+		var unitFund=0;
+		
+		for (var i = 0; i < ind; i++) {
+			//var r=$('#table1':noOfParticipant_i).val();
+			// var r=$('#table1').children('noOfParticipant_'+i).text();
+			//alert(r);
+			unitCost += +$('#unitFundAF_'+i).html();	
+			if(isNaN(unitCost)) {
+				 unitCost = 0;
+				}
+			unitFund +=unitCost;
+			//unitFund +=+$('#unitFund_'+i).html();
+		}
+		//$('#totalCost').val(+unitFund);
+		
+		$('#taTotFundAF').val(+unitFund);
+		 addRequi= $('#addRequAF').val();
+		$('#fundAF').val(+unitFund + +addRequi);
+		}
+	function rowCountDLS(ind){
+		var unitCost=0;
+		var addRequi=0;
+		var unitFund=0;
+		
+		for (var i = 0; i < ind; i++) {
+			//var r=$('#table1':noOfParticipant_i).val();
+			// var r=$('#table1').children('noOfParticipant_'+i).text();
+			//alert(r);
+			unitCost += +$('#unitFundDLS_'+i).html();	
+			if(isNaN(unitCost)) {
+				 unitCost = 0;
+				}
+			unitFund +=unitCost;
+			//unitFund +=+$('#unitFund_'+i).html();
+		}
+		//$('#totalCost').val(+unitFund);
+		
+		$('#taTotFundDLS').val(+unitFund);
+		 addRequi= $('#addRequDLS').val();
+		$('#fundDLS').val(+unitFund + +addRequi);
+		}
+	function rowCountPP(ind){
+		var unitCost=0;
+		var addRequi=0;
+		var unitFund=0;
+		
+		for (var i = 0; i < ind; i++) {
+			//var r=$('#table1':noOfParticipant_i).val();
+			// var r=$('#table1').children('noOfParticipant_'+i).text();
+			//alert(r);
+			unitCost += +$('#unitFundPP_'+i).html();	
+			if(isNaN(unitCost)) {
+				 unitCost = 0;
+				}
+			unitFund +=unitCost;
+			//unitFund +=+$('#unitFund_'+i).html();
+		}
+		//$('#totalCost').val(+unitFund);
+		
+		$('#taTotFundPP').val(+unitFund);
+		 addRequi= $('#addRequPP').val();
+		$('#fundPP').val(+unitFund + +addRequi);
+		}
+		
+	function refreshCaptcha()
+	{
+		  $('#img_Capatcha').attr('src', 'captchaImage?cache=' + new Date().getTime());
+	    $('#captchaAnswer').val('');
+	    $('#captchaAnswer').focus();
+	}
+	function exportToPdf(id) {
+		var header = 'Training Activities';
+		var sTable =$('#'+id).html();
+		var style = "<style>";
+
+		style = style + "table,th,td{border: solid 1px black;border-collapse: collapse;}";
+		       style = style + "thead {color : black; background-color: #e87b7b;";
+		       style = style + "</style>";
+
+		  var win = window.open('', '', 'height=1000,width=1000');
+		   win.document.write('<html><head>');
+		   win.document.write('<title>'+header+'</title>');  
+		   win.document.write(style);
+		   win.document.write('</head>');
+		   win.document.write('<body>');
+		   win.document.write(sTable);        
+		   win.document.write('</body></html>');
+		  win.document.close();
+		  win.print();    
+		} 
+			
 </script>
 
+<style>
+.col-sm-1 {
+    width: 6.333%;
+}
+.card {
+    background: 
+#f0eaea;
+min-height: 50px;
+box-shadow: 0 2px 10px
+    rgba(0, 0, 0, 0.2);
+    position: relative;
+    margin-bottom: 30px;
+}
+.panel-default {
+    border-color: 
+    #b5abab;
+}
 
+.table thead tr th {
+    padding: 10px;
+        padding-top: 10px;
+        padding-right: 10px;
+        padding-bottom: 10px;
+        padding-left: 10px;
+    border-bottom: 3px solid 
+    #5d1616;
+    background-color: !blue!aliceblue;
+}
+.bs-accordion { .panel-heading { // remove the padding on the heading so
+	we can increase the click area of the anchor padding:0;a { // increase
+	the click area of the anchor trigger to match the original
+	.panel-heading display:block;
+	padding: 10px 15px; // spin the chevron! &[aria-expanded=true] {
+	.glyphicon.glyphicon-chevron-right { transform : rotate( 90deg);
+	transition: transform 350ms cubic-bezier(0.645, 0.045, 0.355, 1);
+}
+
+}
+.glyphicon.glyphicon-chevron-right {
+	transition: transform 350ms cubic-bezier(0.645, 0.045, 0.355, 1);
+}
+}
+}
+}
+</style>
 
 <section class="content">
 
@@ -1265,91 +1531,16 @@ function collapseHide() {
 							Physical Report</h3>
 					</div>
 					<br />
-					<form:form method="post" name="" action="">
+					<%-- <form:form method="post" name="" action=""> --%>
 						
-						<div class="card">
-                        <div class="container">
-                          <div class="body">
-							<div class="row ">
-							<div class="form-group">
-							<div class="col-sm-12">
-							<div class="col-sm-4">
-							<c:if test="${ShowState}">
-								
-									
-										<label ><strong>Select State :</strong></label>
-									
-									
-										<select name="" id="selectSLC" 
-											
-											class="form-control">
-											<option value="0">Select State:</option>
-											<c:forEach items="${stateList}" var="slc">
-												<option value="${slc.stateCode}">${slc.stateNameEnglish}</option>
-											</c:forEach>
-										</select>
-									
-								
-								</c:if>
-								</div>
-								<div class="col-sm-4">
-							<c:if test="${showFin}">
-									
-										<label for="QuaterId1"><strong>Select FinYear :</strong></label>
-									
-									
-										<select name="" id="selectFin" 
-											
-											class="form-control">
-											<option value="0">Select FinYear</option>
-											<c:forEach items="${FIN_YEAR_LIST}" var="year">
-												<option value="${year.yearId}">${year.finYear}</option>
-											</c:forEach>
-										</select>
-									
-							</c:if>
-								</div><c:if test="${ShowState}">
-								<div class="col-sm-4">
-							 <button class="btn  bg-primary" type="button" onclick="getformDetail();"> Get Detail</button>
-							</div>
-							</c:if>
-							<c:if test="${showFin}">
-							<div class="row">
-							<div class="form-group">
-							<div class="col-sm-12">
-							<div class="col-sm-4">
-							<div class="form-group">  
-									<img src="captchaImage" width="200px" id="img_Capatcha" /></div>
-									<div class="col-sm-1">
-									 <i class="fa fa-refresh pull-right" onclick="refreshCaptcha()"></i>
-								</div>
-								</div>
-								<div class="form-group">
-							<div class="col-sm-12">
-							
-								<div class=" has-feedback">
-									<label class="control-label">Captcha Answer</label>
-									<form:input cssStyle="color:black;" id="captchaAnswer" path="captchaAnswer" placeholder="Captcha Answer" class="form-control"  htmlEscape="true" autocomplete="off" required="required"/>
-									<span class="glyphicon glyphicon-ok form-control-feedback" aria-hidden="true"></span>
-								</div></div>
-								</div>
-							</div>
-							</div>
-							</div>
-							</c:if>
-							</div>
-							</div>
-							</div>
-							
-						</div>
-						</div>
-						</div>
+					
 							<div class="container">
 <div id="print">
+
 								<main>
 								<article class="panel-group bs-accordion" id="accordion"
 									role="tablist" aria-multiselectable="true">
-									
+									<div id="printElement">
 									<section class="panel panel-default xxx">
 										<div class="panel-heading" role="tab" id="heading1"
 											onclick="collapseDetails('TD');">
@@ -1371,8 +1562,8 @@ function collapseHide() {
 											</div>
 											<div class="row form-group" id ="trainDetails">
 											<div class="col-sm-12">
-											
-											<div class="col-sm-9">
+											<div class="col-sm-6"></div>
+											<div class="col-sm-4">
 											<label>Total No. of Participants</label>
 											</div>
 											<div class="col-sm-2" >
@@ -1380,8 +1571,8 @@ function collapseHide() {
 											</div>
 											</div>
 											<div class="col-sm-12">
-											
-											<div class="col-sm-9">
+											<div class="col-sm-6"></div>
+											<div class="col-sm-4">
 											<label>Total Funds</label>
 											</div>
 											<div class="col-sm-2" >
@@ -1389,8 +1580,8 @@ function collapseHide() {
 											</div>
 											</div>
 											<div class="col-sm-12">
-											
-											<div class="col-sm-9">
+											<div class="col-sm-6"></div>
+											<div class="col-sm-4">
 											
 											
 											<label>Additional Requirements</label>
@@ -1400,8 +1591,8 @@ function collapseHide() {
 											</div>
 											</div>
 											<div class="col-sm-12">
-											
-											<div class="col-sm-9">
+											<div class="col-sm-6"></div>
+											<div class="col-sm-4">
 											<label>Total Proposed Fund</label>
 											</div>
 											<div class="col-sm-2" id="">
@@ -1952,264 +2143,128 @@ function collapseHide() {
 											</div>
 										</div>
 									</section>
-								
+								</div>
 								<div class="text-right">
 										<button  type="button"   class="btn bg-green waves-effect"  onclick="collapseShow();">Expand all</button>
 
 										<button  type="button" class="btn bg-red waves-effect" id=collapse_hide onclick="collapseHide();">Collapse all</button>
 										 <button type="button" class="btn bg-primary waves-effect"
 										id="exportButtonId"
-										onclick="exportToPdf('print')">Print
+										onclick="exportToPdf('printElement')">Print
 										File</button> 
+										
 									</div>
+									
+									<div class="text-left">
+											<button type="button"
+												onclick="onClose('actionPlanPhysicalReport.html?<csrf:token uri='actionPlanPhysicalReport.html'/>&stateCode=0')"
+												class="btn bg-orange waves-effect">
+												<i class="fa fa-arrow-left" aria-hidden="true"></i>
+												<spring:message code="Label.BACK" htmlEscape="true" />
+											</button>
+										</div>
+										
 									</article>
 								</main>
+								
 								</div>
 									
 							</div>
-						
-					</form:form>
+						<div class="card abcv">
+                        <div class="container">
+                          <div class="body">
+							<div class="row ">
+							<div class="form-group">
+							<c:if test="${ShowState}">
+								<div class="col-sm-12">
+							<div class="col-sm-2">
+							
+									
+										<label ><strong>Select State :</strong></label>
+									</div>
+									
+							<div class="col-sm-4">
+							
+									
+										<select name="" id="selectSLC" 
+											
+											class="form-control">
+											<option value="0">Select State:</option>
+											<c:forEach items="${stateList}" var="slc">
+												<option value="${slc.stateCode}">${slc.stateNameEnglish}</option>
+											</c:forEach>
+										</select>
+									
+								</div>
+								</div>
+								</c:if>
+								
+								
+							<c:if test="${showFin}">
+									<div class="col-sm-12">
+							<div class="col-sm-2">
+							
+										<label for="QuaterId1"><strong>Select FinYear :</strong></label>
+									</div>
+									<div class="col-sm-4">
+										<select name="" id="selectFin" 
+											
+											class="form-control">
+											<option value="0">Select FinYear</option>
+											<c:forEach items="${FIN_YEAR_LIST}" var="year">
+												<option value="${year.yearId}">${year.finYear}</option>
+											</c:forEach>
+										</select>
+									</div>
+									</div>
+							</c:if>
+								
+							
+						 <c:if test="${showFin}"> 
+									<div class="col-sm-12">
+							<div class="col-sm-2">
+							<label class="control-label">Please enter Capatcha</label>
+							</div><div class="col-sm-4">  
+							<input cssStyle="color:black;" id="captchaAnswer"  placeholder="Captcha Answer" class="form-control"  autocomplete="off" required="required"/>
+									</div>
+							<div class="col-sm-2">  
+									<img src="captchaImage" width="200px" id="img_Capatcha" /></div>
+									<div class="col-sm-1">
+									 <i class="fa fa-refresh pull-right" onclick="refreshCaptcha()"></i>
+								
+								</div>
+								
+							</div>
+							 </c:if> 
+							<c:if test="${ShowState}">
+								<div class="col-sm-12">
+							<div class="col-sm-2">
+							</div>
+							
+							<div class="col-sm-4">
+							
+							 <button class="btn  bg-primary" type="button" onclick="getformDetail();"> Get Detail</button>
+							</div>
+							</div>
+							</c:if>
+							</div>
+							</div>
+							
+							</div>
+							</div>
+							</div>
+							
+						</div>
+						</div>
+						</div> 
+					<%-- </form:form> --%>
 				</div>
 			</div>
 		</div>
 		</div>
-	</div>
+	
 </section>
-<style>
 
-
-.card {
-    background: 
-#f0eaea;
-min-height: 50px;
-box-shadow: 0 2px 10px
-    rgba(0, 0, 0, 0.2);
-    position: relative;
-    margin-bottom: 30px;
-}
-.panel-default {
-    border-color: 
-    #b5abab;
-}
-
-.table thead tr th {
-    padding: 10px;
-        padding-top: 10px;
-        padding-right: 10px;
-        padding-bottom: 10px;
-        padding-left: 10px;
-    border-bottom: 3px solid 
-    #5d1616;
-    background-color: !blue!aliceblue;
-}
-.bs-accordion { .panel-heading { // remove the padding on the heading so
-	we can increase the click area of the anchor padding:0;a { // increase
-	the click area of the anchor trigger to match the original
-	.panel-heading display:block;
-	padding: 10px 15px; // spin the chevron! &[aria-expanded=true] {
-	.glyphicon.glyphicon-chevron-right { transform : rotate( 90deg);
-	transition: transform 350ms cubic-bezier(0.645, 0.045, 0.355, 1);
-}
-
-}
-.glyphicon.glyphicon-chevron-right {
-	transition: transform 350ms cubic-bezier(0.645, 0.045, 0.355, 1);
-}
-}
-}
-}
-</style>
 <script>
-function rowCount(ind){
-	var noOfP=0;
-	var addRequi=0;
-	var unitFund=0;
-	
-	for (var i = 0; i < ind; i++) {
-		//var r=$('#table1':noOfParticipant_i).val();
-		// var r=$('#table1').children('noOfParticipant_'+i).text();
-		//alert(r);
-		noOfP += +$('#noOfParticipant_'+i).html();	
-		
-		unitFund +=+$('#unitFund_'+i).html();
-	}
-	$('#totalCost').val(+unitFund);
-	
-	$('#noOfPart').val(+noOfP);
-	addRequi= $('#addRequ').val();
-	$('#fund').val(+unitFund + +addRequi);
-	}
-function rowCountTRA(ind){
-	var unitCost=0;
-	var addRequi=0;
-	var unitFund=0;
-	
-	for (var i = 0; i < ind; i++) {
-		//var r=$('#table1':noOfParticipant_i).val();
-		// var r=$('#table1').children('noOfParticipant_'+i).text();
-		//alert(r);
-		unitCost += +$('#unitFund_'+i).html();	
-		
-		//unitFund +=+$('#unitFund_'+i).html();
-	}
-	$('#taTotFund').val(+unitCost);
-	
-	//$('#noOfPart').val(+unitCost);
-	addRequi= $('#addRequTRA').html();
-	if(addRequi ==null){
-		addRequi=0;
-	}
-	$('#fundTa').val(+unitCost + +addRequi);
-	}
-function rowCountATS(ind){
-	var unitCost=0;
-	var addRequi=0;
-	var unitFund=0;
-	
-	for (var i = 0; i < ind; i++) {
-		//var r=$('#table1':noOfParticipant_i).val();
-		// var r=$('#table1').children('noOfParticipant_'+i).text();
-		//alert(r);
-		unitCost = +$('#unitCost_'+i).html();	
-		if(isNaN(unitCost)) {
-			 unitCost = 0;
-			}
-		unitFund +=unitCost;
-		//unitFund +=+$('#unitFund_'+i).html();
-	}
-	$('#taTotFundATS').val(+unitFund);
-	
-	//$('#noOfPart').val(+unitCost);
-	addRequi= $('#addRequATS').html();
-	if(addRequi ==null){
-		addRequi=0;
-	}
-	$('#fundATS').val(+unitFund + +addRequi);
-	}
-function rowCountPMU(ind){
-	var unitCost=0;
-	
-	for (var i = 0; i < ind; i++) {
-		unitCost += +$('#total_'+i).html();	
-		
-		//unitFund +=+$('#unitFund_'+i).html();
-	}
-	$('#fundPMU').val(+unitCost);
-	
-	
-	}
 
-function rowCountIE(ind){
-	var noOfP=0;
-	var addRequi=0;
-	var unitFund=0;
-	
-	for (var i = 0; i < ind; i++) {
-		//var r=$('#table1':noOfParticipant_i).val();
-		// var r=$('#table1').children('noOfParticipant_'+i).text();
-		//alert(r);
-		unitFund += +$('#unitFundIE_'+i).html();	
-		
-		//unitFund +=+$('#unitFund_'+i).html();
-	}
-	//$('#totalCost').val(+unitFund);
-	
-	$('#taTotFundIE').val(+unitFund);
-	 addRequi= $('#addRequIE').val();
-	$('#fundIE').val(+unitFund + +addRequi);
-	}
-function rowCountAF(ind){
-	var unitCost=0;
-	var addRequi=0;
-	var unitFund=0;
-	
-	for (var i = 0; i < ind; i++) {
-		//var r=$('#table1':noOfParticipant_i).val();
-		// var r=$('#table1').children('noOfParticipant_'+i).text();
-		//alert(r);
-		unitCost += +$('#unitFundAF_'+i).html();	
-		if(isNaN(unitCost)) {
-			 unitCost = 0;
-			}
-		unitFund +=unitCost;
-		//unitFund +=+$('#unitFund_'+i).html();
-	}
-	//$('#totalCost').val(+unitFund);
-	
-	$('#taTotFundAF').val(+unitFund);
-	 addRequi= $('#addRequAF').val();
-	$('#fundAF').val(+unitFund + +addRequi);
-	}
-function rowCountDLS(ind){
-	var unitCost=0;
-	var addRequi=0;
-	var unitFund=0;
-	
-	for (var i = 0; i < ind; i++) {
-		//var r=$('#table1':noOfParticipant_i).val();
-		// var r=$('#table1').children('noOfParticipant_'+i).text();
-		//alert(r);
-		unitCost += +$('#unitFundDLS_'+i).html();	
-		if(isNaN(unitCost)) {
-			 unitCost = 0;
-			}
-		unitFund +=unitCost;
-		//unitFund +=+$('#unitFund_'+i).html();
-	}
-	//$('#totalCost').val(+unitFund);
-	
-	$('#taTotFundDLS').val(+unitFund);
-	 addRequi= $('#addRequDLS').val();
-	$('#fundDLS').val(+unitFund + +addRequi);
-	}
-function rowCountPP(ind){
-	var unitCost=0;
-	var addRequi=0;
-	var unitFund=0;
-	
-	for (var i = 0; i < ind; i++) {
-		//var r=$('#table1':noOfParticipant_i).val();
-		// var r=$('#table1').children('noOfParticipant_'+i).text();
-		//alert(r);
-		unitCost += +$('#unitFundPP_'+i).html();	
-		if(isNaN(unitCost)) {
-			 unitCost = 0;
-			}
-		unitFund +=unitCost;
-		//unitFund +=+$('#unitFund_'+i).html();
-	}
-	//$('#totalCost').val(+unitFund);
-	
-	$('#taTotFundPP').val(+unitFund);
-	 addRequi= $('#addRequPP').val();
-	$('#fundPP').val(+unitFund + +addRequi);
-	}
-	
-function refreshCaptcha()
-{
-	  $('#img_Capatcha').attr('src', 'captchaImage?cache=' + new Date().getTime());
-    $('#captchaAnswer').val('');
-    $('#captchaAnswer').focus();
-}
-function exportToPdf(id) {
-	var header = 'Training Activities';
-	var sTable =$('#'+id).html();
-	var style = "<style>";
-
-	style = style + "table,th,td{border: solid 1px black;border-collapse: collapse;}";
-	       style = style + "thead {color : black; background-color: #e87b7b;";
-	       style = style + "</style>";
-
-	  var win = window.open('', '', 'height=1000,width=1000');
-	   win.document.write('<html><head>');
-	   win.document.write('<title>'+header+'</title>');  
-	   win.document.write(style);
-	   win.document.write('</head>');
-	   win.document.write('<body>');
-	   win.document.write(sTable);        
-	   win.document.write('</body></html>');
-	  win.document.close();
-	  win.print();    
-	} 
-		
 		</script>

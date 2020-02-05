@@ -6,18 +6,27 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import javax.persistence.NoResultException;
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import gov.in.rgsa.dto.AnualActionPlanPhysically;
 import gov.in.rgsa.dto.DemographicProfileDataDto;
 import gov.in.rgsa.entity.CapacityBuildingActivity;
+import gov.in.rgsa.entity.NodalOfficerDetails;
 import gov.in.rgsa.entity.State;
+import gov.in.rgsa.model.FacadeModel;
 import gov.in.rgsa.model.ViewReportAtMoprModel;
 import gov.in.rgsa.service.AdditionalFacultyAndMainService;
 import gov.in.rgsa.service.AdminAndFinancialDataCellService;
@@ -41,6 +50,8 @@ import gov.in.rgsa.service.TrainingActivityService;
 import gov.in.rgsa.service.TrainingInstitutionService;
 import gov.in.rgsa.service.ViewReportAtMoprService;
 import gov.in.rgsa.user.preference.UserPreference;
+import gov.in.rgsa.utils.Message;
+import gov.in.rgsa.validater.CaptchaValidator;
 
 @Controller
 public class ViewReportAtMoprController {
@@ -139,6 +150,9 @@ public class ViewReportAtMoprController {
 
 	@Autowired
 	private CapacityBuildingService capacityBuildingService;
+
+	@Value("${rgsa.captcha.enabled}")
+	private Boolean isCaptcha;
 
 	@GetMapping(value = "viewReportDemographicProfile")
 	private String viewReportDemographicProfile(
@@ -261,6 +275,24 @@ public class ViewReportAtMoprController {
 		return anualActionPlanPhysically;
 	}
 	
+	@GetMapping({ "validateCaptcha" })
+	@ResponseBody
+	public Boolean validateCaptcha(String captcahAnswer, Model model,HttpSession httpSession, RedirectAttributes re) {
+		//Map<String, Boolean> validateCap = new HashMap<>();
+		Boolean flag=false;
+			CaptchaValidator captchaValidator = new CaptchaValidator();	
+			boolean messageFlag = captchaValidator.validateCaptcha(httpSession, captcahAnswer);
+			if (isCaptcha  && !messageFlag ) { 
+				flag =messageFlag;
+				//validateCap.put("captchaStatus", flag);
+			}else {
+				flag=messageFlag;
+				//validateCap.put("captchaStatus", flag);
+			}
+			
+			return flag; 
+		
+	}
 	/*@GetMapping({ "actionPlanReportForPublicDomain" })
 	@ResponseBody
 	public String actionPlanReportForPublicDomain(Model model) {
@@ -277,4 +309,5 @@ public class ViewReportAtMoprController {
 		
 			return ACTION_PLAN_REPORT_FOR_MINISTORY_DOMAIN;
 	}*/
+
 }
