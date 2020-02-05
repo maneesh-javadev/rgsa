@@ -89,7 +89,7 @@ function getformDetail()
     collapseDetails('PB');		
     collapseDetails('ATS');	
     collapseDetails('EE');	
-    collapseDetails('EG');		
+    collapseDetails('EGOV');		
     collapseDetails('PP');	
     collapseDetails('PP');	
     collapseDetails('DLS');	
@@ -153,8 +153,9 @@ function collapseHide() {
 
 												table = $("<table/>");
 												table.attr("id", "table1");
+												
 												table
-														.addClass("table table-hover dashboard-task-infos table-responsive");
+														.addClass("table table-hover table-bordered dashboard-task-infos table-responsive");
 
 												thead = $("<thead/>");
 
@@ -1114,7 +1115,7 @@ function collapseHide() {
 														value1) {
 													tbody.append(tr);
 													table.append(tbody);
-                                     if(value1.column9 =='2'){
+                                    
                                     	var tdnext;
 
 													td = $("<TD/>");
@@ -1142,13 +1143,98 @@ function collapseHide() {
 															+ "</td>");
 													tr.append(tdnext);
 													tr = $("<TR/>");
-                                     }
+                                    
 												});
 
 												divTemplate.append(table);
 
 											}
 											
+											else if (key == "15") {
+												var divTemplate = $("#collapse7");
+
+												$("#collapse7").empty();
+												//$("#collapse2").text(activityName+" Finalize Work Location of "+$scope.selectDistrictCode.districtNameEnglish+" District");
+
+												table = $("<table/>");
+												table.attr("id", "table7");
+												table
+														.addClass("table table-hover dashboard-task-infos table-responsive");
+
+												thead = $("<thead/>");
+
+												tr = $("<TR/>");
+
+												th = createLabel("Level");
+												tr.append(th);
+
+												th = createLabel("Designation");
+												tr.append(th);
+
+												th = createLabel("No. of Posts proposed");
+												tr.append(th);
+
+												th = createLabel("No. of Months");
+												tr.append(th);
+
+												th = createLabel("Unit Cost(in Rs)");
+												tr.append(th);
+												th = createLabel("Fund Proposed (in Rs)");
+												tr.append(th);
+												
+												th = createLabel("Remarks");
+												tr.append(th);
+
+												thead.append(tr);
+
+												table.append(thead);
+
+												tbody = $("<tbody/>");
+												tbody1 = $("<tbody/>");
+												tr1 = $("<TR/>");
+												tr = $("<TR/>");
+												$.each(value, function(key1,
+														value1) {
+													tbody.append(tr);
+													table.append(tbody);
+                                    
+                                    	var tdnext;
+
+													td = $("<TD/>");
+													td.append(value1.column1);
+													tr.append(td);
+													tdnext = $("<td>"
+															+ value1.column2
+															+ "</td>");
+													tr.append(tdnext);
+													tdnext = $("<td>"
+															+ value1.column3
+															+ "</td>");
+													tr.append(tdnext);
+													tdnext = $("<td>"
+															+ value1.column5
+															+ "</td>");
+													tr.append(tdnext);
+													tdnext = $("<td>"
+															+ value1.column4
+															+ "</td>");
+													tdnext.attr("id", "expenditureEGOV_"+key1);
+													tr.append(tdnext);
+													tdnext = $("<td>"
+															+ value1.column7
+															+ "</td>");
+													tr.append(tdnext);
+													tdnext = $("<td>"
+															+ value1.column8
+															+ "</td>");
+													tr.append(tdnext);
+													tr = $("<TR/>");
+                                    
+												});
+
+												divTemplate.append(table);
+
+											}
 											
 										});
 					},
@@ -1218,7 +1304,7 @@ function collapseHide() {
 							</c:if>
 								</div><c:if test="${ShowState}">
 								<div class="col-sm-4">
-							 <button class="btn btn-search bg-green" type="button" onclick="getformDetail();"><i class="fa fa-search fa-fw"></i> Search</button>
+							 <button class="btn  bg-primary" type="button" onclick="getformDetail();"> Get Detail</button>
 							</div>
 							</c:if>
 							<c:if test="${showFin}">
@@ -1503,7 +1589,7 @@ function collapseHide() {
 									</section>
 									<section class="panel panel-default xxx">
 										<div class="panel-heading" role="tab" id="heading7"
-											onclick="collapseDetails('EG');">
+											onclick="collapseDetails('EGOV');">
 					<h4 class="panel-title">
 												<a role="button" data-toggle="collapse"
 													data-parent="#accordion" href="#collapse7"
@@ -1865,7 +1951,7 @@ function collapseHide() {
 										<button  type="button"   class="btn bg-green waves-effect"  onclick="collapseShow();">Expand all</button>
 
 										<button  type="button" class="btn bg-red waves-effect" id=collapse_hide onclick="collapseHide();">Collapse all</button>
-										 <button type="button" class="btn bg-red waves-effect"
+										 <button type="button" class="btn bg-primary waves-effect"
 										id="exportButtonId"
 										onclick="exportToPdf('print')">Print
 										File</button> 
