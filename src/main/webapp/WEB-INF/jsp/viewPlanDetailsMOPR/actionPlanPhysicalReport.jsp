@@ -70,11 +70,11 @@ function getformDetail()
 		  
 		  imageCaptua=$("#img_Capatcha").val();
 		 answerCap=$("#captchaAnswer").val();
-			if(slc != 0 && fin != 0 && imageCaptua == answerCap){
+			/* if(slc != 0 && fin != 0 && imageCaptua == answerCap){
 			 $("#accordion").show();
 			}else{
 				alert('kindly select  Detail properlly');
-			}
+			} */
 			
 	}
 }
