@@ -277,37 +277,14 @@ public class ViewReportAtMoprController {
 	
 	@GetMapping({ "validateCaptcha" })
 	@ResponseBody
-	public Boolean validateCaptcha(String captcahAnswer, Model model,HttpSession httpSession, RedirectAttributes re) {
-		//Map<String, Boolean> validateCap = new HashMap<>();
-		Boolean flag=false;
-			CaptchaValidator captchaValidator = new CaptchaValidator();	
-			boolean messageFlag = captchaValidator.validateCaptcha(httpSession, captcahAnswer);
-			if (isCaptcha  && !messageFlag ) { 
-				flag =messageFlag;
-				//validateCap.put("captchaStatus", flag);
-			}else {
-				flag=messageFlag;
-				//validateCap.put("captchaStatus", flag);
-			}
-			
-			return flag; 
+	public Boolean validateCaptcha(String captchaAnswer, Model model,HttpSession httpSession, RedirectAttributes re) {
+		
+		if(!isCaptcha)
+			return true;
+		
+		CaptchaValidator captchaValidator = new CaptchaValidator();	
+		return captchaValidator.validateCaptcha(httpSession, captchaAnswer);
 		
 	}
-	/*@GetMapping({ "actionPlanReportForPublicDomain" })
-	@ResponseBody
-	public String actionPlanReportForPublicDomain(Model model) {
-		Map<String, Object> parameter = new HashMap<String, Object>();
-		List<State> getStateList = lgdService.getAllStateList();
-		parameter.put("FIN_YEAR", userPreference.getFinYearId());
-		parameter.put("stateList", getStateList);
-		return ACTION_PLAN_REPORT_FOR_PUBLIC_DOMAIN;
-	}
 	
-	
-	@GetMapping({ "actionPlanReportForMinistoryDomain" })
-	public String actionPlanReportForMinistoryDomain(Model model) {
-		
-			return ACTION_PLAN_REPORT_FOR_MINISTORY_DOMAIN;
-	}*/
-
 }

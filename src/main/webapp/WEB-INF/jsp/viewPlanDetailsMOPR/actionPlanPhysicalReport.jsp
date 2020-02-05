@@ -35,7 +35,8 @@ $( document ).ready(function() {
 		 $("#print").hide();
 		}
 	else if(userType== ''){
-		 $("#print").show();
+		$('#print').css("display","none");
+		$('.abcv').css("display","block");
 	}
 	if(userType== 'S'){
 		 $("#print").show();
