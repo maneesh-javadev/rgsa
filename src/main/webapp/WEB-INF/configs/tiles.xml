@@ -944,5 +944,19 @@
 			value="/WEB-INF/jsp/viewPlanDetailsMOPR/actionPlanPhysicalReport.jsp" />
 	</definition>
 	
+		<definition name="actionPlanReportForPublicDomain"
+		extends="base.definition.admin">
+		<put-attribute name="title" value="View Report Mopr" />
+		<put-attribute name="body"
+			value="/WEB-INF/jsp/viewPlanDetailsMOPR/actionPlanReportForPublicDomain.jsp" />
+	</definition>
+	
+		<definition name="actionPlanReportForMinistoryDomain"
+		extends="base.definition.admin">
+		<put-attribute name="title" value="View Report Mopr" />
+		<put-attribute name="body"
+			value="/WEB-INF/jsp/viewPlanDetailsMOPR/actionPlanReportForMinistoryDomain.jsp" />
+	</definition>
+	
 </tiles-definitions>
 

@@ -143,6 +143,7 @@ src:url('fonts/jackfrost.otf') format('opentype');
 							<li><a href="downloadNew.html?<csrf:token uri='downloadNew.html'/>">Downloads </a></li>
 							<li><a href="#">Gallery</a></li>
 							<li><a href="#" data-toggle="modal" data-target="#contactsUs">Contact Us</a></li>
+							<%-- <li> <a href="annualPlanReport.html?<csrf:token uri='annualPlanReport.html'/>">Reports</a></li> --%>
 						</ul>
 					</div>
 				</nav>

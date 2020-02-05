@@ -185,7 +185,8 @@
 							<li><a target="_parent" href="aboutGPDP.html?<csrf:token uri='aboutGPDP.html'/>" >GPDP Guidelines</a></li>
 							<li><a target="_parent" href="downloadNew.html?<csrf:token uri='downloadNew.html'/>" >Downloads </a></li>
 							<li><a target="_parent"   href="manageCms.html?<csrf:token uri='manageCms.html'/>">Gallery</a></li>
-							<li><a href="#" data-toggle="modal" data-target="#contactsUs">Contact Us</a></li></ul>
+							<li><a href="#" data-toggle="modal" data-target="#contactsUs">Contact Us</a></li>
+							<li> <a target="_parent"  href="actionPlanPhysicalReport.html?<csrf:token uri='actionPlanPhysicalReport.html'/>">Reports</a></li></ul>
 					</div>
 				</nav>
 

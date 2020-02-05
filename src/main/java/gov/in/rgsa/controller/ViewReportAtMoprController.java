@@ -1,6 +1,8 @@
 package gov.in.rgsa.controller;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -10,9 +12,12 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
+import gov.in.rgsa.dto.AnualActionPlanPhysically;
 import gov.in.rgsa.dto.DemographicProfileDataDto;
 import gov.in.rgsa.entity.CapacityBuildingActivity;
+import gov.in.rgsa.entity.State;
 import gov.in.rgsa.model.ViewReportAtMoprModel;
 import gov.in.rgsa.service.AdditionalFacultyAndMainService;
 import gov.in.rgsa.service.AdminAndFinancialDataCellService;
@@ -46,11 +51,14 @@ public class ViewReportAtMoprController {
 	private static final String VIEW_REPORT_DEMOGRAPHIC_PROFILE_STATE = "viewReportDemographicProfileState";
 	private static final String VIEW_REPORT_ANNUAL_ACTION_STATE = "viewReportAnnualActionState";
 	private static final String Action_Plan_Physical_Report = "actionPlanPhysicalReport";
-
+	private static final String ACTION_PLAN_REPORT_FOR_PUBLIC_DOMAIN = "actionPlanReportForPublicDomain";
+	private static final String ACTION_PLAN_REPORT_FOR_MINISTORY_DOMAIN = "actionPlanReportForMinistoryDomain";
+	
+	
+	
 	@Autowired
 	private ViewReportAtMoprService viewReportAtMoprService;
 
-	
 	@Autowired
 	UserPreference userPreference;
 
@@ -128,11 +136,10 @@ public class ViewReportAtMoprController {
 
 	@Autowired
 	PlanAllocationService planAllocationService;
-	
+
 	@Autowired
 	private CapacityBuildingService capacityBuildingService;
-	
-	
+
 	@GetMapping(value = "viewReportDemographicProfile")
 	private String viewReportDemographicProfile(
 			@ModelAttribute(name = "VIEW_REPORT_MODEL") ViewReportAtMoprModel viewReportModel, Model model) {
@@ -215,21 +222,59 @@ public class ViewReportAtMoprController {
 		model.addAttribute("planComponentsFunds", facadeService.fetchFundDetailsByUserType(parameter));
 		return VIEW_REPORT_ANNUAL_ACTION_STATE;
 	}
-	
+
 	@GetMapping({ "actionPlanPhysicalReport" })
 	public String getReportData(Model model) {
-		
+		List<State> getStateList = lgdService.getAllStateList();
+		model.addAttribute("user_type", userPreference.getUserType());
+	
+		if(("S").equals(userPreference.getUserType())){
+			model.addAttribute("ShowState", Boolean.FALSE);
+			model.addAttribute("showFin", Boolean.FALSE);
+		}
+		else if(("M").equals(userPreference.getUserType())) {
+			model.addAttribute("stateList", getStateList);
+			model.addAttribute("ShowState", Boolean.TRUE);
+			//model.addAttribute("showFin", Boolean.TRUE);
+		}else {
+			model.addAttribute("FIN_YEAR_LIST", viewReportAtMoprService.getFinYearList());
+			model.addAttribute("stateList", getStateList);
+			model.addAttribute("ShowState", Boolean.TRUE);
+			model.addAttribute("showFin", Boolean.TRUE);
+	
+		}
 		return Action_Plan_Physical_Report;
+	}
+
+	@PostMapping({ "actionPlanPhysicalReport" })
+	@ResponseBody
+	public Map<String, List<AnualActionPlanPhysically>> fetchReportData(String component,String slc,String fin, Model model) {
+		Map<String, List<AnualActionPlanPhysically>> anualActionPlanPhysically = new HashMap<>();
+		List<AnualActionPlanPhysically> capacityBuildingList = new ArrayList<>();
+				
+			 capacityBuildingList = viewReportAtMoprService
+						.fetchAnualActionPlanPhysically(component ,slc ,fin);
+	
+
+		anualActionPlanPhysically.put(capacityBuildingList.get(0).getColumn11(), capacityBuildingList);
+		
+		return anualActionPlanPhysically;
 	}
 	
-	@PostMapping({ "actionPlanPhysicalReport" })
-	public String fetchReportData(String component, Model model) {
-		
-		if(("TRA").equals(component)) {
-		CapacityBuildingActivity capacityBuildingList = capacityBuildingService.fetchCapacityBuildingActivity(null);
-		
-		
+	/*@GetMapping({ "actionPlanReportForPublicDomain" })
+	@ResponseBody
+	public String actionPlanReportForPublicDomain(Model model) {
+		Map<String, Object> parameter = new HashMap<String, Object>();
+		List<State> getStateList = lgdService.getAllStateList();
+		parameter.put("FIN_YEAR", userPreference.getFinYearId());
+		parameter.put("stateList", getStateList);
+		return ACTION_PLAN_REPORT_FOR_PUBLIC_DOMAIN;
 	}
-		return Action_Plan_Physical_Report;
-}
+	
+	
+	@GetMapping({ "actionPlanReportForMinistoryDomain" })
+	public String actionPlanReportForMinistoryDomain(Model model) {
+		
+			return ACTION_PLAN_REPORT_FOR_MINISTORY_DOMAIN;
+	}*/
 }
