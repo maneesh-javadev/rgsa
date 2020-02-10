@@ -278,11 +278,7 @@ public class ViewReportAtMoprController {
 	@GetMapping(value ="validateCaptcha")
 	@ResponseBody
 	public Boolean validateCaptcha(String captchaAnswer, Model model,HttpSession httpSession, RedirectAttributes re) {
-		
-		if(!isCaptcha)
-			return true;
-		
-		CaptchaValidator captchaValidator = new CaptchaValidator();	
+			CaptchaValidator captchaValidator = new CaptchaValidator();	
 		return captchaValidator.validateCaptcha(httpSession, captchaAnswer);
 		
 	}

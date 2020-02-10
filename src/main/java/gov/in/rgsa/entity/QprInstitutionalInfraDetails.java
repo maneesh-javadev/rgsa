@@ -22,7 +22,7 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 
 @Entity
 @Table(name="qpr_inst_infra_details",schema="rgsa")
-@NamedQuery(name="FETCH_QPR_INST_ACTIVITY_DETAILS_DEPEND_ON_QUATOR",query="SELECt D FROM QprInstitutionalInfraDetails D WHERE D.qprInstitutionalInfrastructure.qprInstInfraId=:qprInstInfraId AND D.trainingInstitueTypeId=:trainingInstituteTypeId")
+@NamedQuery(name="FETCH_QPR_INST_ACTIVITY_DETAILS_DEPEND_ON_QUATOR",query="SELECt D FROM QprInstitutionalInfraDetails D WHERE D.qprInstitutionalInfrastructure.qprInstInfraId=:qprInstInfraId AND D.trainingInstitueTypeId=:trainingInstituteTypeId order by D.districtCode ")
 public class QprInstitutionalInfraDetails implements Serializable {
 
 
@@ -54,6 +54,14 @@ public class QprInstitutionalInfraDetails implements Serializable {
 	
 	@Column(name="file_path")
 	private String file_path;
+	
+	
+	@Column(name="district_code")
+	private Integer districtCode;
+	
+	@Transient
+	private String districtName;
+	
 	
 	@OneToOne(fetch=FetchType.EAGER,cascade=CascadeType.ALL)
 	@JoinColumn(name="file_node_id")
@@ -154,6 +162,25 @@ public class QprInstitutionalInfraDetails implements Serializable {
 	public void setFileNodeId(Integer fileNodeId) {
 		this.fileNodeId = fileNodeId;
 	}
+
+	public Integer getDistrictCode() {
+		return districtCode;
+	}
+
+	public void setDistrictCode(Integer districtCode) {
+		this.districtCode = districtCode;
+	}
+
+	public String getDistrictName() {
+		return districtName;
+	}
+
+	public void setDistrictName(String districtName) {
+		this.districtName = districtName;
+	}
+
+	
+	
 
 	
 

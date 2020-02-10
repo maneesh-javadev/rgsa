@@ -106,8 +106,8 @@ public class ViewReportAtMoprServiceImpl implements ViewReportAtMoprService {
 		if (("EGOV").equals(component)) {
 			actionPlanPhysicallies = dao.findAll("FETCH_ANUAL_ACTION_PLAN_DETAILS_EGOV", parameter);
 		}
-		if (("ALL").equals(component)) {
-			actionPlanPhysicallies = dao.findAll("FETCH_ANUAL_ACTION_PLAN_DETAILS_ALL_COMPONENT", parameter);
+		if (("IIF").equals(component)) {
+			actionPlanPhysicallies = dao.findAll("FETCH_ANUAL_ACTION_PLAN_DETAILS_IIF", parameter);
 		}
 		
 		

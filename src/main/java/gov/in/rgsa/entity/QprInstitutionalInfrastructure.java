@@ -13,6 +13,7 @@ import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
+import javax.persistence.OrderBy;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.CreationTimestamp;
@@ -23,8 +24,8 @@ import org.hibernate.annotations.UpdateTimestamp;
 
 
 @NamedQueries({
-@NamedQuery(name="FETCH_QPR_INST_ACTIVITY_DEPEND_ON_QUATOR",query ="SELECT Q FROM QprInstitutionalInfrastructure Q inner join Q.qprInstitutionalInfraDetails QD ON Q.qprInstInfraId=QD.qprInstitutionalInfrastructure.qprInstInfraId  WHERE Q.qtrId=:quatorId and Q.institutionalInfraActivivtyId=:activityId"),
-@NamedQuery(name="UPDATE_QPR_INST_ACTIVITY_DEPEND_ON_QUATOR",query="UPDATE QprInstitutionalInfrastructure SET additionalRequirement=:additionalRequirement,additionalRequirementDPRC=:additionalRequirementDPRC  where qprInstInfraId=:qprInstInfraId"),
+@NamedQuery(name="FETCH_QPR_INST_ACTIVITY_DEPEND_ON_QUATOR",query ="SELECT Q FROM QprInstitutionalInfrastructure Q inner join Q.qprInstitutionalInfraDetails QD ON Q.qprInstInfraId=QD.qprInstitutionalInfrastructure.qprInstInfraId  WHERE Q.qtrId=:quatorId and Q.institutionalInfraActivivtyId=:activityId order by QD.districtCode  "),
+@NamedQuery(name="UPDATE_QPR_INST_ACTIVITY_DEPEND_ON_QUATOR",query="UPDATE QprInstitutionalInfrastructure SET additionalRequirement=:additionalRequirement,additionalRequirementDPRC=:additionalRequirementDPRC  where qprInstInfraId=:qprInstInfraId "),
 })
 public class QprInstitutionalInfrastructure  implements IFreezable{
 
@@ -67,6 +68,7 @@ public class QprInstitutionalInfrastructure  implements IFreezable{
 	
 	
 	@OneToMany(fetch=FetchType.EAGER,cascade=CascadeType.ALL,mappedBy="qprInstitutionalInfrastructure")
+	@OrderBy("district_code asc")
 	private List<QprInstitutionalInfraDetails> qprInstitutionalInfraDetails;
 
 

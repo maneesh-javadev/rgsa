@@ -53,6 +53,8 @@ $( document ).ready(function() {
 	$("#trainPP").hide();
 });
 
+
+
 function getformDetail()
 {
 
@@ -82,13 +84,18 @@ function getformDetail()
 			}else{
 				flag=0;
 				alert('kindly select state list');
+			}if(fin != 0){
+				flag=1;
+			}else{
+				flag=0;
+				alert('kindly select fin year');
 			}
-			 if(imageCaptua != null){
+			 if(imageCaptua != ''){
 				$
 				.ajax({
 					type : "GET",
 					contentType : "application/json",
-					url : "validateCaptcha.html?<csrf:token uri='validateCaptcha.html'/>&captcahAnswer="+imageCaptua,
+					url : "validateCaptcha.html?<csrf:token uri='validateCaptcha.html'/>&captchaAnswer="+imageCaptua,
 					dataType : 'json',
 					cache : false,
 					timeout : 100000,
@@ -135,7 +142,18 @@ function getformDetail()
 }
 
 function collapseHide() {
-    
+	
+	if ($('.abc').attr('aria-expanded') === 'false') {
+		$("#trainDetails").hide();
+		$("#trainRA").hide();
+		$("#trainATS").hide();
+		$("#trainEE").hide();
+		$("#trainPMU").hide();
+		$("#trainIE").hide();
+		$("#trainAF").hide();
+		$("#trainDLS").hide();
+		$("#trainPP").hide();
+	    }
     $('.abc').removeClass("in");
 }
 </script>
@@ -1169,7 +1187,7 @@ function collapseHide() {
 													tdnext = $("<td>"
 															+ value1.column7
 															+ "</td>");
-													tdnext.attr("id", "expenditure_"+key1);
+													tdnext.attr("id", "expenditureSPRC_"+key1);
 													tr.append(tdnext);
 													tdnext = $("<td>"
 															+ value1.column8
@@ -1177,6 +1195,35 @@ function collapseHide() {
 													tr.append(tdnext);
 													tr = $("<TR/>");
                                      }
+                                     if(value1.column9 =='4'){
+                                     	var tdnext;
+
+ 													td = $("<TD/>");
+ 													td.append(value1.column1);
+ 													tr.append(td);
+ 													tdnext = $("<td>"
+ 															+ value1.column2
+ 															+ "</td>");
+ 													tr.append(tdnext);
+ 													tdnext = $("<td>"
+ 															+ value1.column3
+ 															+ "</td>");
+ 													tr.append(tdnext);
+ 													tdnext = $("<td>"
+ 															+ value1.column5
+ 															+ "</td>");
+ 													tr.append(tdnext);
+ 													tdnext = $("<td>"
+ 															+ value1.column7
+ 															+ "</td>");
+ 													tdnext.attr("id", "expenditureDPRC_"+key1);
+ 													tr.append(tdnext);
+ 													tdnext = $("<td>"
+ 															+ value1.column8
+ 															+ "</td>");
+ 													tr.append(tdnext);
+ 													tr = $("<TR/>");
+                                      }
 												});
 
 												divTemplate.append(table);
@@ -1519,6 +1566,12 @@ box-shadow: 0 2px 10px
 }
 }
 }
+
+a[aria-expanded="true"]{
+$('#trainIE').css("display","none");
+
+}
+$("a[aria-expanded='true']").css("background-color", "#42DCA3");
 </style>
 
 <section class="content">
@@ -1654,7 +1707,7 @@ box-shadow: 0 2px 10px
 									</section>
 									<section class="panel panel-default xxx">
 										<div class="panel-heading" role="tab" id="heading3"
-											onclick="collapseDetails('II');">
+											onclick="collapseDetails('IIF');">
 											<h4 class="panel-title">
 												<a class="collapsed" role="button" data-toggle="collapse"
 													data-parent="#accordion" href="#collapse3"
@@ -1991,9 +2044,11 @@ box-shadow: 0 2px 10px
 												</a>
 											</h4>
 										</div>
-										<div id="collapse12" class="panel-collapse collapse abc"
+										<div class="" id="collapse12">
+										<div  class="panel-collapse collapse abc"
 											role="tabpanel" aria-labelledby="heading12">
 											
+										</div>
 										</div>
 									</section>
 									<section class="panel panel-default xxx">
@@ -2010,9 +2065,11 @@ box-shadow: 0 2px 10px
 												</a>
 											</h4>
 										</div>
+										<div class="">
 										<div id="collapse13" class="panel-collapse collapse abc"
 											role="tabpanel" aria-labelledby="heading13">
-						<div class="panel-body"></div>
+						                  <div class="panel-body"></div>
+										</div>
 										</div>
 										<div class="row form-group" id ="trainIE">
 											<div class="col-sm-12">

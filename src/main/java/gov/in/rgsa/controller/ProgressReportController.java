@@ -2176,6 +2176,17 @@ public class ProgressReportController {
 
 				if (qprInstitutionalInfrastructureList != null && !qprInstitutionalInfrastructureList.isEmpty()) {
 					qprInstitutionalInfrastructure = qprInstitutionalInfrastructureList.get(0);
+					for (int i = 0; i < qprInstitutionalInfrastructure.getQprInstitutionalInfraDetails().size(); i++) {
+						for (int j = 0; j < institutionalInfraProgressReportDTOList.size(); j++) {
+							if(institutionalInfraProgressReportDTOList.get(j).getDistrictCode().equals(qprInstitutionalInfrastructure.getQprInstitutionalInfraDetails().get(i).getDistrictCode())) {
+								qprInstitutionalInfrastructure.getQprInstitutionalInfraDetails().get(i).setDistrictName(institutionalInfraProgressReportDTOList.get(j).getDistrictName());
+							}
+							
+						}
+						
+					}
+					
+					
 					model.addAttribute("DISABLE_FREEZE", false);
 				} else {
 					qprInstitutionalInfrastructure = new QprInstitutionalInfrastructure();
