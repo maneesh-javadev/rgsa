@@ -23,10 +23,6 @@ import org.springframework.web.multipart.MultipartFile;
 @Entity
 @Table(name="qpr_handholding_gpdp" ,schema="rgsa")
 public class QprHandholdingGpdp implements Serializable{
-	
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 3692187613542590582L;
 
 	@Id

@@ -647,7 +647,7 @@ public class ProgressReportServiceImpl implements ProgressReportService {
         params.put("quaterId", quaterId);
         return commonRepository.findAll("FETCH_Subcomponent_wise_Quater_Balance", params);
     }
-
+    
     @Override
     public void saveInstitutionalInfraProgressReport(QprInstitutionalInfrastructure qprInstitutionalInfrastructure) {
 

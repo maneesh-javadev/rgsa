@@ -8,7 +8,218 @@
 
 <script type="text/javascript" src="${pageContext.request.contextPath}/resources/plugins/angular/directives.js"></script>
 <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/angular/toastr.css">
-<<script type="text/javascript">
+<script type="text/javascript">
+
+  function exportToPdf(id) {
+	 var header = 'Training Activities';
+	 var sTable =$('#'+id).html();
+	 var style = "<style>";
+	 
+	 	 style = style + "table,th,td{border: solid 1px black;border-collapse: collapse;}";
+        style = style + "thead {color : black; background-color: #e87b7b;";
+        style = style + "</style>";
+	 
+   var win = window.open('', '', 'height=1000,width=1000');
+    win.document.write('<html><head>');
+    win.document.write('<title>'+header+'</title>');  
+    win.document.write(style); 
+    win.document.write('</head>');
+    win.document.write('<body>');
+    win.document.write(sTable);         
+    win.document.write('</body></html>');
+  	 win.document.close(); 	
+  	 win.print();    
+}  
+
+function fnExcelReport(val)
+{
+    var tab_text="<table border='2px'><tr bgcolor='#87AFC6'>";
+    var textRange; var j=0;
+    tab = document.getElementById(val); // id of table
+
+    for(j = 0 ; j < tab.rows.length ; j++) 
+    {     
+        tab_text=tab_text+tab.rows[j].innerHTML+"</tr>";
+        //tab_text=tab_text+"</tr>";
+    }
+
+    tab_text=tab_text+"</table>";
+    tab_text= tab_text.replace(/<A[^>]*>|<\/A>/g, "");//remove if u want links in your table
+    tab_text= tab_text.replace(/<img[^>]*>/gi,""); // remove if u want images in your table
+    tab_text= tab_text.replace(/<input[^>]*>|<\/input>/gi, ""); // reomves input params
+
+    var ua = window.navigator.userAgent;
+    var msie = ua.indexOf("MSIE "); 
+
+    if (msie > 0 || !!navigator.userAgent.match(/Trident.*rv\:11\./))      // If Internet Explorer
+    {
+        txtArea1.document.open("txt/html","replace");
+        txtArea1.document.write(tab_text);
+        txtArea1.document.close();
+        txtArea1.focus(); 
+        sa=txtArea1.document.execCommand("SaveAs",true,"Say Thanks to Sumit.xls");
+    }  
+    else                 //other browser not tested on IE 11
+        sa = window.open('data:application/vnd.ms-excel,' + encodeURIComponent(tab_text));  
+
+    return (sa);
+}
+        
+        
+        
+        
+//table export
+/* function fnExcelReport(val)
+{   
+    var currentdate = new Date();
+    var datetime = val+"_" + currentdate.getDay() + "_"+currentdate.getMonth()+1 
+    + "_" + currentdate.getFullYear() + "_" 
+    + currentdate.getHours() + ":" 
+    + currentdate.getMinutes() + ".xls";
+    
+    var tab_text="<table border='2px'><tr bgcolor='#87AFC6'>";
+    var textRange; var j=0; var k=0;
+    var tab = document.getElementById(val); // id of table
+   
+    for(j = 0 ; j < tab.rows.length ; j++) 
+    {     
+        tab_text=tab_text+tab.rows[j].innerHTML+"</tr>";
+        //tab_text=tab_text+"</tr>";
+    }
+    tab_text=tab_text+"</table>";
+    tab_text= tab_text.replace(/<A[^>]*>|<\/A>/g, "");//remove if u want links in your table
+    tab_text= tab_text.replace(/<img[^>]*>/gi,""); // remove if u want images in your table
+    tab_text= tab_text.replace(/<input[^>]*>|<\/input>/gi, ""); // reomves input params
+
+    
+    var ua = window.navigator.userAgent;
+    var msie = ua.indexOf("MSIE "); 
+
+    if (msie > 0 || !!navigator.userAgent.match(/Trident.*rv\:11\./))      // If Internet Explorer
+    {
+        txtArea1.document.open("txt/html","replace");
+        txtArea1.document.write(tab_text);
+        txtArea1.document.close();
+        txtArea1.focus(); 
+        txtArea1.document.execCommand("SaveAs",true,datetime);
+    }
+    else 
+    {
+        //other browser not tested on IE 11
+        var bba = document.createElement('a');
+        var data_type = 'data:application/vnd.ms-excel';
+        var table_div = tab_text;    //Your tab_text   
+        var table_html = table_div.replace(/ /g, '%20');
+        bba.href = data_type + ', ' + table_html;
+        //setting the file name
+        bba.download = datetime;
+        //triggering the function
+        bba.click();
+    }
+        //sa = window.open('data:application/vnd.ms-excel,' + encodeURIComponent(tab_text));  
+}
+
+ var xport = {
+      _fallbacktoCSV: true,  
+      toXLS: function(tableId, filename) {   
+        this._filename = (typeof filename == 'undefined') ? tableId : filename;
+     
+        if ((this._getMsieVersion() || this._isFirefox()) && this._fallbacktoCSV) {
+          return this.toCSV(tableId);
+        } else if (this._getMsieVersion() || this._isFirefox()) {
+          alert("Not supported browser");
+        }
+        //Other Browser can download xls
+        var htmltable = document.getElementById(tableId);
+        var html = htmltable.outerHTML;
+        this._downloadAnchor("data:application/vnd.ms-excel" + encodeURIComponent(html),'xls'); 
+      },
+      toCSV: function(tableId, filename) {
+        this._filename = (typeof filename === 'undefined') ? tableId : filename;
+        // Generate our CSV string from out HTML Table
+        
+        var tab_text="<table border='2px'><tr bgcolor='#87AFC6'>";
+        var textRange; var j=0; var k=0;
+        var tab = document.getElementById(tableId); // id of table
+        for(j = 0 ; j < tab.rows.length ; j++) 
+        {     
+            tab_text=tab_text+tab.rows[j].innerHTML+"</tr>";
+            //tab_text=tab_text+"</tr>";
+        }
+       
+        tab_text=tab_text+"</table>";
+     
+        var blob = new Blob([tab_text], { type: "text/csv" });
+ 
+        if (navigator.msSaveOrOpenBlob) {
+           
+          navigator.msSaveOrOpenBlob(blob, $("#tabName").val() + ".xls");
+        } else {      
+          this._downloadAnchor(URL.createObjectURL(blob), 'xls');      
+        }
+      },
+      _getMsieVersion: function() {
+        var ua = window.navigator.userAgent;
+
+        var msie = ua.indexOf("MSIE ");
+        if (msie > 0) {
+          // IE 10 or older => return version number
+          return parseInt(ua.substring(msie + 5, ua.indexOf(".", msie)), 10);
+        }
+
+        var trident = ua.indexOf("Trident/");
+        if (trident > 0) {
+          // IE 11 => return version number
+          var rv = ua.indexOf("rv:");
+          return parseInt(ua.substring(rv + 3, ua.indexOf(".", rv)), 10);
+        }
+
+        var edge = ua.indexOf("Edge/");
+        if (edge > 0) {
+          // Edge (IE 12+) => return version number
+          return parseInt(ua.substring(edge + 5, ua.indexOf(".", edge)), 10);
+        }
+        // other browser
+        return false;
+      },
+      _isFirefox: function(){
+        if (navigator.userAgent.indexOf("Firefox") > 0) {
+          return 1;
+        }
+        return 0;
+      },
+      _downloadAnchor: function(content, ext) {
+          var anchor = document.createElement("a");
+          anchor.style = "display:none !important";
+          anchor.id = "downloadanchor";
+          document.body.appendChild(anchor);
+
+          // If the [download] attribute is supported, try to use it
+          
+          if ("download" in anchor) {
+            anchor.download = this._filename + "." + ext;
+          }
+          anchor.href = content;
+          anchor.click();
+          anchor.remove();
+      },
+      _tableToCSV: function(table) {
+        // We'll be co-opting `slice` to create arrays
+        var slice = Array.prototype.slice;
+        
+        return slice
+          .call(table.rows)
+          .map(function(row) {
+            return slice
+              .call(row.cells)
+              .map(function(cell) {
+                return '"t"'.replace("t", cell.textContent);
+              })
+              .join(",");
+          })
+          .join("\r\n");
+      }
+    };  */
 
 </script>
 
@@ -19,7 +230,11 @@
 				<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
 					<div class="card">
 						<div class="header">
-							<h2>Training Activities</h2>
+							<h2>Training Activities
+							<!-- <span class="glyphicon glyphicon-download-alt" onclick="fnExcelReport('mytable')"></span>
+						 <span class="glyphicon glyphicon-print" onclick="exportToPdf('home_with_icon_title')"></span> -->
+							</h2>
+							
 						</div>
 						
 						<div class="tab-content">
@@ -28,12 +243,12 @@
 								<div class="table-responsive">
 								
 									<table class="table table-hover dashboard-task-infos" id="mytable" >
-								
+									<iframe id="txtArea1" style="display:none"></iframe>
 										<thead>
 											<tr>
 												<th rowspan="2">
 													<div align="center">
-														<strong>S.No.</strong>
+														<strong>S.No.</strong> 
 													</div>
 												</th>
 												<th rowspan="2">
@@ -191,7 +406,7 @@
 															{{moprComments}}</li>
 														</ol>
 													</td>
-											</c:if>
+											 </c:if>
 											</tr>
 											<tr>
 											<th colspan="5" align="center" >Total Funds</th>
@@ -216,7 +431,7 @@
 											</tr>
 										</tbody>
 									</table>
-									</div>
+		 							</div>
 									
 									 
 									

@@ -75,16 +75,16 @@ public class DatasourceConfig {
                 "gov.in.rgsa.dto"
         );
         em.setMappingResources(this.resources);
-
+        
         Properties properties = new Properties();
         properties.setProperty("hibernate.hbm2ddl.auto", this.ddlAuto);
         properties.setProperty("hibernate.dialect", this.hibernateDialect);
-
+        
         properties.setProperty("hibernate.default_schema", this.defaultSchema);
         properties.setProperty("hibernate.jdbc.lob.non_contextual_creation", this.nonContextualCreation);
         properties.setProperty("hibernate.format_sql", this.formatSQL);
         properties.setProperty("hibernate.naming.physical-strategy", this.strategy);
-
+        
         em.setJpaProperties(properties);
         return em;
     }

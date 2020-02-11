@@ -1,5 +1,6 @@
 package gov.in.rgsa.entity;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
@@ -28,7 +29,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 		+ " WHERE Q.qtrId=:qtrId and Q.trainingActivityId=:trainingActivityId order by QT.qprTrainingsDetailsId"),
 @NamedQuery(name="UPDATE_QPR_TRAINING_DETAIL_DEPEND_ON_QUATOR",query="UPDATE QuarterTrainings SET additionalRequirement=:additionalRequirement where qprTrainingsId=:qprTrainingsId"),
 })
-public class QuarterTrainings implements IFreezable{
+public class QuarterTrainings implements IFreezable,Serializable{
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)

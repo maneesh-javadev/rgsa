@@ -1,5 +1,6 @@
 package gov.in.rgsa.entity;
 
+import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.List;
 
@@ -33,7 +34,9 @@ import org.hibernate.annotations.UpdateTimestamp;
 @NamedQuery(name="UPDATE_QPRCBACtivity_FRZUNFREEZ_STATUS", query="UPDATE QprCbActivity SET  isFreeze=:isFreeze where qpCbActivityId=:qpCbActivityId"),
 @NamedQuery(name="QPR_CAPACITY_BUILDING_REPORT_BASED_ON_QUARTER", query="Select QCA from QprCbActivity QCA where  QCA.capacityBuildingActivity.stateCode=:stateCode AND  QCA.capacityBuildingActivity.yearId=:yearId AND QCA.quarterDuration.qtrId=:quarterId AND capacityBuildingActivity.cbActivityId=:cbActivityId")
 })
-public class QprCbActivity  implements IFreezable{
+public class QprCbActivity  implements IFreezable,Serializable{
+ 
+	private static final long serialVersionUID = 8452696251578367629L;
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)

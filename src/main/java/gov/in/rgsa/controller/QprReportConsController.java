@@ -1,25 +1,38 @@
 package gov.in.rgsa.controller;
 
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpRequest;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+
 import gov.in.rgsa.dao.CommonRepository;
-import gov.in.rgsa.entity.FinYear;
+import gov.in.rgsa.entity.CapacityBuildingActivity;
 import gov.in.rgsa.entity.QprPlanFunds;
 import gov.in.rgsa.entity.State;
 import gov.in.rgsa.model.QprReportConsModel;
 import gov.in.rgsa.service.CommonService;
+import gov.in.rgsa.service.QprReportConService;
 import gov.in.rgsa.user.preference.UserPreference;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
-
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 @Controller
 public class QprReportConsController {
 
     private static String VIEW_PAGE= "qprReportConsolidated";
+    private static String VIEW_QPR_REPORT= "viewQprReportPage";
+    private static String VIEW_QPR_REPORT_DETAILS= "QprReport/viewQprReportPageDetails";
 
     @Autowired
     private UserPreference userPreference;
@@ -27,6 +40,9 @@ public class QprReportConsController {
     private CommonRepository commonRepository;
     @Autowired
     private CommonService commonService;
+   
+    @Autowired
+    QprReportConService qprReportConService;
 
 //    public QprReportConsController(UserPreference userPreference,
 //                                   CommonRepository commonRepository,
@@ -118,5 +134,53 @@ public class QprReportConsController {
         qprPlanFundsList.add(qprPlanFunds);
         return qprPlanFundsList;
     }
-
+    
+    
+    // fetch all Qpr report for all level
+    @GetMapping(value = "qprReportInstallmentWise")
+    private String fetchAllQprreport(  Model model) {
+    	try {
+    		model.addAttribute("FIN_YEAR_LIST", qprReportConService.fetchFinYearList());
+    		model.addAttribute("STATE", qprReportConService.fetchStateList());
+    		model.addAttribute("QUARTER", qprReportConService.fetchQuarterList());
+    		}catch(Exception e) {
+    			e.printStackTrace();
+    		}
+    	return VIEW_QPR_REPORT;
+    }
+    
+    @PostMapping(value = "qprReportDetails")
+    @ResponseBody
+    public Map<Object,List> fetchAllQprreportDetails( HttpServletRequest  request  ) {
+    	Map<Object,List> dataMap=new LinkedHashMap<Object, List>();
+    	try {
+    	 	String statecode=request.getParameter("statecode");
+        	String yearId=request.getParameter("yearId");
+        	String UserType="C";
+        	String quarterId=request.getParameter("quarterId");
+        	
+        	if(statecode!=null && yearId!=null && quarterId!=null ) {
+		    	dataMap.put("Training_Activities_Progress_Report", qprReportConService.fetchTrainingActivityList(statecode,yearId, UserType,quarterId));
+		    	dataMap.put("Training_Details_Progress_Report", qprReportConService.fetchQprTrainingDetails(statecode,yearId, UserType,quarterId)) ;
+		    	dataMap.put("Additional_Faculty_Maintenance_SPRC_DPRC",  qprReportConService.fetchQprHRsupportSprcDprc(statecode,yearId, UserType,quarterId));
+		    	dataMap.put("e_Governance_Support_Group",  qprReportConService.fetchQprEgovProgressReport(statecode,yearId, UserType,quarterId));
+		    	dataMap.put("EenablementProgressReportId",  qprReportConService.fetchQprEenablementProgressReport(statecode,yearId, UserType,quarterId));
+		    	dataMap.put("pesa_Plan",  qprReportConService.fetchQprPesaReport(statecode,yearId, UserType,quarterId));
+		     	dataMap.put("IncomeEnhancementId",  qprReportConService.fetchQprIncomeEnhancement(statecode,yearId, UserType,quarterId));
+		    	dataMap.put("iecProgressReport",  qprReportConService.fetchQprIEC(statecode,yearId, UserType,quarterId));
+		    	dataMap.put("pmuProgressReport",  qprReportConService.fetchQprPMU(statecode,yearId, UserType,quarterId));
+		    	dataMap.put("administrativeAndTechnicalSupportId",  qprReportConService.fetchQprAdministrativeAndTechnicalSupport(statecode,yearId, UserType,quarterId));
+		      	dataMap.put("panchyatbhawanProgressReport",  qprReportConService.fetchQprPanchayatBhawan(statecode,yearId, UserType,quarterId));
+		    	dataMap.put("SATCOMIP",  qprReportConService.fetchQprSATCOM(statecode,yearId, UserType,quarterId));
+		    	dataMap.put("InstitutionalInfrastructureId",  qprReportConService.fetchQprInstitutionalInfrastructure(statecode,yearId, UserType,quarterId));
+        	}
+    		}catch(Exception e) {
+    			e.printStackTrace();
+    		}
+    	 
+    	 
+    	return dataMap;
+    }
+    
+    
 }
