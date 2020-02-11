@@ -31,6 +31,7 @@ for (var i = 0; i < NBdprc; i++) {
 
 }); */
 
+
 function get_quater_wise_data()
 {
 	
@@ -47,12 +48,16 @@ loadElement=function(){
 	//alert('${QPR_INSTITUTIONALINFRAQUATERLY.qprInstitutionalInfraDetails[0].qprInstInfraDetailsId}');
 	//alert('${QPR_INSTITUTIONALINFRAQUATERLY.qprInstitutionalInfraDetails[0].expenditureIncurred}');
 	$("#qtrId option[value='${QPR_INSTITUTIONALINFRAQUATERLY.qtrId}']").attr("selected", "selected");
-	validate_expenditureIncurred('${subcomponentwiseQuaterBalanceList[0].balanceAmount}',null,"nbs");
-	validate_expenditureIncurred('${subcomponentwiseQuaterBalanceList[1].balanceAmount}',null,"nbd");
-	validate_expenditureIncurred('${subcomponentwiseQuaterBalanceList[2].balanceAmount}',null,"cfs");
-	validate_expenditureIncurred('${subcomponentwiseQuaterBalanceList[3].balanceAmount}',null,"cfd");
-	
-	
+	if('${subcomponentwiseQuaterBalanceList[0].balanceAmount}' !=''){
+		validate_expenditureIncurred('${subcomponentwiseQuaterBalanceList[0].balanceAmount}',null,"nbs");
+	}
+	if('${subcomponentwiseQuaterBalanceList[1].balanceAmount}' !=''){
+		validate_expenditureIncurred('${subcomponentwiseQuaterBalanceList[1].balanceAmount}',null,"nbd");
+	}if('${subcomponentwiseQuaterBalanceList[2].balanceAmount}' !=''){
+		validate_expenditureIncurred('${subcomponentwiseQuaterBalanceList[0].balanceAmount}',null,"cfs");
+	}if('${subcomponentwiseQuaterBalanceList[3].balanceAmount}' !=''){
+		validate_expenditureIncurred('${subcomponentwiseQuaterBalanceList[0].balanceAmount}',null,"cfd");
+	}
 	
 };
 
@@ -76,6 +81,7 @@ function validate_data(){
 }
 
 function validate_expenditureIncurred(balance,obj,objId){
+	
 if(obj==null){
 temp=("#"+objId+"_0");
 if(temp.length>0){
@@ -111,7 +117,7 @@ if(obj!=null){
 			calculcate_total(tot,idn);
 		}
 }
-	
+
 }
 
 function calculcate_total(subtotal,id){
@@ -194,4 +200,12 @@ function FreezeAndUnfreeze(msg){
 			</script>
 			 </c:forEach>
 </c:if>
+<script>
+var qtr ='${quaterIdExist}';
+if(qtr == 'true'){
+	loadElement();
+}
+
+</script>
+
 <!--#end page return from server with error then call loadElementandShowError  method -->

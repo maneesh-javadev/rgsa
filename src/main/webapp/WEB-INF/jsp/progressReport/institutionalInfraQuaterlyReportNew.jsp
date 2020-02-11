@@ -42,7 +42,7 @@
 								<label for="QuaterDuration" class="col-sm-2"><spring:message code="Label.QuaterDuration" htmlEscape="true" /></label>
 								<div class="col-lg-4">
 									
-									<select id="qtrId" name="qtrId" onchange="get_quater_wise_data(this.value)" required="required" class="form-control">
+									<select id="qtrId" name="qtrId" onchange="get_quater_wise_data(this.value);" required="required" class="form-control">
 										<option value="0">Select Quarter Duration</option>
 										
 										<c:forEach items="${quarterDuration}" var="duration">
@@ -111,7 +111,16 @@
                        		<c:if test="${bhawanDto.workType eq 'N' and bhawanDto.institutionalActivityTypeId==2}">
 								<tr>
 								<td align="center">
+										
+										<c:choose>
+										<c:when test="${QPR_INSTITUTIONALINFRAQUATERLY.qprInstitutionalInfraDetails[mindex].districtCode == null }">
 										<strong>${bhawanDto.districtName}</strong>
+										</c:when>
+										
+										<c:otherwise>
+										<strong>${QPR_INSTITUTIONALINFRAQUATERLY.qprInstitutionalInfraDetails[mindex].districtName}</strong>
+									</c:otherwise>
+										</c:choose> 
 										<spring:bind path="QPR_INSTITUTIONALINFRAQUATERLY.qprInstitutionalInfraDetails[${mindex}].qprInstInfraDetailsId" >
 										<input type="hidden" name="${status.expression}" value="${status.value}" /> 
 										</spring:bind>
@@ -119,16 +128,36 @@
 										<spring:bind path="QPR_INSTITUTIONALINFRAQUATERLY.qprInstitutionalInfraDetails[${mindex}].trainingInstitueTypeId" >
 										<input type="hidden" name="${status.expression}" value="${bhawanDto.institutionalActivityTypeId}" /> 
 										</spring:bind>
-										
+										<c:choose>
+										<c:when test="${QPR_INSTITUTIONALINFRAQUATERLY.qprInstitutionalInfraDetails[mindex].instituteInfrsaHrActivityDetailsId ==null }">
 										<spring:bind path="QPR_INSTITUTIONALINFRAQUATERLY.qprInstitutionalInfraDetails[${mindex}].instituteInfrsaHrActivityDetailsId" >
 										<input type="hidden" name="${status.expression}" value="${bhawanDto.institutionalInfraActivityDetailId}" /> 
 										</spring:bind>
+										</c:when>
+										<c:otherwise>
+										<spring:bind path="QPR_INSTITUTIONALINFRAQUATERLY.qprInstitutionalInfraDetails[${mindex}].instituteInfrsaHrActivityDetailsId" >
+										<input type="hidden" name="${status.expression}" value="${QPR_INSTITUTIONALINFRAQUATERLY.qprInstitutionalInfraDetails[mindex].instituteInfrsaHrActivityDetailsId}" /> 
+										</spring:bind>
+									
+										</c:otherwise>
+										</c:choose>
+										<c:choose>
+										<c:when test="${QPR_INSTITUTIONALINFRAQUATERLY.qprInstitutionalInfraDetails[mindex].districtCode ==null }">
+										<spring:bind path="QPR_INSTITUTIONALINFRAQUATERLY.qprInstitutionalInfraDetails[${mindex}].districtCode" >
+										<input type="hidden" name="${status.expression}" value="${bhawanDto.districtCode}" /> 
+										</spring:bind>
+										</c:when>
+										<c:otherwise>
+										<spring:bind path="QPR_INSTITUTIONALINFRAQUATERLY.qprInstitutionalInfraDetails[${mindex}].districtCode" >
+										<input type="hidden" name="${status.expression}" value="${QPR_INSTITUTIONALINFRAQUATERLY.qprInstitutionalInfraDetails[mindex].districtCode}" /> 
+										</spring:bind>
+									
+										</c:otherwise>
+										</c:choose>
 										
 										<spring:bind path="QPR_INSTITUTIONALINFRAQUATERLY.qprInstitutionalInfraDetails[${mindex}].fileNode.fileNodeId" >
 										<input type="hidden" name="${status.expression}" value="${status.value}" /> 
 										</spring:bind>
-										
- 							 				
 								</td>
 								<td align="center">
 									<spring:bind path="QPR_INSTITUTIONALINFRAQUATERLY.qprInstitutionalInfraDetails[${mindex}].instInfraStatusId" >
@@ -283,12 +312,21 @@
 							  </thead>
                               <tbody id=tbodyIdNdprc">
                                   <c:set var="sindex" value="0" />
-                               	    <c:forEach items="${instInfraStateDataForProgressReport}" var="bhawanDto" >
+                               	    <c:forEach items="${instInfraStateDataForProgressReport}" var="bhawanDto" varStatus="index">
                        		<c:if test="${bhawanDto.workType eq 'N' and bhawanDto.institutionalActivityTypeId==4}">
                        		
 								<tr>
 								<td align="center">
+										
+										<c:choose>
+										<c:when test="${QPR_INSTITUTIONALINFRAQUATERLY.qprInstitutionalInfraDetails[mindex].districtCode == null }">
 										<strong>${bhawanDto.districtName}</strong>
+										</c:when>
+										
+										<c:otherwise>
+										<strong>${QPR_INSTITUTIONALINFRAQUATERLY.qprInstitutionalInfraDetails[mindex].districtName}</strong>
+									</c:otherwise>
+										</c:choose> 
 										<spring:bind path="QPR_INSTITUTIONALINFRAQUATERLY.qprInstitutionalInfraDetails[${mindex}].qprInstInfraDetailsId" >
 										<input type="hidden" name="${status.expression}" value="${status.value}" /> 
 										</spring:bind>
@@ -296,10 +334,32 @@
 										<spring:bind path="QPR_INSTITUTIONALINFRAQUATERLY.qprInstitutionalInfraDetails[${mindex}].trainingInstitueTypeId" >
 										<input type="hidden" name="${status.expression}" value="${bhawanDto.institutionalActivityTypeId}" /> 
 										</spring:bind>
-										
+										<c:choose>
+										<c:when test="${QPR_INSTITUTIONALINFRAQUATERLY.qprInstitutionalInfraDetails[mindex].instituteInfrsaHrActivityDetailsId ==null }">
 										<spring:bind path="QPR_INSTITUTIONALINFRAQUATERLY.qprInstitutionalInfraDetails[${mindex}].instituteInfrsaHrActivityDetailsId" >
 										<input type="hidden" name="${status.expression}" value="${bhawanDto.institutionalInfraActivityDetailId}" /> 
 										</spring:bind>
+										</c:when>
+										<c:otherwise>
+										<spring:bind path="QPR_INSTITUTIONALINFRAQUATERLY.qprInstitutionalInfraDetails[${mindex}].instituteInfrsaHrActivityDetailsId" >
+										<input type="hidden" name="${status.expression}" value="${QPR_INSTITUTIONALINFRAQUATERLY.qprInstitutionalInfraDetails[mindex].instituteInfrsaHrActivityDetailsId}" /> 
+										</spring:bind>
+									
+										</c:otherwise>
+										</c:choose>
+										<c:choose>
+										<c:when test="${QPR_INSTITUTIONALINFRAQUATERLY.qprInstitutionalInfraDetails[mindex].districtCode ==null }">
+										<spring:bind path="QPR_INSTITUTIONALINFRAQUATERLY.qprInstitutionalInfraDetails[${mindex}].districtCode" >
+										<input type="hidden" name="${status.expression}" value="${bhawanDto.districtCode}" /> 
+										</spring:bind>
+										</c:when>
+										<c:otherwise>
+										<spring:bind path="QPR_INSTITUTIONALINFRAQUATERLY.qprInstitutionalInfraDetails[${mindex}].districtCode" >
+										<input type="hidden" name="${status.expression}" value="${QPR_INSTITUTIONALINFRAQUATERLY.qprInstitutionalInfraDetails[mindex].districtCode}" /> 
+										</spring:bind>
+									
+										</c:otherwise>
+										</c:choose>
 										
 										<spring:bind path="QPR_INSTITUTIONALINFRAQUATERLY.qprInstitutionalInfraDetails[${mindex}].fileNode.fileNodeId" >
 										<input type="hidden" name="${status.expression}" value="${status.value}" /> 
@@ -458,7 +518,19 @@
                        		<c:if test="${bhawanDto.workType eq 'C' and bhawanDto.institutionalActivityTypeId==2}">
 								<tr>
 								<td align="center">
+										
+										
+										
+										
+									<c:choose>
+										<c:when test="${QPR_INSTITUTIONALINFRAQUATERLY.qprInstitutionalInfraDetails[mindex].districtCode == null }">
 										<strong>${bhawanDto.districtName}</strong>
+										</c:when>
+										
+										<c:otherwise>
+										<strong>${QPR_INSTITUTIONALINFRAQUATERLY.qprInstitutionalInfraDetails[mindex].districtName}</strong>
+									</c:otherwise>
+										</c:choose> 
 										<spring:bind path="QPR_INSTITUTIONALINFRAQUATERLY.qprInstitutionalInfraDetails[${mindex}].qprInstInfraDetailsId" >
 										<input type="hidden" name="${status.expression}" value="${status.value}" /> 
 										</spring:bind>
@@ -466,19 +538,36 @@
 										<spring:bind path="QPR_INSTITUTIONALINFRAQUATERLY.qprInstitutionalInfraDetails[${mindex}].trainingInstitueTypeId" >
 										<input type="hidden" name="${status.expression}" value="${bhawanDto.institutionalActivityTypeId}" /> 
 										</spring:bind>
-										
+										<c:choose>
+										<c:when test="${QPR_INSTITUTIONALINFRAQUATERLY.qprInstitutionalInfraDetails[mindex].instituteInfrsaHrActivityDetailsId ==null }">
 										<spring:bind path="QPR_INSTITUTIONALINFRAQUATERLY.qprInstitutionalInfraDetails[${mindex}].instituteInfrsaHrActivityDetailsId" >
 										<input type="hidden" name="${status.expression}" value="${bhawanDto.institutionalInfraActivityDetailId}" /> 
 										</spring:bind>
+										</c:when>
+										<c:otherwise>
+										<spring:bind path="QPR_INSTITUTIONALINFRAQUATERLY.qprInstitutionalInfraDetails[${mindex}].instituteInfrsaHrActivityDetailsId" >
+										<input type="hidden" name="${status.expression}" value="${QPR_INSTITUTIONALINFRAQUATERLY.qprInstitutionalInfraDetails[mindex].instituteInfrsaHrActivityDetailsId}" /> 
+										</spring:bind>
+									
+										</c:otherwise>
+										</c:choose>
+										<c:choose>
+										<c:when test="${QPR_INSTITUTIONALINFRAQUATERLY.qprInstitutionalInfraDetails[mindex].districtCode ==null }">
+										<spring:bind path="QPR_INSTITUTIONALINFRAQUATERLY.qprInstitutionalInfraDetails[${mindex}].districtCode" >
+										<input type="hidden" name="${status.expression}" value="${bhawanDto.districtCode}" /> 
+										</spring:bind>
+										</c:when>
+										<c:otherwise>
+										<spring:bind path="QPR_INSTITUTIONALINFRAQUATERLY.qprInstitutionalInfraDetails[${mindex}].districtCode" >
+										<input type="hidden" name="${status.expression}" value="${QPR_INSTITUTIONALINFRAQUATERLY.qprInstitutionalInfraDetails[mindex].districtCode}" /> 
+										</spring:bind>
+									
+										</c:otherwise>
+										</c:choose>
 										
 										<spring:bind path="QPR_INSTITUTIONALINFRAQUATERLY.qprInstitutionalInfraDetails[${mindex}].fileNode.fileNodeId" >
 										<input type="hidden" name="${status.expression}" value="${status.value}" /> 
 										</spring:bind>
-										
-										<spring:bind path="QPR_INSTITUTIONALINFRAQUATERLY.qprInstitutionalInfraDetails[${mindex}].fileNode.fileNodeId" >
-										<input type="hidden" name="${status.expression}" value="${status.value}" /> 
-										</spring:bind>
-										
  							 				
 								</td>
 								<td align="center">
@@ -606,7 +695,15 @@
                        		<c:if test="${bhawanDto.workType eq 'C' and bhawanDto.institutionalActivityTypeId==4}">
 								<tr>
 								<td align="center">
+									<c:choose>
+										<c:when test="${QPR_INSTITUTIONALINFRAQUATERLY.qprInstitutionalInfraDetails[mindex].districtCode == null }">
 										<strong>${bhawanDto.districtName}</strong>
+										</c:when>
+										
+										<c:otherwise>
+										<strong>${QPR_INSTITUTIONALINFRAQUATERLY.qprInstitutionalInfraDetails[mindex].districtName}</strong>
+									</c:otherwise>
+										</c:choose> 
 										<spring:bind path="QPR_INSTITUTIONALINFRAQUATERLY.qprInstitutionalInfraDetails[${mindex}].qprInstInfraDetailsId" >
 										<input type="hidden" name="${status.expression}" value="${status.value}" /> 
 										</spring:bind>
@@ -614,15 +711,36 @@
 										<spring:bind path="QPR_INSTITUTIONALINFRAQUATERLY.qprInstitutionalInfraDetails[${mindex}].trainingInstitueTypeId" >
 										<input type="hidden" name="${status.expression}" value="${bhawanDto.institutionalActivityTypeId}" /> 
 										</spring:bind>
-										
+										<c:choose>
+										<c:when test="${QPR_INSTITUTIONALINFRAQUATERLY.qprInstitutionalInfraDetails[mindex].instituteInfrsaHrActivityDetailsId ==null }">
 										<spring:bind path="QPR_INSTITUTIONALINFRAQUATERLY.qprInstitutionalInfraDetails[${mindex}].instituteInfrsaHrActivityDetailsId" >
 										<input type="hidden" name="${status.expression}" value="${bhawanDto.institutionalInfraActivityDetailId}" /> 
 										</spring:bind>
+										</c:when>
+										<c:otherwise>
+										<spring:bind path="QPR_INSTITUTIONALINFRAQUATERLY.qprInstitutionalInfraDetails[${mindex}].instituteInfrsaHrActivityDetailsId" >
+										<input type="hidden" name="${status.expression}" value="${QPR_INSTITUTIONALINFRAQUATERLY.qprInstitutionalInfraDetails[mindex].instituteInfrsaHrActivityDetailsId}" /> 
+										</spring:bind>
+									
+										</c:otherwise>
+										</c:choose>
+										<c:choose>
+										<c:when test="${QPR_INSTITUTIONALINFRAQUATERLY.qprInstitutionalInfraDetails[mindex].districtCode ==null }">
+										<spring:bind path="QPR_INSTITUTIONALINFRAQUATERLY.qprInstitutionalInfraDetails[${mindex}].districtCode" >
+										<input type="hidden" name="${status.expression}" value="${bhawanDto.districtCode}" /> 
+										</spring:bind>
+										</c:when>
+										<c:otherwise>
+										<spring:bind path="QPR_INSTITUTIONALINFRAQUATERLY.qprInstitutionalInfraDetails[${mindex}].districtCode" >
+										<input type="hidden" name="${status.expression}" value="${QPR_INSTITUTIONALINFRAQUATERLY.qprInstitutionalInfraDetails[mindex].districtCode}" /> 
+										</spring:bind>
+									
+										</c:otherwise>
+										</c:choose>
 										
 										<spring:bind path="QPR_INSTITUTIONALINFRAQUATERLY.qprInstitutionalInfraDetails[${mindex}].fileNode.fileNodeId" >
 										<input type="hidden" name="${status.expression}" value="${status.value}" /> 
-										</spring:bind>
-										
+										</spring:bind>					
  							 				
 								</td>
 								<td align="center">

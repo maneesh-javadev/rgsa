@@ -1,23 +1,57 @@
 package gov.in.rgsa.controller;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import javax.persistence.NoResultException;
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import gov.in.rgsa.dto.AnualActionPlanPhysically;
 import gov.in.rgsa.dto.DemographicProfileDataDto;
+import gov.in.rgsa.entity.CapacityBuildingActivity;
+import gov.in.rgsa.entity.NodalOfficerDetails;
+import gov.in.rgsa.entity.State;
+import gov.in.rgsa.model.FacadeModel;
 import gov.in.rgsa.model.ViewReportAtMoprModel;
+import gov.in.rgsa.service.AdditionalFacultyAndMainService;
+import gov.in.rgsa.service.AdminAndFinancialDataCellService;
+import gov.in.rgsa.service.AdminTechSupportService;
+import gov.in.rgsa.service.CapacityBuildingService;
+import gov.in.rgsa.service.EEnablementOfPanchayatService;
 import gov.in.rgsa.service.FacadeService;
+import gov.in.rgsa.service.IecService;
+import gov.in.rgsa.service.IncomeEnhancementService;
+import gov.in.rgsa.service.InnovativeActivityService;
+import gov.in.rgsa.service.InstitutionalInfraActivityPlanService;
 import gov.in.rgsa.service.LGDService;
 import gov.in.rgsa.service.MOPRService;
+import gov.in.rgsa.service.PanchayatBhawanService;
+import gov.in.rgsa.service.PlanAllocationService;
+import gov.in.rgsa.service.PmuActivityService;
+import gov.in.rgsa.service.ProgressReportService;
+import gov.in.rgsa.service.SatcomActivityProgressService;
+import gov.in.rgsa.service.SatcomFacilityService;
+import gov.in.rgsa.service.TrainingActivityService;
+import gov.in.rgsa.service.TrainingInstitutionService;
 import gov.in.rgsa.service.ViewReportAtMoprService;
 import gov.in.rgsa.user.preference.UserPreference;
+import gov.in.rgsa.utils.Message;
+import gov.in.rgsa.validater.CaptchaValidator;
 
 @Controller
 public class ViewReportAtMoprController {
@@ -27,7 +61,12 @@ public class ViewReportAtMoprController {
 
 	private static final String VIEW_REPORT_DEMOGRAPHIC_PROFILE_STATE = "viewReportDemographicProfileState";
 	private static final String VIEW_REPORT_ANNUAL_ACTION_STATE = "viewReportAnnualActionState";
-
+	private static final String Action_Plan_Physical_Report = "actionPlanPhysicalReport";
+	private static final String ACTION_PLAN_REPORT_FOR_PUBLIC_DOMAIN = "actionPlanReportForPublicDomain";
+	private static final String ACTION_PLAN_REPORT_FOR_MINISTORY_DOMAIN = "actionPlanReportForMinistoryDomain";
+	
+	
+	
 	@Autowired
 	private ViewReportAtMoprService viewReportAtMoprService;
 
@@ -42,6 +81,78 @@ public class ViewReportAtMoprController {
 
 	@Autowired
 	private MOPRService moprService;
+
+	@Autowired
+	private TrainingActivityService trainingActivityService;
+
+	@Autowired
+	private PanchayatBhawanService panchayatBhawanService;
+
+	@Autowired
+	private TrainingInstitutionService trainingInstitutionService;
+
+	@Autowired
+	private ProgressReportService progressReportService;
+
+	@Autowired
+	private IecService iecService;
+
+	/*
+	 * @Autowired private PmuActivityService activityService;
+	 */
+
+	@Autowired
+	InnovativeActivityService innovativeActivityService;
+
+	@Autowired
+	private InstitutionalInfraActivityPlanService institutionalInfraActivityPlanService;
+
+	@Autowired
+	private IncomeEnhancementService enhancementService;
+
+	@Autowired
+	private SatcomFacilityService satcomFacilityService;
+
+	@Autowired
+	private LGDService lgdService;
+
+	@Autowired
+	private AdminTechSupportService adminTechSupportService;
+
+	@Autowired
+	private SatcomActivityProgressService satcomActivityProgressService;
+
+	@Autowired
+	private AdditionalFacultyAndMainService additionalFacultyAndMainService;
+
+	/*
+	 * @Autowired private CapacityBuildingService capacityBuildingService;
+	 */
+
+	@Autowired
+	private PmuActivityService pmuActivityService;
+
+	@Autowired
+	private EEnablementOfPanchayatService eEnablementOfPanchayatService;
+
+	/*
+	 * @Autowired private CBMasterService cbMasterService;
+	 */
+
+	@Autowired
+	private AdminAndFinancialDataCellService adminAndFinancialDataCellService;
+
+	@Autowired
+	InstitutionalInfraActivityPlanService InstitutionalInfraActivityPlanService;
+
+	@Autowired
+	PlanAllocationService planAllocationService;
+
+	@Autowired
+	private CapacityBuildingService capacityBuildingService;
+
+	@Value("${rgsa.captcha.enabled}")
+	private Boolean isCaptcha;
 
 	@GetMapping(value = "viewReportDemographicProfile")
 	private String viewReportDemographicProfile(
@@ -125,4 +236,51 @@ public class ViewReportAtMoprController {
 		model.addAttribute("planComponentsFunds", facadeService.fetchFundDetailsByUserType(parameter));
 		return VIEW_REPORT_ANNUAL_ACTION_STATE;
 	}
+
+	@GetMapping(value ="actionPlanPhysicalReport")
+	public String getReportData(Model model) {
+		List<State> getStateList = lgdService.getAllStateList();
+		model.addAttribute("user_type", userPreference.getUserType());
+	
+		if(("S").equals(userPreference.getUserType())){
+			model.addAttribute("ShowState", Boolean.FALSE);
+			model.addAttribute("showFin", Boolean.FALSE);
+		}
+		else if(("M").equals(userPreference.getUserType())) {
+			model.addAttribute("stateList", getStateList);
+			model.addAttribute("ShowState", Boolean.TRUE);
+			//model.addAttribute("showFin", Boolean.TRUE);
+		}else {
+			model.addAttribute("FIN_YEAR_LIST", viewReportAtMoprService.getFinYearList());
+			model.addAttribute("stateList", getStateList);
+			model.addAttribute("ShowState", Boolean.TRUE);
+			model.addAttribute("showFin", Boolean.TRUE);
+	
+		}
+		return Action_Plan_Physical_Report;
+	}
+
+	@PostMapping(value ="actionPlanPhysicalReport")
+	@ResponseBody
+	public Map<String, List<AnualActionPlanPhysically>> fetchReportData(String component,String slc,String fin, Model model) {
+		Map<String, List<AnualActionPlanPhysically>> anualActionPlanPhysically = new HashMap<>();
+		List<AnualActionPlanPhysically> capacityBuildingList = new ArrayList<>();
+				
+			 capacityBuildingList = viewReportAtMoprService
+						.fetchAnualActionPlanPhysically(component ,slc ,fin);
+	
+
+		anualActionPlanPhysically.put(capacityBuildingList.get(0).getColumn11(), capacityBuildingList);
+		
+		return anualActionPlanPhysically;
+	}
+	
+	@GetMapping(value ="validateCaptcha")
+	@ResponseBody
+	public Boolean validateCaptcha(String captchaAnswer, Model model,HttpSession httpSession, RedirectAttributes re) {
+			CaptchaValidator captchaValidator = new CaptchaValidator();	
+		return captchaValidator.validateCaptcha(httpSession, captchaAnswer);
+		
+	}
+	
 }
