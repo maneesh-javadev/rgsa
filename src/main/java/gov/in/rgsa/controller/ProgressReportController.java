@@ -292,7 +292,7 @@ public class ProgressReportController {
 		model.addAttribute("QUATER_DETAILS", progressReportService.getQuarterDurations());
 		List<QuaterWiseFund> totalQuatorWiseFund = new ArrayList<>();
 		List<IecActivity> iecActivitiesApproved = iecService.fetchApprovedIec();// this gives CEC approved data.
-		List<StateAllocation> stateAllocation = progressReportService.fetchStateAllocationData(11, 
+		List<StateAllocation> stateAllocation = progressReportService.fetchStateAllocationData(11, installmentNo,
 				progressReportService.getCurrentPlanCode());
 		if (quarterId == 3 || quarterId == 4) {
 			/*stateAllocation.add(progressReportService
@@ -502,7 +502,7 @@ public class ProgressReportController {
 		List<QuaterWiseFund> totalQuatorWiseFund = new ArrayList<>();
 		List<IncomeEnhancementActivity> incomeEnhancementActApproved = enhancementService
 				.fetchAllIncmEnhncmntActvty('C');
-		List<StateAllocation> stateAllocation = progressReportService.fetchStateAllocationData(10, 
+		List<StateAllocation> stateAllocation = progressReportService.fetchStateAllocationData(10, installmentNo,
 				progressReportService.getCurrentPlanCode());
 		model.addAttribute("QUATER_DETAILS", progressReportService.getQuarterDurations());
 		if (quarterId == 3 || quarterId == 4) {
@@ -659,7 +659,7 @@ public class ProgressReportController {
 																										// data that was
 																										// approved by
 																										// the CEC
-		List<StateAllocation> stateAllocation = progressReportService.fetchStateAllocationData(7, 
+		List<StateAllocation> stateAllocation = progressReportService.fetchStateAllocationData(7, installmentNo,
 				progressReportService.getCurrentPlanCode());
 		model.addAttribute("QUATER_DETAILS", progressReportService.getQuarterDurations());
 		if (quarterId == 3 || quarterId == 4) {
@@ -839,12 +839,12 @@ public class ProgressReportController {
 		List<QuaterWiseFund> totalQuatorWiseFund = new ArrayList<>();
 		List<AdministrativeTechnicalSupport> administrativeTechnicalApproved = adminTechSupportService
 				.getApprovedSatcomActivity();
-		List<StateAllocation> stateAllocation = progressReportService.fetchStateAllocationData(4, 
+		List<StateAllocation> stateAllocation = progressReportService.fetchStateAllocationData(4, installmentNo,
 				progressReportService.getCurrentPlanCode());
 		model.addAttribute("QUATER_DETAILS", progressReportService.getQuarterDurations());
 		if (quarterId == 3 || quarterId == 4) {
 			stateAllocation.add(progressReportService
-					.fetchStateAllocationData(4,  progressReportService.getCurrentPlanCode()).get(0)); // total fund
+					.fetchStateAllocationData(4, installmentNo, progressReportService.getCurrentPlanCode()).get(0)); // total fund
 																											// allocated
 																											// in first
 																											// quator
@@ -1020,7 +1020,7 @@ public class ProgressReportController {
 		districtName = lgdService.getAllDistrictBasedOnState(userPreference.getStateCode());
 		List<InstitueInfraHrActivity> institueInfraHrActivityApproved = additionalFacultyAndMainService
 				.fetchApprovedInstituteHrActivity();
-		stateAllocation = progressReportService.fetchStateAllocationData(14, 
+		stateAllocation = progressReportService.fetchStateAllocationData(14, installmentNo,
 				progressReportService.getCurrentPlanCode());
 		model.addAttribute("LIST_OF_DOMAINS", domains);
 		model.addAttribute("LIST_OF_DOMAINS_LENGTH", domains.size() / 2);
@@ -1029,7 +1029,7 @@ public class ProgressReportController {
 		if (quarterId == 3 || quarterId == 4) {
 			if (CollectionUtils.isEmpty(stateAllocation)) {
 				stateAllocation.add(progressReportService
-						.fetchStateAllocationData(14,  progressReportService.getCurrentPlanCode()).get(0)); // total
+						.fetchStateAllocationData(14, installmentNo,  progressReportService.getCurrentPlanCode()).get(0)); // total
 																												// fund
 			}
 			totalQuatorWiseFund = progressReportService.fetchTotalQuaterWiseFundData(userPreference.getStateCode(), 14);
@@ -1056,7 +1056,7 @@ public class ProgressReportController {
 		if (CollectionUtils.isNotEmpty(stateAllocation)
 				&& CollectionUtils.isNotEmpty(institueInfraHrActivityApproved)) {
 			if (quarterId > 2) {
-				List<StateAllocation> stateAllocationPreQuater = progressReportService.fetchStateAllocationData(14, 
+				List<StateAllocation> stateAllocationPreQuater = progressReportService.fetchStateAllocationData(14, installmentNo,
 						progressReportService.getCurrentPlanCode());
 				for (StateAllocation allocation : stateAllocationPreQuater) {
 					if (allocation.getSubcomponentId() == 10) {
@@ -1245,8 +1245,8 @@ public class ProgressReportController {
 			Model model) {
 		int quarterId = 0;
 		
-		// commented by rajeev
-		// int installmentNo = (quarterId < 3) ? 1 : 2; // installment number for qtrId
+		// commented by rajeev 00
+		 int installmentNo = (quarterId < 3) ? 1 : 2; // installment number for qtrId
 		// 1 & 2 = 1 and 3 & 4 = 2
 		if (pmuProgress.getQtrIdJsp6() != null) {
 			quarterId = pmuProgress.getQtrIdJsp6();
@@ -1261,7 +1261,7 @@ public class ProgressReportController {
 		// commented by rajeev
 		// stateAllocation = progressReportService.fetchStateAllocationData(12,
 		// installmentNo,progressReportService.getCurrentPlanCode());
-		stateAllocation = progressReportService.fetchStateAllocationData(12,
+		stateAllocation = progressReportService.fetchStateAllocationData(12,installmentNo,
 				progressReportService.getCurrentPlanCode());
 
 		model.addAttribute("QUATER_DETAILS", progressReportService.getQuarterDurations());
@@ -1762,11 +1762,11 @@ public class ProgressReportController {
 		model.addAttribute("QUATER_DETAILS", progressReportService.getQuarterDurations());
 		List<QuaterWiseFund> totalQuatorWiseFund = new ArrayList<>();
 		List<InnovativeActivity> innovativeActApproved = innovativeActivityService.fetchApprovedInnovative();
-		List<StateAllocation> stateAllocation = progressReportService.fetchStateAllocationData(9, 
+		List<StateAllocation> stateAllocation = progressReportService.fetchStateAllocationData(9, installmentNo,
 				progressReportService.getCurrentPlanCode());
 		if (quarterId == 3 || quarterId == 4) {
 			stateAllocation.add(progressReportService
-					.fetchStateAllocationData(9,  progressReportService.getCurrentPlanCode()).get(0)); // total fund
+					.fetchStateAllocationData(9, installmentNo, progressReportService.getCurrentPlanCode()).get(0)); // total fund
 																											// allocated
 																											// in first
 																											// quator
@@ -1918,12 +1918,12 @@ public class ProgressReportController {
 		List<QuaterWiseFund> totalQuatorWiseFund = new ArrayList<>();
 		List<AdminAndFinancialDataActivity> adminAndFinancialDataActivityApproved = adminAndFinancialDataCellService
 				.fetchApprovedActivity();
-		List<StateAllocation> stateAllocation = progressReportService.fetchStateAllocationData(8, 
+		List<StateAllocation> stateAllocation = progressReportService.fetchStateAllocationData(8, installmentNo,
 				progressReportService.getCurrentPlanCode());
 		model.addAttribute("quarter_duration", progressReportService.getQuarterDurations());
 		if (quarterId == 3 || quarterId == 4) {
 			stateAllocation.add(progressReportService
-					.fetchStateAllocationData(8,  progressReportService.getCurrentPlanCode()).get(0)); // total fund
+					.fetchStateAllocationData(8, installmentNo,  progressReportService.getCurrentPlanCode()).get(0)); // total fund
 																											// allocated
 																											// in first
 																											// quator
