@@ -29,6 +29,7 @@
 					  // console.log("key = " + key + " valueList = " + valueList);
 						if(key=='Training_Activities_Progress_Report'){
 							  var tableBody='';
+							  var total=0;
 							   tableBody+= '<thead style="background-color: #eeb2b2">';
 							   tableBody+= '<td><b>S.No.<b></td>';
 							   tableBody+= '<td><b> Activity Name </b></td>';
@@ -39,25 +40,43 @@
 							   tableBody+= '<td><b>Expenditure Incurred </b></td>';
 							   tableBody+= '</thead>';
 								   for (var key1 in valueList) {
-									   //console.log(">>>"+valueList.length);
+									   //console.log(">>>key1===="+key1);
 									    var slno=parseInt(key1)+1;
-									    if(valueList.length==slno){
-									    	// tableBody+='<tr style="background-color: #dbd0d0">';
-									    	tableBody+='<tr>';
-									    }else{
 										    tableBody+='<tr>';
-								   			}
-									    tableBody+='<td>'+ slno +  '</td>';
+									   	 tableBody+='<td>'+ slno +  '</td>';
 									   $.each( valueList[key1], function(key2,listVal){
 										    //console.log("key2 = " + key2 + " listVal = " + listVal); 
-										    	tableBody+='<td>'+ listVal +  '</td>';
+										    if( key2!='additional_requirement'){
+										    	 if( key2=='expenditure_incurred'){
+										    		 total=parseInt(total)+parseInt(listVal);
+										    		 tableBody+='<td>'+ listVal +  '</td>';
+										    	 }else{
+										    		 tableBody+='<td>'+ listVal +  '</td>';
+										    	 }
+										    }
 									   })
+										   if(valueList.length==slno){
+											   tableBody+='</tr>';
+											   tableBody+='<tr  style="background-color: #dbd0d0">';
+											   $.each( valueList[key1], function(key2,listVal){
+												    if( key2=='additional_requirement'){
+												    	tableBody+='<td colspan=6> <b>Additional Requirement </b> </td>';
+												    	tableBody+='<td><b>'+ listVal +  '</b></td>';
+												    }
+											   })
+											   tableBody+='</tr>';
+											   tableBody+='<tr  style="background-color: #dbd0d0">';  
+											   tableBody+='<td colspan=6> <b>Total </b> </td>';
+										    	tableBody+='<td><b>'+ total +  '</b></td>';
+											   tableBody+='</tr>';
+										   }
 									   tableBody+='</tr>';
 									}
 								   $("#trainingActivityId").html(tableBody);
 							  }
 							if(key=='Training_Details_Progress_Report'){
 								var tableBody='';
+								var total=0;
 								   tableBody+= '<thead style="background-color: #eeb2b2">';
 								   tableBody+= '<td><b>S.No.<b></td>';
 								   tableBody+= '<td><b> Training Category </b></td>';
@@ -73,15 +92,37 @@
 											    tableBody+='<tr>';
 										    	tableBody+='<td>'+ slno +  '</td>';
 											   $.each( valueList[key1], function(key2,listVal){
-												    //console.log("key2 = " + key2 + " listVal = " + listVal); 
-												    	tableBody+='<td>'+ listVal +  '</td>';
+												   if( key2!='additional_requirement'){
+												    	 if( key2=='expenditure_incurred'){
+												    		 total=parseInt(total)+parseInt(listVal);
+												    		 tableBody+='<td>'+ listVal +  '</td>';
+												    	 }else{
+												    		 tableBody+='<td>'+ listVal +  '</td>';
+												    	 }
+												    }
 											   })
+											   if(valueList.length==slno){
+												   tableBody+='</tr>';
+												   tableBody+='<tr  style="background-color: #dbd0d0">';
+												   $.each( valueList[key1], function(key2,listVal){
+													    if( key2=='additional_requirement'){
+													    	tableBody+='<td colspan=6> <b>Additional Requirement </b> </td>';
+													    	tableBody+='<td><b>'+ listVal +  '</b></td>';
+													    }
+												   })
+												   tableBody+='</tr>';
+												   tableBody+='<tr  style="background-color: #dbd0d0">';  
+												   tableBody+='<td colspan=6> <b>Total </b> </td>';
+											    	tableBody+='<td><b>'+ total +  '</b></td>';
+												   tableBody+='</tr>';
+											   }
 											   tableBody+='</tr>';
 										}
 									   $("#trainingDetailsId").html(tableBody);
 								  }
 							if(key=='Additional_Faculty_Maintenance_SPRC_DPRC'){
 								var tableBody='';
+								var total=0;
 								   tableBody+= '<thead style="background-color: #eeb2b2">';
 								   tableBody+= '<td><b>S.No.<b></td>';
 								   tableBody+= '<td><b> Type of Center </b></td>';
@@ -97,15 +138,37 @@
 											    tableBody+='<tr>';
 										    	tableBody+='<td>'+ slno +  '</td>';
 											   $.each( valueList[key1], function(key2,listVal){
-												    //console.log("key2 = " + key2 + " listVal = " + listVal); 
-												    	tableBody+='<td>'+ listVal +  '</td>';
+												   if( key2!='additional_requirement'){
+												    	 if( key2=='expenditure_incurred'){
+												    		 total=parseInt(total)+parseInt(listVal);
+												    		 tableBody+='<td>'+ listVal +  '</td>';
+												    	 }else{
+												    		 tableBody+='<td>'+ listVal +  '</td>';
+												    	 }
+												    }
 											   })
+											   if(valueList.length==slno){
+												   tableBody+='</tr>';
+												   tableBody+='<tr  style="background-color: #dbd0d0">';
+												   $.each( valueList[key1], function(key2,listVal){
+													    if( key2=='additional_requirement'){
+													    	tableBody+='<td colspan=6> <b>Additional Requirement </b> </td>';
+													    	tableBody+='<td><b>'+ listVal +  '</b></td>';
+													    }
+												   })
+												   tableBody+='</tr>';
+												   tableBody+='<tr  style="background-color: #dbd0d0">';  
+												   tableBody+='<td colspan=6> <b>Total </b> </td>';
+											    	tableBody+='<td><b>'+ total +  '</b></td>';
+												   tableBody+='</tr>';
+											   }
 											   tableBody+='</tr>';
 										}
 									   $("#hrSupportSprc").html(tableBody);               
 								  }
 							if(key=='e_Governance_Support_Group'){
 								var tableBody='';
+								var total=0;
 								   tableBody+= '<thead style="background-color: #eeb2b2">';
 								   tableBody+= '<td><b>S.No.<b></td>';
 								   tableBody+= '<td><b> Level </b></td>';
@@ -121,15 +184,37 @@
 											    tableBody+='<tr>';
 										    	tableBody+='<td>'+ slno +  '</td>';
 											   $.each( valueList[key1], function(key2,listVal){
-												    //console.log("key2 = " + key2 + " listVal = " + listVal); 
-												    	tableBody+='<td>'+ listVal +  '</td>';
+												   if( key2!='additional_requirement'){
+												    	 if( key2=='expenditure_incurred'){
+												    		 total=parseInt(total)+parseInt(listVal);
+												    		 tableBody+='<td>'+ listVal +  '</td>';
+												    	 }else{
+												    		 tableBody+='<td>'+ listVal +  '</td>';
+												    	 }
+												    }
 											   })
+											   if(valueList.length==slno){
+												   tableBody+='</tr>';
+												   tableBody+='<tr  style="background-color: #dbd0d0">';
+												   $.each( valueList[key1], function(key2,listVal){
+													    if( key2=='additional_requirement'){
+													    	tableBody+='<td colspan=6> <b>Additional Requirement </b> </td>';
+													    	tableBody+='<td><b>'+ listVal +  '</b></td>';
+													    }
+												   })
+												   tableBody+='</tr>';
+												   tableBody+='<tr  style="background-color: #dbd0d0">';  
+												   tableBody+='<td colspan=6> <b>Total </b> </td>';
+											    	tableBody+='<td><b>'+ total +  '</b></td>';
+												   tableBody+='</tr>';
+											   }
 											   tableBody+='</tr>';
 										}
 									   $("#egov_SupportGrpId").html(tableBody);
 								  }
 							if(key=='pesa_Plan'){
 								var tableBody='';
+								var total=0;
 								   tableBody+= '<thead style="background-color: #eeb2b2">';
 								   tableBody+= '<td><b>S.No.<b></td>';
 								   tableBody+= '<td><b> Designation </b></td>';
@@ -144,9 +229,31 @@
 											    tableBody+='<tr>';
 										    	tableBody+='<td>'+ slno +  '</td>';
 											   $.each( valueList[key1], function(key2,listVal){
-												    //console.log("key2 = " + key2 + " listVal = " + listVal); 
-												    	tableBody+='<td>'+ listVal +  '</td>';
+												   if( key2!='additional_requirement'){
+												    	 if( key2=='expenditure_incurred'){
+												    		 total=parseInt(total)+parseInt(listVal);
+												    		 tableBody+='<td>'+ listVal +  '</td>';
+												    	 }else{
+												    		 tableBody+='<td>'+ listVal +  '</td>';
+												    	 }
+												    }
 											   })
+											   if(valueList.length==slno){
+												   tableBody+='</tr>';
+												   tableBody+='<tr  style="background-color: #dbd0d0">';
+												   $.each( valueList[key1], function(key2,listVal){
+													    if( key2=='additional_requirement'){
+													    	tableBody+='<td colspan=6> <b>Additional Requirement </b> </td>';
+													    	tableBody+='<td><b>'+ listVal +  '</b></td>';
+													    }
+												   })
+												   tableBody+='</tr>';
+												   tableBody+='<tr  style="background-color: #dbd0d0">';  
+												   tableBody+='<td colspan=6> <b>Total </b> </td>';
+											    	tableBody+='<td><b>'+ total +  '</b></td>';
+												   tableBody+='</tr>';
+											   }   
+											   
 											   tableBody+='</tr>';
 										}
 									   $("#pesa_PlanId").html(tableBody);
@@ -154,6 +261,7 @@
 							
 							if(key=='iecProgressReport'){
 								var tableBody='';
+								
 								   tableBody+= '<thead style="background-color: #eeb2b2">';
 								   tableBody+= '<td><b>S.No.<b></td>';
 								   tableBody+= '<td><b> Nature of the IEC Activity </b></td>';
@@ -176,6 +284,7 @@
 							
 							if(key=='pmuProgressReport'){
 								var tableBody='';
+								var total=0;
 								   tableBody+= '<thead style="background-color: #eeb2b2">';
 								   tableBody+= '<td><b>S.No.<b></td>';
 								   tableBody+= '<td><b> Type of Center </b></td>';
@@ -186,20 +295,41 @@
 								   tableBody+= '<td><b> Expenditure Incurred </b></td>';
 								   tableBody+= '</thead>';
 									   for (var key1 in valueList) {
-										   //console.log(">>>"+valueList.length);
 										    var slno=parseInt(key1)+1;
 											    tableBody+='<tr>';
 										    	tableBody+='<td>'+ slno +  '</td>';
 											   $.each( valueList[key1], function(key2,listVal){
-												    //console.log("key2 = " + key2 + " listVal = " + listVal); 
-												    	tableBody+='<td>'+ listVal +  '</td>';
+												   if( key2!='additional_requirement'){
+												    	 if( key2=='expenditure_incurred'){
+												    		 total=parseInt(total)+parseInt(listVal);
+												    		 tableBody+='<td>'+ listVal +  '</td>';
+												    	 }else{
+												    		 tableBody+='<td>'+ listVal +  '</td>';
+												    	 }
+												    } 
 											   })
+											   if(valueList.length==slno){
+												   tableBody+='</tr>';
+												   tableBody+='<tr  style="background-color: #dbd0d0">';
+												   $.each( valueList[key1], function(key2,listVal){
+													    if( key2=='additional_requirement'){
+													    	tableBody+='<td colspan=6> <b>Additional Requirement </b> </td>';
+													    	tableBody+='<td><b>'+ listVal +  '</b></td>';
+													    }
+												   })
+												   tableBody+='</tr>';
+												   tableBody+='<tr  style="background-color: #dbd0d0">';  
+												   tableBody+='<td colspan=6> <b>Total </b> </td>';
+											    	tableBody+='<td><b>'+ total +  '</b></td>';
+												   tableBody+='</tr>';
+											   }   
 											   tableBody+='</tr>';
 										}
 									   $("#pmuProgressReportId").html(tableBody);
 								  }
 							if(key=='panchyatbhawanProgressReport'){
 								var tableBody='';
+								var total=0;
 								   tableBody+= '<thead style="background-color: #eeb2b2">';
 								   tableBody+= '<td><b>S.No.<b></td>';
 								   tableBody+= '<td><b> Activity Type </b></td>';
@@ -212,16 +342,38 @@
 										    var slno=parseInt(key1)+1;
 											    tableBody+='<tr>';
 										    	tableBody+='<td>'+ slno +  '</td>';
-											   $.each( valueList[key1], function(key2,listVal){
-												    //console.log("key2 = " + key2 + " listVal = " + listVal); 
-												    	tableBody+='<td>'+ listVal +  '</td>';
-											   })
+										    	 $.each( valueList[key1], function(key2,listVal){
+													   if( key2!='additional_requirement'){
+													    	 if( key2=='expenditure_incurred'){
+													    		 total=parseInt(total)+parseInt(listVal);
+													    		 tableBody+='<td>'+ listVal +  '</td>';
+													    	 }else{
+													    		 tableBody+='<td>'+ listVal +  '</td>';
+													    	 }
+													    } 
+												   })
+												   if(valueList.length==slno){
+													   tableBody+='</tr>';
+													   tableBody+='<tr  style="background-color: #dbd0d0">';
+													   $.each( valueList[key1], function(key2,listVal){
+														    if( key2=='additional_requirement'){
+														    	tableBody+='<td colspan=4> <b>Additional Requirement </b> </td>';
+														    	tableBody+='<td><b>'+ listVal +  '</b></td>';
+														    }
+													   })
+													   tableBody+='</tr>';
+													   tableBody+='<tr  style="background-color: #dbd0d0">';  
+													   tableBody+='<td colspan=4> <b>Total </b> </td>';
+												    	tableBody+='<td><b>'+ total +  '</b></td>';
+													   tableBody+='</tr>';
+												   }  
 											   tableBody+='</tr>';
 										}
 									   $("#panchyatbhawanProgressReportId").html(tableBody);
 								  }
 							if(key=='administrativeAndTechnicalSupportId'){
 								var tableBody='';
+								var total=0;
 								   tableBody+= '<thead style="background-color: #eeb2b2">';
 								   tableBody+= '<td><b>S.No.<b></td>';
 								   tableBody+= '<td><b> Post Type </b></td>';
@@ -237,16 +389,38 @@
 										    var slno=parseInt(key1)+1;
 											    tableBody+='<tr>';
 										    	tableBody+='<td>'+ slno +  '</td>';
-											   $.each( valueList[key1], function(key2,listVal){
-												    //console.log("key2 = " + key2 + " listVal = " + listVal); 
-												    	tableBody+='<td>'+ listVal +  '</td>';
-											   })
+										    	 $.each( valueList[key1], function(key2,listVal){
+													   if( key2!='additional_requirement'){
+													    	 if( key2=='expenditure_incurred'){
+													    		 total=parseInt(total)+parseInt(listVal);
+													    		 tableBody+='<td>'+ listVal +  '</td>';
+													    	 }else{
+													    		 tableBody+='<td>'+ listVal +  '</td>';
+													    	 }
+													    } 
+												   })
+												   if(valueList.length==slno){
+													   tableBody+='</tr>';
+													   tableBody+='<tr  style="background-color: #dbd0d0">';
+													   $.each( valueList[key1], function(key2,listVal){
+														    if( key2=='additional_requirement'){
+														    	tableBody+='<td colspan=6> <b>Additional Requirement </b> </td>';
+														    	tableBody+='<td><b>'+ listVal +  '</b></td>';
+														    }
+													   })
+													   tableBody+='</tr>';
+													   tableBody+='<tr  style="background-color: #dbd0d0">';  
+													   tableBody+='<td colspan=6> <b>Total </b> </td>';
+												    	tableBody+='<td><b>'+ total +  '</b></td>';
+													   tableBody+='</tr>';
+												   }  
 											   tableBody+='</tr>';
 										}
 									   $("#adminAndTechSupportReportId").html(tableBody);
 								  }
 							if(key=='IncomeEnhancementId'){
 								var tableBody='';
+								var total=0;
 								   tableBody+= '<thead style="background-color: #eeb2b2">';
 								   tableBody+= '<td><b>S.No.<b></td>';
 								   tableBody+= '<td><b> Name of Activity </b></td>';
@@ -259,10 +433,31 @@
 										    var slno=parseInt(key1)+1;
 											    tableBody+='<tr>';
 										    	tableBody+='<td>'+ slno +  '</td>';
-											   $.each( valueList[key1], function(key2,listVal){
-												    //console.log("key2 = " + key2 + " listVal = " + listVal); 
-												    	tableBody+='<td>'+ listVal +  '</td>';
-											   })
+										    	 $.each( valueList[key1], function(key2,listVal){
+													   if( key2!='additional_requirement'){
+													    	 if( key2=='expenditure_incurred'){
+													    		 total=parseInt(total)+parseInt(listVal);
+													    		 tableBody+='<td>'+ listVal +  '</td>';
+													    	 }else{
+													    		 tableBody+='<td>'+ listVal +  '</td>';
+													    	 }
+													    } 
+												   })
+												   if(valueList.length==slno){
+													   tableBody+='</tr>';
+													   tableBody+='<tr  style="background-color: #dbd0d0">';
+													   $.each( valueList[key1], function(key2,listVal){
+														    if( key2=='additional_requirement'){
+														    	tableBody+='<td colspan=4> <b>Additional Requirement </b> </td>';
+														    	tableBody+='<td><b>'+ listVal +  '</b></td>';
+														    }
+													   })
+													   tableBody+='</tr>';
+													   tableBody+='<tr  style="background-color: #dbd0d0">';  
+													   tableBody+='<td colspan=4> <b>Total </b> </td>';
+												    	tableBody+='<td><b>'+ total +  '</b></td>';
+													   tableBody+='</tr>';
+												   }  
 											   tableBody+='</tr>';
 										}
 									   $("#IncomeEnhancementId").html(tableBody);
@@ -271,6 +466,7 @@
 							
 							if(key=='SATCOMIP'){
 								var tableBody='';
+								var total=0;
 								   tableBody+= '<thead style="background-color: #eeb2b2">';
 								   tableBody+= '<td><b>S.No.<b></td>';
 								   tableBody+= '<td><b> Name of the Activity </b></td>';
@@ -286,38 +482,82 @@
 										    var slno=parseInt(key1)+1;
 											    tableBody+='<tr>';
 										    	tableBody+='<td>'+ slno +  '</td>';
-											   $.each( valueList[key1], function(key2,listVal){
-												    //console.log("key2 = " + key2 + " listVal = " + listVal); 
-												    	tableBody+='<td>'+ listVal +  '</td>';
-											   })
+										    	 $.each( valueList[key1], function(key2,listVal){
+													   if( key2!='additional_requirement'){
+													    	 if( key2=='expenditure_incurred'){
+													    		 total=parseInt(total)+parseInt(listVal);
+													    		 tableBody+='<td>'+ listVal +  '</td>';
+													    	 }else{
+													    		 tableBody+='<td>'+ listVal +  '</td>';
+													    	 }
+													    } 
+												   })
+												   if(valueList.length==slno){
+													   tableBody+='</tr>';
+													   tableBody+='<tr  style="background-color: #dbd0d0">';
+													   $.each( valueList[key1], function(key2,listVal){
+														    if( key2=='additional_requirement'){
+														    	tableBody+='<td colspan=7> <b>Additional Requirement </b> </td>';
+														    	tableBody+='<td><b>'+ listVal +  '</b></td>';
+														    }
+													   })
+													   tableBody+='</tr>';
+													   tableBody+='<tr  style="background-color: #dbd0d0">';  
+													   tableBody+='<td colspan=7> <b>Total </b> </td>';
+												    	tableBody+='<td><b>'+ total +  '</b></td>';
+													   tableBody+='</tr>';
+												   }  
 											   tableBody+='</tr>';
 										}
 									   $("#satcomipid").html(tableBody);
 								  }
 							if(key=='EenablementProgressReportId'){
 								var tableBody='';
+								var total=0;
 								   tableBody+= '<thead style="background-color: #eeb2b2">';
 									   tableBody+= '<td><b>S.No.<b></td>';
 									   tableBody+= '<td><b> GP Name </b></td>';
 									   tableBody+= '<td><b>Amount Sanctioned</b></td>';
-									   tableBody+= '<td><b> Expenditure Incurred(in Rs.)</b></td>';
 									   tableBody+= '<td><b>Status</b></td>';
+									   tableBody+= '<td><b> Expenditure Incurred(in Rs.)</b></td>';
 								   tableBody+= '</thead>';
 									   for (var key1 in valueList) {
 										   //console.log(">>>"+valueList.length);
 										    var slno=parseInt(key1)+1;
 											    tableBody+='<tr>';
 										    	tableBody+='<td>'+ slno +  '</td>';
-											   $.each( valueList[key1], function(key2,listVal){
-												    //console.log("key2 = " + key2 + " listVal = " + listVal); 
-												    	tableBody+='<td>'+ listVal +  '</td>';
-											   })
+										    	 $.each( valueList[key1], function(key2,listVal){
+													   if( key2!='additional_requirement'){
+													    	 if( key2=='expenditure_incurred'){
+													    		 total=parseInt(total)+parseInt(listVal);
+													    		 tableBody+='<td>'+ listVal +  '</td>';
+													    	 }else{
+													    		 tableBody+='<td>'+ listVal +  '</td>';
+													    	 }
+													    } 
+												   })
+												   if(valueList.length==slno){
+													   tableBody+='</tr>';
+													   tableBody+='<tr  style="background-color: #dbd0d0">';
+													   $.each( valueList[key1], function(key2,listVal){
+														    if( key2=='additional_requirement'){
+														    	tableBody+='<td colspan=4> <b>Additional Requirement </b> </td>';
+														    	tableBody+='<td><b>'+ listVal +  '</b></td>';
+														    }
+													   })
+													   tableBody+='</tr>';
+													   tableBody+='<tr  style="background-color: #dbd0d0">';  
+													   tableBody+='<td colspan=4> <b>Total </b> </td>';
+												    	tableBody+='<td><b>'+ total +  '</b></td>';
+													   tableBody+='</tr>';
+												   }  
 											   tableBody+='</tr>';
 										}
 									   $("#eEnablementId").html(tableBody);
 								  }
 							if(key=='InstitutionalInfrastructureId'){
 								var tableBody='';
+								var total=0;
 								   tableBody+= '<thead style="background-color: #eeb2b2">';
 									   tableBody+= '<td><b>S.No.<b></td>';
 									   tableBody+= '<td><b> Type </b></td>';
@@ -332,13 +572,31 @@
 										    var slno=parseInt(key1)+1;
 											    tableBody+='<tr>';
 										    	tableBody+='<td>'+ slno +  '</td>';
-											   $.each( valueList[key1], function(key2,listVal){
-												    //console.log("key2 = " + key2 + " listVal = " + listVal); 
-												     
-												    	tableBody+='<td>'+ listVal +  '</td>';
-												   	  
-												    	
-											   })
+										    	 $.each( valueList[key1], function(key2,listVal){
+													   if( key2!='additional_requirement'){
+													    	 if( key2=='expenditure_incurred'){
+													    		 total=parseInt(total)+parseInt(listVal);
+													    		 tableBody+='<td>'+ listVal +  '</td>';
+													    	 }else{
+													    		 tableBody+='<td>'+ listVal +  '</td>';
+													    	 }
+													    } 
+												   })
+												   if(valueList.length==slno){
+													   tableBody+='</tr>';
+													   tableBody+='<tr  style="background-color: #dbd0d0">';
+													   $.each( valueList[key1], function(key2,listVal){
+														    if( key2=='additional_requirement'){
+														    	tableBody+='<td colspan=6> <b>Additional Requirement </b> </td>';
+														    	tableBody+='<td><b>'+ listVal +  '</b></td>';
+														    }
+													   })
+													   tableBody+='</tr>';
+													   tableBody+='<tr  style="background-color: #dbd0d0">';  
+													   tableBody+='<td colspan=6> <b>Total </b> </td>';
+												    	tableBody+='<td><b>'+ total +  '</b></td>';
+													   tableBody+='</tr>';
+												   }  
 											   tableBody+='</tr>';
 										}
 									   $("#InstitutionalInfrastructureId").html(tableBody);
