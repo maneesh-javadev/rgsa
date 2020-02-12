@@ -595,10 +595,10 @@ public class ProgressReportServiceImpl implements ProgressReportService {
     }
 
 
-   public List<StateAllocation> fetchStateAllocationData(int componentId ,int planCode) {
+    public List<StateAllocation> fetchStateAllocationData(int componentId, int installmentNo,int planCode) {
         Map<String, Object> params = new HashMap<>();
         params.put("componentId", componentId);
-        //params.put("installmentNo", installmentNo);
+        params.put("installmentNo", installmentNo);
         params.put("planCode", planCode);
         return commonRepository.findAll("FETCH_STATE_ALLOCATION_BY_COMP_ID_AND_INSTALL_NO", params);
     }
@@ -1177,8 +1177,6 @@ public class ProgressReportServiceImpl implements ProgressReportService {
 		        } else
 		            return null;
 		    }
-
-		
 		
 
 }
