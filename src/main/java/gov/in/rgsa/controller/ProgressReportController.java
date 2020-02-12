@@ -1,30 +1,102 @@
 package gov.in.rgsa.controller;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import org.apache.commons.collections.CollectionUtils;
+import org.codehaus.jettison.json.JSONObject;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
 import gov.in.rgsa.dto.EEnablementReportDto;
 import gov.in.rgsa.dto.GramPanchayatProgressReportDTO;
 import gov.in.rgsa.dto.InstitutionalInfraProgressReportDTO;
 import gov.in.rgsa.dto.SubcomponentwiseQuaterBalance;
-import gov.in.rgsa.entity.*;
-import gov.in.rgsa.outbound.MsgReply;
-import gov.in.rgsa.service.*;
+import gov.in.rgsa.entity.AdditionalFacultyProgress;
+import gov.in.rgsa.entity.AdditionalFacultyProgressDetail;
+import gov.in.rgsa.entity.AdminAndFinancialDataActivity;
+import gov.in.rgsa.entity.AdministrativeTechnicalDetailProgress;
+import gov.in.rgsa.entity.AdministrativeTechnicalProgress;
+import gov.in.rgsa.entity.AdministrativeTechnicalSupport;
+import gov.in.rgsa.entity.District;
+import gov.in.rgsa.entity.Domains;
+import gov.in.rgsa.entity.EEnablement;
+import gov.in.rgsa.entity.EEnablementGPs;
+import gov.in.rgsa.entity.FileNode;
+import gov.in.rgsa.entity.GPBhawanStatus;
+import gov.in.rgsa.entity.IecActivity;
+import gov.in.rgsa.entity.IecQuater;
+import gov.in.rgsa.entity.IecQuaterDetails;
+import gov.in.rgsa.entity.IncomeEnhancementActivity;
+import gov.in.rgsa.entity.InnovativeActivity;
+import gov.in.rgsa.entity.InstitueInfraHrActivity;
+import gov.in.rgsa.entity.InstitueInfraHrActivityDetails;
+import gov.in.rgsa.entity.InstituteInfraHrActivityType;
+import gov.in.rgsa.entity.PmuActivity;
+import gov.in.rgsa.entity.PmuDomain;
+import gov.in.rgsa.entity.PmuProgress;
+import gov.in.rgsa.entity.PmuProgressDetails;
+import gov.in.rgsa.entity.QprAdminAndFinancialDataActivity;
+import gov.in.rgsa.entity.QprAdminAndFinancialDataActivityDetails;
+import gov.in.rgsa.entity.QprCbActivity;
+import gov.in.rgsa.entity.QprEnablement;
+import gov.in.rgsa.entity.QprEnablementDetails;
+import gov.in.rgsa.entity.QprIncomeEnhancement;
+import gov.in.rgsa.entity.QprIncomeEnhancementDetails;
+import gov.in.rgsa.entity.QprInnovativeActivity;
+import gov.in.rgsa.entity.QprInnovativeActivityDetails;
+import gov.in.rgsa.entity.QprInstitutionalInfrastructure;
+import gov.in.rgsa.entity.QprPanchayatBhawan;
+import gov.in.rgsa.entity.QprTrainingBreakup;
+import gov.in.rgsa.entity.QuarterTrainings;
+import gov.in.rgsa.entity.QuarterTrainingsDetails;
+import gov.in.rgsa.entity.QuaterWiseFund;
+import gov.in.rgsa.entity.SatcomActivity;
+import gov.in.rgsa.entity.SatcomActivityProgress;
+import gov.in.rgsa.entity.SatcomActivityProgressDetails;
+import gov.in.rgsa.entity.StateAllocation;
+import gov.in.rgsa.entity.TargetGroupMaster;
+import gov.in.rgsa.entity.TrainingActivity;
+import gov.in.rgsa.entity.TrainingProgressReport;
+import gov.in.rgsa.service.AdditionalFacultyAndMainService;
+import gov.in.rgsa.service.AdminAndFinancialDataCellService;
+import gov.in.rgsa.service.AdminTechSupportService;
+import gov.in.rgsa.service.EEnablementOfPanchayatService;
+import gov.in.rgsa.service.IecService;
+import gov.in.rgsa.service.IncomeEnhancementService;
+import gov.in.rgsa.service.InnovativeActivityService;
+import gov.in.rgsa.service.InstitutionalInfraActivityPlanService;
+import gov.in.rgsa.service.LGDService;
+import gov.in.rgsa.service.PanchayatBhawanService;
+import gov.in.rgsa.service.PlanAllocationService;
+import gov.in.rgsa.service.PmuActivityService;
+import gov.in.rgsa.service.ProgressReportService;
+import gov.in.rgsa.service.SatcomActivityProgressService;
+import gov.in.rgsa.service.SatcomFacilityService;
+import gov.in.rgsa.service.TrainingActivityService;
+import gov.in.rgsa.service.TrainingInstitutionService;
 import gov.in.rgsa.user.preference.UserPreference;
 import gov.in.rgsa.utils.FileNodeUtils;
 import gov.in.rgsa.utils.Message;
-import org.apache.commons.collections.CollectionUtils;
-import org.codehaus.jettison.json.JSONObject;
-import org.owasp.esapi.util.CollectionsUtil;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.configurationprocessor.json.JSONArray;
-import org.springframework.http.MediaType;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.util.*;
 
 @Controller
 public class ProgressReportController {
@@ -220,21 +292,21 @@ public class ProgressReportController {
 		model.addAttribute("QUATER_DETAILS", progressReportService.getQuarterDurations());
 		List<QuaterWiseFund> totalQuatorWiseFund = new ArrayList<>();
 		List<IecActivity> iecActivitiesApproved = iecService.fetchApprovedIec();// this gives CEC approved data.
-		List<StateAllocation> stateAllocation = progressReportService.fetchStateAllocationData(11, installmentNo,
+		List<StateAllocation> stateAllocation = progressReportService.fetchStateAllocationData(11, 
 				progressReportService.getCurrentPlanCode());
 		if (quarterId == 3 || quarterId == 4) {
-			stateAllocation.add(progressReportService
+			/*stateAllocation.add(progressReportService
 					.fetchStateAllocationData(11, 1, progressReportService.getCurrentPlanCode()).get(0)); // total fund
-																											// allocated
+			*/																								// allocated
 																											// in first
 																											// installment
 			totalQuatorWiseFund = progressReportService.fetchTotalQuaterWiseFundData(userPreference.getStateCode(), 11);
 			double fund_used_in_one_two_qtr = calTotalFundUsedInQtr1And2(totalQuatorWiseFund);
-			/*if (fund_used_in_one_two_qtr == 0) {
-				model.addAttribute("QTR_ID", 0);
-				model.addAttribute("QTR_ONE_TWO_FILLED", false);
-				return IEC_PROGRESS_REPORT;
-			}*/
+			/*
+			 * if (fund_used_in_one_two_qtr == 0) { model.addAttribute("QTR_ID", 0);
+			 * model.addAttribute("QTR_ONE_TWO_FILLED", false); return IEC_PROGRESS_REPORT;
+			 * }
+			 */
 			model.addAttribute("TOTAL_FUND_USED_IN_QTR_1_AND_2", fund_used_in_one_two_qtr);
 		}
 		if (CollectionUtils.isNotEmpty(stateAllocation) && CollectionUtils.isNotEmpty(iecActivitiesApproved)) {
@@ -430,22 +502,22 @@ public class ProgressReportController {
 		List<QuaterWiseFund> totalQuatorWiseFund = new ArrayList<>();
 		List<IncomeEnhancementActivity> incomeEnhancementActApproved = enhancementService
 				.fetchAllIncmEnhncmntActvty('C');
-		List<StateAllocation> stateAllocation = progressReportService.fetchStateAllocationData(10, installmentNo,
+		List<StateAllocation> stateAllocation = progressReportService.fetchStateAllocationData(10, 
 				progressReportService.getCurrentPlanCode());
 		model.addAttribute("QUATER_DETAILS", progressReportService.getQuarterDurations());
 		if (quarterId == 3 || quarterId == 4) {
-			stateAllocation.add(progressReportService
+			/*stateAllocation.add(progressReportService
 					.fetchStateAllocationData(10, 1, progressReportService.getCurrentPlanCode()).get(0)); // total fund
-																											// allocated
+			*/																								// allocated
 																											// in first
 																											// quator
 			totalQuatorWiseFund = progressReportService.fetchTotalQuaterWiseFundData(userPreference.getStateCode(), 10);
 			double fund_used_in_one_two_qtr = calTotalFundUsedInQtr1And2(totalQuatorWiseFund);
-			/*if (fund_used_in_one_two_qtr == 0) {
-				model.addAttribute("QTR_ID", 0);
-				model.addAttribute("QTR_ONE_TWO_FILLED", false);
-				return INCOMEENHANCEMENT_QUATERLY;
-			}*/
+			/*
+			 * if (fund_used_in_one_two_qtr == 0) { model.addAttribute("QTR_ID", 0);
+			 * model.addAttribute("QTR_ONE_TWO_FILLED", false); return
+			 * INCOMEENHANCEMENT_QUATERLY; }
+			 */
 			model.addAttribute("TOTAL_FUND_USED_IN_QTR_1_AND_2", fund_used_in_one_two_qtr);
 		}
 
@@ -587,22 +659,22 @@ public class ProgressReportController {
 																										// data that was
 																										// approved by
 																										// the CEC
-		List<StateAllocation> stateAllocation = progressReportService.fetchStateAllocationData(7, installmentNo,
+		List<StateAllocation> stateAllocation = progressReportService.fetchStateAllocationData(7, 
 				progressReportService.getCurrentPlanCode());
 		model.addAttribute("QUATER_DETAILS", progressReportService.getQuarterDurations());
 		if (quarterId == 3 || quarterId == 4) {
-			stateAllocation.add(progressReportService
+			/*stateAllocation.add(progressReportService
 					.fetchStateAllocationData(7, 1, progressReportService.getCurrentPlanCode()).get(0)); // total fund
-																											// allocated
+			*/																								// allocated
 																											// in first
 																											// quator
 			totalQuatorWiseFund = progressReportService.fetchTotalQuaterWiseFundData(userPreference.getStateCode(), 7);
 			double fund_used_in_one_two_qtr = calTotalFundUsedInQtr1And2(totalQuatorWiseFund);
-		/*	if (fund_used_in_one_two_qtr == 0) {
-				model.addAttribute("QTR_ID", 0);
-				model.addAttribute("QTR_ONE_TWO_FILLED", false);
-				return CURRENT_SATCOM_QUATERLY;
-			}*/
+			/*
+			 * if (fund_used_in_one_two_qtr == 0) { model.addAttribute("QTR_ID", 0);
+			 * model.addAttribute("QTR_ONE_TWO_FILLED", false); return
+			 * CURRENT_SATCOM_QUATERLY; }
+			 */
 			model.addAttribute("TOTAL_FUND_USED_IN_QTR_1_AND_2", fund_used_in_one_two_qtr);
 		}
 
@@ -767,22 +839,21 @@ public class ProgressReportController {
 		List<QuaterWiseFund> totalQuatorWiseFund = new ArrayList<>();
 		List<AdministrativeTechnicalSupport> administrativeTechnicalApproved = adminTechSupportService
 				.getApprovedSatcomActivity();
-		List<StateAllocation> stateAllocation = progressReportService.fetchStateAllocationData(4, installmentNo,
+		List<StateAllocation> stateAllocation = progressReportService.fetchStateAllocationData(4, 
 				progressReportService.getCurrentPlanCode());
 		model.addAttribute("QUATER_DETAILS", progressReportService.getQuarterDurations());
 		if (quarterId == 3 || quarterId == 4) {
 			stateAllocation.add(progressReportService
-					.fetchStateAllocationData(4, 1, progressReportService.getCurrentPlanCode()).get(0)); // total fund
+					.fetchStateAllocationData(4,  progressReportService.getCurrentPlanCode()).get(0)); // total fund
 																											// allocated
 																											// in first
 																											// quator
 			totalQuatorWiseFund = progressReportService.fetchTotalQuaterWiseFundData(userPreference.getStateCode(), 4);
 			double fund_used_in_one_two_qtr = calTotalFundUsedInQtr1And2(totalQuatorWiseFund);
-			/*if (fund_used_in_one_two_qtr == 0) {
-				model.addAttribute("QTR_ID", 0);
-				model.addAttribute("QTR_ONE_TWO_FILLED", false);
-				return ADMIN_QUADERLY;
-			}*/
+			/*
+			 * if (fund_used_in_one_two_qtr == 0) { model.addAttribute("QTR_ID", 0);
+			 * model.addAttribute("QTR_ONE_TWO_FILLED", false); return ADMIN_QUADERLY; }
+			 */
 			model.addAttribute("TOTAL_FUND_USED_IN_QTR_1_AND_2", fund_used_in_one_two_qtr);
 		}
 		if (CollectionUtils.isNotEmpty(stateAllocation)
@@ -809,14 +880,15 @@ public class ProgressReportController {
 					.getadminTechProgressActBasedOnActIdAndQtrId(
 							administrativeTechnicalApproved.get(0).getAdministrativeTechnicalSupportId(), quarterId);
 			if (adminTechReportDetailOfRestQuater != null) {
-				 Integer getExpenditureDetailsOfQpr = adminTechSupportService.getExpenditureDetailsOfQpr(administrativeTechnicalApproved.get(0).getAdministrativeTechnicalSupportId(), quarterId);
-				 
+				Integer getExpenditureDetailsOfQpr = adminTechSupportService.getExpenditureDetailsOfQpr(
+						administrativeTechnicalApproved.get(0).getAdministrativeTechnicalSupportId(), quarterId);
+
 				Collections.sort(adminTechReportDetailOfRestQuater,
 						(o1, o2) -> o1.getAtsDetailsProgressId() - o2.getAtsDetailsProgressId());
 				detailForTotalNoOfUnit = getTotalUnitAndExpIncurredInAllQtrAdminTech(detailForTotalNoOfUnit,
 						adminTechReportDetailOfRestQuater);
 				model.addAttribute("DEATIL_FOR_TOTAL_NO_OF_UNIT", detailForTotalNoOfUnit);
-				  model.addAttribute("GET_EXPENDITURE_DETAILS_OF_QPR", getExpenditureDetailsOfQpr);
+				model.addAttribute("GET_EXPENDITURE_DETAILS_OF_QPR", getExpenditureDetailsOfQpr);
 			} else {
 				model.addAttribute("DEATIL_FOR_TOTAL_NO_OF_UNIT", null);
 			}
@@ -855,9 +927,10 @@ public class ProgressReportController {
 			model.addAttribute("QTR_ID", quarterId);
 			model.addAttribute("QTR_ONE_TWO_FILLED", true);
 			model.addAttribute("APPROVED_ADMIN_TECH_ACT", administrativeTechnicalApproved.get(0));
-			if (quarterId != 0 ) {
-				 balnceAmount =(progressReportService.getBalanceAdditionalReqiurment(4, quarterId) == null)? "0": progressReportService.getBalanceAdditionalReqiurment(4, quarterId);
-					model.addAttribute("REMAINING_ADD_REQ",Integer.valueOf(balnceAmount));
+			if (quarterId != 0) {
+				balnceAmount = (progressReportService.getBalanceAdditionalReqiurment(4, quarterId) == null) ? "0"
+						: progressReportService.getBalanceAdditionalReqiurment(4, quarterId);
+				model.addAttribute("REMAINING_ADD_REQ", Integer.valueOf(balnceAmount));
 			}
 			return ADMIN_QUADERLY;
 		} else {
@@ -931,7 +1004,7 @@ public class ProgressReportController {
 			@ModelAttribute("HR_SUPPORT_SPRC_DPRC_QUATER") AdditionalFacultyProgress additionalFacultyProgress,
 			Model model) {
 		int quarterId = 0;
-		
+
 		Map<String, Object> map = new HashMap<String, Object>();
 		if (additionalFacultyProgress.getQtrIdJsp3() != null) {
 			quarterId = additionalFacultyProgress.getQtrIdJsp3();
@@ -947,38 +1020,43 @@ public class ProgressReportController {
 		districtName = lgdService.getAllDistrictBasedOnState(userPreference.getStateCode());
 		List<InstitueInfraHrActivity> institueInfraHrActivityApproved = additionalFacultyAndMainService
 				.fetchApprovedInstituteHrActivity();
-		stateAllocation = progressReportService.fetchStateAllocationData(14, installmentNo,
+		stateAllocation = progressReportService.fetchStateAllocationData(14, 
 				progressReportService.getCurrentPlanCode());
 		model.addAttribute("LIST_OF_DOMAINS", domains);
 		model.addAttribute("LIST_OF_DOMAINS_LENGTH", domains.size() / 2);
 		model.addAttribute("LIST_OF_DISTRICT", districtName);
 		model.addAttribute("QUATER_DETAILS", progressReportService.getQuarterDurations());
 		if (quarterId == 3 || quarterId == 4) {
-			if(CollectionUtils.isEmpty(stateAllocation)) {
-			stateAllocation.add(progressReportService
-					.fetchStateAllocationData(14, 1, progressReportService.getCurrentPlanCode()).get(0)); // total fund
+			if (CollectionUtils.isEmpty(stateAllocation)) {
+				stateAllocation.add(progressReportService
+						.fetchStateAllocationData(14,  progressReportService.getCurrentPlanCode()).get(0)); // total
+																												// fund
 			}
 			totalQuatorWiseFund = progressReportService.fetchTotalQuaterWiseFundData(userPreference.getStateCode(), 14);
 			if (CollectionUtils.isNotEmpty(totalQuatorWiseFund)) {
 				map = calTotalFundUsedInFirstInstallHRSprcDprc(totalQuatorWiseFund);
-				/*if (((Integer) map.get("total_sprc_subcomp") + (Integer) map.get("total_dprc_subcomp")) == 0) {*/
-				String sprcAnddprs =String.valueOf((Double)map.get("total_sprc_subcomp")+ (Double)map.get("total_dprc_subcomp"));
-	               
-               /* if("0.0".equals( sprcAnddprs)){
-					model.addAttribute("QTR_ID", 0);
-					model.addAttribute("QTR_ONE_TWO_FILLED", false);
-					return ADDITIONAL_FACULTY_QUADERLY;
-				} else {*/
-					model.addAttribute("TOTAL_SPRC_FUND_USED_IN_QTR_1_AND_2", map.get("total_sprc_subcomp"));
-					model.addAttribute("TOTAL_DPRC_FUND_USED_IN_QTR_1_AND_2", map.get("total_dprc_subcomp"));
-				/*}*/
+				/*
+				 * if (((Integer) map.get("total_sprc_subcomp") + (Integer)
+				 * map.get("total_dprc_subcomp")) == 0) {
+				 */
+				String sprcAnddprs = String
+						.valueOf((Double) map.get("total_sprc_subcomp") + (Double) map.get("total_dprc_subcomp"));
+
+				/*
+				 * if("0.0".equals( sprcAnddprs)){ model.addAttribute("QTR_ID", 0);
+				 * model.addAttribute("QTR_ONE_TWO_FILLED", false); return
+				 * ADDITIONAL_FACULTY_QUADERLY; } else {
+				 */
+				model.addAttribute("TOTAL_SPRC_FUND_USED_IN_QTR_1_AND_2", map.get("total_sprc_subcomp"));
+				model.addAttribute("TOTAL_DPRC_FUND_USED_IN_QTR_1_AND_2", map.get("total_dprc_subcomp"));
+				/* } */
 			}
 		}
 
 		if (CollectionUtils.isNotEmpty(stateAllocation)
 				&& CollectionUtils.isNotEmpty(institueInfraHrActivityApproved)) {
 			if (quarterId > 2) {
-				List<StateAllocation> stateAllocationPreQuater = progressReportService.fetchStateAllocationData(14, 1,
+				List<StateAllocation> stateAllocationPreQuater = progressReportService.fetchStateAllocationData(14, 
 						progressReportService.getCurrentPlanCode());
 				for (StateAllocation allocation : stateAllocationPreQuater) {
 					if (allocation.getSubcomponentId() == 10) {
@@ -1166,7 +1244,10 @@ public class ProgressReportController {
 	public String qprGetFormPmuActivityMethodQuaterly(@ModelAttribute("PMU_ACTIVITY_QUATERLY") PmuProgress pmuProgress,
 			Model model) {
 		int quarterId = 0;
-		int installmentNo = (quarterId < 3) ? 1 : 2; // installment number for qtrId 1 & 2 = 1 and 3 & 4 = 2
+		
+		// commented by rajeev
+		// int installmentNo = (quarterId < 3) ? 1 : 2; // installment number for qtrId
+		// 1 & 2 = 1 and 3 & 4 = 2
 		if (pmuProgress.getQtrIdJsp6() != null) {
 			quarterId = pmuProgress.getQtrIdJsp6();
 		} else {
@@ -1177,30 +1258,34 @@ public class ProgressReportController {
 		List<QuaterWiseFund> totalQuatorWiseFund = new ArrayList<>();
 		List<PmuDomain> domainList = pmuActivityService.fetchPmuDomains();
 		List<PmuActivity> pmuCecApprovedActivities = pmuActivityService.fetchApprovedPmu();
-		stateAllocation = progressReportService.fetchStateAllocationData(12, installmentNo,
+		// commented by rajeev
+		// stateAllocation = progressReportService.fetchStateAllocationData(12,
+		// installmentNo,progressReportService.getCurrentPlanCode());
+		stateAllocation = progressReportService.fetchStateAllocationData(12,
 				progressReportService.getCurrentPlanCode());
+
 		model.addAttribute("QUATER_DETAILS", progressReportService.getQuarterDurations());
 		model.addAttribute("LIST_OF_PMU_DOMAINS", domainList);
 		model.addAttribute("LIST_OF_PMU_DOMAINS_LIST", domainList.size() / 2);
 		model.addAttribute("LIST_OF_DISTRICT", pmuActivityService.fetchDistrictName());
-		if (quarterId == 3 || quarterId == 4) {
-			stateAllocation.add(progressReportService
-					.fetchStateAllocationData(12, 1, progressReportService.getCurrentPlanCode()).get(0)); // total fund
-																											// allocated
-																											// in first
-																											// quator
-			totalQuatorWiseFund = progressReportService.fetchTotalQuaterWiseFundData(userPreference.getStateCode(), 12);
-			double fund_used_in_one_two_qtr = calTotalFundUsedInQtr1And2(totalQuatorWiseFund);
-			/*if (fund_used_in_one_two_qtr == 0) {
-				model.addAttribute("QTR_ID", 0);
-				model.addAttribute("QTR_ONE_TWO_FILLED", false);
-				return TRAINING_PROGRESS_PMU;
-			}*/
-			model.addAttribute("TOTAL_FUND_USED_IN_QTR_1_AND_2", fund_used_in_one_two_qtr);
-		}
+		// commented by rajeev
+		/*
+		 * if (quarterId == 3 || quarterId == 4) {
+		 * stateAllocation.add(progressReportService .fetchStateAllocationData(12, 1,
+		 * progressReportService.getCurrentPlanCode()).get(0)); // total fund //
+		 * allocated // in first // quator totalQuatorWiseFund =
+		 * progressReportService.fetchTotalQuaterWiseFundData(userPreference.
+		 * getStateCode(), 12); double fund_used_in_one_two_qtr =
+		 * calTotalFundUsedInQtr1And2(totalQuatorWiseFund); if (fund_used_in_one_two_qtr
+		 * == 0) { model.addAttribute("QTR_ID", 0);
+		 * model.addAttribute("QTR_ONE_TWO_FILLED", false); return
+		 * TRAINING_PROGRESS_PMU; } model.addAttribute("TOTAL_FUND_USED_IN_QTR_1_AND_2",
+		 * fund_used_in_one_two_qtr); }
+		 */
 		if (CollectionUtils.isNotEmpty(stateAllocation) && CollectionUtils.isNotEmpty(pmuCecApprovedActivities)) {
-
-			if (stateAllocation.size() > 1) {
+			// commented by rajeev
+			/*if (stateAllocation.size() > 1) {
+				stateAllocation.forEach(proposedFund -> stateAllocation.);
 				model.addAttribute("FUND_ALLOCATED_BY_STATE_PREVIOUS", stateAllocation.get(1).getFundsAllocated()); // we
 																													// will
 																													// use
@@ -1213,8 +1298,9 @@ public class ProgressReportController {
 																													// total
 																													// remaining
 																													// field
-			}
-
+			}*/
+			
+		Double totalAmount =	stateAllocation.stream().map(x ->x.getFundsAllocated()).reduce( 0.0, Double::sum);
 			// list to get total number of unit in all quator except current one
 			List<PmuProgressDetails> detailForTotalNoOfUnit = new ArrayList<>();
 			List<PmuProgressDetails> pmuReportDetailOfRestQuater = pmuActivityService
@@ -1444,136 +1530,167 @@ public class ProgressReportController {
 	 * NO_FUND_ALLOCATED_JSP; } return ENABLEMENT_PROGRESS_REPORT; }
 	 */
 	@RequestMapping(value = "enablementQuaterly", method = RequestMethod.GET)
-    public String qprGetFormEnablementQuaderly(@ModelAttribute("Enablement") QprEnablement qprEnablement, Model model,RedirectAttributes re) {
-        int quarterId = 0;
-        model.addAttribute("QUATER_DETAILS", progressReportService.getQuarterDurations());
-        model.addAttribute("SetNewQtrId1", qprEnablement.getQrtId());
-        model.addAttribute("LGD_DISTRICT", lgdService.getAllDistrictBasedOnState(userPreference.getStateCode()));
-     if(qprEnablement.getQrtId() != null) {
-    	  model.addAttribute("LGD_DISTRICT", lgdService.getAllDistrictBasedOnState(userPreference.getStateCode()));
-    	 model.addAttribute("QUATER_SHOW", Boolean.TRUE);
-    	
-    	
-     }
-        if (qprEnablement.getQrtId() != null && qprEnablement.getDistrictId() != null) {
-        	  model.addAttribute("SetNewQtrId1", qprEnablement.getQrtId());
-        	   model.addAttribute("LGD_DISTRICT", lgdService.getAllDistrictBasedOnState(userPreference.getStateCode()));
-        if (qprEnablement.getQrtId() != null) {
-            quarterId = qprEnablement.getQrtId();
-        } else {
-            quarterId = 0;
-        }
-        model.addAttribute("approved", true);
-        List<EEnablement> eEnablementsApproved = eEnablementOfPanchayatService.getApprovedEEnablement();
-        /* getting stateAllocation data by using component id */
-        List<StateAllocation> stateAllocation = new ArrayList<>();
-        List<QuaterWiseFund> totalQuatorWiseFund = new ArrayList<>();
-     /*   model.addAttribute("QUATER_DETAILS", progressReportService.getQuarterDurations());
-        model.addAttribute("LGD_DISTRICT", lgdService.getAllDistrictBasedOnState(userPreference.getStateCode()));*/
-        int installmentNo = (quarterId < 3) ? 1 : 2; // installment number for qtrId 1 & 2 = 1 and 3 & 4 = 2
-        stateAllocation = progressReportService.fetchStateAllocationData(5, 16, installmentNo,progressReportService.getCurrentPlanCode());
-        if (quarterId == 3 || quarterId == 4) {
-            stateAllocation.add(progressReportService.fetchStateAllocationData(5, 16, 1,progressReportService.getCurrentPlanCode()).get(0)); // total fund allocated in first quator
-            totalQuatorWiseFund = progressReportService.fetchTotalQuaterWiseFundData(userPreference.getStateCode(), 5);
-            double fund_used_in_one_two_qtr=calTotalFundUsedInQtr1And2(totalQuatorWiseFund);
-           /* if(fund_used_in_one_two_qtr == 0) {
-            	model.addAttribute("QTR_ID", 0);
-				model.addAttribute("QTR_ONE_TWO_FILLED", false);
-				return ENABLEMENT_PROGRESS_REPORT;
-            }*/
-            model.addAttribute("TOTAL_FUND_USED_IN_QTR_1_AND_2",fund_used_in_one_two_qtr);
-        }
-        if (CollectionUtils.isNotEmpty(stateAllocation) && CollectionUtils.isNotEmpty(eEnablementsApproved)) {
-            model.addAttribute("FUND_ALLOCATED_BY_STATE", stateAllocation.get(0).getFundsAllocated());
-            if (stateAllocation.size() > 1) {
-                model.addAttribute("FUND_ALLOCATED_BY_STATE_PREVIOUS", stateAllocation.get(1).getFundsAllocated()); // we will  use this in jsp to calculate the total remaining field
-            }
-            Integer id = eEnablementsApproved.get(0).geteEnablementId();
-            Integer eEnablementDetailsId = eEnablementsApproved.get(0).geteEnablementDetails().get(0).geteEnablementDetailId();
-            List<EEnablementGPs> eEnablementGPs = eEnablementOfPanchayatService.fetchCapacityBuildingActivityGPsList(eEnablementDetailsId);
-            model.addAttribute("eEnablementGPs", eEnablementGPs);
-            model.addAttribute("idEEnablement", id);
-            model.addAttribute("SetNewQtrId1", qprEnablement.getQrtId());
-            model.addAttribute("SetNewDistrictId", qprEnablement.getDistrictId());
-            model.addAttribute("quarterId", quarterId);
-            model.addAttribute("QTR_ONE_TWO_FILLED", true);
-            model.addAttribute("eEnablementsApproved", eEnablementsApproved.get(0));
-            if(quarterId !=0) 
-				model.addAttribute("REMAINING_ADD_REQ", progressReportService.getBalanceAdditionalReqiurment(5,quarterId));
-            List<EEnablementReportDto> eEnablementReportDto=new ArrayList<EEnablementReportDto>();
-            int district =  (qprEnablement.getDistrictId() > 0) ? qprEnablement.getDistrictId() : 0;  
-            if(district != 0) {
-            	eEnablementReportDto = eEnablementOfPanchayatService.getEEnablementReportDto(district);
-            	model.addAttribute("eEnablementReportDto", eEnablementReportDto);
-            	 if (qprEnablement.getDistrictId() != null) {
-                     district = qprEnablement.getDistrictId();
-                 } else {
-                     district = eEnablementGPs.get(0).getDistrictCode();
-                 }
-            }
-            
-            if (eEnablementReportDto.size() == 0) {
-                return ENABLEMENT_PROGRESS_REPORT;
-            }
-            int eEnablementId = eEnablementReportDto.get(0).geteEnablementId();
-            int localbodyCode = eEnablementReportDto.get(0).getLocalBodyCode();
-            List<QprEnablementDetails> fetchDetails = eEnablementOfPanchayatService.getEEnablementReport(localbodyCode,
-                    qprEnablement.getQprEEnablementId());
-            QprEnablement fetchQprEnablement = progressReportService.fetchQprEnablement(eEnablementId, quarterId ,qprEnablement.getDistrictId());
-            QprEnablement fetchQprEnablementId = progressReportService.fetchQprEnablementId(eEnablementId, quarterId );
+	public String qprGetFormEnablementQuaderly(@ModelAttribute("Enablement") QprEnablement qprEnablement, Model model,
+			RedirectAttributes re) {
+		int quarterId = 0;
+		model.addAttribute("QUATER_DETAILS", progressReportService.getQuarterDurations());
+		model.addAttribute("SetNewQtrId1", qprEnablement.getQrtId());
+		model.addAttribute("LGD_DISTRICT", lgdService.getAllDistrictBasedOnState(userPreference.getStateCode()));
+		if (qprEnablement.getQrtId() != null) {
+			model.addAttribute("LGD_DISTRICT", lgdService.getAllDistrictBasedOnState(userPreference.getStateCode()));
+			model.addAttribute("QUATER_SHOW", Boolean.TRUE);
 
-            /*
-             * used to get previous data stored which is then use to validate the
-             * expenditure incurred
-             */
-            List<QuaterWiseFund> quaterWiseFund = new ArrayList<>();
-            List<QprEnablementDetails> qprEnablementDetails = new ArrayList<>();
-            if (quarterId == 1 || quarterId == 3) {
-                quaterWiseFund = progressReportService.fetchQuaterWiseFundData(userPreference.getStateCode(),
-                        (quarterId + 1), 5);
-            } else {
-                quaterWiseFund = progressReportService.fetchQuaterWiseFundData(userPreference.getStateCode(),
-                        (quarterId - 1), 5);
-            }
-            if (CollectionUtils.isNotEmpty(quaterWiseFund)) {
-                model.addAttribute("FUND_USED_IN_OTHER_QUATOR", quaterWiseFund.get(0).getFunds());
-            }
+		}
+		if (qprEnablement.getQrtId() != null && qprEnablement.getDistrictId() != null) {
+			model.addAttribute("SetNewQtrId1", qprEnablement.getQrtId());
+			model.addAttribute("LGD_DISTRICT", lgdService.getAllDistrictBasedOnState(userPreference.getStateCode()));
+			if (qprEnablement.getQrtId() != null) {
+				quarterId = qprEnablement.getQrtId();
+			} else {
+				quarterId = 0;
+			}
+			model.addAttribute("approved", true);
+			List<EEnablement> eEnablementsApproved = eEnablementOfPanchayatService.getApprovedEEnablement();
+			/* getting stateAllocation data by using component id */
+			List<StateAllocation> stateAllocation = new ArrayList<>();
+			List<QuaterWiseFund> totalQuatorWiseFund = new ArrayList<>();
+			/*
+			 * model.addAttribute("QUATER_DETAILS",
+			 * progressReportService.getQuarterDurations());
+			 * model.addAttribute("LGD_DISTRICT",
+			 * lgdService.getAllDistrictBasedOnState(userPreference.getStateCode()));
+			 */
+			int installmentNo = (quarterId < 3) ? 1 : 2; // installment number for qtrId 1 & 2 = 1 and 3 & 4 = 2
+			stateAllocation = progressReportService.fetchStateAllocationData(5, 16, installmentNo,
+					progressReportService.getCurrentPlanCode());
+			if (quarterId == 3 || quarterId == 4) {
+				stateAllocation.add(progressReportService
+						.fetchStateAllocationData(5, 16, 1, progressReportService.getCurrentPlanCode()).get(0)); // total
+																													// fund
+																													// allocated
+																													// in
+																													// first
+																													// quator
+				totalQuatorWiseFund = progressReportService.fetchTotalQuaterWiseFundData(userPreference.getStateCode(),
+						5);
+				double fund_used_in_one_two_qtr = calTotalFundUsedInQtr1And2(totalQuatorWiseFund);
+				/*
+				 * if(fund_used_in_one_two_qtr == 0) { model.addAttribute("QTR_ID", 0);
+				 * model.addAttribute("QTR_ONE_TWO_FILLED", false); return
+				 * ENABLEMENT_PROGRESS_REPORT; }
+				 */
+				model.addAttribute("TOTAL_FUND_USED_IN_QTR_1_AND_2", fund_used_in_one_two_qtr);
+			}
+			if (CollectionUtils.isNotEmpty(stateAllocation) && CollectionUtils.isNotEmpty(eEnablementsApproved)) {
+				model.addAttribute("FUND_ALLOCATED_BY_STATE", stateAllocation.get(0).getFundsAllocated());
+				if (stateAllocation.size() > 1) {
+					model.addAttribute("FUND_ALLOCATED_BY_STATE_PREVIOUS", stateAllocation.get(1).getFundsAllocated()); // we
+																														// will
+																														// use
+																														// this
+																														// in
+																														// jsp
+																														// to
+																														// calculate
+																														// the
+																														// total
+																														// remaining
+																														// field
+				}
+				Integer id = eEnablementsApproved.get(0).geteEnablementId();
+				Integer eEnablementDetailsId = eEnablementsApproved.get(0).geteEnablementDetails().get(0)
+						.geteEnablementDetailId();
+				List<EEnablementGPs> eEnablementGPs = eEnablementOfPanchayatService
+						.fetchCapacityBuildingActivityGPsList(eEnablementDetailsId);
+				model.addAttribute("eEnablementGPs", eEnablementGPs);
+				model.addAttribute("idEEnablement", id);
+				model.addAttribute("SetNewQtrId1", qprEnablement.getQrtId());
+				model.addAttribute("SetNewDistrictId", qprEnablement.getDistrictId());
+				model.addAttribute("quarterId", quarterId);
+				model.addAttribute("QTR_ONE_TWO_FILLED", true);
+				model.addAttribute("eEnablementsApproved", eEnablementsApproved.get(0));
+				if (quarterId != 0)
+					model.addAttribute("REMAINING_ADD_REQ",
+							progressReportService.getBalanceAdditionalReqiurment(5, quarterId));
+				List<EEnablementReportDto> eEnablementReportDto = new ArrayList<EEnablementReportDto>();
+				int district = (qprEnablement.getDistrictId() > 0) ? qprEnablement.getDistrictId() : 0;
+				if (district != 0) {
+					eEnablementReportDto = eEnablementOfPanchayatService.getEEnablementReportDto(district);
+					model.addAttribute("eEnablementReportDto", eEnablementReportDto);
+					if (qprEnablement.getDistrictId() != null) {
+						district = qprEnablement.getDistrictId();
+					} else {
+						district = eEnablementGPs.get(0).getDistrictCode();
+					}
+				}
 
-            // list to get total number of unit in all quator except current one
-            List<QprEnablementDetails> detailForTotalNoOfUnit = new ArrayList<>();
-            List<QprEnablementDetails> enablementReportDetailOfRestQuater = eEnablementOfPanchayatService.getEnablementQprActBasedOnActIdAndQtrId(eEnablementsApproved.get(0).geteEnablementId(), quarterId );
-            if (enablementReportDetailOfRestQuater != null) {
-                Collections.sort(enablementReportDetailOfRestQuater,
-                        (o1, o2) -> o1.getQprEEenablementDetailsId() - o2.getQprEEenablementDetailsId());
-                detailForTotalNoOfUnit = getTotalUnitAndExpIncurredInAllQtrEnablement(detailForTotalNoOfUnit,
-                		enablementReportDetailOfRestQuater,eEnablementReportDto.size());
-                model.addAttribute("DEATIL_FOR_TOTAL_NO_OF_UNIT", detailForTotalNoOfUnit);
-            } else {
-                model.addAttribute("DEATIL_FOR_TOTAL_NO_OF_UNIT", null);
-            }
-            /*----------------------------end here-------------------------------------------------- */
-            model.addAttribute("fetchDetails", fetchDetails);
-            model.addAttribute("fetchQprEnablementId", fetchQprEnablementId);
-            
-            if (fetchQprEnablement != null) {
-                model.addAttribute("Qpr_Enablement", fetchQprEnablement);
-                qprEnablementDetails = progressReportService
-                        .fetchQprEnablementDetails(fetchQprEnablement.getQprEEnablementId() , quarterId ,qprEnablement.getDistrictId() );
-                model.addAttribute("EnablementDtlsList", qprEnablementDetails);
-                model.addAttribute("DISABLE_FREEZE", false);
-            } else {
-                QprEnablement fetchQprEnablement1 = progressReportService.fetchEEnablementProgressToGeReportId1(id);
-                if (fetchQprEnablement1 != null) {
-                    model.addAttribute("qprEEnablementId", fetchQprEnablement1.getQprEEnablementId());
-                }
-                model.addAttribute("DISABLE_FREEZE", true);
-            }
-        } else {
-            return NO_FUND_ALLOCATED_JSP;
-        }}
-        return ENABLEMENT_PROGRESS_REPORT;
-    }
-	
+				if (eEnablementReportDto.size() == 0) {
+					return ENABLEMENT_PROGRESS_REPORT;
+				}
+				int eEnablementId = eEnablementReportDto.get(0).geteEnablementId();
+				int localbodyCode = eEnablementReportDto.get(0).getLocalBodyCode();
+				List<QprEnablementDetails> fetchDetails = eEnablementOfPanchayatService
+						.getEEnablementReport(localbodyCode, qprEnablement.getQprEEnablementId());
+				QprEnablement fetchQprEnablement = progressReportService.fetchQprEnablement(eEnablementId, quarterId,
+						qprEnablement.getDistrictId());
+				QprEnablement fetchQprEnablementId = progressReportService.fetchQprEnablementId(eEnablementId,
+						quarterId);
+
+				/*
+				 * used to get previous data stored which is then use to validate the
+				 * expenditure incurred
+				 */
+				List<QuaterWiseFund> quaterWiseFund = new ArrayList<>();
+				List<QprEnablementDetails> qprEnablementDetails = new ArrayList<>();
+				if (quarterId == 1 || quarterId == 3) {
+					quaterWiseFund = progressReportService.fetchQuaterWiseFundData(userPreference.getStateCode(),
+							(quarterId + 1), 5);
+				} else {
+					quaterWiseFund = progressReportService.fetchQuaterWiseFundData(userPreference.getStateCode(),
+							(quarterId - 1), 5);
+				}
+				if (CollectionUtils.isNotEmpty(quaterWiseFund)) {
+					model.addAttribute("FUND_USED_IN_OTHER_QUATOR", quaterWiseFund.get(0).getFunds());
+				}
+
+				// list to get total number of unit in all quator except current one
+				List<QprEnablementDetails> detailForTotalNoOfUnit = new ArrayList<>();
+				List<QprEnablementDetails> enablementReportDetailOfRestQuater = eEnablementOfPanchayatService
+						.getEnablementQprActBasedOnActIdAndQtrId(eEnablementsApproved.get(0).geteEnablementId(),
+								quarterId);
+				if (enablementReportDetailOfRestQuater != null) {
+					Collections.sort(enablementReportDetailOfRestQuater,
+							(o1, o2) -> o1.getQprEEenablementDetailsId() - o2.getQprEEenablementDetailsId());
+					detailForTotalNoOfUnit = getTotalUnitAndExpIncurredInAllQtrEnablement(detailForTotalNoOfUnit,
+							enablementReportDetailOfRestQuater, eEnablementReportDto.size());
+					model.addAttribute("DEATIL_FOR_TOTAL_NO_OF_UNIT", detailForTotalNoOfUnit);
+				} else {
+					model.addAttribute("DEATIL_FOR_TOTAL_NO_OF_UNIT", null);
+				}
+				/*----------------------------end here-------------------------------------------------- */
+				model.addAttribute("fetchDetails", fetchDetails);
+				model.addAttribute("fetchQprEnablementId", fetchQprEnablementId);
+
+				if (fetchQprEnablement != null) {
+					model.addAttribute("Qpr_Enablement", fetchQprEnablement);
+					qprEnablementDetails = progressReportService.fetchQprEnablementDetails(
+							fetchQprEnablement.getQprEEnablementId(), quarterId, qprEnablement.getDistrictId());
+					model.addAttribute("EnablementDtlsList", qprEnablementDetails);
+					model.addAttribute("DISABLE_FREEZE", false);
+				} else {
+					QprEnablement fetchQprEnablement1 = progressReportService.fetchEEnablementProgressToGeReportId1(id);
+					if (fetchQprEnablement1 != null) {
+						model.addAttribute("qprEEnablementId", fetchQprEnablement1.getQprEEnablementId());
+					}
+					model.addAttribute("DISABLE_FREEZE", true);
+				}
+			} else {
+				return NO_FUND_ALLOCATED_JSP;
+			}
+		}
+		return ENABLEMENT_PROGRESS_REPORT;
+	}
+
 	private List<QprEnablementDetails> getTotalUnitAndExpIncurredInAllQtrEnablement(
 			List<QprEnablementDetails> detailForTotalNoOfUnit,
 			List<QprEnablementDetails> enablementReportDetailOfRestQuater, int size) {
@@ -1645,22 +1762,22 @@ public class ProgressReportController {
 		model.addAttribute("QUATER_DETAILS", progressReportService.getQuarterDurations());
 		List<QuaterWiseFund> totalQuatorWiseFund = new ArrayList<>();
 		List<InnovativeActivity> innovativeActApproved = innovativeActivityService.fetchApprovedInnovative();
-		List<StateAllocation> stateAllocation = progressReportService.fetchStateAllocationData(9, installmentNo,
+		List<StateAllocation> stateAllocation = progressReportService.fetchStateAllocationData(9, 
 				progressReportService.getCurrentPlanCode());
 		if (quarterId == 3 || quarterId == 4) {
 			stateAllocation.add(progressReportService
-					.fetchStateAllocationData(9, 1, progressReportService.getCurrentPlanCode()).get(0)); // total fund
+					.fetchStateAllocationData(9,  progressReportService.getCurrentPlanCode()).get(0)); // total fund
 																											// allocated
 																											// in first
 																											// quator
 			totalQuatorWiseFund = progressReportService.fetchTotalQuaterWiseFundData(userPreference.getStateCode(), 9);
 			double fund_used_in_one_two_qtr = calTotalFundUsedInQtr1And2(totalQuatorWiseFund);
 			// hide by rajeev regarding 3& 4 quater can be shown in 1 installment
-			/*if (fund_used_in_one_two_qtr == 0) {
-				model.addAttribute("QTR_ID", 0);
-				model.addAttribute("QTR_ONE_TWO_FILLED", false);
-				return INNOVATIVE_PROGRESS_REPORT;
-			}*/
+			/*
+			 * if (fund_used_in_one_two_qtr == 0) { model.addAttribute("QTR_ID", 0);
+			 * model.addAttribute("QTR_ONE_TWO_FILLED", false); return
+			 * INNOVATIVE_PROGRESS_REPORT; }
+			 */
 			model.addAttribute("TOTAL_FUND_USED_IN_QTR_1_AND_2", fund_used_in_one_two_qtr);
 		}
 
@@ -1801,22 +1918,22 @@ public class ProgressReportController {
 		List<QuaterWiseFund> totalQuatorWiseFund = new ArrayList<>();
 		List<AdminAndFinancialDataActivity> adminAndFinancialDataActivityApproved = adminAndFinancialDataCellService
 				.fetchApprovedActivity();
-		List<StateAllocation> stateAllocation = progressReportService.fetchStateAllocationData(8, installmentNo,
+		List<StateAllocation> stateAllocation = progressReportService.fetchStateAllocationData(8, 
 				progressReportService.getCurrentPlanCode());
 		model.addAttribute("quarter_duration", progressReportService.getQuarterDurations());
 		if (quarterId == 3 || quarterId == 4) {
 			stateAllocation.add(progressReportService
-					.fetchStateAllocationData(8, 1, progressReportService.getCurrentPlanCode()).get(0)); // total fund
+					.fetchStateAllocationData(8,  progressReportService.getCurrentPlanCode()).get(0)); // total fund
 																											// allocated
 																											// in first
 																											// quator
 			totalQuatorWiseFund = progressReportService.fetchTotalQuaterWiseFundData(userPreference.getStateCode(), 8);
 			double fund_used_in_one_two_qtr = calTotalFundUsedInQtr1And2(totalQuatorWiseFund);
-			/*if (fund_used_in_one_two_qtr == 0) {
-				model.addAttribute("QTR_ID", 0);
-				model.addAttribute("QTR_ONE_TWO_FILLED", false);
-				return ADMIN_DATA_FIN_QUATERLY;
-			}*/
+			/*
+			 * if (fund_used_in_one_two_qtr == 0) { model.addAttribute("QTR_ID", 0);
+			 * model.addAttribute("QTR_ONE_TWO_FILLED", false); return
+			 * ADMIN_DATA_FIN_QUATERLY; }
+			 */
 			model.addAttribute("TOTAL_FUND_USED_IN_QTR_1_AND_2", fund_used_in_one_two_qtr);
 		}
 		if (CollectionUtils.isNotEmpty(stateAllocation)
@@ -2439,8 +2556,8 @@ public class ProgressReportController {
 					model.addAttribute("balAddiReq", Integer.parseInt(addReqirmentDetails));
 				}
 			} else {
-				//model.addAttribute("isError", "2nd installement not released");
-				//model.addAttribute("installementExist", Boolean.FALSE);
+				// model.addAttribute("isError", "2nd installement not released");
+				// model.addAttribute("installementExist", Boolean.FALSE);
 			}
 			model.addAttribute("QPR_TRAINING_DETAILS", quarterTrainings);
 

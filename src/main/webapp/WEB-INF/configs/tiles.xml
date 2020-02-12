@@ -936,15 +936,7 @@
 			value="/WEB-INF/jsp/viewMoprReport/viewReportDemographicProfileState.jsp" />
 	</definition>
 	
-	<definition name="viewQprReportPage"
-		extends="base.definition.admin">
-		<put-attribute name="title"
-			value="View Report" />
-		<put-attribute name="body"
-			value="/WEB-INF/jsp/QprReport/viewQprReportPage.jsp" />
-	</definition>
 	
- 
 	<definition name="actionPlanPhysicalReport"
 		extends="base.definition.admin">
 		<put-attribute name="title" value="View Report Mopr" />
@@ -965,7 +957,5 @@
 		<put-attribute name="body"
 			value="/WEB-INF/jsp/viewPlanDetailsMOPR/actionPlanReportForMinistoryDomain.jsp" />
 	</definition>
- 
 	
 </tiles-definitions>
-
