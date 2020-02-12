@@ -63,6 +63,7 @@ public class QprInstitutionalInfraDetails implements Serializable {
 	private String districtName;
 	
 	
+	
 	@OneToOne(fetch=FetchType.EAGER,cascade=CascadeType.ALL)
 	@JoinColumn(name="file_node_id")
 	private FileNode fileNode;
@@ -73,7 +74,12 @@ public class QprInstitutionalInfraDetails implements Serializable {
 	@Column(name="institutional_activity_type_id")
 	private Integer trainingInstitueTypeId;
 
+	@Column(name="work_type")
+	private String workType;
 
+
+	
+	
 	@Transient
 	private MultipartFile file;
 
@@ -177,6 +183,14 @@ public class QprInstitutionalInfraDetails implements Serializable {
 
 	public void setDistrictName(String districtName) {
 		this.districtName = districtName;
+	}
+
+	public String getWorkType() {
+		return workType;
+	}
+
+	public void setWorkType(String workType) {
+		this.workType = workType;
 	}
 
 	

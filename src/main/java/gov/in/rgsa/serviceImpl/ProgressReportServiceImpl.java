@@ -672,21 +672,76 @@ public class ProgressReportServiceImpl implements ProgressReportService {
             qprInstitutionalInfrastructure.setLastUpdateOn(new Date());
 
             List<QprInstitutionalInfraDetails> updateQprInstitutionalInfraDetailsList = new ArrayList<QprInstitutionalInfraDetails>();
-
-            for (QprInstitutionalInfraDetails obj : qprInstitutionalInfrastructure.getQprInstitutionalInfraDetails()) {
+            if(qprInstitutionalInfrastructure.getQprInstitutionalInfraCarryDprc() != null &&  qprInstitutionalInfrastructure.getQprInstitutionalInfraCarryDprc().size() >0) {
+            for (QprInstitutionalInfraDetails obj : qprInstitutionalInfrastructure.getQprInstitutionalInfraCarryDprc()) {
                 obj.setQprInstitutionalInfrastructure(qprInstitutionalInfrastructure);
                 if (obj.getExpenditureIncurred() != null && obj.getInstInfraStatusId() != null) {
                     multipartFile = obj.getFile();
-                    if (multipartFile.getSize() > 0) {
+                    if (multipartFile != null && multipartFile.getSize() > 0) {
                         uploadReport = attemptUpload(obj.getFileNode(), multipartFile, uploadPath, qprInstitutionalInfrastructure.getQtrId(), "institutional");
                         obj.setFileNode(uploadReport.getFileNode());
-                    } else {
+                    } else if(obj.getFileNode().getFileNodeId() !=null) {
+                    	
+                    }else {
                         obj.setFileNode(null);
                     }
                     updateQprInstitutionalInfraDetailsList.add(obj);
                 }
             }
-
+            }
+            if( qprInstitutionalInfrastructure.getQprInstitutionalInfraCarrySprc() != null && qprInstitutionalInfrastructure.getQprInstitutionalInfraCarrySprc().size() >0) {
+            for (QprInstitutionalInfraDetails objCS : qprInstitutionalInfrastructure.getQprInstitutionalInfraCarrySprc()) {
+            	objCS.setQprInstitutionalInfrastructure(qprInstitutionalInfrastructure);
+                if (objCS.getExpenditureIncurred() != null && objCS.getInstInfraStatusId() != null) {
+                    multipartFile = objCS.getFile();
+                    if (multipartFile != null && multipartFile.getSize() > 0) {
+                        uploadReport = attemptUpload(objCS.getFileNode(), multipartFile, uploadPath, qprInstitutionalInfrastructure.getQtrId(), "institutional");
+                        objCS.setFileNode(uploadReport.getFileNode());
+                    }else if(objCS.getFileNode().getFileNodeId() !=null) {
+                    	
+                    } else {
+                    	objCS.setFileNode(null);
+                    }
+                    updateQprInstitutionalInfraDetailsList.add(objCS);
+                }
+            }
+            }
+            if(qprInstitutionalInfrastructure.getQprInstitutionalInfraNewSprc() != null && qprInstitutionalInfrastructure.getQprInstitutionalInfraNewSprc().size() >0) {
+            for (QprInstitutionalInfraDetails objNS : qprInstitutionalInfrastructure.getQprInstitutionalInfraNewSprc()) {
+            	objNS.setQprInstitutionalInfrastructure(qprInstitutionalInfrastructure);
+                if (objNS.getExpenditureIncurred() != null && objNS.getInstInfraStatusId() != null) {
+                    multipartFile = objNS.getFile();
+                    if (multipartFile != null && multipartFile.getSize() > 0) {
+                        uploadReport = attemptUpload(objNS.getFileNode(), multipartFile, uploadPath, qprInstitutionalInfrastructure.getQtrId(), "institutional");
+                        objNS.setFileNode(uploadReport.getFileNode());
+                    } else if(objNS.getFileNode().getFileNodeId() !=null) {
+                    	
+                    }else {
+                    	objNS.setFileNode(null);
+                    }
+                    updateQprInstitutionalInfraDetailsList.add(objNS);
+                }
+            }
+            }
+            if(qprInstitutionalInfrastructure.getQprInstitutionalInfraNewDprc() != null && qprInstitutionalInfrastructure.getQprInstitutionalInfraNewDprc().size() >0  ) {
+            for (QprInstitutionalInfraDetails objND : qprInstitutionalInfrastructure.getQprInstitutionalInfraNewDprc()) {
+            	objND.setQprInstitutionalInfrastructure(qprInstitutionalInfrastructure);
+                if (objND.getExpenditureIncurred() != null && objND.getInstInfraStatusId() != null) {
+                    multipartFile = objND.getFile();
+                    if (multipartFile != null && multipartFile.getSize() > 0) {
+                        uploadReport = attemptUpload(objND.getFileNode(), multipartFile, uploadPath, qprInstitutionalInfrastructure.getQtrId(), "institutional");
+                        objND.setFileNode(uploadReport.getFileNode());
+                    }else if(objND.getFileNode().getFileNodeId() !=null) {
+                    	
+                    }
+                    
+                    else {
+                    	objND.setFileNode(null);
+                    }
+                    updateQprInstitutionalInfraDetailsList.add(objND);
+                }
+            }
+            }
             for (QprInstitutionalInfraDetails obj : updateQprInstitutionalInfraDetailsList) {
 
                 if (qprInstitutionalInfrastructure.getQprInstInfraId() != null) {

@@ -197,8 +197,8 @@ function collapseHide() {
 											if (key == "1") {
 												
 												$("#trainDetails").show();
-												var divTemplate = $("#collapse1");
-												$("#collapse1").empty();
+												var divTemplate = $("#collapse1Div");
+												$("#collapse1Div").empty();
 
 												//$("#collapse2").text(activityName+" Finalize Work Location of "+$scope.selectDistrictCode.districtNameEnglish+" District");
 
@@ -213,42 +213,43 @@ function collapseHide() {
 												tr = $("<TR/>");
 
 												th = createLabel("Training Category");
-												th.attr("style","thead {color : black; background-color: #e87b7b;")
+												
+												th.attr("style","background-color: #eeb2b2");
 												tr.append(th);
 
 												th = createLabel("Training Subjects");
-												th.attr("style","thead {color : black; background-color: #e87b7b;")
+												th.attr("style","background-color: #eeb2b2");
 												tr.append(th);
 
 												th = createLabel("Training Target Group");
-												th.attr("style","thead {color : black; background-color: #e87b7b;")
+												th.attr("style","background-color: #eeb2b2");
 												tr.append(th);
 
 												th = createLabel("Venue Level");
-												th.attr("style","thead {color : black; background-color: #e87b7b;")
+												th.attr("style","background-color: #eeb2b2");
 												tr.append(th);
 
 												th = createLabel("Mode Of Training");
-												th.attr("style","thead {color : black; background-color: #e87b7b;")
+												th.attr("style","background-color: #eeb2b2");
 												tr.append(th);
 
 												th = createLabel("No. of Participants");
-												th.attr("style","thead {color : black; background-color: #e87b7b;")
+												th.attr("style","background-color: #eeb2b2");
 												tr.append(th);
 												th = createLabel("No.of Days");
-												th.attr("style","thead {color : black; background-color: #e87b7b;")
+												th.attr("style","background-color: #eeb2b2");
 												tr.append(th);
 
 												th = createLabel("Unit Cost");
-												th.attr("style","thead {color : black; background-color: #e87b7b;")
+												th.attr("style","background-color: #eeb2b2");
 												tr.append(th);
 
 												th = createLabel("Funds Proposed 	");
-												th.attr("style","thead {color : black; background-color: #e87b7b;")
+												th.attr("style","background-color: #eeb2b2");
 												tr.append(th);
 
 												th = createLabel("Remarks");
-												th.attr("style","thead {color : black; background-color: #e87b7b;")
+												th.attr("style","background-color: #eeb2b2");
 												tr.append(th);
 
 												thead.append(tr);
@@ -337,21 +338,27 @@ function collapseHide() {
 												tr = $("<TR/>");
 
 												th = createLabel("Designation");
+												th.attr("style","background-color: #eeb2b2");
 												tr.append(th);
 
 												th = createLabel("No. of Units A ");
+												th.attr("style","background-color: #eeb2b2");
 												tr.append(th);
 
 												th = createLabel("Unit Cost per month (in Rs) B ");
+												th.attr("style","background-color: #eeb2b2");
 												tr.append(th);
 
 												th = createLabel("No. of Months   C ");
+												th.attr("style","background-color: #eeb2b2");
 												tr.append(th);
 
 												th = createLabel("Funds (in Rs)  D = A * B * C ");
+												th.attr("style","background-color: #eeb2b2");
 												tr.append(th);
 
 												th = createLabel("Remarks");
+												th.attr("style","background-color: #eeb2b2");
 												tr.append(th);
 
 												thead.append(tr);
@@ -1522,63 +1529,13 @@ function collapseHide() {
 			
 </script>
 
-<style>
-.col-sm-1 {
-    width: 6.333%;
-}
-.card {
-    background: 
-#f0eaea;
-min-height: 50px;
-box-shadow: 0 2px 10px
-    rgba(0, 0, 0, 0.2);
-    position: relative;
-    margin-bottom: 30px;
-}
-.panel-default {
-    border-color: 
-    #b5abab;
-}
-
-.table thead tr th {
-    padding: 10px;
-        padding-top: 10px;
-        padding-right: 10px;
-        padding-bottom: 10px;
-        padding-left: 10px;
-    border-bottom: 3px solid 
-    #5d1616;
-    background-color: !blue!aliceblue;
-}
-.bs-accordion { .panel-heading { // remove the padding on the heading so
-	we can increase the click area of the anchor padding:0;a { // increase
-	the click area of the anchor trigger to match the original
-	.panel-heading display:block;
-	padding: 10px 15px; // spin the chevron! &[aria-expanded=true] {
-	.glyphicon.glyphicon-chevron-right { transform : rotate( 90deg);
-	transition: transform 350ms cubic-bezier(0.645, 0.045, 0.355, 1);
-}
-
-}
-.glyphicon.glyphicon-chevron-right {
-	transition: transform 350ms cubic-bezier(0.645, 0.045, 0.355, 1);
-}
-}
-}
-}
-
-a[aria-expanded="true"]{
-$('#trainIE').css("display","none");
-
-}
-$("a[aria-expanded='true']").css("background-color", "#42DCA3");
-</style>
-
+ 
+ 
 <section class="content">
 
 	<div class="container-fluid">
 		<div class="row clearfix">
-			<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+			<div class="table-responsive">
 				<div class="card">
 					<div class="header">
 						<h3 style="padding-top: 25px;">&nbsp;&nbsp; Action Plan
@@ -1589,7 +1546,7 @@ $("a[aria-expanded='true']").css("background-color", "#42DCA3");
 						
 					
 							<div class="container">
-<div id="print">
+                            <div id="print">
 
 								<main>
 								<article class="panel-group bs-accordion" id="accordion"
@@ -1610,11 +1567,30 @@ $("a[aria-expanded='true']").css("background-color", "#42DCA3");
 										</div>
 										
 										<div class="">
-										<div id="collapse1"
+										<div id="collapse1" 
 											class="panel-collapse collapse abc "
 											role="tabpanel"  aria-labelledby="heading1">
-											</div>
-											<div class="row form-group" id ="trainDetails">
+											<div id="collapse1Div"></div>
+										<div class="row form-group" id ="trainDetails" >
+										<table>
+										<tbody>
+										<tr>
+										<td></td>
+										<td></td>
+										</tr>
+										<tr>
+										<td></td><td></td>
+										</tr>
+										<tr>
+										<td></td><td></td>
+										</tr>
+										<tr>
+										<td></td><td></td>
+										</tr>
+										</tbody>
+										</table>
+										
+											
 											<div class="col-sm-12">
 											<div class="col-sm-6"></div>
 											<div class="col-sm-4">
@@ -1654,7 +1630,7 @@ $("a[aria-expanded='true']").css("background-color", "#42DCA3");
 											</div>
 											</div>
 										</div>
-										
+									</div>
 											</div>
 									</section>
 									<section class="panel panel-default xxx">
