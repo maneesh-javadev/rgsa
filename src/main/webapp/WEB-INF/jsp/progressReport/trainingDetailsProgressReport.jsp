@@ -146,11 +146,11 @@
 										 <c:choose>
 										 <c:when test="${status.value== null}">
 										 <form:input id="expenditureIncurred_${count.index}" onkeypress="return isNumber(event)"  path="${status.expression}"  class="form-control"  value="0" 
-											maxlength="8" style="text-align:right;" required="required" autocomplete="off" onblur="validate_expenditureIncurred('${subcomponentwiseQuaterBalanceList[0].balanceAmount}',this)" readonly="${QPR_TRAINING_DETAILS.isFreeze}"/>
+											 style="text-align:right;" required="required" autocomplete="off" onblur="validate_expenditureIncurred('${subcomponentwiseQuaterBalanceList[0].balanceAmount}',this)" readonly="${QPR_TRAINING_DETAILS.isFreeze}"/>
 										 </c:when>
 										 <c:otherwise>
 										 <form:input id="expenditureIncurred_${count.index}" onkeypress="return isNumber(event)"  path="${status.expression}"  class="form-control"  value="${status.value}" 
-											maxlength="8" style="text-align:right;" required="required" autocomplete="off" onblur="validate_expenditureIncurred('${subcomponentwiseQuaterBalanceList[0].balanceAmount}',this)" readonly="${QPR_TRAINING_DETAILS.isFreeze}"/>
+											 style="text-align:right;" required="required" autocomplete="off" onblur="validate_expenditureIncurred('${subcomponentwiseQuaterBalanceList[0].balanceAmount}',this)" readonly="${QPR_TRAINING_DETAILS.isFreeze}"/>
 										
 										 
 										 </c:otherwise>
@@ -201,7 +201,7 @@
 									</td>
 									<td>
 										<spring:bind path="QPR_TRAINING_DETAILS.additionalRequirement" >
-										<form:input onkeypress="return isNumber(event)" id="addReq" class="form-control" path="${status.expression}"  value="${status.value}" onblur="calculcate_total(null,'expenditureIncurred')"  maxlength="8" style="text-align:right;" autocomplete="off" readonly="${QPR_TRAINING_DETAILS.isFreeze}"/>
+										<form:input onkeypress="return isNumber(event)" id="addReq" class="form-control" path="${status.expression}"  value="${status.value}" onblur="calculcate_total(null,'expenditureIncurred')"   style="text-align:right;" autocomplete="off" readonly="${QPR_TRAINING_DETAILS.isFreeze}"/>
 										</spring:bind>
 										<span class="errormsg" id="error_addReq"></span>
 									</td>

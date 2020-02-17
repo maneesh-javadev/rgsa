@@ -184,7 +184,7 @@
 											    tableBody+='<tr>';
 										    	tableBody+='<td>'+ slno +  '</td>';
 											   $.each( valueList[key1], function(key2,listVal){
-												   if( key2!='additional_requirement'){
+												   if( key2!='additional_requirement_dpmu' && key2!='additional_requirement_spmu'){
 												    	 if( key2=='expenditure_incurred'){
 												    		 total=parseInt(total)+parseInt(listVal);
 												    		 tableBody+='<td>'+ listVal +  '</td>';
@@ -196,9 +196,14 @@
 											   if(valueList.length==slno){
 												   tableBody+='</tr>';
 												   tableBody+='<tr  style="background-color: #dbd0d0">';
+												   tableBody+='<td>  </td>';
 												   $.each( valueList[key1], function(key2,listVal){
-													    if( key2=='additional_requirement'){
-													    	tableBody+='<td colspan=6> <b>Additional Requirement </b> </td>';
+													    if( key2=='additional_requirement_dpmu'){
+													    	tableBody+='<td colspan=2> <b>Additional Requirement DPMU </b> </td>';
+													    	tableBody+='<td><b>'+ listVal +  '</b></td>';
+													    }
+													    if( key2=='additional_requirement_spmu'){
+													    	tableBody+='<td colspan=2> <b>Additional Requirement SPMU</b> </td>';
 													    	tableBody+='<td><b>'+ listVal +  '</b></td>';
 													    }
 												   })
@@ -616,7 +621,7 @@
 			 var sTable =$('#'+id).html();
 			 var style = "<style>";
 			 
-			 	 style = style + "table,th,td{border: solid 1px black;border-collapse: collapse;}";
+			 	style = style + "table,th,td{border: solid 1px black;border-collapse: collapse;}";
 		        style = style + "thead {color : black; background-color: #e87b7b;";
 		        style = style + "</style>";
 			 
@@ -683,7 +688,7 @@
 					
 					<div class="col-md-3" style="margin-top:2%">
 					<button type="button" onclick="ajaxCallFunction();" class="btn btn-primary"><span class="glyphicon glyphicon-search"></span>&nbsp; Search</button>
-					<button type="button" onclick="exportToPdf('tableExp');" class="btn btn-primary"><span class="glyphicon glyphicon-download"></span>&nbsp; Download</button>
+					<button type="button" onclick="exportToPdf('tableExp');" class="btn btn-primary"><span class="glyphicon glyphicon-print"></span>&nbsp; Print</button>
 					</div>
 					
 					</div><!--  row -->

@@ -51,41 +51,54 @@ public class QprReportConServiceImpl implements QprReportConService
 	public List fetchTrainingActivityList(String statecode,String yearId,String UserType,String quarterId)
 	{
 		List  datalist=new LinkedList();
+		int index1=0;
+		
 		try {
 			StringBuilder query=new StringBuilder();
-			query.append(" Select cm.cb_name,cad.no_of_units,cad.funds, qcad.no_of_days_completed,qcad.no_of_units_completed,COALESCE(qcad.expenditure_incurred,0) expenditure_incurred,COALESCE(qca.additional_requirement,0) additional  from rgsa.qpr_cb_activity_details qcad ");
+			//query.append(" Select cm.cb_name,cad.no_of_units,cad.funds, qcad.no_of_days_completed,qcad.no_of_units_completed,COALESCE(qcad.expenditure_incurred,0) expenditure_incurred,COALESCE(qca.additional_requirement,0) additional  from rgsa.qpr_cb_activity_details qcad ");
+			//query.append(" inner join rgsa.qpr_cb_activity qca on qca.qpr_cb_activity_id=qcad.qpr_cb_activity_id ");
+			//query.append(" inner join rgsa.cb_activity_details cad on cad.cb_activity_detail_id=qcad.cb_activity_detail_id ");
+			//query.append(" inner join rgsa.cb_master cm on cm.cb_master_id=cad.cb_master_id ");
+			//query.append("  where qca.qtr_id="+quarterId+" and qca.cb_activity_id =(select cb_activity_id from rgsa.cb_activity where state_code="+statecode+" and user_type='"+UserType+"' and year_id="+yearId+" and is_active)  ");
+			
+			query.append(" Select COALESCE(qcad.no_of_days_completed,0) no_of_days_completed ,COALESCE(qcad.no_of_units_completed,0) no_of_units_completed ,COALESCE(qcad.expenditure_incurred,0) expenditure_incurred,COALESCE(qca.additional_requirement,0) additional  from rgsa.qpr_cb_activity_details qcad ");
 			query.append(" inner join rgsa.qpr_cb_activity qca on qca.qpr_cb_activity_id=qcad.qpr_cb_activity_id ");
-			query.append(" inner join rgsa.cb_activity_details cad on cad.cb_activity_detail_id=qcad.cb_activity_detail_id ");
-			query.append(" inner join rgsa.cb_master cm on cm.cb_master_id=cad.cb_master_id ");
-			query.append("  where qca.qtr_id="+quarterId+" and qca.cb_activity_id =(select cb_activity_id from rgsa.cb_activity where state_code="+statecode+" and user_type='"+UserType+"' and year_id="+yearId+" and is_active)  ");
-			/*
-			 * query.append("union all"); query.
-			 * append(" select 'Total',sum(COALESCE(cad.no_of_units,0)),sum(COALESCE(cad.funds,0)),sum(COALESCE(qcad.no_of_days_completed,0)),sum(COALESCE(qcad.no_of_units_completed,0)),sum(COALESCE(qcad.expenditure_incurred,0)) from rgsa.qpr_cb_activity_details qcad "
-			 * ); query.
-			 * append(" inner join rgsa.qpr_cb_activity qca on qca.qpr_cb_activity_id=qcad.qpr_cb_activity_id "
-			 * ); query.
-			 * append(" inner join rgsa.cb_activity_details cad on cad.cb_activity_detail_id=qcad.cb_activity_detail_id "
-			 * ); query.
-			 * append(" inner join rgsa.cb_master cm on cm.cb_master_id=cad.cb_master_id ");
-			 * query.
-			 * append(" where qca.qtr_id=3 and qca.cb_activity_id =(select cb_activity_id from rgsa.cb_activity where state_code=11 and user_type='C' and year_id=2 and is_active)  "
-			 * );
-			 */
+			query.append(" inner join rgsa.cb_activity ca on ca.cb_activity_id=qca.cb_activity_id ");
+			query.append("  where qca.qtr_id="+quarterId+" and ca.state_code="+statecode+" and ca.user_type='"+UserType+"' and ca.year_id="+yearId+" and ca.is_active ");
 			
 			List list=dao.findAllByNativeQuery(query.toString(), null);
-			if(list!=null && !list.isEmpty()) {
-			 for(Iterator itr=list.iterator(); itr.hasNext();)
+			
+			query=new StringBuilder();
+			query.append("  select cm.cb_name,COALESCE(cad.no_of_units,0) no_of_units ,COALESCE(cad.funds,0) funds from rgsa.cb_activity ca ");
+			query.append(" inner join rgsa.cb_activity_details cad on cad.cb_activity_id=ca.cb_activity_id ");
+			query.append("  inner join rgsa.cb_master cm on cm.cb_master_id=cad.cb_master_id  ");
+			query.append("  where ca.state_code="+statecode+" and ca.user_type='"+UserType+"' and ca.year_id="+yearId+" and ca.is_active ");
+			
+			List actionlist=dao.findAllByNativeQuery(query.toString(), null);
+			
+			if(list!=null && !list.isEmpty() && actionlist!=null && !actionlist.isEmpty()) {
+			 for(Iterator itr=actionlist.iterator(); itr.hasNext();)
 			 {
-				 Object []  obj=(Object [])itr.next();
-				 Map <String,String> map=new LinkedHashMap<>();
-				 map.put("cb_name", obj[0].toString()); 
-				 map.put("no_of_units", obj[1].toString());
-				 map.put("funds", obj[2].toString());
-				 map.put("no_of_days_completed", obj[3].toString());
-				 map.put("no_of_units_completed", obj[4].toString());
-				 map.put("expenditure_incurred", obj[5].toString());
-				 map.put("additional_requirement", obj[6].toString());
-				 datalist.add(map);
+				 Object []  dobj=(Object [])itr.next();
+				 index1++;
+				 int index2=0;
+				 for(Iterator ditr=list.iterator(); ditr.hasNext();)
+				 {
+					 Object []  obj=(Object []) ditr.next();
+					 index2++;
+					 if(index1==index2) {
+						 Map <String,String> map=new LinkedHashMap<>();
+						 map.put("cb_name", dobj[0].toString()); 
+						 map.put("no_of_units", dobj[1].toString());
+						 map.put("funds", dobj[2].toString());
+						 map.put("no_of_days_completed", obj[0].toString());
+						 map.put("no_of_units_completed", obj[1].toString());
+						 map.put("expenditure_incurred", obj[2].toString());
+						 map.put("additional_requirement", obj[3].toString());
+						 datalist.add(map);
+						 break;
+					 }
+				 }
 			 }
 		 }
 		}
@@ -192,9 +205,9 @@ public class QprReportConServiceImpl implements QprReportConService
 		List  datalist=new LinkedList();
 		try {
 			 Map<String, Object> qParams = new HashMap<>();
-		        qParams.put("quarterId", quarterId);
-		        qParams.put("stateCode", statecode);
-		        qParams.put("yearId", yearId);
+		        qParams.put("quarterId", Integer.parseInt(quarterId));
+		        qParams.put("stateCode", Integer.parseInt(statecode));
+		        qParams.put("yearId", Integer.parseInt(yearId));
 		        qParams.put("userType", 'C');
 		        List<QprEGovResponse> qprEGovs = dao.findAll("FETCH_QPR_EGOV_SUPPORT", qParams);
 			 
@@ -208,8 +221,22 @@ public class QprReportConServiceImpl implements QprReportConService
 					 map.put("No_of_Posts_approved", String.valueOf(obj.getPostApproved()) );
 					 map.put("Unit_Cost_Approved", String.valueOf(obj.getCostApproved() ));
 					 map.put("No_of_Post_filled", String.valueOf( obj.getPostFilled() ) );
-					 map.put("expenditure_incurred", String.valueOf( obj.getFunds() ) );
-					 map.put("additional_requirement", String.valueOf( obj.getAdditionalReqSpmu()+obj.getAdditionalReqDpmu()) );
+					 if(obj.getFunds()!=null ) {
+						 map.put("expenditure_incurred", String.valueOf( obj.getFunds() ) );	 
+					 }else {
+						 map.put("expenditure_incurred", "0" );	 
+					 }
+					
+					 if(obj.getAdditionalReqSpmu()!=null) {
+					 map.put("additional_requirement_spmu", String.valueOf( obj.getAdditionalReqSpmu()) );
+					 }else {
+						 map.put("additional_requirement_spmu", "0" );	 
+					 }
+					 if(obj.getAdditionalReqDpmu()!=null) {
+						 map.put("additional_requirement_dpmu", String.valueOf( obj.getAdditionalReqDpmu()) );
+					 }else {
+						 map.put("additional_requirement_dpmu", "0" );	 
+					 }
 					 datalist.add(map);
 				 }
 			}
@@ -225,9 +252,9 @@ public class QprReportConServiceImpl implements QprReportConService
 		List  datalist=new LinkedList();
 		try {
 			 Map<String, Object> qParams = new HashMap<>();
-		        qParams.put("quarterId", quarterId);
-		        qParams.put("stateCode", statecode);
-		        qParams.put("yearId", yearId);
+		        qParams.put("quarterId", Integer.parseInt(quarterId));
+		        qParams.put("stateCode", Integer.parseInt(statecode));
+		        qParams.put("yearId", Integer.parseInt(yearId));
 		        qParams.put("userType", 'C');
 		        List<QprQuartProgress> qprQuartProgress = dao.findAll("FETCH_QPR_PESA", qParams);
 			 
@@ -273,9 +300,13 @@ public class QprReportConServiceImpl implements QprReportConService
 					 Map <String,String> map=new LinkedHashMap<>();
 					 map.put("GP_Name", obj[4].toString()); 
 					 map.put("Amount Sanctioned", obj[1].toString());
-					 map.put("Status", obj[6].toString());
-					 map.put("Expenditure_Incurred", obj[5].toString());
-					 map.put("additional_requirement", obj[6].toString());
+					 if(obj[6]!=null) {
+						 map.put("Status", obj[6].toString()); 
+					 }else {
+						 map.put("Status","");  
+					 }
+					 map.put("expenditure_incurred", obj[5].toString());
+					 map.put("additional_requirement", obj[7].toString());
 					 datalist.add(map);
 				 }
 			}
@@ -306,7 +337,7 @@ public class QprReportConServiceImpl implements QprReportConService
 					 Map <String,String> map=new LinkedHashMap<>();
 					 map.put("Nature_of_the_IEC_Activity", obj[0].toString()); 
 					 map.put("Total_Amount_Proposed", obj[1].toString());
-					 map.put("Expenditure Incurred", obj[2].toString());
+					 map.put("expenditure_incurred", obj[2].toString());
 					 datalist.add(map);
 				 }
 			}
@@ -321,32 +352,58 @@ public class QprReportConServiceImpl implements QprReportConService
 	
 	public List fetchQprPMU(String statecode,String yearId,String UserType,String quarterId) {
 		List  datalist=new LinkedList();
+		int index1=0;
 		try {
 			StringBuilder query=new StringBuilder();
-			query.append(" select   pat.pmu_activity_type_name , pt.pmu_type_name,COALESCE(pad.no_of_units,0) no_of_units ,COALESCE(pad.funds,0) funds ,COALESCE(qpd.no_of_units_filled ,0) no_of_units_filled ,COALESCE(qpd.expenditure_incurred,0) expenditure_incurred ,COALESCE(additional_requirement,0) additional_requirement  from rgsa.pmu_activity pa ");
-			query.append(" right outer join rgsa.pmu_activity_details pad on pad.pmu_activity_id=pa.pmu_activity_id ");
-			query.append(" inner join rgsa.pmu_activity_type pat on pat.pmu_activity_type_id = pad.pmu_activity_type_id ");
+			//query.append(" select   pat.pmu_activity_type_name , pt.pmu_type_name,COALESCE(pad.no_of_units,0) no_of_units ,COALESCE(pad.funds,0) funds ,COALESCE(qpd.no_of_units_filled ,0) no_of_units_filled ,COALESCE(qpd.expenditure_incurred,0) expenditure_incurred ,COALESCE(qp.additional_requirement,0) additional_requirement  from rgsa.pmu_activity pa ");
+			//query.append(" right outer join rgsa.pmu_activity_details pad on pad.pmu_activity_id=pa.pmu_activity_id ");
+			//query.append(" inner join rgsa.pmu_activity_type pat on pat.pmu_activity_type_id = pad.pmu_activity_type_id ");
+			//query.append(" inner join rgsa.pmu_type pt on pt.pmu_type_id=pat.pmu_type_id  ");
+			//query.append(" inner join  rgsa.qpr_pmu qp on qp.pmu_activity_id=pa.pmu_activity_id ");
+			//query.append(" right outer join rgsa.qpr_pmu_details qpd on qpd.qpr_pmu_id=qp.qpr_pmu_id ");
+			//query.append("  where pa.state_code="+statecode+" and pa.user_type='"+UserType+"' and pa.year_id="+yearId+" and qp.qtr_id="+quarterId+"  ");
+			//query.append("  group by pat.pmu_activity_type_name,pt.pmu_type_name,pad.no_of_units,pad.funds,qpd.no_of_units_filled,qpd.expenditure_incurred ,qp.additional_requirement ");
+			
+			query.append(" select    pat.pmu_activity_type_name , pt.pmu_type_name,COALESCE(pad.no_of_units,0) no_of_units ,COALESCE(pad.funds,0) funds   from rgsa.pmu_activity pa ");
+			query.append(" right outer join rgsa.pmu_activity_details pad on pad.pmu_activity_id=pa.pmu_activity_id  ");
+			query.append(" inner join rgsa.pmu_activity_type pat on pat.pmu_activity_type_id = pad.pmu_activity_type_id   ");
 			query.append(" inner join rgsa.pmu_type pt on pt.pmu_type_id=pat.pmu_type_id  ");
-			query.append(" inner join  rgsa.qpr_pmu qp on qp.pmu_activity_id=pa.pmu_activity_id ");
-			query.append(" right outer join rgsa.qpr_pmu_details qpd on qpd.qpr_pmu_id=qp.qpr_pmu_id ");
-			query.append("  where pa.state_code="+statecode+" and pa.user_type='"+UserType+"' and pa.year_id="+yearId+" and qp.qtr_id="+quarterId+"  ");
-			query.append("  group by pat.pmu_activity_type_name,pt.pmu_type_name,pad.no_of_units,pad.funds,qpd.no_of_units_filled,qpd.expenditure_incurred  ");
+			query.append(" where pa.state_code="+statecode+" and pa.user_type='"+UserType+"' and pa.year_id="+yearId+" and pa.is_active  ");
 			
 			List list=dao.findAllByNativeQuery(query.toString(), null);
-			if(list!=null && !list.isEmpty()) 
+			
+			query=new StringBuilder();
+			query.append(" select COALESCE(qpd.no_of_units_filled ,0) no_of_units_filled ,COALESCE(qpd.expenditure_incurred,0) expenditure_incurred ,COALESCE(qp.additional_requirement,0) 		additional_requirement from rgsa.qpr_pmu qp ");
+			query.append(" inner join  rgsa.pmu_activity pa on qp.pmu_activity_id=pa.pmu_activity_id ");
+			query.append(" inner join rgsa.qpr_pmu_details qpd  on qpd.qpr_pmu_id=qp.qpr_pmu_id  ");
+			query.append(" where pa.state_code="+statecode+" and pa.user_type='"+UserType+"' and pa.year_id="+yearId+" and qp.qtr_id="+quarterId+" ");
+			
+			List qtlist=dao.findAllByNativeQuery(query.toString(), null);
+			
+			if(list!=null && !list.isEmpty() && qtlist!=null && !qtlist.isEmpty()) 
 			{
 				 for(Iterator itr=list.iterator(); itr.hasNext();)
 				 {
 					 Object []  obj=(Object [])itr.next();
-					 Map <String,String> map=new LinkedHashMap<>();
-					 map.put("pmu_activity_type_name", obj[1].toString()); 
-					 map.put("pmu_type_name", obj[0].toString());
-					 map.put("no_of_units", obj[2].toString());
-					 map.put("funds", obj[3].toString());
-					 map.put("no_of_units_filled", obj[4].toString());
-					 map.put("expenditure_incurred", obj[5].toString());
-					 map.put("additional_requirement", obj[6].toString());
-					 datalist.add(map);
+					index1++;
+					int index2=0;
+					 for(Iterator qitr=qtlist.iterator(); qitr.hasNext();)
+					 {
+						 Object []  qb=(Object [])qitr.next();
+						 index2++;
+						 if(index1==index2) {
+						 Map <String,String> map=new LinkedHashMap<>();
+						 map.put("pmu_activity_type_name", obj[1].toString()); 
+						 map.put("pmu_type_name", obj[0].toString());
+						 map.put("no_of_units", obj[2].toString());
+						 map.put("funds", obj[3].toString());
+						 map.put("no_of_units_filled", qb[0].toString());
+						 map.put("expenditure_incurred", qb[1].toString());
+						 map.put("additional_requirement", qb[2].toString());
+						 datalist.add(map);
+						 break;
+					  }
+					} 
 				 }
 			}
 		}catch(Exception e)
@@ -369,7 +426,7 @@ public class QprReportConServiceImpl implements QprReportConService
 			query.append(" left join lgd.localbody l on qpd.local_body_code = l.local_body_code ");
 			query.append(" left join rgsa.gps_activity ga on ga.activity_id = qp.activity_id ");
 			query.append(" where pa.user_type = '"+UserType+"' and  qp.qtr_id ="+quarterId+" and pa.state_code ="+statecode+" and pa.year_id = "+yearId+" and pa.is_active =True  and pg.isactive ");
-			query.append(" group by ga.activity_name,l.local_body_name_english,gs.gp_bhawan_status_name,qpd.expenditure_incurred ");
+			query.append(" group by ga.activity_name,l.local_body_name_english,gs.gp_bhawan_status_name,qpd.expenditure_incurred,qp.additional_requirement ");
 			List list=dao.findAllByNativeQuery(query.toString(), null);
 			if(list!=null && !list.isEmpty()) 
 			{
@@ -479,7 +536,7 @@ public class QprReportConServiceImpl implements QprReportConService
 		List  datalist=new LinkedList();
 		try {
 			StringBuilder query=new StringBuilder();
-			query.append(" select  sl.satcom_level_name,sm.satcom_master_name,COALESCE(sad.no_of_units,0) no_of_units,COALESCE(sad.unit_cost,0) unit_cost,COALESCE(sad.funds,0) funds, COALESCE(sdp.no_of_units_completed,0) no_of_units_completed ,COALESC(sdp.expenditure_incurred,0),COALESCE(sapr.additional_requirement,0) additional_requirement from rgsa.satcom_activity sa   ");
+			query.append(" select  sl.satcom_level_name,sm.satcom_master_name,COALESCE(sad.no_of_units,0) no_of_units,COALESCE(sad.unit_cost,0) unit_cost,COALESCE(sad.funds,0) funds, COALESCE(sdp.no_of_units_completed,0) no_of_units_completed ,COALESCE(sdp.expenditure_incurred,0) expenditure_incurred ,COALESCE(sapr.additional_requirement,0) additional_requirement from rgsa.satcom_activity sa   ");
 			query.append("  inner join rgsa.satcom_activity_details sad  on sa.satcom_activity_id=sad.satcom_activity_id ");
 			query.append("  inner join rgsa.satcom_master sm on sm.satcom_master_id=sad.satcom_master_id ");
 			query.append("  left join rgsa.satcom_level sl on sl.satcom_level_id= sad.satcom_level_id ");
@@ -517,7 +574,7 @@ public class QprReportConServiceImpl implements QprReportConService
 		List  datalist=new LinkedList();
 		try {
 			StringBuilder query=new StringBuilder();
-			query.append("  select  tit.training_institue_type_name,d.district_name_english,iss.inst_infra_status_name,idd.work_type,idd.fund_sanctioned,COALESCE(qd.expenditure_incurred,0) expenditure_incurred ,COALESCE(qi.additional_requirement,0) additional_requirement ,COALESCE(qi.additional_requirement_dprc,0) additional_requirement_dprc  \r\n" + 
+			query.append("  select  tit.training_institue_type_name,d.district_name_english,iss.inst_infra_status_name,idd.work_type,COALESCE(idd.fund_sanctioned,0) fund_sanctioned ,COALESCE(qd.expenditure_incurred,0) expenditure_incurred ,COALESCE(qi.additional_requirement,0) additional_requirement ,COALESCE(qi.additional_requirement_dprc,0) additional_requirement_dprc  \r\n" + 
 					" from rgsa.institutional_infra_activity ia  ");
 			query.append("  left join rgsa.institutional_infra_activity_details idd on ia.institutional_infra_activity_id=idd.institutional_infra_activity_id  ");
 			query.append(" inner join rgsa.training_institue_type tit on tit.training_institue_type_id=idd.institutional_activity_type_id  ");
@@ -528,7 +585,6 @@ public class QprReportConServiceImpl implements QprReportConService
 			query.append(" where ia.year_id="+yearId+" and ia.user_type='"+UserType+"' and ia.state_code="+statecode+"   and d.isactive and ia.is_active=true and qi.qtr_id="+quarterId+" ");
 			
 			List  list=dao.findAllByNativeQuery(query.toString(), null);
-			
 			if(list!=null && !list.isEmpty()) {
 				 for(Iterator itr=list.iterator(); itr.hasNext();)
 				 {
@@ -537,8 +593,16 @@ public class QprReportConServiceImpl implements QprReportConService
 							 Map <String,String> map=new LinkedHashMap<>();
 							 map.put("training_institue_type_name", String.valueOf(obj[0])); 
 							 map.put("district_name_english", String.valueOf(obj[1]));
-							 map.put("inst_infra_status_name", String.valueOf(obj[2]) );
+							 if(obj[3]!=null) {
 							 map.put("work_type", String.valueOf(obj[3]) );
+							}else {
+								 map.put("work_type","NA"  ); 
+				 			}
+							if (obj[2] != null) {
+								map.put("inst_infra_status_name", String.valueOf(obj[2]));
+							} else {
+								map.put("inst_infra_status_name", "NA");
+							}
 							 map.put("funds", String.valueOf(obj[4]));
 							 map.put("expenditure_incurred", String.valueOf(obj[5]));
 							 map.put("additional_requirement", String.valueOf( Integer.parseInt(obj[6].toString())+Integer.parseInt(obj[7].toString())  ));
@@ -551,6 +615,8 @@ public class QprReportConServiceImpl implements QprReportConService
 		}
 		return datalist;
 	}
+	
+	 
 	
 	
 }
