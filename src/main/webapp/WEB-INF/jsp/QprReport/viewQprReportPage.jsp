@@ -229,6 +229,7 @@
 									   $("#egov_SupportGrpId").html(tableBody);
 								  }
 							if(key=='pesa_Plan'){
+								
 								var tableBody='';
 								var total=0;
 								   tableBody+= '<thead style="background-color: #eeb2b2">';
