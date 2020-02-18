@@ -75,6 +75,7 @@ public class QprTrainingActivityController {
 		model.addAttribute("quarter_duration", progressReportService.getQuarterDurations());
 		List<QuaterWiseFund> totalQuatorWiseFund = new ArrayList<>();
 		CapacityBuildingActivity cbActivityApproved= capacityBuildingService.fetchCapacityBuildingActivity('C');
+		
 		List<StateAllocation> stateAllocation = progressReportService.fetchStateAllocationData(13,installmentNo,progressReportService.getCurrentPlanCode());
 		if (quarterId == 3 || quarterId == 4) {
 			stateAllocation.add(progressReportService.fetchStateAllocationData(13, 1,progressReportService.getCurrentPlanCode()).get(0)); // total fund allocated in first installment

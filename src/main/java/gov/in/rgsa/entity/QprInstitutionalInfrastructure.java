@@ -1,5 +1,6 @@
 package gov.in.rgsa.entity;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
@@ -15,6 +16,7 @@ import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.OrderBy;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
@@ -27,7 +29,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 @NamedQuery(name="FETCH_QPR_INST_ACTIVITY_DEPEND_ON_QUATOR",query ="SELECT Q FROM QprInstitutionalInfrastructure Q inner join Q.qprInstitutionalInfraDetails QD ON Q.qprInstInfraId=QD.qprInstitutionalInfrastructure.qprInstInfraId  WHERE Q.qtrId=:quatorId and Q.institutionalInfraActivivtyId=:activityId order by QD.districtCode  "),
 @NamedQuery(name="UPDATE_QPR_INST_ACTIVITY_DEPEND_ON_QUATOR",query="UPDATE QprInstitutionalInfrastructure SET additionalRequirement=:additionalRequirement,additionalRequirementDPRC=:additionalRequirementDPRC  where qprInstInfraId=:qprInstInfraId "),
 })
-public class QprInstitutionalInfrastructure  implements IFreezable{
+public class QprInstitutionalInfrastructure  implements IFreezable , Serializable{
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
@@ -72,6 +74,19 @@ public class QprInstitutionalInfrastructure  implements IFreezable{
 	private List<QprInstitutionalInfraDetails> qprInstitutionalInfraDetails;
 
 
+	@Transient
+	private List<QprInstitutionalInfraDetails> qprInstitutionalInfraNewSprc;
+	
+	@Transient
+	private List<QprInstitutionalInfraDetails> qprInstitutionalInfraNewDprc;
+	
+	@Transient
+	private List<QprInstitutionalInfraDetails> qprInstitutionalInfraCarrySprc;
+	
+	@Transient
+	private List<QprInstitutionalInfraDetails> qprInstitutionalInfraCarryDprc;    
+	
+	
 	public Integer getQprInstInfraId() {
 		return qprInstInfraId;
 	}
@@ -189,6 +204,46 @@ public class QprInstitutionalInfrastructure  implements IFreezable{
 
 	public void setQprInstitutionalInfraDetails(List<QprInstitutionalInfraDetails> qprInstitutionalInfraDetails) {
 		this.qprInstitutionalInfraDetails = qprInstitutionalInfraDetails;
+	}
+
+
+	public List<QprInstitutionalInfraDetails> getQprInstitutionalInfraNewSprc() {
+		return qprInstitutionalInfraNewSprc;
+	}
+
+
+	public void setQprInstitutionalInfraNewSprc(List<QprInstitutionalInfraDetails> qprInstitutionalInfraNewSprc) {
+		this.qprInstitutionalInfraNewSprc = qprInstitutionalInfraNewSprc;
+	}
+
+
+	public List<QprInstitutionalInfraDetails> getQprInstitutionalInfraNewDprc() {
+		return qprInstitutionalInfraNewDprc;
+	}
+
+
+	public void setQprInstitutionalInfraNewDprc(List<QprInstitutionalInfraDetails> qprInstitutionalInfraNewDprc) {
+		this.qprInstitutionalInfraNewDprc = qprInstitutionalInfraNewDprc;
+	}
+
+
+	public List<QprInstitutionalInfraDetails> getQprInstitutionalInfraCarrySprc() {
+		return qprInstitutionalInfraCarrySprc;
+	}
+
+
+	public void setQprInstitutionalInfraCarrySprc(List<QprInstitutionalInfraDetails> qprInstitutionalInfraCarrySprc) {
+		this.qprInstitutionalInfraCarrySprc = qprInstitutionalInfraCarrySprc;
+	}
+
+
+	public List<QprInstitutionalInfraDetails> getQprInstitutionalInfraCarryDprc() {
+		return qprInstitutionalInfraCarryDprc;
+	}
+
+
+	public void setQprInstitutionalInfraCarryDprc(List<QprInstitutionalInfraDetails> qprInstitutionalInfraCarryDprc) {
+		this.qprInstitutionalInfraCarryDprc = qprInstitutionalInfraCarryDprc;
 	}
 
 

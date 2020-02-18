@@ -245,10 +245,14 @@ public class ViewReportAtMoprController {
 		if(("S").equals(userPreference.getUserType())){
 			model.addAttribute("ShowState", Boolean.FALSE);
 			model.addAttribute("showFin", Boolean.FALSE);
+			 model.addAttribute("FIN_YEAR", userPreference.getFinYear());
+			model.addAttribute("STATE", lGDService.getStateDetailsByCode(userPreference.getStateCode()));
+		
 		}
 		else if(("M").equals(userPreference.getUserType())) {
 			model.addAttribute("stateList", getStateList);
 			model.addAttribute("ShowState", Boolean.TRUE);
+			 model.addAttribute("FIN_YEAR", userPreference.getFinYear());
 			//model.addAttribute("showFin", Boolean.TRUE);
 		}else {
 			model.addAttribute("FIN_YEAR_LIST", viewReportAtMoprService.getFinYearList());
@@ -268,8 +272,7 @@ public class ViewReportAtMoprController {
 				
 			 capacityBuildingList = viewReportAtMoprService
 						.fetchAnualActionPlanPhysically(component ,slc ,fin);
-	
-
+			
 		anualActionPlanPhysically.put(capacityBuildingList.get(0).getColumn11(), capacityBuildingList);
 		
 		return anualActionPlanPhysically;

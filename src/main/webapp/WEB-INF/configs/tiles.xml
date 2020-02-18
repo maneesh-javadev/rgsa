@@ -966,6 +966,7 @@
 			value="/WEB-INF/jsp/QprReport/viewQprReportPage.jsp" />
 	</definition>
 	
+
 	<definition name="viewQprReportPublic"
 		extends="base.definition.withoutSidBar">
 		<put-attribute name="title"
