@@ -679,7 +679,7 @@ public class QprReportConServiceImpl implements QprReportConService
 					 Object []  obj=(Object [])itr.next();
 					 	index1++;
 						int index2=0;
-					 for(Iterator qitr=list.iterator(); qitr.hasNext();)
+					 for(Iterator qitr=qprlist.iterator(); qitr.hasNext();)
 					 {
 						 Object [] qob =(Object[]) qitr.next();
 						 index2++;
@@ -694,6 +694,7 @@ public class QprReportConServiceImpl implements QprReportConService
 								 map.put("expenditure_incurred", String.valueOf(qob[1]));
 								 map.put("additional_requirement", String.valueOf(qob[2]));
 								 datalist.add(map); 
+								 break;
 						 }
 					 }
 				 }
