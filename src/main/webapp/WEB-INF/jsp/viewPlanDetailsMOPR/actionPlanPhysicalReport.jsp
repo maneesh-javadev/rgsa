@@ -35,11 +35,18 @@ $( document ).ready(function() {
 		 $("#print").hide();
 		}
 	else if(userType== ''){
+		alert(userType);
 		$('#print').css("display","none");
 		$('.abcv').css("display","block");
 	}
 	if(userType== 'S'){
 		 $("#print").show();
+		 var finYear ='${FIN_YEAR}';
+			var stateCode ='${STATE.stateCode}';
+			$('#selectSLC').val(stateCode);
+			$('#selectFin').val(finYear);
+			 
+			
 		}
 	
 	$("#trainDetails").hide();
@@ -125,11 +132,11 @@ function getformDetail()
     collapseDetails('td');
     collapseDetails('TD');
     collapseDetails('TRA');		
-    collapseDetails('II');		
+    collapseDetails('IIF');		
     collapseDetails('PB');		
     collapseDetails('ATS');	
     collapseDetails('EE');	
-    collapseDetails('EG');		
+    collapseDetails('EGOV');		
     collapseDetails('PP');	
     collapseDetails('PP');	
     collapseDetails('DLS');	
@@ -199,7 +206,12 @@ function collapseHide() {
 												$("#trainDetails").show();
 												var divTemplate = $("#collapse1Div");
 												$("#collapse1Div").empty();
-
+												var noOfPart =0;
+												var funds =0;
+												var additionlReq =0;
+												var totalFunds =0;
+												
+												
 												//$("#collapse2").text(activityName+" Finalize Work Location of "+$scope.selectDistrictCode.districtNameEnglish+" District");
 
 												table = $("<table/>");
@@ -316,22 +328,143 @@ function collapseHide() {
 													tr.append(tdnext);
 													tr = $("<TR/>");
 													count ++;
+													noOfPart =noOfPart + +value1.column6;
+													funds=funds + +value1.column9
+													
+													 if(value1.column13 != ''){
+				                                          additionlReq= value1.column13;
+			                                                   }
+													
 													
 												});
+												
+												totalFunds  =funds  + +additionlReq;
+												tbody.append(tr);
+												table.append(tbody);
+												var tdnext;
+												 td = $("<TD/>");
+												
+												 td.attr('colspan',8);
+												
+												/*  td.attr('style','text-align:right;'); */
+												 td.append("<label class='control-label'>Total no. of Participants</label>");
+												 td.attr("style","background-color: #CCCEDF;");
+												 tr.append(td);
+												
+												 tdnext = $("<td >"
+															+ noOfPart+ "</td>");
+												
+												 tdnext.attr("id", "noOfPart");
+												 tdnext.attr("style","background-color: #CCCEDF;font-weight:bold;text-align:right;");
+												 tdnext.attr('colspan',2);
+													tr.append(tdnext);
+													
+													
+													
+													
+													tr.append(tdnext);
+												 
+												 tr = $("<TR/>");
+												 tbody.append(tr);
+													table.append(tbody);
+													var tdnext;
+													 td = $("<TD/>");
+													
+													 td.attr('colspan',8);
+													
+													/*  td.attr('style','text-align:right;'); */
+													 td.append("<label class='control-label'>Total Funds</label>");
+													 td.attr("style","background-color: #CCCEDF;");
+													 tr.append(td);
+													
+													 tdnext = $("<td >"
+																+ funds+ "</td>");
+													
+													 tdnext.attr("id", "noOfPart");
+													 tdnext.attr("style","background-color: #CCCEDF;font-weight:bold; text-align:right;");
+													 tdnext.attr('colspan',2);
+														tr.append(tdnext);
+														
+														
+														
+														
+														tr.append(tdnext);
+													 
+													 tr = $("<TR/>");
+													 
+													 tbody.append(tr);
+														table.append(tbody);
+														var tdnext;
+														 td = $("<TD/>");
+														
+														 td.attr('colspan',8);
+														
+														/*  td.attr('style','text-align:right;'); */
+														 td.append("<label class='control-label'>Additional Requirements</label>");
+														 td.attr("style","background-color: #CCCEDF;");
+														 tr.append(td);
+														
+														 tdnext = $("<td >"
+																	+ additionlReq+ "</td>");
+														
+														 tdnext.attr("id", "noOfPart");
+														 tdnext.attr("style","background-color: #CCCEDF;font-weight:bold;text-align:right;");
+														 tdnext.attr('colspan',2);
+															tr.append(tdnext);
+															
+															
+															
+															
+															tr.append(tdnext);
+														 
+														 tr = $("<TR/>");
+														 
+														 
+														 tbody.append(tr);
+															table.append(tbody);
+															var tdnext;
+															 td = $("<TD/>");
+															
+															 td.attr('colspan',8);
+															
+															/*  td.attr('style','text-align:right;'); */
+															 td.append("<label class='control-label'>Grand Total</label>");
+															 td.attr("style","background-color: #CCCEDF;");
+															 tr.append(td);
+															
+															 tdnext = $("<td >"
+																		+ totalFunds+ "</td>");
+															
+															 tdnext.attr("id", "noOfPart");
+															 tdnext.attr("style","background-color: #CCCEDF;font-weight:bold;text-align:right;");
+															 tdnext.attr('colspan',2);
+																tr.append(tdnext);
+																
+																
+																
+																
+																tr.append(tdnext);
+															 
+															 tr = $("<TR/>");
+															 
 												
 												divTemplate.append(table);
 												rowCount(count);
 
 											} else if (key == "6") {
-												var divTemplate = $("#collapse8");
+												var divTemplate = $("#collapseDIV8");
 												$("#trainPP").show();
-												$("#collapse8").empty();
+												$("#collapseDIV8").empty();
 												//$("#collapse2").text(activityName+" Finalize Work Location of "+$scope.selectDistrictCode.districtNameEnglish+" District");
+
+													  var funds =0;
+		                                              var additionlReq =0;
+		                                               var totalFunds =0;
 
 												table = $("<table/>");
 												table.attr("id", "table8");
 												table
-														.addClass("table table-hover dashboard-task-infos table-responsive");
+														.addClass("table table-hover table-bordered dashboard-task-infos table-responsive");
 
 												thead = $("<thead/>");
 
@@ -341,19 +474,19 @@ function collapseHide() {
 												th.attr("style","background-color: #eeb2b2");
 												tr.append(th);
 
-												th = createLabel("No. of Units A ");
+												th = createLabel("No. of Units  ");
 												th.attr("style","background-color: #eeb2b2");
 												tr.append(th);
 
-												th = createLabel("Unit Cost per month (in Rs) B ");
+												th = createLabel("Unit Cost per month (in Rs) ");
 												th.attr("style","background-color: #eeb2b2");
 												tr.append(th);
 
-												th = createLabel("No. of Months   C ");
+												th = createLabel("No. of Months   ");
 												th.attr("style","background-color: #eeb2b2");
 												tr.append(th);
 
-												th = createLabel("Funds (in Rs)  D = A * B * C ");
+												th = createLabel("Funds (in Rs)");
 												th.attr("style","background-color: #eeb2b2");
 												tr.append(th);
 
@@ -406,12 +539,223 @@ function collapseHide() {
 													tr.append(tdnext);
 													tr = $("<TR/>");
 													count ++;
+													
+													
+													funds=funds + +value1.column5
+													
+													 if(value1.column6 != '' || value1.column6 ==null){
+				                                          additionlReq= value1.column6;
+			                                                   }
 												});
 
+											
+												totalFunds  =funds  + +additionlReq;
+												
+													
+													tr.append(tdnext);
+												 
+												 tr = $("<TR/>");
+												 tbody.append(tr);
+													table.append(tbody);
+													var tdnext;
+													 td = $("<TD/>");
+													
+													 td.attr('colspan',5);
+													
+													/*  td.attr('style','text-align:right;'); */
+													 td.append("<label class='control-label'>Total Funds</label>");
+													 td.attr("style","background-color: #CCCEDF;");
+													 tr.append(td);
+													
+													 tdnext = $("<td >"
+																+ funds+ "</td>");
+													
+													 tdnext.attr("id", "noOfPart");
+													 tdnext.attr("style","background-color: #CCCEDF;font-weight:bold; text-align:right;");
+													 tdnext.attr('colspan',2);
+														tr.append(tdnext);
+														
+														
+														
+														
+														tr.append(tdnext);
+													 
+													 tr = $("<TR/>");
+													 
+													 tbody.append(tr);
+														table.append(tbody);
+														var tdnext;
+														 td = $("<TD/>");
+														
+														 td.attr('colspan',5);
+														
+														/*  td.attr('style','text-align:right;'); */
+														 td.append("<label class='control-label'>Additional Requirements</label>");
+														 td.attr("style","background-color: #CCCEDF;");
+														 tr.append(td);
+														
+														 tdnext = $("<td >"
+																	+ additionlReq+ "</td>");
+														
+														 tdnext.attr("id", "noOfPart");
+														 tdnext.attr("style","background-color: #CCCEDF;font-weight:bold;text-align:right;");
+														 tdnext.attr('colspan',2);
+															tr.append(tdnext);
+															
+															
+															
+															
+															tr.append(tdnext);
+														 
+														 tr = $("<TR/>");
+														 
+														 
+														 tbody.append(tr);
+															table.append(tbody);
+															var tdnext;
+															 td = $("<TD/>");
+															
+															 td.attr('colspan',5);
+															
+															/*  td.attr('style','text-align:right;'); */
+															 td.append("<label class='control-label'>Grand Total</label>");
+															 td.attr("style","background-color: #CCCEDF;");
+															 tr.append(td);
+															
+															 tdnext = $("<td >"
+																		+ totalFunds+ "</td>");
+															
+															 tdnext.attr("id", "noOfPart");
+															 tdnext.attr("style","background-color: #CCCEDF;font-weight:bold;text-align:right;");
+															 tdnext.attr('colspan',2);
+																tr.append(tdnext);
+																
+																
+															
 												divTemplate.append(table);
 												rowCountPP(count);
 											} else if (key == "11") {
-												$.each(value, function(key1,
+												
+												var divTemplate = $("#collapseDIV14");
+												  var funds =0;
+	                                              var additionlReq =0;
+	                                            
+												$("#collapseDIV14").empty();
+												//$("#collapse2").text(activityName+" Finalize Work Location of "+$scope.selectDistrictCode.districtNameEnglish+" District");
+                                            $("#trainEE").show();
+												table = $("<table/>");
+												table.attr("id", "table6");
+												table
+														.addClass("table table-hover table-bordered dashboard-task-infos table-responsive");
+
+												thead = $("<thead/>");
+
+												tr = $("<TR/>");
+
+												th = createLabel("Nature of the IEC Activity");
+												th.attr("style","background-color: #eeb2b2");
+												tr.append(th);
+
+												th = createLabel("Amount Proposed");
+												th.attr("style","background-color: #eeb2b2");
+												tr.append(th);
+
+												th = createLabel("Remarks");
+												th.attr("style","background-color: #eeb2b2");
+												tr.append(th);
+
+												
+												thead.append(tr);
+
+												table.append(thead);
+
+												tbody = $("<tbody/>");
+												tr = $("<TR/>");
+												
+												 $.each(value, function(key1,
+															value1) {
+
+												 tbody.append(tr);
+													table.append(tbody);
+													var tdnext;
+													 td = $("<TD/>");
+													
+													
+													/*  td.attr('style','text-align:right;'); */
+													/*  td.append("<label class='control-label'>Additional Requirements</label>");
+													 td.attr("style","background-color: #CCCEDF;");
+													 tr.append(td);
+													 */
+													 tdnext = $("<td >"
+																+ value1.column1+ "</td>");
+													
+													 tdnext.attr("id", "noOfPart");
+													 tdnext.attr("style","font-weight:bold;text-align:left;");
+													
+														tr.append(tdnext);
+												
+														 tbody.append(tr);
+															table.append(tbody);
+															var tdnext;
+															 td = $("<TD/>");
+															
+															
+															/*  td.attr('style','text-align:right;'); */
+															/*  td.append("<label class='control-label'>Additional Requirements</label>");
+															 td.attr("style","background-color: #CCCEDF;");
+															 tr.append(td);
+														 */	
+															 tdnext = $("<td >"
+																		+ value1.column2+ "</td>");
+															
+															 tdnext.attr("id", "noOfPart");
+															 tdnext.attr("style","font-weight:bold;text-align:right;");
+															
+																tr.append(tdnext);
+														
+																 tbody.append(tr);
+																	table.append(tbody);
+																	
+																	var tdnext;
+																	 td = $("<TD/>");
+																	
+																	
+																	/*  td.attr('style','text-align:right;'); */
+															/* 		 td.append("<label class='control-label'>Additional Requirements</label>");
+																	 td.attr("style","background-color: #CCCEDF;");
+																	 tr.append(td);
+																	
+															 */		 tdnext = $("<td >"
+																				+ value1.column3+ "</td>");
+																	
+																	 tdnext.attr("id", "noOfPart");
+																	 tdnext.attr("style","font-weight:bold;text-align:right;");
+																	
+																		tr.append(tdnext);
+																
+																		 tr = $("<TR/>");
+																		 tbody.append(tr);
+																			table.append(tbody);
+																			var tdnext;
+																			 td = $("<TD/>");
+																			
+																			 td.attr('colspan',1);
+																			
+																			/*  td.attr('style','text-align:right;'); */
+																			 td.append("<label class='control-label'>Total Proposed Funds</label>");
+																			 td.attr("style","background-color: #CCCEDF;");
+																			 tr.append(td);
+																			
+																			 tdnext = $("<td >"
+																						+ value1.column2+ "</td>");
+																			
+																			 tdnext.attr("id", "noOfPart");
+																			 tdnext.attr("style","background-color: #CCCEDF;font-weight:bold; text-align:right;");
+																			 tdnext.attr('colspan',2);
+																				tr.append(tdnext);
+																		
+														divTemplate.append(table);
+												/* $.each(value, function(key1,
 														value1) {
 
 													$('#Remarks').val(
@@ -422,38 +766,51 @@ function collapseHide() {
 													//alert(value1.column1);
 													$('#natureActivity').val(
 															value1.column1);
-												});
-											} else if (key == "5") {
-												var divTemplate = $("#collapse6");
-
-												$("#collapse6").empty();
+												}); */});
+											} 
+											
+											
+											
+											
+											else if (key == "5") {
+												var divTemplate = $("#collapseDIV6");
+												  var funds =0;
+	                                              var additionlReq =0;
+	                                            
+												$("#collapseDIV6").empty();
 												//$("#collapse2").text(activityName+" Finalize Work Location of "+$scope.selectDistrictCode.districtNameEnglish+" District");
                                               $("#trainEE").show();
 												table = $("<table/>");
 												table.attr("id", "table6");
 												table
-														.addClass("table table-hover dashboard-task-infos table-responsive");
+														.addClass("table table-hover table-bordered dashboard-task-infos table-responsive");
 
 												thead = $("<thead/>");
 
 												tr = $("<TR/>");
 
 												th = createLabel("E-infrastructure Resource");
+												th.attr("style","background-color: #eeb2b2");
 												tr.append(th);
 
-												th = createLabel("No. of G.Ps A");
+												th = createLabel("No. of G.Ps ");
+												th.attr("style","background-color: #eeb2b2");
 												tr.append(th);
 
 												th = createLabel("No. of Aspirational Gps");
+												th.attr("style","background-color: #eeb2b2");
 												tr.append(th);
 
-												th = createLabel("Unit Cost(in Rs.) B ");
+												th = createLabel("Unit Cost(in Rs.)  ");
+												th.attr("style","background-color: #eeb2b2");
 												tr.append(th);
 
-												th = createLabel("Funds (in Rs) C = A*B  ");
+												th = createLabel("Funds (in Rs)   ");
+												th.attr("style","background-color: #eeb2b2");
 												tr.append(th);
 
 												th = createLabel("Remarks");
+												th.attr("style","background-color: #eeb2b2");
 												tr.append(th);
 
 												thead.append(tr);
@@ -497,44 +854,113 @@ function collapseHide() {
 															+ "</td>");
 													tr.append(tdnext);
 													tr = $("<TR/>");
+													funds=funds + +value1.column6
+													
+													 if(value1.column7 != ''){
+				                                          additionlReq= value1.column7;
+			                                                   }
+												
 												});
-
+												
+												 tr = $("<TR/>");
+												 
+												 tbody.append(tr);
+													table.append(tbody);
+													var tdnext;
+													 td = $("<TD/>");
+													
+													 td.attr('colspan',4);
+													
+													/*  td.attr('style','text-align:right;'); */
+													 td.append("<label class='control-label'>Additional Requirements</label>");
+													 td.attr("style","background-color: #CCCEDF;");
+													 tr.append(td);
+													
+													 tdnext = $("<td >"
+																+ additionlReq+ "</td>");
+													
+													 tdnext.attr("id", "noOfPart");
+													 tdnext.attr("style","background-color: #CCCEDF;font-weight:bold;text-align:right;");
+													 tdnext.attr('colspan',2);
+														tr.append(tdnext);
+														
+													
+												 
+												 tr = $("<TR/>");
+												 tbody.append(tr);
+													table.append(tbody);
+													var tdnext;
+													 td = $("<TD/>");
+													
+													 td.attr('colspan',4);
+													
+													/*  td.attr('style','text-align:right;'); */
+													 td.append("<label class='control-label'>Total Funds</label>");
+													 td.attr("style","background-color: #CCCEDF;");
+													 tr.append(td);
+													
+													 tdnext = $("<td >"
+																+ funds+ "</td>");
+													
+													 tdnext.attr("id", "noOfPart");
+													 tdnext.attr("style","background-color: #CCCEDF;font-weight:bold; text-align:right;");
+													 tdnext.attr('colspan',2);
+														tr.append(tdnext);
+														
+														
+														
+														
+														tr.append(tdnext);
+													 
+													
+															
 												
 												divTemplate.append(table);
 
 											} else if (key == "13") {
-												var divTemplate = $("#collapse2");
+												var divTemplate = $("#collapseDIV2");
 												$("#trainRA").show();
-												$("#collapse2").empty();
+												$("#collapseDIV2").empty();
 												//$("#collapse2").text(activityName+" Finalize Work Location of "+$scope.selectDistrictCode.districtNameEnglish+" District");
+
+                                              var funds =0;
+                                              var additionlReq =0;
+                                               var totalFunds =0;
 
 												table = $("<table/>");
 												table.attr("id", "table2");
 												table
-														.addClass("table table-hover dashboard-task-infos table-responsive");
+														.addClass("table table-hover table-bordered dashboard-task-infos table-responsive");
 
 												thead = $("<thead/>");
 
 												tr = $("<TR/>");
 
 												th = createLabel("Activity");
+												th.attr("style","background-color: #eeb2b2");
 												tr.append(th);
 
 												th = createLabel("No. of Days");
+												th.attr("style","background-color: #eeb2b2");
 												tr.append(th);
 
 												th = createLabel("No. of Units");
+												th.attr("style","background-color: #eeb2b2");
 												tr.append(th);
 
 												th = createLabel("Unit Cost(In Rs)");
+												th.attr("style","background-color: #eeb2b2");
 												tr.append(th);
 
 												th = createLabel("Funds Proposed(In Rs) ");
+												th.attr("style","background-color: #eeb2b2");
 												tr.append(th);
 
 												th = createLabel("Collaboration with Institute");
+												th.attr("style","background-color: #eeb2b2");
 												tr.append(th);
 												th = createLabel("Remarks");
+												th.attr("style","background-color: #eeb2b2");
 												tr.append(th);
 
 												thead.append(tr);
@@ -555,16 +981,23 @@ function collapseHide() {
 													td = $("<TD/>");
 													td.append(value1.column1);
 													tr.append(td);
+													if(value1.column4 == '0'){
+														tdnext = $("<td>"
+																+ '1'
+																+ "</td>");
+													}else{
+														tdnext = $("<td>"
+																+ value1.column4
+																+ "</td>");
+													}
+													
+													tr.append(tdnext);
 													tdnext = $("<td>"
-															+ value1.column2
+															+ value1.column2 
 															+ "</td>");
 													tr.append(tdnext);
 													tdnext = $("<td>"
 															+ value1.column3
-															+ "</td>");
-													tr.append(tdnext);
-													tdnext = $("<td>"
-															+ value1.column4
 															+ "</td>");
 													tr.append(tdnext);
 													tdnext = $("<td>"
@@ -583,68 +1016,305 @@ function collapseHide() {
 
 													tr = $("<TR/>");
 													count ++;
+													
+													
+													funds=funds + +value1.column5
+													
+													 if(value1.column6 != ''){
+				                                          additionlReq= value1.column6;
+			                                                   }
+												
 												});
-
+												
+												totalFunds  =funds  + +additionlReq;
+												
+													
+													tr.append(tdnext);
+												 
+												 tr = $("<TR/>");
+												 tbody.append(tr);
+													table.append(tbody);
+													var tdnext;
+													 td = $("<TD/>");
+													
+													 td.attr('colspan',5);
+													
+													/*  td.attr('style','text-align:right;'); */
+													 td.append("<label class='control-label'>Total Funds</label>");
+													 td.attr("style","background-color: #CCCEDF;");
+													 tr.append(td);
+													
+													 tdnext = $("<td >"
+																+ funds+ "</td>");
+													
+													 tdnext.attr("id", "noOfPart");
+													 tdnext.attr("style","background-color: #CCCEDF;font-weight:bold; text-align:right;");
+													 tdnext.attr('colspan',2);
+														tr.append(tdnext);
+														
+														
+														
+														
+														tr.append(tdnext);
+													 
+													 tr = $("<TR/>");
+													 
+													 tbody.append(tr);
+														table.append(tbody);
+														var tdnext;
+														 td = $("<TD/>");
+														
+														 td.attr('colspan',5);
+														
+														/*  td.attr('style','text-align:right;'); */
+														 td.append("<label class='control-label'>Additional Requirements</label>");
+														 td.attr("style","background-color: #CCCEDF;");
+														 tr.append(td);
+														
+														 tdnext = $("<td >"
+																	+ additionlReq+ "</td>");
+														
+														 tdnext.attr("id", "noOfPart");
+														 tdnext.attr("style","background-color: #CCCEDF;font-weight:bold;text-align:right;");
+														 tdnext.attr('colspan',2);
+															tr.append(tdnext);
+															
+															
+															
+															
+															tr.append(tdnext);
+														 
+														 tr = $("<TR/>");
+														 
+														 
+														 tbody.append(tr);
+															table.append(tbody);
+															var tdnext;
+															 td = $("<TD/>");
+															
+															 td.attr('colspan',5);
+															
+															/*  td.attr('style','text-align:right;'); */
+															 td.append("<label class='control-label'>Grand Total</label>");
+															 td.attr("style","background-color: #CCCEDF;");
+															 tr.append(td);
+															
+															 tdnext = $("<td >"
+																		+ totalFunds+ "</td>");
+															
+															 tdnext.attr("id", "noOfPart");
+															 tdnext.attr("style","background-color: #CCCEDF;font-weight:bold;text-align:right;");
+															 tdnext.attr('colspan',2);
+																tr.append(tdnext);
+																
+																
+																
+																
+																tr.append(tdnext);
+															 
+															 tr = $("<TR/>");
+															 
 												divTemplate.append(table);
 												rowCountTRA(count);
 
 											} else if (key == "3") {
-												var divTemplate = $("#collapse4");
+												var divTemplate = $("#collapsediv4");
 
-												$("#collapse4").empty();
+												$("#collapsediv4").empty();
+												var divTemplate1 = $("#collapseSP4");
+
+												$("#collapseSP4").empty();
+											
 												//$("#collapse2").text(activityName+" Finalize Work Location of "+$scope.selectDistrictCode.districtNameEnglish+" District");
-                                               $("#collapse4").append("<br><label>New Building</label>");
-												
+                                              /*  $("#collapse4").append("<br><label>New Building</label>"); */
+													
+													var additionlReq =0;
+													var totalFunds =0;
+													
 												table = $("<table/>");
 												table.attr("id", "table4");
 												table
-														.addClass("table table-hover dashboard-task-infos table-responsive");
-
+														.addClass("table table-hover table-bordered dashboard-task-infos table-responsive");
+                                                 
 												thead = $("<thead/>");
-
+												thead5 = $("<thead/>");
+												 var cap =$("<caption/>");
+												  var span =$("<span />");
+												  span.attr("style","color: #fff;font-weight:bold;font-size:18px;");
+												  cap.append(span);
+												  span.append("NEW BUILDING");
+													cap.attr("style","background-color: #5AAA5A; color: #fff;text-align:center;");
+												/* th = createLabel("New Building");
+												th.attr("style","background-color: #5AAA5A; color: #fff;");
+												tr5.append(th);
+												thead5.append(tr5);
+ */
+												table.append(cap);
+												
 												tr = $("<TR/>");
 
 												th = createLabel("Activities");
+												th.attr("style","background-color: #eeb2b2");
 												tr.append(th);
 
 												th = createLabel("No. of G.Ps");
+												th.attr("style","background-color: #eeb2b2");
 												tr.append(th);
-
+												
 												th = createLabel("No. of Aspirational GPs selected selected ");
+												th.attr("style","background-color: #eeb2b2");
 												tr.append(th);
 
 												th = createLabel("Unit Cost (in Rs) ");
+												th.attr("style","background-color: #eeb2b2");
 												tr.append(th);
 
 												th = createLabel("Funds (in Rs)");
+												th.attr("style","background-color: #eeb2b2");
 												tr.append(th);
 
 												th = createLabel("Remarks");
+												th.attr("style","background-color: #eeb2b2");
 												tr.append(th);
 
 												thead.append(tr);
 
 												table.append(thead);
-
+												
 												tbody = $("<tbody/>");
-												tbody1 = $("<tbody/>");
-												tr1 = $("<TR/>");
-												tr = $("<TR/>");
+													tr = $("<TR/>");
 												$.each(value, function(key1,
 														value1) {
 													tbody.append(tr);
 													table.append(tbody);
-
+                                              if(value1.column10 <4){
 													var tdnext;
 													
 													td = $("<TD/>");
 													td.append(value1.column1);
 													tr.append(td);
+														
+													
+														tdnext = $("<td>"
+																+ value1.column7
+																+ "</td>");
+														tr.append(tdnext);
+															tdnext = $("<td>"
+																+ value1.column5
+																+ "</td>");
+														tr.append(tdnext);
+														tdnext = $("<td>"
+																+ value1.column3
+																+ "</td>");
+														tr.append(tdnext);
+													
+														
+												
+														tdnext = $("<td>"
+															+ value1.column4
+															+ "</td>");
+													tr.append(tdnext);
+													tdnext = $("<td>"
+															+ value1.column9
+															+ "</td>");
+													tr.append(tdnext);
+
+													tr = $("<TR/>");
+                                              if(value1.column2 != ''){
+	                                          additionlReq= value1.column2;
+                                                   }
+													
+													
+													totalFunds =totalFunds + +value1.column4;
+               }
+												});
+
+												
+														tr.append(tdnext);
+													 
+																					
+															
+												
+												
+												
+												divTemplate.append(table);
+												
+												var total_car =0
+												var total =0;
+												table1 = $("<table/>");
+												table1.attr("id", "table5");
+												table1
+														.addClass("table table-hover table-bordered dashboard-task-infos table-responsive");
+
+												thead1 = $("<thead/>");
+												thead6 = $("<thead/>");
+												tr6 = $("<TR/>");
+												  var cap =$("<caption/>");
+												  var span =$("<span />");
+												  span.attr("style","color: #fff;font-weight:bold;font-size:18px;");
+												  cap.append(span);
+												  span.append("CARRY FORWARD");
+													cap.attr("style","background-color: #5AAA5A; color: #fff;text-align:center;");
+													
+												/* th = createLabel("Carry Forward");
+												th.attr("style","background-color: #5AAA5A; color: #fff;");
+												 *//* tr6.append(cap);
+												thead6.append(tr6);
+ */
+												table1.append(cap);
+												
+												tr = $("<TR/>");
+
+												th = createLabel("Activities");
+												th.attr("style","background-color: #eeb2b2");
+												tr.append(th);
+	
+												
+												
+												th = createLabel("Fund Sanctioned ");
+												th.attr("style","background-color: #eeb2b2");
+												tr.append(th);
+
+												th = createLabel("Fund Released ");
+												th.attr("style","background-color: #eeb2b2");
+												tr.append(th);
+
+												th = createLabel("Fund Utilized");
+												th.attr("style","background-color: #eeb2b2");
+												tr.append(th);
+
+											
+											
+												th = createLabel("Funds (in Rs)");
+												th.attr("style","background-color: #eeb2b2");
+												tr.append(th);
+
+												
+												thead1.append(tr);
+												
+												
+												table1.append(thead1);
+												
+												tbody2 = $("<tbody/>");
+													tr = $("<TR/>");
+												$.each(value, function(key1,
+														value1) {
+													tbody2.append(tr);
+													table1.append(tbody2);
+													if(value1.column10 >3){
+													var tdnext;
+													
+													td = $("<TD/>");
+													td.append(value1.column1);
+													tr.append(td);
+														
+													
+
 													tdnext = $("<td>"
 															+ value1.column7
 															+ "</td>");
 													tr.append(tdnext);
-													tdnext = $("<td>"
+														tdnext = $("<td>"
 															+ value1.column5
 															+ "</td>");
 													tr.append(tdnext);
@@ -652,54 +1322,120 @@ function collapseHide() {
 															+ value1.column3
 															+ "</td>");
 													tr.append(tdnext);
+												
+													
+											
 													tdnext = $("<td>"
-															+ value1.column4
-															+ "</td>");
-													tr.append(tdnext);
-													tdnext = $("<td>"
-															+ value1.column6
-															+ "</td>");
-													tr.append(tdnext);
-
+														+ value1.column4
+														+ "</td>");
+												tr.append(tdnext);
+												
 													tr = $("<TR/>");
+	
+													
+													total_car =total_car + +value1.column4;
+													}
 												});
-
-												divTemplate.append(table);
-
+                                            total =total_car + +totalFunds + +additionlReq;
+												divTemplate1.append(table1);
+												 tr = $("<TR/>");
+												 
+												 tbody2.append(tr);
+													table.append(tbody2);
+													var tdnext;
+													 td = $("<TD/>");
+													
+													 td.attr('colspan',3);
+													
+													/*  td.attr('style','text-align:right;'); */
+													 td.append("<label class='control-label'>Additional Requirements (New Building)</label>");
+													 td.attr("style","background-color: #CCCEDF;");
+													 tr.append(td);
+													
+													 tdnext = $("<td >"
+																+ additionlReq+ "</td>");
+													
+													 tdnext.attr("id", "noOfPart");
+													 tdnext.attr("style","background-color: #CCCEDF;font-weight:bold;text-align:right;");
+													 tdnext.attr('colspan',2);
+														tr.append(tdnext);
+														
+														
+														
+														tr.append(tdnext);
+														 
+														 tr = $("<TR/>");
+														 tbody2.append(tr);
+															table1.append(tbody2);
+															var tdnext;
+															 td = $("<TD/>");
+															
+															 td.attr('colspan',3);
+															
+															/*  td.attr('style','text-align:right;'); */
+															 td.append("<label class='control-label'>Total Proposed Fund </label>");
+															 td.attr("style","background-color: #CCCEDF;");
+															 tr.append(td);
+															
+															 tdnext = $("<td >"
+																		+ total+  "</td>");
+															
+															 tdnext.attr("id", "noOfPart");
+															 tdnext.attr("style","background-color: #CCCEDF;font-weight:bold; text-align:right;");
+															 tdnext.attr('colspan',2);
+																tr.append(tdnext);
+																
+									
 											} else if (key == "4") {
-												var divTemplate = $("#collapse5");
+												var divTemplate = $("#collapseDIV5");
 												$("#trainATS").show();
-												$("#collapse5").empty();
+												$("#collapseDIV5").empty();
 												//$("#collapse2").text(activityName+" Finalize Work Location of "+$scope.selectDistrictCode.districtNameEnglish+" District");
-
+                                           		 
+													
+													var funds =0;
+													var additionlReq =0;
+													var totalFunds =0;
+													
 												table = $("<table/>");
 												table.attr("id", "table5");
 												table
-														.addClass("table table-hover dashboard-task-infos table-responsive");
+														.addClass("table table-hover table-bordered dashboard-task-infos table-responsive");
 
 												thead = $("<thead/>");
 
 												tr = $("<TR/>");
 
 												th = createLabel("Post Type");
+												th.attr("style","background-color: #eeb2b2");
 												tr.append(th);
 
 												th = createLabel("Post Name");
+												th.attr("style","background-color: #eeb2b2");
 												tr.append(th);
 
 												th = createLabel("Level");
+												th.attr("style","background-color: #eeb2b2");
 												tr.append(th);
 
 												th = createLabel("No. of Block(s) ");
+												th.attr("style","background-color: #eeb2b2");
 												tr.append(th);
 
 												th = createLabel("Unit Cost");
+												th.attr("style","background-color: #eeb2b2");
 												tr.append(th);
 
 												th = createLabel("No. of Months ");
+												th.attr("style","background-color: #eeb2b2");
 												tr.append(th);
 
-												th = createLabel("Funds    (in Ã¯ÂÂ) ");
+												th = createLabel("Funds  ");
+												th.attr("style","background-color: #eeb2b2");
+												tr.append(th);
+
+												th = createLabel("Remarks  ");
+												th.attr("style","background-color: #eeb2b2");
 												tr.append(th);
 
 												thead.append(tr);
@@ -746,51 +1482,150 @@ function collapseHide() {
 															+ value1.column7
 															+ "</td>");
 													tdnext.attr("id", "unitCost_"+key1);
+													tr.append(tdnext);
+													tdnext = $("<td>"
+															+ value1.column9
+															+ "</td>");
 													
+												
 													tr.append(tdnext);
 
 													tr = $("<TR/>");
 													count ++;
+													
+														funds=funds + +value1.column7
+														 if(value1.column8 != ''){
+					                                          additionlReq= value1.column8;
+				                                                   }
+														
+														
+												
 												});
 
+												totalFunds  =funds  + +additionlReq;
+												tbody.append(tr);
+												table.append(tbody);
+												var tdnext;
+												 td = $("<TD/>");
+												
+												 td.attr('colspan',6);
+												
+												/*  td.attr('style','text-align:right;'); */
+												 td.append("<label class='control-label'>Additional Requirements</label>");
+												 td.attr("style","background-color: #CCCEDF;");
+												 tr.append(td);
+												
+												 tdnext = $("<td >"
+															+ additionlReq+ "</td>");
+												
+												 tdnext.attr("id", "noOfPart");
+												 tdnext.attr("style","background-color: #CCCEDF;font-weight:bold;text-align:right;");
+												 tdnext.attr('colspan',2);
+													tr.append(tdnext);
+													
+													
+													
+													
+													tr.append(tdnext);
+												 
+												 tr = $("<TR/>");
+												 tbody.append(tr);
+													table.append(tbody);
+													var tdnext;
+													 td = $("<TD/>");
+													
+													 td.attr('colspan',6);
+													
+													/*  td.attr('style','text-align:right;'); */
+													 td.append("<label class='control-label'>Total Funds</label>");
+													 td.attr("style","background-color: #CCCEDF;");
+													 tr.append(td);
+													
+													 tdnext = $("<td >"
+																+ funds+ "</td>");
+													
+													 tdnext.attr("id", "noOfPart");
+													 tdnext.attr("style","background-color: #CCCEDF;font-weight:bold; text-align:right;");
+													 tdnext.attr('colspan',6);
+														tr.append(tdnext);
+														
+														
+														
+														
+														tr.append(tdnext);
+													 
+													 tr = $("<TR/>");
+													 
+													 tbody.append(tr);
+														table.append(tbody);
+														var tdnext;
+														 td = $("<TD/>");
+														
+														 td.attr('colspan',6);
+														
+														/*  td.attr('style','text-align:right;'); */
+														 td.append("<label class='control-label'>Grand Total</label>");
+														 td.attr("style","background-color: #CCCEDF;");
+														 tr.append(td);
+														
+														 tdnext = $("<td >"
+																	+ totalFunds+ "</td>");
+														
+														 tdnext.attr("id", "noOfPart");
+														 tdnext.attr("style","background-color: #CCCEDF;font-weight:bold;text-align:right;");
+														 tdnext.attr('colspan',2);
+															tr.append(tdnext);
+															
+															
 												divTemplate.append(table);
 												rowCountATS(count);
 											}
 
 											else if (key == "8") {
-												var divTemplate = $("#collapse10");
+												var divTemplate = $("#collapseDIV10");
 												$("#trainAF").show();
-												$("#collapse10").empty();
+												$("#collapseDIV10").empty();
 												//$("#collapse2").text(activityName+" Finalize Work Location of "+$scope.selectDistrictCode.districtNameEnglish+" District");
+	                                                  var funds =0;
+		                                              var additionlReq =0;
+		                                               var totalFunds =0;
 
+											
 												table = $("<table/>");
 												table.attr("id", "table10");
 												table
-														.addClass("table table-hover dashboard-task-infos table-responsive");
+														.addClass("table table-hover table-bordered dashboard-task-infos table-responsive");
 
 												thead = $("<thead/>");
 
 												tr = $("<TR/>");
 
 												th = createLabel("Type of Center");
+												th.attr("style","background-color: #eeb2b2");
 												tr.append(th);
 
 												th = createLabel("Domain Experts");
+												th.attr("style","background-color: #eeb2b2");
 												tr.append(th);
 
 												th = createLabel("No of Staff proposed");
+												th.attr("style","background-color: #eeb2b2");
 												tr.append(th);
 
 												th = createLabel("Unit Cost");
+												th.attr("style","background-color: #eeb2b2");
 												tr.append(th);
 
 												th = createLabel("No. of Months");
+												th.attr("style","background-color: #eeb2b2");
 												tr.append(th);
 
 												th = createLabel("Funds (in Rs)");
+												th.attr("style","background-color: #eeb2b2");
 												tr.append(th);
 
 												th = createLabel("Remarks ");
+												th.attr("style","background-color: #eeb2b2");
 												tr.append(th);
 
 												thead.append(tr);
@@ -840,54 +1675,158 @@ function collapseHide() {
 
 													tr = $("<TR/>");
 													count ++;
+													funds=funds + +value1.column9
+													 if(value1.column8 != ''){
+				                                          additionlReq= value1.column8;
+			                                                   }
+													
+											
 												});
-
+											
+												totalFunds  =funds  + +additionlReq;
+												
+													
+													tr.append(tdnext);
+												 
+												 tr = $("<TR/>");
+												 tbody.append(tr);
+													table.append(tbody);
+													var tdnext;
+													 td = $("<TD/>");
+													
+													 td.attr('colspan',5);
+													
+													/*  td.attr('style','text-align:right;'); */
+													 td.append("<label class='control-label'>Total Funds</label>");
+													 td.attr("style","background-color: #CCCEDF;");
+													 tr.append(td);
+													
+													 tdnext = $("<td >"
+																+ funds+ "</td>");
+													
+													 tdnext.attr("id", "noOfPart");
+													 tdnext.attr("style","background-color: #CCCEDF;font-weight:bold; text-align:right;");
+													 tdnext.attr('colspan',2);
+														tr.append(tdnext);
+														
+														
+														
+														
+														tr.append(tdnext);
+													 
+													 tr = $("<TR/>");
+													 
+													 tbody.append(tr);
+														table.append(tbody);
+														var tdnext;
+														 td = $("<TD/>");
+														
+														 td.attr('colspan',5);
+														
+														/*  td.attr('style','text-align:right;'); */
+														 td.append("<label class='control-label'>Additional Requirements</label>");
+														 td.attr("style","background-color: #CCCEDF;");
+														 tr.append(td);
+														
+														 tdnext = $("<td >"
+																	+ additionlReq+ "</td>");
+														
+														 tdnext.attr("id", "noOfPart");
+														 tdnext.attr("style","background-color: #CCCEDF;font-weight:bold;text-align:right;");
+														 tdnext.attr('colspan',2);
+															tr.append(tdnext);
+															
+															
+															
+															
+															tr.append(tdnext);
+														 
+														 tr = $("<TR/>");
+														 
+														 
+														 tbody.append(tr);
+															table.append(tbody);
+															var tdnext;
+															 td = $("<TD/>");
+															
+															 td.attr('colspan',5);
+															
+															/*  td.attr('style','text-align:right;'); */
+															 td.append("<label class='control-label'>Grand Total</label>");
+															 td.attr("style","background-color: #CCCEDF;");
+															 tr.append(td);
+															
+															 tdnext = $("<td >"
+																		+ totalFunds+ "</td>");
+															
+															 tdnext.attr("id", "noOfPart");
+															 tdnext.attr("style","background-color: #CCCEDF;font-weight:bold;text-align:right;");
+															 tdnext.attr('colspan',2);
+																tr.append(tdnext);
+																
+														
 												divTemplate.append(table);
 												rowCountAF(count);
-											} else if (key == "10") {
-												var divTemplate = $("#collapse13");
+											}  if (key == "10") {
+												var divTemplate = $("#collapseDIV13");
 												$("#trainIE").show();
-												$("#collapse13").empty();
+												$("#collapseDIV13").empty();
 												//$("#collapse2").text(activityName+" Finalize Work Location of "+$scope.selectDistrictCode.districtNameEnglish+" District");
+		                                              var funds =0;
+		                                              var additionlReq =0;
+		                                               var totalFunds =0;
 
+											
 												table = $("<table/>");
 												table.attr("id", "table13");
 												table
-														.addClass("table table-hover dashboard-task-infos table-responsive");
+														.addClass("table table-hover table-bordered dashboard-task-infos table-responsive");
 
 												thead = $("<thead/>");
 
 												tr = $("<TR/>");
 
 												th = createLabel("Name of the Activity");
+												th.attr("style","background-color: #eeb2b2");
 												tr.append(th);
 
 												th = createLabel("Select Scheme");
+												th.attr("style","background-color: #eeb2b2");
 												tr.append(th);
 
 												th = createLabel("District Name");
+												th.attr("style","background-color: #eeb2b2");
 												tr.append(th);
 
 												th = createLabel("Block Name");
+												th.attr("style","background-color: #eeb2b2");
 												tr.append(th);
 
 												th = createLabel("Total No. of GP's Covered 	");
+												th.attr("style","background-color: #eeb2b2");
 												tr.append(th);
 
 												th = createLabel("No. of Aspirational GPs");
+												th.attr("style","background-color: #eeb2b2");
 												tr.append(th);
 
 												th = createLabel("From ");
+												th.attr("style","background-color: #eeb2b2");
 												tr.append(th);
 												th = createLabel("To ");
+												th.attr("style","background-color: #eeb2b2");
 												tr.append(th);
 												th = createLabel("Total cost of project ");
+												th.attr("style","background-color: #eeb2b2");
 												tr.append(th);
 												th = createLabel("Funds Proposed in current year ");
+												th.attr("style","background-color: #eeb2b2");
 												tr.append(th);
 												th = createLabel("Brief about the Activity");
+												th.attr("style","background-color: #eeb2b2");
 												tr.append(th);
 												th = createLabel("Remarks ");
+												th.attr("style","background-color: #eeb2b2");
 												tr.append(th);
 
 												thead.append(tr);
@@ -950,52 +1889,146 @@ function collapseHide() {
 													tdnext.attr("id", "unitFundIE_"+key1);
 													tr.append(tdnext);
 													tdnext = $("<td>"
-															+ value1.column11
+															+ value1.column12
 															+ "</td>");
 													tr.append(tdnext);
 													tdnext = $("<td>"
-															+ value1.column12
+															+ value1.column14
 															+ "</td>");
 													tr.append(tdnext);
 
 													tr = $("<TR/>");
 													count++;
+													funds=funds + +value1.column10
+													
+													 if(value1.column13 != ''){
+				                                          additionlReq= value1.column13;
+			                                                   }
+													
+											
 												});
-
+											
+												totalFunds  =funds  + +additionlReq;
+												
+													
+													tr.append(tdnext);
+												 
+												 tr = $("<TR/>");
+												 tbody.append(tr);
+													table.append(tbody);
+													var tdnext;
+													 td = $("<TD/>");
+													
+													 td.attr('colspan',10);
+													
+													/*  td.attr('style','text-align:right;'); */
+													 td.append("<label class='control-label'>Total Funds</label>");
+													 td.attr("style","background-color: #CCCEDF;");
+													 tr.append(td);
+													
+													 tdnext = $("<td >"
+																+ funds+ "</td>");
+													
+													 tdnext.attr("id", "noOfPart");
+													 tdnext.attr("style","background-color: #CCCEDF;font-weight:bold; text-align:right;");
+													 tdnext.attr('colspan',2);
+														tr.append(tdnext);
+														
+														
+														
+														
+														tr.append(tdnext);
+													 
+													 tr = $("<TR/>");
+													 
+													 tbody.append(tr);
+														table.append(tbody);
+														var tdnext;
+														 td = $("<TD/>");
+														
+														 td.attr('colspan',10);
+														
+														/*  td.attr('style','text-align:right;'); */
+														 td.append("<label class='control-label'>Additional Requirements</label>");
+														 td.attr("style","background-color: #CCCEDF;");
+														 tr.append(td);
+														
+														 tdnext = $("<td >"
+																	+ additionlReq+ "</td>");
+														
+														 tdnext.attr("id", "noOfPart");
+														 tdnext.attr("style","background-color: #CCCEDF;font-weight:bold;text-align:right;");
+														 tdnext.attr('colspan',2);
+															tr.append(tdnext);
+															
+															
+															
+															
+															tr.append(tdnext);
+														 
+														 tr = $("<TR/>");
+														 
+														 
+														 tbody.append(tr);
+															table.append(tbody);
+															var tdnext;
+															 td = $("<TD/>");
+															
+															 td.attr('colspan',10);
+															
+															/*  td.attr('style','text-align:right;'); */
+															 td.append("<label class='control-label'>Grand Total</label>");
+															 td.attr("style","background-color: #CCCEDF;");
+															 tr.append(td);
+															
+															 tdnext = $("<td >"
+																		+ totalFunds+ "</td>");
+															
+															 tdnext.attr("id", "noOfPart");
+															 tdnext.attr("style","background-color: #CCCEDF;font-weight:bold;text-align:right;");
+															 tdnext.attr('colspan',2);
+																tr.append(tdnext);
+													
 												divTemplate.append(table);
 												rowCountIE(count);
-											} else if (key == "12") {
-												var divTemplate = $("#collapse15");
-												
+											}  if (key == "12") {
+												var divTemplate = $("#collapseDIV15");
+												 
 												$("#trainPMU").show();
-												$("#collapse15").empty();
+												$("#collapseDIV15").empty();
 												//$("#collapse2").text(activityName+" Finalize Work Location of "+$scope.selectDistrictCode.districtNameEnglish+" District");
-
+                                                var totalFunds =0;
 												table = $("<table/>");
 												table.attr("id", "table15");
 												table
-														.addClass("table table-hover dashboard-task-infos table-responsive");
+														.addClass("table table-hover table-bordered dashboard-task-infos table-responsive");
 
 												thead = $("<thead/>");
 
 												tr = $("<TR/>");
 
 												th = createLabel("Type of Center");
+												th.attr("style","background-color: #eeb2b2");
 												tr.append(th);
 
 												th = createLabel("Faculty and Staff");
+												th.attr("style","background-color: #eeb2b2");
 												tr.append(th);
 
 												th = createLabel("No. of Units");
+												th.attr("style","background-color: #eeb2b2");
 												tr.append(th);
 
 												th = createLabel("No. of Months");
+												th.attr("style","background-color: #eeb2b2");
 												tr.append(th);
 
 												th = createLabel("Funds (in Rs) 	");
+												th.attr("style","background-color: #eeb2b2");
 												tr.append(th);
 
 												th = createLabel("Remarks");
+												th.attr("style","background-color: #eeb2b2");
 												tr.append(th);
 
 												thead.append(tr);
@@ -1025,59 +2058,92 @@ function collapseHide() {
 															+ "</td>");
 													tr.append(tdnext);
 													tdnext = $("<td>"
-															+ value1.column4
-															+ "</td>");
-													tr.append(tdnext);
-													tdnext = $("<td>"
 															+ value1.column5
 															+ "</td>");
-													tdnext.attr("id", "total_"+key1);
-													
+													tr.append(tdnext);
+														tdnext = $("<td>"
+															+ value1.column9
+															+ "</td>");
 													tr.append(tdnext);
 													tdnext = $("<td>"
-															+ value1.column6
+															+ value1.column7
 															+ "</td>");
-
-													tr = $("<TR/>");
+													tr.append(tdnext);
+												
 													count ++;
-												});
-
+													   totalFunds = totalFunds + +value1.column9;
+											
+													tr = $("<TR/>");
+														});
+												tr.append(tdnext);
+												 
+												 tr = $("<TR/>");
+												 tbody.append(tr);
+													table.append(tbody);
+													var tdnext;
+													 td = $("<TD/>");
+													
+													 td.attr('colspan',4);
+													
+													/*  td.attr('style','text-align:right;'); */
+													 td.append("<label class='control-label'>Total Funds</label>");
+													 td.attr("style","background-color: #CCCEDF;");
+													 tr.append(td);
+													
+													 tdnext = $("<td >"
+																+ totalFunds+ "</td>");
+													
+													 tdnext.attr("id", "noOfPart");
+													 tdnext.attr("style","background-color: #CCCEDF;font-weight:bold; text-align:right;");
+													 tdnext.attr('colspan',2);
+														tr.append(tdnext);
+														
+														
 												divTemplate.append(table);
 												rowCountPMU(count);
 											}
 											else if (key == "7") {
-												var divTemplate = $("#collapse9");
+												var divTemplate = $("#collapseDIV9");
 												
 												$("#trainDLS").show();
-												$("#collapse9").empty();
+												$("#collapseDIV9").empty();
 												//$("#collapse2").text(activityName+" Finalize Work Location of "+$scope.selectDistrictCode.districtNameEnglish+" District");
+	                                                     var funds =0;
+		                                              var additionlReq =0;
+		                                               var totalFunds =0;
 
 												table = $("<table/>");
 												table.attr("id", "table9");
 												table
-														.addClass("table table-hover dashboard-task-infos table-responsive");
+														.addClass("table table-hover table-bordered dashboard-task-infos table-responsive");
 
 												thead = $("<thead/>");
 
 												tr = $("<TR/>");
 
 												th = createLabel("Name of the Activity");
+												th.attr("style","background-color: #eeb2b2");
 												tr.append(th);
 
 												th = createLabel("Panchayat Level");
+												th.attr("style","background-color: #eeb2b2");
 												tr.append(th);
 
 												th = createLabel("No. of Units");
+												th.attr("style","background-color: #eeb2b2");
 												tr.append(th);
 
 												th = createLabel("Unit Cost (in Rs)");
+												th.attr("style","background-color: #eeb2b2");
 												tr.append(th);
 
 												th = createLabel("Fund Proposed (in Rs)");
+												th.attr("style","background-color: #eeb2b2");
 												
 												tr.append(th);
 
 												th = createLabel("Remarks");
+												th.attr("style","background-color: #eeb2b2");
 												tr.append(th);
 
 												thead.append(tr);
@@ -1119,46 +2185,146 @@ function collapseHide() {
 													tdnext = $("<td>"
 															+ value1.column6
 															+ "</td>");
-
+													tr.append(tdnext);
 													tr = $("<TR/>");
 													
 													count ++;
+												
+													funds=funds + +value1.column5
+													
+													 if(value1.column8 != ''){
+				                                          additionlReq= value1.column8;
+			                                                   }
 												});
-
+												
+												totalFunds  =funds  + +additionlReq;
+												
+													
+													tr.append(tdnext);
+												 
+												 tr = $("<TR/>");
+												 tbody.append(tr);
+													table.append(tbody);
+													var tdnext;
+													 td = $("<TD/>");
+													
+													 td.attr('colspan',4);
+													
+													/*  td.attr('style','text-align:right;'); */
+													 td.append("<label class='control-label'>Total Funds</label>");
+													 td.attr("style","background-color: #CCCEDF;");
+													 tr.append(td);
+													
+													 tdnext = $("<td >"
+																+ funds+ "</td>");
+													
+													 tdnext.attr("id", "noOfPart");
+													 tdnext.attr("style","background-color: #CCCEDF;font-weight:bold; text-align:right;");
+													 tdnext.attr('colspan',2);
+														tr.append(tdnext);
+														
+														
+														
+														
+														tr.append(tdnext);
+													 
+													 tr = $("<TR/>");
+													 
+													 tbody.append(tr);
+														table.append(tbody);
+														var tdnext;
+														 td = $("<TD/>");
+														
+														 td.attr('colspan',4);
+														
+														/*  td.attr('style','text-align:right;'); */
+														 td.append("<label class='control-label'>Additional Requirements</label>");
+														 td.attr("style","background-color: #CCCEDF;");
+														 tr.append(td);
+														
+														 tdnext = $("<td >"
+																	+ additionlReq+ "</td>");
+														
+														 tdnext.attr("id", "noOfPart");
+														 tdnext.attr("style","background-color: #CCCEDF;font-weight:bold;text-align:right;");
+														 tdnext.attr('colspan',2);
+															tr.append(tdnext);
+															
+															
+															
+															
+															tr.append(tdnext);
+														 
+														 tr = $("<TR/>");
+														 
+														 
+														 tbody.append(tr);
+															table.append(tbody);
+															var tdnext;
+															 td = $("<TD/>");
+															
+															 td.attr('colspan',4);
+															
+															/*  td.attr('style','text-align:right;'); */
+															 td.append("<label class='control-label'>Grand Total</label>");
+															 td.attr("style","background-color: #CCCEDF;");
+															 tr.append(td);
+															
+															 tdnext = $("<td >"
+																		+ totalFunds+ "</td>");
+															
+															 tdnext.attr("id", "noOfPart");
+															 tdnext.attr("style","background-color: #CCCEDF;font-weight:bold;text-align:right;");
+															 tdnext.attr('colspan',2);
+																tr.append(tdnext);
+																
+																
+														
 												divTemplate.append(table);
 												rowCountDLS(count);
 											}
 											else if (key == "14") {
-												var divTemplate = $("#collapse12");
-
-												$("#collapse12").empty();
+												var divTemplate = $("#collapsediv12");
+												  var spmuAdd =0;
+													var dpmuAdd =0;
+													var spmufund =0;
+													var dpmuFund =0;
+													var totalFunds =0;
+										
+												$("#collapsediv12").empty();
 												//$("#collapse2").text(activityName+" Finalize Work Location of "+$scope.selectDistrictCode.districtNameEnglish+" District");
 
 												table = $("<table/>");
 												table.attr("id", "table12");
 												table
-														.addClass("table table-hover dashboard-task-infos table-responsive");
+														.addClass("table table-hover table-bordered dashboard-task-infos table-responsive");
 
 												thead = $("<thead/>");
 
 												tr = $("<TR/>");
 
 												th = createLabel("Type of Center");
+												th.attr("style","background-color: #eeb2b2");
 												tr.append(th);
 
 												th = createLabel("Faculty and Staff");
+												th.attr("style","background-color: #eeb2b2");
 												tr.append(th);
 
 												th = createLabel("No. of Units");
+												th.attr("style","background-color: #eeb2b2");
 												tr.append(th);
 
 												th = createLabel("No. of Months");
+												th.attr("style","background-color: #eeb2b2");
 												tr.append(th);
 
 												th = createLabel("Funds (in Rs)");
+												th.attr("style","background-color: #eeb2b2");
 												tr.append(th);
 
 												th = createLabel("Remarks");
+												th.attr("style","background-color: #eeb2b2");
 												tr.append(th);
 
 												thead.append(tr);
@@ -1173,7 +2339,7 @@ function collapseHide() {
 														value1) {
 													tbody.append(tr);
 													table.append(tbody);
-                                     if(value1.column9 =='2'){
+                                   
                                     	var tdnext;
 
 													td = $("<TD/>");
@@ -1201,75 +2367,212 @@ function collapseHide() {
 															+ "</td>");
 													tr.append(tdnext);
 													tr = $("<TR/>");
-                                     }
-                                     if(value1.column9 =='4'){
-                                     	var tdnext;
-
- 													td = $("<TD/>");
- 													td.append(value1.column1);
- 													tr.append(td);
- 													tdnext = $("<td>"
- 															+ value1.column2
- 															+ "</td>");
- 													tr.append(tdnext);
- 													tdnext = $("<td>"
- 															+ value1.column3
- 															+ "</td>");
- 													tr.append(tdnext);
- 													tdnext = $("<td>"
- 															+ value1.column5
- 															+ "</td>");
- 													tr.append(tdnext);
- 													tdnext = $("<td>"
- 															+ value1.column7
- 															+ "</td>");
- 													tdnext.attr("id", "expenditureDPRC_"+key1);
- 													tr.append(tdnext);
- 													tdnext = $("<td>"
- 															+ value1.column8
- 															+ "</td>");
- 													tr.append(tdnext);
- 													tr = $("<TR/>");
-                                      }
+                                   
+												  
+												if(value1.column9 == 2){
+													if(value1.column12 != null){
+														spmuAdd = value1.column12;
+														
+													}
+													
+													spmufund =spmufund + +value1.column7;
+												}if(value1.column9 == 4){
+													if(value1.column10 != null){
+														spmuAdd = value1.column12;
+														dpmuAdd= value1.column10;
+														
+													}
+													
+													dpmuFund =dpmuFund + +value1.column7;
+												}
+									
+                                     	count++
+                                  
 												});
-
+											
+												totalFunds  =spmufund  + +dpmuFund + +spmuAdd + +dpmuAdd;
+												tbody.append(tr);
+												table.append(tbody);
+												var tdnext;
+												 td = $("<TD/>");
+												
+												 td.attr('colspan',5);
+												
+												/*  td.attr('style','text-align:right;'); */
+												 td.append("<label class='control-label'>Total SPRC Fund</label>");
+												 td.attr("style","background-color: #CCCEDF;");
+												 tr.append(td);
+												
+												 tdnext = $("<td >"
+															+ spmufund+ "</td>");
+												
+												 tdnext.attr("id", "noOfPart");
+												 tdnext.attr("style","background-color: #CCCEDF;font-weight:bold;text-align:right;");
+												 tdnext.attr('colspan',2);
+													tr.append(tdnext);
+													
+													
+													
+													
+													tr.append(tdnext);
+												 
+												 tr = $("<TR/>");
+												 tbody.append(tr);
+													table.append(tbody);
+													var tdnext;
+													 td = $("<TD/>");
+													
+													 td.attr('colspan',5);
+													
+													/*  td.attr('style','text-align:right;'); */
+													 td.append("<label class='control-label'>Total DPRC Fund</label>");
+													 td.attr("style","background-color: #CCCEDF;");
+													 tr.append(td);
+													
+													 tdnext = $("<td >"
+																+ dpmuFund+ "</td>");
+													
+													 tdnext.attr("id", "noOfPart");
+													 tdnext.attr("style","background-color: #CCCEDF;font-weight:bold; text-align:right;");
+													 tdnext.attr('colspan',2);
+														tr.append(tdnext);
+														
+														
+														
+														
+														tr.append(tdnext);
+													 
+													 tr = $("<TR/>");
+													 
+													 tbody.append(tr);
+														table.append(tbody);
+														var tdnext;
+														 td = $("<TD/>");
+														
+														 td.attr('colspan',5);
+														
+														/*  td.attr('style','text-align:right;'); */
+														 td.append("<label class='control-label'>SPRC Additional  Requirements</label>");
+														 td.attr("style","background-color: #CCCEDF;");
+														 tr.append(td);
+														
+														 tdnext = $("<td >"
+																	+ spmuAdd+ "</td>");
+														
+														 tdnext.attr("id", "noOfPart");
+														 tdnext.attr("style","background-color: #CCCEDF;font-weight:bold;text-align:right;");
+														 tdnext.attr('colspan',2);
+															tr.append(tdnext);
+															
+															
+															
+															
+															tr.append(tdnext);
+														 
+														 tr = $("<TR/>");
+														 
+														 
+														 tbody.append(tr);
+															table.append(tbody);
+															var tdnext;
+															 td = $("<TD/>");
+															
+															 td.attr('colspan',5);
+															
+															/*  td.attr('style','text-align:right;'); */
+															 td.append("<label class='control-label'>DPRC Additional Requirement</label>");
+															 td.attr("style","background-color: #CCCEDF;");
+															 tr.append(td);
+															
+															 tdnext = $("<td >"
+																		+ dpmuAdd+ "</td>");
+															
+															 tdnext.attr("id", "noOfPart");
+															 tdnext.attr("style","background-color: #CCCEDF;font-weight:bold;text-align:right;");
+															 tdnext.attr('colspan',2);
+																tr.append(tdnext);
+																
+																
+																
+																
+																tr.append(tdnext);
+																 tr = $("<TR/>");
+																 
+																 
+																 tbody.append(tr);
+																	table.append(tbody);
+																	var tdnext;
+																	 td = $("<TD/>");
+																	
+																	 td.attr('colspan',5);
+																	
+																	/*  td.attr('style','text-align:right;'); */
+																	 td.append("<label class='control-label'>Total Proposed Fund</label>");
+																	 td.attr("style","background-color: #CCCEDF;");
+																	 tr.append(td);
+																	
+																	 tdnext = $("<td >"
+																				+ totalFunds+ "</td>");
+																	
+																	 tdnext.attr("id", "noOfPart");
+																	 tdnext.attr("style","background-color: #CCCEDF;font-weight:bold;text-align:right;");
+																	 tdnext.attr('colspan',2);
+																		tr.append(tdnext);
+																		
+																		
+																		
+																		
+																		tr.append(tdnext);
+																	 
+																		
 												divTemplate.append(table);
 
 											}
 											
 											else if (key == "15") {
-												var divTemplate = $("#collapse7");
-
-												$("#collapse7").empty();
+												var divTemplate = $("#collapseDIV7");
+                                              var count =0; 
+												$("#collapseDIV7").empty();
 												//$("#collapse2").text(activityName+" Finalize Work Location of "+$scope.selectDistrictCode.districtNameEnglish+" District");
-
+                                                   var spmuAdd =0;
+													var dpmuAdd =0;
+													var spmufund =0;
+													var dpmuFund =0;
+													var totalFunds =0;
 												table = $("<table/>");
 												table.attr("id", "table7");
 												table
-														.addClass("table table-hover dashboard-task-infos table-responsive");
+														.addClass("table table-hover table-bordered dashboard-task-infos table-responsive");
 
 												thead = $("<thead/>");
 
 												tr = $("<TR/>");
 
 												th = createLabel("Level");
+												th.attr("style","background-color: #eeb2b2");
 												tr.append(th);
 
 												th = createLabel("Designation");
+												th.attr("style","background-color: #eeb2b2");
 												tr.append(th);
 
 												th = createLabel("No. of Posts proposed");
+												th.attr("style","background-color: #eeb2b2");
 												tr.append(th);
 
 												th = createLabel("No. of Months");
+												th.attr("style","background-color: #eeb2b2");
 												tr.append(th);
 
 												th = createLabel("Unit Cost(in Rs)");
+												th.attr("style","background-color: #eeb2b2");
 												tr.append(th);
 												th = createLabel("Fund Proposed (in Rs)");
+												th.attr("style","background-color: #eeb2b2");
 												tr.append(th);
 												
 												th = createLabel("Remarks");
+												th.attr("style","background-color: #eeb2b2");
 												tr.append(th);
 
 												thead.append(tr);
@@ -1284,9 +2587,501 @@ function collapseHide() {
 														value1) {
 													tbody.append(tr);
 													table.append(tbody);
-                                     if(value1.column9 =='2'){
+                                    
                                     	var tdnext;
 
+													td = $("<TD/>");
+													td.append(value1.column1);
+													tr.append(td);
+													tdnext = $("<td>"
+															+ value1.column2
+															+ "</td>");
+													tr.append(tdnext);
+													tdnext = $("<td>"
+															+ value1.column3
+															+ "</td>");
+													tr.append(tdnext);
+													tdnext = $("<td>"
+															+ value1.column5
+															+ "</td>");
+													tr.append(tdnext);
+													tdnext = $("<td>"
+															+ value1.column4
+															+ "</td>");
+													tdnext.attr("id", "expenditureEGOV_"+key1);
+													tr.append(tdnext);
+													tdnext = $("<td>"
+															+ value1.column7
+															+ "</td>");
+													tr.append(tdnext);
+													tdnext = $("<td>"
+															+ value1.column8
+															+ "</td>");
+													tr.append(tdnext);
+													tr = $("<TR/>");
+													if(value1.column12 ==1){
+														if(value1.column9 !=''){
+														spmuAdd =value1.column9;
+														}
+														spmufund =spmufund + +value1.column7;
+													
+													}if(value1.column12 ==2){
+														if(value1.column10 !=''){
+															dpmuAdd=value1.column10;
+															}
+														
+														dpmuFund =dpmuFund + +value1.column7;
+														
+													}
+												
+													count++;
+												});
+											
+												totalFunds  =spmufund  + +dpmuFund + +spmuAdd + +dpmuAdd;
+												tbody.append(tr);
+												table.append(tbody);
+												var tdnext;
+												 td = $("<TD/>");
+												
+												 td.attr('colspan',5);
+												
+												/*  td.attr('style','text-align:right;'); */
+												 td.append("<label class='control-label'>Total SPMU Fund</label>");
+												 td.attr("style","background-color: #CCCEDF;");
+												 tr.append(td);
+												
+												 tdnext = $("<td >"
+															+ spmufund+ "</td>");
+												
+												 tdnext.attr("id", "noOfPart");
+												 tdnext.attr("style","background-color: #CCCEDF;font-weight:bold;text-align:right;");
+												 tdnext.attr('colspan',2);
+													tr.append(tdnext);
+													
+													
+													
+													
+													tr.append(tdnext);
+												 
+												 tr = $("<TR/>");
+												 tbody.append(tr);
+													table.append(tbody);
+													var tdnext;
+													 td = $("<TD/>");
+													
+													 td.attr('colspan',5);
+													
+													/*  td.attr('style','text-align:right;'); */
+													 td.append("<label class='control-label'>Total DPMU Fund</label>");
+													 td.attr("style","background-color: #CCCEDF;");
+													 tr.append(td);
+													
+													 tdnext = $("<td >"
+																+ dpmuFund+ "</td>");
+													
+													 tdnext.attr("id", "noOfPart");
+													 tdnext.attr("style","background-color: #CCCEDF;font-weight:bold; text-align:right;");
+													 tdnext.attr('colspan',2);
+														tr.append(tdnext);
+														
+														
+														
+														
+														tr.append(tdnext);
+													 
+													 tr = $("<TR/>");
+													 
+													 tbody.append(tr);
+														table.append(tbody);
+														var tdnext;
+														 td = $("<TD/>");
+														
+														 td.attr('colspan',5);
+														
+														/*  td.attr('style','text-align:right;'); */
+														 td.append("<label class='control-label'>SPMU Additional  Requirements</label>");
+														 td.attr("style","background-color: #CCCEDF;");
+														 tr.append(td);
+														
+														 tdnext = $("<td >"
+																	+ spmuAdd+ "</td>");
+														
+														 tdnext.attr("id", "noOfPart");
+														 tdnext.attr("style","background-color: #CCCEDF;font-weight:bold;text-align:right;");
+														 tdnext.attr('colspan',2);
+															tr.append(tdnext);
+															
+															
+															
+															
+															tr.append(tdnext);
+														 
+														 tr = $("<TR/>");
+														 
+														 
+														 tbody.append(tr);
+															table.append(tbody);
+															var tdnext;
+															 td = $("<TD/>");
+															
+															 td.attr('colspan',5);
+															
+															/*  td.attr('style','text-align:right;'); */
+															 td.append("<label class='control-label'>DPMU Additional Requirement</label>");
+															 td.attr("style","background-color: #CCCEDF;");
+															 tr.append(td);
+															
+															 tdnext = $("<td >"
+																		+ dpmuAdd+ "</td>");
+															
+															 tdnext.attr("id", "noOfPart");
+															 tdnext.attr("style","background-color: #CCCEDF;font-weight:bold;text-align:right;");
+															 tdnext.attr('colspan',2);
+																tr.append(tdnext);
+																
+																
+																
+																
+																tr.append(tdnext);
+																 tr = $("<TR/>");
+																 
+																 
+																 tbody.append(tr);
+																	table.append(tbody);
+																	var tdnext;
+																	 td = $("<TD/>");
+																	
+																	 td.attr('colspan',5);
+																	
+																	/*  td.attr('style','text-align:right;'); */
+																	 td.append("<label class='control-label'>Total Proposed Fund</label>");
+																	 td.attr("style","background-color: #CCCEDF;");
+																	 tr.append(td);
+																	
+																	 tdnext = $("<td >"
+																				+ totalFunds+ "</td>");
+																	
+																	 tdnext.attr("id", "noOfPart");
+																	 tdnext.attr("style","background-color: #CCCEDF;font-weight:bold;text-align:right;");
+																	 tdnext.attr('colspan',2);
+																		tr.append(tdnext);
+																		
+																		
+																		
+																		
+																		tr.append(tdnext);
+																	 
+																		
+																		
+																	 tr = $("<TR/>");
+												divTemplate.append(table);
+
+											}
+	                                      if (key == "2") {
+												
+												
+												var divTemplate = $("#collapseDIV3");
+												$("#collapseDIV3").empty();
+												var addNsprc =0;
+												var addNdprc =0;
+												var sfundN =0;
+												var sfundC =0;
+												var grandTotal =0;
+												
+												
+												//$("#collapse2").text(activityName+" Finalize Work Location of "+$scope.selectDistrictCode.districtNameEnglish+" District");
+
+												table = $("<table/>");
+												table.attr("id", "table1");
+												
+												table
+														.addClass("table table-hover table-bordered dashboard-task-infos table-responsive");
+
+												thead = $("<thead/>");
+
+												tr = $("<TR/>");
+
+											
+												
+												th = createLabel("Building Type");
+												
+												th.attr("style","background-color: #eeb2b2");
+												tr.append(th);
+
+												th = createLabel("District");
+												th.attr("style","background-color: #eeb2b2");
+												tr.append(th);
+
+												th = createLabel("Fund Sanctioned");
+												th.attr("style","background-color: #eeb2b2");
+												tr.append(th);
+
+												th = createLabel("Fund Released");
+												th.attr("style","background-color: #eeb2b2");
+												tr.append(th);
+
+												th = createLabel("Fund Utilized");
+												th.attr("style","background-color: #eeb2b2");
+												tr.append(th);
+
+												th = createLabel("Fund Required");
+												th.attr("style","background-color: #eeb2b2");
+												tr.append(th);
+												
+												thead.append(tr);
+
+												table.append(thead);
+
+												tbody = $("<tbody/>");
+												
+												tr = $("<TR/>");
+												$.each(value, function(key1,
+														value1) {
+													 
+													console.log(key1 + " === "
+															+ value1.column1);
+
+													tbody.append(tr);
+													table.append(tbody);
+
+													var tdnext;
+													$('#addRequ').val(value1.column13);
+													td = $("<TD/>");
+													td.append(value1.column1);
+													tr.append(td);
+													tdnext = $("<td>"
+															+ value1.column5
+															+ "</td>");
+													tr.append(tdnext);
+													tdnext = $("<td>"
+															+ value1.column10
+															+ "</td>");
+													tr.append(tdnext);
+													tdnext = $("<td>"
+															+ value1.column7
+															+ "</td>");
+													tr.append(tdnext);
+													tdnext = $("<td>"
+															+ value1.column12
+															+ "</td>");
+													tr.append(tdnext);
+													tdnext = $("<td>"
+															+ value1.column9
+															+ "</td>");
+													
+													tr.append(tdnext);
+													tr = $("<TR/>");
+													count ++;
+													
+													
+													var sfundN =0;
+													var sfundC =0;
+													var grandTotal =0;
+													
+													sfundN =sfundN + +value1.column3;
+													sfundC=sfundC + +value1.column9
+													addNsprc =addNsprc + +value1.column13;
+													addNdprc =addNdprc + +value1.column14;
+													 
+													
+													
+												});
+												
+												totalFunds  =sfundN  + +sfundC + +addNsprc + +addNdprc;
+												tbody.append(tr);
+												table.append(tbody);
+												var tdnext;
+												 td = $("<TD/>");
+												
+												 td.attr('colspan',4);
+												
+												/*  td.attr('style','text-align:right;'); */
+												 td.append("<label class='control-label'>Additional Requirement (SPRC)</label>");
+												 td.attr("style","background-color: #CCCEDF;");
+												 tr.append(td);
+												
+												 tdnext = $("<td >"
+															+ addNsprc+ "</td>");
+												
+												 tdnext.attr("id", "noOfPart");
+												 tdnext.attr("style","background-color: #CCCEDF;font-weight:bold;text-align:right;");
+												 tdnext.attr('colspan',2);
+													tr.append(tdnext);
+													
+													
+													
+													
+													tr.append(tdnext);
+												 
+												 tr = $("<TR/>");
+												 tbody.append(tr);
+													table.append(tbody);
+													var tdnext;
+													 td = $("<TD/>");
+													
+													 td.attr('colspan',4);
+													
+													/*  td.attr('style','text-align:right;'); */
+													 td.append("<label class='control-label'>Additional Requirement (DPRC)</label>");
+													 td.attr("style","background-color: #CCCEDF;");
+													 tr.append(td);
+													
+													 tdnext = $("<td >"
+																+ addNdprc+ "</td>");
+													
+													 tdnext.attr("id", "noOfPart");
+													 tdnext.attr("style","background-color: #CCCEDF;font-weight:bold; text-align:right;");
+													 tdnext.attr('colspan',2);
+														tr.append(tdnext);
+														
+														
+														
+														
+														tr.append(tdnext);
+													 
+													 tr = $("<TR/>");
+													 
+													 tbody.append(tr);
+														table.append(tbody);
+														var tdnext;
+														 td = $("<TD/>");
+														
+														 td.attr('colspan',4);
+														
+														/*  td.attr('style','text-align:right;'); */
+														 td.append("<label class='control-label'>Total Proposed Fund (New Building (SPRC) +New Building (DPRC))</label>");
+														 td.attr("style","background-color: #CCCEDF;");
+														 tr.append(td);
+														
+														 tdnext = $("<td >"
+																	+ sfundN+ "</td>");
+														
+														 tdnext.attr("id", "noOfPart");
+														 tdnext.attr("style","background-color: #CCCEDF;font-weight:bold;text-align:right;");
+														 tdnext.attr('colspan',2);
+															tr.append(tdnext);
+															
+															
+															
+															
+															tr.append(tdnext);
+														 
+														 tr = $("<TR/>");
+														 
+														 
+														 tbody.append(tr);
+															table.append(tbody);
+															var tdnext;
+															 td = $("<TD/>");
+															
+															 td.attr('colspan',4);
+															
+															/*  td.attr('style','text-align:right;'); */
+															 td.append("<label class='control-label'>Total Proposed Fund (Carry Forward (SPRC) +Carry Forward (DPRC))</label>");
+															 td.attr("style","background-color: #CCCEDF;");
+															 tr.append(td);
+															
+															 tdnext = $("<td >"
+																		+ sfundC+ "</td>");
+															
+															 tdnext.attr("id", "noOfPart");
+															 tdnext.attr("style","background-color: #CCCEDF;font-weight:bold;text-align:right;");
+															 tdnext.attr('colspan',2);
+																tr.append(tdnext);
+																 tr = $("<TR/>");
+																
+																 tbody.append(tr);
+																	table.append(tbody);
+																	var tdnext;
+																	 td = $("<TD/>");
+																	
+																	 td.attr('colspan',4);
+																	
+																	/*  td.attr('style','text-align:right;'); */
+																	 td.append("<label class='control-label'>Grand Total</label>");
+																	 td.attr("style","background-color: #CCCEDF;");
+																	 tr.append(td);
+																	
+																	 tdnext = $("<td >"
+																				+ totalFunds+ "</td>");
+																	
+																	 tdnext.attr("id", "noOfPart");
+																	 tdnext.attr("style","background-color: #CCCEDF;font-weight:bold;text-align:right;");
+																	 tdnext.attr('colspan',2);
+																		tr.append(tdnext);
+																		
+																						
+																		tr.append(tdnext);
+																
+															 
+															 tr = $("<TR/>");
+															 
+												
+												divTemplate.append(table);
+												rowCount(count);
+
+											}if (key == "9") {
+												var divTemplate = $("#collapsedIV11");
+												
+												$("#collapsedIV11").empty();
+												//$("#collapse2").text(activityName+" Finalize Work Location of "+$scope.selectDistrictCode.districtNameEnglish+" District");
+		                                              var funds =0;
+		                                              var additionlReq =0;
+		                                               var totalFunds =0;
+
+											
+												table = $("<table/>");
+												table.attr("id", "table13");
+												table
+														.addClass("table table-hover table-bordered dashboard-task-infos table-responsive");
+
+												thead = $("<thead/>");
+
+												tr = $("<TR/>");
+
+												th = createLabel("Name of the Activity");
+												th.attr("style","background-color: #eeb2b2");
+												tr.append(th);
+
+												th = createLabel("Funds (in Rs)");
+												th.attr("style","background-color: #eeb2b2");
+												tr.append(th);
+
+												th = createLabel("Brief about the Activity");
+												th.attr("style","background-color: #eeb2b2");
+												tr.append(th);
+
+												th = createLabel("From");
+												th.attr("style","background-color: #eeb2b2");
+												tr.append(th);
+
+												th = createLabel("To");
+												th.attr("style","background-color: #eeb2b2");
+												tr.append(th);
+
+												th = createLabel("Remarks");
+												th.attr("style","background-color: #eeb2b2");
+												tr.append(th);
+
+												
+												thead.append(tr);
+
+												table.append(thead);
+
+												tbody = $("<tbody/>");
+												tbody1 = $("<tbody/>");
+												tr1 = $("<TR/>");
+												tr = $("<TR/>");
+												$.each(value, function(key1,
+														value1) {
+													tbody.append(tr);
+													table.append(tbody);
+
+													var tdnext;
+													
+													$('#addRequIE').val(value1.column13);
+													//$('#fundIE').val(value1.column10);
+													
 													td = $("<TD/>");
 													td.append(value1.column1);
 													tr.append(td);
@@ -1305,22 +3100,105 @@ function collapseHide() {
 													tdnext = $("<td>"
 															+ value1.column5
 															+ "</td>");
-													tdnext.attr("id", "expenditureEGOV_"+key1);
 													tr.append(tdnext);
 													tdnext = $("<td>"
-															+ value1.column6
+															+ value1.column7
 															+ "</td>");
 													tr.append(tdnext);
-													tdnext = $("<td>"
-															+ value1.column8
-															+ "</td>");
-													tr.append(tdnext);
+													
 													tr = $("<TR/>");
-                                     }
+													count++;
+													funds=funds + +value1.column2
+													
+													 if(value1.column6 != ''){
+				                                          additionlReq= value1.column6;
+			                                                   }
+											
 												});
-
+											
+												totalFunds  =funds  + +additionlReq;
+												
+													
+													tr.append(tdnext);
+												 
+												 tr = $("<TR/>");
+												 tbody.append(tr);
+													table.append(tbody);
+													var tdnext;
+													 td = $("<TD/>");
+													
+													 td.attr('colspan',4);
+													
+													/*  td.attr('style','text-align:right;'); */
+													 td.append("<label class='control-label'>Total Funds</label>");
+													 td.attr("style","background-color: #CCCEDF;");
+													 tr.append(td);
+													
+													 tdnext = $("<td >"
+																+ funds+ "</td>");
+													
+													 tdnext.attr("id", "noOfPart");
+													 tdnext.attr("style","background-color: #CCCEDF;font-weight:bold; text-align:right;");
+													 tdnext.attr('colspan',2);
+														tr.append(tdnext);
+														
+														
+														
+														
+														tr.append(tdnext);
+													 
+													 tr = $("<TR/>");
+													 
+													 tbody.append(tr);
+														table.append(tbody);
+														var tdnext;
+														 td = $("<TD/>");
+														
+														 td.attr('colspan',4);
+														
+														/*  td.attr('style','text-align:right;'); */
+														 td.append("<label class='control-label'>Additional Requirements</label>");
+														 td.attr("style","background-color: #CCCEDF;");
+														 tr.append(td);
+														
+														 tdnext = $("<td >"
+																	+ additionlReq+ "</td>");
+														
+														 tdnext.attr("id", "noOfPart");
+														 tdnext.attr("style","background-color: #CCCEDF;font-weight:bold;text-align:right;");
+														 tdnext.attr('colspan',2);
+															tr.append(tdnext);
+															
+															
+															
+															
+															tr.append(tdnext);
+														 
+														 tr = $("<TR/>");
+														 
+														 
+														 tbody.append(tr);
+															table.append(tbody);
+															var tdnext;
+															 td = $("<TD/>");
+															
+															 td.attr('colspan',4);
+															
+															/*  td.attr('style','text-align:right;'); */
+															 td.append("<label class='control-label'>Grand Total</label>");
+															 td.attr("style","background-color: #CCCEDF;");
+															 tr.append(td);
+															
+															 tdnext = $("<td >"
+																		+ totalFunds+ "</td>");
+															
+															 tdnext.attr("id", "noOfPart");
+															 tdnext.attr("style","background-color: #CCCEDF;font-weight:bold;text-align:right;");
+															 tdnext.attr('colspan',2);
+																tr.append(tdnext);
+													
 												divTemplate.append(table);
-
+												rowCountIE(count);
 											}
 											
 										});
@@ -1507,17 +3385,55 @@ function collapseHide() {
 	    $('#captchaAnswer').focus();
 	}
 	function exportToPdf(id) {
-		var header = 'Training Activities';
-		var sTable =$('#'+id).html();
-		var style = "<style>";
+	if(userType == 'M'){
+		 var stateName = $('#selectSLC').find('option:selected').text();
+		 var finYear = '${FIN_YEAR}';
+		 var header = 'Annual Plan Report of'+ stateName + 'for'+ finYear;
+		
+		}
+	else if(userType == 'S'){
+			var finYear = '${FIN_YEAR}';
+			var state = '${STATE}';
+		 var header = 'Annual Plan Report of'+ state + 'for'+ finYear;
+		}
+		else{
+			 var stateName = $('#selectSLC').find('option:selected').text();
+			 var finYear = $('#selectFin').find('option:selected').text();
+			 var header = 'Annual Plan Report of  '+ stateName +  'for'  +finYear;
+		}
+		
+	
 
+	 var stateName = $('#selectSLC').find('option:selected').text();
+	   
+		
+		var sTable =$('#'+id).html();
+		
+		var style = "<style>";
+		var style1 = "<style>";
+
+		
+		 var cap =$("<caption/>");
+		  var span =$("<span />");
+		  span.attr("style","color: #fff;font-weight:bold;font-size:18px;");
+		  cap.append(span);
+		 
+			
+		/* th = createLabel("New Building");
+		th.attr("style","background-color: #5AAA5A; color: #fff;");
+		tr5.append(th);
+		thead5.append(tr5);
+*/
+
+    
 		style = style + "table,th,td{border: solid 1px black;border-collapse: collapse;}";
-		       style = style + "thead {color : black; background-color: #e87b7b;";
+		       style = style +"thead {color : black; background-color: #e87b7b;";
 		       style = style + "</style>";
 
 		  var win = window.open('', '', 'height=1000,width=1000');
 		   win.document.write('<html><head>');
 		   win.document.write('<title>'+header+'</title>');  
+		   win.document.write('<h3 style="border: 4px solid black;">'+ header+ '</h3>');  
 		   win.document.write(style);
 		   win.document.write('</head>');
 		   win.document.write('<body>');
@@ -1545,7 +3461,7 @@ function collapseHide() {
 					<%-- <form:form method="post" name="" action=""> --%>
 						
 					
-							<div class="container">
+							<div class="">
                             <div id="print">
 
 								<main>
@@ -1566,72 +3482,17 @@ function collapseHide() {
 											</h4>
 										</div>
 										
-										<div class="">
+										
 										<div id="collapse1" 
 											class="panel-collapse collapse abc "
 											role="tabpanel"  aria-labelledby="heading1">
-											<div id="collapse1Div"></div>
-										<div class="row form-group" id ="trainDetails" >
-										<table>
-										<tbody>
-										<tr>
-										<td></td>
-										<td></td>
-										</tr>
-										<tr>
-										<td></td><td></td>
-										</tr>
-										<tr>
-										<td></td><td></td>
-										</tr>
-										<tr>
-										<td></td><td></td>
-										</tr>
-										</tbody>
-										</table>
+											<div class="panel-body">
+											<div id="collapse1Div"></div>	
+											</div>
+											
 										
-											
-											<div class="col-sm-12">
-											<div class="col-sm-6"></div>
-											<div class="col-sm-4">
-											<label>Total No. of Participants</label>
-											</div>
-											<div class="col-sm-2" >
-											<input type="text" id="noOfPart" readonly="readonly" class="form-control" />
-											</div>
-											</div>
-											<div class="col-sm-12">
-											<div class="col-sm-6"></div>
-											<div class="col-sm-4">
-											<label>Total Funds</label>
-											</div>
-											<div class="col-sm-2" >
-											<input type="text" id="totalCost" readonly="readonly" class="form-control" />
-											</div>
-											</div>
-											<div class="col-sm-12">
-											<div class="col-sm-6"></div>
-											<div class="col-sm-4">
-											
-											
-											<label>Additional Requirements</label>
-											</div>
-											<div class="col-sm-2" >
-											<input type="text" id="addRequ" readonly="readonly" class="form-control" />
-											</div>
-											</div>
-											<div class="col-sm-12">
-											<div class="col-sm-6"></div>
-											<div class="col-sm-4">
-											<label>Total Proposed Fund</label>
-											</div>
-											<div class="col-sm-2" id="">
-											<input type="text" id="fund" readonly="readonly" class="form-control"/>
-											</div>
-											</div>
-										</div>
 									</div>
-											</div>
+											
 									</section>
 									<section class="panel panel-default xxx">
 										<div class="panel-heading" role="tab" id="heading2"
@@ -1647,37 +3508,9 @@ function collapseHide() {
 											</h4>
 										</div>
 										<div id="collapse2" class="panel-collapse collapse abc"
-											role="tabpanel" aria-labelledby="heading2"></div>
-											<div class="row form-group" id ="trainRA">
-											<div class="col-sm-12">
-											
-											<div class="col-sm-8">
-											<label>Total Funds</label>
-											</div>
-											<div class="col-sm-4" >
-											<input type="text" id="taTotFund" readonly="readonly" class="form-control" />
-											</div>
-											</div>
-											
-											<div class="col-sm-12">
-											
-											<div class="col-sm-8">
-											
-											
-											<label>Additional Requirements</label>
-											</div>
-											<div class="col-sm-4" >
-											<input type="text" id="addRequTa" readonly="readonly" class="form-control" />
-											</div>
-											</div>
-											<div class="col-sm-12">
-											
-											<div class="col-sm-8">
-											<label>Total Proposed Fund</label>
-											</div>
-											<div class="col-sm-4" id="">
-											<input type="text" id="fundTa" readonly="readonly" class="form-control"/>
-											</div>
+											role="tabpanel" aria-labelledby="heading2">
+											<div class="panel-body">
+											<div id="collapseDIV2"></div>
 											</div>
 										</div>
 									</section>
@@ -1696,8 +3529,9 @@ function collapseHide() {
 										</div>
 										<div id="collapse3" class="panel-collapse collapse abc"
 											role="tabpanel" aria-labelledby="heading3">
+											
 											<div class="panel-body">
-												
+												<div id="collapseDIV3"></div>
 											</div>
 										</div>
 									</section>
@@ -1718,10 +3552,11 @@ function collapseHide() {
 										<div id="collapse4" class="panel-collapse collapse abc"
 											role="tabpanel" aria-labelledby="heading4">
 											<div class="panel-body">
-												</div>
+												
 
-											
-										</div>
+											<div  id="collapsediv4"></div>
+											<div  id="collapseSP4"></div>
+										</div></div>
 									</section>
 									<section class="panel panel-default xxx">
 										<div class="panel-heading" role="tab" id="heading5"
@@ -1738,39 +3573,11 @@ function collapseHide() {
 										</div>
 										<div id="collapse5" class="panel-collapse collapse abc"
 											role="tabpanel" aria-labelledby="heading5">
-											<div class="panel-body"></div>
-										</div>
-												<div class="row form-group" id ="trainATS">
-											<div class="col-sm-12">
+											<div class="panel-body">
+											<div id="collapseDIV5" ></div>
+											</div>
+										
 											
-											<div class="col-sm-10">
-											<label>Total Funds</label>
-											</div>
-											<div class="col-sm-2" >
-											<input type="text" id="taTotFundATS" readonly="readonly" class="form-control" />
-											</div>
-											</div>
-											
-											<div class="col-sm-12">
-											
-											<div class="col-sm-10">
-											
-											
-											<label>Additional Requirements</label>
-											</div>
-											<div class="col-sm-2" >
-											<input type="text" id="addRequATS" readonly="readonly" class="form-control" />
-											</div>
-											</div>
-											<div class="col-sm-12">
-											
-											<div class="col-sm-10">
-											<label>Total Proposed Fund</label>
-											</div>
-											<div class="col-sm-2" id="">
-											<input type="text" id="fundATS" readonly="readonly" class="form-control"/>
-											</div>
-											</div>
 										</div>
 									</section>
 									<section class="panel panel-default xxx">
@@ -1787,31 +3594,12 @@ function collapseHide() {
 											</h4>
 										</div>
 										<div id="collapse6" class="panel-collapse collapse abc"
-											role="tabpanel" aria-labelledby="heading6"></div>
-											<div class="row form-group" id ="trainEE">
-											
-											<div class="col-sm-12">
-											
-											<div class="col-sm-10">
-											
-											
-											<label>Additional Requirements</label>
+											role="tabpanel" aria-labelledby="heading6">
+											<div class="panel-body">
+											<div id="collapseDIV6"></div>
 											</div>
-											<div class="col-sm-2" >
-											<input type="text" id="addRequEE" readonly="readonly" class="form-control" />
-											</div>
-											</div>
-											<div class="col-sm-12">
 											
-											<div class="col-sm-10">
-											<label>Total Proposed Fund</label>
 											</div>
-											<div class="col-sm-2" id="">
-											<input type="text" id="fundEE" readonly="readonly" class="form-control"/>
-											</div>
-											</div>
-										</div>
-											
 											
 									</section>
 									<section class="panel panel-default xxx">
@@ -1831,8 +3619,9 @@ function collapseHide() {
 											role="tabpanel" aria-labelledby="heading7">
 											<div class="panel-body">
 												
-											</div>
-										</div>
+											
+											<div id="collapseDIV7"></div>
+										</div></div>
 									</section>
 									<section class="panel panel-default xxx">
 										<div class="panel-heading" role="tab" id="heading8"
@@ -1848,37 +3637,9 @@ function collapseHide() {
 											</h4>
 										</div>
 										<div id="collapse8" class="panel-collapse collapse abc"
-											role="tabpanel" aria-labelledby="heading8"></div>
-											<div class="row form-group" id ="trainPP">
-											<div class="col-sm-12">
-											
-											<div class="col-sm-10">
-											<label> Funds</label>
-											</div>
-											<div class="col-sm-2" >
-											<input type="text" id="taTotFundPP" readonly="readonly" class="form-control" />
-											</div>
-											</div>
-											
-											<div class="col-sm-12">
-											
-											<div class="col-sm-10">
-											
-								 
-											<label>Additional Requirements</label>
-											</div>
-											<div class="col-sm-2" >
-											<input type="text" id="addRequPP" readonly="readonly" class="form-control" />
-											</div>
-											</div>
-											<div class="col-sm-12">
-											
-											<div class="col-sm-10">
-											<label>Total Proposed Fund</label>
-											</div>
-											<div class="col-sm-2" id="">
-											<input type="text" id="fundPP" readonly="readonly" class="form-control"/>
-											</div>
+											role="tabpanel" aria-labelledby="heading8">
+											<div class="panel-body">
+											<div id="collapseDIV8"></div>
 											</div>
 										</div>
 									</section>
@@ -1899,39 +3660,10 @@ function collapseHide() {
 											role="tabpanel" aria-labelledby="heading9">
 											<div class="panel-body">
 												
-											</div>
+											
+										<div id="collapseDIV9"></div>
+									
 										</div>
-										<div class="row form-group" id ="trainDLS">
-											<div class="col-sm-12">
-											
-											<div class="col-sm-8">
-											<label> Funds</label>
-											</div>
-											<div class="col-sm-2" >
-											<input type="text" id="taTotFundDLS" readonly="readonly" class="form-control" />
-											</div>
-											</div>
-											
-											<div class="col-sm-12">
-											
-											<div class="col-sm-10">
-											
-								 
-											<label>Additional Requirements</label>
-											</div>
-											<div class="col-sm-2" >
-											<input type="text" id="addRequDLS" readonly="readonly" class="form-control" />
-											</div>
-											</div>
-											<div class="col-sm-12">
-											
-											<div class="col-sm-10">
-											<label>Total Proposed Fund</label>
-											</div>
-											<div class="col-sm-2" id="">
-											<input type="text" id="fundDLS" readonly="readonly" class="form-control"/>
-											</div>
-											</div>
 										</div>
 									</section>
 									<section class="panel panel-default xxx">
@@ -1951,40 +3683,10 @@ function collapseHide() {
 										<div id="collapse10" class="panel-collapse collapse abc"
 											role="tabpanel" aria-labelledby="heading10">
 											<div class="panel-body">
-												
-											</div>
+												<div id="collapseDIV10"></div>
+											
+									
 										</div>
-										<div class="row form-group" id ="trainAF">
-											<div class="col-sm-12">
-											
-											<div class="col-sm-10">
-											<label> Funds</label>
-											</div>
-											<div class="col-sm-2" >
-											<input type="text" id="taTotFundAF" readonly="readonly" class="form-control" />
-											</div>
-											</div>
-											
-											<div class="col-sm-12">
-											
-											<div class="col-sm-10">
-											
-											
-											<label>Additional Requirements</label>
-											</div>
-											<div class="col-sm-2" >
-											<input type="text" id="addRequAF" readonly="readonly" class="form-control" />
-											</div>
-											</div>
-											<div class="col-sm-12">
-											
-											<div class="col-sm-10">
-											<label>Total Proposed Fund</label>
-											</div>
-											<div class="col-sm-2" id="">
-											<input type="text" id="fundAF" readonly="readonly" class="form-control"/>
-											</div>
-											</div>
 										</div>
 									</section>
 									<section class="panel panel-default xxx">
@@ -2003,7 +3705,7 @@ function collapseHide() {
 										<div id="collapse11" class="panel-collapse collapse abc"
 											role="tabpanel" aria-labelledby="heading11">
 											<div class="panel-body">
-												
+												<div ID="collapsedIV11"></div>
 											</div>
 										</div>
 									</section>
@@ -2020,10 +3722,13 @@ function collapseHide() {
 												</a>
 											</h4>
 										</div>
-										<div class="" id="collapse12">
-										<div  class="panel-collapse collapse abc"
+										<div class="" >
+										<div id="collapse12"  class="panel-collapse collapse abc"
 											role="tabpanel" aria-labelledby="heading12">
-											
+											 <div class="panel-body">
+										<div id="collapsediv12"></div>
+										
+										 	</div>
 										</div>
 										</div>
 									</section>
@@ -2041,46 +3746,14 @@ function collapseHide() {
 												</a>
 											</h4>
 										</div>
-										<div class="">
+										
 										<div id="collapse13" class="panel-collapse collapse abc"
 											role="tabpanel" aria-labelledby="heading13">
-						                  <div class="panel-body"></div>
-										</div>
-										</div>
-										<div class="row form-group" id ="trainIE">
-											<div class="col-sm-12">
-											
-											<div class="col-sm-10">
-											<label> Funds</label>
-											</div>
-											<div class="col-sm-2" >
-											<input type="text" id="taTotFundIE" readonly="readonly" class="form-control" />
-											</div>
-											</div>
-											
-											<div class="col-sm-12">
-											
-											<div class="col-sm-10">
-											
-											
-											<label>Additional Requirements</label>
-											</div>
-											<div class="col-sm-2" >
-											<input type="text" id="addRequIE" readonly="readonly" class="form-control" />
-											</div>
-											</div>
-											<div class="col-sm-12">
-											
-											<div class="col-sm-10">
-											<label>Total Proposed Fund</label>
-											</div>
-											<div class="col-sm-2" id="">
-											<input type="text" id="fundIE" readonly="readonly" class="form-control"/>
-											</div>
-											</div>
-										</div>
-										 	
-	
+						                  <div class="panel-body">
+										<div id="collapseDIV13"></div>
+										
+										 	</div>
+	</div>
 
 									</section>
 									<section class="panel panel-default xxx">
@@ -2097,51 +3770,9 @@ function collapseHide() {
 										</div>
 										<div id="collapse14" class="panel-collapse collapse abc"
 											role="tabpanel" aria-labelledby="heading14">
+											<div class="panel-body">
+											<div id="collapseDIV14"></div>
 											<div class="container">
-												<br>
-												<div class="row">
-													<div class="form-group">
-														<div class="col-sm-12">
-															<label>Nature of the IEC Activity:</label>
-														</div>
-														<br>
-														<div class="col-sm-8">
-															<div id="">
-																<input type="text" id="natureActivity"
-																	class="form-control" />
-															</div>
-														</div>
-														<br>
-													</div>
-													<div class="form-group">
-														<div class="col-sm-12">
-															<div class="">
-																<label>Amount Proposed:</label>
-															</div>
-														</div>
-														<br>
-														<div class="col-sm-8">
-															<div id="">
-																<input type="text" id="total" class="form-control" />
-															</div>
-														</div>
-														<br>
-													</div>
-													<div class="form-group">
-														<div class="col-sm-8">
-															<div class="">
-																<label>Remarks:</label>
-
-															</div>
-														</div>
-														<br>
-														<div class="col-sm-8">
-															<div id="Remarks">
-																<input type="text" id="Remarks" class="form-control" />
-															</div>
-														</div>
-
-													</div>
 												</div>
 											</div>
 										</div>
@@ -2160,21 +3791,11 @@ function collapseHide() {
 										</div>
 										<div id="collapse15" class="panel-collapse collapse abc"
 											role="tabpanel" aria-labelledby="heading15">
-											<div class="panel-body"></div>
+											<div class="panel-body">
+											<div id="collapseDIV15" ></div>
+										
+											
 										</div>
-											<div class="row form-group" id ="trainPMU">
-											
-											
-											
-											<div class="col-sm-12">
-											<div class="col-sm-1"></div>
-											<div class="col-sm-7">
-											<label>Total SPMU Fund</label>
-											</div>
-											<div class="col-sm-2" id="">
-											<input type="text" id="fundPMU" readonly="readonly" class="form-control"/>
-											</div>
-											</div>
 										</div>
 									</section>
 								</div>
@@ -2184,7 +3805,7 @@ function collapseHide() {
 										<button  type="button" class="btn bg-red waves-effect" id=collapse_hide onclick="collapseHide();">Collapse all</button>
 										 <button type="button" class="btn bg-primary waves-effect"
 										id="exportButtonId"
-										onclick="exportToPdf('printElement')">Print
+										onclick="exportToPdf('printElement')"><span class="glyphicon glyphicon-print"></span> Print
 										File</button> 
 										
 									</div>
@@ -2209,6 +3830,27 @@ function collapseHide() {
                           <div class="body">
 							<div class="row ">
 							<div class="form-group">
+							
+							<c:if test="${showFin}">
+									<div class="col-sm-12">
+							<div class="col-sm-2">
+							
+										<label for="QuaterId1"><strong>Select FinYear :</strong></label>
+									</div>
+									<div class="col-sm-4">
+										<select name="" id="selectFin" 
+											
+											class="form-control">
+											<option value="0">Select FinYear</option>
+											<c:forEach items="${FIN_YEAR_LIST}" var="year">
+												<option value="${year.yearId}">${year.finYear}</option>
+											</c:forEach>
+										</select>
+									</div>
+									</div>
+							</c:if>
+								
+							
 							<c:if test="${ShowState}">
 								<div class="col-sm-12">
 							<div class="col-sm-2">
@@ -2234,25 +3876,7 @@ function collapseHide() {
 								</c:if>
 								
 								
-							<c:if test="${showFin}">
-									<div class="col-sm-12">
-							<div class="col-sm-2">
 							
-										<label for="QuaterId1"><strong>Select FinYear :</strong></label>
-									</div>
-									<div class="col-sm-4">
-										<select name="" id="selectFin" 
-											
-											class="form-control">
-											<option value="0">Select FinYear</option>
-											<c:forEach items="${FIN_YEAR_LIST}" var="year">
-												<option value="${year.yearId}">${year.finYear}</option>
-											</c:forEach>
-										</select>
-									</div>
-									</div>
-							</c:if>
-								
 							
 						 <c:if test="${showFin}"> 
 									<div class="col-sm-12">
