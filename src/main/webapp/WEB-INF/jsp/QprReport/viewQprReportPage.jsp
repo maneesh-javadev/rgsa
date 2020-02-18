@@ -62,6 +62,7 @@
 												    if( key2=='additional_requirement'){
 												    	tableBody+='<td colspan=6> <b>Additional Requirement </b> </td>';
 												    	tableBody+='<td><b>'+ listVal +  '</b></td>';
+												    	total=parseInt(total)+parseInt(listVal);
 												    }
 											   })
 											   tableBody+='</tr>';
@@ -108,6 +109,7 @@
 													    if( key2=='additional_requirement'){
 													    	tableBody+='<td colspan=6> <b>Additional Requirement </b> </td>';
 													    	tableBody+='<td><b>'+ listVal +  '</b></td>';
+													    	total=parseInt(total)+parseInt(listVal);
 													    }
 												   })
 												   tableBody+='</tr>';
@@ -155,10 +157,12 @@
 													    if( key2=='additional_req_dprc'){
 													    	tableBody+='<td colspan=2> <b>Additional Requirement DPRC </b> </td>';
 													    	tableBody+='<td><b>'+ listVal +  '</b></td>';
+													    	total=parseInt(total)+parseInt(listVal);
 													    }
 													    if( key2=='additional_req_sprc'){
 													    	tableBody+='<td colspan=2> <b>Additional Requirement SPRC </b> </td>';
 													    	tableBody+='<td><b>'+ listVal +  '</b></td>';
+													    	total=parseInt(total)+parseInt(listVal);
 													    }
 												   })
 												   tableBody+='</tr>';
@@ -206,10 +210,12 @@
 													    if( key2=='additional_requirement_dpmu'){
 													    	tableBody+='<td colspan=2> <b>Additional Requirement DPMU </b> </td>';
 													    	tableBody+='<td><b>'+ listVal +  '</b></td>';
+													    	total=parseInt(total)+parseInt(listVal);
 													    }
 													    if( key2=='additional_requirement_spmu'){
 													    	tableBody+='<td colspan=2> <b>Additional Requirement SPMU</b> </td>';
 													    	tableBody+='<td><b>'+ listVal +  '</b></td>';
+													    	total=parseInt(total)+parseInt(listVal);
 													    }
 												   })
 												   tableBody+='</tr>';
@@ -253,13 +259,14 @@
 												   tableBody+='<tr  style="background-color: #dbd0d0">';
 												   $.each( valueList[key1], function(key2,listVal){
 													    if( key2=='additional_requirement'){
-													    	tableBody+='<td colspan=6> <b>Additional Requirement </b> </td>';
+													    	tableBody+='<td colspan=5> <b>Additional Requirement </b> </td>';
 													    	tableBody+='<td><b>'+ listVal +  '</b></td>';
+													    	total=parseInt(total)+parseInt(listVal);
 													    }
 												   })
 												   tableBody+='</tr>';
 												   tableBody+='<tr  style="background-color: #dbd0d0">';  
-												   tableBody+='<td colspan=6> <b>Total </b> </td>';
+												   tableBody+='<td colspan=5> <b>Total </b> </td>';
 											    	tableBody+='<td><b>'+ total +  '</b></td>';
 												   tableBody+='</tr>';
 											   }   
@@ -325,6 +332,7 @@
 													    if( key2=='additional_requirement'){
 													    	tableBody+='<td colspan=6> <b>Additional Requirement </b> </td>';
 													    	tableBody+='<td><b>'+ listVal +  '</b></td>';
+													    	total=parseInt(total)+parseInt(listVal);
 													    }
 												   })
 												   tableBody+='</tr>';
@@ -369,6 +377,7 @@
 														    if( key2=='additional_requirement'){
 														    	tableBody+='<td colspan=4> <b>Additional Requirement </b> </td>';
 														    	tableBody+='<td><b>'+ listVal +  '</b></td>';
+														    	total=parseInt(total)+parseInt(listVal);
 														    }
 													   })
 													   tableBody+='</tr>';
@@ -416,6 +425,7 @@
 														    if( key2=='additional_requirement'){
 														    	tableBody+='<td colspan=7> <b>Additional Requirement </b> </td>';
 														    	tableBody+='<td><b>'+ listVal +  '</b></td>';
+														    	total=parseInt(total)+parseInt(listVal);
 														    }
 													   })
 													   tableBody+='</tr>';
@@ -460,6 +470,7 @@
 														    if( key2=='additional_requirement'){
 														    	tableBody+='<td colspan=4> <b>Additional Requirement </b> </td>';
 														    	tableBody+='<td><b>'+ listVal +  '</b></td>';
+														    	total=parseInt(total)+parseInt(listVal);
 														    }
 													   })
 													   tableBody+='</tr>';
@@ -509,6 +520,7 @@
 														    if( key2=='additional_requirement'){
 														    	tableBody+='<td colspan=7> <b>Additional Requirement </b> </td>';
 														    	tableBody+='<td><b>'+ listVal +  '</b></td>';
+														    	total=parseInt(total)+parseInt(listVal);
 														    }
 													   })
 													   tableBody+='</tr>';
@@ -553,6 +565,7 @@
 														    if( key2=='additional_requirement'){
 														    	tableBody+='<td colspan=4> <b>Additional Requirement </b> </td>';
 														    	tableBody+='<td><b>'+ listVal +  '</b></td>';
+														    	total=parseInt(total)+parseInt(listVal);
 														    }
 													   })
 													   tableBody+='</tr>';
@@ -599,6 +612,7 @@
 														    if( key2=='additional_requirement'){
 														    	tableBody+='<td colspan=6> <b>Additional Requirement </b> </td>';
 														    	tableBody+='<td><b>'+ listVal +  '</b></td>';
+														    	total=parseInt(total)+parseInt(listVal);
 														    }
 													   })
 													   tableBody+='</tr>';
@@ -642,6 +656,7 @@
 														    if( key2=='additional_requirement'){
 														    	tableBody+='<td colspan=3> <b>Additional Requirement </b> </td>';
 														    	tableBody+='<td><b>'+ listVal +  '</b></td>';
+														    	total=parseInt(total)+parseInt(listVal);
 														    }
 													   })
 													   tableBody+='</tr>';
@@ -689,6 +704,7 @@
 														    if( key2=='additional_requirement'){
 														    	tableBody+='<td colspan=7> <b>Additional Requirement </b> </td>';
 														    	tableBody+='<td><b>'+ listVal +  '</b></td>';
+														    	total=parseInt(total)+parseInt(listVal);
 														    }
 													   })
 													   tableBody+='</tr>';
