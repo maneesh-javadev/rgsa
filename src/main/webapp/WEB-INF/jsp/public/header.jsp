@@ -186,7 +186,9 @@
 							<li><a target="_parent" href="downloadNew.html?<csrf:token uri='downloadNew.html'/>" >Downloads </a></li>
 							<li><a target="_parent"   href="manageCms.html?<csrf:token uri='manageCms.html'/>">Gallery</a></li>
 							<li><a href="#" data-toggle="modal" data-target="#contactsUs">Contact Us</a></li>
-							<li> <a target="_parent"  href="actionPlanPhysicalReport.html?<csrf:token uri='actionPlanPhysicalReport.html'/>">Reports</a></li></ul>
+							<li> <a target="_parent"  href="actionPlanPhysicalReport.html?<csrf:token uri='actionPlanPhysicalReport.html'/>">Reports</a></li> 
+							<li> <a target="_parent"  href="qprReportInstallmentWiseForPublic.html?<csrf:token uri='qprReportInstallmentWiseForPublic.html'/>">Quarter Progress Report</a></li>
+					</ul>
 					</div>
 				</nav>
 

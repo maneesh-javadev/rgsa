@@ -32,7 +32,7 @@ public class QprReportConsController {
 
     private static String VIEW_PAGE= "qprReportConsolidated";
     private static String VIEW_QPR_REPORT= "viewQprReportPage";
-    private static String VIEW_QPR_REPORT_DETAILS= "QprReport/viewQprReportPageDetails";
+    private static String VIEW_QPR_REPORT_PUBLIC= "viewQprReportPublic";
 
     @Autowired
     private UserPreference userPreference;
@@ -149,6 +149,20 @@ public class QprReportConsController {
     	return VIEW_QPR_REPORT;
     }
     
+    // fetch all Qpr report for public domain
+    @GetMapping(value = "qprReportInstallmentWiseForPublic")
+    private String fetchAllQprreportForPublic(  Model model) {
+    	try {
+    		model.addAttribute("FIN_YEAR_LIST", qprReportConService.fetchFinYearList());
+    		model.addAttribute("STATE", qprReportConService.fetchStateList());
+    		model.addAttribute("QUARTER", qprReportConService.fetchQuarterList());
+    		}catch(Exception e) {
+    			e.printStackTrace();
+    		}
+    	return VIEW_QPR_REPORT_PUBLIC;
+    }
+    
+    
     @PostMapping(value = "qprReportDetails")
     @ResponseBody
     public Map<Object,List> fetchAllQprreportDetails( HttpServletRequest  request  ) {
@@ -173,6 +187,8 @@ public class QprReportConsController {
 		      	dataMap.put("panchyatbhawanProgressReport",  qprReportConService.fetchQprPanchayatBhawan(statecode,yearId, UserType,quarterId));
 		    	dataMap.put("SATCOMIP",  qprReportConService.fetchQprSATCOM(statecode,yearId, UserType,quarterId));
 		    	dataMap.put("InstitutionalInfrastructureId",  qprReportConService.fetchQprInstitutionalInfrastructure(statecode,yearId, UserType,quarterId));
+		    	dataMap.put("InnovativeActiveId",  qprReportConService.fetchQprInnovativeActive(statecode,yearId, UserType,quarterId));
+		    	dataMap.put("adminFinancialId",  qprReportConService.fetchQpradminFinancial(statecode,yearId, UserType,quarterId));
         	}
     		}catch(Exception e) {
     			e.printStackTrace();

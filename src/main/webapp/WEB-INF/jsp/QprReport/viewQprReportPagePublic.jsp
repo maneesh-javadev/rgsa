@@ -138,7 +138,7 @@
 											    tableBody+='<tr>';
 										    	tableBody+='<td>'+ slno +  '</td>';
 											   $.each( valueList[key1], function(key2,listVal){
-												   if( key2!='additional_req_dprc' && key2!='additional_req_sprc'){
+												   if( key2!='additional_requirement'){
 												    	 if( key2=='expenditure_incurred'){
 												    		 total=parseInt(total)+parseInt(listVal);
 												    		 tableBody+='<td>'+ listVal +  '</td>';
@@ -150,14 +150,9 @@
 											   if(valueList.length==slno){
 												   tableBody+='</tr>';
 												   tableBody+='<tr  style="background-color: #dbd0d0">';
-												   tableBody+='<td> <b> </b> </td>';
 												   $.each( valueList[key1], function(key2,listVal){
-													    if( key2=='additional_req_dprc'){
-													    	tableBody+='<td colspan=2> <b>Additional Requirement DPRC </b> </td>';
-													    	tableBody+='<td><b>'+ listVal +  '</b></td>';
-													    }
-													    if( key2=='additional_req_sprc'){
-													    	tableBody+='<td colspan=2> <b>Additional Requirement SPRC </b> </td>';
+													    if( key2=='additional_requirement'){
+													    	tableBody+='<td colspan=6> <b>Additional Requirement </b> </td>';
 													    	tableBody+='<td><b>'+ listVal +  '</b></td>';
 													    }
 												   })
@@ -414,13 +409,13 @@
 													   tableBody+='<tr  style="background-color: #dbd0d0">';
 													   $.each( valueList[key1], function(key2,listVal){
 														    if( key2=='additional_requirement'){
-														    	tableBody+='<td colspan=7> <b>Additional Requirement </b> </td>';
+														    	tableBody+='<td colspan=6> <b>Additional Requirement </b> </td>';
 														    	tableBody+='<td><b>'+ listVal +  '</b></td>';
 														    }
 													   })
 													   tableBody+='</tr>';
 													   tableBody+='<tr  style="background-color: #dbd0d0">';  
-													   tableBody+='<td colspan=7> <b>Total </b> </td>';
+													   tableBody+='<td colspan=6> <b>Total </b> </td>';
 												    	tableBody+='<td><b>'+ total +  '</b></td>';
 													   tableBody+='</tr>';
 												   }  
@@ -611,96 +606,6 @@
 										}
 									   $("#InstitutionalInfrastructureId").html(tableBody);
 								  }
-							if(key=='InnovativeActiveId'){
-								var tableBody='';
-								var total=0;
-								   tableBody+= '<thead style="background-color: #eeb2b2">';
-									   tableBody+= '<td><b>S.No.<b></td>';
-									   tableBody+= '<td><b> Name of Activity </b></td>';
-									   tableBody+= '<td><b>Fund Proposed</b></td>';
-									   tableBody+= '<td><b>Expenditure Incurred </b></td>';
-								   tableBody+= '</thead>';
-									   for (var key1 in valueList) {
-										   //console.log(">>>"+valueList.length);
-										    var slno=parseInt(key1)+1;
-											    tableBody+='<tr>';
-										    	tableBody+='<td>'+ slno +  '</td>';
-										    	 $.each( valueList[key1], function(key2,listVal){
-													   if( key2!='additional_requirement'){
-													    	 if( key2=='expenditure_incurred'){
-													    		 total=parseInt(total)+parseInt(listVal);
-													    		 tableBody+='<td>'+ listVal +  '</td>';
-													    	 }else{
-													    		 tableBody+='<td>'+ listVal +  '</td>';
-													    	 }
-													    } 
-												   })
-												   if(valueList.length==slno){
-													   tableBody+='</tr>';
-													   tableBody+='<tr  style="background-color: #dbd0d0">';
-													   $.each( valueList[key1], function(key2,listVal){
-														    if( key2=='additional_requirement'){
-														    	tableBody+='<td colspan=3> <b>Additional Requirement </b> </td>';
-														    	tableBody+='<td><b>'+ listVal +  '</b></td>';
-														    }
-													   })
-													   tableBody+='</tr>';
-													   tableBody+='<tr  style="background-color: #dbd0d0">';  
-													   tableBody+='<td colspan=3> <b>Total </b> </td>';
-												    	tableBody+='<td><b>'+ total +  '</b></td>';
-													   tableBody+='</tr>';
-												   }  
-											   tableBody+='</tr>';
-										}
-									   $("#InnovativeActiveId").html(tableBody);
-								  }
-							if(key=='adminFinancialId'){
-								var tableBody='';
-								var total=0;
-								   tableBody+= '<thead style="background-color: #eeb2b2">';
-									   tableBody+= '<td><b>S.No.<b></td>';
-									   tableBody+= '<td><b> Type of Center </b></td>';
-									   tableBody+= '<td><b>Domain Experts</b></td>';
-									   tableBody+= '<td><b>Approved No. of Staff </b></td>';
-									   tableBody+= '<td><b>Approved Unit Cost</b></td>';
-									   tableBody+= '<td><b>Fund Sanctioned </b></td>';
-									   tableBody+= '<td><b>no. Of Units Filled</b></td>';
-									   tableBody+= '<td><b>Expenditure Incurred </b></td>';
-								   tableBody+= '</thead>';
-									   for (var key1 in valueList) {
-										   //console.log(">>>"+valueList.length);
-										    var slno=parseInt(key1)+1;
-											    tableBody+='<tr>';
-										    	tableBody+='<td>'+ slno +  '</td>';
-										    	 $.each( valueList[key1], function(key2,listVal){
-													   if( key2!='additional_requirement'){
-													    	 if( key2=='expenditure_incurred'){
-													    		 total=parseInt(total)+parseInt(listVal);
-													    		 tableBody+='<td>'+ listVal +  '</td>';
-													    	 }else{
-													    		 tableBody+='<td>'+ listVal +  '</td>';
-													    	 }
-													    } 
-												   })
-												   if(valueList.length==slno){
-													   tableBody+='</tr>';
-													   tableBody+='<tr  style="background-color: #dbd0d0">';
-													   $.each( valueList[key1], function(key2,listVal){
-														    if( key2=='additional_requirement'){
-														    	tableBody+='<td colspan=7> <b>Additional Requirement </b> </td>';
-														    	tableBody+='<td><b>'+ listVal +  '</b></td>';
-														    }
-													   })
-													   tableBody+='</tr>';
-													   tableBody+='<tr  style="background-color: #dbd0d0">';  
-													   tableBody+='<td colspan=7> <b>Total </b> </td>';
-												    	tableBody+='<td><b>'+ total +  '</b></td>';
-													   tableBody+='</tr>';
-												   }  
-											   tableBody+='</tr>';
-										}
-									   $("#adminFinancialId").html(tableBody);
-								  }
 							
 				   })
 			   },
@@ -711,7 +616,7 @@
 	 }
 	 
 	 
-	  function exportToPdf(id) {
+	 function exportToPdf(id) {
 		  
 		  
 		  var today = new Date();
@@ -747,13 +652,14 @@
 		    win.document.write('<h5 style=" margin-left: 35%">  https://rgsa.nic.in  </h5>');  
 		    win.document.write('<h5 style=" margin-left: 15%"> Report Generated on '+today+' and Data is updated & managed by State Departments  </h5>'); 
 		    win.document.write('<h5 style=" margin-left: 35%"> Rashtriya Gram Swaraj Abhiyan </h5>'); 
-		    win.document.write('</body></html>');
+		    win.document.write('</body></html>'); 
 		  	 win.document.close(); 	
 		  	 win.print();    
 		} 
 	</script>
 	
 </head>
+
 <section class="content">
 	<div class="container-fluid">
 		<div class="row clearfix">
@@ -1003,33 +909,6 @@
 		    </div>
 		  </div>
 		  
-		   <div class="panel panel-default">
-		    <div class="panel-heading">
-		     <a data-toggle="collapse" data-parent="" href="#collapse15">
-		      <h4 class="panel-title">
-		       Innovative Activity Quaterly Report
-		      </h4></a>
-		    </div>
-		    <div id="collapse15" class="panel-collapse collapse">
-		      <div class="panel-body">
-		      	<table class="table table-bordered" id="InnovativeActiveId"></table>
-		      </div>
-		    </div>
-		  </div>
-		  
-		  <div class="panel panel-default">
-		    <div class="panel-heading">
-		     <a data-toggle="collapse" data-parent="" href="#collapse16">
-		      <h4 class="panel-title">
-		       Admin And Financial Data Cell Quaterly Report 
-		      </h4></a>
-		    </div>
-		    <div id="collapse16" class="panel-collapse collapse">
-		      <div class="panel-body">
-		      	<table class="table table-bordered" id="adminFinancialId"></table>
-		      </div>
-		    </div>
-		  </div>
 		  
 
 </div> 

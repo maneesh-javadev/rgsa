@@ -39,4 +39,8 @@ public interface QprReportConService
 	public List fetchQprSATCOM(String statecode,String yearId,String UserType,String quarterId);
 	
 	public List fetchQprInstitutionalInfrastructure(String statecode,String yearId,String UserType,String quarterId);
+	
+	public List fetchQprInnovativeActive(String statecode,String yearId,String UserType,String quarterId) ;
+	
+	public List fetchQpradminFinancial(String statecode,String yearId,String UserType,String quarterId) ;
 }
