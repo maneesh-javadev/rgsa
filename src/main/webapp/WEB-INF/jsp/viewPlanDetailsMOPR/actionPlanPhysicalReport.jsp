@@ -33,16 +33,23 @@ $( document ).ready(function() {
 	
 	if(userType== 'M'){
 		 $("#print").hide();
+			var finYear = '${FIN_YEAR}';
+			var state = '${STATE.stateNameEnglish}';
+			
 		}
 	else if(userType== ''){
 		alert(userType);
+		var finYear = '${FIN_YEAR}';
+		var state = '${STATE.stateNameEnglish}';
+		
 		$('#print').css("display","none");
 		$('.abcv').css("display","block");
 	}
 	if(userType== 'S'){
 		 $("#print").show();
-		 var finYear ='${FIN_YEAR}';
-			var stateCode ='${STATE.stateCode}';
+			var finYear = '${FIN_YEAR}';
+			var state = '${STATE.stateNameEnglish}';
+		    var stateCode ='${STATE.stateCode}';
 			$('#selectSLC').val(stateCode);
 			$('#selectFin').val(finYear);
 			 
@@ -64,7 +71,8 @@ $( document ).ready(function() {
 
 function getformDetail()
 {
-
+	
+	
 	//alert(imageCaptua);
 	var slc =0;
 	var fin =0;
@@ -73,6 +81,7 @@ function getformDetail()
 	var flag=0;
 	if(userType== 'M'){
 	 slc=$("#selectSLC option:selected").val();
+	 $('#stateSelect').html("of "+$("#selectSLC option:selected").html()+ " for ");
 	if(slc != 0){
 		$('.abcv').css("display","none");
 		$('#print').css("display","block");
@@ -82,6 +91,9 @@ function getformDetail()
 	}
 	}
 	else if(userType== ''){
+		
+		$('#stateSelect').html("of "+$("#selectSLC option:selected").html()+ " for ");
+		$('#finSelect').html($("#selectFin option:selected").html());
 		 imageCaptua=$("#captchaAnswer").val();
 		 slc=$("#selectSLC option:selected").val();
 		 fin=$("#selectFin option:selected").val();
@@ -3385,21 +3397,31 @@ function collapseHide() {
 	    $('#captchaAnswer').focus();
 	}
 	function exportToPdf(id) {
+		
+		  
+		  var today = new Date();
+		  var dd = String(today.getDate()).padStart(2, '0');
+		  var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+		  var yyyy = today.getFullYear();
+
+		  today = mm + '/' + dd + '/' + yyyy;
+		 
+		
 	if(userType == 'M'){
 		 var stateName = $('#selectSLC').find('option:selected').text();
 		 var finYear = '${FIN_YEAR}';
-		 var header = 'Annual Plan Report of'+ stateName + 'for'+ finYear;
+		 var header = 'Annual Plan Report of  '+ stateName + '  for '+ finYear;
 		
 		}
 	else if(userType == 'S'){
 			var finYear = '${FIN_YEAR}';
-			var state = '${STATE}';
-		 var header = 'Annual Plan Report of'+ state + 'for'+ finYear;
+			var state = '${STATE.stateNameEnglish}';
+		 var header = 'Annual Plan Report of  ' + state + ' for '+ finYear;
 		}
 		else{
 			 var stateName = $('#selectSLC').find('option:selected').text();
 			 var finYear = $('#selectFin').find('option:selected').text();
-			 var header = 'Annual Plan Report of  '+ stateName +  'for'  +finYear;
+			 var header = 'Annual Plan Report of   '+ stateName +  ' for  '  +finYear;
 		}
 		
 	
@@ -3432,12 +3454,16 @@ function collapseHide() {
 
 		  var win = window.open('', '', 'height=1000,width=1000');
 		   win.document.write('<html><head>');
-		   win.document.write('<title>'+header+'</title>');  
-		   win.document.write('<h3 style="border: 4px solid black;">'+ header+ '</h3>');  
+		   /* win.document.write('<title>'+header+'</title>'); */  
+		   win.document.write('<h3 style="border: 4px solid black;text-align:center">'+ header+ '</h3>');  
 		   win.document.write(style);
 		   win.document.write('</head>');
 		   win.document.write('<body>');
-		   win.document.write(sTable);        
+		   win.document.write(sTable);  
+		   win.document.write('<h5 style=" margin-left: 35%">  https://rgsa.nic.in  </h5>');  
+		    win.document.write('<h5 style=" margin-left: 15%"> Report Generated on '+today+' and Data is updated & managed by State Departments  </h5>'); 
+		    win.document.write('<h5 style=" margin-left: 35%"> Rashtriya Gram Swaraj Abhiyan </h5>'); 
+		  
 		   win.document.write('</body></html>');
 		  win.document.close();
 		  win.print();    
@@ -3454,8 +3480,21 @@ function collapseHide() {
 			<div class="table-responsive">
 				<div class="card">
 					<div class="header">
-						<h3 style="padding-top: 25px;">&nbsp;&nbsp; Action Plan
-							Physical Report</h3>
+						
+						<c:choose>
+						<c:when test="${user_type eq 'S'}">     
+						<h3 style="padding-top: 25px;">&nbsp;&nbsp; Action Plan Report of <c:out value=" ${STATE.stateNameEnglish}"></c:out> for <c:out value="${FIN_YEAR}"></c:out> </h3> 
+						</c:when>
+						   
+						<c:when test="${user_type eq 'M'}">
+					<h3 style="padding-top: 25px;">&nbsp;&nbsp; Action Plan Report  <label id="stateSelect" ></label>  <c:out value="${FIN_YEAR}"></c:out> </h3> 
+						</c:when>
+						<c:otherwise>
+						<h3 style="padding-top: 25px;">&nbsp;&nbsp; Action Plan Report  <label id="stateSelect" ></label>  <label id="finSelect" ></label> </h3> 
+						</c:otherwise>
+						
+						</c:choose>
+						
 					</div>
 					<br />
 					<%-- <form:form method="post" name="" action=""> --%>
