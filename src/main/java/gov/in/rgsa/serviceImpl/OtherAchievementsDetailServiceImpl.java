@@ -6,6 +6,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import gov.in.rgsa.dao.CommonRepository;
+import gov.in.rgsa.entity.FinYear;
+import gov.in.rgsa.entity.QuarterDuration;
+import gov.in.rgsa.entity.State;
 import gov.in.rgsa.service.OtherAchievementsDetailService;
 
 @Service
@@ -15,6 +18,30 @@ public class OtherAchievementsDetailServiceImpl implements OtherAchievementsDeta
 	@Autowired
 	private CommonRepository commonRepository;
 
+	
+	
+	public List<FinYear> fetchFinYearList()
+	{
+		return commonRepository.findAll("FETCH_ALL_FIN_YEAR", null);
+	}
+
+	public List<State> fetchStateList()
+	{
+		return commonRepository.findAll("GET_ALL_STATE_LIST", null);
+	}
+
+	public Object fetchfindQuaterList()
+	{
+		return commonRepository.findAll("GET_ALL_STATE_LIST", null);
+	}
+
+	public List<QuarterDuration> fetchQuarterList()
+	{
+
+		return commonRepository.findAll("FETCH_QUARTER_DURATION", null);
+	}
+	
+	
 	@Override
 	public String basicOrientationTrainingofER(Integer trCategory)
 	{

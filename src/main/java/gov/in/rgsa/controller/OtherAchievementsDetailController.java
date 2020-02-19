@@ -6,6 +6,8 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -19,6 +21,8 @@ public class OtherAchievementsDetailController {
 
     @Autowired
     private OtherAchievementsDetailService otherAchievementsDetailService;
+    
+    private String KPI_HEADER_PAGE="kpiheaderpage";
 	
 	@ResponseBody
 	@RequestMapping(value = "basicOrientationTrainingofER", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
@@ -60,5 +64,18 @@ public class OtherAchievementsDetailController {
 		}
 		 
 		return list;
+	}
+	
+	
+	@ResponseBody
+	@RequestMapping(value = "kpiHeaderPage", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
+	public String kpiHeaderPage(@RequestParam(value = "kpiName", required = false) String kpiName) {
+		try {
+			 
+		}catch(Exception e)
+		{
+			e.printStackTrace();
+		}
+		return KPI_HEADER_PAGE ;
 	}
 }

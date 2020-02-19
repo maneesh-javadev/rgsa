@@ -830,7 +830,7 @@
 	<div class="panel-group" id="accordion">
  	 
 			   <div class="panel panel-default">
-			    <div class="panel-heading">
+			    <div class="panel-heading" >
 			    <a data-toggle="collapse" data-parent="" href="#collapse1">
 			      <h4 class="panel-title">
 			        Training Activities

@@ -160,7 +160,7 @@ public class QprReportConsController {
     			e.printStackTrace();
     		}
     	return VIEW_QPR_REPORT_PUBLIC;
-    }
+    } 
     
     
     @PostMapping(value = "qprReportDetails")

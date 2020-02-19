@@ -243,7 +243,7 @@
 								</div>
 								<div class="row">
 									<div class="col-lg-12">
-										<a href="#">	<span class="counter ng-binding" id="eComputerizationId" >0000</span>
+										<a href="kpiHeaderPage.html?<csrf:token uri='kpiHeaderPage.html'/>">	<span class="counter ng-binding" id="eComputerizationId" >0000</span>
 											<p>Computerization</p>
 										</a>
 									</div>
