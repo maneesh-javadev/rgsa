@@ -967,13 +967,22 @@
 	</definition>
 	
 
-	<definition name="viewQprReportPublic"
+	<definition name="actionPlanPhysicalReportPublicDomain"
+
 		extends="base.definition.withoutSidBar">
 		<put-attribute name="title"
 			value="View Report" />
 		<put-attribute name="body"
-			value="/WEB-INF/jsp/QprReport/viewQprReportPagePublic.jsp" />
-	</definition>
+       value="/WEB-INF/jsp/viewPlanDetailsMOPR/actionPlanPhysicalReport.jsp" />
+	 </definition>
 	
+
+     <definition name="viewQprReportPublic"
+       extends="base.definition.withoutSidBar">
+		<put-attribute name="title"
+			value="View Report"/>
+	   <put-attribute name="body" value="/WEB-INF/jsp/QprReport/viewQprReportPagePublic.jsp" />
+	</definition>
+
 	
 </tiles-definitions>
