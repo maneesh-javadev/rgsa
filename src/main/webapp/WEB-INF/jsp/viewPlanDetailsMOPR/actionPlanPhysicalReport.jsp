@@ -38,7 +38,7 @@ $( document ).ready(function() {
 			
 		}
 	else if(userType== ''){
-		alert(userType);
+		
 		var finYear = '${FIN_YEAR}';
 		var state = '${STATE.stateNameEnglish}';
 		
@@ -67,7 +67,43 @@ $( document ).ready(function() {
 	$("#trainPP").hide();
 });
 
+function getStateList(){
+	var fin =$("#selectFin option:selected").val();
+	
+	 		$
+			.ajax({
+				type : "GET",
+				contentType : "application/json",
+				url : "getStateList.html?<csrf:token uri='getStateList.html'/>&finYear="+fin,
+				dataType : 'json',
+				cache : false,
+				timeout : 100000,
+				success : function(data) {
+				   var temp = $('#selectSLC'); // cache it
+			        temp.empty();
+			        $("#selectSLC").append("<option value=''>--Select--</option>");
 
+			        $.each(data, function (i, value) {      // bind the dropdown list using json result              
+			            $('<option>',
+			               {
+			                   value: i,
+			                   text: value
+			               }).html(value).appendTo("#selectSLC");
+			        });
+			        $('#selectSLC').trigger("chosen:updated");
+			    
+					/*  $.each(data, function (index, value) {
+		                    // APPEND OR INSERT DATA TO SELECT ELEMENT.
+		                    $('#selectSLC').append('<option value="' + index + '">' + value + '</option>');
+		                });
+						 */
+	 },error : function(e) {
+			console.log(e);
+		}
+			}); 	
+		
+	 
+}
 
 function getformDetail()
 {
@@ -461,7 +497,7 @@ function collapseHide() {
 															 
 												
 												divTemplate.append(table);
-												rowCount(count);
+												
 
 											} else if (key == "6") {
 												var divTemplate = $("#collapseDIV8");
@@ -645,7 +681,7 @@ function collapseHide() {
 																
 															
 												divTemplate.append(table);
-												rowCountPP(count);
+												
 											} else if (key == "11") {
 												
 												var divTemplate = $("#collapseDIV14");
@@ -1127,7 +1163,7 @@ function collapseHide() {
 															 tr = $("<TR/>");
 															 
 												divTemplate.append(table);
-												rowCountTRA(count);
+											
 
 											} else if (key == "3") {
 												var divTemplate = $("#collapsediv4");
@@ -1590,7 +1626,7 @@ function collapseHide() {
 															
 															
 												divTemplate.append(table);
-												rowCountATS(count);
+											
 											}
 
 											else if (key == "8") {
@@ -1778,7 +1814,7 @@ function collapseHide() {
 																
 														
 												divTemplate.append(table);
-												rowCountAF(count);
+												
 											}  if (key == "10") {
 												var divTemplate = $("#collapseDIV13");
 												$("#trainIE").show();
@@ -2002,7 +2038,7 @@ function collapseHide() {
 																tr.append(tdnext);
 													
 												divTemplate.append(table);
-												rowCountIE(count);
+												
 											}  if (key == "12") {
 												var divTemplate = $("#collapseDIV15");
 												 
@@ -2112,7 +2148,7 @@ function collapseHide() {
 														
 														
 												divTemplate.append(table);
-												rowCountPMU(count);
+											
 											}
 											else if (key == "7") {
 												var divTemplate = $("#collapseDIV9");
@@ -2293,7 +2329,7 @@ function collapseHide() {
 																
 														
 												divTemplate.append(table);
-												rowCountDLS(count);
+												
 											}
 											else if (key == "14") {
 												var divTemplate = $("#collapsediv12");
@@ -3030,7 +3066,7 @@ function collapseHide() {
 															 
 												
 												divTemplate.append(table);
-												rowCount(count);
+												
 
 											}if (key == "9") {
 												var divTemplate = $("#collapsedIV11");
@@ -3210,7 +3246,7 @@ function collapseHide() {
 																tr.append(tdnext);
 													
 												divTemplate.append(table);
-												rowCountIE(count);
+												
 											}
 											
 										});
@@ -3222,173 +3258,6 @@ function collapseHide() {
 
 	}
 												
-												
-												
-												
-	function rowCount(ind){
-		var noOfP=0;
-		var addRequi=0;
-		var unitFund=0;
-		
-		for (var i = 0; i < ind; i++) {
-			//var r=$('#table1':noOfParticipant_i).val();
-			// var r=$('#table1').children('noOfParticipant_'+i).text();
-			//alert(r);
-			noOfP += +$('#noOfParticipant_'+i).html();	
-			
-			unitFund +=+$('#unitFund_'+i).html();
-		}
-		$('#totalCost').val(+unitFund);
-		
-		$('#noOfPart').val(+noOfP);
-		addRequi= $('#addRequ').val();
-		$('#fund').val(+unitFund + +addRequi);
-		}
-	function rowCountTRA(ind){
-		var unitCost=0;
-		var addRequi=0;
-		var unitFund=0;
-		
-		for (var i = 0; i < ind; i++) {
-			//var r=$('#table1':noOfParticipant_i).val();
-			// var r=$('#table1').children('noOfParticipant_'+i).text();
-			//alert(r);
-			unitCost += +$('#unitFund_'+i).html();	
-			
-			//unitFund +=+$('#unitFund_'+i).html();
-		}
-		$('#taTotFund').val(+unitCost);
-		
-		//$('#noOfPart').val(+unitCost);
-		addRequi= $('#addRequTRA').html();
-		if(addRequi ==null){
-			addRequi=0;
-		}
-		$('#fundTa').val(+unitCost + +addRequi);
-		}
-	function rowCountATS(ind){
-		var unitCost=0;
-		var addRequi=0;
-		var unitFund=0;
-		
-		for (var i = 0; i < ind; i++) {
-			//var r=$('#table1':noOfParticipant_i).val();
-			// var r=$('#table1').children('noOfParticipant_'+i).text();
-			//alert(r);
-			unitCost = +$('#unitCost_'+i).html();	
-			if(isNaN(unitCost)) {
-				 unitCost = 0;
-				}
-			unitFund +=unitCost;
-			//unitFund +=+$('#unitFund_'+i).html();
-		}
-		$('#taTotFundATS').val(+unitFund);
-		
-		//$('#noOfPart').val(+unitCost);
-		addRequi= $('#addRequATS').html();
-		if(addRequi ==null){
-			addRequi=0;
-		}
-		$('#fundATS').val(+unitFund + +addRequi);
-		}
-	function rowCountPMU(ind){
-		var unitCost=0;
-		
-		for (var i = 0; i < ind; i++) {
-			unitCost += +$('#total_'+i).html();	
-			
-			//unitFund +=+$('#unitFund_'+i).html();
-		}
-		$('#fundPMU').val(+unitCost);
-		
-		
-		}
-
-	function rowCountIE(ind){
-		var noOfP=0;
-		var addRequi=0;
-		var unitFund=0;
-		
-		for (var i = 0; i < ind; i++) {
-			//var r=$('#table1':noOfParticipant_i).val();
-			// var r=$('#table1').children('noOfParticipant_'+i).text();
-			//alert(r);
-			unitFund += +$('#unitFundIE_'+i).html();	
-			
-			//unitFund +=+$('#unitFund_'+i).html();
-		}
-		//$('#totalCost').val(+unitFund);
-		
-		$('#taTotFundIE').val(+unitFund);
-		 addRequi= $('#addRequIE').val();
-		$('#fundIE').val(+unitFund + +addRequi);
-		}
-	function rowCountAF(ind){
-		var unitCost=0;
-		var addRequi=0;
-		var unitFund=0;
-		
-		for (var i = 0; i < ind; i++) {
-			//var r=$('#table1':noOfParticipant_i).val();
-			// var r=$('#table1').children('noOfParticipant_'+i).text();
-			//alert(r);
-			unitCost += +$('#unitFundAF_'+i).html();	
-			if(isNaN(unitCost)) {
-				 unitCost = 0;
-				}
-			unitFund +=unitCost;
-			//unitFund +=+$('#unitFund_'+i).html();
-		}
-		//$('#totalCost').val(+unitFund);
-		
-		$('#taTotFundAF').val(+unitFund);
-		 addRequi= $('#addRequAF').val();
-		$('#fundAF').val(+unitFund + +addRequi);
-		}
-	function rowCountDLS(ind){
-		var unitCost=0;
-		var addRequi=0;
-		var unitFund=0;
-		
-		for (var i = 0; i < ind; i++) {
-			//var r=$('#table1':noOfParticipant_i).val();
-			// var r=$('#table1').children('noOfParticipant_'+i).text();
-			//alert(r);
-			unitCost += +$('#unitFundDLS_'+i).html();	
-			if(isNaN(unitCost)) {
-				 unitCost = 0;
-				}
-			unitFund +=unitCost;
-			//unitFund +=+$('#unitFund_'+i).html();
-		}
-		//$('#totalCost').val(+unitFund);
-		
-		$('#taTotFundDLS').val(+unitFund);
-		 addRequi= $('#addRequDLS').val();
-		$('#fundDLS').val(+unitFund + +addRequi);
-		}
-	function rowCountPP(ind){
-		var unitCost=0;
-		var addRequi=0;
-		var unitFund=0;
-		
-		for (var i = 0; i < ind; i++) {
-			//var r=$('#table1':noOfParticipant_i).val();
-			// var r=$('#table1').children('noOfParticipant_'+i).text();
-			//alert(r);
-			unitCost += +$('#unitFundPP_'+i).html();	
-			if(isNaN(unitCost)) {
-				 unitCost = 0;
-				}
-			unitFund +=unitCost;
-			//unitFund +=+$('#unitFund_'+i).html();
-		}
-		//$('#totalCost').val(+unitFund);
-		
-		$('#taTotFundPP').val(+unitFund);
-		 addRequi= $('#addRequPP').val();
-		$('#fundPP').val(+unitFund + +addRequi);
-		}
 		
 	function refreshCaptcha()
 	{
@@ -3478,6 +3347,7 @@ function collapseHide() {
 	<div class="container-fluid">
 		<div class="row clearfix">
 			<div class="table-responsive">
+				<div class="col-lg-12">
 				<div class="card">
 					<div class="header">
 						
@@ -3668,7 +3538,7 @@ function collapseHide() {
 											<h4 class="panel-title">
 												<a class="collapsed" role="button" data-toggle="collapse"
 													data-parent="#accordion" href="#collapse8"
-													aria-expanded="false" aria-controls="collapse8"> Pesa
+													aria-expanded="false" aria-controls="collapse8"> PESA
 													Plan <span
 													class="glyphicon glyphicon-chevron-right pull-right"
 													aria-hidden="true"></span>
@@ -3864,85 +3734,61 @@ function collapseHide() {
 								</div>
 									
 							</div>
-						<div class="card abcv">
+						<div class=" abcv">
                         <div class="container">
                           <div class="body">
 							<div class="row ">
-							<div class="form-group">
 							
 							<c:if test="${showFin}">
-									<div class="col-sm-12">
-							<div class="col-sm-2">
+									<div class="col-md-3">
 							
-										<label for="QuaterId1"><strong>Select FinYear :</strong></label>
-									</div>
-									<div class="col-sm-4">
-										<select name="" id="selectFin" 
+							
+									<label class="control-label" > Financial year : </label>
+										<select name="" id="selectFin" onchange="getStateList();"
 											
 											class="form-control">
-											<option value="0">Select FinYear</option>
+											<option value="0">--Select--</option>
 											<c:forEach items="${FIN_YEAR_LIST}" var="year">
 												<option value="${year.yearId}">${year.finYear}</option>
-											</c:forEach>
+											</c:forEach> 
 										</select>
 									</div>
-									</div>
+									
 							</c:if>
 								
 							
 							<c:if test="${ShowState}">
-								<div class="col-sm-12">
-							<div class="col-sm-2">
-							
-									
-										<label ><strong>Select State :</strong></label>
-									</div>
-									
-							<div class="col-sm-4">
-							
-									
+								<div class="col-md-3">
+										<label class="control-label" > State: </label>
 										<select name="" id="selectSLC" 
-											
 											class="form-control">
-											<option value="0">Select State:</option>
+											<%-- <option value="0">--Select--</option>
 											<c:forEach items="${stateList}" var="slc">
 												<option value="${slc.stateCode}">${slc.stateNameEnglish}</option>
-											</c:forEach>
+											</c:forEach> --%>
 										</select>
-									
-								</div>
 								</div>
 								</c:if>
+							 <c:if test="${showFin}"> 
+							 <div class="col-md-3">
+											<label class="control-label" > Please enter Capatcha: </label>
+								<input cssStyle="color:black;" id="captchaAnswer"  placeholder="Captcha Answer" class="form-control"  autocomplete="off" required="required"/>
 								
-								
-							
-							
-						 <c:if test="${showFin}"> 
-									<div class="col-sm-12">
-							<div class="col-sm-2">
-							<label class="control-label">Please enter Capatcha</label>
-							</div><div class="col-sm-4">  
-							<input cssStyle="color:black;" id="captchaAnswer"  placeholder="Captcha Answer" class="form-control"  autocomplete="off" required="required"/>
-									</div>
 							<div class="col-sm-2">  
-									<img src="captchaImage" width="200px" id="img_Capatcha" /></div>
-									<div class="col-sm-1">
+									<img src="captchaImage" width="208px" id="img_Capatcha" /></div>
+									<div class="col-sm-10">
 									 <i class="fa fa-refresh pull-right" onclick="refreshCaptcha()"></i>
 								
-								</div>
-								
+									
+							</div>
 							</div>
 							 </c:if> 
 							<c:if test="${ShowState}">
-								<div class="col-sm-12">
-							<div class="col-sm-2">
+								
+							<div class="col-md-3" style="margin-top:2%; text-align:right; ">
+							 <button class="btn btn-primary" type="button" onclick="getformDetail();"> Get Detail</button>
 							</div>
 							
-							<div class="col-sm-4">
-							
-							 <button class="btn  bg-primary" type="button" onclick="getformDetail();"> Get Detail</button>
-							</div>
-							</div>
 							</c:if>
 							</div>
 							</div>

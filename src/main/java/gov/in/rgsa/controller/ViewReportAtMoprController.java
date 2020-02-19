@@ -64,7 +64,7 @@ public class ViewReportAtMoprController {
 	private static final String Action_Plan_Physical_Report = "actionPlanPhysicalReport";
 	private static final String ACTION_PLAN_REPORT_FOR_PUBLIC_DOMAIN = "actionPlanReportForPublicDomain";
 	private static final String ACTION_PLAN_REPORT_FOR_MINISTORY_DOMAIN = "actionPlanReportForMinistoryDomain";
-	
+	private static final String Action_Plan_Physical_Report_Public_Domain = "actionPlanPhysicalReportPublicDomain";
 	
 	
 	@Autowired
@@ -241,25 +241,25 @@ public class ViewReportAtMoprController {
 	public String getReportData(Model model) {
 		List<State> getStateList = lgdService.getAllStateList();
 		model.addAttribute("user_type", userPreference.getUserType());
-	
+		       
 		if(("S").equals(userPreference.getUserType())){
 			model.addAttribute("ShowState", Boolean.FALSE);
 			model.addAttribute("showFin", Boolean.FALSE);
 			 model.addAttribute("FIN_YEAR", userPreference.getFinYear());
-			model.addAttribute("STATE", lGDService.getStateDetailsByCode(userPreference.getStateCode()));
+			//model.addAttribute("STATE", lGDService.getStateDetailsByCode(userPreference.getStateCode()));
 		
 		}
 		else if(("M").equals(userPreference.getUserType())) {
-			model.addAttribute("stateList", getStateList);
+			//model.addAttribute("stateList", getStateList);
 			model.addAttribute("ShowState", Boolean.TRUE);
 			 model.addAttribute("FIN_YEAR", userPreference.getFinYear());
 			//model.addAttribute("showFin", Boolean.TRUE);
 		}else {
 			model.addAttribute("FIN_YEAR_LIST", viewReportAtMoprService.getFinYearList());
-			model.addAttribute("stateList", getStateList);
+			//model.addAttribute("stateList", getStateList);
 			model.addAttribute("ShowState", Boolean.TRUE);
 			model.addAttribute("showFin", Boolean.TRUE);
-	
+	    return Action_Plan_Physical_Report_Public_Domain;
 		}
 		return Action_Plan_Physical_Report;
 	}
@@ -284,6 +284,31 @@ public class ViewReportAtMoprController {
 			CaptchaValidator captchaValidator = new CaptchaValidator();	
 		return captchaValidator.validateCaptcha(httpSession, captchaAnswer);
 		
+	}
+	
+	@GetMapping(value ="getStateList")
+	@ResponseBody
+	public Map<Integer, String> getStateList(String finYear, Model model,HttpSession httpSession, RedirectAttributes re) {
+		Map<Integer, String> map = new HashMap<>();
+		if(("S").equals(userPreference.getUserType())){
+			List<State> states =   moprService.getStateListApprovedbyCEC(userPreference.getFinYearId());
+			for (State state : states) {
+				map.put(state.getStateCode(), state.getStateNameEnglish());
+			}
+		   }else if(("M").equals(userPreference.getUserType())) {
+			List<State> states =   moprService.getStateListApprovedbyCEC(userPreference.getFinYearId());
+			for (State state : states) {
+				map.put(state.getStateCode(), state.getStateNameEnglish());
+			}
+		}
+		else {
+			List<State> states =   moprService.getStateListApprovedbyCEC(Integer.valueOf(finYear));
+			for (State state : states) {
+				map.put(state.getStateCode(), state.getStateNameEnglish());
+			}
+		}
+		return map;
+				
 	}
 	
 }
