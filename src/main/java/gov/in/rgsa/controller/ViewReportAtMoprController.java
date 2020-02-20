@@ -251,6 +251,8 @@ public class ViewReportAtMoprController {
 		}
 		else if(("M").equals(userPreference.getUserType())) {
 			//model.addAttribute("stateList", getStateList);
+			List<State> states =   moprService.getStateListApprovedbyCEC(userPreference.getFinYearId());
+			model.addAttribute("stateList", states);
 			model.addAttribute("ShowState", Boolean.TRUE);
 			 model.addAttribute("FIN_YEAR", userPreference.getFinYear());
 			//model.addAttribute("showFin", Boolean.TRUE);
@@ -290,22 +292,11 @@ public class ViewReportAtMoprController {
 	@ResponseBody
 	public Map<Integer, String> getStateList(String finYear, Model model,HttpSession httpSession, RedirectAttributes re) {
 		Map<Integer, String> map = new HashMap<>();
-		if(("S").equals(userPreference.getUserType())){
-			List<State> states =   moprService.getStateListApprovedbyCEC(userPreference.getFinYearId());
-			for (State state : states) {
-				map.put(state.getStateCode(), state.getStateNameEnglish());
-			}
-		   }else if(("M").equals(userPreference.getUserType())) {
-			List<State> states =   moprService.getStateListApprovedbyCEC(userPreference.getFinYearId());
-			for (State state : states) {
-				map.put(state.getStateCode(), state.getStateNameEnglish());
-			}
-		}
-		else {
+	
 			List<State> states =   moprService.getStateListApprovedbyCEC(Integer.valueOf(finYear));
 			for (State state : states) {
 				map.put(state.getStateCode(), state.getStateNameEnglish());
-			}
+			
 		}
 		return map;
 				
