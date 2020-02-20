@@ -26,7 +26,9 @@
    <link href="${pageContext.request.contextPath}/resources/css/bootstrap.min.css" rel="stylesheet">
 	<script type="text/javascript"
 		src="${pageContext.request.contextPath}/resources/js/utils/captcha.js"></script>
+
 <script>
+
 var userType ='${user_type}';
 $( document ).ready(function() {
 	//alert(userType);

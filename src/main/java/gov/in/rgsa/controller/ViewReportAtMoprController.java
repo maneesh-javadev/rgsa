@@ -246,7 +246,7 @@ public class ViewReportAtMoprController {
 			model.addAttribute("ShowState", Boolean.FALSE);
 			model.addAttribute("showFin", Boolean.FALSE);
 			 model.addAttribute("FIN_YEAR", userPreference.getFinYear());
-			//model.addAttribute("STATE", lGDService.getStateDetailsByCode(userPreference.getStateCode()));
+			model.addAttribute("STATE", lGDService.getStateDetailsByCode(userPreference.getStateCode()));
 		
 		}
 		else if(("M").equals(userPreference.getUserType())) {

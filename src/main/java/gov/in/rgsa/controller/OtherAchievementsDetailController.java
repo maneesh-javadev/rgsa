@@ -88,6 +88,7 @@ public class OtherAchievementsDetailController {
 		Map<String, List<Object>> map= new HashMap<>();
 		try {
 			map.put("eSPMU", otherAchievementsDetailService.fetchEspmu(kpiName));
+			map.put("eDPMU", otherAchievementsDetailService.fetchEspmu(kpiName));
 			
 		}catch(Exception e)
 		{
