@@ -3758,6 +3758,7 @@ function collapseHide() {
 								
 							
 							<c:if test="${ShowState}">
+								<c:if test="${user_type ne 'M'}">
 								<div class="col-md-3">
 										<label class="control-label" > State: </label>
 										<select name="" id="selectSLC" 
@@ -3768,6 +3769,7 @@ function collapseHide() {
 											</c:forEach> --%>
 										</select>
 								</div>
+								</c:if>
 								<c:if test="${user_type eq 'M'}">
 								<div class="col-md-3">
 										<label class="control-label" > State: </label>
