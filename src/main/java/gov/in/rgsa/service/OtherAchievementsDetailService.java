@@ -1,6 +1,19 @@
 package gov.in.rgsa.service;
 
+import java.util.List;
+
+import gov.in.rgsa.entity.FinYear;
+import gov.in.rgsa.entity.QuarterDuration;
+import gov.in.rgsa.entity.State;
+
 public interface OtherAchievementsDetailService {
+	
+	public List<FinYear> fetchFinYearList();
+
+	public List<State> fetchStateList();
+
+	public List<QuarterDuration> fetchQuarterList();
+	
 	
     public String basicOrientationTrainingofER(Integer trCategory);
     
@@ -14,4 +27,5 @@ public interface OtherAchievementsDetailService {
     
     public String panchyatStakehlderTrained();
 
+    public List fetchEspmu(String kpiName);
 }

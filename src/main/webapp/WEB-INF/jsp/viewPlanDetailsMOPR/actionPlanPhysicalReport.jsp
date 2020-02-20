@@ -3768,6 +3768,18 @@ function collapseHide() {
 											</c:forEach> --%>
 										</select>
 								</div>
+								<c:if test="${user_type eq 'M'}">
+								<div class="col-md-3">
+										<label class="control-label" > State: </label>
+										<select name="" id="selectSLC" 
+											class="form-control">
+											 <option value="0">--Select--</option>
+											<c:forEach items="${stateList}" var="slc">
+												<option value="${slc.stateCode}">${slc.stateNameEnglish}</option>
+											</c:forEach> 
+										</select>
+								</div>
+								</c:if>
 								</c:if>
 							 <c:if test="${showFin}"> 
 							 <div class="col-md-3">

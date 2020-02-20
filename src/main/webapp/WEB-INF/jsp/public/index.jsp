@@ -229,7 +229,7 @@
 								<p class="underline ">e- enablement of Panchayats</p>
 								<div class="row">
 									<div class="col-lg-12">
-										<a href="#">	<span class="counter ng-binding" data-ng-value="0000" id="eSPMUId">0000</span>
+										<a  onclick="onloadKPI('eSPMUId');" >	<span class="counter ng-binding" data-ng-value="0000" id="eSPMUId">0000</span>
 											<p>e- SPMU</p>
 										</a>
 									</div>
@@ -243,7 +243,7 @@
 								</div>
 								<div class="row">
 									<div class="col-lg-12">
-										<a href="#">	<span class="counter ng-binding" id="eComputerizationId" >0000</span>
+										<a href="kpiHeaderPage.html?<csrf:token uri='kpiHeaderPage.html'/>">	<span class="counter ng-binding" id="eComputerizationId" >0000</span>
 											<p>Computerization</p>
 										</a>
 									</div>
@@ -256,6 +256,13 @@
 		</div>
 	</div>
 </section>
+   
+  <!-- Modal -->
+  <div class="modal fade" id="eSPMU" role="dialog">
+   
+  </div>
+  
+  
 <!--  open below div for Latest Uploaded content -->
 <section class="gallerysec">
 	<div class="container-fluid">
@@ -387,37 +394,74 @@
 		<script type="text/javascript"
 		src="${pageContext.request.contextPath}/resources/js/utils/captcha.js"></script>
 		
-		
-<script type="text/javascript"> 
+		<script type="text/javascript"
+		src="${pageContext.request.contextPath}/resources/js/kpi/kpiCommon.js"></script>
+	
 
-setTimeout(function(){ voteViaAjax(0); }, 100);
-function voteViaAjax(detailId){ 
-   $.ajax({
-   type : "POST",
-   contentType : "application/json",
-   url : "basicOrientationTrainingofER.html?<csrf:token uri='basicOrientationTrainingofER.html'/>&detailId="+detailId,
-   dataType : 'json',
-   cache : false,
-   timeout : 100000,
-   success : function(data) {
-	$("#basicOrientationTrainingofERId").html(data[0]);
-	$("#refreshertraningtoERId").html(data[1]);
-	$("#shg_pri_convergenceID").html(data[2]);
-	$("#eSPMUId").html(data[3]);
-	$("#eDPMUId").html(data[4]);
-	$("#eComputerizationId").html(data[5]);
-	$("#bhawansConstructedId").html(data[6]);
-	$("#bhawansRepairedId").html(data[7]);
-	$("#CSCsId").html(data[8]);
-	$("#withinStateId").html(data[9]);
-	$("#OutsideStateId").html(data[10]);
-	$("#panchyatStakeholderId").html(data[11]);
-	$("#technicalsupporttoGPsId").html(data[12]);
-   },
-   error : function(e) {
-    console.log(e);
-   }
-  });
-}
-</script>
+		<script>
+		setTimeout(function(){ voteViaAjax(0); }, 100);
+		function voteViaAjax(detailId){ 
+		   $.ajax({
+		   type : "POST",
+		   contentType : "application/json",
+		   url : "basicOrientationTrainingofER.html?<csrf:token uri='basicOrientationTrainingofER.html'/>&detailId="+detailId,
+		   dataType : 'json',
+		   cache : false,
+		   timeout : 100000,
+		   success : function(data) {
+			$("#basicOrientationTrainingofERId").html(data[0]);
+			$("#refreshertraningtoERId").html(data[1]);
+			$("#shg_pri_convergenceID").html(data[2]);
+			$("#eSPMUId").html(data[3]);
+			$("#eDPMUId").html(data[4]);
+			$("#eComputerizationId").html(data[5]);
+			$("#bhawansConstructedId").html(data[6]);
+			$("#bhawansRepairedId").html(data[7]);
+			$("#CSCsId").html(data[8]);
+			$("#withinStateId").html(data[9]);
+			$("#OutsideStateId").html(data[10]);
+			$("#panchyatStakeholderId").html(data[11]);
+			$("#technicalsupporttoGPsId").html(data[12]);
+		   },
+		   error : function(e) {
+		    console.log(e);
+		   }
+		  });
+		}
 		
+		
+		function onloadKPI(kpiName){			
+			 $.ajax({
+				   type : "GET",
+				   contentType : "application/json",
+				   url : "kpiRajeevPage.html?<csrf:token uri='kpiRajeevPage.html'/>&kpiName="+kpiName,
+				   dataType : 'json',
+				   cache : false,
+				   timeout : 100000,
+				   success : function(data) {
+					   $.each( data, function(key,valueList){
+							  // console.log("key = " + key + " valueList = " + valueList);
+								if(key=='eSPMU'){
+									  var tableBody='';
+									  var total=0;
+									   tableBody+= '<thead style="background-color: #eeb2b2">';
+									   tableBody+= '<td><b>S.No.<b></td>';
+									   tableBody+= '<td><b> Activity Name </b></td>';
+									   tableBody+= '<td><b>No. Of Unit Proposed</b></td>';
+									   tableBody+= '<td><b>Fund Proposed </b></td>';
+									   tableBody+= '<td><b>No. of Days Completed </b></td>';
+									   tableBody+= '<td><b>No. of Units Completed </b></td>';
+									   tableBody+= '<td><b>Expenditure Incurred </b></td>';
+									   tableBody+= '</thead>';
+									
+										   $("#eSPMU").html(tableBody);
+									  }
+					   })
+				   },
+				   error : function(e) {
+				    console.log(e);
+				   }
+				 
+			 });
+			 }
+		</script>
