@@ -236,7 +236,7 @@
 								</div>
 								<div class="row">
 									<div class="col-lg-12">
-										<a href="#">	<span class="counter ng-binding" id="eDPMUId">0000</span>
+										<a onclick="onloadKPI('eDPMUId');">	<span class="counter ng-binding" id="eDPMUId">0000</span>
 											<p>e- DPMU</p>
 										</a>
 									</div>
@@ -258,10 +258,27 @@
 		</div>
 	</div>
 </section>
-   
+   <div id="myModal" class="modal fade" role="dialog">
+  <div class="modal-dialog modal-lg">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title" id ="header"></h4>
+      </div>
+      <div class="modal-body">
+        <table class="table table-bordered" id="eSPMU">  </table>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+    </div>
+    </div>
   <!-- Modal -->
-  <div class="modal fade" id="eSPMU" role="dialog">
-   
+  <div class="modal fade" id="" role="dialog">
+    
   </div>
   
   
@@ -428,7 +445,7 @@
 
 		<script>
 		
-		function onloadKPI(kpiName){			
+		function onloadKPI(kpiName){			 
 			 $.ajax({
 				   type : "GET",
 				   contentType : "application/json",
@@ -444,16 +461,61 @@
 									  var total=0;
 									   tableBody+= '<thead style="background-color: #eeb2b2">';
 									   tableBody+= '<td><b>S.No.<b></td>';
-									   tableBody+= '<td><b> Activity Name </b></td>';
-									   tableBody+= '<td><b>No. Of Unit Proposed</b></td>';
-									   tableBody+= '<td><b>Fund Proposed </b></td>';
-									   tableBody+= '<td><b>No. of Days Completed </b></td>';
-									   tableBody+= '<td><b>No. of Units Completed </b></td>';
-									   tableBody+= '<td><b>Expenditure Incurred </b></td>';
-									   tableBody+= '</thead>';
-									
-										   $("#eSPMU").html(tableBody);
-									  }
+									   tableBody+= '<td><b> State Name(In English) </b></td>';
+									   tableBody+= '<td><b>	No. of Posts approved</b></td>';
+									   tableBody+= '<td><b>No of Post filled </b></td>';
+									   tableBody+= '<td><b>Fin Year </b></td>';
+									  tableBody+= '</thead>';
+									   for (var key1 in valueList) {
+										   //console.log(">>>key1===="+key1);
+										    var slno=parseInt(key1)+1;
+											    tableBody+='<tr>';
+										   	 tableBody+='<td>'+ slno +  '</td>';
+										   
+										   $.each( valueList[key1], function(key2,listVal){
+											    //console.log("key2 = " + key2 + " listVal = " + listVal); 
+												 tableBody+='<td>'+ listVal +  '</td>';
+												
+										   })
+											   
+										   tableBody+='</tr>';
+										}
+									   $('#header').html("eSPMU");
+									   $('#myModal').modal('show');
+										   $('#eSPMU').html(tableBody);
+										   
+										   //$("#myModal").show();
+									  }else if(key=='eDPMU'){
+										  var tableBody='';
+										  var total=0;
+										   tableBody+= '<thead style="background-color: #eeb2b2">';
+										   tableBody+= '<td><b>S.No.<b></td>';
+										   tableBody+= '<td><b> State Name(In English) </b></td>';
+										   tableBody+= '<td><b>	No. of Posts approved</b></td>';
+										   tableBody+= '<td><b>No of Post filled </b></td>';
+										   tableBody+= '<td><b>Fin Year </b></td>';
+										  tableBody+= '</thead>';
+										   for (var key1 in valueList) {
+											   //console.log(">>>key1===="+key1);
+											    var slno=parseInt(key1)+1;
+												    tableBody+='<tr>';
+											   	 tableBody+='<td>'+ slno +  '</td>';
+											   
+											   $.each( valueList[key1], function(key2,listVal){
+												    //console.log("key2 = " + key2 + " listVal = " + listVal); 
+													 tableBody+='<td>'+ listVal +  '</td>';
+													
+											   })
+												   
+											   tableBody+='</tr>';
+											}
+										     
+										     $('#header').html("eDPMU");
+										   $('#myModal').modal('show');
+											   $('#eDPMU').html(tableBody);
+											   
+											   //$("#myModal").show();
+										  }
 					   })
 				   },
 				   error : function(e) {
