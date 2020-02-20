@@ -211,29 +211,58 @@ public class OtherAchievementsDetailServiceImpl implements OtherAchievementsDeta
 	
 	public List fetchEspmu(String kpiName) {
 		List  datalist=new LinkedList();
-		try { 
+		try {
 			StringBuilder query=new StringBuilder();
-			query.append(" select  (select distinct state_name_english from lgd.state where state_code = ea.state_code) state_name_english ,CAST(sum(ead.no_of_units )  AS varchar)no_of_units ,CAST(sum(qed.no_of_units_filled)   AS varchar)no_of_units_filled ,(select finyear from rgsa.fin_year where year_id =ea.year_id ) finyear  from  rgsa.egov_support_activity ea ,");
-			query.append(" rgsa.egov_support_activity_details ead ,  rgsa.egov_post ep , rgsa.egov_post_level epl  , rgsa.qpr_egov  qe , rgsa.qpr_egov_details  qed  ");
-			query.append("  where ea.egov_support_activity_id =ead.egov_support_activity_id  and  ep.egov_post_level_id =epl.egov_post_level_id and qe.egov_support_activity_id =ea.egov_support_activity_id and ");
-			query.append("  qe.qpr_egov_id =qed.qpr_egov_id and epl.egov_post_level_id =1 ");
-			query.append("  group by state_name_english  ,finyear  order by  state_name_english ");
+			if(("eSPMUId").equals(kpiName)) {
+				
+				query.append(" select  (select distinct state_name_english from lgd.state where state_code = ea.state_code) state_name_english ,CAST(sum(ead.no_of_units )  AS varchar)no_of_units ,CAST(sum(qed.no_of_units_filled)   AS varchar)no_of_units_filled ,(select finyear from rgsa.fin_year where year_id =ea.year_id ) finyear  from  rgsa.egov_support_activity ea ,");
+				query.append(" rgsa.egov_support_activity_details ead ,  rgsa.egov_post ep , rgsa.egov_post_level epl  , rgsa.qpr_egov  qe , rgsa.qpr_egov_details  qed  ");
+				query.append("  where ea.egov_support_activity_id =ead.egov_support_activity_id  and  ep.egov_post_level_id =epl.egov_post_level_id and qe.egov_support_activity_id =ea.egov_support_activity_id and ");
+				query.append("  qe.qpr_egov_id =qed.qpr_egov_id and epl.egov_post_level_id =1 ");
+				query.append("  group by state_name_english  ,finyear  order by  state_name_english ");
+				
+				List list=commonRepository.findAllByNativeQuery(query.toString(), null);
+				if(list!=null && !list.isEmpty()) {
+					 for(Iterator itr=list.iterator(); itr.hasNext();)
+					 {
+						 Object []  obj=(Object [])itr.next();
+						 Map <String,String> map=new LinkedHashMap<>();
+						 map.put("stateName", obj[0].toString()); 
+						 map.put("NoOfUnit", obj[1].toString());
+						 
+						 map.put("NoOfUnitFilled", obj[2].toString());
+						 map.put("FinYear", obj[3].toString());
+						 datalist.add(map);
+					 }
+				}
+				
+			}else if(("eDPMUId").equals(kpiName)) {
+				
+					
+					query.append(" select  (select distinct state_name_english from lgd.state where state_code = ea.state_code) state_name_english ,CAST(sum(ead.no_of_units )  AS varchar)no_of_units ,CAST(sum(qed.no_of_units_filled)   AS varchar)no_of_units_filled ,(select finyear from rgsa.fin_year where year_id =ea.year_id ) finyear  from  rgsa.egov_support_activity ea ,");
+					query.append(" rgsa.egov_support_activity_details ead ,  rgsa.egov_post ep , rgsa.egov_post_level epl  , rgsa.qpr_egov  qe , rgsa.qpr_egov_details  qed  ");
+					query.append("  where ea.egov_support_activity_id =ead.egov_support_activity_id  and  ep.egov_post_level_id =epl.egov_post_level_id and qe.egov_support_activity_id =ea.egov_support_activity_id and ");
+					query.append("  qe.qpr_egov_id =qed.qpr_egov_id and epl.egov_post_level_id =2 ");
+					query.append("  group by state_name_english  ,finyear  order by  state_name_english ");
+					
+					List list=commonRepository.findAllByNativeQuery(query.toString(), null);
+					if(list!=null && !list.isEmpty()) {
+						 for(Iterator itr=list.iterator(); itr.hasNext();)
+						 {
+							 Object []  obj=(Object [])itr.next();
+							 Map <String,String> map=new LinkedHashMap<>();
+							 map.put("stateName", obj[0].toString()); 
+							 map.put("NoOfUnit", obj[1].toString());
+							 
+							 map.put("NoOfUnitFilled", obj[2].toString());
+							 map.put("FinYear", obj[3].toString());
+							 datalist.add(map);
+						 }
+					}
+					
+				}
 			
-			List list=commonRepository.findAllByNativeQuery(query.toString(), null);
-			if(list!=null && !list.isEmpty()) {
-				 for(Iterator itr=list.iterator(); itr.hasNext();)
-				 {
-					 Object []  obj=(Object [])itr.next();
-					 Map <String,String> map=new LinkedHashMap<>();
-					 map.put("stateName", obj[0].toString()); 
-					 map.put("NoOfUnit", obj[1].toString());
-					 
-					 map.put("NoOfUnitFilled", obj[2].toString());
-					 map.put("FinYear", obj[3].toString());
-					 datalist.add(map);
-				 }
-			}
-			
+	
 		}catch(Exception e)
 		{
 			e.printStackTrace();
