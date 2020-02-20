@@ -186,8 +186,15 @@
 							<li><a target="_parent" href="downloadNew.html?<csrf:token uri='downloadNew.html'/>" >Downloads </a></li>
 							<li><a target="_parent"   href="manageCms.html?<csrf:token uri='manageCms.html'/>">Gallery</a></li>
 							<li><a href="#" data-toggle="modal" data-target="#contactsUs">Contact Us</a></li>
-							<li> <a target="_parent"  href="actionPlanPhysicalReport.html?<csrf:token uri='actionPlanPhysicalReport.html'/>">Reports</a></li> 
-							<li> <a target="_parent"  href="qprReportInstallmentWiseForPublic.html?<csrf:token uri='qprReportInstallmentWiseForPublic.html'/>">Quarter Progress Report</a></li>
+							<%-- <li> <a target="_parent"  href="actionPlanPhysicalReport.html?<csrf:token uri='actionPlanPhysicalReport.html'/>">Reports</a></li> 
+							<li> <a target="_parent"  href="qprReportInstallmentWiseForPublic.html?<csrf:token uri='qprReportInstallmentWiseForPublic.html'/>">Quarter Progress Report</a></li> --%>
+							<li class="dropdown">
+                             <a data-toggle="dropdown" data-target="changelang" class="btn " aria-expanded="false">Report <i class="fa fa-caret-down"></i></a>
+                             	<ul id="changelang" class="dropdown-menu">
+								<li><a data-attr="en"  href="actionPlanPhysicalReport.html?<csrf:token uri='actionPlanPhysicalReport.html'/>">Action Plan Report</a></li>
+								<li><a data-attr="hi"  href="qprReportInstallmentWiseForPublic.html?<csrf:token uri='qprReportInstallmentWiseForPublic.html'/>">Quarter Progress Report</a></li>
+								</ul>
+                               </li> 
 					</ul>
 					</div>
 				</nav>

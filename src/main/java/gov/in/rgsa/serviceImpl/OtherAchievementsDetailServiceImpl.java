@@ -1,6 +1,10 @@
 package gov.in.rgsa.serviceImpl;
 
+import java.util.Iterator;
+import java.util.LinkedHashMap;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -108,9 +112,16 @@ public class OtherAchievementsDetailServiceImpl implements OtherAchievementsDeta
 		String data = null;
 		try
 		{
-			StringBuilder query = new StringBuilder();
-			query.append(" select sum(COALESCE(count_gp,0)) from (SELECT  count(qed.local_body_code )count_gp  from  rgsa.e_enablement_master em,rgsa.e_enablement_details ed,rgsa.qpr_e_enablement qe,rgsa.qpr_e_enablement_details qed ");
-			query.append(" where em.ee__master_id = ed.ee_master_id and ed.e_enablement_id = qe.e_enablement_id and qe.qpr_e_enablement_id = qed.qpr_e_enablement_id and qe.is_freez =  True and ed.ee_master_id = " + masterId + " )t; ");
+			/*
+			 * StringBuilder query = new StringBuilder(); query.
+			 * append(" select sum(COALESCE(count_gp,0)) from (SELECT  count(qed.local_body_code )count_gp  from  rgsa.e_enablement_master em,rgsa.e_enablement_details ed,rgsa.qpr_e_enablement qe,rgsa.qpr_e_enablement_details qed "
+			 * ); query.
+			 * append(" where em.ee__master_id = ed.ee_master_id and ed.e_enablement_id = qe.e_enablement_id and qe.qpr_e_enablement_id = qed.qpr_e_enablement_id and qe.is_freez =  True and ed.ee_master_id = "
+			 * + masterId + " )t; ");
+			 */
+			String query="select sum(COALESCE(count_gp,0)) from (SELECT  count(qed.local_body_code )count_gp  from  rgsa.e_enablement_master em,rgsa.e_enablement_details ed,rgsa.qpr_e_enablement qe,		rgsa.qpr_e_enablement_details qed  \r\n" + 
+					"	    where qed.qpr_status=em.ee__master_id   and ed.e_enablement_id = qe.e_enablement_id and qe.qpr_e_enablement_id = qed.qpr_e_enablement_id and qe.is_freez =  True \r\n" + 
+					"	    and ed.ee_master_id = "+masterId+ " )t;  ";
 			List<Object> list = commonRepository.findAllByNativeQuery(query.toString(), null);
 			if (list.get(0) != null && !"null".equals(list.get(0)))
 			{
@@ -204,4 +215,37 @@ public class OtherAchievementsDetailServiceImpl implements OtherAchievementsDeta
 		return data;
 	}
 
+	public List fetchQprEenablementProgressReport() {
+		List  datalist=new LinkedList();
+		try { 
+			StringBuilder query=new StringBuilder();
+			query.append(" \r\n" + 
+					"		SELECT  s.state_name_english,lb.local_body_name_english,em.ee_name,fn.finyear  from  rgsa.e_enablement_master em,rgsa.e_enablement_details ed,\r\n" + 
+					"		rgsa.qpr_e_enablement qe, rgsa.qpr_e_enablement_details qed , lgd.localbody lb,lgd.state s,rgsa.e_enablement ee, rgsa.fin_Year fn\r\n" + 
+					"		where em.ee__master_id = ed.ee_master_id and ed.e_enablement_id = qe.e_enablement_id and qe.qpr_e_enablement_id = qed.qpr_e_enablement_id\r\n" + 
+					"		and lb.local_body_code=qed.local_body_code and s.state_code=ee.state_code and qe.e_enablement_id=ee.e_enablement_id \r\n" + 
+					"		and fn.year_id=ee.year_id\r\n" + 
+					"		and qe.is_freez =  True and qed.qpr_status = 3 and lb.isactive  and qe.is_freez ");
+			List list= commonRepository.findAllByNativeQuery(query.toString(), null);
+			if(list!=null && !list.isEmpty()) {
+				 for(Iterator itr=list.iterator(); itr.hasNext();)
+				 {
+					 Object []  obj=(Object [])itr.next();
+					 Map <String,String> map=new LinkedHashMap<>();
+					 map.put("State", obj[0].toString()); 
+					 map.put("GP_Name", obj[1].toString()); 
+					 map.put("status", obj[2].toString());
+					 map.put("finyear", obj[3].toString());
+					 datalist.add(map);
+				 }
+			}
+			
+		}catch(Exception e)
+		{
+			e.printStackTrace();
+		}
+		return datalist;
+	}
+	
+	
 }

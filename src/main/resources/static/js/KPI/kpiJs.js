@@ -1,5 +1,6 @@
 setTimeout(function(){ voteViaAjax(0); }, 100);
 function voteViaAjax(detailId){ 
+	
    $.ajax({
    type : "POST",
    contentType : "application/json",
@@ -26,4 +27,48 @@ function voteViaAjax(detailId){
     console.log(e);
    }
   });
+}
+
+
+function onloadKPI(kpiName){
+	$('.bd-example-modal-lg').modal('show');
+		$("label[for*='myModalLabel']").html(kpiName);
+	$.ajax({
+		   type : "POST",
+		   contentType : "application/json",
+		   url : "kpiHeaderPage.html?<csrf:token uri='kpiHeaderPage.html'/>&kpiName="+kpiName,
+		   dataType : 'json',
+		   cache : false,
+		   timeout : 100000,
+		   success : function(data) {
+			   console.log(data);
+			   var table='';
+			   	table+='<thead style="background-color: #eeb2b2">';
+			   		  table+='<tr>';
+					   	 table+='<td><b> S.No </b></td>';
+					   	 table+='<td> <b>State <b></td>';
+					   	 table+='<td><b> G.P Name </b> </td>';
+					   	 table+='<td><b> Financial Year</b></td>';
+					   table+='</tr>';
+					   table+='</thead>';
+					   table+='<tbody>';
+					   
+					   $.each(data, function (index) {
+						   var slno=parseInt(index)+1;
+						   table+='<tr>';
+						   		table+='<td>'+slno+'</td>';
+							   table+='<td>'+this.State+'</td>';
+							   table+='<td>'+this.GP_Name+'</td>';
+							   table+='<td>'+this.status+'</td>';
+							   table+='<td>'+this.finyear+'</td>';
+						   table+='</tr>'; 
+					    });
+					   
+					   table+='</tbody>';
+					  $('#tableExample').html(table);
+		   },
+		   error : function(e) {
+		    console.log(e);
+		   }
+		  });
 }

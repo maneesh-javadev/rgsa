@@ -243,7 +243,7 @@
 								</div>
 								<div class="row">
 									<div class="col-lg-12">
-										<a href="kpiHeaderPage.html?<csrf:token uri='kpiHeaderPage.html'/>">	<span class="counter ng-binding" id="eComputerizationId" >0000</span>
+										<a href="" onclick="onloadKPI('Computerization')">	<span class="counter ng-binding" id="eComputerizationId" >0000</span>
 											<p>Computerization</p>
 										</a>
 									</div>
@@ -252,6 +252,9 @@
 						</div>
 					</div>
 				</div>
+				
+				
+				
 			</div>
 		</div>
 	</div>
@@ -340,6 +343,27 @@
 	</div>
 </section>
 <br />
+
+<!-- open modal -->
+
+	 
+	<div class="modal bd-example-modal-lg" id="modalnew" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
+	  <div class="modal-dialog modal-lg" role="document">
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+	        <label class="modal-title" id="myModalLabel" for="myModalLabel"></label>
+	      </div>
+	      <div class="modal-body">
+	       		<table id="tableExample" class="table table-bordered"></table>
+	      </div>
+	    </div>
+	  </div>
+	</div>
+	
+	
+<!--   close modal -->
+
 <%-- <section class="reportssec">
 	<div class="container-fluid">
 		<div class="row">
@@ -368,6 +392,7 @@
 		</div>
 	</div>
 	</section>--%>
+	
 	<section>
 		<div class="container-fluid"></div>
 	</section>
@@ -386,7 +411,7 @@
 		src="${pageContext.request.contextPath}/resources/js/index/index-model.js"></script>
 		<script type="text/javascript"
 		src="${pageContext.request.contextPath}/resources/js/utils/captcha.js"></script>
-	<script type="text/javascript" src="${pageContext.request.contextPath}/resources/static/js/KPI/kpiJs.js"></script>
+	<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/KPI/kpiJs.js"></script>
 		
 <script type="text/javascript"> 
 

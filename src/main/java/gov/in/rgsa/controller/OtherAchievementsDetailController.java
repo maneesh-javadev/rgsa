@@ -1,13 +1,12 @@
 package gov.in.rgsa.controller;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -41,7 +40,7 @@ public class OtherAchievementsDetailController {
 			list.add(result);
 			result=otherAchievementsDetailService.enablementsOfPanchat(2);
 			list.add(result);
-			result= otherAchievementsDetailService.enablementsOfPanchyatComputerization(1);
+			result= otherAchievementsDetailService.enablementsOfPanchyatComputerization(3);
 			list.add(result);
 			result= otherAchievementsDetailService.exposureVisit(5);
 			list.add(result);
@@ -56,7 +55,7 @@ public class OtherAchievementsDetailController {
 			result=  otherAchievementsDetailService.panchyatStakehlderTrained();
 			list.add(result);
 			// method for Technical support to GPs 
-			result= otherAchievementsDetailService.enablementsOfPanchyatComputerization(3);
+			result= otherAchievementsDetailService.enablementsOfPanchyatComputerization(1);
 			list.add(result);
 			
 		} catch (Exception ex) {
@@ -69,13 +68,16 @@ public class OtherAchievementsDetailController {
 	
 	@ResponseBody
 	@RequestMapping(value = "kpiHeaderPage", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
-	public String kpiHeaderPage(@RequestParam(value = "kpiName", required = false) String kpiName) {
+	public List kpiHeaderPage(@RequestParam(value = "kpiName", required = false) String kpiName) {
+		List  list=new LinkedList();
 		try {
+			String result=null;
+			list= otherAchievementsDetailService.fetchQprEenablementProgressReport();
 			 
 		}catch(Exception e)
 		{
 			e.printStackTrace();
 		}
-		return KPI_HEADER_PAGE ;
+		return list ;
 	}
 }

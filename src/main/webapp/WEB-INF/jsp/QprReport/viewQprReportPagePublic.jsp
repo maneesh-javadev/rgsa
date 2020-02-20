@@ -5,8 +5,38 @@
 
 	
 	<script type="text/javascript">
-	 function ajaxCallFunction(detailId){
+	 
+	function ajaxCallFunction(detailId){
+		
+		var imageCaptua=$("#captchaAnswer").val();
+	 if(imageCaptua != ''){
+			$
+			.ajax({
+				type : "GET",
+				contentType : "application/json",
+				url : "validateCaptcha.html?<csrf:token uri='validateCaptcha.html'/>&captchaAnswer="+imageCaptua,
+				dataType : 'json',
+				cache : false,
+				timeout : 100000,
+				success : function(data) {
+						if (data == true) {
+							ajaxCallFunction123(detailId);
+						}else{
+							alert("kindly enter captcha correctly");
+						}
+	 			},error : function(e) {
+			console.log(e);
+		}
+			}); 	
+		}
+	}
+	
+	 function ajaxCallFunction123(detailId){
+		 
 		 $("#tableExp").hide();
+		 $("#hideShow").hide();
+		 $("#backButtonId").show();
+		 
 		  var statecode=$("#inputState").val();
 		  var yearId=$("#inputFinYear").val();
 		  var quarterId=$("#quarterId").val();
@@ -818,9 +848,25 @@
 					</select>
 					</div>
 					
-					<div class="col-md-3" style="margin-top:2%">
-					<button type="button" onclick="ajaxCallFunction();" class="btn btn-primary"><span class="glyphicon glyphicon-search"></span>&nbsp; Search</button>
-					<button type="button" onclick="exportToPdf('tableExp');" class="btn btn-primary"><span class="glyphicon glyphicon-print"></span>&nbsp; Print</button>
+					<div id="hideShow">
+					 <div class="col-md-3">
+											<label class="control-label" > Please enter Capatcha: </label>
+								<input cssStyle="color:black;" id="captchaAnswer"  placeholder="Captcha Answer" class="form-control"  autocomplete="off" required="required"/>
+								
+							<div class="col-sm-2">  
+									<img src="captchaImage" width="208px" id="img_Capatcha" /></div>
+									<div class="col-sm-10">
+									 <i class="fa fa-refresh pull-right" onclick="refreshCaptcha()"></i>
+								
+									
+							</div>
+							</div>
+					
+						<div class="col-md-3" style="margin-top:2%">
+							<button type="button" onclick="ajaxCallFunction();" class="btn btn-primary"><span class="glyphicon glyphicon-search"></span>&nbsp; Search</button>
+							<button type="button" onclick="exportToPdf('tableExp');" class="btn btn-primary"><span class="glyphicon glyphicon-print"></span>&nbsp; Print</button>
+						</div>
+					
 					</div>
 					
 					</div><!--  row -->
@@ -1054,7 +1100,14 @@
 
 								</div>	 
  			 
-					
+								<div class="text-left" id="backButtonId" style="display:none">
+											<button type="button"
+												onclick="onClose('index.html?<csrf:token uri='index.html'/>')"
+												class="btn bg-orange waves-effect">
+												<i class="fa fa-arrow-left" aria-hidden="true"></i>
+												<spring:message code="Label.BACK" htmlEscape="true" />
+											</button>
+										</div>	
 	 
 						 
 					</div>
