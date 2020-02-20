@@ -229,7 +229,7 @@
 								<p class="underline ">e- enablement of Panchayats</p>
 								<div class="row">
 									<div class="col-lg-12">
-										<a href="#">	<span class="counter ng-binding" data-ng-value="0000" id="eSPMUId">0000</span>
+										<a  onclick="onloadKPI('eSPMUId');" >	<span class="counter ng-binding" data-ng-value="0000" id="eSPMUId">0000</span>
 											<p>e- SPMU</p>
 										</a>
 									</div>
@@ -244,7 +244,6 @@
 								<div class="row">
 									<div class="col-lg-12">
 										<a href="" onclick="onloadKPI('Computerization')">	<span class="counter ng-binding" id="eComputerizationId" >0000</span>
-											<p>Computerization</p>
 										</a>
 									</div>
 								</div>
@@ -259,6 +258,13 @@
 		</div>
 	</div>
 </section>
+   
+  <!-- Modal -->
+  <div class="modal fade" id="eSPMU" role="dialog">
+   
+  </div>
+  
+  
 <!--  open below div for Latest Uploaded content -->
 <section class="gallerysec">
 	<div class="container-fluid">
@@ -411,6 +417,7 @@
 		src="${pageContext.request.contextPath}/resources/js/index/index-model.js"></script>
 		<script type="text/javascript"
 		src="${pageContext.request.contextPath}/resources/js/utils/captcha.js"></script>
+ 
 	<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/KPI/kpiJs.js"></script>
 		
 <script type="text/javascript"> 
@@ -418,3 +425,42 @@
  
 </script>
 		
+
+		<script>
+		
+		function onloadKPI(kpiName){			
+			 $.ajax({
+				   type : "GET",
+				   contentType : "application/json",
+				   url : "kpiRajeevPage.html?<csrf:token uri='kpiRajeevPage.html'/>&kpiName="+kpiName,
+				   dataType : 'json',
+				   cache : false,
+				   timeout : 100000,
+				   success : function(data) {
+					   $.each( data, function(key,valueList){
+							  // console.log("key = " + key + " valueList = " + valueList);
+								if(key=='eSPMU'){
+									  var tableBody='';
+									  var total=0;
+									   tableBody+= '<thead style="background-color: #eeb2b2">';
+									   tableBody+= '<td><b>S.No.<b></td>';
+									   tableBody+= '<td><b> Activity Name </b></td>';
+									   tableBody+= '<td><b>No. Of Unit Proposed</b></td>';
+									   tableBody+= '<td><b>Fund Proposed </b></td>';
+									   tableBody+= '<td><b>No. of Days Completed </b></td>';
+									   tableBody+= '<td><b>No. of Units Completed </b></td>';
+									   tableBody+= '<td><b>Expenditure Incurred </b></td>';
+									   tableBody+= '</thead>';
+									
+										   $("#eSPMU").html(tableBody);
+									  }
+					   })
+				   },
+				   error : function(e) {
+				    console.log(e);
+				   }
+				 
+			 });
+			 }
+		</script>
+ 

@@ -1,8 +1,10 @@
 package gov.in.rgsa.controller;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -64,6 +66,7 @@ public class OtherAchievementsDetailController {
 		 
 		return list;
 	}
+ 
 
 	
 	@ResponseBody
@@ -78,6 +81,22 @@ public class OtherAchievementsDetailController {
 		{
 			e.printStackTrace();
 		}
-		return list ;
+			return list ;
+	 
+	}
+	
+	
+	
+	@ResponseBody
+	@RequestMapping(value = "kpiRajeevPage", method = RequestMethod.GET)
+	public Map<String, List<Object>> kpiRajeevPage(@RequestParam(value = "kpiName", required = false) String kpiName) {
+		Map<String, List<Object>> map= new HashMap<>();
+		try {
+			map.put("eSPMU", otherAchievementsDetailService.fetchEspmu(kpiName));
+		}catch(Exception e)
+		{
+			e.printStackTrace();
+		}
+		return map ;
 	}
 }
