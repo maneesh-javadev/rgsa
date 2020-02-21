@@ -6,6 +6,13 @@
 	
 	<script type="text/javascript">
 	 
+	function refreshCaptcha()
+	{
+		  $('#img_Capatcha').attr('src', 'captchaImage?cache=' + new Date().getTime());
+	    $('#captchaAnswer').val('');
+	    $('#captchaAnswer').focus();
+	}
+	
 	function ajaxCallFunction(detailId){
 		
 		var imageCaptua=$("#captchaAnswer").val();

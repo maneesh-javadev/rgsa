@@ -1,3 +1,5 @@
+ 			
+ <script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/KPI/kpiJs.js"></script>			
  				<%@ page import="java.net.*" %>
 						<%
 						InetAddress localhost = InetAddress.getLocalHost(); 
@@ -244,6 +246,7 @@
 								<div class="row">
 									<div class="col-lg-12">
 										<a href="" onclick="onloadKPI('Computerization')">	<span class="counter ng-binding" id="eComputerizationId" >0000</span>
+										<p> Computerization </p>
 										</a>
 									</div>
 								</div>
@@ -435,7 +438,7 @@
 		<script type="text/javascript"
 		src="${pageContext.request.contextPath}/resources/js/utils/captcha.js"></script>
  
-	<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/KPI/kpiJs.js"></script>
+	
 		
 <script type="text/javascript"> 
 
