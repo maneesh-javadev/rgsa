@@ -210,7 +210,7 @@ public class OtherAchievementsDetailServiceImpl implements OtherAchievementsDeta
 		} catch (Exception e)
 		{
 			e.printStackTrace();
-		}
+		} 
 
 		return data;
 	}
