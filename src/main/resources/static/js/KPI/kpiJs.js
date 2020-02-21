@@ -48,6 +48,7 @@ function onloadKPI(kpiName){
 					   	 table+='<td><b> S.No </b></td>';
 					   	 table+='<td> <b>State <b></td>';
 					   	 table+='<td><b> G.P Name </b> </td>';
+					     table+='<td><b> Status</b></td>';
 					   	 table+='<td><b> Financial Year</b></td>';
 					   table+='</tr>';
 					   table+='</thead>';

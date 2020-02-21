@@ -229,14 +229,14 @@
 								<p class="underline ">e- enablement of Panchayats</p>
 								<div class="row">
 									<div class="col-lg-12">
-										<a  onclick="onloadKPI('eSPMUId');" >	<span class="counter ng-binding" data-ng-value="0000" id="eSPMUId">0000</span>
+										<a  onclick="onloadKPIRajiv('eSPMUId');" >	<span class="counter ng-binding" data-ng-value="0000" id="eSPMUId">0000</span>
 											<p>e- SPMU</p>
 										</a>
 									</div>
 								</div>
 								<div class="row">
 									<div class="col-lg-12">
-										<a onclick="onloadKPI('eDPMUId');">	<span class="counter ng-binding" id="eDPMUId">0000</span>
+										<a onclick="onloadKPIRajiv('eDPMUId');">	<span class="counter ng-binding" id="eDPMUId">0000</span>
 											<p>e- DPMU</p>
 										</a>
 									</div>
@@ -445,7 +445,7 @@
 
 		<script>
 		
-		function onloadKPI(kpiName){			 
+		function onloadKPIRajiv(kpiName){			 
 			 $.ajax({
 				   type : "GET",
 				   contentType : "application/json",
