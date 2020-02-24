@@ -50,6 +50,20 @@ public class QprPlanFunds {
     @Column(name = "plan_component_name")
     String planComponentName ;
 
+    @Column(name = "qtr1_is_freeze")
+    Boolean qtr1IsFreeze;
+
+    @Column(name = "qtr2_is_freeze")
+    Boolean qtr2IsFreeze;
+
+    @Column(name = "qtr3_is_freeze")
+    Boolean qtr3IsFreeze;
+
+    @Column(name = "qtr4_is_freeze")
+    Boolean qtr4IsFreeze;
+
+
+
     public Integer getQprId() {
         return qprId;
     }
@@ -160,5 +174,37 @@ public class QprPlanFunds {
 
     public void setPlanComponentName(String planComponentName) {
         this.planComponentName = planComponentName;
+    }
+
+    public Boolean getQtr1IsFreeze() {
+        return qtr1IsFreeze;
+    }
+
+    public void setQtr1IsFreeze(Boolean qtr1IsFreeze) {
+        this.qtr1IsFreeze = qtr1IsFreeze;
+    }
+
+    public Boolean getQtr2IsFreeze() {
+        return qtr2IsFreeze;
+    }
+
+    public void setQtr2IsFreeze(Boolean qtr2IsFreeze) {
+        this.qtr2IsFreeze = qtr2IsFreeze;
+    }
+
+    public Boolean getQtr3IsFreeze() {
+        return qtr3IsFreeze;
+    }
+
+    public void setQtr3IsFreeze(Boolean qtr3IsFreeze) {
+        this.qtr3IsFreeze = qtr3IsFreeze;
+    }
+
+    public Boolean getQtr4IsFreeze() {
+        return qtr4IsFreeze;
+    }
+
+    public void setQtr4IsFreeze(Boolean qtr4IsFreeze) {
+        this.qtr4IsFreeze = qtr4IsFreeze;
     }
 }
