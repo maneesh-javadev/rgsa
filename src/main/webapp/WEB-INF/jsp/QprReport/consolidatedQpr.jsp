@@ -90,6 +90,7 @@
                         <c:set var="t_fund" value="0"/>
                         <c:set var="t_unit" value="0"/>
                         <tbody>
+                        <c:set var="highlight" value="" scope="page" />
                             <%--@elvariable id="command" type="gov.in.rgsa.model.QprReportConsModel"--%>
                         <c:forEach items="${command.qprPlanFundsList}" var="pc"  varStatus="pcindex">
                             <c:if test="${pc.yearId != null}">
@@ -100,28 +101,28 @@
                                     </td>
                                     <td><b>${pcindex.count}</b></td>
                                     <td><b>${pc.planComponents.componentName}</b></td>
-                                    <td><b>${pc.qtr1Expenditure + pc.qtr1AdditionalFund}</b></td>
-                                    <td><b>${pc.qtr2Expenditure + pc.qtr2AdditionalFund}</b></td>
-                                    <td><b>${pc.qtr3Expenditure + pc.qtr3AdditionalFund}</b></td>
-                                    <td><b>${pc.qtr4Expenditure + pc.qtr4AdditionalFund}</b></td>
+                                    <td class="${pc.qtr1IsFreeze ? 'bg-success' : ''}"><b>${pc.qtr1Expenditure + pc.qtr1AdditionalFund}</b></td>
+                                    <td class="${pc.qtr2IsFreeze ? 'bg-success' : ''}"><b>${pc.qtr2Expenditure + pc.qtr2AdditionalFund}</b></td>
+                                    <td class="${pc.qtr3IsFreeze ? 'bg-success' : ''}"><b>${pc.qtr3Expenditure + pc.qtr3AdditionalFund}</b></td>
+                                    <td class="${pc.qtr4IsFreeze ? 'bg-success' : ''}"><b>${pc.qtr4Expenditure + pc.qtr4AdditionalFund}</b></td>
                                 </tr>
                                 <tr id="repeat_${pcindex.count}" class="hidden">
                                     <td></td>
                                     <td></td>
                                     <td>${pc.planComponents.componentName}</td>
-                                    <td>${pc.qtr1Expenditure}</td>
-                                    <td>${pc.qtr2Expenditure}</td>
-                                    <td>${pc.qtr3Expenditure}</td>
-                                    <td>${pc.qtr4Expenditure}</td>
+                                    <td class="${pc.qtr1IsFreeze ? 'bg-success' : ''}">${pc.qtr1Expenditure}</td>
+                                    <td class="${pc.qtr2IsFreeze ? 'bg-success' : ''}">${pc.qtr2Expenditure}</td>
+                                    <td class="${pc.qtr3IsFreeze ? 'bg-success' : ''}">${pc.qtr3Expenditure}</td>
+                                    <td class="${pc.qtr4IsFreeze ? 'bg-success' : ''}">${pc.qtr4Expenditure}</td>
                                 </tr>
                                 <tr id="add_${pcindex.count}" class="hidden">
                                     <td></td>
                                     <td></td>
                                     <td>Additional Requirements</td>
-                                    <td>${pc.qtr1AdditionalFund}</td>
-                                    <td>${pc.qtr2AdditionalFund}</td>
-                                    <td>${pc.qtr3AdditionalFund}</td>
-                                    <td>${pc.qtr4AdditionalFund}</td>
+                                    <td class="${pc.qtr1IsFreeze ? 'bg-success' : ''}">${pc.qtr1AdditionalFund}</td>
+                                    <td class="${pc.qtr2IsFreeze ? 'bg-success' : ''}">${pc.qtr2AdditionalFund}</td>
+                                    <td class="${pc.qtr3IsFreeze ? 'bg-success' : ''}">${pc.qtr3AdditionalFund}</td>
+                                    <td class="${pc.qtr4IsFreeze ? 'bg-success' : ''}">${pc.qtr4AdditionalFund}</td>
                                 </tr>
                             </c:if>
                             <c:if test="${pc.yearId == null}">
