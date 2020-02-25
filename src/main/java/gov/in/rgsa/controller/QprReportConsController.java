@@ -34,6 +34,9 @@ public class QprReportConsController {
     private static String VIEW_QPR_REPORT= "viewQprReportPage";
     private static String VIEW_QPR_REPORT_PUBLIC= "viewQprReportPublic";
 
+    
+
+    
     @Autowired
     private UserPreference userPreference;
     @Autowired

@@ -41,7 +41,7 @@ function onloadKPI(kpiName){
 		   cache : false,
 		   timeout : 100000,
 		   success : function(data) {
-			   console.log(data);
+			//   console.log(data);
 			   var table='';
 			   	table+='<thead style="background-color: #eeb2b2">';
 			   		  table+='<tr>';

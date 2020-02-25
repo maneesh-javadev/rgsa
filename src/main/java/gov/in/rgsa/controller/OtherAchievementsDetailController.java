@@ -92,13 +92,8 @@ public class OtherAchievementsDetailController {
 	public Map<String, List<Object>> kpiRajeevPage(@RequestParam(value = "kpiName", required = false) String kpiName) {
 		Map<String, List<Object>> map= new HashMap<>();
 		try {
-			map.put("eSPMU", otherAchievementsDetailService.fetchEspmu(kpiName));
- 
- 
-			map.put("eDPMU", otherAchievementsDetailService.fetchEspmu(kpiName));
-			
- 
-		}catch(Exception e)
+			map.put(kpiName,  otherAchievementsDetailService.fetchEspmu(kpiName));
+			}catch(Exception e)
 		{
 			e.printStackTrace();
 		}

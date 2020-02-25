@@ -1,6 +1,4 @@
- 			
- <script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/KPI/kpiJs.js"></script>			
- 				<%@ page import="java.net.*" %>
+<%@ page import="java.net.*" %>
 						<%
 						InetAddress localhost = InetAddress.getLocalHost(); 
 						//System.out.println("System IP Address : " + (localhost.getHostAddress())); 
@@ -437,17 +435,19 @@
 		src="${pageContext.request.contextPath}/resources/js/index/index-model.js"></script>
 		<script type="text/javascript"
 		src="${pageContext.request.contextPath}/resources/js/utils/captcha.js"></script>
- 
+  	
 	
 		
 <script type="text/javascript"> 
-
  
+	setTimeout(function(){ voteViaAjax(0); }, 100);
+ 
+
 </script>
 		
 
 		<script>
-		
+	 
 		function onloadKPIRajiv(kpiName){			 
 			 $.ajax({
 				   type : "GET",
@@ -459,10 +459,10 @@
 				   success : function(data) {
 					   $.each( data, function(key,valueList){
 							  // console.log("key = " + key + " valueList = " + valueList);
-								if(key=='eSPMU'){
+								/* if(key=='eSPMUId'){ */
 									  var tableBody='';
 									  var total=0;
-									   tableBody+= '<thead style="background-color: #eeb2b2">';
+									   tableBody+= '<thead style="background-color: #5AAA5A;color: #fff">';
 									   tableBody+= '<td><b>S.No.<b></td>';
 									   tableBody+= '<td><b> State Name(In English) </b></td>';
 									   tableBody+= '<td><b>	No. of Posts approved</b></td>';
@@ -477,26 +477,30 @@
 										   
 										   $.each( valueList[key1], function(key2,listVal){
 											    //console.log("key2 = " + key2 + " listVal = " + listVal); 
-												 tableBody+='<td>'+ listVal +  '</td>';
+												 tableBody+='<td style ="text-align:center">'+ listVal +  '</td>';
 												
 										   })
 											   
 										   tableBody+='</tr>';
 										}
-									   $('#header').html("eSPMU");
+									   if(key =='eSPMUId'){
+										   $('#header').html("eSPMU Details");
+									   }else if(key =='eDPMUId'){
+										   $('#header').html("eDPMU Details");
+									   }
 									   $('#myModal').modal('show');
 										   $('#eSPMU').html(tableBody);
 										   
 										   //$("#myModal").show();
-									  }else if(key=='eDPMU'){
+									 /*  } *//* else if(key=='eDPMUId'){
 										  var tableBody='';
 										  var total=0;
-										   tableBody+= '<thead style="background-color: #eeb2b2">';
+										   tableBody+= '<thead style="background-color: #5AAA5A">';
 										   tableBody+= '<td><b>S.No.<b></td>';
 										   tableBody+= '<td><b> State Name(In English) </b></td>';
 										   tableBody+= '<td><b>	No. of Posts approved</b></td>';
 										   tableBody+= '<td><b>No of Post filled </b></td>';
-										   tableBody+= '<td><b>Fin Year </b></td>';
+										   tableBody+= '<td style="text-align:center"><b>Fin Year </b></td>';
 										  tableBody+= '</thead>';
 										   for (var key1 in valueList) {
 											   //console.log(">>>key1===="+key1);
@@ -513,12 +517,12 @@
 											   tableBody+='</tr>';
 											}
 										     
-										     $('#header').html("eDPMU");
+										     $('#header').html("eDPMU Details");
 										   $('#myModal').modal('show');
 											   $('#eDPMU').html(tableBody);
 											   
 											   //$("#myModal").show();
-										  }
+										  } */
 					   })
 				   },
 				   error : function(e) {
@@ -527,5 +531,85 @@
 				 
 			 });
 			 }
+	
+		
+		
+		function voteViaAjax(detailId){ 
+			
+		   $.ajax({
+		   type : "POST",
+		   contentType : "application/json",
+		   url : "basicOrientationTrainingofER.html?<csrf:token uri='basicOrientationTrainingofER.html'/>&detailId="+detailId,
+		   dataType : 'json',
+		   cache : false,
+		   timeout : 100000,
+		   success : function(data) {
+			$("#basicOrientationTrainingofERId").html(data[0]);
+			$("#refreshertraningtoERId").html(data[1]);
+			$("#shg_pri_convergenceID").html(data[2]);
+			$("#eSPMUId").html(data[3]);
+			$("#eDPMUId").html(data[4]);
+			$("#eComputerizationId").html(data[5]);
+			$("#bhawansConstructedId").html(data[6]);
+			$("#bhawansRepairedId").html(data[7]);
+			$("#CSCsId").html(data[8]);
+			$("#withinStateId").html(data[9]);
+			$("#OutsideStateId").html(data[10]);
+			$("#panchyatStakeholderId").html(data[11]);
+			$("#technicalsupporttoGPsId").html(data[12]);
+		   },
+		   error : function(e) {
+		    console.log(e);
+		   }
+		  });
+		}
+
+
+		function onloadKPI(kpiName){
+			$('.bd-example-modal-lg').modal('show');
+				$("label[for*='myModalLabel']").html(kpiName);
+			$.ajax({
+				   type : "POST",
+				   contentType : "application/json",
+				   url : "kpiHeaderPage.html?<csrf:token uri='kpiHeaderPage.html'/>&kpiName="+kpiName,
+				   dataType : 'json',
+				   cache : false,
+				   timeout : 100000,
+				   success : function(data) {
+					//   console.log(data);
+					   var table='';
+					   	table+='<thead style="background-color: #eeb2b2">';
+					   		  table+='<tr>';
+							   	 table+='<td><b> S.No </b></td>';
+							   	 table+='<td> <b>State <b></td>';
+							   	 table+='<td><b> G.P Name </b> </td>';
+							     table+='<td><b> Status</b></td>';
+							   	 table+='<td><b> Financial Year</b></td>';
+							   table+='</tr>';
+							   table+='</thead>';
+							   table+='<tbody>';
+							   
+							   $.each(data, function (index) {
+								   var slno=parseInt(index)+1;
+								   table+='<tr>';
+								   		table+='<td>'+slno+'</td>';
+									   table+='<td>'+this.State+'</td>';
+									   table+='<td>'+this.GP_Name+'</td>';
+									   table+='<td>'+this.status+'</td>';
+									   table+='<td>'+this.finyear+'</td>';
+								   table+='</tr>'; 
+							    });
+							   
+							   table+='</tbody>';
+							  $('#tableExample').html(table);
+				   },
+				   error : function(e) {
+				    console.log(e);
+				   }
+				  });
+		}
+		
+		
+		
 		</script>
  
