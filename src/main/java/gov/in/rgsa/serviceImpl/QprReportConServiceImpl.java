@@ -123,7 +123,7 @@ public class QprReportConServiceImpl implements QprReportConService
 			query.append("  inner join rgsa.training_wise_category twc on twc.training_id=tad.training_id ");
 			query.append("  inner join rgsa.training_categories tc on tc.training_category_id=twc.training_category_id");
 			query.append("  inner join rgsa.training_venue_level tvl on tvl.training_venue_level_id= tad.training_venue_level_id ");
-			query.append("  where qt.qtr_id="+quarterId+" and td.state_code="+statecode+" and td.year_id="+yearId+" and td.user_type='"+UserType+"' and td.is_active ");
+			query.append("  where qt.qtr_id="+quarterId+" and td.state_code="+statecode+" and td.year_id="+yearId+" and td.user_type='"+UserType+"' and td.is_active   ");
 			query.append("  and qt.training_activity_id=(select training_activity_id from rgsa.training_activity where state_code="+statecode+" and year_id="+yearId+" and user_type='"+UserType+"' and is_active)");
 			List list=dao.findAllByNativeQuery(query.toString(), null);
 			if(list!=null && !list.isEmpty()) {
@@ -134,10 +134,10 @@ public class QprReportConServiceImpl implements QprReportConService
 					 map.put("Training_Category", obj[0].toString()); 
 					 map.put("Training_Subjects", obj[1].toString());
 					 map.put("Venue_Level", obj[2].toString());
-					 map.put("Total_Participants", obj[3].toString());
+					 map.put("Total_Participants", obj[3].toString()); 
 					 map.put("Approved_Amount", obj[4].toString());
 					 map.put("expenditure_incurred", obj[5].toString());
-					 map.put("additional_requirement", obj[6].toString());
+					 map.put("additional_requirement", obj[6].toString()); 
 					 datalist.add(map);
 				 }
 			}
