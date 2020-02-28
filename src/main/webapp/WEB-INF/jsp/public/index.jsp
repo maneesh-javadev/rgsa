@@ -386,6 +386,21 @@
 	</div>
 	
 	
+	
+	<div class="modal bd-example-modal-xlg" id="modalGPName" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
+	  <div class="modal-dialog modal-xlg" role="document">
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+	        <label class="modal-title" id="GPNameLabel" for="GPNameLabel"></label>
+	      </div>
+	      <div class="modal-body">
+	       		<table id="tableGP" class="table table-bordered"></table>
+	      </div>
+	    </div>
+	  </div>
+	</div>
+	
 <!--   close modal -->
 
 <%-- <section class="reportssec">
@@ -469,7 +484,7 @@
 									   tableBody+= '<td><b>No of Post filled </b></td>';
 									   tableBody+= '<td><b>Fin Year </b></td>';
 									  tableBody+= '</thead>';
-									   for (var key1 in valueList) {
+									   for (var key1 in valueList) {  
 										   //console.log(">>>key1===="+key1);
 										    var slno=parseInt(key1)+1;
 											    tableBody+='<tr>';
@@ -534,7 +549,7 @@
 	
 		
 		
-		function voteViaAjax(detailId){ 
+		function voteViaAjax(detailId){
 			
 		   $.ajax({
 		   type : "POST",
@@ -566,6 +581,7 @@
 
 
 		function onloadKPI(kpiName){
+			 $('#tableExample').html('');
 			$('.bd-example-modal-lg').modal('show');
 				$("label[for*='myModalLabel']").html(kpiName);
 			$.ajax({
@@ -587,14 +603,15 @@
 							   	 table+='<td><b> Financial Year</b></td>';
 							   table+='</tr>';
 							   table+='</thead>';
-							   table+='<tbody>';
+							   table+='<tbody  >';
 							   
-							   $.each(data, function (index) {
+							   $.each(data, function (index) {								
 								   var slno=parseInt(index)+1;
 								   table+='<tr>';
-								   		table+='<td>'+slno+'</td>';
+								   		table+='<td>'+slno+'</td>'; 
 									   table+='<td>'+this.State+'</td>';
-									   table+='<td>'+this.GP_Name+'</td>';
+									   table+='<td onclick="showGPName('+slno+')"  > '+this.GP_Count+' </td>';
+									   table+='<td id="gpName_'+slno+'" style="display:none">' +this.GP_Name+' </td>';
 									   table+='<td>'+this.status+'</td>';
 									   table+='<td>'+this.finyear+'</td>';
 								   table+='</tr>'; 
@@ -609,6 +626,32 @@
 				  });
 		}
 		
+		function showGPName(vid){
+			$('.bd-example-modal-xlg').modal('show');
+			$("label[for*='GPNameLabel']").html("G.P Name");
+			  var gp=$('#gpName_'+vid).html();
+			  var ggg  =gp.split(',');
+			  var table='';
+			   table+='<thead style="background-color: #eeb2b2">';
+			   table+='<tr>';
+			   table+='<td><b> S.No </b></td>';
+			   table+='<td><b> G.P Name </b></td>';
+			   table+='</tr>';
+			   table+='</thead>';
+			   table+='<tbody>';
+			  for(var i=0; i<ggg.length; i++)
+			  {
+				  var slno=parseInt(i)+1;
+				  table+='<tr>';
+				  table+='<td>'+ slno + ' </td>';
+				  table+='<td>'+ ggg[i]+'</td>';
+				  table+='</tr>';
+			  }
+			  table+='</tbody>';
+			  
+			  $('#tableGP').html(table);
+			// console.log(s);
+		}
 		
 		
 		</script>
