@@ -59,7 +59,7 @@ loadElement=function(){
 loadSubElement=function(instInfraStatusId,index){
 /* 	$("#instInfraStatusId"+index+" option[value='"+instInfraStatusId+"']").attr("selected", "selected");
  */
- alert($("#instInfraStatusId"+index).val());
+// alert($("#instInfraStatusId"+index).val());
  
  
 };
@@ -181,7 +181,7 @@ function FreezeAndUnfreeze(msg){
 <c:if test="${quaterIdExist eq true}">
 			<script>
 			$(window).load(function () {
-				loadElement();
+				//loadElement();
 			}); 
 			</script>
 			

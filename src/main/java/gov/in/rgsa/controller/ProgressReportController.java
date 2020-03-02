@@ -224,9 +224,12 @@ public class ProgressReportController {
 		List<StateAllocation> stateAllocation = progressReportService.fetchStateAllocationData(11, installmentNo,
 				progressReportService.getCurrentPlanCode());
 		if (quarterId == 3 || quarterId == 4) {
-			if(progressReportService
-					.fetchStateAllocationData(11, 1, progressReportService.getCurrentPlanCode()).get(0) != null) {
-				stateAllocation.add(progressReportService
+			
+			List<StateAllocation> stateAllocationOther =	progressReportService
+					.fetchStateAllocationData(11, 1, progressReportService.getCurrentPlanCode());
+			
+			if (CollectionUtils.isNotEmpty(stateAllocationOther) && CollectionUtils.isNotEmpty(stateAllocationOther)) {
+			stateAllocation.add(progressReportService
 						.fetchStateAllocationData(11, 1, progressReportService.getCurrentPlanCode()).get(0)); // total fund
 																												// allocated
 																												// in first
@@ -439,8 +442,11 @@ public class ProgressReportController {
 				progressReportService.getCurrentPlanCode());
 		model.addAttribute("QUATER_DETAILS", progressReportService.getQuarterDurations());
 		if (quarterId == 3 || quarterId == 4) {
-			if(stateAllocation.add(progressReportService
-					.fetchStateAllocationData(10, 1, progressReportService.getCurrentPlanCode()).get(0))){
+			List<StateAllocation> stateAllocationOther =progressReportService
+					.fetchStateAllocationData(10, 1, progressReportService.getCurrentPlanCode());
+			
+			if (CollectionUtils.isNotEmpty(stateAllocationOther) && CollectionUtils.isNotEmpty(stateAllocationOther)) {
+		
 			stateAllocation.add(progressReportService
 					.fetchStateAllocationData(10, 1, progressReportService.getCurrentPlanCode()).get(0)); // total fund
 																											// allocated
@@ -598,7 +604,10 @@ public class ProgressReportController {
 				progressReportService.getCurrentPlanCode());
 		model.addAttribute("QUATER_DETAILS", progressReportService.getQuarterDurations());
 		if (quarterId == 3 || quarterId == 4) {
-			if(progressReportService.fetchStateAllocationData(7, 1, progressReportService.getCurrentPlanCode()).get(0) != null) {
+			List<StateAllocation> stateAllocationOther =progressReportService.fetchStateAllocationData(7, 1, progressReportService.getCurrentPlanCode());
+			
+			if (CollectionUtils.isNotEmpty(stateAllocationOther) && CollectionUtils.isNotEmpty(stateAllocationOther)) {
+		
 				stateAllocation.add(progressReportService
 						.fetchStateAllocationData(7, 1, progressReportService.getCurrentPlanCode()).get(0)); // total fund
 																												// allocated
@@ -781,8 +790,11 @@ public class ProgressReportController {
 				progressReportService.getCurrentPlanCode());
 		model.addAttribute("QUATER_DETAILS", progressReportService.getQuarterDurations());
 		if (quarterId == 3 || quarterId == 4) {
-			if(progressReportService
-					.fetchStateAllocationData(4, 1, progressReportService.getCurrentPlanCode()).get(0) != null) {
+	List<StateAllocation> stateAllocationOther =progressReportService
+			.fetchStateAllocationData(4, 1, progressReportService.getCurrentPlanCode());
+			
+			if (CollectionUtils.isNotEmpty(stateAllocationOther) && CollectionUtils.isNotEmpty(stateAllocationOther)) {
+		
 				stateAllocation.add(progressReportService
 						.fetchStateAllocationData(4, 1, progressReportService.getCurrentPlanCode()).get(0)); // total fund
 																												// allocated
@@ -969,7 +981,12 @@ public class ProgressReportController {
 		model.addAttribute("LIST_OF_DISTRICT", districtName);
 		model.addAttribute("QUATER_DETAILS", progressReportService.getQuarterDurations());
 		if (quarterId == 3 || quarterId == 4) {
-			if (CollectionUtils.isEmpty(stateAllocation)) {
+			List<StateAllocation> stateAllocationOther =progressReportService
+					.fetchStateAllocationData(14, 1, progressReportService.getCurrentPlanCode());
+					
+					if (CollectionUtils.isNotEmpty(stateAllocationOther) && CollectionUtils.isNotEmpty(stateAllocationOther)) {
+			
+			
 				stateAllocation.add(progressReportService
 						.fetchStateAllocationData(14, 1, progressReportService.getCurrentPlanCode()).get(0)); // total
 																												// fund
@@ -1204,8 +1221,12 @@ public class ProgressReportController {
 		model.addAttribute("LIST_OF_PMU_DOMAINS_LIST", domainList.size() / 2);
 		model.addAttribute("LIST_OF_DISTRICT", pmuActivityService.fetchDistrictName());
 		if (quarterId == 3 || quarterId == 4) {
-			if(progressReportService
-					.fetchStateAllocationData(12, 1, progressReportService.getCurrentPlanCode()).get(0) != null) {
+			List<StateAllocation> stateAllocationOther =progressReportService
+					.fetchStateAllocationData(12, 1, progressReportService.getCurrentPlanCode());
+					
+					if (CollectionUtils.isNotEmpty(stateAllocationOther) && CollectionUtils.isNotEmpty(stateAllocationOther)) {
+			
+			
 				stateAllocation.add(progressReportService
 						.fetchStateAllocationData(12, 1, progressReportService.getCurrentPlanCode()).get(0)); // total fund
 																												// allocated
@@ -1708,8 +1729,13 @@ public class ProgressReportController {
 		List<StateAllocation> stateAllocation = progressReportService.fetchStateAllocationData(9, installmentNo,
 				progressReportService.getCurrentPlanCode());
 		if (quarterId == 3 || quarterId == 4) {
-			if(progressReportService
-					.fetchStateAllocationData(9, 1, progressReportService.getCurrentPlanCode()).get(0) != null) {
+			
+			List<StateAllocation> stateAllocationOther =	progressReportService
+					.fetchStateAllocationData(9, 1, progressReportService.getCurrentPlanCode());
+			
+			if (CollectionUtils.isNotEmpty(stateAllocationOther) && CollectionUtils.isNotEmpty(stateAllocationOther)) {
+	
+			
 				stateAllocation.add(progressReportService
 						.fetchStateAllocationData(9, 1, progressReportService.getCurrentPlanCode()).get(0)); // total fund
 																												// allocated
@@ -1869,9 +1895,11 @@ public class ProgressReportController {
 				progressReportService.getCurrentPlanCode());
 		model.addAttribute("quarter_duration", progressReportService.getQuarterDurations());
 		if (quarterId == 3 || quarterId == 4) {
-			if(stateAllocation.add(progressReportService
-					.fetchStateAllocationData(8, 1, progressReportService.getCurrentPlanCode()).get(0)))
-			{	stateAllocation.add(progressReportService
+			List<StateAllocation> stateAllocationOther =	progressReportService
+					.fetchStateAllocationData(8, 1, progressReportService.getCurrentPlanCode());
+			
+			if (CollectionUtils.isNotEmpty(stateAllocationOther) && CollectionUtils.isNotEmpty(stateAllocationOther)) {
+			stateAllocation.add(progressReportService
 					.fetchStateAllocationData(8, 1, progressReportService.getCurrentPlanCode()).get(0)); // total fund
 																											// allocated
 																											// in first
@@ -2321,6 +2349,7 @@ public class ProgressReportController {
 					qprInstitutionalInfrastructure.setQtrId(quaterId);
 					model.addAttribute("DISABLE_FREEZE", true);
 				}
+				model.addAttribute("quaterId",  qprInstitutionalInfrastructure.getQtrId());
 				model.addAttribute("additionalRequirement", additionalRequirement);
 				model.addAttribute("additionalRequirementDPRC", additionalRequirementDPRC);
 				model.addAttribute("quarterDuration", progressReportService.getQuarterDurations());
