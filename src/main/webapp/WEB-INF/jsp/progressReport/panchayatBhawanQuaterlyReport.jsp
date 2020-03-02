@@ -145,7 +145,7 @@
 																<td>${bhawanDto.localBodyNameEnglish}</td>
 																<td>
 																		<spring:bind path="QPR_PANCHAYAT_BHAWAN.qprPanhcayatBhawanDetails[${count.index}].gpBhawanStatusId" >
-																			<select class="form-control" name="${status.expression}" id="gpBhawanStatusId_${count.index}"  >
+																			<select class="form-control freez" name="${status.expression}" id="gpBhawanStatusId_${count.index}"  >
 																		<option value="0">Please Select GP Status</option>
 																		<c:forEach items="${GPBhawanStatus}" var="status" >
 																			<option value="${status.gpBhawanStatusId}" >${status.gpBhawanStatusName}</option>
@@ -155,7 +155,7 @@
 																</td>
 																<td>
 																	<spring:bind path="QPR_PANCHAYAT_BHAWAN.qprPanhcayatBhawanDetails[${count.index}].expenditureIncurred" >
-																	<form:input class="form-control" id="expenditureIncurred_${count.index}" path="${status.expression}"  value="${status.value}"
+																	<form:input class="form-control freez" id="expenditureIncurred_${count.index}" path="${status.expression}"  value="${status.value}"
 																	autocomplete="off" onblur="validate_expenditureIncurred('${subcomponentwiseQuaterBalance}',this,null)" onkeypress="return isNumber(event)"  />
 																	</spring:bind>
 																	<span class="errormsg" id="error_expenditureIncurred_${count.index}"></span>
@@ -163,7 +163,7 @@
 																<td>
 																	<spring:bind path="QPR_PANCHAYAT_BHAWAN.qprPanhcayatBhawanDetails[${count.index}].file" >
 																	<c:choose>
-																		<c:when test="${QPR_PANCHAYAT_BHAWAN.isFreeze}"><input type="file" name="${status.expression}" class="form-control"  /></c:when>
+																		<c:when test="${QPR_PANCHAYAT_BHAWAN.isFreeze}"><input type="file" name="${status.expression}" class="form-control freez"  /></c:when>
 																		<c:otherwise><input type="file" name="${status.expression}" class="form-control"/></c:otherwise>
 																	</c:choose>
 																	</spring:bind>
@@ -261,4 +261,16 @@
 								</div>
 							</div>
 						</section>
+<script>
 
+var frz ='${QPR_PANCHAYAT_BHAWAN.isFreeze}';
+$( document ).ready(function() {
+	if(frz =='true'){
+		$('.freez').prop('disabled',true);
+	}
+	else{
+		$('.freez').prop('disabled',false);
+	}
+});
+
+</script>

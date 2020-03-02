@@ -2,6 +2,16 @@
 <script type="text/javascript"
 	src="${pageContext.request.contextPath}/resources/plugins/angular/angular.min.js"></script>
 <script>
+
+var frz ='${Qpr_Enablement.isFreeze}';
+$( document ).ready(function() {
+	if(frz =='true'){
+		$('.freez').prop('disabled',true);
+	}
+	else{
+		$('.freez').prop('disabled',false);
+	}
+});
 var  quator_id='${quarterId}';
 var remaining_add_req = '${REMAINING_ADD_REQ}';
 var qtr_1_2_filled='${QTR_ONE_TWO_FILLED}';
@@ -320,7 +330,7 @@ function FreezeAndUnfreeze(msg){
 																onkeyup="validateFundByAllocatedFund(${count.index});validateWithCorrespondingFund(${count.index});calTotalExpenditure()"
 																id="expenditureIncurred_${count.index}" required="required" readonly="${Qpr_Enablement.isFreeze}" /></td>
 																
-																<td><form:select id="enablement_${count.index}"  path ="qprEnablementDetails[${count.index}].enablementStatus" readonly="${Qpr_Enablement.isFreeze}"  class="form-control">
+																<td><form:select id="enablement_${count.index}"  path ="qprEnablementDetails[${count.index}].enablementStatus" readonly="${Qpr_Enablement.isFreeze}"  class="form-control freez">
 																<option value="-1">select</option>
 															
                                                                    <option value="1">Tendering process</option>
@@ -391,7 +401,7 @@ function FreezeAndUnfreeze(msg){
 																onkeyup="validateFundByAllocatedFund(${count.index});validateWithCorrespondingFund(${count.index});calTotalExpenditure()"
 																id="expenditureIncurred_${count.index}"
 																required="required"  /></td>
-																<td><select name ="qprEnablementDetails[${count.index}].enablementStatus" class="form-control">
+																<td><select name ="qprEnablementDetails[${count.index}].enablementStatus" class="form-control freez">
 																<option value="-1">select</option>
                                                                    <option value="1">Tendering process</option>
                                                                      <option value="2">Computer procured</option>
