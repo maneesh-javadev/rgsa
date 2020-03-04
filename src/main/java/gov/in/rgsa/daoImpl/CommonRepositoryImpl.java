@@ -71,6 +71,17 @@ public class CommonRepositoryImpl implements CommonRepository {
 		return (T) entityManager.find(entity, id);
 	}
 
+	@SuppressWarnings("unchecked")
+	@Override
+	public <T> T find(Class<T> resultClass, Map<String, Object> params) {
+		try {
+			Query query = getFindQuery(resultClass, params);
+			return (T)query.getSingleResult();
+		}catch(NoResultException ex) {
+			return null;
+		}
+	}
+
 	@Override
 	public <T> int excuteUpdate(String query, Map<String, Object> params) {
 
@@ -96,17 +107,6 @@ public class CommonRepositoryImpl implements CommonRepository {
         CriteriaQuery<T> all = cq.select(rootEntry);
         TypedQuery<T> allQuery = entityManager.createQuery(all);
         return allQuery.getResultList();
-	}
-
-	@SuppressWarnings("unchecked")
-	@Override
-	public <T> T find(Class<T> resultClass, Map<String, Object> params) {
-		try {
-			Query query = getFindQuery(resultClass, params);
-        	return (T)query.getSingleResult();
-        }catch(NoResultException ex) {
-        	return null;
-        }
 	}
 
 	@SuppressWarnings("unchecked")
