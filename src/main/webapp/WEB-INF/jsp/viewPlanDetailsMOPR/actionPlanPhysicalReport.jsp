@@ -28,7 +28,7 @@
 		src="${pageContext.request.contextPath}/resources/js/utils/captcha.js"></script>
 
 <script>
-
+//alert(document.referrer);
 var userType ='${user_type}';
 $( document ).ready(function() {
 	//alert(userType);
@@ -46,6 +46,7 @@ $( document ).ready(function() {
 		
 		$('#print').css("display","none");
 		$('.abcv').css("display","block");
+		$('.content').css({'margin':'0 0 0 0','margin-top':'150px'});
 	}
 	if(userType== 'S'){
 		 $("#print").show();
@@ -3338,14 +3339,10 @@ function collapseHide() {
 		   win.document.write('</body></html>');
 		  win.document.close();
 		  win.print();    
-		} 
-			
-</script>
+		}
+</script> 
 
- 
- 
 <section class="content">
-
 	<div class="container-fluid">
 		<div class="row clearfix">
 			<div class="table-responsive">
@@ -3718,24 +3715,13 @@ function collapseHide() {
 										id="exportButtonId"
 										onclick="exportToPdf('printElement')"><span class="glyphicon glyphicon-print"></span> Print
 										File</button> 
-										
-									</div>
-									
-									<div class="text-left">
-											<button type="button"
-												onclick="onClose('actionPlanPhysicalReport.html?<csrf:token uri='actionPlanPhysicalReport.html'/>&stateCode=0')"
-												class="btn bg-orange waves-effect">
-												<i class="fa fa-arrow-left" aria-hidden="true"></i>
-												<spring:message code="Label.BACK" htmlEscape="true" />
-											</button>
-										</div>
-										
-									</article>
-								</main>
-								
 								</div>
 									
+									</article>
+								</main>
+								</div>
 							</div>
+							
 						<div class=" abcv">
                         <div class="container">
                           <div class="body">
@@ -3811,11 +3797,37 @@ function collapseHide() {
 							
 							</div>
 							</div>
-							</div>
+						<c:choose>
+							<c:when test="${user_type eq 'S' || user_type eq 'M'}">
+								<div class="text-left">
+									<button type="button"
+										onclick="onClose('actionPlanPhysicalReport.html?<csrf:token uri='actionPlanPhysicalReport.html'/>&stateCode=0')"
+										class="btn bg-orange waves-effect">
+										<i class="fa fa-arrow-left" aria-hidden="true"></i>
+										<spring:message code="Label.BACK" htmlEscape="true" />
+									</button>
+									<br />
+								</div>
+							</c:when>
+							<c:otherwise>
+								<div class="text-left">
+									<button type="button"
+										onclick="onClose('index.html?<csrf:token uri='index.html'/>')"
+										class="btn bg-orange waves-effect">
+										<i class="fa fa-arrow-left" aria-hidden="true"></i>
+										<spring:message code="Label.BACK" htmlEscape="true" />
+									</button>
+									<br />
+								</div>
+							</c:otherwise>
+						</c:choose>
+					</div>
 							
 						</div>
 						</div>
+						
 						</div> 
+						
 					<%-- </form:form> --%>
 				</div>
 			</div>
