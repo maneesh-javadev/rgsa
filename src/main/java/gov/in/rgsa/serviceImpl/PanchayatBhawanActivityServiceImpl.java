@@ -298,7 +298,7 @@ public class PanchayatBhawanActivityServiceImpl implements PanchayatBhawanServic
 			commonRepository.save(qprPanchayatBhawan);
 		}else{
 			commonRepository.update(qprPanchayatBhawan);
-		}
+		}	
 	}
 	
 	public QprPanchayatBhawan setObjectForQprPanchayatBhawan(QprPanchayatBhawan qprPanchayatBhawan){
@@ -388,11 +388,11 @@ public class PanchayatBhawanActivityServiceImpl implements PanchayatBhawanServic
 	}
 
 	@Override
-	public List<QprPanchayatBhawan> fetchDataAccordingToQuator(Integer quatorId,Integer activityId,Integer panchayatBhawanActivityId) {
+	public List<QprPanchayatBhawan> fetchDataAccordingToQuator(Integer quatorId,Integer activityId,Integer districtCode) {
 		Map<String, Object> params=new HashMap<>();
 		params.put("quatorId", quatorId);
 		params.put("activityId", activityId);
-		params.put("panchayatBhawanActivityId", panchayatBhawanActivityId);
+		params.put("districtCode", districtCode);
 		return commonRepository.findAll("FETCH_ACTIVITY_DEPEND_ON_QUATOR", params);
 	}
 	

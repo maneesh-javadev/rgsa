@@ -22,10 +22,12 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.persistence.Transient;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.*;
 import java.util.stream.Collectors;
+import java.util.stream.LongStream;
 
 @Controller
 public class ProgressReportController {
@@ -2257,6 +2259,11 @@ public class ProgressReportController {
 			Integer activityId = null;
 			Integer additionalRequirement = null;
 			Integer additionalRequirementDPRC = null;
+			 long countNSprc =0l;
+			 long countCSprc =0l;
+			 long countNDprc =0l;
+			 long countCDprc =0l;
+			
 			Integer quaterId = qprInstitutionalInfrastructure.getQtrId();
 			List<InstitutionalInfraProgressReportDTO> institutionalInfraProgressReportDTOList = institutionalInfraActivityPlanService
 					.fetchInstInfraStateDataForProgressReport();
@@ -2293,18 +2300,21 @@ public class ProgressReportController {
 							.getQprInstitutionalInfraDetails().stream()
 							.filter(u -> u.getTrainingInstitueTypeId().equals(4) && u.getWorkType().equals("N"))
 							.collect(Collectors.toList());
+					countNDprc =  qprInstitutionalInfrastructureList1.stream().mapToLong(x -> x.getExpenditureIncurred()).sum();
 					qprInstitutionalInfraNewDprc.setQprInstitutionalInfraNewDprc(qprInstitutionalInfrastructureList1);
 
 					List<QprInstitutionalInfraDetails> qprInstitutionalInfrastructureList2 = qprInstitutionalInfrastructure
 							.getQprInstitutionalInfraDetails().stream()
 							.filter(u -> u.getTrainingInstitueTypeId().equals(2) && u.getWorkType().equals("N"))
 							.collect(Collectors.toList());
-
+				
+					countNSprc =  qprInstitutionalInfrastructureList2.stream().mapToLong(x -> x.getExpenditureIncurred()).sum();
 					qprInstitutionalInfraNewSprc.setQprInstitutionalInfraNewSprc(qprInstitutionalInfrastructureList2);
 					List<QprInstitutionalInfraDetails> qprInstitutionalInfrastructureList3 = qprInstitutionalInfrastructure
 							.getQprInstitutionalInfraDetails().stream()
 							.filter(u -> u.getTrainingInstitueTypeId().equals(2) && u.getWorkType().equals("C"))
 							.collect(Collectors.toList());
+					countCSprc =  qprInstitutionalInfrastructureList3.stream().mapToLong(x -> x.getExpenditureIncurred()).sum();
 					qprInstitutionalInfraCarrySprc
 							.setQprInstitutionalInfraCarrySprc(qprInstitutionalInfrastructureList3);
 
@@ -2312,7 +2322,7 @@ public class ProgressReportController {
 							.getQprInstitutionalInfraDetails().stream()
 							.filter(u -> u.getTrainingInstitueTypeId().equals(4) && u.getWorkType().equals("C"))
 							.collect(Collectors.toList());
-
+					countCDprc =  qprInstitutionalInfrastructureList4.stream().mapToLong(x -> x.getExpenditureIncurred()).sum();
 					qprInstitutionalInfraCarryDprc
 							.setQprInstitutionalInfraCarryDprc(qprInstitutionalInfrastructureList4);
 
@@ -2320,6 +2330,10 @@ public class ProgressReportController {
 					model.addAttribute("qprInstitutionalNewSprc", qprInstitutionalInfraNewSprc);
 					model.addAttribute("qprInstitutionalCarryDprc",qprInstitutionalInfraCarryDprc );
 					model.addAttribute("qprInstitutionalCarrySprc",qprInstitutionalInfraCarrySprc);
+					model.addAttribute("countNSprc", countNSprc);
+					model.addAttribute("countCSprc", countCSprc);
+					model.addAttribute("countNDprc",countNDprc );
+					model.addAttribute("countCDprc",countCDprc);
 
 					/*
 					 * model.addAttribute("newBuldingTypeId4",qprInstitutionalInfrastructure

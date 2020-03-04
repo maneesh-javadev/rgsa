@@ -1,5 +1,6 @@
 package gov.in.rgsa.serviceImpl;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
@@ -10,6 +11,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import gov.in.rgsa.dao.CommonRepository;
+import gov.in.rgsa.dto.KpiReportDto;
+import gov.in.rgsa.dto.KpiReportDtoContainer;
 import gov.in.rgsa.entity.FinYear;
 import gov.in.rgsa.entity.QuarterDuration;
 import gov.in.rgsa.entity.State;
@@ -249,34 +252,100 @@ public class OtherAchievementsDetailServiceImpl implements OtherAchievementsDeta
 	}
 	
 	
-	public List fetchEspmu(String kpiName) {
-		List  datalist=new LinkedList();
+	public List<KpiReportDtoContainer> fetchEspmu(String kpiName) {
+		List<KpiReportDtoContainer> mapListOBJ = null;
+		List<KpiReportDto> rpListDTOOBJ = null;
+		int j = 0;
 		try {
 			StringBuilder query=new StringBuilder();
 			String type = new String();
-			if(("eSPMUId").equals(kpiName)) {
-				 type= "1";
-			}else if(("eDPMUId").equals(kpiName)) {
-				 type= "2";
-			}
 			query.append("select * from rgsa.get_no_eSpmu(");
-			query.append(type);
+			if(("eSPMUId").equals(kpiName)) {
+			 query.append("1");
+			}else if(("eDPMUId").equals(kpiName)) {
+				query.append("2");
+			}
 			query.append(");");
-				List list=commonRepository.findAllByNativeQuery(query.toString(), null);
-				if(list!=null && !list.isEmpty()) {
-					 for(Iterator itr=list.iterator(); itr.hasNext();)
-					 {
-						 Object []  obj=(Object [])itr.next();
-						 Map <String,String> map=new LinkedHashMap<>();
-						 map.put("stateName", obj[0].toString()); 
-						 map.put("NoOfUnit", obj[1].toString());
-						 
-						 map.put("NoOfUnitFilled", obj[2].toString());
-						 map.put("FinYear", obj[3].toString());
-						 
-						 datalist.add(map);
-					 }
+			List<Object[]> dataListOBJ=commonRepository.findAllByNativeQuery(query.toString(), null);
+			if(dataListOBJ!=null && !dataListOBJ.isEmpty()) {
+				mapListOBJ = new ArrayList<>();
+				for (int i = 0; i < dataListOBJ.size();) {
+				Object[] obj = dataListOBJ.get(i);
+				rpListDTOOBJ = new ArrayList<>();
+				KpiReportDtoContainer containerOBJ = new KpiReportDtoContainer();
+				KpiReportDto dtoOBJ = new KpiReportDto();
+				boolean checkSameRp = true;
+				Integer trgCount = new Integer(1);
+				if ((Integer) obj[0] != null && !((Integer) obj[0]).toString().isEmpty()) {
+					containerOBJ.setSlc((Integer) obj[0]);
+					}
+				if ((String) obj[1] != null && !((String) obj[1]).toString().isEmpty()) {
+				containerOBJ.setStateName(((String) obj[1]));
+				} else {
+				containerOBJ.setStateName("");
 				}
+				if ((String) obj[2] != null && !((String) obj[2]).toString().isEmpty()) {
+					containerOBJ.setNoOfPostApproved(((String) obj[2]));
+				} else {
+					containerOBJ.setNoOfPostApproved("");
+				}
+				if ((String) obj[5] != null && !((String) obj[5]).toString().isEmpty()) {
+					containerOBJ.setFinYear((String) obj[5]);
+				} else {
+					containerOBJ.setFinYear("");
+				}
+				if ((String) obj[3] != null && !((String) obj[3]).toString().isEmpty()) {
+					dtoOBJ.setNoOfUnitFilled((String) obj[3]);
+				} else {
+					dtoOBJ.setNoOfUnitFilled("");
+				}
+				if ((String) obj[4] != null && !((String) obj[4]).toString().isEmpty()) {
+					dtoOBJ.setQuater((String) obj[4]);
+				} else {
+					dtoOBJ.setQuater("");
+				}
+				rpListDTOOBJ.add(dtoOBJ);
+				for (j = i + 1; j < dataListOBJ.size() && checkSameRp; j++) {
+					Object[] isSameRPOBJ = dataListOBJ.get(j);
+					if (containerOBJ.getSlc().intValue() == (((Integer) isSameRPOBJ[0]).intValue())) {
+						KpiReportDto dtoRPOBJ = new KpiReportDto();
+						if ((String) isSameRPOBJ[3] != null && !((String) isSameRPOBJ[3]).toString().isEmpty()) {
+						dtoRPOBJ.setNoOfUnitFilled((String) isSameRPOBJ[3]);
+						} else {
+							dtoRPOBJ.setNoOfUnitFilled("");
+						}
+						if ((String) obj[4] != null && !((String) obj[4]).toString().isEmpty()) {
+							dtoRPOBJ.setQuater((String) obj[4]);
+						} else {
+							dtoRPOBJ.setQuater("");
+						}
+						trgCount++;
+						rpListDTOOBJ.add(dtoRPOBJ);
+					} else {
+					checkSameRp = false;
+				}
+				}
+				containerOBJ.setQdurCount(trgCount);
+				containerOBJ.setKpiReportDto(rpListDTOOBJ);
+				mapListOBJ.add(containerOBJ);
+				rpListDTOOBJ = null;
+				// setting outer loop from the last scanned position
+				// If last index remained unmatched
+				if (j == dataListOBJ.size() && !checkSameRp) {
+				i = j - 1;
+				}
+				// If last index remained matched
+				else if (j == dataListOBJ.size() && checkSameRp) {
+				i = j;
+				} // otherwise
+				else {
+				i = j - 1;
+				}
+				}
+			}
+	
+
+				
 				
 			
 			
@@ -285,8 +354,7 @@ public class OtherAchievementsDetailServiceImpl implements OtherAchievementsDeta
 		{
 			e.printStackTrace();
 		}
-		return datalist;
+		return mapListOBJ;
 	}
-	
  
 }

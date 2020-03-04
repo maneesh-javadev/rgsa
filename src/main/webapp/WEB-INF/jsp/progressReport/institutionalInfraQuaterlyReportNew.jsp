@@ -398,7 +398,7 @@
 										</strong>
 									</td>
 									<td>
-										<input type="text" class="form-control" id="nbs_subtotal" disabled="disabled" style="text-align:right;"/>
+										<input type="text" class="form-control nStotal" id="nbs_subtotal" disabled="disabled" style="text-align:right;"/>
 										
 									</td>
 								</tr>
@@ -411,7 +411,7 @@
 									</td>
 									<td>
 										<spring:bind path="QPR_INSTITUTIONALINFRAQUATERLY.additionalRequirement" >
-										<input type="text" onkeypress="return isNumber(event)" id="nbs_addReq" class="form-control" name="${status.expression}"  value="${status.value}" onblur="calculcate_total(null,'nbs')"  maxlength="8" style="text-align:right;" autocomplete="off" readonly="${QPR_INSTITUTIONALINFRAQUATERLY.isFreeze}"/>
+										<input type="text" onkeypress="return isNumber(event)" id="nbs_addReq" class="form-control nsAdd" name="${status.expression}"  value="${status.value}" onblur="calculcate_total(null,'nbs')"  maxlength="8" style="text-align:right;" autocomplete="off" readonly="${QPR_INSTITUTIONALINFRAQUATERLY.isFreeze}"/>
 										</spring:bind>
 										<span class="errormsg" id="error_nbs_addReq"></span>
 									</td>
@@ -827,7 +827,7 @@
 										</strong>
 									</td>
 									<td>
-										<input type="text" class="form-control" id="nbd_subtotal" disabled="disabled" style="text-align:right;"/>
+										<input type="text" class="form-control nDtotal" id="nbd_subtotal" disabled="disabled" style="text-align:right;"/>
 										
 									</td>
 								</tr>
@@ -840,7 +840,7 @@
 									</td>
 									<td>
 										<spring:bind path="QPR_INSTITUTIONALINFRAQUATERLY.additionalRequirementDPRC" >
-										<input type="text" onkeypress="return isNumber(event)" id="nbd_addReq" class="form-control" name="${status.expression}"  value="${status.value}" onblur="calculcate_total(null,'nbd')"  maxlength="8" style="text-align:right;" autocomplete="off" readonly="${QPR_INSTITUTIONALINFRAQUATERLY.isFreeze}"/>
+										<input type="text" onkeypress="return isNumber(event)" id="nbd_addReq" class="form-control nDAdd" name="${status.expression}"  value="${status.value}" onblur="calculcate_total(null,'nbd')"  maxlength="8" style="text-align:right;" autocomplete="off" readonly="${QPR_INSTITUTIONALINFRAQUATERLY.isFreeze}"/>
 										</spring:bind>
 										<span class="errormsg" id="error_nbd_addReq"></span>
 									</td>
@@ -1109,7 +1109,7 @@
 										</strong>
 									</td>
 									<td>
-										<input type="text" id="cfs_total" class="form-control"  style="text-align:right;" readonly="readonly"/>
+										<input type="text" id="cfs_total" class="form-control cStotal"  style="text-align:right;" readonly="readonly"/>
 										
 									</td>
 								</tr>
@@ -1398,7 +1398,7 @@
 										</strong>
 									</td>
 									<td>
-										<input type="text" id="cfd_total" class="form-control"  style="text-align:right;" readonly="readonly"/>
+										<input type="text" id="cfd_total" class="form-control cDtotal"  style="text-align:right;" readonly="readonly"/>
 										
 									</td>
 								</tr>	
@@ -1426,7 +1426,7 @@
 												</strong>
 											</td>
 											<td align="right" width="40%">
-												<input type="text"  class="form-control" id="grandTotal" readonly="readonly" style="text-align:right;"/>
+												<input type="text"  class="form-control gt" id="grandTotal" readonly="readonly" style="text-align:right;"/>
 											</td>
 										</tr>
 									</tfoot>
@@ -1486,6 +1486,14 @@
 <script>
 	
 $( document ).ready(function() {
+	$('.cDtotal').val('${countCDprc}');
+	$('.cStotal').val('${countCSprc}');
+	$('.nStotal').val('${countNSprc}');
+	$('.nDtotal').val('${countNDprc}');
+	    $('.nsAdd').val('0');
+	    $('.nDAdd').val('0');
+	var nSadd =$('.gt').val();
+	
 	var freeze ='${QPR_INSTITUTIONALINFRAQUATERLY.isFreeze}';
 	$("#qtrId option[value='${QPR_INSTITUTIONALINFRAQUATERLY.qtrId}']").attr("selected", "selected");
 	if(freeze ==='true'){

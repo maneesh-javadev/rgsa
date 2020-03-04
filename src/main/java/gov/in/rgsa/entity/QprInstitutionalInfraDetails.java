@@ -64,6 +64,7 @@ public class QprInstitutionalInfraDetails implements Serializable {
 	
 	
 	
+	
 	@OneToOne(fetch=FetchType.EAGER,cascade=CascadeType.ALL)
 	@JoinColumn(name="file_node_id")
 	private FileNode fileNode;
@@ -193,8 +194,7 @@ public class QprInstitutionalInfraDetails implements Serializable {
 		this.workType = workType;
 	}
 
-	
-	
+
 
 	
 

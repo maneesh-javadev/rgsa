@@ -139,7 +139,9 @@
 																		<spring:bind path="QPR_PANCHAYAT_BHAWAN.qprPanhcayatBhawanDetails[${count.index}].panhcayatBhawanActivityDetailsId" >
 																		<input type="hidden" name="${status.expression}" value="${QprPanchayatBhawanDto[count.index].panchayatBhawanActivityDetailId}" /> 
 																	</spring:bind>
-																
+																<spring:bind path="QPR_PANCHAYAT_BHAWAN.qprPanhcayatBhawanDetails[${count.index}].districtCode" >
+																		<input type="hidden" name="${status.expression}" value="${QprPanchayatBhawanDto[count.index].districtCode}" /> 
+																	</spring:bind>
 																		
 																<td>${count.index+1}</td>
 																<td>${bhawanDto.localBodyNameEnglish}</td>

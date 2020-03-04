@@ -229,14 +229,14 @@
 								<p class="underline ">e- enablement of Panchayats</p>
 								<div class="row">
 									<div class="col-lg-12">
-										<a  onclick="onloadKPIRajiv('eSPMUId');" >	<span class="counter ng-binding" data-ng-value="0000" id="eSPMUId">0000</span>
+										<a  onclick="onloadKPIRj('eSPMUId');" >	<span class="counter ng-binding" data-ng-value="0000" id="eSPMUId">0000</span>
 											<p>e- SPMU</p>
 										</a>
 									</div>
 								</div>
 								<div class="row">
 									<div class="col-lg-12">
-										<a onclick="onloadKPIRajiv('eDPMUId');">	<span class="counter ng-binding" id="eDPMUId">0000</span>
+										<a onclick="onloadKPIRj('eDPMUId');">	<span class="counter ng-binding" id="eDPMUId">0000</span>
 											<p>e- DPMU</p>
 										</a>
 									</div>
@@ -463,89 +463,7 @@
 
 		<script>
 	 
-		function onloadKPIRajiv(kpiName){			 
-			 $.ajax({
-				   type : "GET",
-				   contentType : "application/json",
-				   url : "kpiRajeevPage.html?<csrf:token uri='kpiRajeevPage.html'/>&kpiName="+kpiName,
-				   dataType : 'json',
-				   cache : false,
-				   timeout : 100000,
-				   success : function(data) {
-					   $.each( data, function(key,valueList){
-							  // console.log("key = " + key + " valueList = " + valueList);
-								/* if(key=='eSPMUId'){ */
-									  var tableBody='';
-									  var total=0;
-									   tableBody+= '<thead style="background-color: #5AAA5A;color: #fff">';
-									   tableBody+= '<td><b>S.No.<b></td>';
-									   tableBody+= '<td><b> State Name(In English) </b></td>';
-									   tableBody+= '<td><b>	No. of Posts approved</b></td>';
-									   tableBody+= '<td><b>No of Post filled </b></td>';
-									   tableBody+= '<td><b>Fin Year </b></td>';
-									  tableBody+= '</thead>';
-									   for (var key1 in valueList) {  
-										   //console.log(">>>key1===="+key1);
-										    var slno=parseInt(key1)+1;
-											    tableBody+='<tr>';
-										   	 tableBody+='<td>'+ slno +  '</td>';
-										   
-										   $.each( valueList[key1], function(key2,listVal){
-											    //console.log("key2 = " + key2 + " listVal = " + listVal); 
-												 tableBody+='<td style ="text-align:center">'+ listVal +  '</td>';
-												
-										   })
-											   
-										   tableBody+='</tr>';
-										}
-									   if(key =='eSPMUId'){
-										   $('#header').html("eSPMU Details");
-									   }else if(key =='eDPMUId'){
-										   $('#header').html("eDPMU Details");
-									   }
-									   $('#myModal').modal('show');
-										   $('#eSPMU').html(tableBody);
-										   
-										   //$("#myModal").show();
-									 /*  } *//* else if(key=='eDPMUId'){
-										  var tableBody='';
-										  var total=0;
-										   tableBody+= '<thead style="background-color: #5AAA5A">';
-										   tableBody+= '<td><b>S.No.<b></td>';
-										   tableBody+= '<td><b> State Name(In English) </b></td>';
-										   tableBody+= '<td><b>	No. of Posts approved</b></td>';
-										   tableBody+= '<td><b>No of Post filled </b></td>';
-										   tableBody+= '<td style="text-align:center"><b>Fin Year </b></td>';
-										  tableBody+= '</thead>';
-										   for (var key1 in valueList) {
-											   //console.log(">>>key1===="+key1);
-											    var slno=parseInt(key1)+1;
-												    tableBody+='<tr>';
-											   	 tableBody+='<td>'+ slno +  '</td>';
-											   
-											   $.each( valueList[key1], function(key2,listVal){
-												    //console.log("key2 = " + key2 + " listVal = " + listVal); 
-													 tableBody+='<td>'+ listVal +  '</td>';
-													
-											   })
-												   
-											   tableBody+='</tr>';
-											}
-										     
-										     $('#header').html("eDPMU Details");
-										   $('#myModal').modal('show');
-											   $('#eDPMU').html(tableBody);
-											   
-											   //$("#myModal").show();
-										  } */
-					   })
-				   },
-				   error : function(e) {
-				    console.log(e);
-				   }
-				 
-			 });
-			 }
+		
 	
 		
 		
@@ -652,6 +570,78 @@
 			  $('#tableGP').html(table);
 			// console.log(s);
 		}
+		
+		function onloadKPIRj(kpiName){			 
+			 $.ajax({
+				   type : "GET",
+				   contentType : "application/json",
+				   url : "kpiRajeevPage.html?<csrf:token uri='kpiRajeevPage.html'/>&kpiName="+kpiName,
+				   dataType : 'json',
+				   cache : false,
+				   timeout : 100000,
+				   success : function(data) {
+					   $.each( data, function(key,valueList){
+							  // console.log("key = " + key + " valueList = " + valueList);
+								/* if(key=='eSPMUId'){ */
+									  var tableBody='';
+									  var total=0;
+									   tableBody+= '<thead style="background-color: #5AAA5A;color: #fff">';
+									   tableBody+= '<th rowspan =10 style ="text-align:center"><b>S.No.<b></th>';
+									   tableBody+= '<th rowspan =10 style ="text-align:center"><b> State Name(In English) </b></th>';
+									   tableBody+= '<th rowspan =10 style ="text-align:center"><b>Fin Year </b></td>';
+									   tableBody+= '<th rowspan =10 style ="text-align:center"><b>	No. of Posts approved</b></th>';
+									   tableBody+= '<th  colspan =4 style ="text-align:center" ><b>No of Post filled </b></th>';
+									   tableBody+='<tr>';
+									   tableBody+= '<th colspan =1 style ="text-align:center"><b>	Quater 1</b></th>';
+									   tableBody+= '<th colspan =1 style ="text-align:center"><b>	Quater 2</b></th>';
+									   tableBody+= '<th colspan =1 style ="text-align:center"><b>	Quater 3</b></th>';
+									   tableBody+= '<th colspan =1 style ="text-align:center"><b>	Quater 4</b></th>';
+									 
+										 tableBody+='</tr>';
+									  tableBody+= '</thead>';
+										  
+										   $.each(valueList, function(key1,value1) {
+										    var slno=parseInt(key1)+1;
+										    var count =0;
+											    tableBody+='<tr>';
+											    tableBody+='<td  style ="text-align:center" >'+ slno + '</td>';
+											    tableBody+='<td  style ="text-align:center" >'+ value1.stateName + '</td>';
+											    tableBody+='<td  style ="text-align:center" >'+ value1.finYear + '</td>';
+											    tableBody+='<td  style ="text-align:center" >'+ value1.noOfPostApproved + '</td>';
+												 $.each( value1.kpiReportDto, function(key2,value){
+										   		
+											    if(value.quater =='Q1'){
+													  tableBody+='<td  style ="text-align:center">'+ value.noOfUnitFilled + '</td>'; 
+												  } if(value.quater =='Q2'){
+													  tableBody+='<td  style ="text-align:center">'+ value.noOfUnitFilled + '</td>'; 
+												  } if(value.quater =='Q3'){
+													  tableBody+='<td  style ="text-align:center">'+ value.noOfUnitFilled + '</td>'; 
+												  } if(value.quater =='Q4'){
+													  tableBody+='<td  style ="text-align:center">'+ value.noOfUnitFilled + '</td>'; 
+												  }
+												 });   
+											   	 tableBody+='</tr>';
+											   	count =0;
+											   }); 
+										   	 
+									   if(key =='eSPMUId'){
+										   $('#header').html("eSPMU Details");
+									   }else if(key =='eDPMUId'){
+										   $('#header').html("eDPMU Details");
+									   }
+									   $('#myModal').modal('show');
+										   $('#eSPMU').html(tableBody);
+										   
+										   
+					   })
+				   },
+				   error : function(e) {
+				    console.log(e);
+				   }
+				 
+			 });
+			 }
+		
 		
 		
 		</script>
