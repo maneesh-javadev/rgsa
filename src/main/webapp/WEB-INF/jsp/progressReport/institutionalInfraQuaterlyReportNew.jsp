@@ -116,7 +116,7 @@
 								<c:choose >
 								
 									<c:when test="${qprInstitutionalNewSprc ne null}">
-						<c:out value="sdfsd"></c:out>
+						
 						<tr>
 								<td align="center">
 										<strong>${qprInstitutionalNewSprc.qprInstitutionalInfraNewSprc[nsindex].districtName}</strong>
@@ -209,7 +209,7 @@
 								
 								
 								<c:otherwise>
-								<c:out value="c:otherwise"></c:out>
+								
 						<c:if test="${bhawanDto.workType eq 'N' and bhawanDto.institutionalActivityTypeId==2}">
 						<tr>
 								<td align="center">
@@ -603,7 +603,7 @@
                        		<c:choose>
                        		
                        		<c:when test="${qprInstitutional   ne null}">
-                       		 <c:out value="dasdas"></c:out>
+                       		 
                        		<tr>
                        			
 								<td align="center">
@@ -722,7 +722,7 @@
                        		
                        		<c:otherwise>
                        		<c:if test="${bhawanDto.workType eq 'N' and bhawanDto.institutionalActivityTypeId==4}">
-                       		<c:out value="c:otherwise"></c:out>
+                       		
                        		<tr>
 								<td align="center">
 											<strong>${bhawanDto.districtName}</strong>
@@ -919,7 +919,7 @@
                        		<c:if test="${bhawanDto.workType eq 'C' and bhawanDto.institutionalActivityTypeId==2}">
 							<c:choose>
 						<c:when test="${qprInstitutionalCarrySprc ne null}">
-						<c:out value="sdfsd"></c:out>
+						
 						<tr>
 								<td align="center">
 										<strong>${qprInstitutionalCarrySprc.qprInstitutionalInfraCarrySprc[csindex].districtName}</strong>
@@ -1008,7 +1008,7 @@
 								 <c:set var="csindex" value="${csindex+1}" />
 						</c:when>	
 						<c:otherwise>
-						<c:out value="c:otherwise"></c:out>
+						
 						<c:if test="${bhawanDto.workType eq 'C' and bhawanDto.institutionalActivityTypeId==2}">
 						<tr>
 								<td align="center">
@@ -1178,7 +1178,7 @@
                        		<c:choose>
                        		
                        		<c:when test="${qprInstitutionalCarryDprc   ne null}">
-                       		 <c:out value="dasdas"></c:out>
+                       		
                        		<tr>
                        			
 								<td align="center">
@@ -1297,7 +1297,7 @@
                        		
                        		<c:otherwise>
                        		<c:if test="${bhawanDto.workType eq 'C' and bhawanDto.institutionalActivityTypeId==4}">
-                       		<c:out value="c:otherwise"></c:out>
+                       		
                        		<tr>
 								<td align="center">
 											<strong>${bhawanDto.districtName}</strong>
@@ -1406,7 +1406,7 @@
                              
                            </table>
                            </div>
-                         </div>
+                         </div>	
                          
                          <div class="records">
 								<div class="">
@@ -1487,10 +1487,10 @@
 	
 $( document ).ready(function() {
 	var freeze ='${QPR_INSTITUTIONALINFRAQUATERLY.isFreeze}';
-	
+	$("#qtrId option[value='${QPR_INSTITUTIONALINFRAQUATERLY.qtrId}']").attr("selected", "selected");
 	if(freeze ==='true'){
 		$('.xxx').prop("disabled" ,"disabled");
 	}
-	loadElement();
+	//loadElement();
 });
 </script>
