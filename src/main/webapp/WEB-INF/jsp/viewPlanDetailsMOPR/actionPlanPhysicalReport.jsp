@@ -43,9 +43,9 @@ $( document ).ready(function() {
 		
 		var finYear = '${FIN_YEAR}';
 		var state = '${STATE.stateNameEnglish}';
-		
 		$('#print').css("display","none");
 		$('.abcv').css("display","block");
+		$('.content').css({'margin':'0 0 0 0','margin-top':'150px'});
 	}
 	if(userType== 'S'){
 		 $("#print").show();
@@ -88,9 +88,9 @@ function getStateList(){
 			        $.each(data, function (i, value) {      // bind the dropdown list using json result              
 			            $('<option>',
 			               {
-			                   value: i,
-			                   text: value
-			               }).html(value).appendTo("#selectSLC");
+			                   value: value,
+			                   text: i
+			               }).html(i).appendTo("#selectSLC");
 			        });
 			        $('#selectSLC').trigger("chosen:updated");
 			    
@@ -1167,7 +1167,7 @@ function collapseHide() {
 												divTemplate.append(table);
 											
 
-											} else if (key == "3") {
+											}  if (key == "3") {
 												var divTemplate = $("#collapsediv4");
 
 												$("#collapsediv4").empty();
@@ -2829,26 +2829,145 @@ function collapseHide() {
 											}
 	                                      if (key == "2") {
 												
-												
-												var divTemplate = $("#collapseDIV3");
-												$("#collapseDIV3").empty();
-												var addNsprc =0;
-												var addNdprc =0;
-												var sfundN =0;
-												var sfundC =0;
-												var grandTotal =0;
-												
-												
-												//$("#collapse2").text(activityName+" Finalize Work Location of "+$scope.selectDistrictCode.districtNameEnglish+" District");
+	                                    	    
+	                                    	  
+	                                    	  var divTemplate = $("#collapseDIV3");
 
+												$("#collapseDIV3").empty();
+												var divTemplate1 = $("#collapseCARRYdIV3");
+
+												$("#collapseCARRYdIV3").empty();
+											
+												//$("#collapse2").text(activityName+" Finalize Work Location of "+$scope.selectDistrictCode.districtNameEnglish+" District");
+                                            /*  $("#collapse4").append("<br><label>New Building</label>"); */
+													var newBuildingSprcDprc =0;
+													var additionlReq =0;
+													var totalFunds =0;
+													var additionlReqSprc= 0;  
+													var carrySprcDprc =0;
+													var total =0;
 												table = $("<table/>");
-												table.attr("id", "table1");
-												
+												table.attr("id", "table4");
 												table
 														.addClass("table table-hover table-bordered dashboard-task-infos table-responsive");
-
+                                               
 												thead = $("<thead/>");
+												thead5 = $("<thead/>");
+												 var cap =$("<caption/>");
+												  var span =$("<span />");
+												  span.attr("style","color: #fff;font-weight:bold;font-size:18px;");
+												  cap.append(span);
+												  span.append("NEW BUILDING");
+													cap.attr("style","background-color: #5AAA5A; color: #fff;text-align:center;");
+												/* th = createLabel("New Building");
+												th.attr("style","background-color: #5AAA5A; color: #fff;");
+												tr5.append(th);
+												thead5.append(tr5);
+*/
+												table.append(cap);
+												
+												tr = $("<TR/>");
 
+												th = createLabel("Building Type ");
+												th.attr("style","background-color: #eeb2b2");
+												tr.append(th);
+
+												th = createLabel("District : ");
+												th.attr("style","background-color: #eeb2b2");
+												tr.append(th);
+												
+												th = createLabel("Funds (in Rs) ");
+												th.attr("style","background-color: #eeb2b2");
+												tr.append(th);
+
+												th = createLabel("Remarks");
+												th.attr("style","background-color: #eeb2b2");
+												tr.append(th);
+
+												
+												thead.append(tr);
+
+												table.append(thead);
+												
+												tbody = $("<tbody/>");
+													tr = $("<TR/>");
+												$.each(value, function(key1,
+														value1) {
+													tbody.append(tr);
+													table.append(tbody);
+                                            if(value1.column15 ==2){
+													var tdnext;
+													
+													td = $("<TD/>");
+													td.append(value1.column1);
+													tr.append(td);
+														
+													
+														tdnext = $("<td>"
+																+ value1.column5
+																+ "</td>");
+														tr.append(tdnext);
+															tdnext = $("<td>"
+																+ value1.column2
+																+ "</td>");
+														tr.append(tdnext);
+														tdnext = $("<td>"
+																+ value1.column16
+																+ "</td>");
+														tr.append(tdnext);
+														  
+													
+													          if(value1.column13 != ''){
+													        	  additionlReqSprc= value1.column13;
+	                                          
+	                                          
+                                                 }
+													          if(value1.column14 != ''){
+													        	  additionlReq= value1.column14;
+						                                          
+						                                         
+					                                                 }
+													
+													          
+													          newBuildingSprcDprc =newBuildingSprcDprc + +value1.column2;
+             }
+                                            tr = $("<TR/>");
+												});
+
+												
+														tr.append(tdnext);
+													 
+																					
+															
+												
+												
+												
+												divTemplate.append(table);
+												
+												
+												
+												table1 = $("<table/>");
+												table1.attr("id", "table5");
+												table1
+														.addClass("table table-hover table-bordered dashboard-task-infos table-responsive");
+
+												thead1 = $("<thead/>");
+												thead6 = $("<thead/>");
+												tr6 = $("<TR/>");
+												  var cap =$("<caption/>");
+												  var span =$("<span />");
+												  span.attr("style","color: #fff;font-weight:bold;font-size:18px;");
+												  cap.append(span);
+												  span.append("CARRY FORWARD");
+													cap.attr("style","background-color: #5AAA5A; color: #fff;text-align:center;");
+													
+												/* th = createLabel("Carry Forward");
+												th.attr("style","background-color: #5AAA5A; color: #fff;");
+												 *//* tr6.append(cap);
+												thead6.append(tr6);
+*/
+												table1.append(cap);
+												
 												tr = $("<TR/>");
 
 											
@@ -2877,33 +2996,33 @@ function collapseHide() {
 												th = createLabel("Fund Required");
 												th.attr("style","background-color: #eeb2b2");
 												tr.append(th);
+									
 												
-												thead.append(tr);
-
-												table.append(thead);
-
-												tbody = $("<tbody/>");
+												thead1.append(tr);
 												
-												tr = $("<TR/>");
+												
+												table1.append(thead1);
+												
+												tbody2 = $("<tbody/>");
+													tr = $("<TR/>");
 												$.each(value, function(key1,
 														value1) {
-													 
-													console.log(key1 + " === "
-															+ value1.column1);
-
-													tbody.append(tr);
-													table.append(tbody);
-
+													tbody2.append(tr);
+													table1.append(tbody2);
+													if(value1.column15 == 4){
 													var tdnext;
-													$('#addRequ').val(value1.column13);
+													
 													td = $("<TD/>");
 													td.append(value1.column1);
 													tr.append(td);
+														
+													
+
 													tdnext = $("<td>"
 															+ value1.column5
 															+ "</td>");
 													tr.append(tdnext);
-													tdnext = $("<td>"
+														tdnext = $("<td>"
 															+ value1.column10
 															+ "</td>");
 													tr.append(tdnext);
@@ -2911,165 +3030,146 @@ function collapseHide() {
 															+ value1.column7
 															+ "</td>");
 													tr.append(tdnext);
+												
 													tdnext = $("<td>"
 															+ value1.column12
 															+ "</td>");
 													tr.append(tdnext);
+												
+												
+											
 													tdnext = $("<td>"
-															+ value1.column9
-															+ "</td>");
-													
-													tr.append(tdnext);
+														+ value1.column8
+														+ "</td>");
+												tr.append(tdnext);
+												
 													tr = $("<TR/>");
-													count ++;
+	
 													
-													
-													var sfundN =0;
-													var sfundC =0;
-													var grandTotal =0;
-													
-													sfundN =sfundN + +value1.column3;
-													sfundC=sfundC + +value1.column9
-													addNsprc =addNsprc + +value1.column13;
-													addNdprc =addNdprc + +value1.column14;
-													 
-													
-													
+													carrySprcDprc =carrySprcDprc + +value1.column8;
+													}
 												});
 												
-												totalFunds  =sfundN  + +sfundC + +addNsprc + +addNdprc;
-												tbody.append(tr);
-												table.append(tbody);
-												var tdnext;
-												 td = $("<TD/>");
+												total =  carrySprcDprc + +newBuildingSprcDprc + +additionlReq  + +additionlReqSprc;
 												
-												 td.attr('colspan',4);
 												
-												/*  td.attr('style','text-align:right;'); */
-												 td.append("<label class='control-label'>Additional Requirement (SPRC)</label>");
-												 td.attr("style","background-color: #CCCEDF;");
-												 tr.append(td);
 												
-												 tdnext = $("<td >"
-															+ addNsprc+ "</td>");
 												
-												 tdnext.attr("id", "noOfPart");
-												 tdnext.attr("style","background-color: #CCCEDF;font-weight:bold;text-align:right;");
-												 tdnext.attr('colspan',2);
-													tr.append(tdnext);
-													
-													
-													
-													
-													tr.append(tdnext);
 												 
-												 tr = $("<TR/>");
-												 tbody.append(tr);
-													table.append(tbody);
-													var tdnext;
-													 td = $("<TD/>");
-													
-													 td.attr('colspan',4);
-													
-													/*  td.attr('style','text-align:right;'); */
-													 td.append("<label class='control-label'>Additional Requirement (DPRC)</label>");
-													 td.attr("style","background-color: #CCCEDF;");
-													 tr.append(td);
-													
-													 tdnext = $("<td >"
-																+ addNdprc+ "</td>");
-													
-													 tdnext.attr("id", "noOfPart");
-													 tdnext.attr("style","background-color: #CCCEDF;font-weight:bold; text-align:right;");
-													 tdnext.attr('colspan',2);
-														tr.append(tdnext);
-														
-														
-														
-														
-														tr.append(tdnext);
-													 
+													divTemplate1.append(table1);
 													 tr = $("<TR/>");
 													 
-													 tbody.append(tr);
-														table.append(tbody);
+													 tbody2.append(tr);
+														table.append(tbody2);
 														var tdnext;
 														 td = $("<TD/>");
 														
 														 td.attr('colspan',4);
 														
 														/*  td.attr('style','text-align:right;'); */
-														 td.append("<label class='control-label'>Total Proposed Fund (New Building (SPRC) +New Building (DPRC))</label>");
+														 td.append("<label class='control-label'>Additional Requirement (SPRC)</label>");
 														 td.attr("style","background-color: #CCCEDF;");
 														 tr.append(td);
 														
 														 tdnext = $("<td >"
-																	+ sfundN+ "</td>");
+																	+ additionlReqSprc+ "</td>");
 														
 														 tdnext.attr("id", "noOfPart");
 														 tdnext.attr("style","background-color: #CCCEDF;font-weight:bold;text-align:right;");
 														 tdnext.attr('colspan',2);
 															tr.append(tdnext);
 															
-															
-															
-															
-															tr.append(tdnext);
-														 
-														 tr = $("<TR/>");
-														 
-														 
-														 tbody.append(tr);
-															table.append(tbody);
-															var tdnext;
-															 td = $("<TD/>");
-															
-															 td.attr('colspan',4);
-															
-															/*  td.attr('style','text-align:right;'); */
-															 td.append("<label class='control-label'>Total Proposed Fund (Carry Forward (SPRC) +Carry Forward (DPRC))</label>");
-															 td.attr("style","background-color: #CCCEDF;");
-															 tr.append(td);
-															
-															 tdnext = $("<td >"
-																		+ sfundC+ "</td>");
-															
-															 tdnext.attr("id", "noOfPart");
-															 tdnext.attr("style","background-color: #CCCEDF;font-weight:bold;text-align:right;");
-															 tdnext.attr('colspan',2);
-																tr.append(tdnext);
-																 tr = $("<TR/>");
-																
-																 tbody.append(tr);
-																	table.append(tbody);
-																	var tdnext;
-																	 td = $("<TD/>");
-																	
-																	 td.attr('colspan',4);
-																	
-																	/*  td.attr('style','text-align:right;'); */
-																	 td.append("<label class='control-label'>Grand Total</label>");
-																	 td.attr("style","background-color: #CCCEDF;");
-																	 tr.append(td);
-																	
-																	 tdnext = $("<td >"
-																				+ totalFunds+ "</td>");
-																	
-																	 tdnext.attr("id", "noOfPart");
-																	 tdnext.attr("style","background-color: #CCCEDF;font-weight:bold;text-align:right;");
-																	 tdnext.attr('colspan',2);
-																		tr.append(tdnext);
-																		
-																						
-																		tr.append(tdnext);
-																
-															 
 															 tr = $("<TR/>");
 															 
-												
-												divTemplate.append(table);
-												
-
+															 tbody2.append(tr);
+																table.append(tbody2);
+																var tdnext;
+																 td = $("<TD/>");
+																
+																 td.attr('colspan',4);
+																
+																/*  td.attr('style','text-align:right;'); */
+																 td.append("<label class='control-label'>Additional Requirement (DPRC)</label>");
+																 td.attr("style","background-color: #CCCEDF;");
+																 tr.append(td);
+																
+																 tdnext = $("<td >"
+																			+ additionlReq+ "</td>");
+																
+																 tdnext.attr("id", "noOfPart");
+																 tdnext.attr("style","background-color: #CCCEDF;font-weight:bold;text-align:right;");
+																 tdnext.attr('colspan',2);
+																	tr.append(tdnext);
+																
+																	 tr = $("<TR/>");
+																	 
+																	 tbody2.append(tr);
+																		table.append(tbody2);
+																		var tdnext;
+																		 td = $("<TD/>");
+																		
+																		 td.attr('colspan',4);
+																		
+																		/*  td.attr('style','text-align:right;'); */
+																		 td.append("<label class='control-label'>Total Proposed Fund (New Building (SPRC) +New Building (DPRC))</label>");
+																		 td.attr("style","background-color: #CCCEDF;");
+																		 tr.append(td);
+																		
+																		 tdnext = $("<td >"
+																					+ newBuildingSprcDprc+ "</td>");
+																		
+																		 tdnext.attr("id", "noOfPart");
+																		 tdnext.attr("style","background-color: #CCCEDF;font-weight:bold;text-align:right;");
+																		 tdnext.attr('colspan',2);
+																			tr.append(tdnext);
+																		
+																			 tr = $("<TR/>");
+																			 
+																			 tbody2.append(tr);
+																				table.append(tbody2);
+																				var tdnext;
+																				 td = $("<TD/>");
+																				
+																				 td.attr('colspan',4);
+																				
+																				/*  td.attr('style','text-align:right;'); */
+																				 td.append("<label class='control-label'>Total Proposed Fund (Carry Forward (SPRC) +Carry Forward (DPRC))</label>");
+																				 td.attr("style","background-color: #CCCEDF;");
+																				 tr.append(td);
+																				
+																				 tdnext = $("<td >"
+																							+ carrySprcDprc+ "</td>");
+																				
+																				 tdnext.attr("id", "noOfPart");
+																				 tdnext.attr("style","background-color: #CCCEDF;font-weight:bold;text-align:right;");
+																				 tdnext.attr('colspan',2);
+																					tr.append(tdnext);
+																				
+															
+															tr.append(tdnext);
+															 
+															 tr = $("<TR/>");
+															 tbody2.append(tr);
+																table1.append(tbody2);
+																var tdnext;
+																 td = $("<TD/>");
+																
+																 td.attr('colspan',4);
+																
+																/*  td.attr('style','text-align:right;'); */
+																 td.append("<label class='control-label'>Grand Total</label>");
+																 td.attr("style","background-color: #CCCEDF;");
+																 tr.append(td);
+																
+																 tdnext = $("<td >"
+																			+ total+  "</td>");
+																
+																 tdnext.attr("id", "noOfPart");
+																 tdnext.attr("style","background-color: #CCCEDF;font-weight:bold; text-align:right;");
+																 tdnext.attr('colspan',2);
+																	tr.append(tdnext);
+											
+	                                    	  
 											}if (key == "9") {
 												var divTemplate = $("#collapsedIV11");
 												
@@ -3443,6 +3543,7 @@ function collapseHide() {
 											
 											<div class="panel-body">
 												<div id="collapseDIV3"></div>
+												<div id="collapseCARRYdIV3"></div>  
 											</div>
 										</div>
 									</section>
@@ -3720,15 +3821,6 @@ function collapseHide() {
 										File</button> 
 										
 									</div>
-									
-									<div class="text-left">
-											<button type="button"
-												onclick="onClose('actionPlanPhysicalReport.html?<csrf:token uri='actionPlanPhysicalReport.html'/>&stateCode=0')"
-												class="btn bg-orange waves-effect">
-												<i class="fa fa-arrow-left" aria-hidden="true"></i>
-												<spring:message code="Label.BACK" htmlEscape="true" />
-											</button>
-										</div>
 										
 									</article>
 								</main>
@@ -3811,6 +3903,30 @@ function collapseHide() {
 							
 							</div>
 							</div>
+								<c:choose>
+							<c:when test="${user_type eq 'S' || user_type eq 'M'}">
+								<div class="text-left">
+									<button type="button"
+										onclick="onClose('actionPlanPhysicalReport.html?<csrf:token uri='actionPlanPhysicalReport.html'/>&stateCode=0')"
+										class="btn bg-orange waves-effect">
+										<i class="fa fa-arrow-left" aria-hidden="true"></i>
+										<spring:message code="Label.BACK" htmlEscape="true" />
+									</button>
+									<br />
+								</div>
+							</c:when>
+							<c:otherwise>
+								<div class="text-left">
+									<button type="button"
+										onclick="onClose('index.html?<csrf:token uri='index.html'/>')"
+										class="btn bg-orange waves-effect">
+										<i class="fa fa-arrow-left" aria-hidden="true"></i>
+										<spring:message code="Label.BACK" htmlEscape="true" />
+									</button>
+									<br />
+								</div>
+							</c:otherwise>
+						</c:choose>
 							</div>
 							
 						</div>

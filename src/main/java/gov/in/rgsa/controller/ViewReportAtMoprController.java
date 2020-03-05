@@ -3,6 +3,7 @@ package gov.in.rgsa.controller;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -290,16 +291,15 @@ public class ViewReportAtMoprController {
 	
 	@GetMapping(value ="getStateList")
 	@ResponseBody
-	public Map<Integer, String> getStateList(String finYear, Model model,HttpSession httpSession, RedirectAttributes re) {
-		Map<Integer, String> map = new HashMap<>();
+	public LinkedHashMap<String, Integer> getStateList(String finYear, Model model,HttpSession httpSession, RedirectAttributes re) {
+		LinkedHashMap<String, Integer> map = new LinkedHashMap<>();
 	
 			List<State> states =   moprService.getStateListApprovedbyCEC(Integer.valueOf(finYear));
 			for (State state : states) {
-				map.put(state.getStateCode(), state.getStateNameEnglish());
+				map.put(state.getStateNameEnglish() ,state.getStateCode());
 			
 		}
 		return map;
 				
 	}
-	
 }

@@ -10,6 +10,7 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
@@ -17,7 +18,9 @@ import javax.persistence.Transient;
 
 @Entity
 @Table(name="qpr_panhcayat_bhawan",schema="rgsa")
-@NamedQuery(name="FETCH_ACTIVITY_DEPEND_ON_QUATOR",query="SELECT Q FROM QprPanchayatBhawan Q WHERE qtrId=:quatorId AND panchayatBhawanActivityId=:panchayatBhawanActivityId AND activityId=:activityId ")
+@NamedQueries({
+@NamedQuery(name="FETCH_ACTIVITY_DEPEND_ON_QUATOR",query="SELECT Q FROM QprPanchayatBhawan Q inner join Q.qprPanhcayatBhawanDetails QD WHERE Q.qtrId=:quatorId AND QD.districtCode=:districtCode AND Q.activityId=:activityId "),
+@NamedQuery(name="UPDATE_QPR_Panchayat_Bhawan_DEPEND_ON_QUATOR",query="UPDATE QprPanchayatBhawan SET additionalRequirementDPRC=:additionalRequirement  where qprPanchayatBhawanId=:qprPanchayatBhawanId ")})
 public class QprPanchayatBhawan  implements IFreezable{
 
 	

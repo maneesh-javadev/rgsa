@@ -105,7 +105,7 @@ public class QprGramPanchayatController {
 					model.addAttribute("isExistQprPanchayatBhawan",Boolean.FALSE);
 				}
 				
-				QprPanchayatBhawan = panchayatBhawanService.fetchDataAccordingToQuator(quatorId,activityId,panchayatBhawanActivityId);
+				QprPanchayatBhawan = panchayatBhawanService.fetchDataAccordingToQuator(quatorId,activityId,districtCode);
 				List<QprPanhcayatBhawanDetails> qprPanhcayatBhawanDetailsList=new  ArrayList<QprPanhcayatBhawanDetails>();
 				if(QprPanchayatBhawan!=null && !QprPanchayatBhawan.isEmpty() && QprPanchayatBhawan.get(0).getQprPanhcayatBhawanDetails().size()>0) {
 					int temp=0;
