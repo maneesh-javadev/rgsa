@@ -93,7 +93,7 @@ public class OtherAchievementsDetailServiceImpl implements OtherAchievementsDeta
 			StringBuilder query = new StringBuilder();
 			query.append("SELECT  sum(COALESCE(qed.no_of_units_filled,0) )  FROM  rgsa.qpr_egov qe , rgsa.qpr_egov_details qed , rgsa.egov_post ep , rgsa.egov_post_level el ");
 			query.append(" where  qe.qpr_egov_id = qed.qpr_egov_id and  qed.egov_post_id=ep.egov_post_id  and ep.egov_post_level_id = el.egov_post_level_id ");
-			query.append(" and qe.is_freeze = True and ep.egov_post_level_id =  " + levelId);
+			query.append(" and qe.is_freeze = True and   qe.qtr_id=4 and  ep.egov_post_level_id =  " + levelId);
 			List<Object> list = commonRepository.findAllByNativeQuery(query.toString(), null);
 			if (list.get(0) != null && !"null".equals(list.get(0)))
 			{

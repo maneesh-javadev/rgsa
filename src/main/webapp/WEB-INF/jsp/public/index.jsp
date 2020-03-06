@@ -269,7 +269,7 @@
         <h4 class="modal-title" id ="header"></h4>
       </div>
       <div class="modal-body">
-        <table class="table table-bordered" id="eSPMU">  </table>
+        <table class="table table-bordered table-responsive" id="eSPMU">  </table>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
@@ -588,14 +588,14 @@
 									   tableBody+= '<thead style="background-color: #5AAA5A;color: #fff">';
 									   tableBody+= '<th rowspan =10 style ="text-align:center"><b>S.No.<b></th>';
 									   tableBody+= '<th rowspan =10 style ="text-align:center"><b> State Name(In English) </b></th>';
-									   tableBody+= '<th rowspan =10 style ="text-align:center"><b>Fin Year </b></td>';
+									   tableBody+= '<th rowspan =10 style ="text-align:center"><b>Fin. Year </b></td>';
 									   tableBody+= '<th rowspan =10 style ="text-align:center"><b>	No. of Posts approved</b></th>';
 									   tableBody+= '<th  colspan =4 style ="text-align:center" ><b>No of Post filled </b></th>';
 									   tableBody+='<tr>';
-									   tableBody+= '<th colspan =1 style ="text-align:center"><b>	Quater 1</b></th>';
-									   tableBody+= '<th colspan =1 style ="text-align:center"><b>	Quater 2</b></th>';
-									   tableBody+= '<th colspan =1 style ="text-align:center"><b>	Quater 3</b></th>';
-									   tableBody+= '<th colspan =1 style ="text-align:center"><b>	Quater 4</b></th>';
+									   tableBody+= '<th colspan =1 style ="text-align:center"><b>	Quarter 1</b></th>';
+									   tableBody+= '<th colspan =1 style ="text-align:center"><b>	Quarter 2</b></th>';
+									   tableBody+= '<th colspan =1 style ="text-align:center"><b>	Quarter 3</b></th>';
+									   tableBody+= '<th colspan =1 style ="text-align:center"><b>	Quarter 4</b></th>';
 									 
 										 tableBody+='</tr>';
 									  tableBody+= '</thead>';
