@@ -89,9 +89,9 @@ function getStateList(){
 			        $.each(data, function (i, value) {      // bind the dropdown list using json result              
 			            $('<option>',
 			               {
-			                   value: i,
-			                   text: value
-			               }).html(value).appendTo("#selectSLC");
+			                   value: value,
+			                   text: i
+			               }).html(i).appendTo("#selectSLC");
 			        });
 			        $('#selectSLC').trigger("chosen:updated");
 			    
