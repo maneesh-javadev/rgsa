@@ -9,6 +9,7 @@ public class KpiReportDtoContainer {
 	private String noOfPostApproved;
 	private String finYear;
 	private Integer QdurCount;
+	private String gpCount;
 	private List<KpiReportDto> kpiReportDto;
 	
 	public Integer getQdurCount() {
@@ -47,6 +48,13 @@ public class KpiReportDtoContainer {
 	public void setSlc(Integer slc) {
 		this.slc = slc;
 	}
+	public String getGpCount()
+	{
+		return gpCount;
+	}
+	public void setGpCount(String gpCount)
+	{
+		this.gpCount = gpCount;
+	}
 	
-
 }

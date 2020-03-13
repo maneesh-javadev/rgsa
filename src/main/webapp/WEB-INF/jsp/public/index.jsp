@@ -199,28 +199,28 @@
 								<p class="underline ">Support for Panchayat Assets</p>
 								<div class="row">
 									<div class="col-lg-12">
-										<a href="#">	<span class="counter ng-binding" id="bhawansConstructedId" >0000</span>
+										<a  onclick="onloadKPIRj('bhawanConst');">	<span class="counter ng-binding" id="bhawansConstructedId" >0000</span>
 											<p>Bhawans Constructed</p>
 										</a>
 									</div>
 								</div>
 								<div class="row">
 									<div class="col-lg-12">
-										<a href="#">	<span class="counter ng-binding" id="bhawansRepairedId" >0000</span>
+										<a  onclick="onloadKPIRj('bhawanRepair');">	<span class="counter ng-binding" id="bhawansRepairedId" >0000</span>
 											<p>Bhawans Repaired</p>
 										</a>
-									</div>
+									</div>  
 								</div>
 								<div class="row">
 									<div class="col-lg-12">
-										<a href="#">	<span class="counter ng-binding" id="CSCsId">0000</span>
+										<a  onclick="onloadKPIRj('bhawanColocate');">	<span class="counter ng-binding" id="CSCsId">0000</span>
 											<p>CSCs co-located in Bhawans</p>
 										</a>
 									</div>
 								</div>
 							</div>
-						</div>
-					</div>
+						</div>   
+					</div> 
 				</div>
 				<div class="col-lg-2">
 					<div class="counter_item text-center">
@@ -483,9 +483,9 @@
 			$("#eSPMUId").html(data[3]);
 			$("#eDPMUId").html(data[4]);
 			$("#eComputerizationId").html(data[5]);
-			$("#bhawansConstructedId").html(data[6]);
-			$("#bhawansRepairedId").html(data[7]);
-			$("#CSCsId").html(data[8]);
+			$("#bhawansConstructedId").html(data[8]);
+			$("#bhawansRepairedId").html(data[9]);
+			$("#CSCsId").html(data[10]);
 			$("#withinStateId").html(data[9]);
 			$("#OutsideStateId").html(data[10]);
 			$("#panchyatStakeholderId").html(data[11]);
@@ -571,6 +571,34 @@
 			// console.log(s);
 		}
 		
+		function showGPNameId(vid){
+			$('.bd-example-modal-xlg').modal('show');
+			$("label[for*='GPNameLabel']").html("G.P Name");
+			 var gp=$('#gpName_'+vid).html();
+			  var ggg  =gp.split(',');
+			  var table='';
+			   table+='<thead style="background-color: #5AAA5A;color: #fff">';
+			   table+='<tr>';
+			   table+='<td><b> S.No </b></td>';
+			   table+='<td><b> G.P Name </b></td>';
+			   table+='</tr>';
+			   table+='</thead>';
+			   table+='<tbody>';
+			  for(var i=0; i<ggg.length; i++)
+			  {
+				  var slno=parseInt(i)+1;
+				  table+='<tr>';
+				  table+='<td>'+ slno + ' </td>';
+				  table+='<td>'+ ggg[i]+'</td>';
+				  table+='</tr>';
+			  }
+			  table+='</tbody>';
+			  
+			  $('#tableGP').html(table);
+			// console.log(s);
+		}
+		
+		
 		function onloadKPIRj(kpiName){			 
 			 $.ajax({
 				   type : "GET",
@@ -584,13 +612,23 @@
 							  // console.log("key = " + key + " valueList = " + valueList);
 								/* if(key=='eSPMUId'){ */
 									  var tableBody='';
-									  var total=0;
+									  var total1=0;
+									  var total2=0;
+									  var total3=0;
+									  var total4=0;
 									   tableBody+= '<thead style="background-color: #5AAA5A;color: #fff">';
 									   tableBody+= '<th rowspan =10 style ="text-align:center"><b>S.No.<b></th>';
 									   tableBody+= '<th rowspan =10 style ="text-align:center"><b> State Name(In English) </b></th>';
 									   tableBody+= '<th rowspan =10 style ="text-align:center"><b>Fin. Year </b></td>';
+									   if(kpiName =='eSPMUId' || kpiName =='eDPMUId'){
 									   tableBody+= '<th rowspan =10 style ="text-align:center"><b>	No. of Posts approved</b></th>';
 									   tableBody+= '<th  colspan =4 style ="text-align:center" ><b>No of Post filled </b></th>';
+									   }else if(kpiName =='bhawanConst' || kpiName =='bhawanRepair'   || kpiName =='bhawanColocate'){    
+										   tableBody+= '<th rowspan =10 style ="text-align:center"><b>	No. of Gps approved</b></th>';
+										   tableBody+= '<th  rowspan =10 style ="text-align:center" ><b>No. of Aspirational GPs approved   </b></th>';
+										   tableBody+= '<th  colspan =4 style ="text-align:center" ><b>No. of GPs Work Building Completed   </b></th>';
+									 
+									   }
 									   tableBody+='<tr>';
 									   tableBody+= '<th colspan =1 style ="text-align:center"><b>	Quarter 1</b></th>';
 									   tableBody+= '<th colspan =1 style ="text-align:center"><b>	Quarter 2</b></th>';
@@ -599,7 +637,7 @@
 									 
 										 tableBody+='</tr>';
 									  tableBody+= '</thead>';
-										  
+									  
 										   $.each(valueList, function(key1,value1) {
 										    var slno=parseInt(key1)+1;
 										    var count =0;
@@ -608,29 +646,92 @@
 											    tableBody+='<td  style ="text-align:center" >'+ value1.stateName + '</td>';
 											    tableBody+='<td  style ="text-align:center" >'+ value1.finYear + '</td>';
 											    tableBody+='<td  style ="text-align:center" >'+ value1.noOfPostApproved + '</td>';
+										  if(kpiName =='bhawanConst' || kpiName =='bhawanRepair'   || kpiName =='bhawanColocate'){ 
+											    	 tableBody+='<td  style ="text-align:center" >'+ value1.gpCount + '</td>';
+											    	 
+											    }  
 												 $.each( value1.kpiReportDto, function(key2,value){
-										   		
+													 if(kpiName =='bhawanConst' || kpiName =='bhawanRepair'   || kpiName =='bhawanColocate'){ 
 											    if(value.quater =='Q1'){
-													  tableBody+='<td  style ="text-align:center">'+ value.noOfUnitFilled + '</td>'; 
+											    	  tableBody+='<td   onclick="showGPNameId('+1+ ')"  style ="text-align:center;color: #109910;font-size: larger;">'+ value.noOfUnitFilled + '</td>'; 
+											    	  tableBody+='<td id="gpName_'+1+'" style="display:none">' +value.gpName+' </td>';
+													  total1 = total1 + +value.noOfUnitFilled;
 												  } if(value.quater =='Q2'){
-													  tableBody+='<td  style ="text-align:center">'+ value.noOfUnitFilled + '</td>'; 
+													  tableBody+='<td onclick="showGPNameId('+2+ ')"  style ="text-align:center;color: #109910;font-size: larger;">'+ value.noOfUnitFilled + '</td>'; 
+													  tableBody+='<td id="gpName_'+2+'" style="display:none">' +value.gpName+' </td>';
+													  total2 = total2 + +value.noOfUnitFilled;
 												  } if(value.quater =='Q3'){
-													  tableBody+='<td  style ="text-align:center">'+ value.noOfUnitFilled + '</td>'; 
+													  tableBody+='<td onclick="showGPNameId('+3+ ')"  style ="text-align:center;color: #109910;font-size: larger;">'+ value.noOfUnitFilled + '</td>'; 
+													  tableBody+='<td id="gpName_'+3+'" style="display:none">' +value.gpName+' </td>';
+													  total3 = total3 + +value.noOfUnitFilled;
 												  } if(value.quater =='Q4'){
-													  tableBody+='<td  style ="text-align:center">'+ value.noOfUnitFilled + '</td>'; 
+													  tableBody+='<td onclick="showGPNameId('+4+ ')"  style ="text-align:center;color: #109910;font-size: larger;">'+ value.noOfUnitFilled + '</td>'; 
+													  tableBody+='<td id="gpName_'+4+'" style="display:none">' +value.gpName+' </td>';
+													  total4 = total4 + +value.noOfUnitFilled;
+													  
 												  }
-												 });   
+													 }else{
+														 
+														
+															    if(value.quater =='Q1'){
+															    	  tableBody+='<td    style ="text-align:center;">'+ value.noOfUnitFilled + '</td>'; 
+															    	 
+																	  total1 = total1 + +value.noOfUnitFilled;
+																  } if(value.quater =='Q2'){
+																	  tableBody+='<td   style ="text-align:center;">'+ value.noOfUnitFilled + '</td>'; 
+																	 
+																	  total2 = total2 + +value.noOfUnitFilled;
+																  } if(value.quater =='Q3'){
+																	  tableBody+='<td   style ="text-align:center;">'+ value.noOfUnitFilled + '</td>'; 
+																	 
+																	  total3 = total3 + +value.noOfUnitFilled;
+																  } if(value.quater =='Q4'){
+																	  tableBody+='<td  style ="text-align:center;">'+ value.noOfUnitFilled + '</td>'; 
+																	
+																	  total4 = total4 + +value.noOfUnitFilled;
+																
+													 }
+													 }
+												 }); 
+												
 											   	 tableBody+='</tr>';
-											   	count =0;
+											   	//count =0;
 											   }); 
-										   	 
-									   if(key =='eSPMUId'){
+										   
+										   tableBody+= '<tfoot style="background-color: #ddd;  ">';
+										   if(kpiName =='eSPMUId' || kpiName =='eDPMUId'){
+											   tableBody+= '<td colspan ="4" style ="text-align:left"><b>Grand Total<b></th>';
+										   }
+									  if(kpiName =='bhawanConst' || kpiName =='bhawanRepair'   || kpiName =='bhawanColocate'){ 
+										   tableBody+= '<td colspan ="5" style ="text-align:left"><b>Grand Total<b></th>';
+										   }  tableBody+='<td colspan ="1" style ="text-align:center" > <b>'+ total1 + '</b></td>';
+										   tableBody+='<td colspan ="1" style ="text-align:center" > <b>'+ total2 + '</b></td>';
+										   tableBody+='<td colspan ="1" style ="text-align:center" > <b>'+ total3 + '</b></td>';
+										   tableBody+='<td colspan ="1" style ="text-align:center" > <b>'+ total4 + '</b></td>';
+										 
+											 tableBody+='</tr>';
+										   tableBody+= '</tfoot>';
+										    
+											 tableBody+='</tr>';
+										   
+										   
+									   if(kpiName =='eSPMUId'){
 										   $('#header').html("eSPMU Details");
-									   }else if(key =='eDPMUId'){
+									   }else if(kpiName =='eDPMUId'){
 										   $('#header').html("eDPMU Details");
+									   }
+									   else if(kpiName =='bhawanConst'){
+										   $('#header').html("Bhawans Constructed");
+									   }
+									   else if(kpiName =='bhawanRepair'){
+										   $('#header').html("Bhawans Repaired");
+									   }
+									   else if(kpiName =='bhawanColocate'){
+										   $('#header').html("CSCs co-located in Bhawans");
 									   }
 									   $('#myModal').modal('show');
 										   $('#eSPMU').html(tableBody);
+										 
 										   
 										   
 					   })

@@ -171,7 +171,7 @@ public class OtherAchievementsDetailServiceImpl implements OtherAchievementsDeta
 		try
 		{
 			StringBuilder query = new StringBuilder();
-			query.append(" select sum(count_gp) from (select count(qpd.local_body_code)as count_gp  from  rgsa.qpr_panhcayat_bhawan qp ,rgsa.qpr_panhcayat_bhawan_details qpd , ");
+			query.append(" select sum(count_gp) from (select count(distinct qpd.local_body_code)as count_gp  from  rgsa.qpr_panhcayat_bhawan qp ,rgsa.qpr_panhcayat_bhawan_details qpd , ");
 			query.append(" rgsa.gp_bhawan_status qs where qp.qpr_panhcayat_bhawan_id = qpd.qpr_panhcayat_bhawan_id and qpd.gp_bhawan_status_id = qs.gp_bhawan_status_id and qp.is_freeze = True  ");
 			query.append(" and  qs.gp_bhawan_status_id = " + bhawanStatus + " and qs.activity_id = " + activityId + ")t ");
 			List<Object> list = commonRepository.findAllByNativeQuery(query.toString(), null);
@@ -228,7 +228,7 @@ public class OtherAchievementsDetailServiceImpl implements OtherAchievementsDeta
 					"rgsa.qpr_e_enablement qe, rgsa.qpr_e_enablement_details qed , lgd.localbody lb,lgd.state s,rgsa.e_enablement ee, rgsa.fin_Year fn \r\n" + 
 					"where em.ee__master_id = qed.qpr_status and ed.e_enablement_id = qe.e_enablement_id and qe.qpr_e_enablement_id = qed.qpr_e_enablement_id  \r\n" + 
 					"and lb.local_body_code=qed.local_body_code and s.state_code=ee.state_code and qe.e_enablement_id=ee.e_enablement_id   \r\n" + 
-					"and fn.year_id=ee.year_id  and qe.is_freez =  True and qed.qpr_status = 1 and lb.isactive  and qe.is_freez group by s.state_name_english,em.ee_name,fn.finyear  order by s.state_name_english ");
+					"and fn.year_id=ee.year_id  and qe.is_freez =  True and qed.qpr_status = 3 and lb.isactive  and qe.is_freez group by s.state_name_english,em.ee_name,fn.finyear  order by s.state_name_english ");
 			List list= commonRepository.findAllByNativeQuery(query.toString(), null);
 			if(list!=null && !list.isEmpty()) {
 				 for(Iterator itr=list.iterator(); itr.hasNext();)
@@ -265,6 +265,16 @@ public class OtherAchievementsDetailServiceImpl implements OtherAchievementsDeta
 			}else if(("eDPMUId").equals(kpiName)) {
 				query.append("2");
 			}
+			else if(("bhawanConst").equals(kpiName)) {
+				query.append("3");
+			}
+			else if(("bhawanRepair").equals(kpiName)) {
+				query.append("4");
+			}
+			else if(("bhawanColocate").equals(kpiName)) {
+				query.append("5");
+			}
+			   
 			query.append(");");
 			List<Object[]> dataListOBJ=commonRepository.findAllByNativeQuery(query.toString(), null);
 			if(dataListOBJ!=null && !dataListOBJ.isEmpty()) {
@@ -294,28 +304,74 @@ public class OtherAchievementsDetailServiceImpl implements OtherAchievementsDeta
 				} else {
 					containerOBJ.setFinYear("");
 				}
-				if ((String) obj[3] != null && !((String) obj[3]).toString().isEmpty()) {
-					dtoOBJ.setNoOfUnitFilled((String) obj[3]);
-				} else {
-					dtoOBJ.setNoOfUnitFilled("");
+				
+				if(("bhawanConst").equals(kpiName) || ("bhawanRepair").equals(kpiName)  || ("bhawanColocate").equals(kpiName) ) {
+					if ((String) obj[3] != null && !((String) obj[3]).toString().isEmpty()) {
+						dtoOBJ.setNoOfUnitFilled((String) obj[3]);
+					} else {
+						dtoOBJ.setNoOfUnitFilled("");
+					}
+					if ((String) obj[6] != null && !((String) obj[6]).toString().isEmpty()) {
+						dtoOBJ.setGp((String) obj[6]);
+					} else {
+						dtoOBJ.setGp("");
+					}
+					if ((String) obj[7] != null && !((String) obj[7]).toString().isEmpty()) {
+						containerOBJ.setGpCount((String) obj[7]);
+					} else {
+						containerOBJ.setGpCount("");
+					}
+					if ((String) obj[8] != null && !((String) obj[8]).toString().isEmpty()) {
+						dtoOBJ.setGpName((String) obj[8]);
+					} else {
+						dtoOBJ.setGpName("");
+					}
+					
+				}else {
+					if ((String) obj[3] != null && !((String) obj[3]).toString().isEmpty()) {
+						dtoOBJ.setNoOfUnitFilled((String) obj[3]);
+					} else {
+						dtoOBJ.setNoOfUnitFilled("");
+					}
 				}
 				if ((String) obj[4] != null && !((String) obj[4]).toString().isEmpty()) {
 					dtoOBJ.setQuater((String) obj[4]);
 				} else {
 					dtoOBJ.setQuater("");
 				}
+				
 				rpListDTOOBJ.add(dtoOBJ);
 				for (j = i + 1; j < dataListOBJ.size() && checkSameRp; j++) {
 					Object[] isSameRPOBJ = dataListOBJ.get(j);
 					if (containerOBJ.getSlc().intValue() == (((Integer) isSameRPOBJ[0]).intValue())) {
 						KpiReportDto dtoRPOBJ = new KpiReportDto();
-						if ((String) isSameRPOBJ[3] != null && !((String) isSameRPOBJ[3]).toString().isEmpty()) {
-						dtoRPOBJ.setNoOfUnitFilled((String) isSameRPOBJ[3]);
-						} else {
-							dtoRPOBJ.setNoOfUnitFilled("");
-						}
+						
+						if(("bhawanConst").equals(kpiName) || ("bhawanRepair").equals(kpiName)  || ("bhawanColocate").equals(kpiName) ) {
+							if ((String) obj[6] != null && !((String) obj[6]).toString().isEmpty()) {
+								dtoRPOBJ.setGp((String) isSameRPOBJ[6]);
+							} else {
+								dtoRPOBJ.setGp("");
+							}
+							if ((String) obj[3] != null && !((String) obj[3]).toString().isEmpty()) {
+								dtoRPOBJ.setNoOfUnitFilled((String) isSameRPOBJ[3]);
+							} else {
+								dtoRPOBJ.setNoOfUnitFilled("");
+							}
+							if ((String) obj[8] != null && !((String) obj[8]).toString().isEmpty()) {
+								dtoRPOBJ.setGpName((String) isSameRPOBJ[8]);
+							} else {
+								dtoRPOBJ.setGpName("");
+							}
+							}else {
+								if ((String) isSameRPOBJ[3] != null && !((String) isSameRPOBJ[3]).toString().isEmpty()) {
+									dtoRPOBJ.setNoOfUnitFilled((String) isSameRPOBJ[3]);
+									} else {
+										dtoRPOBJ.setNoOfUnitFilled("");
+									}
+									
+							}
 						if ((String) obj[4] != null && !((String) obj[4]).toString().isEmpty()) {
-							dtoRPOBJ.setQuater((String) obj[4]);
+							dtoRPOBJ.setQuater((String) isSameRPOBJ[4]);
 						} else {
 							dtoRPOBJ.setQuater("");
 						}
@@ -356,5 +412,5 @@ public class OtherAchievementsDetailServiceImpl implements OtherAchievementsDeta
 		}
 		return mapListOBJ;
 	}
- 
+		  
 }
