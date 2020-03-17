@@ -31,7 +31,7 @@ public interface PanchayatBhawanService{
 	
 	public BasicInfoDetails findNumberOfPnchayatWithOutBhawanByState(Integer stateCode);
 
-	public List<GramPanchayatProgressReportDTO> fetchGPBhawanData(Integer panchayatBhawanActvityId,
+	public List<GramPanchayatProgressReportDTO> fetchGPBhawanData(Integer activityId,
 			Integer districtListId ,Integer panchayatBhawanActivityId);
 
 	public void saveQprPanchayatBhawanData(QprPanchayatBhawan qprPanchayatBhawan);

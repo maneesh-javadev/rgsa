@@ -803,13 +803,13 @@
 			  {
 				  var slno=parseInt(i)+1;
 				  table+='<tr>';
-				  table+='<td>'+ sc_maless + ' </td>';
-				  table+='<td>'+ st_maless+'</td>';
-				  table+='<td>'+ others_maless + ' </td>';
-				  table+='<td>'+sc_femaless+'</td>';
+				  table+='<td style ="text-align:center">'+ sc_maless + ' </td>';
+				  table+='<td style ="text-align:center">'+ st_maless+'</td>';
+				  table+='<td style ="text-align:center">'+ others_maless + ' </td>';
+				  table+='<td style ="text-align:center">'+sc_femaless+'</td>';
 				
-				  table+='<td>'+ st_femaless + ' </td>';
-				  table+='<td>'+ others_femaless+'</td>';
+				  table+='<td style ="text-align:center">'+ st_femaless + ' </td>';
+				  table+='<td style ="text-align:center">'+ others_femaless+'</td>';
 				
 				  table+='</tr>';
 			  }
