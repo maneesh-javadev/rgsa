@@ -122,9 +122,7 @@ public class OtherAchievementsDetailServiceImpl implements OtherAchievementsDeta
 			 * append(" where em.ee__master_id = ed.ee_master_id and ed.e_enablement_id = qe.e_enablement_id and qe.qpr_e_enablement_id = qed.qpr_e_enablement_id and qe.is_freez =  True and ed.ee_master_id = "
 			 * + masterId + " )t; ");
 			 */
-			String query="select sum(COALESCE(count_gp,0)) from (SELECT  count(qed.local_body_code )count_gp  from  rgsa.e_enablement_master em,rgsa.e_enablement_details ed,rgsa.qpr_e_enablement qe,		rgsa.qpr_e_enablement_details qed  \r\n" + 
-					"	    where qed.qpr_status=em.ee__master_id   and ed.e_enablement_id = qe.e_enablement_id and qe.qpr_e_enablement_id = qed.qpr_e_enablement_id and qe.is_freez =  True \r\n" + 
-					"	    and ed.ee_master_id = "+masterId+ " )t;  ";
+			String query="select sum(COALESCE(count_gp,0)) from (SELECT  count(qed.local_body_code )count_gp  from  rgsa.e_enablement_master em,rgsa.e_enablement_details ed,rgsa.qpr_e_enablement qe,		rgsa.qpr_e_enablement_details qed  ,rgsa.qpr_e_enablement_status_master esm   where  ed.e_enablement_id = qe.e_enablement_id and qe.qpr_e_enablement_id = qed.qpr_e_enablement_id and qe.is_freez =  True   and ed.ee_master_id = 1 AND esm.ee__master_id =qed.qpr_status and esm.ee__master_id  = "+masterId+ " )t;  ";
 			List<Object> list = commonRepository.findAllByNativeQuery(query.toString(), null);
 			if (list.get(0) != null && !"null".equals(list.get(0)))
 			{
@@ -273,6 +271,8 @@ public class OtherAchievementsDetailServiceImpl implements OtherAchievementsDeta
 			}
 			else if(("bhawanColocate").equals(kpiName)) {
 				query.append("5");
+			}else if(("basicOrientationTrainErs").equals(kpiName)) {
+				query.append("6");
 			}
 			   
 			query.append(");");
@@ -328,6 +328,40 @@ public class OtherAchievementsDetailServiceImpl implements OtherAchievementsDeta
 					}
 					
 				}else {
+					if(("basicOrientationTrainErs").equals(kpiName)) {
+						if ((String) obj[6] != null && !((String) obj[6]).toString().isEmpty()) {
+							dtoOBJ.setGp((String) obj[6]);
+						} else {
+							dtoOBJ.setGp("");
+						}
+						if ((String) obj[8] != null && !((String) obj[8]).toString().isEmpty()) {
+							dtoOBJ.setStMale((String) obj[8]);
+						} else {
+							dtoOBJ.setStMale("");
+						}
+						if ((String) obj[7] != null && !((String) obj[7]).toString().isEmpty()) {
+							dtoOBJ.setGpName((String) obj[7]);
+						} else {
+							dtoOBJ.setGpName("");
+						}
+					
+						if ((String) obj[9] != null && !((String) obj[9]).toString().isEmpty()) {
+							dtoOBJ.setOtherSc((String) obj[9]);  
+						} else {
+							dtoOBJ.setOtherSc("");
+						}
+						if ((String) obj[10] != null && !((String) obj[10]).toString().isEmpty()) {
+							dtoOBJ.setOtherSt((String) obj[10]);
+						} else {
+							dtoOBJ.setOtherSt("");
+						}
+						if ((String) obj[11] != null && !((String) obj[11]).toString().isEmpty()) {
+							dtoOBJ.setStFemale((String) obj[11]);
+						} else {
+							dtoOBJ.setStFemale("");
+						}
+						
+					}
 					if ((String) obj[3] != null && !((String) obj[3]).toString().isEmpty()) {
 						dtoOBJ.setNoOfUnitFilled((String) obj[3]);
 					} else {
@@ -363,6 +397,41 @@ public class OtherAchievementsDetailServiceImpl implements OtherAchievementsDeta
 								dtoRPOBJ.setGpName("");
 							}
 							}else {
+								if(("basicOrientationTrainErs").equals(kpiName)) {
+									
+									if ((String) obj[7] != null && !((String) obj[7]).toString().isEmpty()) {
+										dtoRPOBJ.setGpName((String) isSameRPOBJ[7]);
+									} else {
+										dtoRPOBJ.setGpName("");
+									}
+								
+									if ((String) obj[6] != null && !((String) obj[6]).toString().isEmpty()) {
+										dtoRPOBJ.setGp((String) obj[6]);
+									} else {
+										dtoRPOBJ.setGp("");
+									}
+									if ((String) obj[9] != null && !((String) obj[9]).toString().isEmpty()) {
+										dtoRPOBJ.setOtherSc((String) obj[9]);  
+									} else {
+										dtoRPOBJ.setOtherSc("");
+									}
+									if ((String) obj[10] != null && !((String) obj[10]).toString().isEmpty()) {
+										dtoRPOBJ.setOtherSt((String) obj[10]);
+									} else {
+										dtoRPOBJ.setOtherSt("");
+									}
+									if ((String) obj[11] != null && !((String) obj[11]).toString().isEmpty()) {
+										dtoRPOBJ.setStFemale((String) obj[11]);
+									} else {
+										dtoRPOBJ.setStFemale("");
+									}
+								
+									if ((String) obj[8] != null && !((String) obj[8]).toString().isEmpty()) {
+										dtoRPOBJ.setStMale((String) obj[8]);
+									} else {
+										dtoRPOBJ.setStMale("");
+									}
+									}
 								if ((String) isSameRPOBJ[3] != null && !((String) isSameRPOBJ[3]).toString().isEmpty()) {
 									dtoRPOBJ.setNoOfUnitFilled((String) isSameRPOBJ[3]);
 									} else {

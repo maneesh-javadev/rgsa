@@ -17,6 +17,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import gov.in.rgsa.dto.GramPanchayatProgressReportDTO;
 import gov.in.rgsa.dto.SubcomponentwiseQuaterBalance;
+import gov.in.rgsa.entity.District;
 import gov.in.rgsa.entity.QprPanchayatBhawan;
 import gov.in.rgsa.entity.QprPanhcayatBhawanDetails;
 import gov.in.rgsa.entity.StateAllocation;
@@ -87,9 +88,10 @@ public class QprGramPanchayatController {
 		List<QprPanchayatBhawan> QprPanchayatBhawan=new ArrayList<QprPanchayatBhawan>();
 		
 		if(activityId>0) {
-			model.addAttribute("districtList",progressReportService.getDistrictBasedOnPNCHAYATBHAWANnState(activityId));
-			if(districtCode>0) {
-				List<GramPanchayatProgressReportDTO> gramPanchayatProgressReportDTOAll =panchayatBhawanService.fetchGPBhawanData(activityId,districtCode);
+			List<District> districtList = progressReportService.getDistrictBasedOnPNCHAYATBHAWANnState(activityId);
+			model.addAttribute("districtList",districtList);
+			if(districtCode>0 && !districtList.isEmpty() ) {
+				List<GramPanchayatProgressReportDTO> gramPanchayatProgressReportDTOAll =panchayatBhawanService.fetchGPBhawanData(activityId,districtCode ,districtList.get(0).getPanhcayatBhawanActivityId());
 				if(gramPanchayatProgressReportDTOAll!=null && !gramPanchayatProgressReportDTOAll.isEmpty()) {
 					panchayatBhawanActivityId=gramPanchayatProgressReportDTOAll.get(0).getPanchayatBhawanActivityId();	
 				for(GramPanchayatProgressReportDTO obj:gramPanchayatProgressReportDTOAll) {

@@ -113,7 +113,7 @@
 					<div class="col-lg-4">
 						<div class="counter_item text-center">
 							<div class="sigle_counter_item">
-								<a href="#">
+								<a  onclick="onloadKPIRj('basicOrientationTrainErs');">
 									<div class="counter_text lightcyanbg">
 										<p class="underline ">Basic Orientation Training to ERs</p>	<span class="counter ng-binding" id="basicOrientationTrainingofERId">0000</span>
 									</div>
@@ -629,6 +629,11 @@
 										   tableBody+= '<th  colspan =4 style ="text-align:center" ><b>No. of GPs Work Building Completed   </b></th>';
 									 
 									   }
+									   else if(kpiName =='basicOrientationTrainErs'){
+										   tableBody+= '<th rowspan =10 style ="text-align:center"><b>	Total Participants</b></th>';
+										  tableBody+= '<th  colspan =4 style ="text-align:center" ><b>Total Participants trained </b></th>';
+								   }
+									 
 									   tableBody+='<tr>';
 									   tableBody+= '<th colspan =1 style ="text-align:center"><b>	Quarter 1</b></th>';
 									   tableBody+= '<th colspan =1 style ="text-align:center"><b>	Quarter 2</b></th>';
@@ -650,6 +655,7 @@
 											    	 tableBody+='<td  style ="text-align:center" >'+ value1.gpCount + '</td>';
 											    	 
 											    }  
+										  
 												 $.each( value1.kpiReportDto, function(key2,value){
 													 if(kpiName =='bhawanConst' || kpiName =='bhawanRepair'   || kpiName =='bhawanColocate'){ 
 											    if(value.quater =='Q1'){
@@ -670,7 +676,27 @@
 													  total4 = total4 + +value.noOfUnitFilled;
 													  
 												  }
-													 }else{
+													 }else  if(kpiName =='basicOrientationTrainErs'){ 
+														    if(value.quater =='Q1'){
+														    	  tableBody+='<td   onclick="showModelErs(' + value.gp+ ','+value.gpName +   ',' +value.stMale +','  +value.otherSc +',' + value.otherSt +',' +value.stFemale  +')"  style ="text-align:center;color: #109910;font-size: larger;">'+ value.noOfUnitFilled + '</td>'; 
+														    	//  tableBody+='<td id="gpName_'+1+'" style="display:none">' + +' </td>';
+																  total1 = total1 + +value.noOfUnitFilled;
+															  } if(value.quater =='Q2'){
+																  tableBody+='<td onclick="showModelErs(' + value.gp+ ','+value.gpName +   ',' +value.stMale +','  +value.otherSc +',' + value.otherSt +',' +value.stFemale  +' )"  style ="text-align:center;color: #109910;font-size: larger;">'+ value.noOfUnitFilled + '</td>'; 
+																//  tableBody+='<td id="gpName_'+2+'" style="display:none">' +value.gpName +',' + value.gp+ ',' +value.stFemale +','+ value.otherSt +',' +value.otherSc+ ',' +value.stMale +' </td>';
+																  total2 = total2 + +value.noOfUnitFilled;
+															  } if(value.quater =='Q3'){
+																  tableBody+='<td onclick="showModelErs(' + value.gp+ ','+value.gpName +   ',' +value.stMale +','  +value.otherSc +',' + value.otherSt +',' +value.stFemale  +')"  style ="text-align:center;color: #109910;font-size: larger;">'+ value.noOfUnitFilled + '</td>'; 
+																//  tableBody+='<td id="gpName_'+3+'" style="display:none">' +value.gpName +',' + value.gp+ ',' +value.stFemale +','+ value.otherSt +',' +value.otherSc+ ',' +value.stMale +'  </td>';
+																  total3 = total3 + +value.noOfUnitFilled;
+															  } if(value.quater =='Q4'){
+																  tableBody+='<td onclick="showModelErs(' + value.gp+ ','+value.gpName +   ',' +value.stMale +','  +value.otherSc +',' + value.otherSt +',' +value.stFemale  +')"  style ="text-align:center;color: #109910;font-size: larger;">'+ value.noOfUnitFilled + '</td>'; 
+																 // tableBody+='<td id="gpName_'+4+'" style="display:none">' +value.gpName +',' + value.gp+ ',' +value.stFemale +','+ value.otherSt +',' +value.otherSc+ ',' +value.stMale +'  </td>';
+																  total4 = total4 + +value.noOfUnitFilled;
+																  
+															  }
+																 }
+													 else{
 														 
 														
 															    if(value.quater =='Q1'){
@@ -704,7 +730,11 @@
 										   }
 									  if(kpiName =='bhawanConst' || kpiName =='bhawanRepair'   || kpiName =='bhawanColocate'){ 
 										   tableBody+= '<td colspan ="5" style ="text-align:left"><b>Grand Total<b></th>';
-										   }  tableBody+='<td colspan ="1" style ="text-align:center" > <b>'+ total1 + '</b></td>';
+										   }
+									  if(kpiName =='basicOrientationTrainErs'){ 
+										   tableBody+= '<td colspan ="4" style ="text-align:left"><b>Grand Total<b></th>';
+										   } 
+									  tableBody+='<td colspan ="1" style ="text-align:center" > <b>'+ total1 + '</b></td>';
 										   tableBody+='<td colspan ="1" style ="text-align:center" > <b>'+ total2 + '</b></td>';
 										   tableBody+='<td colspan ="1" style ="text-align:center" > <b>'+ total3 + '</b></td>';
 										   tableBody+='<td colspan ="1" style ="text-align:center" > <b>'+ total4 + '</b></td>';
@@ -729,6 +759,9 @@
 									   else if(kpiName =='bhawanColocate'){
 										   $('#header').html("CSCs co-located in Bhawans");
 									   }
+									   else if(kpiName =='basicOrientationTrainErs'){
+										   $('#header').html("Basic Orientation Training to ERs");
+									   }
 									   $('#myModal').modal('show');
 										   $('#eSPMU').html(tableBody);
 										 
@@ -743,7 +776,48 @@
 			 });
 			 }
 		
+		function showModelErs(sc_maless ,sc_femaless ,st_maless ,st_femaless ,others_maless ,others_femaless){
+			$('.bd-example-modal-xlg').modal('show');
+			$("label[for*='GPNameLabel']").html("G.P Name");
+			// var gp=$('#gpName_'+vid).html();
+			 // var ggg  =gp.split(',');
+			  var table='';
+			   table+='<thead style="background-color: #5AAA5A;color: #fff">';
+			   table+='<tr>';
+			   table+= '<th  colspan =3 style ="text-align:center" ><b>Male </b></th>';
+			   table+= '<th  colspan =3 style ="text-align:center" ><b>Female</b></th>';
+			   table+='<tr>';
+			   table+= '<th colspan =1 style ="text-align:center"><b>	Sc</b></th>';
+			   table+= '<th colspan =1 style ="text-align:center"><b>	St</b></th>';
+			   table+= '<th colspan =1 style ="text-align:center"><b>	other</b></th>';
+			   table+= '<th colspan =1 style ="text-align:center"><b>	Sc</b></th>';
+			   table+= '<th colspan =1 style ="text-align:center"><b>	St</b></th>';
+			   table+= '<th colspan =1 style ="text-align:center"><b>	other</b></th>';
+			 
+			   table+='</tr>';
 		
+			   table+='</tr>';
+			   table+='</thead>';
+			   table+='<tbody>';
+			  for(var i=0; i<1; i++)
+			  {
+				  var slno=parseInt(i)+1;
+				  table+='<tr>';
+				  table+='<td>'+ sc_maless + ' </td>';
+				  table+='<td>'+ st_maless+'</td>';
+				  table+='<td>'+ others_maless + ' </td>';
+				  table+='<td>'+sc_femaless+'</td>';
+				
+				  table+='<td>'+ st_femaless + ' </td>';
+				  table+='<td>'+ others_femaless+'</td>';
+				
+				  table+='</tr>';
+			  }
+			  table+='</tbody>';
+			  
+			  $('#tableGP').html(table);
+			// console.log(s);
+		}
 		
 		</script>
  

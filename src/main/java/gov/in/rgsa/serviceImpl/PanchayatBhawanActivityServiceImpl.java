@@ -283,10 +283,12 @@ public class PanchayatBhawanActivityServiceImpl implements PanchayatBhawanServic
 
 	@Override
 	public List<GramPanchayatProgressReportDTO> fetchGPBhawanData(Integer panchayatBhawanActvityId,
-			Integer districtListId) {
+			Integer districtListId ,Integer panchayatBhawanActivityId) {
 		Map<String, Object> params = new HashMap<>();
 		params.put("activityId", panchayatBhawanActvityId);
 		params.put("districtCode", districtListId);
+		params.put("panchayatBhawanActivityId", panchayatBhawanActivityId);
+		
 		return commonRepository.findAll("FETCH_GRAM_PANCHAYAT_REPORT_DETAILS", params);
 	}
 
