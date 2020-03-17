@@ -168,13 +168,20 @@ public class ProgressReportController {
 
 	}
 
-	@ResponseBody
-	@RequestMapping(value = "fetchGpBhawanData", method = RequestMethod.GET)
-	private List<GramPanchayatProgressReportDTO> fetchGPBhawanData(
-			@RequestParam(value = "PanchayatBhawanActvityId", required = false) Integer PanchayatBhawanActvityId,
-			@RequestParam(value = "DistrictListId", required = false) Integer DistrictListId) {
-		return panchayatBhawanService.fetchGPBhawanData(PanchayatBhawanActvityId, DistrictListId);
-	}
+	/*
+	 * @ResponseBody
+	 * 
+	 * @RequestMapping(value = "fetchGpBhawanData", method = RequestMethod.GET)
+	 * private List<GramPanchayatProgressReportDTO> fetchGPBhawanData(
+	 * 
+	 * @RequestParam(value = "PanchayatBhawanActvityId", required = false) Integer
+	 * PanchayatBhawanActvityId,
+	 * 
+	 * @RequestParam(value = "DistrictListId", required = false) Integer
+	 * DistrictListId) { return
+	 * panchayatBhawanService.fetchGPBhawanData(PanchayatBhawanActvityId,
+	 * DistrictListId); }
+	 */
 
 	/*
 	 * @ResponseBody
