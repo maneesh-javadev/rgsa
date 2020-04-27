@@ -5,7 +5,7 @@
 		$('#stateDropDownId').val('${VIEW_REPORT_MODEL.stateCode}');
 		var finYear=$('#finYearSelectId').val();
 		var stateCode=$('#stateDropDownId').val();
-		(finYear > 0) ? $('#stateDropDownBlock').show() : $('#stateDropDownBlock').hide() ;
+		//(finYear > 0) ? $('#stateDropDownBlock').show() : $('#stateDropDownBlock').hide() ;
 		(stateCode > 0) ? $('#optionChoosingBlock').show() : $('#optionChoosingBlock').hide() ;
 		if ('${VIEW_REPORT_MODEL.isDemoGraphic}' == 'true') {
 			$('#demoGraphicBlock').show();
@@ -51,30 +51,47 @@
 		submitToPost();
 	}
 
+	
 	function exportToPdf(id) {
-		 var finYear = $('#finYearSelectId').find('option:selected').text();
-		 var stateName = $('#stateDropDownId').find('option:selected').text();
-		 var header = (id == 'annualPlanBlockPrint') ? 'Annual action plan '+ finYear + ' - ' + $.trim(stateName): 'Demographic profile and other information '+ finYear + ' - ' + $.trim(stateName);
-		 var sTable =$('#'+id).html();
-		 var style = "<style>";
-		 if(id == 'annualPlanBlockPrint'){
-		 	 style = style + "table,th,td{border: solid 1px black;border-collapse: collapse;}";
-	         style = style + "thead {color : white; background-color: #9071bf;";
-	         style = style + "</style>";
-		 }else{
-			 style = style + " table , td, th {border: solid 1px grey;border-collapse: collapse;}";
-			 style = style + "</style>";
-		 }
-         var win = window.open('', '', 'height=700,width=700');
-         win.document.write('<html><head>');
-         win.document.write('<title>'+header+'</title>');  
-         win.document.write(style); 
-         win.document.write('</head>');
-         win.document.write('<body>');
-         win.document.write(sTable);         
-         win.document.write('</body></html>');
-       	 win.document.close(); 	
-       	 win.print();    
+		  var today = new Date();
+		  var dd = String(today.getDate()).padStart(2, '0');
+		  var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+		  var yyyy = today.getFullYear();
+
+		  today = mm + '/' + dd + '/' + yyyy;
+		 
+	
+	
+		var finYear = $('#finYearSelectId').find('option:selected').text();
+		var stateName = $('#stateDropDownId').find('option:selected').text();
+		var header = ' Demographic profile Report of '+ stateName+" for "
+		+'('+ '${FIN_YEAR}'+')'  ;
+		var sTable = $('#' + id).html();
+		var style = "<style>";
+		if (id == 'annualPlanBlockPrint') {
+			style = style
+					+ "table,th,td{border: solid 1px black;border-collapse: collapse;}";
+			style = style + "thead {color : white; background-color: #9071bf;";
+			style = style + "</style>";
+		} else {
+			style = style
+					+ " table , td, th {border: solid 1px grey;border-collapse: collapse;}";
+			style = style + "</style>";
+		}
+		var win = window.open('', '', 'height=700,width=700');
+		win.document.write('<html><head>');
+		   win.document.write('<h3 style="border: 4px solid black;text-align:center">'+ header+ '</h3>');  
+		win.document.write(style);
+		win.document.write('</head>');
+		win.document.write('<body>');
+		win.document.write(sTable);
+		  win.document.write('<h5 style=" margin-left: 35%">  https://rgsa.nic.in  </h5>');  
+		    win.document.write('<h5 style=" margin-left: 15%"> Report Generated on '+today+' and Data is updated & managed by State Departments  </h5>'); 
+		    win.document.write('<h5 style=" margin-left: 35%"> Rashtriya Gram Swaraj Abhiyan </h5>'); 
+		 
+		win.document.write('</body></html>');
+		win.document.close();
+		win.print();
 	}
 </script>
 <section class="content">
@@ -89,7 +106,7 @@
 					<br />
 					<form:form method="post" name="viewReportAtMopr" action=""
 						modelAttribute="VIEW_REPORT_MODEL">
-						<div class="row">
+						<%-- <div class="row">
 							<div class="col-sm-2">
 								<label for="finYear">&nbsp;&nbsp; Select financial year
 									: </label>
@@ -105,7 +122,7 @@
 								</form:select>
 							</div>
 						</div>
-						<br />
+						<br /> --%>
 
 						<div class="row" id="stateDropDownBlock">
 							<div class="col-sm-2">
@@ -237,11 +254,13 @@
 										</table>
 									</div>
 									<div class="text-right">
-										<button type="button" class="btn bg-red waves-effect"
+									<button type="button" class="btn bg-primary waves-effect" id="exportButtonId" onclick="exportToPdf('demoGraphicBlockPrint')"><span class="glyphicon glyphicon-print"></span> Print
+										File</button>
+										<!-- <button type="button" class="btn bg-red waves-effect"
 											id="exportButtonId"
 											onclick="exportToPdf('demoGraphicBlockPrint')">Export
 											File</button>
-									</div>
+								 -->	</div>
 								</div>
 
 							</div>

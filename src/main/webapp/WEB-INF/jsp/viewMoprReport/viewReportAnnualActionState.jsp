@@ -156,29 +156,48 @@
 		
 		submitToPost();
 	}
-
 	function exportToPdf(id) {
-		 var finYear = $('#finYearSelectId').find('option:selected').text();
-		 var stateName = $('#stateDropDownId').find('option:selected').text();
-		 var header = 'Annual action plan '+ finYear + ' - ' + $.trim(stateName);
-		 var sTable =$('#annualPlanBlockPrint').html();
-		 var style = "<style>";
-		
-		 	 style = style + "table,th,td{border: solid 1px black;border-collapse: collapse;}";
-	         style = style + "thead {color : white; background-color: #9071bf;";
-	         style = style + "</style>";
-		
-         var win = window.open('', '', 'height=700,width=700');
-         win.document.write('<html><head>');
-         win.document.write('<title>'+header+'</title>');  
-         win.document.write(style); 
-         win.document.write('</head>');
-         win.document.write('<body>');
-         win.document.write(sTable);         
-         win.document.write('</body></html>');
-       	 win.document.close(); 	
-       	 win.print();    
+		  var today = new Date();
+		  var dd = String(today.getDate()).padStart(2, '0');
+		  var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+		  var yyyy = today.getFullYear();
+
+		  today = mm + '/' + dd + '/' + yyyy;
+		 
+	
+	
+		var finYear = $('#finYearSelectId').find('option:selected').text();
+		var stateName = $('#stateDropDownId').find('option:selected').text();
+		var header = '  Annual Action plan of '+ '${STATE.stateNameEnglish}'+" for "
+				+'('+ '${FIN_YEAR}'+')'  ;
+		var sTable = $('#' + id).html();
+		var style = "<style>";
+		if (id == 'annualPlanBlockPrint') {
+			style = style
+					+ "table,th,td{border: solid 1px black;border-collapse: collapse;}";
+			style = style + "thead {color : white; background-color: #9071bf;";
+			style = style + "</style>";
+		} else {
+			style = style
+					+ " table , td, th {border: solid 1px grey;border-collapse: collapse;}";
+			style = style + "</style>";
+		}
+		var win = window.open('', '', 'height=700,width=700');
+		win.document.write('<html><head>');
+		   win.document.write('<h3 style="border: 4px solid black;text-align:center">'+ header+ '</h3>');  
+		win.document.write(style);
+		win.document.write('</head>');
+		win.document.write('<body>');
+		win.document.write(sTable);
+		  win.document.write('<h5 style=" margin-left: 35%">  https://rgsa.nic.in  </h5>');  
+		    win.document.write('<h5 style=" margin-left: 15%"> Report Generated on '+today+' and Data is updated & managed by State Departments  </h5>'); 
+		    win.document.write('<h5 style=" margin-left: 35%"> Rashtriya Gram Swaraj Abhiyan </h5>'); 
+		 
+		win.document.write('</body></html>');
+		win.document.close();
+		win.print();
 	}
+	
 </script>
 
 
@@ -189,13 +208,13 @@
 			<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
 				<div class="card">
 					<div class="header">
-						<h3 style="padding-top: 25px;">&nbsp;&nbsp; Annual action
+						<h3 style="padding-top: 25px;">&nbsp;&nbsp; Annual Action
 							plan Report</h3>
 					</div>
 					<br />
 					<form:form method="post" name="viewReportAtMopr" action=""
 						modelAttribute="VIEW_REPORT_MODEL">
-						<div class="row">
+						<%-- <div class="row">
 							<div class="col-sm-3">
 							</div>
 							<div class="col-sm-2">
@@ -204,8 +223,8 @@
 							<div class="col-sm-4">
 								<span class="badge badge-success">${FIN_YEAR}</span>
 							</div>
-						</div>
-						<br />
+						</div> --%>
+						<%-- <br />
 
 						<div class="row" id="stateDropDownBlock">
 							<div class="col-sm-3">
@@ -219,7 +238,7 @@
 								</span>
 							</div>
 						</div>
-						<br />
+						<br /> --%>
 						<input type="hidden" id="annualActionPlanId" class="radio"
 							name="isAnnualPlan" />
 
@@ -871,16 +890,20 @@
 									</table>
 								</div>
 								<div class="text-right">
+								
 									<button type="button" class="btn bg-green waves-effect"
 										onclick="expandAll('expand')" id="expandButtonId">Expand
 										All</button>
 									<button type="button" class="btn bg-blue waves-effect"
 										onclick="expandAll('collapse')" id="collapseButtonId"
 										style="display: none;">Collapse All</button>
-								 <button type="button" class="btn bg-red waves-effect"
+								<!--  <button type="button" class="btn bg-red waves-effect"
 										id="exportButtonId"
 										onclick="exportToPdf('annualPlanBlockPrint')">Export
-										File</button> 
+										File</button>  -->
+										<button type="button" class="btn bg-primary waves-effect" id="exportButtonId" onclick="exportToPdf('annualPlanBlockPrint')"><span class="glyphicon glyphicon-print"></span> Print
+										File</button>
+								
 								</div>
 							</div>
 						</div>

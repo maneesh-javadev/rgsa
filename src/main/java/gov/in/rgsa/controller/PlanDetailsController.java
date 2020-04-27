@@ -75,6 +75,8 @@ public class PlanDetailsController {
 	public static final String CEC_PLAN_DETAILS = "viewPlanDetailsForCEC";
 	public static final String RDIRECT_CEC_PLAN_DETAILS = "redirect:viewPlanDetailsForCEC.html";
 	
+	public static final String APPROVE_PLANLIST_DETAILS = "approvePlanList";
+	
 	@RequestMapping(value = "submitedPlanByState", method = RequestMethod.GET)
 	public String viewPlanList(@ModelAttribute("FACADE_MODEL") FacadeModel form, Model model, RedirectAttributes re) {
 		return MOPR_PLAN_DETAILS;
@@ -87,7 +89,7 @@ public class PlanDetailsController {
 	}
 	
 	@RequestMapping(value = "viewPlanDetails", method = RequestMethod.GET)
-	public String planDetailsByState(@ModelAttribute("FACADE_MODEL") FacadeModel form,@RequestParam(value = "stateCode") Integer stateCode,Model model) {
+	public String planDetailsByState(@ModelAttribute("FACADE_MODEL") FacadeModel form,@RequestParam(value = "stateCode") Integer stateCode , Model model) {
 		/***sdfs**/
 		String userPage = null;
 		if(userPreference.getUserType().equalsIgnoreCase("m")){
@@ -107,7 +109,9 @@ public class PlanDetailsController {
 		Map<String, Object> parameter = new HashMap<String, Object>();
 		parameter.put("stateCode", stateCode);
 		parameter.put("yearId", userPreference.getFinYearId());
-		parameter.put("userType", userPreference.getUserType());
+		
+			 parameter.put("userType", userPreference.getUserType());
+		
 		model.addAttribute("IS_FREEZE_STATUS_LIST", facadeService.fetchFormsIsFreezeStatus(stateCode));
 		model.addAttribute("planComponentsFunds", facadeService.fetchFundDetailsByUserType(parameter));
 		return userPage;
@@ -204,5 +208,11 @@ public class PlanDetailsController {
 	public String statuswisePlanDetails(@RequestParam("statusId") Integer statusId, Model model, RedirectAttributes re) {
 		model.addAttribute("statusId",statusId);
 		return MOPR_PLAN_DETAILS;
+	}
+	
+	@RequestMapping(value = "approvePlanList", method = RequestMethod.GET)
+	public String approvePlanList(@RequestParam("statusId") Integer statusId, Model model, RedirectAttributes re) {
+		model.addAttribute("statusId",statusId);
+		return APPROVE_PLANLIST_DETAILS;
 	}
 }

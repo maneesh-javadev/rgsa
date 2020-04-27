@@ -14,6 +14,7 @@ import gov.in.rgsa.utils.PlanUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -43,7 +44,7 @@ public class IecController {
 
     @Autowired
     private UserPreference userPreference;
-
+@CrossOrigin(origins ="http://localhost:9090/rgsa")
     @RequestMapping(value = "iec", method = RequestMethod.GET)
     private String IecGet(@ModelAttribute("IEC_ACTIVITY") IecFormModel iecFormModel, Model model, HttpServletRequest request, @RequestParam(value = "iecId", required = false) Integer iecId, RedirectAttributes redirectAttributes) {
 

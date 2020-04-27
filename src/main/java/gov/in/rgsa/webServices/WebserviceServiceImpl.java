@@ -126,8 +126,12 @@ public class WebserviceServiceImpl implements WebserviceService
     @Override
     public List<CapacityBuildingErForOoms> fetchCapacityBuildingErForOoms(final String finYear, final String type) {
         List<CapacityBuildingErForOoms> capacityBuildingErForOomsList = null;
+        String finYearN= null;
+        if(finYear.trim() != null) {
+        	 finYearN= finYear.trim().split("-")[0]+"-"+finYear.substring(0, 2)+ finYear.trim().split("-")[1];
+        }
         final Map<String, Object> params = new HashMap<String, Object>();
-        params.put("finYear", finYear);
+        params.put("finYear", finYearN);
         if ("CB".equals(type)) {
             capacityBuildingErForOomsList = (List<CapacityBuildingErForOoms>)this.commonRepository.findAll("FETCH_CAPACITY_BUILDING_ER_OOMS", (Map)params);
         }

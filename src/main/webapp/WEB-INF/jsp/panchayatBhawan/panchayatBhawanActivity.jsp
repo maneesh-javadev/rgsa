@@ -344,14 +344,14 @@
                                     </td>
                                     <td>
                                        <input type="text" class="form-control" data-ng-show="panchayatBhawanActivity.status == 'F'" ng-model="panchayatBhawanActivity.panchatayBhawanActivityDetails[$index].noOfGPs"  style="text-align:right;" disabled="disabled">
-                                       <input type="text" class="form-control" data-ng-show="panchayatBhawanActivity.status != 'F'" ng-model="panchayatBhawanActivity.panchatayBhawanActivityDetails[$index].noOfGPs"  onkeypress="return isNumber(event)" data-ng-change="calculateFundRequired($index,'SAN')" maxlength="7" style="text-align:right;">
+                                       <input type="text" class="form-control" data-ng-show="panchayatBhawanActivity.status != 'F'" ng-model="panchayatBhawanActivity.panchatayBhawanActivityDetails[$index].noOfGPs"  onkeypress="return isNumber(event)" data-ng-change="calculateFundRequired($index,'SAN')" maxlength="9" style="text-align:right;">
                                     </td>
                                     <td>
                                        <input type="text" class="form-control" data-ng-show="panchayatBhawanActivity.status == 'F'" ng-model="panchayatBhawanActivity.panchatayBhawanActivityDetails[$index].aspirationalGps" style="text-align:right;" disabled="disabled"/>
-                                       <input type="text" class="form-control" data-ng-show="panchayatBhawanActivity.status != 'F'" onkeypress="return isNumber(event)" ng-model="panchayatBhawanActivity.panchatayBhawanActivityDetails[$index].aspirationalGps" data-ng-change="calculateFundRequired($index,'REL')" maxlength="7" style="text-align:right;"/>														
+                                       <input type="text" class="form-control" data-ng-show="panchayatBhawanActivity.status != 'F'" onkeypress="return isNumber(event)" ng-model="panchayatBhawanActivity.panchatayBhawanActivityDetails[$index].aspirationalGps" data-ng-change="calculateFundRequired($index,'REL')" maxlength="9" style="text-align:right;"/>														
                                     </td>
                                     <td>
-                                       <input type="text" class="form-control" data-ng-show="panchayatBhawanActivity.status != 'F'" onkeypress="return isNumber(event)" ng-model="panchayatBhawanActivity.panchatayBhawanActivityDetails[$index].unitCost" data-ng-change="calculateFundRequired($index,'UTI')" maxlength="7"  style="text-align:right;"/>
+                                       <input type="text" class="form-control" data-ng-show="panchayatBhawanActivity.status != 'F'" onkeypress="return isNumber(event)" ng-model="panchayatBhawanActivity.panchatayBhawanActivityDetails[$index].unitCost" data-ng-change="calculateFundRequired($index,'UTI')" maxlength="9"  style="text-align:right;"/>
                                        <input type="text" class="form-control" data-ng-show="panchayatBhawanActivity.status == 'F'" ng-model="panchayatBhawanActivity.panchatayBhawanActivityDetails[$index].unitCost" style="text-align:right;" disabled="disabled"/>
                                     </td>
                                     <td>

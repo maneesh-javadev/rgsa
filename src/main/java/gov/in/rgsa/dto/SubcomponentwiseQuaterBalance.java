@@ -1,5 +1,7 @@
 package gov.in.rgsa.dto;
 
+import java.math.BigInteger;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -21,7 +23,7 @@ public class SubcomponentwiseQuaterBalance {
 	
 	
 	@Column(name="balance_amount")
-	private Double balanceAmount;
+	private BigInteger balanceAmount;
 
 
 	public Integer getSubcomponentId() {
@@ -34,14 +36,19 @@ public class SubcomponentwiseQuaterBalance {
 	}
 
 
-	public Double getBalanceAmount() {
+	public BigInteger getBalanceAmount()
+	{
 		return balanceAmount;
 	}
 
 
-	public void setBalanceAmount(Double balanceAmount) {
+	public void setBalanceAmount(BigInteger balanceAmount)
+	{
 		this.balanceAmount = balanceAmount;
 	}
+
+
+	
 	
 	
 

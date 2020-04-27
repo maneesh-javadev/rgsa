@@ -983,6 +983,13 @@
 			value="View Report"/>
 	   <put-attribute name="body" value="/WEB-INF/jsp/QprReport/viewQprReportPagePublic.jsp" />
 	</definition>
-
+ 
+ <definition name="approvePlanList"
+		extends="base.definition.admin">
+		<put-attribute name="title"
+			value="Plan Submitted By States" />
+		<put-attribute name="body"
+			value="/WEB-INF/jsp/viewPlanDetailsMOPR/approvePlanList.jsp" />
+	</definition>
 	
 </tiles-definitions>

@@ -13,6 +13,7 @@ import gov.in.rgsa.model.IecFormModel;
 import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import gov.in.rgsa.dao.CommonRepository;
 import gov.in.rgsa.service.FacadeService;
@@ -20,7 +21,7 @@ import gov.in.rgsa.service.IecService;
 import gov.in.rgsa.user.preference.UserPreference;
 
 @Service
-@Transactional
+@EnableTransactionManagement(proxyTargetClass= false)
 public class IecServiceImpl implements IecService {
 
 	@Autowired

@@ -1,6 +1,7 @@
 package gov.in.rgsa.serviceImpl;
 
 import java.math.BigInteger;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -31,6 +32,7 @@ public class PlanDetailsServiceImpl implements PlanDetailsService {
 	
 	private static final int PLAN_FORWARDED_TO_MOPR=2; 
 	private static final int PLAN_FORWARDED_TO_CEC=4; 
+	private static final int PLAN_APPROVED_BY_CEC=5; 
 
 	@Override
 	public List<Plan> getAllSubmittedPlan() {
@@ -52,17 +54,21 @@ public class PlanDetailsServiceImpl implements PlanDetailsService {
 	}
 
 	@Override
-	public long countPlanSubmittedByState(String userType) {
+	public long countPlanSubmittedByState(String userType ,Integer FinId) {
 		Map<String, Object> params=new HashMap<>();
 		if(userType.equalsIgnoreCase("M")){
 			params.put("plan_status_id", PLAN_FORWARDED_TO_MOPR);
 		}else if (userType.equalsIgnoreCase("C")){
 			params.put("plan_status_id", PLAN_FORWARDED_TO_CEC);
+		}else if(userType.equalsIgnoreCase("A")){
+			params.put("plan_status_id",PLAN_APPROVED_BY_CEC);
 		}
 		else{
 			return 0;
 		}
 		params.put("isactive", true);
+		params.put("FinId", FinId);
+		
 		BigInteger count = commonRepository.find("PLAN_COUNT", params);
 		return count.intValue();
 	}
@@ -88,6 +94,7 @@ public class PlanDetailsServiceImpl implements PlanDetailsService {
 	
 	@Override
 	public List<Plan> getAllSubmittedPlanbyStatus(Integer planStatusId) {
+		
 		List<Plan> planStatus=null;
 		Map<String, Object> params=new HashMap<>();
 		params.put("yearId",userPreference.getFinYearId());
@@ -96,11 +103,20 @@ public class PlanDetailsServiceImpl implements PlanDetailsService {
 		params.put("planStatusId", planStatusId);
 		
 		planStatus = commonRepository.findAll("PLAN_STATUS_LIST",params);
-		for (Plan planStatus2 : planStatus) {
-			State state=lGDService.getStateDetailsByCode(planStatus2.getStateCode());
-			planStatus2.setStateName(state.getStateNameEnglish());
+		for (int i = 0; i < planStatus.size(); i++)
+		{	State state=lGDService.getStateDetailsByCode(planStatus.get(i).getStateCode());
+			planStatus.get(i).setStateName(state.getStateNameEnglish());
+	
 		}
+		Collections.sort(planStatus);
 		 return planStatus;
 	}
 
 }
+
+
+
+
+
+
+

@@ -491,10 +491,10 @@ function FreezeAndUnfreeze(msg){
 										</c:choose>
 										<%-- <form:button onclick="onClear(this)"
 												class="btn bg-light-blue waves-effect" disabled="${PMU_PROGRESS.isFreeze}">CLEAR</form:button> --%>
-											<form:button
-												onclick="onClose('home.html?<csrf:token uri='home.html'/>')"
-												class="btn bg-red waves-effect">CLOSE</form:button>
-										</div>
+														<button type="button" onclick="onClose('home.html?OWASP_CSRFTOKEN=7XU4-1U0F-M8OE-6TOL-B9Y4-ZN6Z-DXM7-GAOX')" class="btn bg-red waves-effect">
+							CLOSE
+						</button>
+		</div>
 									</div>
 							<!-- hidden field -->
 							<input type="hidden" name="pmuActivity.pmuActivityId" value="${CEC_APPROVED_ACTIVITY.pmuActivityId}" />

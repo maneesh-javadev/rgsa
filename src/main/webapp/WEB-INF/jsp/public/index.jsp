@@ -103,7 +103,7 @@
 						<div class="counter_item text-center">
 							<div class="sigle_counter_item">
 								<div class="counter_text pinkbg">
-									<a href="#" >
+									<a onclick="onloadKPIRj('panchyatStakeholder');" >
 										<p class="underline ">Panchayat Stakeholders Trained</p>	<span class="counter ng-binding"  id="panchyatStakeholderId">0000</span>
 									</a>
 								</div>
@@ -125,7 +125,7 @@
 						<div class="counter_item text-center">
 							<div class="sigle_counter_item">
 								<div class="counter_text lightbluebg">
-									<a href="#">
+									<a onclick="onloadKPIRj('refreshTrainErs');">
 										<p class="underline ">Refresher Training to ERs</p>	<span class="counter ng-binding" id="refreshertraningtoERId" >0000</span>
 									</a>
 								</div>
@@ -135,7 +135,7 @@
 					<div class="col-lg-4">
 						<div class="counter_item text-center">
 							<div class="sigle_counter_item">
-								<a href="#">
+								<a onclick="onloadKPIRj('selfHelpGroup');">
 									<div class="counter_text yellowbg">
 										<p class="underline ">SHG-PRI Convergence
 											<br />
@@ -151,7 +151,7 @@
 						<div class="counter_item text-center">
 							<div class="sigle_counter_item">
 								<div class="counter_text lightredbg">
-									<a href="#">
+									<a  onclick="onloadKPIRj('technicalSupportGPs');">
 										<p class="underline ">Technical support to GPs</p>	<span class="counter ng-binding" id="technicalsupporttoGPsId">0000</span>
 									</a>
 								</div>
@@ -174,7 +174,7 @@
 								<p class="underline ">Exposure Visits</p>
 								<div class="row">
 									<div class="col-sm-12">
-										<a href="#">
+										<a onclick="onloadKPIRj('exposerVisitWithGPs');">
 											<br />	<span class="counter ng-binding" id="withinStateId">0000</span>
 											<p>Within State</p>
 										</a>
@@ -182,7 +182,7 @@
 								</div>
 								<div class="row">
 									<div class="col-sm-12">
-										<a href="#">
+										<a onclick="onloadKPIRj('exposerVisitWithoutGPs');">
 											<br />	<span class="counter ng-binding" id="OutsideStateId" >0000</span>
 											<p>Outside State</p>
 										</a>
@@ -486,8 +486,8 @@
 			$("#bhawansConstructedId").html(data[8]);
 			$("#bhawansRepairedId").html(data[9]);
 			$("#CSCsId").html(data[10]);
-			$("#withinStateId").html(data[9]);
-			$("#OutsideStateId").html(data[10]);
+			$("#withinStateId").html(data[6]);
+			$("#OutsideStateId").html(data[7]);
 			$("#panchyatStakeholderId").html(data[11]);
 			$("#technicalsupporttoGPsId").html(data[12]);
 		   },
@@ -616,6 +616,7 @@
 									  var total2=0;
 									  var total3=0;
 									  var total4=0;
+									  var slno=1;
 									   tableBody+= '<thead style="background-color: #5AAA5A;color: #fff">';
 									   tableBody+= '<th rowspan =10 style ="text-align:center"><b>S.No.<b></th>';
 									   tableBody+= '<th rowspan =10 style ="text-align:center"><b> State Name(In English) </b></th>';
@@ -629,11 +630,17 @@
 										   tableBody+= '<th  colspan =4 style ="text-align:center" ><b>No. of GPs Work Building Completed   </b></th>';
 									 
 									   }
-									   else if(kpiName =='basicOrientationTrainErs'){
+									   else if(kpiName =='basicOrientationTrainErs' || kpiName =='refreshTrainErs' ||kpiName =='selfHelpGroup' || kpiName == 'panchyatStakeholder'){
 										   tableBody+= '<th rowspan =10 style ="text-align:center"><b>	Total Participants</b></th>';
 										  tableBody+= '<th  colspan =4 style ="text-align:center" ><b>Total Participants trained </b></th>';
 								   }
-									 
+									   else if(kpiName =='technicalSupportGPs'){
+										 
+										  tableBody+= '<th  colspan =4 style ="text-align:center" ><b>Total No. of Block(s)  </b></th>';
+								   }else if(kpiName =='exposerVisitWithGPs' || kpiName =='exposerVisitWithoutGPs'){
+									  
+									   tableBody+= '<th  colspan =4 style ="text-align:center" ><b>No. of Visited GPs </b></th>';
+								   }
 									   tableBody+='<tr>';
 									   tableBody+= '<th colspan =1 style ="text-align:center"><b>	Quarter 1</b></th>';
 									   tableBody+= '<th colspan =1 style ="text-align:center"><b>	Quarter 2</b></th>';
@@ -644,13 +651,21 @@
 									  tableBody+= '</thead>';
 									  
 										   $.each(valueList, function(key1,value1) {
-										    var slno=parseInt(key1)+1;
+										    //var slno=parseInt(key1)+1;
 										    var count =0;
 											    tableBody+='<tr>';
-											    tableBody+='<td  style ="text-align:center" >'+ slno + '</td>';
-											    tableBody+='<td  style ="text-align:center" >'+ value1.stateName + '</td>';
-											    tableBody+='<td  style ="text-align:center" >'+ value1.finYear + '</td>';
+											    if(value1.stateName != null){
+											    	tableBody+='<td  style ="text-align:center" >'+ slno++ + '</td>';
+												    tableBody+='<td  style ="text-align:center" >'+ value1.stateName + '</td>';
+													}else{
+														
+														tableBody+='<td  style ="text-align:center" >'+''  + '</td>';
+													    tableBody+='<td  style ="text-align:center" >'+  ''+ '</td>';
+												}
+											      tableBody+='<td  style ="text-align:center" >'+ value1.finYear + '</td>';
+											    if(kpiName !='technicalSupportGPs' && kpiName !='exposerVisitWithGPs' && kpiName !='exposerVisitWithoutGPs'){
 											    tableBody+='<td  style ="text-align:center" >'+ value1.noOfPostApproved + '</td>';
+											    }
 										  if(kpiName =='bhawanConst' || kpiName =='bhawanRepair'   || kpiName =='bhawanColocate'){ 
 											    	 tableBody+='<td  style ="text-align:center" >'+ value1.gpCount + '</td>';
 											    	 
@@ -676,22 +691,22 @@
 													  total4 = total4 + +value.noOfUnitFilled;
 													  
 												  }
-													 }else  if(kpiName =='basicOrientationTrainErs'){ 
+													 }else  if(kpiName =='basicOrientationTrainErs' || kpiName =='refreshTrainErs' || kpiName =='selfHelpGroup'  || kpiName == 'panchyatStakeholder'){ 
 														    if(value.quater =='Q1'){
-														    	  tableBody+='<td   onclick="showModelErs(' + value.gp+ ','+value.gpName +   ',' +value.stMale +','  +value.otherSc +',' + value.otherSt +',' +value.stFemale  +')"  style ="text-align:center;color: #109910;font-size: larger;">'+ value.noOfUnitFilled + '</td>'; 
-														    	//  tableBody+='<td id="gpName_'+1+'" style="display:none">' + +' </td>';
+														    	  tableBody+='<td   onclick="showModelErs('+value1.slc+ ','+ 1 +')"  style ="text-align:center;color: #109910;font-size: larger;">'+ value.noOfUnitFilled + '</td>'; 
+														    	 tableBody+='<td id="gpName_'+value1.slc+'_'+1+'" style="display:none">' +value.gp+'_'+kpiName +' </td>';
 																  total1 = total1 + +value.noOfUnitFilled;
 															  } if(value.quater =='Q2'){
-																  tableBody+='<td onclick="showModelErs(' + value.gp+ ','+value.gpName +   ',' +value.stMale +','  +value.otherSc +',' + value.otherSt +',' +value.stFemale  +' )"  style ="text-align:center;color: #109910;font-size: larger;">'+ value.noOfUnitFilled + '</td>'; 
-																//  tableBody+='<td id="gpName_'+2+'" style="display:none">' +value.gpName +',' + value.gp+ ',' +value.stFemale +','+ value.otherSt +',' +value.otherSc+ ',' +value.stMale +' </td>';
+																  tableBody+='<td onclick="showModelErs('+ value1.slc +',' +2 + ')"  style ="text-align:center;color: #109910;font-size: larger;">'+ value.noOfUnitFilled + '</td>'; 
+																 tableBody+='<td id="gpName_'+value1.slc+'_'+2+'" style="display:none">' +value.gp+'_'+kpiName +' </td>';
 																  total2 = total2 + +value.noOfUnitFilled;
 															  } if(value.quater =='Q3'){
-																  tableBody+='<td onclick="showModelErs(' + value.gp+ ','+value.gpName +   ',' +value.stMale +','  +value.otherSc +',' + value.otherSt +',' +value.stFemale  +')"  style ="text-align:center;color: #109910;font-size: larger;">'+ value.noOfUnitFilled + '</td>'; 
-																//  tableBody+='<td id="gpName_'+3+'" style="display:none">' +value.gpName +',' + value.gp+ ',' +value.stFemale +','+ value.otherSt +',' +value.otherSc+ ',' +value.stMale +'  </td>';
+																  tableBody+='<td onclick="showModelErs('+ value1.slc +','+ 3 +')"  style ="text-align:center;color: #109910;font-size: larger;">'+ value.noOfUnitFilled + '</td>'; 
+																  tableBody+='<td id="gpName_'+value1.slc+'_'+3+'" style="display:none">' +value.gp+'_'+kpiName + '  </td>';
 																  total3 = total3 + +value.noOfUnitFilled;
 															  } if(value.quater =='Q4'){
-																  tableBody+='<td onclick="showModelErs(' + value.gp+ ','+value.gpName +   ',' +value.stMale +','  +value.otherSc +',' + value.otherSt +',' +value.stFemale  +')"  style ="text-align:center;color: #109910;font-size: larger;">'+ value.noOfUnitFilled + '</td>'; 
-																 // tableBody+='<td id="gpName_'+4+'" style="display:none">' +value.gpName +',' + value.gp+ ',' +value.stFemale +','+ value.otherSt +',' +value.otherSc+ ',' +value.stMale +'  </td>';
+																  tableBody+='<td onclick="showModelErs('+ value1.slc +','+ 4 +')"  style ="text-align:center;color: #109910;font-size: larger;">'+ value.noOfUnitFilled + '</td>'; 
+																  tableBody+='<td id="gpName_'+value1.slc+'_'+4+'" style="display:none">' +value.gp+'_'+kpiName +'  </td>';
 																  total4 = total4 + +value.noOfUnitFilled;
 																  
 															  }
@@ -731,9 +746,15 @@
 									  if(kpiName =='bhawanConst' || kpiName =='bhawanRepair'   || kpiName =='bhawanColocate'){ 
 										   tableBody+= '<td colspan ="5" style ="text-align:left"><b>Grand Total<b></th>';
 										   }
-									  if(kpiName =='basicOrientationTrainErs'){ 
+									  if(kpiName =='basicOrientationTrainErs' || kpiName =='refreshTrainErs' || kpiName =='selfHelpGroup' || kpiName == 'panchyatStakeholder'){ 
 										   tableBody+= '<td colspan ="4" style ="text-align:left"><b>Grand Total<b></th>';
-										   } 
+										   }
+									  if(kpiName =='technicalSupportGPs'){ 
+										   tableBody+= '<td colspan ="3" style ="text-align:left"><b>Grand Total<b></th>';
+										   } if(kpiName =='exposerVisitWithGPs' || kpiName =='exposerVisitWithoutGPs'){ 
+										   tableBody+= '<td colspan ="3" style ="text-align:left"><b>Grand Total<b></th>';
+										   }
+									  
 									  tableBody+='<td colspan ="1" style ="text-align:center" > <b>'+ total1 + '</b></td>';
 										   tableBody+='<td colspan ="1" style ="text-align:center" > <b>'+ total2 + '</b></td>';
 										   tableBody+='<td colspan ="1" style ="text-align:center" > <b>'+ total3 + '</b></td>';
@@ -762,6 +783,22 @@
 									   else if(kpiName =='basicOrientationTrainErs'){
 										   $('#header').html("Basic Orientation Training to ERs");
 									   }
+									   else if(kpiName =='panchyatStakeholder'){
+										   $('#header').html(" Panchayat Stakeholders Trained");
+									   }
+									  
+									   else if(kpiName =='refreshTrainErs'){
+										   $('#header').html("Refresher Training to ERs");
+									   } else if(kpiName =='selfHelpGroup'){
+										   $('#header').html("SHG-PRI Convergence ");
+									   }
+									   else if(kpiName =='technicalSupportGPs'){
+										   $('#header').html("Technical support to GPs");
+									   }else if(kpiName =='exposerVisitWithGPs' ){
+										   $('#header').html("Exposure Visits( Within State )");
+									   }else if( kpiName =='exposerVisitWithoutGPs'){
+										   $('#header').html("Exposure Visits( Outside State )");
+									   }
 									   $('#myModal').modal('show');
 										   $('#eSPMU').html(tableBody);
 										 
@@ -776,46 +813,78 @@
 			 });
 			 }
 		
-		function showModelErs(sc_maless ,sc_femaless ,st_maless ,st_femaless ,others_maless ,others_femaless){
-			$('.bd-example-modal-xlg').modal('show');
-			$("label[for*='GPNameLabel']").html("G.P Name");
+		function showModelErs(slc ,ID){
+			var gp=$('#gpName_'+slc+'_'+ID).html();
+			
+			//alert(ID);
+			 var ggg  =gp.split('_');
+			
+			 $.ajax({
+				   type : "GET",
+				   contentType : "application/json",
+				   url : "basicOrientationById.html?<csrf:token uri='basicOrientationById.html'/>&id="+ggg[0]+"&kpiname="+ggg[1],
+				   dataType : 'json',
+				   cache : false,
+				   timeout : 100000,
+				   success : function(data) {
+					   $.each( data, function(key,valueList){
+				
+						   var table='';
+						   table+='<thead style="background-color: #5AAA5A;color: #fff">';
+						   table+='<tr>';  
+						   table+= '<th   rowspan =10 style ="text-align:center" ><b>Target Group </b></th>';
+						   table+= '<th  colspan =3 style ="text-align:center" ><b>Male </b></th>';
+						   table+= '<th  colspan =3 style ="text-align:center" ><b>Female</b></th>';
+						   table+='<tr>';
+						   table+= '<th colspan =1 style ="text-align:center"><b>	Sc</b></th>';
+						   table+= '<th colspan =1 style ="text-align:center"><b>	St</b></th>';
+						   table+= '<th colspan =1 style ="text-align:center"><b>	other</b></th>';
+						   table+= '<th colspan =1 style ="text-align:center"><b>	Sc</b></th>';
+						   table+= '<th colspan =1 style ="text-align:center"><b>	St</b></th>';
+						   table+= '<th colspan =1 style ="text-align:center"><b>	other</b></th>';
+						 
+						   table+='</tr>';
+					
+						   table+='</tr>';
+						   table+='</thead>';
+						   $.each(valueList, function(key1,value1) {
+						 
+							   table+='<tbody>';
+								  // var slno=parseInt(i)+1;
+									  table+='<tr>';
+									  table+='<td style ="text-align:center">'+ value1.Er + ' </td>';
+									  table+='<td style ="text-align:center">'+ value1.sc_maless + ' </td>';
+									  table+='<td style ="text-align:center">'+ value1.st_maless+'</td>';
+									  table+='<td style ="text-align:center">'+ value1.others_maless + ' </td>';
+									  table+='<td style ="text-align:center">'+value1.sc_femaless+'</td>';
+									
+									  table+='<td style ="text-align:center">'+ value1.st_femaless + ' </td>';
+									  table+='<td style ="text-align:center">'+ value1.others_femaless+'</td>';
+									
+									  table+='</tr>';
+								
+								  table+='</tbody>';
+								  
+						   });
+						   $('#tableGP').html(table);
+						  
+					   })
+					   $('.bd-example-modal-xlg').modal('show');
+						$("label[for*='GPNameLabel']").html("Target Group ");
+			
+				   },
+				   error : function(e) {
+				    console.log(e);
+				   }
+				 		
+			 });
+			
+		
 			// var gp=$('#gpName_'+vid).html();
 			 // var ggg  =gp.split(',');
-			  var table='';
-			   table+='<thead style="background-color: #5AAA5A;color: #fff">';
-			   table+='<tr>';
-			   table+= '<th  colspan =3 style ="text-align:center" ><b>Male </b></th>';
-			   table+= '<th  colspan =3 style ="text-align:center" ><b>Female</b></th>';
-			   table+='<tr>';
-			   table+= '<th colspan =1 style ="text-align:center"><b>	Sc</b></th>';
-			   table+= '<th colspan =1 style ="text-align:center"><b>	St</b></th>';
-			   table+= '<th colspan =1 style ="text-align:center"><b>	other</b></th>';
-			   table+= '<th colspan =1 style ="text-align:center"><b>	Sc</b></th>';
-			   table+= '<th colspan =1 style ="text-align:center"><b>	St</b></th>';
-			   table+= '<th colspan =1 style ="text-align:center"><b>	other</b></th>';
-			 
-			   table+='</tr>';
-		
-			   table+='</tr>';
-			   table+='</thead>';
-			   table+='<tbody>';
-			  for(var i=0; i<1; i++)
-			  {
-				  var slno=parseInt(i)+1;
-				  table+='<tr>';
-				  table+='<td style ="text-align:center">'+ sc_maless + ' </td>';
-				  table+='<td style ="text-align:center">'+ st_maless+'</td>';
-				  table+='<td style ="text-align:center">'+ others_maless + ' </td>';
-				  table+='<td style ="text-align:center">'+sc_femaless+'</td>';
-				
-				  table+='<td style ="text-align:center">'+ st_femaless + ' </td>';
-				  table+='<td style ="text-align:center">'+ others_femaless+'</td>';
-				
-				  table+='</tr>';
-			  }
-			  table+='</tbody>';
 			  
-			  $('#tableGP').html(table);
+			  
+			 
 			// console.log(s);
 		}
 		

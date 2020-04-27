@@ -148,8 +148,10 @@ public class FacadeServiceImpl implements FacadeService {
 		_preference.setPlanStatus(planList.get(0).getPlanStatusId());
 		_preference.setPlanVersion(planList.get(0).getPlanVersion());
 		}
-		_preference.setCountPlanSubmittedByState(planDetailsService.countPlanSubmittedByState("M"));
-		_preference.setCountPlanSubmittedByMOPR(planDetailsService.countPlanSubmittedByState("C"));
+		_preference.setCountPlanSubmittedByState(planDetailsService.countPlanSubmittedByState("M",finYear.getYearId()));
+		_preference.setCountPlanSubmittedByMOPR(planDetailsService.countPlanSubmittedByState("C",finYear.getYearId()));
+		_preference.setCountPlanApprovedByCec(planDetailsService.countPlanSubmittedByState("A",finYear.getYearId()));
+		
 		_preference.setIsFreezeStatusList(isFreezeStatusDto);
 		return _preference;
 	}
@@ -370,6 +372,9 @@ public class FacadeServiceImpl implements FacadeService {
 			}
 		
 		
+		Map<String, Object> param1 = new HashMap<String, Object>();
+		param1.put("yearId",_userPreference.getFinYearId());
+		param1.put("stateCode", _userPreference.getStateCode());
 		
 		Map<String, Object> parameter = new HashMap<String, Object>();
 		parameter.put("yearId",_userPreference.getFinYearId());
@@ -377,11 +382,13 @@ public class FacadeServiceImpl implements FacadeService {
 		parameter.put("userType", _userPreference.getUserType());
 		List<StatePlanComponentsFunds> componentsFunds= commonRepository.findAll("STATE_PLAN_FUNDS", parameter);
 		_userPreference.setStatePlanComponentsFunds(componentsFunds);
-		Boolean plansAreFreezed = checkForFreezeStatus(parameter);
+		Boolean plansAreFreezed = checkForFreezeStatus(param1);
 		_userPreference.setPlansAreFreezed(plansAreFreezed);
 		
-		_userPreference.setCountPlanSubmittedByState(planDetailsService.countPlanSubmittedByState("M"));
-		_userPreference.setCountPlanSubmittedByMOPR(planDetailsService.countPlanSubmittedByState("C"));
+		_userPreference.setCountPlanSubmittedByState(planDetailsService.countPlanSubmittedByState("M", _userPreference.getFinYearId()));
+		_userPreference.setCountPlanSubmittedByMOPR(planDetailsService.countPlanSubmittedByState("C",_userPreference.getFinYearId()));
+		_userPreference.setCountPlanApprovedByCec(planDetailsService.countPlanSubmittedByState("A",_userPreference.getFinYearId()));
+		
 		List<IsFreezeStatusDto> isFreezeStatusDto = commonRepository.findAll("FETCH_FORMS_FREEZE_STATUS", parameter);
 		_userPreference.setIsFreezeStatusList(isFreezeStatusDto);
 		}catch(Exception e) {

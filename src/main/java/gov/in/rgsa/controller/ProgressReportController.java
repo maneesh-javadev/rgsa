@@ -2409,7 +2409,7 @@ public class ProgressReportController {
 			@ModelAttribute("QPR_INSTITUTIONALINFRAQUATERLY") QprInstitutionalInfrastructure qprInstitutionalInfrastructure,
 			Model model, RedirectAttributes redirectAttributes) {
 		progressReportService.saveInstitutionalInfraProgressReport(qprInstitutionalInfrastructure);
-		redirectAttributes.addAttribute("isError", "Data save successfully");
+		redirectAttributes.addFlashAttribute(Message.SUCCESS_KEY, Message.SAVE_SUCCESS);
 		return INSTITUTIONAL_INFRA_REPORT_LOAD;
 	}
 
@@ -2668,7 +2668,7 @@ public class ProgressReportController {
 			} else {
 				progressReportService.savetrainingProgressReport(quarterTrainings);
 			}
-			redirectAttributes.addAttribute("isError", "Data save successfully");
+			redirectAttributes.addFlashAttribute(Message.SUCCESS_KEY, Message.SAVE_SUCCESS);
 			redirectAttributes.addAttribute("qtrId", quarterTrainings.getQtrId());
 		} catch (Exception e) {
 			e.printStackTrace();

@@ -195,6 +195,8 @@ public class FacadeController {
 		_userPreference.setPlansAreFreezed(userPreference.isPlansAreFreezed());
 		_userPreference.setCountPlanSubmittedByState(userPreference.getCountPlanSubmittedByState());
 		_userPreference.setCountPlanSubmittedByMOPR(userPreference.getCountPlanSubmittedByMOPR());
+		_userPreference.setCountPlanApprovedByCec(userPreference.getCountPlanApprovedByCec());
+		
 	}
 	
 	private ResponseEntity<CustomError> error(Exception e){
@@ -233,7 +235,7 @@ public class FacadeController {
 	private Map<String, Object> revertPlan(@RequestParam(name = "stateCode" ,required = false) Integer stateCode){
 		Map<String, Object> param=new HashMap<String, Object>();
 		boolean result = service.revertPlan(stateCode);
-		_userPreference.setCountPlanSubmittedByState(planDetailsService.countPlanSubmittedByState("M"));
+		_userPreference.setCountPlanSubmittedByState(planDetailsService.countPlanSubmittedByState("M", _userPreference.getFinYearId()));
 		param.put("result", result);
 		return param;
 	}

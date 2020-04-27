@@ -1,6 +1,7 @@
 package gov.in.rgsa.entity;
 
 import java.io.Serializable;
+import java.math.BigInteger;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -54,7 +55,7 @@ public class PanchatayBhawanActivityDetails implements Serializable{
 	
 	
 	@Column(name="funds")
-	private Integer funds;
+	private BigInteger funds;
 	
 	
 	@Column(name="aspirational_gps")
@@ -110,12 +111,16 @@ public class PanchatayBhawanActivityDetails implements Serializable{
 	}
 
 
-	public Integer getFunds() {
+	
+
+	public BigInteger getFunds()
+	{
 		return funds;
 	}
 
 
-	public void setFunds(Integer funds) {
+	public void setFunds(BigInteger funds)
+	{
 		this.funds = funds;
 	}
 

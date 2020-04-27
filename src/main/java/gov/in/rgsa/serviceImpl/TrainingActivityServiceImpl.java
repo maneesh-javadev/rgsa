@@ -46,7 +46,7 @@ import gov.in.rgsa.service.TrainingActivityService;
 import gov.in.rgsa.user.preference.UserPreference;
 
 /**
- * @author Mohammad Ayaz 06/09/2018
+ * @author Mohammad Ayaz 06/09/2018		
  *
  */
 @Service
@@ -472,6 +472,8 @@ public void save(TrainingActivity activity) {
 				trainingActivityDetails.setNoOfDays(fetchTrainingDetails.getNoOfDays());
 				trainingActivityDetails.setNoOfParticipants(fetchTrainingDetails.getNoOfParticipants());
 				trainingActivityDetails.setUnitCost(fetchTrainingDetails.getUnitCost());
+				System.out.println("start mk");
+				System.out.println("fetchTrainingDetails.getFunds"+fetchTrainingDetails.getFunds());
 				trainingActivityDetails.setFunds(fetchTrainingDetails.getFunds());
 				trainingActivityDetails.setTrainingActivity(activity);
 				trainingActivityDetails.setIsActive(Boolean.TRUE);

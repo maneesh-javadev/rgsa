@@ -217,7 +217,8 @@ function isNumber(evt) {
 		                                        <label >No. of Participants</label>
 		                                    </div>
 		                                    <div class="col-sm-4">
-		                                        <input type="text" onkeypress="return isNumber(event)" oninput="validity.valid||(value='');" min="1" id="noOfParticipants" required="required" name="trainingActivityDetailsList[0].noOfParticipants" value="${showTrainingActivity.noOfParticipants}" class="form-control" onKeyPress="if(this.value.length==4) return false;" maxlength="5" style="text-align:right;">
+		                            <%--             <input type="text" onkeypress="return isNumber(event)" oninput="validity.valid||(value='');" min="1" id="noOfParticipants" required="required" name="trainingActivityDetailsList[0].noOfParticipants" value="${showTrainingActivity.noOfParticipants}" class="form-control" onKeyPress="if(this.value.length==4) return false;" maxlength="8" style="text-align:right;"> --%>
+		                                              <input type="text" onkeypress="return isNumber(event)" oninput="validity.valid||(value='');" min="1" id="noOfParticipants" required="required" name="trainingActivityDetailsList[0].noOfParticipants" value="${showTrainingActivity.noOfParticipants}" class="form-control"  maxlength="8" style="text-align:right;">
 		                                    </div>
 		                                    <div class="col-sm-2">
 		                                        <label >No. of Days Proposed</label>

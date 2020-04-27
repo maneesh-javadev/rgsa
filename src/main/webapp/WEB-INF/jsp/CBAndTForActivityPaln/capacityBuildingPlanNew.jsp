@@ -333,7 +333,7 @@ table.dataTable thead > tr > th, table.dataTable thead > tr > td {
 		                                        <label >No. of Participants</label>
 		                                    </div>
 		                                    <div class="col-sm-4">
-		                                        <input type="text" data-ng-change="calculateFund('P')" data-ng-model="trainingDetails.noOfParticipants" onkeypress="return isNumber(event)"   class="form-control element-width" maxlength="5" style="text-align:right;">
+		                                        <input type="text" data-ng-change="calculateFund('P')" data-ng-model="trainingDetails.noOfParticipants" onkeypress="return isNumber(event)"   class="form-control element-width" maxlength="8" style="text-align:right;">
 		                                    </div>
 		                                    <div class="col-sm-2">
 		                                        <label >No. of Days Proposed</label>

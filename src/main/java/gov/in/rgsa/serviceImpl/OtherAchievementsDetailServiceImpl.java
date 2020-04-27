@@ -1,6 +1,7 @@
 package gov.in.rgsa.serviceImpl;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
@@ -115,15 +116,19 @@ public class OtherAchievementsDetailServiceImpl implements OtherAchievementsDeta
 		String data = null;
 		try
 		{
-			/*
-			 * StringBuilder query = new StringBuilder(); query.
-			 * append(" select sum(COALESCE(count_gp,0)) from (SELECT  count(qed.local_body_code )count_gp  from  rgsa.e_enablement_master em,rgsa.e_enablement_details ed,rgsa.qpr_e_enablement qe,rgsa.qpr_e_enablement_details qed "
-			 * ); query.
-			 * append(" where em.ee__master_id = ed.ee_master_id and ed.e_enablement_id = qe.e_enablement_id and qe.qpr_e_enablement_id = qed.qpr_e_enablement_id and qe.is_freez =  True and ed.ee_master_id = "
-			 * + masterId + " )t; ");
-			 */
-			String query="select sum(COALESCE(count_gp,0)) from (SELECT  count(qed.local_body_code )count_gp  from  rgsa.e_enablement_master em,rgsa.e_enablement_details ed,rgsa.qpr_e_enablement qe,		rgsa.qpr_e_enablement_details qed  ,rgsa.qpr_e_enablement_status_master esm   where  ed.e_enablement_id = qe.e_enablement_id and qe.qpr_e_enablement_id = qed.qpr_e_enablement_id and qe.is_freez =  True   and ed.ee_master_id = 1 AND esm.ee__master_id =qed.qpr_status and esm.ee__master_id  = "+masterId+ " )t;  ";
-			List<Object> list = commonRepository.findAllByNativeQuery(query.toString(), null);
+			
+			  StringBuilder query = new StringBuilder();
+			 if(3 == masterId) {
+			 query.append(" select sum(COALESCE(count_gp,0)) from (SELECT  count(qed.local_body_code )count_gp  from  rgsa.e_enablement_master em,rgsa.e_enablement_details ed,rgsa.qpr_e_enablement qe,rgsa.qpr_e_enablement_details qed "
+			  ); query.
+			  append(" where em.ee__master_id = ed.ee_master_id and ed.e_enablement_id = qe.e_enablement_id and qe.qpr_e_enablement_id = qed.qpr_e_enablement_id and qe.is_freez =  True and ed.ee_master_id = "
+			  + masterId + " )t; ");
+				 
+			 }else {
+			 query. append("select sum(COALESCE(count_gp,0)) from (select  COALESCE( eed.no_of_units ,0) count_gp  from lgd.state s left join    rgsa.administrative_technical_support ee  on s.state_code = ee.state_code   inner join rgsa.administrative_technical_support_details eed   on ee.administrative_technical_support_id =eed.administrative_technical_support_id ,rgsa.qpr_ats_details qed inner join   rgsa.qpr_ats qe on   qe.qpr_ats_id  =qed.qpr_ats_id , rgsa.fin_year fy ,rgsa.qpr_quarter_detail qd where fy.year_id =ee.year_id  and  ee.user_type ='C'    and qe.is_freeze and  ee.administrative_technical_support_id = qe.administrative_technical_support_id and qe.qpr_ats_id = qed.qpr_ats_id and  qd.qtr_id =qe.qtr_id and qd.qtr_id =4 and eed.post_id=qed.post_id )t;");
+			 
+			 }
+			 List<Object> list = commonRepository.findAllByNativeQuery(query.toString(), null);
 			if (list.get(0) != null && !"null".equals(list.get(0)))
 			{
 				data = String.valueOf(list.get(0));
@@ -145,7 +150,7 @@ public class OtherAchievementsDetailServiceImpl implements OtherAchievementsDeta
 		{
 			StringBuilder query = new StringBuilder();
 			query.append(" SELECT  sum(COALESCE(qcd.no_of_units_completed,0))  ");
-			query.append(" from rgsa.qpr_cb_activity qc ,rgsa.qpr_cb_activity_details qcd, rgsa.cb_activity_details cad,rgsa.cb_master cm where qc.qpr_cb_activity_id = qcd.qpr_cb_activity_id and qcd.cb_activity_detail_id = cad.cb_activity_detail_id and cad.cb_master_id = cm.cb_master_id and cad.is_approved = True  ");
+			query.append(" from rgsa.qpr_cb_activity qc ,rgsa.qpr_cb_activity_details qcd, rgsa.cb_activity_details cad,rgsa.cb_master cm where qc.qpr_cb_activity_id = qcd.qpr_cb_activity_id and qcd.cb_activity_detail_id = cad.cb_activity_detail_id and cad.cb_master_id = cm.cb_master_id and qc.is_freeze = True  ");
 			query.append(" and cad.cb_master_id = " + cbMasterId);
 			List<Object> list = commonRepository.findAllByNativeQuery(query.toString(), null);
 			if (list.get(0) != null && !"null".equals(list.get(0)))
@@ -273,8 +278,22 @@ public class OtherAchievementsDetailServiceImpl implements OtherAchievementsDeta
 				query.append("5");
 			}else if(("basicOrientationTrainErs").equals(kpiName)) {
 				query.append("6");
+			}else if(("refreshTrainErs").equals(kpiName)) { 
+				query.append("7");
+			}else if(("selfHelpGroup").equals(kpiName)) {
+				query.append("8");
+			}else if(("panchyatStakeholder").equals(kpiName)) {
+				query.append("9");
 			}
-			   
+			else if(("technicalSupportGPs").equals(kpiName)) {
+				query.append("10");
+			}else if(("exposerVisitWithGPs").equals(kpiName)) {
+				query.append("11");
+			}else if(("exposerVisitWithoutGPs").equals(kpiName)) {
+				query.append("12");
+			}
+			
+
 			query.append(");");
 			List<Object[]> dataListOBJ=commonRepository.findAllByNativeQuery(query.toString(), null);
 			if(dataListOBJ!=null && !dataListOBJ.isEmpty()) {
@@ -328,39 +347,21 @@ public class OtherAchievementsDetailServiceImpl implements OtherAchievementsDeta
 					}
 					
 				}else {
-					if(("basicOrientationTrainErs").equals(kpiName)) {
+					if(("basicOrientationTrainErs").equals(kpiName) || ("selfHelpGroup").equals(kpiName) || ("refreshTrainErs").equals(kpiName) || ("panchyatStakeholder").equals(kpiName)) {
 						if ((String) obj[6] != null && !((String) obj[6]).toString().isEmpty()) {
 							dtoOBJ.setGp((String) obj[6]);
 						} else {
 							dtoOBJ.setGp("");
 						}
-						if ((String) obj[8] != null && !((String) obj[8]).toString().isEmpty()) {
-							dtoOBJ.setStMale((String) obj[8]);
-						} else {
-							dtoOBJ.setStMale("");
-						}
-						if ((String) obj[7] != null && !((String) obj[7]).toString().isEmpty()) {
-							dtoOBJ.setGpName((String) obj[7]);
-						} else {
-							dtoOBJ.setGpName("");
-						}
-					
-						if ((String) obj[9] != null && !((String) obj[9]).toString().isEmpty()) {
-							dtoOBJ.setOtherSc((String) obj[9]);  
-						} else {
-							dtoOBJ.setOtherSc("");
-						}
-						if ((String) obj[10] != null && !((String) obj[10]).toString().isEmpty()) {
-							dtoOBJ.setOtherSt((String) obj[10]);
-						} else {
-							dtoOBJ.setOtherSt("");
-						}
-						if ((String) obj[11] != null && !((String) obj[11]).toString().isEmpty()) {
-							dtoOBJ.setStFemale((String) obj[11]);
-						} else {
-							dtoOBJ.setStFemale("");
-						}
 						
+							
+					}
+					if(("technicalSupportGPs").equals(kpiName)) {
+						if ((String) obj[3] != null && !((String) obj[3]).toString().isEmpty()) {
+							dtoOBJ.setNoOfUnitFilled((String) obj[3]);
+						} else {
+							dtoOBJ.setNoOfUnitFilled("");
+						}
 					}
 					if ((String) obj[3] != null && !((String) obj[3]).toString().isEmpty()) {
 						dtoOBJ.setNoOfUnitFilled((String) obj[3]);
@@ -373,11 +374,15 @@ public class OtherAchievementsDetailServiceImpl implements OtherAchievementsDeta
 				} else {
 					dtoOBJ.setQuater("");
 				}
-				
+				if ((String) obj[5] != null && !((String) obj[5]).toString().isEmpty()) {
+					dtoOBJ.setFinId((String) obj[5]);
+				} else {
+					dtoOBJ.setFinId("");
+				}
 				rpListDTOOBJ.add(dtoOBJ);
 				for (j = i + 1; j < dataListOBJ.size() && checkSameRp; j++) {
 					Object[] isSameRPOBJ = dataListOBJ.get(j);
-					if (containerOBJ.getSlc().intValue() == (((Integer) isSameRPOBJ[0]).intValue())) {
+					if (containerOBJ.getSlc().intValue() == (((Integer) isSameRPOBJ[0]).intValue())  && (containerOBJ.getFinYear()).equals(((String) isSameRPOBJ[5]))) {
 						KpiReportDto dtoRPOBJ = new KpiReportDto();
 						
 						if(("bhawanConst").equals(kpiName) || ("bhawanRepair").equals(kpiName)  || ("bhawanColocate").equals(kpiName) ) {
@@ -397,41 +402,23 @@ public class OtherAchievementsDetailServiceImpl implements OtherAchievementsDeta
 								dtoRPOBJ.setGpName("");
 							}
 							}else {
-								if(("basicOrientationTrainErs").equals(kpiName)) {
+								if(("basicOrientationTrainErs").equals(kpiName) || ("selfHelpGroup").equals(kpiName) || ("refreshTrainErs").equals(kpiName) || ("panchyatStakeholder").equals(kpiName)) {
 									
-									if ((String) obj[7] != null && !((String) obj[7]).toString().isEmpty()) {
-										dtoRPOBJ.setGpName((String) isSameRPOBJ[7]);
-									} else {
-										dtoRPOBJ.setGpName("");
-									}
 								
-									if ((String) obj[6] != null && !((String) obj[6]).toString().isEmpty()) {
-										dtoRPOBJ.setGp((String) obj[6]);
+									if ((String) isSameRPOBJ[6] != null && !((String) isSameRPOBJ[6]).toString().isEmpty()) {
+										dtoRPOBJ.setGp((String) isSameRPOBJ[6]);
 									} else {
 										dtoRPOBJ.setGp("");
 									}
-									if ((String) obj[9] != null && !((String) obj[9]).toString().isEmpty()) {
-										dtoRPOBJ.setOtherSc((String) obj[9]);  
-									} else {
-										dtoRPOBJ.setOtherSc("");
 									}
-									if ((String) obj[10] != null && !((String) obj[10]).toString().isEmpty()) {
-										dtoRPOBJ.setOtherSt((String) obj[10]);
+								if(("technicalSupportGPs").equals(kpiName)) {
+									if ((String) obj[3] != null && !((String) obj[3]).toString().isEmpty()) {
+										dtoRPOBJ.setNoOfUnitFilled((String) isSameRPOBJ[3]);
 									} else {
-										dtoRPOBJ.setOtherSt("");
+										dtoRPOBJ.setNoOfUnitFilled("");
 									}
-									if ((String) obj[11] != null && !((String) obj[11]).toString().isEmpty()) {
-										dtoRPOBJ.setStFemale((String) obj[11]);
-									} else {
-										dtoRPOBJ.setStFemale("");
-									}
+								}
 								
-									if ((String) obj[8] != null && !((String) obj[8]).toString().isEmpty()) {
-										dtoRPOBJ.setStMale((String) obj[8]);
-									} else {
-										dtoRPOBJ.setStMale("");
-									}
-									}
 								if ((String) isSameRPOBJ[3] != null && !((String) isSameRPOBJ[3]).toString().isEmpty()) {
 									dtoRPOBJ.setNoOfUnitFilled((String) isSameRPOBJ[3]);
 									} else {
@@ -443,6 +430,11 @@ public class OtherAchievementsDetailServiceImpl implements OtherAchievementsDeta
 							dtoRPOBJ.setQuater((String) isSameRPOBJ[4]);
 						} else {
 							dtoRPOBJ.setQuater("");
+						}
+						if ((String) obj[5] != null && !((String) obj[5]).toString().isEmpty()) {
+							dtoRPOBJ.setFinId((String) isSameRPOBJ[5]);
+						} else {
+							dtoRPOBJ.setFinId("");
 						}
 						trgCount++;
 						rpListDTOOBJ.add(dtoRPOBJ);
@@ -472,14 +464,80 @@ public class OtherAchievementsDetailServiceImpl implements OtherAchievementsDeta
 
 				
 				
-			
+			if(mapListOBJ != null) {
+				for (int k = 0; k < mapListOBJ.size()-1; k++)
+				{
+					Collections.sort( (List<KpiReportDto>) mapListOBJ.get(k).getKpiReportDto());
+						if(mapListOBJ.get(k).getSlc()== mapListOBJ.get(k+1).getSlc()) {
+							mapListOBJ.get(k+1).setStateName(null);
+						}
+				}
+				for (int k = 0; k < mapListOBJ.size(); k++)
+				{
+					Collections.sort( (List<KpiReportDto>) mapListOBJ.get(k).getKpiReportDto());
+				}
+			}
 			
 	
 		}catch(Exception e)
 		{
 			e.printStackTrace();
 		}
+		
 		return mapListOBJ;
 	}
 		  
+	public List fetchbasicOrientationById(String id ,String kpiname) {
+		List  datalist=new LinkedList();
+		String tgMasterId=new String();
+		try {
+			 if("basicOrientationTrainErs".equalsIgnoreCase(kpiname.trim())) {
+				 tgMasterId ="1,3,5,14,16,40,41 ";
+			}else if("refreshTrainErs".equalsIgnoreCase(kpiname.trim())) { 
+				tgMasterId="1,3,5,14,16,40,41";
+			}else if("panchyatStakeholder".equalsIgnoreCase(kpiname.trim())) {
+				tgMasterId="7,8,9,10,11,12,13,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39";
+			}
+			StringBuilder query=new StringBuilder();
+			
+			query.append("(with gp_data as( select tgm.target_group_master_name, sum(cast(COALESCE(qtb.sc_males ,0) as integer)) as sc_maless , \r\n" + 
+					"							sum(cast(COALESCE(qtb.sc_females,0)as integer)) as sc_femaless, sum(cast(COALESCE(qtb.st_males,0)as integer)) as st_maless, \r\n" + 
+					"							sum(cast(COALESCE(qtb.st_females,0)as integer)) as st_femaless ,  sum(cast(COALESCE(qtb.others_males, 0)as integer)) as others_maless , \r\n" + 
+					"							sum(cast(COALESCE(qtb.others_females,0) as integer)) as others_femaless  from rgsa.qpr_training_breakup qtb \r\n" + 
+					"										inner join rgsa.qpr_trainings_details qtd on qtb.qpr_trainings_details_id=qtd.qpr_trainings_details_id\r\n" + 
+					"										inner join rgsa.training_target_groups ttg  on  qtb.target_group_master_id=ttg.training_wise_target_group_id \r\n" + 
+					"										inner join rgsa.qpr_trainings qt on qt.qpr_trainings_id=qtd.qpr_trainings_id ,rgsa.target_group_master tgm  \r\n" + 
+					"										where qt.is_freeze=true and qtb.qpr_trainings_details_id in (" + id +") and  qtb.target_group_master_id = tgm.target_group_master_id \r\n" + 
+							"									");
+			if(!("selfHelpGroup").equals(kpiname.trim())) {
+			query.append(" and  qtb.target_group_master_id  in  (" +tgMasterId + ") ");
+			}
+			query.append( "group by target_group_master_name order by target_group_master_name ) select * from gp_data  where \r\n" + 
+					"							 (cast(sc_maless as integer) + cast(sc_femaless as integer) + cast(st_maless as integer) + cast(st_femaless as integer ) + \r\n" + 
+					"							 cast(others_maless as integer) + cast(others_femaless as integer) ) >0 )  " );
+					
+					List list= commonRepository.findAllByNativeQuery(query.toString(), null);
+			if(list!=null && !list.isEmpty()) {
+				 for(Iterator itr=list.iterator(); itr.hasNext();)
+				 {
+					 Object []  obj=(Object [])itr.next();
+					 Map <String,String> map=new LinkedHashMap<>();
+					 map.put("Er", obj[0].toString()); 
+					 map.put("sc_maless", obj[1].toString()); 
+					 map.put("sc_femaless", obj[2].toString());
+					 map.put("st_maless", obj[3].toString()); 
+					 map.put("st_femaless", obj[4].toString());
+					 map.put("others_maless", obj[5].toString());
+					 map.put("others_femaless", obj[6].toString());
+					 datalist.add(map);
+				 }
+			}
+		} catch (Exception e)
+		{
+			e.printStackTrace();
+		}
+			 
+			return datalist;
+	}
+	
 }

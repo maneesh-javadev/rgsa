@@ -1,19 +1,17 @@
 package gov.in.rgsa.dto;
 
-public class KpiReportDto {
+import javax.persistence.Id;
+
+public class KpiReportDto implements Comparable<KpiReportDto>{
 
 	
 	
 	private String noOfUnitFilled;
-	
+	@Id
 	private String quater ;
-	
+	private String finId;
 	private String gp;
 	private String gpName;
-	private String stFemale;
-	private String otherSt;
-	private String otherSc;
-	private String stMale;
 	public String getNoOfUnitFilled() {
 		return noOfUnitFilled;
 	}
@@ -52,50 +50,24 @@ public class KpiReportDto {
 		this.gpName = gpName;
 	}
 
-	public String getStFemale()
+	public String getFinId()
 	{
-		return stFemale;
+		return finId;
 	}
 
-	public void setStFemale(String stFemale)
+	public void setFinId(String finId)
 	{
-		this.stFemale = stFemale;
+		this.finId = finId;
 	}
 
-	public String getOtherSt()
+	@Override
+	public int compareTo(KpiReportDto arg0)
 	{
-		return otherSt;
-	}
-
-	public void setOtherSt(String otherSt)
-	{
-		this.otherSt = otherSt;
-	}
-
-	public String getOtherSc()
-	{
-		return otherSc;
-	}
-
-	public void setOtherSc(String otherSc)
-	{
-		this.otherSc = otherSc;
-	}
-
-	public String getStMale()
-	{
-		return stMale;
-	}
-
-	public void setStMale(String stMale)
-	{
-		this.stMale = stMale;
+		// TODO Auto-generated method stub
+		return quater.compareTo(arg0.getQuater());
 	}
 
 	
 
 	
-	
-
-
 }

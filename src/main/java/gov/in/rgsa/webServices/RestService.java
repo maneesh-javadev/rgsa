@@ -237,9 +237,8 @@ public class RestService {
 
 	@PostMapping({ "/webService/noOfExposureView" })
 	@Produces({ "application/json" })
-	public OomsWebService noOfExposureView(@QueryParam("finYear") final String finYear,
-			@RequestBody final WebServiceOoms capacityBuildingErForOoms,
-			@RequestHeader("username") final String username, @RequestHeader("password") final String password)
+	public OomsWebService noOfExposureView(@RequestBody final WebServiceOoms capacityBuildingErForOoms, @RequestHeader("username") final String username, @RequestHeader("password") final String password
+			)
 			throws JsonProcessingException {
 		List<CapacityBuildingErForOoms> capacityBuildingErForOomsList = null;
 		final OomsWebService oomsWebService = new OomsWebService();

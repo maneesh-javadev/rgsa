@@ -1,6 +1,7 @@
 package gov.in.rgsa.entity;
 
 import java.io.Serializable;
+import java.math.BigInteger;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -49,7 +50,7 @@ public class FetchTrainingDetails implements Serializable {
 	private Integer noOfDays;
 	
 	@Column(name="funds")
-	private Integer funds;
+	private BigInteger funds;
 	
 	
 	@Column(name="remarks")
@@ -158,12 +159,17 @@ public class FetchTrainingDetails implements Serializable {
 	}
 
 
-	public Integer getFunds() {
+	
+
+
+	public BigInteger getFunds()
+	{
 		return funds;
 	}
 
 
-	public void setFunds(Integer funds) {
+	public void setFunds(BigInteger funds)
+	{
 		this.funds = funds;
 	}
 

@@ -47,6 +47,8 @@ public class UserPreference {
 	
 	private long countPlanSubmittedByMOPR;
 	
+	private long countPlanApprovedByCec;
+	
 	private List<FinYear> finYearList; // added by aashish barua
 	
 	private boolean plansAreFreezed;
@@ -260,6 +262,16 @@ public class UserPreference {
 
 	public void setIsFreezeStatusList(List<IsFreezeStatusDto> isFreezeStatusList) {
 		this.isFreezeStatusList = isFreezeStatusList;
+	}
+
+	public long getCountPlanApprovedByCec()
+	{
+		return countPlanApprovedByCec;
+	}
+
+	public void setCountPlanApprovedByCec(long countPlanApprovedByCec)
+	{
+		this.countPlanApprovedByCec = countPlanApprovedByCec;
 	}
 	
 	

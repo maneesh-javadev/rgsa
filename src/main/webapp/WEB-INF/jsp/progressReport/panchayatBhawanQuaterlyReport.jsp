@@ -244,12 +244,9 @@
 										</c:choose>
 										<%-- <form:button type="button" onclick=""
 												class="btn bg-light-blue waves-effect reset" disabled="${QPR_PANCHAYAT_BHAWAN.isFreeze}">CLEAR ${districtCode}</form:button> --%>
-											<form:button type="button"
-												onclick=" onClose('home.html?
-														<csrf:token uri='home.html'/>')"
-												class="btn bg-orange waves-effect">
-												<spring:message code="Label.CLOSE" htmlEscape="true" />
-											</form:button>
+											<button type="button" onclick="onClose('home.html?OWASP_CSRFTOKEN=7XU4-1U0F-M8OE-6TOL-B9Y4-ZN6Z-DXM7-GAOX')" class="btn bg-red waves-effect">
+							CLOSE
+						</button>
 										</div>
 
 								</div>

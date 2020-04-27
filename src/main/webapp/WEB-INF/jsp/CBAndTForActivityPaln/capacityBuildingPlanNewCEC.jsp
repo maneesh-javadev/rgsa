@@ -142,7 +142,7 @@ table.dataTable thead > tr > th, table.dataTable thead > tr > td {
 													</div>
 													<input type="text" class="form-control element_style"	data-ng-disabled="training.isFreeze" data-ng-change="calculateFund('P',$index);" 
 													onkeypress="return isNumber(event)"	data-ng-model="training.trainingDetailList[$index].noOfParticipants"
-													maxlength="7" style="text-align: right; border: none; border-color: transparent;" />
+													maxlength="8" style="text-align: right; border: none; border-color: transparent;" />
 										</td>
 										
 										<td align="right">

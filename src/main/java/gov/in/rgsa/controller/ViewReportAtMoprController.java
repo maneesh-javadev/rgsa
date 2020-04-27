@@ -157,10 +157,9 @@ public class ViewReportAtMoprController {
 	@GetMapping(value = "viewReportDemographicProfile")
 	private String viewReportDemographicProfile(
 			@ModelAttribute(name = "VIEW_REPORT_MODEL") ViewReportAtMoprModel viewReportModel, Model model) {
-		model.addAttribute("FIN_YEAR_LIST", viewReportAtMoprService.getFinYearList());
-		if (viewReportModel.getFinYearId() != null) {
-			model.addAttribute("STATE_LIST", moprService.getStateListApprovedbyCEC(viewReportModel.getFinYearId()));
-		}
+		model.addAttribute("FIN_YEAR", userPreference.getFinYear());
+			model.addAttribute("STATE_LIST", moprService.getStateListApprovedbyCEC(userPreference.getFinYearId()));
+		
 		if (viewReportModel.getIsDemoGraphic() != null && viewReportModel.getIsDemoGraphic()) {
 			List<DemographicProfileDataDto> demographicData = viewReportAtMoprService
 					.fetchDemographicData(viewReportModel);
@@ -180,10 +179,10 @@ public class ViewReportAtMoprController {
 	@GetMapping(value = "viewReportAnnualAction")
 	private String viewReportAnnualAction(
 			@ModelAttribute(name = "VIEW_REPORT_MODEL") ViewReportAtMoprModel viewReportModel, Model model) {
-		model.addAttribute("FIN_YEAR_LIST", viewReportAtMoprService.getFinYearList());
-		if (viewReportModel.getFinYearId() != null) {
-			model.addAttribute("STATE_LIST", moprService.getStateListApprovedbyCEC(viewReportModel.getFinYearId()));
-		}
+		model.addAttribute("FIN_YEAR", userPreference.getFinYear());
+		/*	if (viewReportModel.getFinYearId() != null) {
+	*/		model.addAttribute("STATE_LIST", moprService.getStateListApprovedbyCEC(userPreference.getFinYearId()));
+		//}
 		if (viewReportModel.getIsAnnualPlan() != null && viewReportModel.getIsAnnualPlan()) {
 			Map<String, Object> parameter = new HashMap<String, Object>();
 			parameter.put("stateCode", viewReportModel.getStateCode());
@@ -290,14 +289,13 @@ public class ViewReportAtMoprController {
 	
 	@GetMapping(value ="getStateList")
 	@ResponseBody
-	public Map<Integer, String> getStateList(String finYear, Model model,HttpSession httpSession, RedirectAttributes re) {
-		Map<Integer, String> map = new HashMap<>();
+	public Map<String, List<State>> getStateList(String finYear, Model model,HttpSession httpSession, RedirectAttributes re) {
+		Map<String, List<State>> map = new HashMap<>();
 	
 			List<State> states =   moprService.getStateListApprovedbyCEC(Integer.valueOf(finYear));
-			for (State state : states) {
-				map.put(state.getStateCode(), state.getStateNameEnglish());
+				map.put("stateList", states);
 			
-		}
+		
 		return map;
 				
 	}

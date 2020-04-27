@@ -2,6 +2,7 @@ package gov.in.rgsa.controller;
 
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,6 +29,7 @@ import gov.in.rgsa.service.PanchayatBhawanService;
 import gov.in.rgsa.service.PlanAllocationService;
 import gov.in.rgsa.service.ProgressReportService;
 import gov.in.rgsa.user.preference.UserPreference;
+import gov.in.rgsa.utils.Message;
 
 @Controller
 public class QprGramPanchayatController {
@@ -143,7 +145,7 @@ public class QprGramPanchayatController {
 				List<SubcomponentwiseQuaterBalance> subcomponentwiseQuaterBalanceList = progressReportService.fetchSubcomponentwiseQuaterBalance(3, quatorId);
 		        if (subcomponentwiseQuaterBalanceList != null && !subcomponentwiseQuaterBalanceList.isEmpty() && (subcomponentwiseQuaterBalanceList.size()>=activityId-1)) {
 		        	SubcomponentwiseQuaterBalance subcomponentwiseQuaterBalance=subcomponentwiseQuaterBalanceList.get(activityId-1);
-		        	model.addAttribute("subcomponentwiseQuaterBalance", subcomponentwiseQuaterBalance.getBalanceAmount()-otherDistBal);
+		        	model.addAttribute("subcomponentwiseQuaterBalance", subcomponentwiseQuaterBalance.getBalanceAmount().intValue()- otherDistBal);
 		        }
 				BigDecimal otherSubtotal =progressReportService.subTOTALofOTHERQPRPANCHAYATBHAWAN();
 				Double remainOthertotal=otherSubtotal.longValue()-curDistBal.doubleValue();
@@ -182,7 +184,7 @@ public class QprGramPanchayatController {
 		try {
 		progressReportService.saveQprPanchayatBhawan(qprPanchayatBhawan);
 		 
-		redirectAttributes.addAttribute("msg", "Data Save Successfully!");
+		redirectAttributes.addFlashAttribute(Message.SUCCESS_KEY, Message.SAVE_SUCCESS);
 		}catch(Exception e) {
 			redirectAttributes.addAttribute("msg", "Oop's There are Some Error!");
 		}

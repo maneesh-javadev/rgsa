@@ -223,10 +223,14 @@
 			background-color:  #E91E63;
 			color: white;
 		}
-		.thumbnail.dark-1 > p, .thumbnail.dark-2 > p, .thumbnail.dark-3 > p {
+		.thumbnail.dark-4{
+			background-color:  #5cb85c;
+			color: white;
+		}
+		.thumbnail.dark-1 > p, .thumbnail.dark-2 > p, .thumbnail.dark-3 > p ,.thumbnail.dark-4 > p {
 		    color: ghostwhite;
 		}
-		.thumbnail.dark-1 > a, .thumbnail.dark-2 > a, .thumbnail.dark-3 > a {
+		.thumbnail.dark-1 > a, .thumbnail.dark-2 > a, .thumbnail.dark-3 > a ,.thumbnail.dark-4 > a {
 		    color: ghostwhite;
 		    font-size: 10px;
 		}
@@ -775,25 +779,32 @@
 						<div class="card">
 							<div class="body">
 								<div class="row thumbs">
-									<div class="col-md-3 col-xs-6 thumb-card">
+									<div class="col-md-2 col-xs-6 thumb-card">
 										<div class="thumbnail dark-1">
 											<h2>${sessionScope['scopedTarget.userPreference'].countPlanSubmittedByState}</h2>
 											<p>Plan Submitted By State</p>
 											<a href="submitedPlanByState.html?<csrf:token uri='submitedPlanByState.html'/>">More Info <i class="fa fa-arrow-circle-right"></i></a>
 										</div>
 									</div>
-									<div class="col-md-3  col-md-offset-1 col-xs-6 thumb-card">
+									<div class="col-md-2  col-md-offset-1 col-xs-6 thumb-card">
 										<div class="thumbnail dark-2">
 											<h2>0</h2>
 											<p>Plan Reverted By MOPR</p>
 											<a href="statuswisePlanDetails.html?<csrf:token uri='statuswisePlanDetails.html'/>&statusId=3">More Info <i class="fa fa-arrow-circle-right"></i></a>
 										</div>
 									</div>
-									<div class="col-md-3  col-md-offset-1 col-xs-6 thumb-card">
+									<div class="col-md-2  col-md-offset-1 col-xs-6 thumb-card">
 										<div class="thumbnail dark-3">
 											<h2>${sessionScope['scopedTarget.userPreference'].countPlanSubmittedByMOPR}</h2>
 											<p>Plan forwarded To CEC</p>
 											<a href="statuswisePlanDetails.html?<csrf:token uri='statuswisePlanDetails.html'/>&statusId=4">More Info <i class="fa fa-arrow-circle-right"></i></a>
+										</div>
+									</div>
+									<div class="col-md-2  col-md-offset-1 col-xs-6 thumb-card">
+										<div class="thumbnail dark-4 ">
+											<h2>${sessionScope['scopedTarget.userPreference'].countPlanApprovedByCec}</h2>
+											<p>Plan Approved By CEC</p>
+											<a href="approvePlanList.html?<csrf:token uri='approvePlanList.html'/>&statusId=5">More Info <i class="fa fa-arrow-circle-right"></i></a>
 										</div>
 									</div>
 								</div>

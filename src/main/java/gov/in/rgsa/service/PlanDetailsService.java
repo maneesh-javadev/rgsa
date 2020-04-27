@@ -11,7 +11,7 @@ public interface PlanDetailsService {
 	public List<Plan> getAllSubmittedPlan();
 	
 	
-	public long countPlanSubmittedByState(String userType);
+	public long countPlanSubmittedByState(String userType ,Integer FinId);
 	
 	public List<StatewisePlanStatus> getStatewisePlanStatus();
 	

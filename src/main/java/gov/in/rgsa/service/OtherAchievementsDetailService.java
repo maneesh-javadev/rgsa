@@ -30,6 +30,8 @@ public interface OtherAchievementsDetailService {
     public List fetchQprEenablementProgressReport( );
 
     public List fetchEspmu(String kpiName);
-   
+    
+    public List fetchbasicOrientationById(String id ,String kpiname);
+    
    
 }

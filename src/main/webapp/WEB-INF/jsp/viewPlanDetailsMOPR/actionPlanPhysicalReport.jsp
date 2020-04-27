@@ -86,12 +86,16 @@ function getStateList(){
 			        temp.empty();
 			        $("#selectSLC").append("<option value=''>--Select--</option>");
 
-			        $.each(data, function (i, value) {      // bind the dropdown list using json result              
-			            $('<option>',
+			        $.each(data, function (i, value2) {  
+			        	$.each(value2, function (j, value1) {// bind the dropdown list using json result              
+			        	
+			        	$('<option>',
 			               {
-			                   value: value,
-			                   text: i
-			               }).html(i).appendTo("#selectSLC");
+			            	
+			                   value:value1.stateCode,
+			                   text: value1.stateNameEnglish
+			               }).html(value1.stateNameEnglish).appendTo("#selectSLC");
+			        });
 			        });
 			        $('#selectSLC').trigger("chosen:updated");
 			    

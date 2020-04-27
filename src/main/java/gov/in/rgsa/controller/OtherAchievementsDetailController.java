@@ -100,4 +100,17 @@ public class OtherAchievementsDetailController {
 		return map ;
 	}
 	
+	@ResponseBody
+	@RequestMapping(value = "basicOrientationById", method = RequestMethod.GET)
+	public Map<String, List<Object>> basicOrientationById(@RequestParam(value = "id", required = false) String id,@RequestParam(value = "kpiname", required = false) String kpiname) {
+		Map<String, List<Object>> map= new HashMap<>();
+		try {
+			map.put("ErList",  otherAchievementsDetailService.fetchbasicOrientationById(id ,kpiname));
+			}catch(Exception e)
+		{
+			e.printStackTrace();
+		}
+		return map ;
+	}
+	
 }
