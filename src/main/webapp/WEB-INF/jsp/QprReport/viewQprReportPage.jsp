@@ -5,9 +5,52 @@
 
 	
 	<script type="text/javascript">
+	/* $(document).on('change','#inputFinYear',function(){
+		var year=$(this).children('option:selected').text()		
+		if(year.toString().trim()=='2018-2019' || year.toString().trim()=='2019-2020')
+			{
+			//alert('if');
+			$("#quarterId").prop('disabled',true);
+			}
+		else
+			{
+			//alert('false')
+			$("#quarterId").prop('disabled',false);
+			}
+	}) */
+	
+	
+	function diabledQuarterFn(yearObj){
+		yearId=$(yearObj).val();
+		
+		if(yearId==2 || yearId==3){
+			$("#quarterId").val('-1');
+			$('#quarterId').prop('disabled',true);
+		}else{
+			$('#quarterId').prop('disabled',false);
+			$("#quarterId").val('-1');
+		}
+	}
+	
+	
+	
+	
+	
+	
+	
+	
 	 function ajaxCallFunction(detailId){
 		 $("#tableExp").hide();
-		  var statecode=$("#inputState").val();
+		 var ut="${userType}";
+		  if(ut=='S')
+			  {
+			  var statecode=0;
+			  }
+		  else
+			  {
+			  var statecode=$("#inputState").val();
+			  }
+		 
 		  var yearId=$("#inputFinYear").val();
 		  var quarterId=$("#quarterId").val();
 		  if(statecode=='-1' && yearId=='-1' && quarterId=='-1' )
@@ -84,8 +127,10 @@
 								   tableBody+= '<td><b>Training Subjects</b></td>';
 								   tableBody+= '<td><b>Venue Level </b></td>';
 								   tableBody+= '<td><b>Total Participants </b></td>';
+								   tableBody+= '<td><b>Total Trained Participants </b></td>';
 								   tableBody+= '<td><b>Approved Amount </b></td>';
 								   tableBody+= '<td><b>Expenditure Incurred </b></td>';
+								  
 								   tableBody+= '</thead>';
 									   for (var key1 in valueList) {
 										   //console.log(">>>"+valueList.length);
@@ -107,14 +152,14 @@
 												   tableBody+='<tr  style="background-color: #dbd0d0">';
 												   $.each( valueList[key1], function(key2,listVal){
 													    if( key2=='additional_requirement'){
-													    	tableBody+='<td colspan=6> <b>Additional Requirement </b> </td>';
+													    	tableBody+='<td colspan=7> <b>Additional Requirement </b> </td>';
 													    	tableBody+='<td><b>'+ listVal +  '</b></td>';
 													    	total=parseInt(total)+parseInt(listVal);
 													    }
 												   })
 												   tableBody+='</tr>';
 												   tableBody+='<tr  style="background-color: #dbd0d0">';  
-												   tableBody+='<td colspan=6> <b>Total </b> </td>';
+												   tableBody+='<td colspan=7> <b>Total </b> </td>';
 											    	tableBody+='<td><b>'+ total +  '</b></td>';
 												   tableBody+='</tr>';
 											   }
@@ -249,8 +294,16 @@
 												   if( key2!='additional_requirement'){
 												    	 if( key2=='expenditure_incurred'){
 												    		 total=parseInt(total)+parseInt(listVal);
-												    		 tableBody+='<td>'+ listVal +  '</td>';
-												    	 }else{
+												    		 tableBody+='<td>'+parseFloat(listVal)  +  '</td>';
+												    	 }else if(key2=='Fund_sanctioned ' ){
+												    		 if(listVal!='null'){
+												    			 tableBody+='<td>'+parseFloat(listVal)  +  '</td>';
+												    		 }else{
+												    			 tableBody+='<td>0</td>';
+												    		 }
+												    		 
+												    	 }
+												    	 else{
 												    		 tableBody+='<td>'+ listVal +  '</td>';
 												    	 }
 												    }
@@ -783,12 +836,13 @@
 					 </div>
 					<div class="body">
 					
-					 
+			   <c:choose>
+                <c:when test="${userType eq 'M'}">
 					
 					<div class="row">
 					<div class="col-md-3">
 					<label class="control-label" > Financial year : </label>
-					<select class="form-control" id="inputFinYear" path=""  >
+					<select class="form-control" id="inputFinYear" path="" onchange="diabledQuarterFn(this)" >
 					<option value="-1">--Select--</option>
                                 <c:forEach var="item" items="${FIN_YEAR_LIST}">
                                             <option value="${item.yearId}"> ${item.finYear} </option>
@@ -807,6 +861,40 @@
                                 </c:forEach>  
                             </select>
 					</div>
+					
+					
+					
+					
+					</c:when>
+                            <c:otherwise>
+                             <div class="row">
+					<div class="col-md-3">
+					<label class="control-label" > Financial year : </label>
+					<select class="form-control" id="inputFinYear" path="" >
+					<option value="-1">--Select--</option>
+                                <c:forEach var="item" items="${FIN_YEAR_LIST}">
+                                            <option value="${item.yearId}"> ${item.finYear} </option>
+                                </c:forEach>
+                            <select>
+					</div>
+					 
+					 
+					
+					<%-- <div class="col-md-3">
+					<label class="control-label" > State: </label>
+					<select class="form-control" id="inputState"   >
+						<option value="-1">--Select--</option>
+                                 <c:forEach var="item" items="${STATE}">
+                                            <option value="${item.stateCode}"> ${item.stateNameEnglish} </option>
+                                </c:forEach>  
+                            </select>
+					</div> --%>
+					
+                         </c:otherwise>
+                         </c:choose>
+					
+					
+					
 					
 					<div class="col-md-3">
 					<label class="control-label" > Quarter Duration: </label>

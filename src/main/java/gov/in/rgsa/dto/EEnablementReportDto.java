@@ -6,13 +6,17 @@ import javax.persistence.Id;
 import javax.persistence.NamedNativeQuery;
 
 @Entity
-@NamedNativeQuery(name="FETCH_EEnablement_REPORT_DETAILS",query="SELECT  lb.local_body_code,lb.local_body_name_english,t.e_enablement_id,t.e_enablement_details_id,t.unit_cost,t.funds,t.no_of_units,t.district_code\r\n" + 
+@NamedNativeQuery(name="FETCH_EEnablement_REPORT_DETAILS",query="select row_number() OVER () as id, lb.local_body_code,lb.local_body_name_english,t.e_enablement_id,t.e_enablement_details_id,t.unit_cost,t.funds,t.no_of_units,t.district_code\r\n" + 
 		" from lgd.view_all_lb_details lb inner join\r\n" + 
 		"(SELECT  ed.e_enablement_id,ed.e_enablement_details_id,ed.unit_cost,ed.no_of_units,ed.funds,egp.district_code,egp.local_body_code from rgsa.e_enablement_gps egp inner join rgsa.e_enablement_details ed on\r\n" + 
-		" (egp.e_enablement_details_id = ed.e_enablement_details_id) where egp.district_code=:districtCode) t on (t.local_body_code=lb.local_body_code)\r\n" + 
+		" (egp.e_enablement_details_id = ed.e_enablement_details_id) where egp.district_code=:districtCode and egp.isactive) t on (t.local_body_code=lb.local_body_code)\r\n" + 
 		"",resultClass=EEnablementReportDto.class)
 
 public class EEnablementReportDto {
+	
+	@Id
+	@Column(name="id")
+	private Integer Id;
 
 	@Column(name="e_enablement_id")
 	private Integer eEnablementId;
@@ -32,12 +36,22 @@ public class EEnablementReportDto {
 	@Column(name="funds")
 	private Integer fund;
 	
-	@Id
+	
 	@Column(name="local_body_code")
 	private Integer localBodyCode;
 	
 	@Column(name="local_body_name_english")
 	private String localBodyNameEnglish;
+	
+	
+
+	public Integer getId() {
+		return Id;
+	}
+
+	public void setId(Integer id) {
+		Id = id;
+	}
 
 	public Integer geteEnablementId() {
 		return eEnablementId;

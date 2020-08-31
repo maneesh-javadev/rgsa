@@ -55,6 +55,9 @@ $( document ).ready(function() {
 });
 
 function saveAndGetDataQtrRprt(msg){
+	if(savevalidate())
+	{
+	disabled_button();
 	 var districtId = $('#districtId').val();
 	 var quaterId = $('#quaterId').val();
 	 var flag=true;
@@ -72,6 +75,13 @@ function saveAndGetDataQtrRprt(msg){
 			}
 		}
 		flag ? document.qprEnablement.submit() : alert("Expenditure Incurred should not be blank."); 
+	}
+}
+
+function disabled_button(){
+	$('#savebtn').prop('disabled', true);
+	$('#freezebtn').prop('disabled', true);
+	$('#unfreezebtn').prop('disabled', true);
 }
 
 function showDistrictDropDown(){
@@ -133,12 +143,37 @@ function calTotalExpenditure(){
 }
 
 function FreezeAndUnfreeze(msg){
+	disabled_button();
 	var componentId=5;
 	var qprActivityId=$('#qprActivityId').val();
 	var quaterId = $('#quaterId').val();
 	document.qprEnablement.method = "post";
 	document.qprEnablement.action = "freezeAndUnfreezeReport.html?<csrf:token uri='freezeAndUnfreezeReport.html'/>&componentId="+componentId+"&qprActivityId="+qprActivityId+"&quaterId="+quaterId+"&msg="+msg;
 	document.qprEnablement.submit();
+}
+
+function savevalidate()
+{  
+   var totalallocation=$("#totalExpenditureId").val();
+   var status=true;
+   var noOfRows=$("#tbodyId tr").length-1;
+   var total=totalallocation;
+   var fund_allocated_by_state_local=0;
+   fund_allocated_by_state_local = +fund_allocated_by_state;
+   if(total >= fund_allocated_by_state_local){
+	  status=false;
+	  }
+	
+	if(status==false)
+	{
+	  alert('Total Expenditure  should not exceed total allocated fund '+fund_allocated_by_state_local);
+	  return false;
+	}
+   else
+	   {
+   return true;
+	   }
+
 }
 </script>
 <section class="content">
@@ -261,7 +296,7 @@ function FreezeAndUnfreeze(msg){
 				
 												<th>
 													<div align="center">
-														<strong>Amount Sanctioned</strong>
+														<strong>Approved Amount</strong>
 													</div>
 												</th>
 												<th>
@@ -458,11 +493,11 @@ function FreezeAndUnfreeze(msg){
 							<c:choose>
 								<c:when test="${not empty eEnablementReportDto}">
 									<div class="text-right">
-										<form:button onclick="saveAndGetDataQtrRprt('save')" class="btn bg-green waves-effect" disabled="${Qpr_Enablement.isFreeze}">
+										<form:button onclick="saveAndGetDataQtrRprt('save')" class="btn bg-green waves-effect" disabled="${Qpr_Enablement.isFreeze}" id="savebtn">
 											SAVE</form:button>
 										<c:choose>
-											<c:when test="${Qpr_Enablement.isFreeze}"><form:button class="btn bg-orange waves-effect" onclick="FreezeAndUnfreeze('unfreeze')">UNFREEZE</form:button></c:when>
-											<c:otherwise><form:button class="btn bg-orange waves-effect" disabled="${DISABLE_FREEZE}" onclick="FreezeAndUnfreeze('freeze')">FREEZE</form:button></c:otherwise>
+											<c:when test="${Qpr_Enablement.isFreeze}"><form:button class="btn bg-orange waves-effect" onclick="FreezeAndUnfreeze('unfreeze')" id="unfreezebtn">UNFREEZE</form:button></c:when>
+											<c:otherwise><form:button class="btn bg-orange waves-effect" disabled="${DISABLE_FREEZE}" onclick="FreezeAndUnfreeze('freeze')" id="freezebtn">FREEZE</form:button></c:otherwise>
 										</c:choose>	
 										<%-- <form:button onclick="onClear(this)"
 											class="btn bg-light-blue waves-effect" disabled="${Qpr_Enablement.isFreeze}">CLEAR</form:button> --%>

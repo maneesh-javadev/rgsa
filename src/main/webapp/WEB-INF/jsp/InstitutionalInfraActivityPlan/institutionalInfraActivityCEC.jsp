@@ -651,7 +651,7 @@ function isNumber(evt) {
 
 								<button type="button"
 									onclick="onClose('home.html?<csrf:token uri='home.html'/>')"
-									class="btn bg-orange waves-effect">
+									class="btn bg-orange waves-effect" ng-disabled="btn_disabled">
 									<spring:message code="Label.CLOSE" htmlEscape="true" />
 								</button>
 								<br/>
@@ -1145,7 +1145,7 @@ function isNumber(evt) {
 									<div class="col-md-4">
 										<button type="button"
 											onclick="onClose('viewPlanDetails.html?<csrf:token uri='viewPlanDetails.html'/>&stateCode=${STATE_CODE}')"
-											class="btn bg-orange waves-effect">
+											class="btn bg-orange waves-effect" ng-disabled="btn_disabled">
 											<i class="fa fa-arrow-left" aria-hidden="true"></i>
 											<spring:message code="Label.BACK" htmlEscape="true" />
 										</button>
@@ -1154,7 +1154,7 @@ function isNumber(evt) {
 									<div class=" col-md-8 text-right">
 										<button type="button"
 											onclick="onClose('home.html?<csrf:token uri='home.html'/>')"
-											class="btn bg-orange waves-effect">
+											class="btn bg-orange waves-effect" ng-disabled="btn_disabled">
 											<spring:message code="Label.CLOSE" htmlEscape="true" />
 										</button>
 									</div>

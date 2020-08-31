@@ -43,4 +43,52 @@ public interface QprReportConService
 	public List fetchQprInnovativeActive(String statecode,String yearId,String UserType,String quarterId) ;
 	
 	public List fetchQpradminFinancial(String statecode,String yearId,String UserType,String quarterId) ;
+	
+	List<FinYear> fetchTwoFinYear();
+	
+	//Added by Sushma Singh for New Report
+	
+	public List fetchTrainingActivityListYearWiseNew(String statecode, String yearId, String UserType, String quarterId);
+	
+	public List fetchQprTrainingDetailsYearWiseNew(String statecode, String yearId, String UserType, String quarterId);
+	
+	public List fetchQprHRsupportSprcDprcYearWiseNew(String statecode, String yearId, String UserType, String quarterId);
+
+	public List fetchQprEgovProgressReportYearWiseNew(String statecode, String yearId, String UserType, String quarterId);
+
+	public List fetchQprEenablementProgressReportYearWiseNew(String statecode, String yearId, String UserType, String quarterId);
+
+	public List fetchQprPesaReportYearWiseNew(String statecode, String yearId, String UserType, String quarterId);
+
+	public List fetchQprIncomeEnhancementYearWiseNew(String statecode, String yearId, String UserType, String quarterId);
+
+	public List fetchQprIECYearWiseNew(String statecode, String yearId, String UserType, String quarterId);
+
+	public List fetchQprPMUYearWiseNew(String statecode, String yearId, String UserType, String quarterId);
+
+	public List fetchQprAdministrativeAndTechnicalSupportYearWiseNew(String statecode, String yearId, String UserType, String quarterId);
+
+	public List fetchQprPanchayatBhawanYearWiseNew(String statecode, String yearId, String UserType, String quarterId);
+
+	public List fetchQprSATCOMYearWiseNew(String statecode, String yearId, String UserType, String quarterId);
+
+	public List fetchQprInstitutionalInfrastructureYearWiseNew(String statecode, String yearId, String UserType, String quarterId);
+
+	public List fetchQprInnovativeActiveYearWiseNew(String statecode, String yearId, String UserType, String quarterId);
+
+	public List fetchQpradminFinancialYearWiseNew(String statecode, String yearId, String UserType, String quarterId);
+
+	
+	
+	
+	
+	
+	
+	
 }
+
+
+
+
+
+

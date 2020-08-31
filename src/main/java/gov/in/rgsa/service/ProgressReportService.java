@@ -135,5 +135,6 @@ public interface ProgressReportService {
 	public QprEnablement fetchQprEnablementId(Integer eEnablementId, int quarterId);
 	
 	//public List<StateAllocation> fetchStateAllocationData(int componentId, int planCode);
+	 BigDecimal subTOTALofOTHERQPRPANCHAYATBHAWANYEARWISE(Integer activityId);
 
 }

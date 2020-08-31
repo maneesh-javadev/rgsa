@@ -5,6 +5,7 @@ import java.util.List;
 import gov.in.rgsa.entity.GPBhawanStatus;
 import gov.in.rgsa.dto.GramPanchayatProgressReportDTO;
 import gov.in.rgsa.entity.BasicInfoDetails;
+import gov.in.rgsa.entity.FinalizeFreezeStatus;
 import gov.in.rgsa.entity.GramPanchayatActivity;
 import gov.in.rgsa.entity.PanchatayBhawanActivity;
 import gov.in.rgsa.entity.PanchayatBhawanProposedInfo;
@@ -39,7 +40,13 @@ public interface PanchayatBhawanService{
 	
 	public List<PanchayatBhawanProposedInfo> fetchPanchayatBhawanProposedGPsList(Integer activityDetailsId);
 
-	public List<QprPanchayatBhawan> fetchDataAccordingToQuator(Integer quatorId,Integer activityId,Integer districtCode);
+	List<QprPanchayatBhawan> fetchDataAccordingToQuator(Integer quatorId,Integer activityId,Integer districtCode,Integer panchayatBhawanActivityId );
 	
 	public Integer fetchBasicInfoKeyValue(Integer stateCode,String defination_key);
+	
+	Response freezeUnfreezeFinalizeWorkLocation(FinalizeFreezeStatus finalizeFreezeStatus);
+	
+	FinalizeFreezeStatus loadFreezeUnfreezeFinalizeWorkLocation(FinalizeFreezeStatus finalizeFreezeStatus); 
+	
+	public boolean validateFinalizeWorklocationBasedonQPR(Character finalizeType);
 }

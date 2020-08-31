@@ -1,231 +1,7 @@
 <%@include file="../taglib/taglib.jsp"%>
-<script>
-var quater_id = '${QTR_ID}';
-var fund_allocted_sprc = '${FUND_ALLOCATED_SPRC}';
-var fund_allocted_dprc = '${FUND_ALLOCATED_DPRC}';
-var fund_used_other_qtr_sprc = '${FUND_USED_IN_OTHER_QTR_SPRC}';
-var fund_used_other_qtr_dprc = '${FUND_USED_IN_OTHER_QTR_DPRC}';
-var pre_install_fund_sprc = '${PRE_INSTALLMENT_FUND_SPRC}';
-var pre_install_fund_dprc = '${PRE_INSTALLMENT_FUND_DPRC}';
-var total_fund_used_qtr_1_2_sprc = '${TOTAL_SPRC_FUND_USED_IN_QTR_1_AND_2}';
-var total_fund_used_qtr_1_2_dprc = '${TOTAL_DPRC_FUND_USED_IN_QTR_1_AND_2}';
-var total_add_req_sprc_filled = '${TOTAL_ADD_REQ_SPRC}';
-var total_add_req_dprc_filled = '${TOTAL_ADD_REQ_DPRC}';
-var domain_list = '${LIST_OF_DOMAINS}';
-var qtr_1_2_filled='${QTR_ONE_TWO_FILLED}';
-
-$(document).ready(function() {
-	if(qtr_1_2_filled == "false"){
-		alert('Please fill the quater 1 and 2 progress report first.');
-	}
-	$('#quaterDropDownId').val(quater_id);
-	showTablediv();
-	calTotalExpenditure();
-});
-
-function saveAndGetDataQtrRprt(msg){
-	 	$('#qtrIdJsp3').val($('#quaterDropDownId').val());
-	 	$('#origin').val(msg);
-	 	document.additionalFacultyProgress.method = "post";
-		document.additionalFacultyProgress.action = "additionalfacultyProgress.html?<csrf:token uri='additionalfacultyProgress.html'/>";
-		document.additionalFacultyProgress.submit();
-}
+<%@include file="additionalfacultyProgressJs.jsp"%>
 
 
-$( document ).ready(function() {
-	$(".validate").keypress(function (e) {
-	    //if the letter is not digit then display error and don't type anything
-	    if (e.which != 8 && e.which != 0 && (e.which < 48 || e.which > 57)) {
-	       //display error message
-	       $("#errmsg").html("Digits Only").show().fadeOut("slow");
-	              return false;
-	   }
-	  });
-});
-
-function showTablediv(){
-	if($('#quaterDropDownId').val() > 0){
-		$('#mainDivId').show();
-	}else{
-		$('#mainDivId').hide();
-	}
-}
-
-function validateFundByAllocatedFund(index){
-	var noOfRows=$("#tbodyId tr").length;
-	var fund_allocted_sprc_local = +fund_allocted_sprc;
-	var fund_allocted_dprc_local = +fund_allocted_dprc;
-	var total_fund_filled_sprc=0;
-	var total_fund_filled_dprc=0;
-	
-	if(fund_used_other_qtr_sprc != '' && fund_used_other_qtr_sprc != null){
-		fund_allocted_sprc_local -= +fund_used_other_qtr_sprc;
-	}
-	
-	if(fund_used_other_qtr_dprc != '' && fund_used_other_qtr_dprc != null){
-		fund_allocted_dprc_local -= +fund_used_other_qtr_dprc;
-	}
-	
-	if(pre_install_fund_sprc != null && total_fund_used_qtr_1_2_sprc != null){
-		fund_allocted_sprc_local += +(pre_install_fund_sprc - total_fund_used_qtr_1_2_sprc);
-	}
-	
-	if(pre_install_fund_dprc != null && total_fund_used_qtr_1_2_dprc != null){
-		fund_allocted_dprc_local += +(pre_install_fund_dprc - total_fund_used_qtr_1_2_dprc);
-	}
-	
-	for(var i = 0; i < noOfRows;i++){
-		if($('#expenditureIncurred_'+i).val() != null && $('#expenditureIncurred_'+i).val() != ''){
-			if(i< 3){
-				total_fund_filled_sprc += +$('#expenditureIncurred_'+i).val();
-			}else{
-				total_fund_filled_dprc += +$('#expenditureIncurred_'+i).val();
-			}
-		}
-	}
-	if(total_fund_filled_sprc > fund_allocted_sprc_local){
-		alert('Total expenditure should not exceed total remaining for this component which is Rs. '+ (fund_allocted_sprc_local - (total_fund_filled_sprc - $('#expenditureIncurred_'+index).val())));
-		$('#expenditureIncurred_'+index).val('');
-		$('#expenditureIncurred_'+index).focus();
-	}
-	if(total_fund_filled_dprc > fund_allocted_dprc_local){
-		alert('Total expenditure should not exceed total remaining for this component which is Rs. '+ (fund_allocted_dprc_local - (total_fund_filled_dprc - $('#expenditureIncurred_'+index).val())));
-		$('#expenditureIncurred_'+index).val('');
-		$('#expenditureIncurred_'+index).focus();
-	}
-}
-
-function isNoOfUnitAndExpInurredFilled(index){
-	if(($('#noOfUnitCompleted_'+index).val() == null || $('#noOfUnitCompleted_'+index).val() =='') && (index != 2 && index != 5)){
-		alert('Expenditure incurred cannot be filled if number of unit filled is zero or blank.');
-		$('#expenditureIncurred_'+index).val('');
-		$('#noOfUnitCompleted_'+index).focus();
-	}
-}
-
-function validateWithCorrespondingFund(index){
-	var tota_fund_cec= +$('#fundCecId_'+index).text();	
-	var total_corresponding_fund_remaining = tota_fund_cec - $('#totalExpenditureIncurred_'+index).val();
-	if($('#expenditureIncurred_'+index).val() > total_corresponding_fund_remaining){
-		alert('total expenditure should not exceed '+ total_corresponding_fund_remaining);
-		$('#expenditureIncurred_'+index).val('');
-		$('#expenditureIncurred_'+index).focus();
-	}
-}
-
-function validateNoOfUnits(index){
-	var no_of_unit_cec= +$('#noOfUnitCecId_'+index).text();	
-	/* var total_no_of_unit_remaining = no_of_unit_cec - $('#totalNoOfUnit_'+index).val(); */
-	if($('#noOfUnitCompleted_'+index).val() > no_of_unit_cec){
-		alert('total number of units should not exceed '+no_of_unit_cec);
-		$('#noOfUnitCompleted_'+index).val('');
-		$('#noOfUnitCompleted_'+index).focus();
-	}
-}
-
-function validateAddReq(msg){
-	var main_add_req_sprc = $('#additionalReqSprcStateId').text();
-	var main_add_req_dprc = $('#additionalReqDprcStateId').text();
-	
-	if(msg == 'sprc'){
-		if($('#additionalReqSprcId').val() > (main_add_req_sprc - total_add_req_sprc_filled)){
-			alert('Additional requirement for SPRC should not exceed : ' + (main_add_req_sprc - total_add_req_sprc_filled));
-			$('#additionalReqSprcId').val('');
-			$('#additionalReqSprcId').focus();
-			
-		}		
-	}else{
-		if($('#additionalReqDprcId').val() > (main_add_req_dprc - total_add_req_dprc_filled)){
-			alert('Additional requirement for DPRC should not exceed : ' + (main_add_req_dprc - total_add_req_dprc_filled));
-			$('#additionalReqDprcId').val('');
-			$('#additionalReqDprcId').focus();		
-		}
-	}
-}
-
-function calTotalExpenditure(){
-	var rowCount=$('#tbodyId tr').length -2;
-	var total_expenditure=0;
-	for( var i=0;i < rowCount; i++){
-		if($('#expenditureIncurred_'+i).val() != null && $('#expenditureIncurred_'+i).val() != undefined){
-			total_expenditure += +$('#expenditureIncurred_'+i).val();
-		}
-	}
-	$('#totalExpenditureId').val(total_expenditure + +$('#additionalReqSprcId').val() + +$('#additionalReqDprcId').val());
-}
-
-function domainValidation(index){
-	var rowCountSprc=$('#sprcModalTbody tr').length;
-	var rowCountDprc=$('#dprcModalTbody tr').length * domain_list.split(',').length / 2;
-	var noOfDomainSprc=0;
-	var noOfDomainDprc=0;
-	for(var i=0;i<rowCountSprc;i++){
-		noOfDomainSprc += Number($('#noOfExpertsSprc_'+i).val()) ;
-	}
-	for(var i=0;i<rowCountDprc;i++){
-		noOfDomainDprc += Number($('#noOfExpertsDprc_'+(i)).val());
-	}
-	
-	if(!isNaN(index)){
-		if($('#noOfUnitCompleted_0').val() < noOfDomainSprc){
-			alert('Total domains experts should be equal to or less than '+ $('#noOfUnitCompleted_0').val());
-			$('#noOfExpertsSprc_'+index).val('');
-		}else if($('#noOfUnitCompleted_3').val() < noOfDomainDprc){
-			alert('Total domains experts should be equal to or less than '+ $('#noOfUnitCompleted_3').val());
-			$('#noOfExpertsDprc_'+index).val('');
-		}
-		}else{ if(index == 'noOfUnitCompleted_0' && noOfDomainSprc != 0){
-				var result= confirm("If you change Number of units you have to fill domain details.");
-				if(result){
-				if($('#noOfUnitCompleted_0').val() < noOfDomainSprc){
-					alert('No of units in SPRC should not exceed the sum of domain detail :'+ noOfDomainSprc + ' please fill the domain details again.');
-					emptyDomainDetails('sprc',rowCountSprc);
-				}
-				}else{
-					if($('#noOfUnitCompleted_0').val() < noOfDomainSprc){
-						alert('No of units in SPRC should not exceed the sum of domain detail '+ noOfDomainSprc );
-						$('#noOfUnitCompleted_0').val('');
-					}
-				}
-		}else if(index == 'noOfUnitCompleted_3' && noOfDomainDprc != 0){
-			var result= confirm("If you change Number of units you have to fill domain details.");
-			if(result){
-			if($('#noOfUnitCompleted_3').val() < noOfDomainDprc){
-				alert('No of units in DPRC should not exceed the sum of domain detail :'+ noOfDomainDprc + ' please fill the domain details again.');
-				emptyDomainDetails('dprc',rowCountDprc);
-			}
-			}else{
-				if($('#noOfUnitCompleted_3').val() < noOfDomainSprc){
-					alert('No of units in DPRC should not exceed the sum of domain detail '+ noOfDomainDprc );
-					$('#noOfUnitCompleted_3').val('');
-				}
-			}
-		  }
-		}
-}
-
-/* this function used in domainValidation function */
-function emptyDomainDetails(level,count){
-	if(level == 'sprc'){
-		for(var i=0;i<count;i++){
-			$('#noOfExpertsSprc_'+i).val('');
-		}
-	}else{
-		for(var i=0;i<count;i++){
-			$('#noOfExpertsDprc_'+i).val('');
-		}
-	}
-}
-
-function FreezeAndUnfreeze(msg){
-	var componentId=14;
-	var qprActivityId=$('#qprActivityId').val();
-	var quaterId = $('#quaterDropDownId').val();
-	document.additionalFacultyProgress.method = "post";
-	document.additionalFacultyProgress.action = "freezeAndUnfreezeReport.html?<csrf:token uri='freezeAndUnfreezeReport.html'/>&componentId="+componentId+"&qprActivityId="+qprActivityId+"&quaterId="+quaterId+"&msg="+msg;
-	document.additionalFacultyProgress.submit();
-}
-</script>
 <style>
 .Align-Right{
 	text-align: right;
@@ -241,6 +17,7 @@ function FreezeAndUnfreeze(msg){
 					</div>
 					<form:form method="post" name="additionalFacultyProgress" action="additionalfacultyProgress.html" modelAttribute="HR_SUPPORT_SPRC_DPRC_QUATER">
 					<input type="hidden" name="<csrf:token-name/>" value="<csrf:token-value uri="additionalfacultyProgress.html" />" />
+					<input type="hidden" name="qprInstInfraHrId"  value="${QPR_ACTIVITY.qprInstInfraHrId}" id="qprActivityId"/>
 					<div class="body">
 					<c:set var="count" value="0" scope="page" />
 					<div class="row clearfix">
@@ -259,6 +36,20 @@ function FreezeAndUnfreeze(msg){
 							</div>
                            </div>
                         </div>
+                        
+                        <div class="records">
+                        <div class="">
+                           <div  class="col-lg-6 sub_head Alert">
+                             (Balance Amount SPRC:${subcomponentwiseQuaterBalanceList[0].balanceAmount})
+                           </div>
+                           
+                            <div  class="col-lg-6 sub_head Alert">
+                             (Balance Amount DPRC:${subcomponentwiseQuaterBalanceList[1].balanceAmount})
+                           </div>
+                           
+                           <div class="row">
+                           <div class="col-lg-12 padding_top"></div>
+                           </div>
                         <div id="mainDivId">
 						<table class="table table-bordered">
 							<thead>
@@ -266,7 +57,7 @@ function FreezeAndUnfreeze(msg){
 									<th><div align="center">Type of Center</div></th>
 									<th><div align="center">Faculty and Staff</div></th>
 									<th><div align="center">No of Units Approved</div></th>
-									<th><div align="center">Fund Sanctioned</div></th>
+									<th><div align="center">Approved Amount</div></th>
 									<th><div align="center">No. of Unit Filled</div></th>
 								   <th><div align="center">Expenditure Incurred </div></th>
 								</tr>
@@ -293,7 +84,7 @@ function FreezeAndUnfreeze(msg){
 									<!-- ends here -->
 										
 									<input type="hidden" name="institueInfraHrActivity.instituteInfraHrActivityId" value="${CEC_APPROVED_ACTIVITY.instituteInfraHrActivityId}" /> 
-						 	 		<input type="hidden" name="qprInstInfraHrId"  value="${QPR_ACTIVITY.qprInstInfraHrId}" id="qprActivityId"/>
+
 						 	 		<input type="hidden" name="additionalFacultyProgressDetail[${count.index}].instituteInfraHrActivityType.instituteInfraHrActivityTypeId" value="${approvedActDetail.instituteInfraHrActivityType.instituteInfraHrActivityTypeId}" />
 							 		<input type="hidden" name="additionalFacultyProgressDetail[${count.index}].qprInstInfraHrDetailsId" value="${QPR_ACTIVITY.additionalFacultyProgressDetail[count.index].qprInstInfraHrDetailsId}" />
 									<tr>
@@ -320,8 +111,17 @@ function FreezeAndUnfreeze(msg){
 																	<c:otherwise>
 																	</c:otherwise>
 																</c:choose>
-															</c:if></td>
-									 				<td><form:input path="additionalFacultyProgressDetail[${count.index}].expenditureIncurred" id="expenditureIncurred_${count.index}" style="text-align: right;" class="form-control validate" value="${QPR_ACTIVITY.additionalFacultyProgressDetail[count.index].expenditureIncurred }" onkeyup="validateFundByAllocatedFund(${count.index});validateWithCorrespondingFund(${count.index});isNoOfUnitAndExpInurredFilled(${count.index});calTotalExpenditure()" readonly="${QPR_ACTIVITY.isFreeze}"/></td>
+															</c:if>
+														<span class="errormsg" id="error_noOfUnitCompleted_${count.index}"></span>	
+													</td>
+									 				<td>
+									 				<form:input path="additionalFacultyProgressDetail[${count.index}].expenditureIncurred" 
+									 				id="expenditureIncurred_${count.index}" style="text-align: right;" class="form-control validate" 
+									 				value="${QPR_ACTIVITY.additionalFacultyProgressDetail[count.index].expenditureIncurred }" 
+									 				readonly="${QPR_ACTIVITY.isFreeze}"
+									 				onblur="validate_expenditureIncurred('${subcomponentwiseQuaterBalanceList[0].balanceAmount}','${subcomponentwiseQuaterBalanceList[1].balanceAmount}','${approvedActDetail.fund}',this,'${count.index}')"/>
+									 				<span class="errormsg" id="error_expenditureIncurred_${count.index}"></span>
+									 				</td>
 											</c:when>
 											<c:otherwise>
 												<td><c:if test="${count.index ne 2 and count.index ne 5}">
@@ -345,8 +145,15 @@ function FreezeAndUnfreeze(msg){
 																	<c:otherwise>
 																	</c:otherwise>
 																</c:choose>
-															</c:if></td>
-									 				<td><input name="additionalFacultyProgressDetail[${count.index}].expenditureIncurred" id="expenditureIncurred_${count.index}" type="text" style="text-align: right;" class="form-control validate" onkeyup="validateFundByAllocatedFund(${count.index});validateWithCorrespondingFund(${count.index});isNoOfUnitAndExpInurredFilled(${count.index});calTotalExpenditure()"></td>
+															</c:if>
+															<span class="errormsg" id="error_noOfUnitCompleted_${count.index}"></span>
+															</td>
+									 				<td><input name="additionalFacultyProgressDetail[${count.index}].expenditureIncurred" 
+									 				id="expenditureIncurred_${count.index}" type="text" style="text-align: right;" 
+									 				class="form-control validate" 
+									 				onblur="validate_expenditureIncurred('${subcomponentwiseQuaterBalanceList[0].balanceAmount}','${subcomponentwiseQuaterBalanceList[1].balanceAmount}','${approvedActDetail.fund}',this,'${count.index}')">
+									 				<span class="errormsg" id="error_expenditureIncurred_${count.index}"></span>
+									 				</td>
 											</c:otherwise>
 										</c:choose>
 										
@@ -522,19 +329,19 @@ function FreezeAndUnfreeze(msg){
 							<div class="text-right">
 								<c:choose>
 									<c:when test="${QPR_ACTIVITY.isFreeze}">
-										<button type="submit" onclick="saveAndGetDataQtrRprt('save')" class="btn bg-green waves-effect" disabled="disabled">SAVE</button>
-										<button type="button" onclick="FreezeAndUnfreeze('unfreeze')"  class="btn bg-orange waves-effect">UNFREEZE</button>
+										<button type="button" onclick="saveAndGetDataQtrRprt('save')" class="btn bg-green waves-effect" disabled="disabled" id="savebtn">SAVE</button>
+										<button type="button" onclick="FreezeAndUnfreeze('unfreeze')"  class="btn bg-orange waves-effect" id="unfreezebtn">UNFREEZE</button>
 										<!-- <button type="button" onclick="onClear(this)" class="btn bg-light-blue waves-effect" disabled="disabled">CLEAR</button> -->
 									</c:when>
 									<c:otherwise>
-										<button type="submit" onclick="saveAndGetDataQtrRprt('save')" class="btn bg-green waves-effect">SAVE</button>
+										<button type="button" onclick="saveAndGetDataQtrRprt('save')" class="btn bg-green waves-effect" id="savebtn">SAVE</button>
 										<c:choose>
 											<c:when test="${DISABLE_FREEZE}">
 												<button type="button" onclick="" disabled="disabled"
-													class="btn bg-orange waves-effect">FREEZE</button>
+													class="btn bg-orange waves-effect" id="freezebtn">FREEZE</button>
 											</c:when>
 											<c:otherwise><button type="button" onclick="FreezeAndUnfreeze('freeze')"
-													class="btn bg-orange waves-effect">FREEZE</button></c:otherwise>
+													class="btn bg-orange waves-effect" id="freezebtn">FREEZE</button></c:otherwise>
 										</c:choose>
 										<!-- <button type="button" onclick="onClear(this)" class="btn bg-light-blue waves-effect">CLEAR</button> -->
 									</c:otherwise>
@@ -544,6 +351,7 @@ function FreezeAndUnfreeze(msg){
 								
 								<button type="button" onclick="onClose('home.html?<csrf:token uri='home.html'/>')" class="btn bg-red waves-effect">CLOSE</button>
 							</div>
+						</div>
 						</div>
 						</div>
 							<input type="hidden" id="qtrIdJsp3" name="qtrIdJsp3" value=""/>

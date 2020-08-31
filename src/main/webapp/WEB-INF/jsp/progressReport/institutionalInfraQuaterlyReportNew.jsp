@@ -6,10 +6,16 @@
 
 
 <style>
+
 .padding_left_local {
    padding-left: 85px !important;
  }
-
+.Align-Right{
+			text-align: right;
+}
+.Alert{
+	color: red;
+}
 </style>
 <html>
 	<section class="content">
@@ -59,7 +65,9 @@
 						<div class="records">
                         <div class="">
                            <div  class="col-lg-12 sub_head">
-                              <spring:message code="Label.NewBuilding" htmlEscape="true" />(SPRC)(Balance Amount:${subcomponentwiseQuaterBalanceList[0].balanceAmount})
+										<c:set var="sprcBalAmount"
+											value="${subcomponentwiseQuaterBalanceList[0].balanceAmount}" />
+										<spring:message code="Label.NewBuilding" htmlEscape="true" />(SPRC)(Balance Amount:${subcomponentwiseQuaterBalanceList[0].balanceAmount})
                            </div>
                            
                            <div class="row">
@@ -174,7 +182,7 @@
 								
 										
 												<input id="nbs_${sindex}" onkeypress="return isNumber(event)"  name="qprInstitutionalInfraNewSprc[${nsindex}].expenditureIncurred" value="${qprInstitutionalNewSprc.qprInstitutionalInfraNewSprc[nsindex].expenditureIncurred}" class="form-control xxx"   
-										maxlength="8" style="text-align:right;" required="required" autocomplete="off" onblur="validate_expenditureIncurred('${subcomponentwiseQuaterBalanceList[0].balanceAmount}',this)" />
+										maxlength="8" style="text-align:right;" required="required" autocomplete="off" onblur="validate_expenditureIncurred('${sprcBalAmount}',this,'${bhawanDto.totalFundApproved}')" />
 										<%-- readonly="${QPR_INSTITUTIONALINFRAQUATERLY.isFreeze} --%>
 										<span class="errormsg" id="error_nbs_${sindex}"></span>
 										
@@ -276,9 +284,9 @@
 								
 										 
 												<input id="cfs_${sindex}" onkeypress="return isNumber(event)" name="qprInstitutionalInfraNewSprc[${nsindex}].expenditureIncurred"  class="form-control"  
-										maxlength="8" style="text-align:right;" required="required" autocomplete="off" onblur="validate_expenditureIncurred('${subcomponentwiseQuaterBalanceList[2].balanceAmount}',this)" />
+										maxlength="8" style="text-align:right;" required="required" autocomplete="off" onblur="validate_expenditureIncurred('${sprcBalAmount}',this,'${bhawanDto.totalFundApproved}')" />
 										
-										<span class="errormsg" id="error_nbs_${sindex}"></span>
+										<span class="errormsg" id="error_cfs_${sindex}"></span>
 										
 									</td>
 									
@@ -694,9 +702,9 @@
 								
 										
 												<input id="nbd_${ndindex}" onkeypress="return isNumber(event)"  name="qprInstitutionalInfraNewDprc[${ndindex}].expenditureIncurred"  class="form-control xxx"  value="${qprInstitutional.qprInstitutionalInfraNewDprc[ndindex].expenditureIncurred}" 
-										maxlength="8" style="text-align:right;" required="required" autocomplete="off" onblur="validate_expenditureIncurred('${subcomponentwiseQuaterBalanceList[1].balanceAmount}',this,null)" />
+										maxlength="8" style="text-align:right;" required="required" autocomplete="off" onblur="validate_expenditureIncurred('${subcomponentwiseQuaterBalanceList[1].balanceAmount}',this,'${bhawanDto.totalFundApproved}')" />
 						
-										<span class="errormsg" id="error_cfd_${ndindex}"></span>
+										<span class="errormsg" id="error_nbd_${ndindex}"></span>
 										
 									</td>
 									<td align="left">
@@ -784,9 +792,9 @@
 								<td align="center">
 								
 												<input id="nbd_${ndindex}" onkeypress="return isNumber(event)"    class="form-control" name="qprInstitutionalInfraNewDprc[${ndindex}].expenditureIncurred" 
-										maxlength="8" style="text-align:right;" required="required" autocomplete="off" onblur="validate_expenditureIncurred('${subcomponentwiseQuaterBalanceList[1].balanceAmount}',this,null)" />
+										maxlength="8" style="text-align:right;" required="required" autocomplete="off" onblur="validate_expenditureIncurred('${subcomponentwiseQuaterBalanceList[1].balanceAmount}',this,'${bhawanDto.totalFundApproved}')" />
 										
-										<span class="errormsg" id="error_cfd_${ndindex}"></span>
+										<span class="errormsg" id="error_nbd_${ndindex}"></span>
 										
 									</td>
 									<td align="left">
@@ -802,7 +810,7 @@
 										</c:if>
 									</spring:bind> --%>
 									
-									<input type="file" id="file"  name="qprInstitutionalInfraNewDprc[ndindex].fileNode.fileNodeId"/>
+									<input type="file" id="file"  name="qprInstitutionalInfraNewDprc[${ndindex}].file"/>
 									
 									</td>
 								</tr>
@@ -973,9 +981,9 @@
 								
 										
 												<input id="cfs_${csindex}" onkeypress="return isNumber(event)"  name="qprInstitutionalInfraCarrySprc[${csindex}].expenditureIncurred" value="${qprInstitutionalCarrySprc.qprInstitutionalInfraCarrySprc[csindex].expenditureIncurred}" class="form-control xxx"   
-										maxlength="8" style="text-align:right;" required="required" autocomplete="off" onblur="validate_expenditureIncurred('${subcomponentwiseQuaterBalanceList[2].balanceAmount}',this,null)" />
+										maxlength="8" style="text-align:right;" required="required" autocomplete="off" onblur="validate_expenditureIncurred('${subcomponentwiseQuaterBalanceList[2].balanceAmount}',this,'${bhawanDto.totalFundApproved}')" />
 										<%-- readonly="${QPR_INSTITUTIONALINFRAQUATERLY.isFreeze} --%>
-										<span class="errormsg" id="error_cfs_${sindex}"></span>
+										<span class="errormsg" id="error_cfs_${csindex}"></span>
 										
 									</td>
 									<td align="left">
@@ -1073,9 +1081,9 @@
 								
 										 
 												<input id="cfs_${csindex}" onkeypress="return isNumber(event)" name="qprInstitutionalInfraCarrySprc[${csindex}].expenditureIncurred"  class="form-control"  
-										maxlength="8" style="text-align:right;" required="required" autocomplete="off" onblur="validate_expenditureIncurred('${subcomponentwiseQuaterBalanceList[2].balanceAmount}',this,null)" />
+										maxlength="8" style="text-align:right;" required="required" autocomplete="off" onblur="validate_expenditureIncurred('${subcomponentwiseQuaterBalanceList[2].balanceAmount}',this,'${bhawanDto.totalFundApproved}')" />
 										
-										<span class="errormsg" id="error_cfs_${sindex}"></span>
+										<span class="errormsg" id="error_cfs_${csindex}"></span>
 										
 									</td>
 									<td align="left">
@@ -1269,7 +1277,7 @@
 								
 										
 												<input id="cfd_${cdindex}" onkeypress="return isNumber(event)"  name="qprInstitutionalInfraCarryDprc[${cdindex}].expenditureIncurred"  class="form-control xxx"  value="${qprInstitutionalCarryDprc.qprInstitutionalInfraCarryDprc[cdindex].expenditureIncurred}" 
-										maxlength="8" style="text-align:right;" required="required" autocomplete="off" onblur="validate_expenditureIncurred('${subcomponentwiseQuaterBalanceList[3].balanceAmount}',this,null)" />
+										maxlength="8" style="text-align:right;" required="required" autocomplete="off" onblur="validate_expenditureIncurred('${subcomponentwiseQuaterBalanceList[3].balanceAmount}',this,'${bhawanDto.totalFundApproved}')" />
 						
 										<span class="errormsg" id="error_cfd_${cdindex}"></span>
 										
@@ -1359,7 +1367,7 @@
 								<td align="center">
 								
 												<input id="cfd_${cdindex}" onkeypress="return isNumber(event)"    class="form-control" name="qprInstitutionalInfraCarryDprc[${cdindex}].expenditureIncurred" 
-										maxlength="8" style="text-align:right;" required="required" autocomplete="off" onblur="validate_expenditureIncurred('${subcomponentwiseQuaterBalanceList[3].balanceAmount}',this,null)" />
+										maxlength="8" style="text-align:right;" required="required" autocomplete="off" onblur="validate_expenditureIncurred('${subcomponentwiseQuaterBalanceList[3].balanceAmount}',this,'${bhawanDto.totalFundApproved}')" />
 										
 										<span class="errormsg" id="error_cfd_${cdindex}"></span>
 										
@@ -1444,18 +1452,18 @@
 							<c:if test="${installementExist}">
 								<form:button onclick="save_data()" type="button"
 									class="btn bg-green waves-effect"
-									disabled="${QPR_INSTITUTIONALINFRAQUATERLY.isFreeze}">
+									disabled="${QPR_INSTITUTIONALINFRAQUATERLY.isFreeze}" id="savebtn">
 									<spring:message code="Label.SAVE" htmlEscape="true"/>
 								</form:button>
 								<c:choose>
 									<c:when test="${QPR_INSTITUTIONALINFRAQUATERLY.isFreeze}">
 										<form:button class="btn bg-orange waves-effect"
-											onclick="FreezeAndUnfreeze('unfreeze')">UNFREEZE</form:button>
+											onclick="FreezeAndUnfreeze('unfreeze')" id="unfreezebtn">UNFREEZE</form:button>
 									</c:when>
 									<c:otherwise>
 										<form:button class="btn bg-orange waves-effect"
 											disabled="${DISABLE_FREEZE}"
-											onclick="FreezeAndUnfreeze('freeze')">FREEZE</form:button>
+											onclick="FreezeAndUnfreeze('freeze')" id="freezebtn">FREEZE</form:button>
 									</c:otherwise>
 								</c:choose>
 								<%-- <form:button type="button"

@@ -600,14 +600,30 @@ $scope.institutionalInfraActivityPlan.institutionalInfraActivityPlanDetails[inde
 		if(saveStatus){
 			$scope.institutionalInfraActivityPlan.isFreeze=false;
 			if(status=='F'){
-				$scope.institutionalInfraActivityPlan.isFreeze=true;
+				if($scope.grandTotal!=null && $scope.grandTotal!=undefined && $scope.grandTotal>0)
+					{
+					$scope.institutionalInfraActivityPlan.isFreeze=true;
+					}
+				else{
+					$scope.institutionalInfraActivityPlan.isFreeze=false;
+					$scope.btn_disabled=false;
+					toastr.error("Fund value should not be blank or zero.");
+				}
+				
 			}
+			if($scope.grandTotal!=null && $scope.grandTotal!=undefined && $scope.grandTotal>0){
 			institutionalInfraActivityPlanService.saveInstitutionalInfraActivityPlanDetailsMOPRCEC($scope.institutionalInfraActivityPlan).then(function(response){
+				$scope.btn_disabled=true;
 				toastr.success("Plan Saved Successfully");
 					load_data();
 			},function(error){
 				toastr.error("Something went wrong");
 			});	
+			}
+			else{
+				$scope.btn_disabled=false;
+				toastr.error("Fund value should not be blank or zero.");
+			}
 		}else{
 			toastr.error("Fund value should not be blank or zero.");
 		}

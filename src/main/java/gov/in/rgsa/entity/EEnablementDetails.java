@@ -16,7 +16,7 @@ import javax.persistence.Table;
 @Entity	
 @Table(name="e_enablement_details" , schema="rgsa")
 @NamedQueries({
-	@NamedQuery(name="FETCH_ALL_EENABLEMENT_DETAILS_EXCEPT_CURRENT_VERSION",query = "from EEnablementDetails where eEnablement.stateCode=:stateCode and eEnablement.versionNo !=:versionNo and  eEnablement.userType in('S','M') order by eEnablementDetailId"),
+	@NamedQuery(name="FETCH_ALL_EENABLEMENT_DETAILS_EXCEPT_CURRENT_VERSION",query = "from EEnablementDetails where eEnablement.stateCode=:stateCode and eEnablement.versionNo !=:versionNo and eEnablement.yearId=:yearId and  eEnablement.userType in('S','M') order by eEnablementDetailId"),
 	@NamedQuery(name="FETCH_ENABLEMENT_DETAILS",query="select EE FROM EEnablementDetails EE where eEnablement.eEnablementId=:eEnablementId")
 })
 

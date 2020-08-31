@@ -18,7 +18,7 @@ import javax.persistence.Transient;
 @Entity
 @Table(name="admin_financial_data_cell_activity_details",schema="rgsa")
 @NamedQueries({
-	@NamedQuery(name="FETCH_ALL_ADMIN_ACTIVITY_DETAILS_EXCEPT_CURRENT_VERSION",query="from AdminFinancialDataCellActivityDetails where adminAndFinancialDataActivity.stateCode=:stateCode and adminAndFinancialDataActivity.versionNo !=:versionNo and adminAndFinancialDataActivity.userType in('S','M') order by adminFinancialDataActivityDetailId"),
+	@NamedQuery(name="FETCH_ALL_ADMIN_ACTIVITY_DETAILS_EXCEPT_CURRENT_VERSION",query="from AdminFinancialDataCellActivityDetails where adminAndFinancialDataActivity.stateCode=:stateCode and adminAndFinancialDataActivity.versionNo !=:versionNo  and adminAndFinancialDataActivity.yearId =:yearId and  adminAndFinancialDataActivity.userType in('S','M') order by adminFinancialDataActivityDetailId"),
 	@NamedQuery(name="FETCH_ADMIN_FIN_DATA_DETAILS",query="select AD from AdminFinancialDataCellActivityDetails AD where adminAndFinancialDataActivity.adminFinancialDataActivityId=:adminFinancialDataActivityId order by adminFinancialDataActivityDetailId")
 })
 

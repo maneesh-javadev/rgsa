@@ -1,6 +1,54 @@
 <%@include file="../taglib/taglib.jsp"%>
 <script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/eGovernance/e-Governance.js"></script>
 <script type="text/javascript">
+function save_data(){
+	disableButton(true);
+	if($('#districtSupportedId').val()!='' && $('#districtSupportedId').val()!=null && $('#districtSupportedId').val()!='undefined' && $('#districtSupportedId').val()>0)
+		{
+		if($('#total_fund_dpmu').val()!=0 && $('#total_fund_dpmu').val()!='undefined' && $('#total_fund_dpmu').val()!='')
+			{
+			document.egovernance.method = "post";
+			document.egovernance.action = "egovernancesupportgroup.html?<csrf:token uri='egovernancesupportgroup.html'/>";
+			document.egovernance.submit();
+			}
+		else
+		{
+		disableButton(false);
+		alert("Fund can not be 0 or blank");
+		}
+		}
+	else{
+	if($('#total_fund_spmu').val()!=0 && $('#total_fund_spmu').val()!='undefined' && $('#total_fund_spmu').val()!='')
+	{
+	 	document.egovernance.method = "post";
+		document.egovernance.action = "egovernancesupportgroup.html?<csrf:token uri='egovernancesupportgroup.html'/>";
+		document.egovernance.submit();
+	}
+	else
+	{
+	disableButton(false);
+	alert("Fund can not be 0 or blank");
+	}
+	}
+	
+}
+
+function disableButton(isDisabled){
+	if(isDisabled){
+		$('#saveId').prop('disabled',true);
+		$('#freezeId').prop('disabled',true);
+		$('#unfreezeId').prop('disabled',true);
+	}else{
+		$('#saveId').prop('disabled',false);
+		$('#freezeId').prop('disabled',false);
+		$('#unfreezeId').prop('disabled',false);
+	}
+	
+}
+
+
+
+
 $('documnet').ready(function(){
 	changeColor();
 });
@@ -145,7 +193,7 @@ function changeColor() {
 														<td>
 														<div align="center" style="margin-top: 20px;"><strong>${eGovActivityForMOPR.eGovSupportActivityDetails[index.index].months}</strong></div>
 														<form:hidden path="eGovSupportActivityDetails[${index.index}].months"
-																value="${eGovActivityForState.eGovSupportActivityDetails[index.index].months}" 
+																value="${eGovActivityForMOPR.eGovSupportActivityDetails[index.index].months}" 
 																id="monthId_${index.index}" /></td>
 														<td>
 														<div align="center" id="unitCostMoprId_${index.index}"><strong>${eGovActivityForMOPR.eGovSupportActivityDetails[index.index].unitCost}</strong></div>
@@ -403,7 +451,7 @@ function changeColor() {
 									<div class="text-right">
 										<c:if test="${eGovActivity.status eq false || empty eGovActivity.status}">
 									  
-											<button type="submit" class="btn bg-green waves-effect" id="saveId" onclick="validateMonth(${index.index});">
+											<button type="button" class="btn bg-green waves-effect" id="saveId" onclick="save_data()" onclick="validateMonth(${index.index});">
 											<spring:message code="Label.SAVE" htmlEscape="true" /></button>
 											<c:choose>
 											<c:when test="${initial_status}"><button type="button" onclick='freezeAndUnfreeze("freeze")' id="freezeId" class="btn bg-green waves-effect" disabled="disabled"><spring:message code="Label.FREEZE" htmlEscape="true" /></button></c:when>

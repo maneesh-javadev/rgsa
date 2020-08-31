@@ -22,6 +22,12 @@ workLocation.service('workLocationService', [ '$http', function($http) {
 		return $http.get("fetchFinalizeWorkLocationGPs.html?<csrf:token uri=fetchFinalizeWorkLocationGPs.htm/>&activityDetailsId="+activityDetailsId);
 	};
 	
-	
+	this.freezeUnfreezeFinalizeLocation= function(finalizeFreezeStatus) {
+		return $http.post("freezeUnfreezeFinalizeWorkLocation.html?<csrf:token uri=freezeUnfreezeFinalizeWorkLocation.htm/>",finalizeFreezeStatus);
+		};
+		
+	this.loadFreezeUnfreezeData= function(finalizeFreezeStatus) {
+			return $http.post("loadFreezeUnfreezeFinalizeWorkLocation.html?<csrf:token uri=loadFreezeUnfreezeFinalizeWorkLocation.htm/>",finalizeFreezeStatus);
+	};	
 		
 }]);

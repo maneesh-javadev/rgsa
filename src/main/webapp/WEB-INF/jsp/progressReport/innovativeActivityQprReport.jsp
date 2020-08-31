@@ -1,110 +1,16 @@
 <%@include file="../taglib/taglib.jsp"%>
-<script>
-var quater_id = '${QTR_ID}';
-var remaining_add_req = '${REMAINING_ADD_REQ}';
-var qtr_1_2_filled='${QTR_ONE_TWO_FILLED}';
-var fund_allocated_by_state='${FUND_ALLOCATED_BY_STATE}';
-var fund_used='${FUND_USED_IN_OTHER_QUATOR}';
-if(quater_id > 2){
-	var fund_allocated_in_pre_qtr = '${FUND_ALLOCATED_BY_STATE_PREVIOUS}';
-	var fund_used_in_qtr_1_and_2 = '${TOTAL_FUND_USED_IN_QTR_1_AND_2}';
+<%@include file="innovativeActivityQprReportJs.jsp"%>
+<style>
+.padding_left_local {
+   padding-left: 85px !important;
+ }
+.Align-Right{
+			text-align: right;
 }
-$('document').ready(function(){
-	if(qtr_1_2_filled == "false"){
-		alert('Please fill the quater 1 and 2 progress report first.');
-	}
-	$('#quaterDropDownId').val(quater_id);
-	showTablediv();
-	calTotalExpenditure();
-	$(".validate").keypress(function (e) {
-	    //if the letter is not digit then display error and don't type anything
-	    if (e.which != 8 && e.which != 0 && (e.which < 48 || e.which > 57)) {
-	       //display error message
-	       $("#errmsg").html("Digits Only").show().fadeOut("slow");
-	              return false;
-	   }
-	  });
-});
-
-function showTablediv(){
-	if($('#quaterDropDownId').val() > 0){
-		$('#mainDivId').show();
-	}else{
-		$('#mainDivId').hide();
-	}
+.Alert{
+	color: red;
 }
-
-function saveAndGetDataQtrRprt(msg){
-	$('#quaterTransient').val($('#quaterDropDownId').val()); 
-	 $('#origin').val(msg);
- 	document.innovativeActivity.method = "post";
-	document.innovativeActivity.action = "innovativeActivityQpr.html?<csrf:token uri='innovativeActivityQpr.html'/>";
-	document.innovativeActivity.submit(); 
-}
-
-function validateFundByAllocatedFund(obj){
-	var noOfRows=$("#tbodyId tr").length-1;
-	var fund_allocated_by_state_local = +fund_allocated_by_state;
-	var fund_used_local= +fund_used;
-	var total=0;
-	
-	if(quater_id > 2){
-		fund_allocated_by_state_local += +(fund_allocated_in_pre_qtr - fund_used_in_qtr_1_and_2);
-	}
-	if(fund_used !=0){
-		fund_allocated_by_state_local -=  +fund_used_local;
-	}
-	for (var index = 0; index < noOfRows; index++) {
-		total +=  +$('#expenditureIncurred_'+index).val();
-	}
-	if(total > fund_allocated_by_state_local){
-		if(fund_used != 0){
-			alert('Total expenditure should not exceed total remaining for this component which is Rs. '+ (fund_allocated_by_state_local - (total - $('#expenditureIncurred_'+obj).val())));
-		}else{
-			alert('Total expenditure should not exceed total fund allocted by state for this component which is Rs. '+ (fund_allocated_by_state_local - (total - $('#expenditureIncurred_'+obj).val())));
-		}
-		$('#expenditureIncurred_'+obj).val('');
-	}
-}
-
-function validateAddReq(){
-	if(+$('#additionalReqId').val() > +remaining_add_req){
-		alert('Additional requirementshould not exceed : ' + remaining_add_req);
-		$('#additionalReqId').val('');
-		$('#additionalReqId').focus();
-	}
-}
-
-function validateWithCorrespondingFund(index){
-	var tota_fund_cec= +$('#fundCecId_'+index).text();	
-	var total_corresponding_fund_remaining = tota_fund_cec - $('#totalExpenditureIncurred_'+index).val();
-	if($('#expenditureIncurred_'+index).val() > total_corresponding_fund_remaining){
-		alert('total expenditure should not exceed '+ total_corresponding_fund_remaining);
-		$('#expenditureIncurred_'+index).val('');
-		$('#expenditureIncurred_'+index).focus();
-	}
-}
-
-function calTotalExpenditure(){
-	var rowCount=$('#tbodyId tr').length -2;
-	var total_expenditure=0;
-	for( var i=0;i < rowCount; i++){
-		if($('#expenditureIncurred_'+i).val() != null && $('#expenditureIncurred_'+i).val() != undefined){
-			total_expenditure += +$('#expenditureIncurred_'+i).val();
-		}
-	}
-	$('#totalExpenditureId').val(total_expenditure + +$('#additionalReqId').val());
-}
-
-function FreezeAndUnfreeze(msg){
-	var componentId=9;
-	var qprActivityId=$('#qprActivityId').val();
-	var quaterId = $('#quaterDropDownId').val();
-	document.innovativeActivity.method = "post";
-	document.innovativeActivity.action = "freezeAndUnfreezeReport.html?<csrf:token uri='freezeAndUnfreezeReport.html'/>&componentId="+componentId+"&qprActivityId="+qprActivityId+"&quaterId="+quaterId+"&msg="+msg;
-	document.innovativeActivity.submit();
-}
-</script>
+</style>
 <section class="content">
 	<div class="container-fluid">
 		<div class="row clearfix">
@@ -138,6 +44,17 @@ function FreezeAndUnfreeze(msg){
 										</div>
 									</div>
 								</div>
+								
+								
+					<div class="records">
+                        <div class="">
+                           <div  class="col-lg-12 sub_head Alert">
+                             (Balance Amount:${subcomponentwiseQuaterBalanceList[0].balanceAmount})
+                           </div>
+                           
+                           <div class="row">
+                           <div class="col-lg-12 padding_top"></div>
+                           </div>
 								<div id="mainDivId">
 									<div class="table-responsive">
 										<table class="table table-bordered table-hover">
@@ -145,7 +62,7 @@ function FreezeAndUnfreeze(msg){
 												<tr>
 													<th><div align="center">S.No.</div></th>
 													<th><div align="center">Name of Activity</div></th>
-													<th><div align="center">Fund Proposed</div></th>
+													<th><div align="center">Approved Amount</div></th>
 													<th><div align="center">Expenditure Incurred</div></th>
 												</tr>
 											</thead>
@@ -172,13 +89,24 @@ function FreezeAndUnfreeze(msg){
 													<td><div align="center">
 													<c:choose>
 														<c:when test="${not empty QPR_INNOVATIVE_ACTIVITY}">
-															<form:input class="form-control validate Align-Right" path="qprInnovativeActivityDetails[${index.index}].expenditureIncurred" id="expenditureIncurred_${index.index}" value="${QPR_INNOVATIVE_ACTIVITY.qprInnovativeActivityDetails[index.index].expenditureIncurred}" onkeyup="validateFundByAllocatedFund(${index.index});validateWithCorrespondingFund(${index.index });calTotalExpenditure()" readonly="${QPR_INNOVATIVE_ACTIVITY.isFreeze}"/>
+															<form:input class="form-control validate Align-Right" 
+															path="qprInnovativeActivityDetails[${index.index}].expenditureIncurred" 
+															id="expenditureIncurred_${index.index}" 
+															value="${QPR_INNOVATIVE_ACTIVITY.qprInnovativeActivityDetails[index.index].expenditureIncurred}" 
+															onkeyup="validateFundByAllocatedFund(${index.index});validateWithCorrespondingFund(${index.index });calTotalExpenditure()" readonly="${QPR_INNOVATIVE_ACTIVITY.isFreeze}"
+															onblur="validate_expenditureIncurred('${subcomponentwiseQuaterBalanceList[0].balanceAmount}',this)"/>
 														</c:when>
 														<c:otherwise>
-															<input type="text" class="form-control validate Align-Right" name="qprInnovativeActivityDetails[${index.index}].expenditureIncurred" id="expenditureIncurred_${index.index}" onkeyup="validateFundByAllocatedFund(${index.index});validateWithCorrespondingFund(${index.index});calTotalExpenditure()"/>
+															<input type="text" class="form-control validate Align-Right" 
+															name="qprInnovativeActivityDetails[${index.index}].expenditureIncurred" 
+															id="expenditureIncurred_${index.index}" 
+															onkeyup="validateFundByAllocatedFund(${index.index});validateWithCorrespondingFund(${index.index});calTotalExpenditure()"
+															onblur="validate_expenditureIncurred('${subcomponentwiseQuaterBalanceList[0].balanceAmount}',this)"/>
 														</c:otherwise>
 													</c:choose>
-													</div></td>
+													</div>
+													<span class="errormsg" id="error_expenditureIncurred_${index.index}"></span>
+													</td>
 												</tr>
 												<!-- HIDDEN FIELDS -->
 													<input type="hidden" name="qprInnovativeActivityDetails[${index.index}].qprIaDetailsId" value="${QPR_INNOVATIVE_ACTIVITY.qprInnovativeActivityDetails[index.index].qprIaDetailsId}" />
@@ -199,16 +127,16 @@ function FreezeAndUnfreeze(msg){
 									</div>
 									<div class="form-group text-right" style="padding-right: 10px;">
 										<form:button onclick="saveAndGetDataQtrRprt('save')" id="saveButtn"
-											class="btn bg-green waves-effect" disabled="${QPR_INNOVATIVE_ACTIVITY.isFreeze}">SAVE</form:button>
+											class="btn bg-green waves-effect" disabled="${QPR_INNOVATIVE_ACTIVITY.isFreeze}" id="savebtn">SAVE</form:button>
 										<c:choose>
 											<c:when test="${QPR_INNOVATIVE_ACTIVITY.isFreeze}">
 												<form:button class="btn bg-orange waves-effect"
-													onclick="FreezeAndUnfreeze('unfreeze')">UNFREEZE</form:button>
+													onclick="FreezeAndUnfreeze('unfreeze')" id="unfreezebtn">UNFREEZE</form:button>
 											</c:when>
 											<c:otherwise>
 												<form:button class="btn bg-orange waves-effect"
 													disabled="${DISABLE_FREEZE}"
-													onclick="FreezeAndUnfreeze('freeze')">FREEZE</form:button>
+													onclick="FreezeAndUnfreeze('freeze')" id="freezebtn">FREEZE</form:button>
 											</c:otherwise>
 										</c:choose>	
 										<%-- <form:button id="clearButtn" onclick="onClear(this)"
@@ -218,6 +146,9 @@ function FreezeAndUnfreeze(msg){
 											class="btn bg-red waves-effect">CLOSE</form:button>
 									</div>
 								</div>
+								</div>
+							</div>
+								
 							</div>
 							<!-- HIDDEN FIELDS -->
 							<input type="hidden" id="quaterTransient" name="qtrId" />

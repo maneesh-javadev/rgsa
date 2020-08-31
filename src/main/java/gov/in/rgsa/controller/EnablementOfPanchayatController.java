@@ -27,6 +27,7 @@ import gov.in.rgsa.model.EnablementOfPanchayatModel;
 import gov.in.rgsa.model.Response;
 import gov.in.rgsa.service.BasicInfoService;
 import gov.in.rgsa.service.EEnablementOfPanchayatService;
+import gov.in.rgsa.service.PanchayatBhawanService;
 import gov.in.rgsa.user.preference.UserPreference;
 import gov.in.rgsa.utils.Message;
 
@@ -40,15 +41,17 @@ public class EnablementOfPanchayatController {
 	
 	@Autowired
 	private UserPreference userPreference;
+	
+	@Autowired
+	private PanchayatBhawanService panchayatBhawanService;
 
 	private static final String ENABLE_PANCHAYAT = "enablePanchayat";
 	private static final String REDIRECT_ENABLE_PANCHAYAT = "redirect:enablepanchayat.html";
 	private static final String ENABLE_PANCHAYAT_GPs = "enablePanchayatGPs";
 	public static final String REDIRECT_BAISC_INFO_DETAILS = "redirect:basicinfo.add.html";
 	public static final String REDIRECT_MODIFY_BAISC_INFO_DETAILS = "redirect:managebasicInfoDetails.html";
-          private static final String ENABLEMENT_CEC = "enablementCEC";
-
-
+    private static final String ENABLEMENT_CEC = "enablementCEC";
+    public static final String FUND_ERROR_KEY = "Fund can not be 0 or blank";
 
 
  
@@ -122,8 +125,11 @@ public class EnablementOfPanchayatController {
 	}	
 	
 	@RequestMapping(value="enablepanchayat",method = RequestMethod.POST)
-	private String eEnablementPost(@ModelAttribute("ENABLEMENT_OF_PANCHAYAT_MODEL") EEnablement enablement ,RedirectAttributes re)
+	private String eEnablementPost(@ModelAttribute("ENABLEMENT_OF_PANCHAYAT_MODEL") EEnablement enablement ,HttpServletRequest req,RedirectAttributes re)
 	{
+		String totalFund=req.getParameter("grandTotalId");
+		if(totalFund!=null && !totalFund.isEmpty() && Integer.parseInt(totalFund)!=0)
+		{
 		enablementOfPanchayatService.saveEEnablement(enablement);
 		if(enablement.getStatus().equals("f")){
 			re.addFlashAttribute(Message.SUCCESS_KEY,Message.FRIZEE_SUCESS);	
@@ -131,6 +137,11 @@ public class EnablementOfPanchayatController {
 			re.addFlashAttribute(Message.SUCCESS_KEY, Message.SAVE_SUCCESS);
 		}else{
 			re.addFlashAttribute(Message.SUCCESS_KEY, Message.UNFRIZEE_SUCESS);
+		}
+		}
+		else
+		{
+			re.addFlashAttribute(Message.ERROR_KEY, FUND_ERROR_KEY);
 		}
 		return REDIRECT_ENABLE_PANCHAYAT;
 	}
@@ -141,8 +152,9 @@ public class EnablementOfPanchayatController {
 	}
 	
 	@RequestMapping(value="enablepanchayatfinalizeWorkLocation",method=RequestMethod.GET)
-	private String epanchayatfinalizeWorkLocation()
+	private String epanchayatfinalizeWorkLocation(Model model)
 	{
+		model.addAttribute("isQPRDataExist",panchayatBhawanService.validateFinalizeWorklocationBasedonQPR('E'));
 		return ENABLE_PANCHAYAT_GPs;
 	}
 	
@@ -165,6 +177,18 @@ public class EnablementOfPanchayatController {
 	private @ResponseBody List<EEnablemenEntity> fetchEEnablemenEntityListCEC() {
 		  return enablementOfPanchayatService.fetchEEnablemenEntityDetailsCEC();
 	}
+	
+	
+	@RequestMapping(value = "fetchEEnablemenCEC", method = RequestMethod.GET)
+	private @ResponseBody Integer fetchEEnablemenCEC() {
+		List<EEnablement> enablementList=enablementOfPanchayatService.fetchEnablement('C');
+		Integer enablementId=null;
+		if(enablementList!=null && !enablementList.isEmpty()) {
+			enablementId=enablementList.get(0).geteEnablementId();
+		}
+		return enablementId;
+	}
+	
 	
 }
 

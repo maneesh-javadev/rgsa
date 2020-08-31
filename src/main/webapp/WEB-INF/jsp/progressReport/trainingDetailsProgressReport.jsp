@@ -136,8 +136,9 @@
 								<td align="left"><strong>${obj.trainingVenueLevelName}</strong></td>
 								<td align="left" id="noOfParticipants_${count.index}"><strong>${obj.noOfParticipants}</strong></td>
 								<td align="left"><strong>${obj.funds}</strong></td>
-								<td><input type="text" class="form-control Align-Right" id="totalParticipantsId_${count.index}" disabled="disabled" value="${QPR_TRAINING_DETAILS.quarterTrainingsDetailsList[count.index].totalParticipantsEnter}">
-									<button type="button" class="btn btn-lg btn-success" style="margin-top: 5px;" onclick="openModel(${count.index},${QPR_TRAINING_DETAILS.quarterTrainingsDetailsList[count.index].qprTrainingsDetailsId});" data-toggle="modal">Fill Details</button>	
+								<td><input type="text" class="form-control Align-Right" id="totalParticipantsId_${count.index}" disabled="disabled" value="${QPR_TRAINING_DETAILS.quarterTrainingsDetailsList[count.index].totalParticipantsEnter}" />
+									<button type="button" class="btn btn-lg btn-success" style="margin-top: 5px;" onclick="openModel(${count.index},${QPR_TRAINING_DETAILS.quarterTrainingsDetailsList[count.index].qprTrainingsDetailsId});" data-toggle="modal">Fill Details</button>
+									<span class="errormsg" id="error_totalParticipantsId_${count.index}"></span>	
 								</td>
 								<td align="left">
 								
@@ -214,6 +215,7 @@
 									</td>
 									<td>
 										<input type="text" id="total" class="form-control"  style="text-align:right;" readonly="readonly"/>
+										<span class="errormsg" id="error_total"></span>
 									</td>
 								</tr>
                               </tbody>
@@ -274,19 +276,19 @@
                      <div class="form-group text-right">
 						<c:if test="${installementExist}">
 						<c:if test="${QPR_TRAINING_DETAILS.isFreeze eq false || QPR_TRAINING_DETAILS.isFreeze eq null}">
-							<button onclick="save_data('mainSsave')" type="button"
-								class="btn bg-green waves-effect">
+							<button onclick="save_data('mainSsave')" type="button" id="savebtn"
+								class="btn bg-green waves-effect" >
 								<spring:message code="Label.SAVE" htmlEscape="true" />
 							</button></c:if>
 							<c:choose>
 								<c:when test="${QPR_TRAINING_DETAILS.isFreeze}">
-									<form:button class="btn bg-orange waves-effect"
-										onclick="FreezeAndUnfreeze('unfreeze')">UNFREEZE</form:button>
+									<button class="btn bg-orange waves-effect" type="button" id="unfreezebtn"
+										onclick="FreezeAndUnfreeze('unfreeze')">UNFREEZE</button>
 								</c:when>
 								<c:otherwise>
-									<form:button class="btn bg-orange waves-effect"
-										disabled="${DISABLE_FREEZE}"
-										onclick="FreezeAndUnfreeze('freeze')">FREEZE</form:button>
+									<button class="btn bg-orange waves-effect" type="button" id="freezebtn"
+										<%-- disabled="${DISABLE_FREEZE}" --%>
+										onclick="FreezeAndUnfreeze('freeze')">FREEZE</button>
 								</c:otherwise>
 							</c:choose>
 							<%-- <button type="button"
@@ -440,12 +442,29 @@ function calTotalParticipantsFilled(){
 }
 
 function FreezeAndUnfreeze(msg){
-	var componentId=1;
-	var qprActivityId=$('#qprActivityId').val();
-	var quaterId = $('#qtrId').val();
-	document.quarterTrainings.method = "post";
-	document.quarterTrainings.action = "freezeAndUnfreezeReport.html?<csrf:token uri='freezeAndUnfreezeReport.html'/>&componentId="+componentId+"&qprActivityId="+qprActivityId+"&quaterId="+quaterId+"&msg="+msg;
-	document.quarterTrainings.submit();
+	//alert(msg);
+	if(msg=="freeze"){
+		var validateFlag=validate_data();
+		if(validateFlag){
+			disabled_button();
+			var componentId=1;
+			var qprActivityId=$('#qprActivityId').val();
+			var quaterId = $('#qtrId').val();
+			document.quarterTrainings.method = "post";
+			document.quarterTrainings.action = "freezeAndUnfreezeReport.html?<csrf:token uri='freezeAndUnfreezeReport.html'/>&componentId="+componentId+"&qprActivityId="+qprActivityId+"&quaterId="+quaterId+"&msg="+msg;
+			document.quarterTrainings.submit();
+		}
+		
+	}else{
+		disabled_button();
+		var componentId=1;
+		var qprActivityId=$('#qprActivityId').val();
+		var quaterId = $('#qtrId').val();
+		document.quarterTrainings.method = "post";
+		document.quarterTrainings.action = "freezeAndUnfreezeReport.html?<csrf:token uri='freezeAndUnfreezeReport.html'/>&componentId="+componentId+"&qprActivityId="+qprActivityId+"&quaterId="+quaterId+"&msg="+msg;
+		document.quarterTrainings.submit();
+	}
+	
 }
 
 function isNumber(evt) {

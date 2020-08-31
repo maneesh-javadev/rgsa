@@ -24,6 +24,9 @@ public class PesaPlanQuarterly {
 
 	private static final String Pesa_Plan_Quarterly ="pesaPlanQuaterly";
 	
+	private static final String Pesa_Plan_Quarterly_Without_Quater ="approvepesaPlanQuaterlyWithoutQuater";
+	private static final String NO_FUND_ALLOCATED_JSP = "noFundAlloctedJsp";
+	
 	@Autowired
 	private ProgressReportService progressReportService;
 
@@ -87,4 +90,25 @@ public class PesaPlanQuarterly {
 		pesaQtlService.unFreeze(qprQuartReply);
 		return getQuartExp(qprQuartReply.getQuarterId());
 	}
+	
+	/*---------------------------------------------------------------------------------------------------------------
+	 *    Sushma 11June2020  QPR Form Without Quarter 
+	 ------------------------------------------------------------------------------------------------------
+	 */
+	 @RequestMapping(value="pesaPlanQuaterlyWithoutQuarter" , method=RequestMethod.GET)
+		public String qprGetFormpesaPlanQuarterlyWithoutQuater(@ModelAttribute("approvepesaPlanQuaterlyWithoutQuater") ExtentOfCoverage extentOfCoverage, Model model) {		
+	   
+		  int installmentNo =1;
+		    List<StateAllocation> stateAllocation = progressReportService.fetchStateAllocationData(6,installmentNo,progressReportService.getCurrentPlanCode());
+		    if(stateAllocation!=null && !stateAllocation.isEmpty()) {
+		    return Pesa_Plan_Quarterly_Without_Quater;
+		    }
+		    else {
+			    return NO_FUND_ALLOCATED_JSP;
+			    }
+	       }
+	 /*---------------------------------------------------------------------------------------------------------------
+		 *    Sushma 11June2020  QPR Form Without Quarter END
+		 ------------------------------------------------------------------------------------------------------
+		 */
 }

@@ -25,7 +25,7 @@ var finalDetailArr=[];
 				
 				$("#supportStaff,#fundsName").each(function () {
 					var get_textbox_value = $(this).val();
-					if ($.isNumeric(get_textbox_value)) {
+					 if ($.isNumeric(get_textbox_value)) {
 						if(calculated_total_sum + parseFloat(get_textbox_value) > 100000000){
 							alert("Total fund value cannot be greater than 10 Crore");
 							$(this).val("");
@@ -39,17 +39,14 @@ var finalDetailArr=[];
 						 $(this).val("");
 						 $("#subTotal").val();
 						 return false;
-					}
-					
-					/* if(calculated_total_sum >= 100000000){
+					} 
+					if(calculated_total_sum >= 100000000){
 						 alert("Total fund value should be equal to 10 Crore than Additional Requirements should be 0."); 
 						 document.getElementById("additioinalRequirements").value = "";
-						/*  $(this).val("");
-						 $("#subTotal").val(""); */
-						/*  return true; */
-					/*} */
-					
-					else{
+						  $(this).val("");
+						 $("#subTotal").val("");
+						  return true; 
+					} else{
 						
 						$("#subTotal").val(calculated_total_sum);
 						if(calculated_total_sum == 100000000){
@@ -129,7 +126,7 @@ function addRow() {
 	var i = rowCount-3;
 	var tds = '<tr>';
 		 tds+='<td><input type = "text" name="innovativeActivityDetails['+i+'].activityName" id="activityNameId" Class="form-control letters" required="required" placeholder="Enter Activity Name" maxlength="200"/></td>';
-		 tds+='<td><input  type="text" oninput="validity.valid||(value="");" onKeyPress="if(this.value.length==7) return false;" id="fundsName" name="innovativeActivityDetails['+i+'].fundsName"  Class="form-control Align-Right numbers" required="required" placeholder="Enter Funds"  maxlength="12"/></td>';
+		 tds+='<td><input  type="text" oninput="validity.valid||(value="");"  id="fundsName" name="innovativeActivityDetails['+i+'].fundsName"  Class="form-control Align-Right numbers" required="required" placeholder="Enter Funds"  maxlength="12"/></td>';
 		 tds+='<td><input type = "text" name="innovativeActivityDetails['+i+'].aboutActivity"  Class="form-control alphaonly" required="required" placeholder="Enter Brief About Activity"  maxlength="250"/></td>';
 		 tds+='<td><select required="required" class="form-control" id="yearOne_'+i+'" onchange="validateYear('+i+');"  name="innovativeActivityDetails['+i+'].yearFrom"><option value=""> From Year</option><option value="2018">2018</option><option value="2019">2019</option><option value="2020">2020</option><option value="2021">2021</option><option value="2022">2022</option></select></td>';
 		 tds+='<td><select required="required" class="form-control" id="yearTwo_'+i+'" onchange="validateYear('+i+');" name="innovativeActivityDetails['+i+'].yearTo"><option value=""> To Year </option><option value="2018">2018</option><option value="2019">2019</option><option value="2020">2020</option><option value="2021">2021</option><option value="2022">2022</option></select></td>';
@@ -211,6 +208,11 @@ function toDelete(idToDelete,path,name){
 
 
 function saveSubmit(){
+	var gt=0;
+	gt=document.getElementById("grandTotal").value;
+	if(gt!=0)
+		{
+	$("#save").prop('disabled', true);
 	 $.each( delTrainingIdArr, function( index, value ) {
 	    	fname=deleteFile.get(value);
 	    	finalDetailArr.push(value+"@"+fname);
@@ -224,9 +226,19 @@ function saveSubmit(){
 	 document.innovativeActivity.method = "post";
 	document.innovativeActivity.action = "innovativeActivityDetails.html?<csrf:token uri='innovativeActivity.html'/>";
 	document.innovativeActivity.submit(); 
-}
+	$("#save").prop('disabled', false);
+		}
+   else
+ {
+ alert("Fund value should not be blank or 0");
+ }
+ }
 
 function freezUnfreez(obj){
+	var gt=0;
+	gt=document.getElementById("grandTotal").value;
+	if(gt!=0)
+		{
 	$("select").prop('disabled', false);
 	$("input").prop('disabled', false);
 	$('#file').attr('disabled',false);
@@ -234,7 +246,13 @@ function freezUnfreez(obj){
 	document.innovativeActivity.method = "post";
 	document.innovativeActivity.action = "freezUnfreez.html?<csrf:token uri='freezUnfreez.html'/>";
 	document.innovativeActivity.submit();
+		}
+	   else
+	 {
+	 alert("Fund value should not be blank or 0");
+	 }
 }
+
 
 function validate(){
 	 var adtnlRqrmnt = parseFloat(document.getElementById("additioinalRequirements").value);
@@ -380,7 +398,7 @@ function validateYear(index){
 									<tr id="newRow">
 										<td><input type="text" name="innovativeActivityDetails[${count.index}].activityName" id="activityNameId" value="${innovativeActivityDetails.activityName}" onkeyup="this.value=this.value.replace(/[^a-zA-Z ]/,'');" Class="form-control usrType delete${innovativeActivityDetails.id}" maxlength="200" placeholder="Enter Activity Name"/></td>
 										 <c:set var="totalFundToCalc" value="${totalFundToCalc + innovativeActivityDetails.fundsName}"></c:set> 
-										<td><input type="text"  oninput="validity.valid||(value='');" onKeyPress="if(this.value.length==8) return false;" min="0" id="fundsName" name="innovativeActivityDetails[${count.index}].fundsName" value="${innovativeActivityDetails.fundsName}" onkeyup="this.value=this.value.replace(/[^0-9]/g,'');" Class="form-control Align-Right delete${innovativeActivityDetails.id}"  maxlength="12" placeholder="Enter Funds"/></td>
+										<td><input type="text"  oninput="validity.valid||(value='');" min="0" id="fundsName" name="innovativeActivityDetails[${count.index}].fundsName" value="${innovativeActivityDetails.fundsName}" onkeyup="this.value=this.value.replace(/[^0-9]/g,'');" Class="form-control Align-Right delete${innovativeActivityDetails.id}"  placeholder="Enter Funds"/></td>
 										<td><input type = "text" name="innovativeActivityDetails[${count.index}].aboutActivity" value="${innovativeActivityDetails.aboutActivity}" Class="form-control usrType delete${innovativeActivityDetails.id}" onkeyup="this.value=this.value.replace(/[^a-zA-Z0-9 ]/,'');"  maxlength="250" placeholder="Enter Brief About Activity"/></td>
 										<td><select required="required" id="yearOne_${count.index}" class="form-control delete${innovativeActivityDetails.id}" onchange='validateYear("${count.index}");' name="innovativeActivityDetails[${count.index}].yearFrom">
 				                            		<option value="${innovativeActivityDetails.yearFrom}">${innovativeActivityDetails.yearFrom}</option>
@@ -464,7 +482,7 @@ function validateYear(index){
 									 <c:if test="${empty innovativeAcitivityList}">
 										<tr id="newRow">
 										<td><input name="innovativeActivityDetails[0].activityName" id="activityNameId" Class="form-control" required="required" onkeyup="this.value=this.value.replace(/[^a-zA-Z ]/,'');" placeholder="Enter Activity Name" maxlength="200"/></td>
-										<td><input id="fundsName" oninput="validity.valid||(value='');" onKeyPress="if(this.value.length==7) return false;" name="innovativeActivityDetails[0].fundsName" onkeyup="this.value=this.value.replace(/[^0-9]/g,'');" Class="form-control Align-Right" required="required" placeholder="Enter Funds" type="text" maxlength="12"/></td>
+										<td><input id="fundsName" oninput="validity.valid||(value='');"  name="innovativeActivityDetails[0].fundsName" onkeyup="this.value=this.value.replace(/[^0-9]/g,'');" Class="form-control Align-Right" required="required" placeholder="Enter Funds" type="text" /></td>
 										<td><input name="innovativeActivityDetails[0].aboutActivity"  Class="form-control" required="required" onkeyup="this.value=this.value.replace(/[^a-zA-Z0-9 ]/,'');" placeholder="Enter Brief About Activity" maxlength="250"/></td>
 										<td><select required="required" id="yearOne_1" class="form-control" onchange='validateYear("1");' name="innovativeActivityDetails[0].yearFrom">
 				                            		<option value=""> From Year</option>

@@ -10,6 +10,7 @@ import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -18,11 +19,14 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import gov.in.rgsa.entity.PmuActivity;
 import gov.in.rgsa.entity.PmuActivityDetails;
 import gov.in.rgsa.entity.PmuWiseProposedDomainExperts;
+import gov.in.rgsa.model.Response;
 import gov.in.rgsa.service.BasicInfoService;
 import gov.in.rgsa.service.LGDService;
 import gov.in.rgsa.service.PmuActivityService;
 import gov.in.rgsa.user.preference.UserPreference;
 import gov.in.rgsa.utils.Message;
+import gov.in.rgsa.validater.CmsValidator;
+import gov.in.rgsa.validater.PMUValidator;
 
 /**
  * @author MOhammad Ayaz 04/10/2018
@@ -41,6 +45,9 @@ public class PmuController {
 
 	@Autowired
 	private LGDService lgdservice;
+	
+	 @Autowired
+	private PMUValidator pmuValidator;
 
 	private static final String PMU = "pmu";
 	private static final String REDIRECT_PMU = "redirect:pmu.html";
@@ -60,7 +67,17 @@ public class PmuController {
 			redirectAttributes.addFlashAttribute(Message.EXCEPTION_KEY, "Please fill the Required Basic Info Details");
 			return REDIRECT_MODIFY_BAISC_INFO_DETAILS;
 		}
+		
+		pmuActivity=setBasicAttributeofPMU(pmuActivity, model,false);
+		if (userPreference.getUserType().equalsIgnoreCase("C")) {
+			return PMU_CEC;
+		}else {
+			return PMU;
+		}
 
+	}
+	
+	private PmuActivity setBasicAttributeofPMU(PmuActivity pmuActivity, Model model,boolean isError) {
 		Integer planStatus = userPreference.getPlanStatus();
 		Boolean flag = false;
 		if (planStatus != null && planStatus == 1 && userPreference.getUserType().equalsIgnoreCase("S")) {
@@ -70,7 +87,6 @@ public class PmuController {
 		} else {
 			flag = false;
 		}
-
 		model.addAttribute("Plan_Status", flag);
 		model.addAttribute("LIST_OF_ACTIVITY_PMU_TYPE", activityService.fetchPmuActvityType());
 		model.addAttribute("LIST_OF_PMU_DOMAINS", activityService.fetchPmuDomains());
@@ -86,7 +102,9 @@ public class PmuController {
 			// Collections.sort(proposedDomainExpertsList,
 			// Comparator.comparing(PmuWiseProposedDomainExperts::getPmuWiseProposedDomainExpertsId));
 			// pmuActivitiesList.get(0).setSetDistrictIdPmuWise(proposedDomainExpertsList.get(3).getDistrictId());
-			model.addAttribute("pmuActivity", pmuActivitiesList.get(0));
+			if(isError==false) {
+				model.addAttribute("pmuActivity", pmuActivitiesList.get(0));
+			}
 			Map<String, List<List<String>>> map = basicInfoService.fetchStateAndMoprPreComments(pmuActivitiesList.get(0).getPmuActivityDetails().size(),12);
 			model.addAttribute("STATE_PRE_COMMENTS", map.get("statePreviousComments"));
 			model.addAttribute("MOPR_PRE_COMMENTS", map.get("moprPreviousComments"));
@@ -117,18 +135,32 @@ public class PmuController {
 				model.addAttribute("SPMU_TOTAL_MOPR", params.get("spmu_total"));// spmu total for mopr tab in cec
 				model.addAttribute("DPMU_TOTAL_MOPR", params.get("dpmu_total"));// dpmu total for mopr tab in cec
 			}
-			return PMU_CEC;
+			return pmuActivity;
 		} else {
-			return PMU;
+			return pmuActivity;
 		}
 	}
 
 	@RequestMapping(value = "addUpdatePmu", method = RequestMethod.POST)
 	private String addUpdateMethod(@ModelAttribute("PMU_ACTIVITY") PmuActivity pmuActivity, Model model,
-			HttpServletRequest request, RedirectAttributes redirectAttributes) {
-		activityService.saveAndUpdate(pmuActivity);
-		redirectAttributes.addFlashAttribute(Message.SUCCESS_KEY, Message.SAVE_SUCCESS);
-		return REDIRECT_PMU;
+			HttpServletRequest request, RedirectAttributes redirectAttributes,BindingResult br) {
+		Response response =pmuValidator.validate(pmuActivity);
+		if (response.getResponseCode()==500) {
+			model.addAttribute(Message.EXCEPTION_KEY, response.getResponseMessage());
+			pmuActivity=setBasicAttributeofPMU(pmuActivity, model,true);
+			model.addAttribute("pmuActivity",pmuActivity);
+			if (userPreference.getUserType().equalsIgnoreCase("C")) {
+				return PMU_CEC;
+			}else {
+				return PMU;
+			}
+			
+		}else {
+			activityService.saveAndUpdate(pmuActivity);
+			redirectAttributes.addFlashAttribute(Message.SUCCESS_KEY, Message.SAVE_SUCCESS);
+			return REDIRECT_PMU;
+		}
+		
 	}
 
 	@RequestMapping(value = "pmuFreezUnfreez", method = RequestMethod.POST)

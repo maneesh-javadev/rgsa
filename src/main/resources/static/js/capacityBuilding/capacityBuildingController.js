@@ -135,20 +135,29 @@ publicModule.controller("capacityBuildingController", [ '$scope', "capacityBuild
 		if($scope.capacityBuilding.capacityBuildingActivityDetails.isApproved == null){
 			$scope.capacityBuilding.capacityBuildingActivityDetails.isApproved = false;
 		}
+		if($scope.subTotal!=0 && $scope.subTotal!=null && $scope.subTotal!=undefined){
 		capacityBuildingService.saveCapacityBuildingActivityAndDetails($scope.capacityBuilding).then(function(response){
 			fetchCBMastersAndCapacityBuildingData();
 			toastr.success("Data Saved Successfully");
 		},function(error){
 			toastr.error("Something is wrong");
 		});
+		}
+		else
+			{
+			$scope.btn_disabled=false;
+			toastr.error("Fund can not be 0 or blank");
+			}
 	}
 	
 	$scope.freezUnFreezCapacityBuilding=function(freezUnfreez){
+		$scope.btn_disabled=true;
 		if(freezUnfreez == 'freeze'){
 			$scope.capacityBuilding.isFreeze = true;
 		}else{
 			$scope.capacityBuilding.isFreeze = false;
 		}
+		if($scope.subTotal!=0 && $scope.subTotal!=null && $scope.subTotal!=undefined){
 		capacityBuildingService.freezUnFreezCapacityBuilding($scope.capacityBuilding).then(function(response){
 			$scope.capacityBuilding = response.data;
 			if($scope.capacityBuilding.isFreeze){
@@ -160,6 +169,13 @@ publicModule.controller("capacityBuildingController", [ '$scope', "capacityBuild
 		},function(error){
 			alert(error);
 		});
+		}
+		else
+		{
+		$scope.btn_disabled=false;
+		$scope.capacityBuilding.isFreeze = false;
+		toastr.error("Fund can not be 0 or blank");
+		}
 	}
 	
 	$scope.onClear=function(){

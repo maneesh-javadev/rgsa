@@ -6,11 +6,11 @@
 	var lbCodes3=[];
 	var selactivity3 =new Map();
 	var panchatayBhawanidList=new Map();
-	
+	var finalizeFreezeStatus=[];
 
-var workLocation=angular.module("publicModule",[]);
+var workLocation=angular.module("publicModule",['cp.ngConfirm']);
 
-workLocation.controller("workLocationController",['$scope','workLocationService',function($scope,workLocationService){
+workLocation.controller("workLocationController",['$scope','$ngConfirm','workLocationService',function($scope,$ngConfirm,workLocationService){
 	
 	
 	
@@ -51,6 +51,7 @@ workLocation.controller("workLocationController",['$scope','workLocationService'
 			$scope.activityList=response.data.PANCHAYAT_ACTIVITY;
 			$scope.districtCodes=response.data.DISTRICT_LIST;
 			if(response.data.PANCHAYAT_BHAWAN_ACTIVITY!=undefined){
+				$scope.panhcayatBhawanActivityId=response.data.PANCHAYAT_BHAWAN_ACTIVITY.panhcayatBhawanActivityId;
 				$scope.panchayatBhawanActivity=response.data.PANCHAYAT_BHAWAN_ACTIVITY.panchatayBhawanActivityDetails;
 				angular.forEach($scope.panchayatBhawanActivity,function(item){
 					if(item.activity.activityId==1){
@@ -68,6 +69,21 @@ workLocation.controller("workLocationController",['$scope','workLocationService'
 				
 				if(panchatayBhawanidList.has(1) && panchatayBhawanidList.has(2) && panchatayBhawanidList.has(3)){
 					loadinit_data();
+				}
+				$scope.freezestatus=false;
+				if($scope.panhcayatBhawanActivityId!=null){
+					finalizeFreezeStatus= {
+						   "activityId" : $scope.panhcayatBhawanActivityId ,  //your title variable
+						    "finalizeType" : 'P',  
+						    
+						};
+					workLocationService.loadFreezeUnfreezeData(finalizeFreezeStatus).then(function(response){
+						finalizeFreezeStatus=response.data;
+						if(finalizeFreezeStatus!=null  ){
+							$scope.freezestatus=finalizeFreezeStatus.isFreeze;
+						}
+						
+					});
 				}
 			}
 		}
@@ -263,23 +279,23 @@ workLocation.controller("workLocationController",['$scope','workLocationService'
 		$scope.filterLbCodes=[];
 		if(selActivityId==1){
 			angular.forEach($scope.lbCodes,function(item){
-				if(!(lbCodes2.includes(item[0]) || lbCodes3.includes(item[0]))){
+				if(!(lbCodes2.includes(item[0]) )){
 					$scope.filterLbCodes.push(item);
 				}
 			  		
 			});
 		}else if(selActivityId==2){
 			angular.forEach($scope.lbCodes,function(item){
-				if(!(lbCodes1.includes(item[0]) || lbCodes3.includes(item[0]))){
+				if(!(lbCodes1.includes(item[0]) )){
 					$scope.filterLbCodes.push(item);
 				}
 			  		
 			});
 		}else if(selActivityId==3){
 			angular.forEach($scope.lbCodes,function(item){
-				if(!(lbCodes1.includes(item[0]) || lbCodes2.includes(item[0]))){
+				//if(!(lbCodes1.includes(item[0]) || lbCodes2.includes(item[0]))){
 					$scope.filterLbCodes.push(item);
-				}
+				//}
 			  		
 			});
 		}
@@ -362,7 +378,7 @@ workLocation.controller("workLocationController",['$scope','workLocationService'
 			 td.append(templateInput);
 			 tr.append(td);
 			 
-			 td=createLabel(item[1]);
+			 td=createLabel(item[1]+"("+item[0]+")");
 			 tr.append(td);
 			 
 			 td=createCheckbox("landIdentified",$scope.selectDistrictCode.districtCode,item[0]);
@@ -869,6 +885,7 @@ workLocation.controller("workLocationController",['$scope','workLocationService'
 	}
 	
 	$scope.savePanchayatBhawanData = function(){
+		$scope.disabledButton(true);
 		var pbProposedInfo=[];
 		
 		$.each( lbCodes1, function( index, value ) {
@@ -1059,8 +1076,10 @@ workLocation.controller("workLocationController",['$scope','workLocationService'
 	    	workLocationService.savefFinalizeWorkLocation(pbProposedInfo).then(function(response){
 		    	if(response!=null && response.status==200){
 		    		toastr.success(response.data.responseMessage);
+		    		$scope.disabledButton(false);
 		    	}else{
 		    		toastr.error(response.data.responseMessage);
+		    		$scope.disabledButton(false);
 		    	}
 		    	fetchOnLoad();
 		    });
@@ -1071,6 +1090,65 @@ workLocation.controller("workLocationController",['$scope','workLocationService'
 	}
 	
 	
+	
+	$scope.freezePanchayatBhawanDataGP = function(freezestatus){
+	$scope.disabledButton(true);
+	if(finalizeFreezeStatus==null){
+		finalizeFreezeStatus= {
+			    "id" : null,    //your artist variable
+			    "activityId" : $scope.panhcayatBhawanActivityId ,  //your title variable
+			    "finalizeType" : 'P',  
+			     "isFreeze" : freezestatus ,
+			   
+			};
+	}else{
+		finalizeFreezeStatus.isFreeze=freezestatus;
+	}	
+	
+	
+	workLocationService.freezeUnfreezeFinalizeLocation(finalizeFreezeStatus).then(function(response){
+    	if(response!=null && response.status==200){
+    		toastr.success(response.data.responseMessage);
+    		$scope.disabledButton(false);
+    	}else{
+    		toastr.error(response.data.responseMessage);
+    		$scope.disabledButton(false);
+    	}
+    	fetchOnLoad();
+    });
+	}
+	
+	$scope.disabledButton = function(isDisabled){
+		$scope.isbtnDisabled=isDisabled;
+	}
+	
+	
+	$scope.freezeConfirmation = function(freezestatus){
+		if(freezestatus){
+			$ngConfirm({
+				columnClass: 'col-md-4 col-md-offset-8 col-xs-4 col-xs-offset-8',
+				closeIcon: true,
+		        title: 'Confirm!',
+		        content: '<strong>Data Freeze/Unfreeze Only</strong>,For save data first click save button then Freeze/Unfreeze,To countinue click Proceed button ohterwise click close button.',
+		        scope: $scope,
+		        buttons: {
+		            sayBoo: {
+		                text: 'Proceed',
+		                btnClass: 'btn-blue',
+		               action: function(scope, button){
+		                	$scope.freezePanchayatBhawanDataGP(freezestatus);
+		                	
+		                    return true; // prevent close;
+		                }
+		            },
+		            
+		            close: function(scope, button){
+		                // closes the modal
+		            },
+		        }
+		    });
+		}
+	}
 	
 	
 }]);

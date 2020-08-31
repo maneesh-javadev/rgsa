@@ -34,5 +34,12 @@ capacityBuildingGPs.service('capacityBuildingGPsService', [ '$http', function($h
 		return $http.get("fetchCapacityBuildingActivityGPs.html?<csrf:token uri=fetchCapacityBuildingActivityGPs.htm/>&capacityBuildingActivityDetailsId="+cbActivityDetailsId+"&cbMasterId="+cbMasterId);
 	};
 	
+	this.freezeUnfreezeFinalizeLocation= function(finalizeFreezeStatus) {
+		return $http.post("freezeUnfreezeFinalizeWorkLocation.html?<csrf:token uri=freezeUnfreezeFinalizeWorkLocation.htm/>",finalizeFreezeStatus);
+		};
+		
+	this.loadFreezeUnfreezeData= function(finalizeFreezeStatus) {
+		return $http.post("loadFreezeUnfreezeFinalizeWorkLocation.html?<csrf:token uri=loadFreezeUnfreezeFinalizeWorkLocation.htm/>",finalizeFreezeStatus);
+	};	
 		
 }]);

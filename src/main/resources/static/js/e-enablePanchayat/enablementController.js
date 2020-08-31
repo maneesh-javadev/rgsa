@@ -5,15 +5,15 @@
 	var panchatayBhawanidList=new Map();
 	
 
-var enablement=angular.module("publicModule",[]);
+var enablement=angular.module("publicModule",['cp.ngConfirm']);
 
-enablement.controller("enablementController",['$scope','enablementService', function($scope,enablementService){
+enablement.controller("enablementController",['$scope','$ngConfirm','enablementService', function($scope,$ngConfirm,enablementService){
 	
 	$scope.selGPs=0;
 	$scope.totGPS=0;
 	$scope.asSelGPs=0;
 	$scope.asTotGPS=0;
-	
+	var finalizeFreezeStatus=[];
 	
 	
 	$( document ).ready(function() {
@@ -80,7 +80,26 @@ enablement.controller("enablementController",['$scope','enablementService', func
 			$scope.districtCodes=response.data;
 		});
 		
-		
+		enablementService.fetchEEnablemenCEC().then(function(response){
+			$scope.enablementId=response.data;
+			$scope.freezestatus=false;
+			if($scope.enablementId!=null){
+				finalizeFreezeStatus= {
+					   "activityId" : $scope.enablementId ,  //your title variable
+					    "finalizeType" : 'E',  
+					    
+					};
+					
+					enablementService.loadFreezeUnfreezeData(finalizeFreezeStatus).then(function(response){
+					finalizeFreezeStatus=response.data;
+					if(finalizeFreezeStatus!=null  ){
+						$scope.freezestatus=finalizeFreezeStatus.isFreeze;
+					}
+					
+				});
+			}
+			
+		});
 	
 	}
 	
@@ -202,7 +221,7 @@ enablement.controller("enablementController",['$scope','enablementService', func
 		 td.append(templateInput);
 		 
 		 templateLabel = $("<label/>");
-		 templateLabel.html(labelName);
+		 templateLabel.html(labelName+"("+gpCode+")");
 		 td.append(templateLabel);
 		 return td;
 	};
@@ -369,6 +388,65 @@ enablement.controller("enablementController",['$scope','enablementService', func
 	    }
 	 
 	}
+	
+	$scope.freezePanchayatBhawanDataGP = function(freezestatus){
+		$scope.disabledButton(true);
+		if(finalizeFreezeStatus.id==null){
+			finalizeFreezeStatus= {
+				    "id" : null,    //your artist variable
+				    "activityId" : $scope.enablementId ,  //your title variable
+				    "finalizeType" : 'E',  
+				     "isFreeze" : freezestatus ,
+				   
+				};
+		}else{
+			finalizeFreezeStatus.isFreeze=freezestatus;
+		}	
+		
+		
+		enablementService.freezeUnfreezeFinalizeLocation(finalizeFreezeStatus).then(function(response){
+	    	if(response!=null && response.status==200){
+	    		toastr.success(response.data.responseMessage);
+	    		$scope.disabledButton(false);
+	    	}else{
+	    		toastr.error(response.data.responseMessage);
+	    		$scope.disabledButton(false);
+	    	}
+	    	fetchOnLoad();
+	    });
+		}
+		
+		$scope.disabledButton = function(isDisabled){
+			$scope.isbtnDisabled=isDisabled;
+		}
+		
+		
+		$scope.freezeConfirmation = function(freezestatus){
+			if(freezestatus){
+				$ngConfirm({
+					columnClass: 'col-md-4 col-md-offset-8 col-xs-4 col-xs-offset-8',
+					closeIcon: true,
+			        title: 'Confirm!',
+			        content: '<strong>Data Freeze/Unfreeze Only</strong>,For save data first click save button then Freeze/Unfreeze,To countinue click Proceed button ohterwise click close button.',
+			        scope: $scope,
+			        buttons: {
+			            sayBoo: {
+			                text: 'Proceed',
+			                btnClass: 'btn-blue',
+			               action: function(scope, button){
+			                	$scope.freezePanchayatBhawanDataGP(freezestatus);
+			                	
+			                    return true; // prevent close;
+			                }
+			            },
+			            
+			            close: function(scope, button){
+			                // closes the modal
+			            },
+			        }
+			    });
+			}
+		}
 	
 	
 	

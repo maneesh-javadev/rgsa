@@ -30,7 +30,7 @@ import org.hibernate.annotations.CreationTimestamp;
 
 @NamedNativeQueries({
 	@NamedNativeQuery(name="PLAN_COUNT",query="select count(*) from rgsa.plan where plan_status_id=:plan_status_id and isactive=:isactive and year_id=:FinId"),
-	@NamedNativeQuery(name="GET_PLAN_CURRENT",query="select * from rgsa.plan where state_code=:stateCode and year_id=:yearId order by plan_status_id desc limit 1",resultClass = Plan.class),
+	@NamedNativeQuery(name="GET_PLAN_CURRENT",query="select * from rgsa.plan where state_code=:stateCode and year_id=:yearId and isactive order by plan_status_id desc limit 1",resultClass = Plan.class),
 	@NamedNativeQuery(name="PLAN_FORWARDED_OR_NOT",query="select count(*) from rgsa.plan where plan_status_id=:plan_status_id and isactive and state_code=:stateCode and year_id=:yearId")
 	// @NamedNativeQuery(name="FETCH_PLAN_STAUS_COUNT",query="select cast(count(1)  ||','|| (select count(1)  from rgsa.plan pa where pa.plan_status_id=5 and  pa.year_id=ps.year_id )||','|| 0 as character varying)as meeting_by_cec_current_year from rgsa.plan ps left join rgsa.fin_year fy on ps.year_id=fy.year_id where ps.plan_status_id in(2,4,5) and fy.finyear ilike :fin_year group by ps.year_id")
 })

@@ -444,11 +444,12 @@ function fnExcelReport(val)
 							<button ng-click="saveCapacityBuildingActivityAndDetails()" ng-disabled="capacityBuilding.isFreeze || btn_disabled"  type="button" class="btn bg-green waves-effect">
 									<spring:message code="Label.SAVE" htmlEscape="true" />
 								</button>
-								<button ng-show="capacityBuilding.isFreeze" type="button" data-ng-click="freezUnFreezCapacityBuilding('unfreeze')" class="btn bg-orange waves-effect">
+								<button ng-show="capacityBuilding.isFreeze" type="button" data-ng-click="freezUnFreezCapacityBuilding('unfreeze')" ng-disabled="btn_disabled"  type="button" class="btn bg-green waves-effect">
+									
 									<spring:message code="UNFREEZE" htmlEscape="true" />
 								</button>
 								
-								<button ng-show=" capacityBuilding.isFreeze != undefined && !capacityBuilding.isFreeze" type="button" data-ng-click="freezUnFreezCapacityBuilding('freeze')" class="btn bg-orange waves-effect">
+								<button ng-show=" capacityBuilding.isFreeze != undefined && !capacityBuilding.isFreeze" type="button"  data-ng-click="freezUnFreezCapacityBuilding('freeze')" ng-disabled="btn_disabled" class="btn bg-orange waves-effect">
 									<spring:message code="FREEZE" htmlEscape="true" />
 								</button>
 								

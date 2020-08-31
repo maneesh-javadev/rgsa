@@ -390,7 +390,6 @@ function changeColor(){
 															<c:when test="${not empty dbActivitiesList}">
 															<td><div align="center" id="projectCostMoprId_${count.index}">${state_data.totalCostOfProject}</div>
 																<form:input oninput="validity.valid||(value='');"
-																onKeyPress="if(this.value.length==7) return false;"
 																value="${dbActivitiesList.incomeEnhancementDetails[count.index].totalCostOfProject}"																
 																min="1" onkeyup="this.value=this.value.replace(/[^0-9]/g,'');changeColor()"
 																path="incomeEnhancementDetails[${count.index}].totalCostOfProject"
@@ -404,9 +403,7 @@ function changeColor(){
 															
 															<td><div align="center" id="fundsNameMoprId_${count.index}">${state_data.fundsRequired}</div>
 																<form:input oninput="validity.valid||(value='');"
-																onKeyPress="if(this.value.length==5) return false;"
 																onkeyup="this.value=this.value.replace(/[^0-9]/g,'');changeColor()"
-																min="1" max="50000"
 																value="${dbActivitiesList.incomeEnhancementDetails[count.index].fundsRequired}"
 																id="fundsName_${count.index}"
 																path="incomeEnhancementDetails[${count.index}].fundsRequired"
@@ -416,7 +413,6 @@ function changeColor(){
 															<c:otherwise>
 															<td><div align="center" id="projectCostMoprId_${count.index}">${state_data.totalCostOfProject}</div>
 																<form:input oninput="validity.valid||(value='');"
-																onKeyPress="if(this.value.length==7) return false;"
 																min="1" onkeyup="this.value=this.value.replace(/[^0-9]/g,'');changeColor()"
 																path="incomeEnhancementDetails[${count.index}].totalCostOfProject"
 																id="projectCostId_${count.index}"
@@ -429,9 +425,7 @@ function changeColor(){
 															
 															<td><div align="center" id="fundsNameMoprId_${count.index}">${state_data.fundsRequired}</div>
 																<form:input oninput="validity.valid||(value='');"
-																onKeyPress="if(this.value.length==5) return false;"
 																onkeyup="this.value=this.value.replace(/[^0-9]/g,'');changeColor()"
-																min="1" max="50000"
 																id="fundsName_${count.index}"
 																path="incomeEnhancementDetails[${count.index}].fundsRequired"
 																required="required"

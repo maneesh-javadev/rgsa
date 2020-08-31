@@ -224,10 +224,10 @@ table.dataTable thead > tr > th, table.dataTable thead > tr > td {
 									</div>
 								<div class="text-right padding_right">
 									 
-									<button type="button" ng-show="!fetchTrainingMOPR.isFreeze" ng-disabled="capacityBuilding.isFreeze" ng-click="saveTrainingDetails('S')"
+									<button type="button" ng-show="!fetchTrainingMOPR.isFreeze" ng-disabled="capacityBuilding.isFreeze || btn_disabled" ng-click="saveTrainingDetails('S')"
 										class="btn bg-green waves-effect">SAVE</button>
 										
-									<button type="button" ng-show="!fetchTrainingMOPR.isFreeze" ng-disabled="capacityBuilding.isFreeze" ng-click="saveTrainingDetails('F')"
+									<button type="button" ng-show="!fetchTrainingMOPR.isFreeze" ng-disabled="capacityBuilding.isFreeze|| btn_disabled" ng-click="saveTrainingDetails('F')"
 										class="btn bg-orange waves-effect">FREEZE</button>
 										
 										<button type="button" ng-show="fetchTrainingMOPR.isFreeze"  ng-disabled="capacityBuilding.isFreeze" ng-click="saveTrainingDetails('U')"

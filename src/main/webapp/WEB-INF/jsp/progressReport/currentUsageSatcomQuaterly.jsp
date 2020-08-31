@@ -29,11 +29,21 @@ $('document').ready(function() {
 });
 
 function saveAndGetDataQtrRprt(msg){
+	if(savevalidate())
+	{
+	disabled_button();	
 	$('#qtrId').val($('#qtrDropDownId').val());
  	$('#origin').val(msg);
-	document.satcomActivityProgress.method = "post";
+ 	document.satcomActivityProgress.method = "post";
 	document.satcomActivityProgress.action = "currentUsageSatcomQuaterlyPost.html?<csrf:token uri='currentUsageSatcomQuaterlyPost.html'/>";
 	document.satcomActivityProgress.submit();
+	}
+  }
+  
+function disabled_button(){
+	$('#savebtn').prop('disabled', true);
+	$('#freezebtn').prop('disabled', true);
+	$('#unfreezebtn').prop('disabled', true);
 }
 
 function showTable(){
@@ -118,13 +128,46 @@ function calTotalExpenditure(){
 }
 
 function FreezeAndUnfreeze(msg){
+	disabled_button();	
 	var componentId=7;
 	var qprActivityId=$('#qprActivityId').val();
 	var quaterId = $('#qtrDropDownId').val();
 	document.satcomActivityProgress.method = "post";
 	document.satcomActivityProgress.action = "freezeAndUnfreezeReport.html?<csrf:token uri='freezeAndUnfreezeReport.html'/>&componentId="+componentId+"&qprActivityId="+qprActivityId+"&quaterId="+quaterId+"&msg="+msg;
 	document.satcomActivityProgress.submit();
+	
 }
+
+function savevalidate()
+{  
+   var totalallocation=$("#totalExpenditureId").val();
+   var status=true;
+   var noOfRows=$("#tbodyId tr").length-1;
+   var total=totalallocation;
+   var fund_allocated_by_state_local=0;
+   fund_allocated_by_state_local = +fund_allocated_by_state;
+  /* for (var index = 0; index < noOfRows; index++) {
+	   total +=  +$('#expenditureIncurred_'+index).val();
+	}*/
+   if(total >= fund_allocated_by_state_local){
+	  status=false;
+	  }
+	
+	if(status==false)
+	{
+	  alert('Total Expenditure  should not exceed total allocated fund '+fund_allocated_by_state_local);
+	  return false;
+	}
+   else
+	   {
+   return true;
+	   }
+	
+	
+}
+
+
+
 </script>
 <section class="content">
 	<div class="container-fluid">
@@ -162,7 +205,7 @@ function FreezeAndUnfreeze(msg){
 									   <th><div align="center"><strong>Panchayat Level</strong></div></th>
 									   <th><div align="center"><strong>No. of Units<br>A</strong></div></th>
 									   <th><div align="center"><strong>Unit Cost (in Rs)<br>B</strong></div></th>
-									   <th><div align="center"><strong>Fund Proposed (in Rs)<br>C = A * B</strong></div></th>
+									   <th><div align="center"><strong>Approved Amount (in Rs)<br>C = A * B</strong></div></th>
 									   <th><div align="center">No. of Persons Trained</div></th>
 									   <th><div align="center">Expenditure incurred</div></th>
 									</tr>
@@ -223,11 +266,11 @@ function FreezeAndUnfreeze(msg){
 								</tbody>
 							</table>
 								<div class="text-right">
-									<form:button onclick="saveAndGetDataQtrRprt('save')" class="btn bg-green waves-effect" disabled="${QPR_DATA_BASED_CEC_ACT_ID.isFreeze}">
+									<form:button onclick="saveAndGetDataQtrRprt('save');" class="btn bg-green waves-effect" disabled="${QPR_DATA_BASED_CEC_ACT_ID.isFreeze}" id="savebtn">
 										SAVE</form:button>
 									<c:choose>
-										<c:when test="${QPR_DATA_BASED_CEC_ACT_ID.isFreeze}"><form:button class="btn bg-orange waves-effect" onclick="FreezeAndUnfreeze('unfreeze')">UNFREEZE</form:button></c:when>
-										<c:otherwise><form:button class="btn bg-orange waves-effect" disabled="${DISABLE_FREEZE}" onclick="FreezeAndUnfreeze('freeze')">FREEZE</form:button></c:otherwise>
+										<c:when test="${QPR_DATA_BASED_CEC_ACT_ID.isFreeze}"><form:button class="btn bg-orange waves-effect" onclick="FreezeAndUnfreeze('unfreeze')" id="unfreezebtn">UNFREEZE</form:button></c:when>
+										<c:otherwise><form:button class="btn bg-orange waves-effect" disabled="${DISABLE_FREEZE}" onclick="FreezeAndUnfreeze('freeze')" id="freezebtn">FREEZE</form:button></c:otherwise>
 									</c:choose>
 									<%-- <form:button onclick="onClear(this)"
 										class="btn bg-light-blue waves-effect" disabled="${QPR_DATA_BASED_CEC_ACT_ID.isFreeze}">CLEAR</form:button> --%>

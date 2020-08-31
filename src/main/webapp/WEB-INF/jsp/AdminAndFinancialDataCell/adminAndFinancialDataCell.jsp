@@ -90,6 +90,22 @@ function validatingTotalProposedFund(){
 	}
 }
 
+ function validateFund()
+ {
+	 var gt=0;
+		gt=$("#GrandTotalId").val();
+		if(gt==0)
+			{
+			alert("Fund value should not be blank or 0");
+			return false;
+			}
+		else
+			{
+			return true;
+			}
+ }
+
+
 </script>
 <section class="content">
 	<div class="container-fluid">
@@ -100,7 +116,7 @@ function validatingTotalProposedFund(){
 						<h2><spring:message code="Label.AdminAndFinancialDataCell" htmlEscape="true" /></h2>
 					</div>
 					<form:form method="post" name="adminFinancialDataCell" action="adminAndFinancialDataCell.html"
-						modelAttribute="ADMIN_FIN_DATA_CELL"  onsubmit="return validatingTotalProposedFund();disablingSave()">
+						modelAttribute="ADMIN_FIN_DATA_CELL"  onsubmit="return validatingTotalProposedFund();disablingSave();return validateFund()">
 						<input type="hidden" name="<csrf:token-name/>"
 							value="<csrf:token-value uri="adminAndFinancialDataCell.html" />" />
 					<div class="body">
@@ -270,7 +286,7 @@ function validatingTotalProposedFund(){
 											<c:if test="${IS_FREEZE eq false or empty IS_FREEZE}">
 												<c:if test="${Plan_Status eq true}">
 													<button type="submit" class="btn bg-green waves-effect save-button"
-														id="saveId">
+														id="saveId" onclick=" return validateFund()">
 														<spring:message code="Label.SAVE" text="Save"
 															htmlEscape="true" />
 													</button>
@@ -289,7 +305,7 @@ function validatingTotalProposedFund(){
 												<c:if test="${IS_FREEZE eq false or empty IS_FREEZE}">
 													<c:if test="${DISABLE_FREEZE_INTIALLY eq true}">
 														<button type="submit" class="btn bg-orange waves-effect"
-															id="freezeId" onclick="isFreezeFunction('freeze')"
+															id="freezeId" onclick="isFreezeFunction('freeze');"
 															disabled="disabled">
 															<spring:message code="Label.FREEZE" text="Freeze"
 																htmlEscape="true" />
@@ -297,8 +313,8 @@ function validatingTotalProposedFund(){
 													</c:if>
 													<c:if test="${DISABLE_FREEZE_INTIALLY eq false}">
 														<button type="submit" class="btn bg-orange waves-effect"
-															id="freezeId" onclick="isFreezeFunction('freeze')"
-															onsubmit="return validatingTotalProposedFund()">
+															id="freezeId" onclick="isFreezeFunction('freeze');return validateFund()"
+															onsubmit="return validatingTotalProposedFund();">
 															<spring:message code="Label.FREEZE" text="Freeze"
 																htmlEscape="true" />
 														</button>
@@ -334,7 +350,7 @@ function validatingTotalProposedFund(){
 											<c:if test="${IS_FREEZE eq false or empty IS_FREEZE}">
 												<c:if test="${Plan_Status eq true}">
 													<button type="submit" class="btn bg-green waves-effect"
-														id="saveId">
+														id="saveId" onclick=" return validateFund()">
 														<spring:message code="Label.SAVE" text="Save"
 															htmlEscape="true" />
 													</button>
@@ -353,7 +369,7 @@ function validatingTotalProposedFund(){
 												<c:if test="${IS_FREEZE eq false or empty IS_FREEZE}">
 													<c:if test="${DISABLE_FREEZE_INTIALLY eq true}">
 														<button type="submit" class="btn bg-orange waves-effect"
-															id="freezeId" onclick="isFreezeFunction('freeze')"
+															id="freezeId" onclick="isFreezeFunction('freeze'),validateFund()"
 															disabled="disabled">
 															<spring:message code="Label.FREEZE" text="Freeze"
 																htmlEscape="true" />

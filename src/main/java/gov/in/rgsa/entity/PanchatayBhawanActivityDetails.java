@@ -21,7 +21,7 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 
 @Entity
 @Table(name="panhcayat_bhawan_activity_details", schema="rgsa")
-@NamedQuery(name="FETCH_ALL_PANCH_DETAILS_EXCEPT_CURRENT_VERSION",query="from PanchatayBhawanActivityDetails where panchatayBhawanActivity.stateCode=:stateCode and panchatayBhawanActivity.versionNo !=:versionNo and panchatayBhawanActivity.userType in('S','M') order by id")
+@NamedQuery(name="FETCH_ALL_PANCH_DETAILS_EXCEPT_CURRENT_VERSION",query="from PanchatayBhawanActivityDetails where panchatayBhawanActivity.stateCode=:stateCode and panchatayBhawanActivity.versionNo !=:versionNo and panchatayBhawanActivity.yearId=:yearId  and panchatayBhawanActivity.userType in('S','M') order by id")
 public class PanchatayBhawanActivityDetails implements Serializable{
 	
 	/**

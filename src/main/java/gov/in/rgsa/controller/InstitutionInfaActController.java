@@ -5,8 +5,12 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -16,10 +20,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import gov.in.rgsa.entity.District;
 import gov.in.rgsa.entity.InstitutionalInfraActivityPlan;
 import gov.in.rgsa.entity.InstitutionalInfraActivityPlanDetails;
 import gov.in.rgsa.entity.Plan;
 import gov.in.rgsa.entity.TrainingInstitueType;
+import gov.in.rgsa.model.Response;
 import gov.in.rgsa.service.BasicInfoService;
 import gov.in.rgsa.service.InstitutionalInfraActivityPlanService;
 import gov.in.rgsa.service.LGDService;
@@ -41,8 +47,12 @@ public class InstitutionInfaActController {
 	@Autowired
 	private PlanAllocationService planAllocationService;
 	
-@Autowired
+	@Autowired
 	private LGDService lgdservice;
+
+	private static final String CEC_USER_TYPE="C";
+	
+
 	public static final String INSTITUTION_INFRA_ACT = "institutionalInfraActivityPlan";
 	public static final String REDIRECT_BAISC_INFO_DETAILS = "redirect:basicinfo.add.html";
 	public static final String REDIRECT_MODIFY_BAISC_INFO_DETAILS = "redirect:managebasicInfoDetails.html";
@@ -313,6 +323,49 @@ public class InstitutionInfaActController {
 		}
 		return institutionaInfraResponseMap;
 		
+	}
+	
+	
+
+	@RequestMapping(value="finalizeLocationInsttutional",method = RequestMethod.GET)
+	public String finalizeLocationInsttutionalForm( Model model)
+	{
+		model.addAttribute("stateCode",userPreference.getStateCode());
+		return "finalizeLocationInsttutional";
+	}
+	
+	@ResponseBody
+	@RequestMapping(value="getInstInfraActivityValidation", method = RequestMethod.GET, produces=MediaType.APPLICATION_JSON_VALUE)
+	private Map<String, Object> getInstInfraActivityValidation() {
+		Map<String, Object> map=new HashMap<>();
+		boolean isFreeze=institutionalInfraActivityPlanService.fetchInstInfraActFreezDataCEC(CEC_USER_TYPE);
+		boolean isApproved=institutionalInfraActivityPlanService.fetchPlanApprovedByCEC();
+		boolean instComponentData=institutionalInfraActivityPlanService.fetchInstitutionalInfraActivityData();
+		map.put("INST_INFRA_COMPONENT_DATA", instComponentData);
+		map.put("IS_APPROVED", isApproved);
+		map.put("IS_FREEZ", isFreeze);
+		return map;
+	}
+	
+	@ResponseBody
+	@RequestMapping(value="getInstInfraActivityCEC", method = RequestMethod.GET, produces=MediaType.APPLICATION_JSON_VALUE)
+	private Map<String, Object> getPanchayatBhawanActivityCEC() {
+		Map<String, Object> map=new HashMap<>();
+		map.put("DISTRICT_LIST", lgdservice.getAllDistrictBasedOnState(userPreference.getStateCode()));
+		map.put("INST_INFRA_ACTIVITY", institutionalInfraActivityPlanService.fetchInstitutionalInfraActivityDataCEC(CEC_USER_TYPE));
+		return map;
+	}
+	
+	@RequestMapping(value="getRemovableDistList",method=RequestMethod.POST,produces=MediaType.APPLICATION_JSON_VALUE)
+	public @ResponseBody Map<String, Object> getRemovableDistList(@RequestBody final List<District> distObj,HttpServletRequest request, HttpServletResponse httpServletResponse) {
+		List<District> distList=lgdservice.getAllDistrictBasedOnState(userPreference.getStateCode());
+		Map<String,Object> map=new HashMap<>();
+		for(District outerdist :distObj)
+		{
+			distList.removeIf(District -> District.getDistrictCode() == outerdist.getDistrictCode());
+		}
+		map.put("REMOVE_DIST_LIST", distList);
+		return map;
 	}
 
 }

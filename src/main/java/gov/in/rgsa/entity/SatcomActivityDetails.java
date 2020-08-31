@@ -17,7 +17,7 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 
 @Entity
 @Table(name="satcom_activity_details", schema="rgsa")
-@NamedQuery(name="FETCH_ALL_SATCOM_DETAILS_EXCEPT_CURRENT_VERSION",query="from SatcomActivityDetails where satcomActivity.stateCode=:stateCode and satcomActivity.versionNo !=:versionNo and  satcomActivity.userType in('S','M') order by satcomActivityDetailsId")
+@NamedQuery(name="FETCH_ALL_SATCOM_DETAILS_EXCEPT_CURRENT_VERSION",query="from SatcomActivityDetails where satcomActivity.stateCode=:stateCode and satcomActivity.versionNo !=:versionNo and  satcomActivity.yearId=:yearId and satcomActivity.userType in('S','M') order by satcomActivityDetailsId")
 public class SatcomActivityDetails implements Serializable{
 
 	/**
@@ -44,15 +44,15 @@ public class SatcomActivityDetails implements Serializable{
 	private SatcomLevel level;
 	
 	@Column(name="no_of_units")
-	private Integer noOfUnits; 
+	private Long noOfUnits; 
 	
 	
 	@Column(name="unit_cost")
-	private Integer unitCost; 
+	private Long unitCost; 
 	
 	
 	@Column(name="funds")
-	private Integer funds; 
+	private Long funds; 
 	
 	@Column(name="is_approved")
 	private Boolean isApproved;
@@ -105,28 +105,36 @@ public class SatcomActivityDetails implements Serializable{
 		this.satcomMaster = satcomMaster;
 	}
 
-	public Integer getNoOfUnits() {
+	
+	
+	
+
+	public Long getNoOfUnits() {
 		return noOfUnits;
 	}
 
-	public void setNoOfUnits(Integer noOfUnits) {
+	public void setNoOfUnits(Long noOfUnits) {
 		this.noOfUnits = noOfUnits;
 	}
 
-	public Integer getUnitCost() {
+	public Long getUnitCost() {
 		return unitCost;
 	}
 
-	public void setUnitCost(Integer unitCost) {
+	public void setUnitCost(Long unitCost) {
 		this.unitCost = unitCost;
 	}
 
-	public Integer getFunds() {
+	public Long getFunds() {
 		return funds;
 	}
 
-	public void setFunds(Integer funds) {
+	public void setFunds(Long funds) {
 		this.funds = funds;
+	}
+
+	public static long getSerialversionuid() {
+		return serialVersionUID;
 	}
 
 	public String getRemarks() {

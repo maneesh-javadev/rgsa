@@ -134,18 +134,28 @@ trainingDetail.controller("trainingDetailMoprController",['$scope','trainingDeta
 	
 	$scope.saveTrainingDetails=function(status){
 		//alert(validateData($scope.trainingDetails));
-		$scope.btn_disabled=true;
+		
 		if(validateData($scope.training.trainingDetailList)){
-			
+			$scope.btn_disabled=true;
 			if(status=='F'){
-				$scope.training.isFreeze=true;
+				if($scope.allTrainingFund!=null && $scope.allTrainingFund!=undefined && $scope.allTrainingFund>0){
+					$scope.training.isFreeze=true;
+				}
+				else
+				{
+					$scope.training.isFreeze=false;
+					$scope.btn_disabled=false;
+				toastr.error("Fund value should not be 0 or blank");
+				}
+				
 				
 			}else {
 				$scope.training.isFreeze=false;
 				$scope.fetchTrainingMOPR.isFreeze=false;
 			}
-			
+			if($scope.allTrainingFund!=null && $scope.allTrainingFund!=undefined && $scope.allTrainingFund>0){
 			trainingDetailService.savetrainingDetailMOPRCEC($scope.training).then(function(response){
+				$scope.btn_disabled=false;
 		    	if(response!=null && response.status==200){
 		    		toastr.success(response.data.responseMessage);
 		    	}else{
@@ -154,8 +164,13 @@ trainingDetail.controller("trainingDetailMoprController",['$scope','trainingDeta
 		    	fetchOnLoad();
 		    	
 		    });
+			}
+			else
+				{
+				$scope.btn_disabled=false;
+				toastr.error("Fund value should not be 0 or blank");
+				}
 		}
-		
 	}
 	
 validateData=function(trainingDetailsList){

@@ -47,10 +47,37 @@ function show(val) {
 };
 
 function freezeAndUnfreeze(obj) {
-	document.getElementById("dbFileName").value = obj;
-	document.egovernance.method = "post";
-	document.egovernance.action = "freezAndUnfreez.html?<csrf:token uri='freezAndUnfreez.html'/>";
-	document.egovernance.submit();
+	disableButton(true);
+	if($('#districtSupportedId').val()!='' && $('#districtSupportedId').val()!=null && $('#districtSupportedId').val()!='undefined' && $('#districtSupportedId').val()>0)
+	{
+		if($('#total_fund_dpmu').val()!=0 && $('#total_fund_dpmu').val()!='undefined' && $('#total_fund_dpmu').val()!='')
+		{
+			document.getElementById("dbFileName").value = obj;
+			document.egovernance.method = "post";
+			document.egovernance.action = "freezAndUnfreez.html?<csrf:token uri='freezAndUnfreez.html'/>";
+			document.egovernance.submit();
+		}
+		else
+			{
+			alert("Fund can not be 0 or blank");
+			disableButton(false);
+			}
+	}
+	else
+		{
+		if($('#total_fund_spmu').val()!=0 && $('#total_fund_spmu').val()!='undefined' && $('#total_fund_spmu').val()!='')
+		{
+			document.getElementById("dbFileName").value = obj;
+			document.egovernance.method = "post";
+			document.egovernance.action = "freezAndUnfreez.html?<csrf:token uri='freezAndUnfreez.html'/>";
+			document.egovernance.submit();
+		}
+		else
+		{
+		alert("Fund can not be 0 or blank");
+		disableButton(false);
+		}
+		}
 };
 
 function calculateProposedFund(obj) {

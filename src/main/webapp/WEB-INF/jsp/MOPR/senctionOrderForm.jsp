@@ -178,9 +178,11 @@
 																	<strong>${sanctionOrderAmount.componentName}</strong>
 																</div></td>
 
-															<td><input class="form-control Align-Right"
+															<td>
+													<fmt:formatNumber type="number" groupingUsed="false" value="${sanctionOrderAmount.componentAmount}" var="cAmount"  maxFractionDigits="2"/>
+															<input class="form-control Align-Right"
 																name="sanctionOrderCompomentAmountList[${count.index}].componentAmount"
-																value="${sanctionOrderAmount.componentAmount}"
+																value="${cAmount}"
 																required="required" /></td>
 
 															</td>

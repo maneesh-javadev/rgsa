@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import gov.in.rgsa.dao.CommonRepository;
+import gov.in.rgsa.dto.CheckAllComponentforForwardPlan;
 import gov.in.rgsa.dto.IsFreezeStatusDto;
 import gov.in.rgsa.entity.ActionPlanStatus;
 import gov.in.rgsa.entity.FinYear;
@@ -94,10 +95,22 @@ public class FacadeServiceImpl implements FacadeService {
 			menuParam.put("itemType", "W");
 		else
 			menuParam.put("itemType", user.getUserType());
+		
+		
 
-		List<MenuProfile> menus = dao.findAll("FIND_MENU_BY_ITEM_TYPE", menuParam);
+		List<MenuProfile> menus=null;
 		
 		FinYear finYear = commonService.findActiveFinYear();
+		
+		if(menuParam.get("itemType").equals("S")) {
+			if(finYear.getYearId()==2 || finYear.getYearId()==3) {
+				 menus = dao.findAll("FIND_MENU_FOR_STATE_YEARWISE", null);
+			}else {
+				 menus = dao.findAll("FIND_MENU_FOR_STATE_QUARTERWISE", null);
+			}
+		}else {
+			menus = dao.findAll("FIND_MENU_BY_ITEM_TYPE", menuParam);
+		}
 		
 		Map<String, Object> parameter = new HashMap<String, Object>();
 		parameter.put("yearId",finYear.getYearId());
@@ -379,9 +392,15 @@ public class FacadeServiceImpl implements FacadeService {
 		Map<String, Object> parameter = new HashMap<String, Object>();
 		parameter.put("yearId",_userPreference.getFinYearId());
 		parameter.put("stateCode", _userPreference.getStateCode());
+		
+		List<IsFreezeStatusDto> isFreezeStatusDto = commonRepository.findAll("FETCH_FORMS_FREEZE_STATUS", parameter);
+		_userPreference.setIsFreezeStatusList(isFreezeStatusDto);
+		
+		
 		parameter.put("userType", _userPreference.getUserType());
 		List<StatePlanComponentsFunds> componentsFunds= commonRepository.findAll("STATE_PLAN_FUNDS", parameter);
 		_userPreference.setStatePlanComponentsFunds(componentsFunds);
+		
 		Boolean plansAreFreezed = checkForFreezeStatus(param1);
 		_userPreference.setPlansAreFreezed(plansAreFreezed);
 		
@@ -389,8 +408,17 @@ public class FacadeServiceImpl implements FacadeService {
 		_userPreference.setCountPlanSubmittedByMOPR(planDetailsService.countPlanSubmittedByState("C",_userPreference.getFinYearId()));
 		_userPreference.setCountPlanApprovedByCec(planDetailsService.countPlanSubmittedByState("A",_userPreference.getFinYearId()));
 		
-		List<IsFreezeStatusDto> isFreezeStatusDto = commonRepository.findAll("FETCH_FORMS_FREEZE_STATUS", parameter);
-		_userPreference.setIsFreezeStatusList(isFreezeStatusDto);
+		List<MenuProfile> menus=null;
+		if( _userPreference.getUserType().equals("S")) {
+			if(Integer.parseInt(finYearId)==2 || Integer.parseInt(finYearId)==3) {
+				 menus = dao.findAll("FIND_MENU_FOR_STATE_YEARWISE", null);
+			}else {
+				 menus = dao.findAll("FIND_MENU_FOR_STATE_QUARTERWISE", null);
+			}
+			
+			_userPreference.setMenus(menus);
+		}
+		
 		}catch(Exception e) {
 			e.printStackTrace();
 		}
@@ -406,7 +434,13 @@ public class FacadeServiceImpl implements FacadeService {
 			parameter.put("stateCode", stateCode);
 		}
 		parameter.put("yearId", userPreference.getFinYearId());
+		if((stateCode!=null || userPreference.getStateCode()!=null) &&  userPreference.getFinYearId()!=null) {
+		System.out.println("select * from rgsa.get_is_freeze_status_at_all_level("+parameter.get("stateCode")+","+parameter.get("yearId")+")");
 		return commonRepository.findAll("FETCH_FORMS_FREEZE_STATUS", parameter);
+		}else {
+			return null;
+		}
+		
 	}
 
 	@Override
@@ -415,6 +449,32 @@ public class FacadeServiceImpl implements FacadeService {
 		parameter.put("state_code", stateCode);
 		parameter.put("year_id", userPreference.getFinYearId());
 		return dao.findByNativeQuery("select * from rgsa.revert_func_no_deletion(:state_code,:year_id)", parameter);
+	}
+	
+	@Override
+	public Map<String, Object> checkAllComponentforPlanForward(Integer stateCode,Integer yearId ,Character userType){
+		Map<String, Object> data = new HashMap<String, Object>();
+		Map<String, Object> parameter = new HashMap<String, Object>();
+		parameter.put("stateCode", stateCode);
+		parameter.put("yearId",yearId);
+		System.out.println("stateCode:"+stateCode+"|yearId:"+yearId+"|userType:"+userType);
+		
+		Boolean isRecordExist=(Boolean)commonRepository.findByNativeQuery("select case when count(1)>0 then true else false  end from rgsa.plan where state_code=:stateCode and year_id=:yearId and isactive", parameter);
+		 if(isRecordExist)
+		 {
+		 String curPlanStatusType=(String)commonRepository.findByNativeQuery("select case when plan_status_id=1 or plan_status_id=3 then 'S' when plan_status_id=2 then 'M' when plan_status_id=4 then 'C' else 'X' end from rgsa.plan where state_code=:stateCode and year_id=:yearId and isactive", parameter);
+		 data.put("isShowForwardButton",curPlanStatusType.charAt(0)==userType);
+		
+		 parameter.put("userType",userType);
+				
+		 Boolean isallCompVerify=(Boolean)commonRepository.findByNativeQuery("select case when count(1)>0 then false else true end from rgsa.check_all_component_for_forward_plan(:stateCode,:yearId,:userType) where is_freeze=false", parameter);
+		 data.put("isallCompVerify",isallCompVerify);
+		List<CheckAllComponentforForwardPlan> checkAllComponentforForwardPlanList = commonRepository.findAll("CHECK_ALL_COMPONENT_FOR_FORWARD_PLAN", parameter);
+		 data.put("checkAllComponentforForwardPlanList", checkAllComponentforForwardPlanList);
+		 }
+		return data;
+		
+		
 	}
 	
 }

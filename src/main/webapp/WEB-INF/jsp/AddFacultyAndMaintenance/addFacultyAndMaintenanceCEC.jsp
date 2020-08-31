@@ -10,7 +10,8 @@ $('document').ready(function(){
 		var myBoolean= document.getElementById("ISFREEZE").value;
 	}
 	 if(myBoolean == "true"){
-		 $("input").prop('disabled', true);
+		// $("input").prop('disabled', true);
+		 $(".mopr_dbld").prop('disabled', true);
 	}
 	if($('#userType').val() == 'M'){
 		$('#file').attr('disabled',true);
@@ -94,7 +95,8 @@ function validateCeilingValue(count){
 }
 	
 function freezeAndUnfreeze(obj){
-	$("input").prop('disabled', false);
+	 $(".mopr_dbld").prop('disabled', false);
+	disableButton(true);
 	$('#textarea').attr('disabled',false);
 	document.getElementById("dbFileName").value = obj;
 	document.additionalFacultyAndMain.method = "post";
@@ -282,6 +284,19 @@ function calculateTotalFundDprc() {
 	$("#total_fund_dprc").val(total_dprc_fund); 
 	calculateGrandTotal();
 };
+
+function disableButton(isDisabled){
+	if(isDisabled){
+		$('#save').prop('disabled',true);
+		$('#freezebtn').prop('disabled',true);
+		$('#unfreezebtn').prop('disabled',true);
+	}else{
+		$('#save').prop('disabled',false);
+		$('#freezebtn').prop('disabled',false);
+		$('#unfreezebtn').prop('disabled',false);
+	}
+	
+}
 </script>
 <section class="content">
 	<div class="container-fluid">
@@ -390,7 +405,7 @@ function calculateTotalFundDprc() {
 															<form:input
 																path="institueInfraHrActivityDetails[${index.index}].noOfUnits"
 																onkeypress="return isNumber(event)"
-																class="active12 form-control Align-Right"
+																class="active12 form-control Align-Right mopr_dbld"
 																onkeyup="onLoadChangeColor();"
 																onchange="domainValidation('noOfUnitsSprc_${index.index}')"
 																id="noOfUnits_${index.index}" />
@@ -403,7 +418,7 @@ function calculateTotalFundDprc() {
 																<form:input
 																	path="institueInfraHrActivityDetails[${index.index}].noOfMonths"
 																	onkeypress="return isNumber(event)"
-																	class="active12 form-control Align-Right"
+																	class="active12 form-control Align-Right mopr_dbld"
 																	onkeyup="onLoadChangeColor() ;validateMonth(${index.index})" id="noOfMonths_${index.index}" />
 															</c:if>
 														</td>
@@ -414,7 +429,7 @@ function calculateTotalFundDprc() {
 																path="institueInfraHrActivityDetails[${index.index}].fund"
 																readonly="" type="text"
 																onkeypress="return isNumber(event)"
-																class="active12 form-control Align-Right"
+																class="active12 form-control Align-Right mopr_dbld"
 																onkeyup="calculateTotalFundSprc();onLoadChangeColor();validateCeilingValue(${index.index})" id="fund_${index.index}" />
 														</td>
 

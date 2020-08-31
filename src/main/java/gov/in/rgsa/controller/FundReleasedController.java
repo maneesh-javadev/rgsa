@@ -1,8 +1,10 @@
 package gov.in.rgsa.controller;
 
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -25,10 +27,12 @@ import gov.in.rgsa.entity.FundReleasedDetails;
 import gov.in.rgsa.entity.QprCbActivity;
 import gov.in.rgsa.entity.ReleaseIntallment;
 import gov.in.rgsa.entity.State;
+import gov.in.rgsa.entity.StateAllocation;
 import gov.in.rgsa.entity.TrgOfHundredDaysProgramCh2;
 import gov.in.rgsa.service.FundReleasedService;
 import gov.in.rgsa.service.InnovativeActivityService;
 import gov.in.rgsa.service.MOPRService;
+import gov.in.rgsa.service.PlanAllocationService;
 import gov.in.rgsa.user.preference.UserPreference;
 import gov.in.rgsa.utils.FileNodeUtils;
 import gov.in.rgsa.utils.Message;
@@ -51,11 +55,15 @@ public class FundReleasedController {
 	
 	@Autowired
 	private UserPreference userPreference;
+	
+	@Autowired
+	private PlanAllocationService planAllocationService;
 
 	@GetMapping(value="fundReleased")
 	private String fundReleased(@ModelAttribute("FUND_RELEASED") FundReleased fundReleased, Model model , RedirectAttributes re) {
 		try {
 		if(fundReleased.getFinYearId() != null) {
+			Boolean isPlanAllocate=false;
 			List<State> stateList = moprService.getStateListApprovedbyCEC(fundReleased.getFinYearId());
 			model.addAttribute("STATE_LIST", stateList);
 			
@@ -63,6 +71,10 @@ public class FundReleasedController {
 				ReleaseIntallment releaseIntallment = fundReleasedService.validateReleaseInstallment(fundReleased.getStateCode(),fundReleased.getFinYearId());
 				if(releaseIntallment != null) {
 					model.addAttribute("RELEASE_INSTALLMENT", releaseIntallment);
+					List<StateAllocation>  stateAllocationList= planAllocationService.fetchStateAllocationList(releaseIntallment.getPlanCode(), releaseIntallment.getInstallmentNo());
+					if(stateAllocationList!=null && !stateAllocationList.isEmpty() && stateAllocationList.size()>0) {
+						isPlanAllocate=true;
+					}
 					FundReleased fetchedEntity = fundReleasedService.fetchData(releaseIntallment.getPlanCode());
 					if(fetchedEntity != null) {
 						Collections.sort(fetchedEntity.getFundReleasedDetails() ,(o1,o2) -> o1.getFundReleasedDetailsId() - o2.getFundReleasedDetailsId());
@@ -77,6 +89,7 @@ public class FundReleasedController {
 							fundReleased.getFundReleasedDetails().clear();
 					}
 					model.addAttribute("FETCHED_DATA", fetchedEntity); 
+					model.addAttribute("isPlanAllocate", isPlanAllocate);
 				}else {
 					fundReleased.setStateCode(null);
 					model.addAttribute("RELEASE_PRESENT", false);

@@ -141,10 +141,23 @@ publicModule.controller("pesaPlanController", [ '$scope', "pesaPlanService",
 			return false;
 		}
 		
-		$scope.grandTotal = +$scope.totalWithoutAddRequirements + parseInt($scope.pesaPlan.additionalRequirement);
+		if($scope.pesaPlan.additionalRequirement!=undefined){
+			$scope.grandTotal = +$scope.totalWithoutAddRequirements + parseInt($scope.pesaPlan.additionalRequirement)
+			
+		}
+		else
+			{
+			$scope.grandTotal=parseInt($scope.totalWithoutAddRequirements) 
+			}
+		
+		//$scope.grandTotal = +$scope.totalWithoutAddRequirements + parseInt($scope.pesaPlan.additionalRequirement);
 	}
 	
 	$scope.savePesaPlan=function(){
+		$scope.btn_disabled=true;
+		$scope.gt=$scope.grandTotal;
+		if(!isNaN($scope.gt))
+			{
 		console.log("inside savePesaPlan");
 		console.log($scope.pesaPlan);
 		for (var i = 0; i < $scope.pesaPlan.pesaPlanDetails.length; i++) {
@@ -160,10 +173,19 @@ publicModule.controller("pesaPlanController", [ '$scope', "pesaPlanService",
 			pesaPlanService.savePesaPlan($scope.pesaPlan).then(function(response){
 				fetchDesignations();
 				toastr.success("Plan Saved Successfully");
+				$scope.btn_disabled=false;
 			},function(error){
 				toastr.error("Something went wrong");
+				$scope.btn_disabled=false;
 			});
 		}
+		
+	}
+	 else
+			{
+			alert("Fund value should not be blank or 0");
+			$scope.btn_disabled=false;
+			}
 	}
 	
 	$scope.validateFields=function(){
@@ -185,7 +207,8 @@ publicModule.controller("pesaPlanController", [ '$scope', "pesaPlanService",
 			}
 		}
 		if(!flag)
-			toastr.error("empty form can't be save or freezed.");	
+			toastr.error("empty form can't be save or freezed.");
+			$scope.btn_disabled=false;
 		return flag;
 	}
 	
@@ -205,6 +228,12 @@ publicModule.controller("pesaPlanController", [ '$scope', "pesaPlanService",
 	}
 	
 	$scope.freezUnFreezPesaPlan=function(freezUnfreez){
+		
+		$scope.btn_disabled=true;
+		//var grandTotal =  parseInt($scope.totalWithoutAddRequirements) +  parseInt($scope.pesaPlan.additionalRequirement);
+		$scope.gt=$scope.grandTotal;
+		if(!isNaN($scope.gt))
+			{
 		if($scope.validateFields()){
 		if(freezUnfreez == 'freez'){
 			$scope.pesaPlan.isFreez = true;
@@ -217,13 +246,24 @@ publicModule.controller("pesaPlanController", [ '$scope', "pesaPlanService",
 			if(freezUnfreez == 'freez'){
 				fetchDesignations();
 				toastr.success("Plan Freezed Successfully");
+				$scope.btn_disabled=false;
 			}else{
 				fetchDesignations();
 				toastr.success("Plan UnFreezed Successfully");
+				$scope.btn_disabled=false;
 			}
 		},function(error){
 			alert(error);
+			$scope.btn_disabled=false;
 		});
 		}
+			}
+		 else
+			{
+			alert("Fund value should not be blank or 0");
+			$scope.btn_disabled=false;
+			}
+		
+		
 	}
 }]);

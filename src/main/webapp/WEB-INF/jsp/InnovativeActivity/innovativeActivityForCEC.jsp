@@ -22,7 +22,7 @@
 				
 				$("#supportStaff,.fundsName").each(function () {
 					var get_textbox_value = $(this).val();
-					if ($.isNumeric(get_textbox_value)) {
+					 if ($.isNumeric(get_textbox_value)) {
 						if(calculated_total_sum + parseFloat(get_textbox_value) > 100000000){
 							alert("Total fund value cannot be greater than 10 Crore");
 							$(this).val("");
@@ -36,17 +36,16 @@
 						 $(this).val("");
 						 $("#subTotal").val();
 						 return false;
-					}
+					} 
 					
-					/* if(calculated_total_sum >= 100000000){
+					 if(calculated_total_sum >= 100000000){
 						 alert("Total fund value should be equal to 10 Crore than Additional Requirements should be 0."); 
 						 document.getElementById("additioinalRequirements").value = "";
-						/*  $(this).val("");
-						 $("#subTotal").val(""); */
-						/*  return true; */
-					/*} */
-					
-					else{
+						 $(this).val("");
+						 $("#subTotal").val("");   
+						 return true; 
+						 } 
+					 	else{
 						
 						$("#subTotal").val(calculated_total_sum);
 						if(calculated_total_sum == 100000000){
@@ -333,13 +332,12 @@ function saveSubmit(){
 																		id="fundIdMopr_${count.index}"><strong>${state_detail.fundsName}</strong></div>
 
 																<input type="text" oninput="validity.valid||(value='');"
-																onKeyPress="if(this.value.length==8) return false;"
 																min="0" id="fundId_${count.index}"
 																name="innovativeActivityDetails[${count.index}].fundsName"
 																value="${innovativeAcitivityList[0].innovativeActivityDetails[count.index].fundsName}"
 																onkeyup="this.value=this.value.replace(/[^0-9]/g,''); onloadChangeColor()"
 																Class="form-control Align-Right fundsName"
-																maxlength="12" placeholder="Enter Funds" /></td>
+																placeholder="Enter Funds" /></td>
 															</c:when>
 															
 															<c:otherwise>
@@ -349,12 +347,11 @@ function saveSubmit(){
 																		id="fundIdMopr_${count.index}"><strong>${state_detail.fundsName}</strong></div>
 
 																<input type="text" oninput="validity.valid||(value='');"
-																onKeyPress="if(this.value.length==8) return false;"
 																min="0" id="fundId_${count.index}"
 																name="innovativeActivityDetails[${count.index}].fundsName"
 																onkeyup="this.value=this.value.replace(/[^0-9]/g,''); onloadChangeColor()"
 																Class="form-control Align-Right fundsName"
-																maxlength="12" placeholder="Enter Funds" /></td>
+																 placeholder="Enter Funds" /></td>
 															</c:otherwise>
 															</c:choose>
 															

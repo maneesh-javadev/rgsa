@@ -6,6 +6,8 @@ import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.NamedNativeQueries;
+import javax.persistence.NamedNativeQuery;
 import javax.persistence.Table;
 
 /**
@@ -13,6 +15,15 @@ import javax.persistence.Table;
  * @author ANJIT
  */
 @Entity
+
+@NamedNativeQueries({
+	@NamedNativeQuery(name = "FIND_MENU_FOR_STATE_QUARTERWISE", query = "select * from rgsa.menu_profile mp1 where mp1.item_type ='S' and mp1.isactive  and mp1.menu_id not in("
+	+ "select mp2.menu_id from rgsa.menu_profile mp2 where mp2.resource_id ilike 'Annual Progress Report(Without Quarter)' union select mp3.menu_id from rgsa.menu_profile mp3 where"
+	+ " mp3.parent=(select mp4.menu_id from rgsa.menu_profile mp4 where mp4.resource_id ilike 'Annual Progress Report(Without Quarter)')) ORDER BY mp1.group_id,mp1.menu_groupsea ", resultClass = MenuProfile.class),
+	@NamedNativeQuery(name = "FIND_MENU_FOR_STATE_YEARWISE", query = "select * from rgsa.menu_profile mp1 where mp1.item_type ='S' and mp1.isactive and mp1.menu_id not in("
+			+ "select mp2.menu_id from rgsa.menu_profile mp2 where mp2.resource_id ilike 'Quaterly Progress Report' union select mp3.menu_id from rgsa.menu_profile mp3 where"
+			+ " mp3.parent=(select mp4.menu_id from rgsa.menu_profile mp4 where mp4.resource_id ilike 'Quaterly Progress Report')) ORDER BY mp1.group_id,mp1.menu_groupsea ", resultClass = MenuProfile.class)
+})
 @Table(name = "menu_profile", schema = "rgsa")
 public class MenuProfile implements Serializable {
 

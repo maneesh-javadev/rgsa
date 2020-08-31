@@ -15,8 +15,8 @@ public class QprEGovResponse {
     private Integer versionNo;
     private Integer additionalReqSpmu;
     private Integer additionalReqDpmu;
-    private Boolean isFreez;
-    private Boolean isPost;
+    private Integer isFreez;
+    private Integer isPost;
 
     private Integer qprEGovDetailsId;
     private Integer qprEGovId;
@@ -130,14 +130,7 @@ public class QprEGovResponse {
         this.egovPostId = egovPostId;
     }
 
-    public Boolean getIsFreez() {
-        return isFreez;
-    }
-
-    public void setIsFreez(Boolean isFreez) {
-        this.isFreez = isFreez;
-    }
-
+   
     public Integer getPostFilled() {
         return postFilled;
     }
@@ -178,13 +171,7 @@ public class QprEGovResponse {
         this.egovPostLevelName = egovPostLevelName;
     }
 
-    public Boolean getIsPost() {
-        return isPost;
-    }
 
-    public void setIsPost(Boolean post) {
-        isPost = post;
-    }
 
     public Double getSpent() {
         return spent;
@@ -241,4 +228,22 @@ public class QprEGovResponse {
     public void setAddReqDpmuUsed(Integer addReqDpmuUsed) {
         this.addReqDpmuUsed = addReqDpmuUsed;
     }
+
+	public Integer getIsFreez() {
+		return isFreez;
+	}
+
+	public void setIsFreez(Integer isFreez) {
+		this.isFreez = isFreez;
+	}
+
+	public Integer getIsPost() {
+		return isPost;
+	}
+
+	public void setIsPost(Integer isPost) {
+		this.isPost = isPost;
+	}
+    
+    
 }

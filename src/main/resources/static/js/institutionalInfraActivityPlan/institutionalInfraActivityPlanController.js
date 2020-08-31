@@ -727,6 +727,9 @@ function create_state_row_CF(rindex,name,id){
 			};
 		}
 		index=0;
+		
+		
+		
 		if($scope.institutionalInfraActivityPlan.additionalRequirementNBS != undefined){
 			$scope.institutionalInfraActivityPlan.additionalRequirement=$scope.institutionalInfraActivityPlan.additionalRequirementNBS;
 		}
@@ -768,14 +771,26 @@ function create_state_row_CF(rindex,name,id){
 			if(status=='F'){
 				$scope.institutionalInfraActivityPlan.isFreeze=true;
 			}
-			institutionalInfraActivityPlanService.saveInstitutionalInfraActivityPlanDetails($scope.institutionalInfraActivityPlan,$scope.updateStatus).then(function(response){
-				//$scope.institutionalInfraActivityPlan = response.data;
-				//$scope.fetchData($scope.institutionalInfraActivityPlan.institutionalInfraActivityPlanDetails[0].trainingInstitueType.trainingInstitueTypeId);
-					toastr.success("Plan Saved Successfully");
-					init();
-			},function(error){
-				toastr.error("Something went wrong");
-			});
+			grandTotalFlag=false;
+			if($scope.grandTotal!=undefined && $scope.grandTotal>0){
+				grandTotalFlag=true;
+			}
+			
+			if($scope.institutionalInfraActivityPlan.institutionalInfraActivityPlanDetails.length>0 && grandTotalFlag){
+				institutionalInfraActivityPlanService.saveInstitutionalInfraActivityPlanDetails($scope.institutionalInfraActivityPlan,$scope.updateStatus).then(function(response){
+					//$scope.institutionalInfraActivityPlan = response.data;
+					//$scope.fetchData($scope.institutionalInfraActivityPlan.institutionalInfraActivityPlanDetails[0].trainingInstitueType.trainingInstitueTypeId);
+						toastr.success("Plan Saved Successfully");
+						init();
+				},function(error){
+					toastr.error("Something went wrong");
+				});
+			}else{
+				toastr.error("Fund value should not be blank or zero.");
+				$scope.btn_disabled=false;
+				init();
+			}
+			
 		/*}else{
 			toastr.error("Fund value should not be blank or zero.");
 			init();

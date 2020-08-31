@@ -26,7 +26,7 @@ import org.springframework.web.multipart.MultipartFile;
 @Entity
 @Table(name="income_enhancement_details",schema="rgsa")
 @NamedQueries({
-	@NamedQuery(name="FETCH_ALL_INCOME_DETAILS_EXCEPT_CURRENT_VERSION",query = "from IncomeEnhancementDetails where incomeEnhancementActivity.stateCode=:stateCode and incomeEnhancementActivity.versionNo !=:versionNo and incomeEnhancementActivity.userType in('S','M') order by incomeEnhancementDetailsId"),
+	@NamedQuery(name="FETCH_ALL_INCOME_DETAILS_EXCEPT_CURRENT_VERSION",query = "from IncomeEnhancementDetails where incomeEnhancementActivity.stateCode=:stateCode and incomeEnhancementActivity.versionNo !=:versionNo and incomeEnhancementActivity.yearId=:yearId and incomeEnhancementActivity.userType in('S','M') order by incomeEnhancementDetailsId"),
 	@NamedQuery(name="DELETE_INCM_ENHNCMNT_DETAILS_BY_ID",query="delete from IncomeEnhancementDetails where incomeEnhancementDetailsId=:incomeEnhancementDetailsId")
 })
 
@@ -82,10 +82,10 @@ public class IncomeEnhancementDetails implements Serializable{
 	private Integer yearTo;
 	
 	@Column(name="total_cost_of_project")
-	private Integer totalCostOfProject;
+	private Long totalCostOfProject;
 	
 	@Column(name="funds_required")
-	private Integer fundsRequired;
+	private Long fundsRequired;
 	
 	@Column(name="brief_about_activity")
 	private String briefAboutActivity;
@@ -226,19 +226,21 @@ public class IncomeEnhancementDetails implements Serializable{
 		this.yearTo = yearTo;
 	}
 
-	public Integer getTotalCostOfProject() {
+	
+
+	public Long getTotalCostOfProject() {
 		return totalCostOfProject;
 	}
 
-	public void setTotalCostOfProject(Integer totalCostOfProject) {
+	public void setTotalCostOfProject(Long totalCostOfProject) {
 		this.totalCostOfProject = totalCostOfProject;
 	}
 
-	public Integer getFundsRequired() {
+	public Long getFundsRequired() {
 		return fundsRequired;
 	}
 
-	public void setFundsRequired(Integer fundsRequired) {
+	public void setFundsRequired(Long fundsRequired) {
 		this.fundsRequired = fundsRequired;
 	}
 

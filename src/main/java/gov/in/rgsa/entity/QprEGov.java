@@ -54,10 +54,10 @@ import gov.in.rgsa.outbound.QprEGovResponse;
             "    esad.egov_support_activity_details_id \"egovSupportActivityDetailsId\",  " +
             "    COALESCE(esad.no_of_units, 0) \"postApproved\", " +
             "    COALESCE(esad.unit_cost, 0) \"costApproved\",  " +
-            "    esad.is_approved \"isApproved\",  " +
+            "    case when  esad.is_approved=true then 1 when  esad.is_approved=false then 0 end \"isApproved\",  " +
             "    ep.egov_post_id \"egovPostId\", " +
-            "    COALESCE(qe.is_freeze, FALSE) \"isFreez\",  " +
-            "    ep.is_post \"isPost\",  " +
+            "    case when  qe.is_freeze=true then 1 when  qe.is_freeze=false then 0 end \"isFreez\",  " +
+            "    case when  ep.is_post=true then 1 when  ep.is_post=false then 0 end  \"isPost\",  " +
             "    COALESCE(qe.qpr_egov_id, -1) \"qprEGovId\", " +
             "    COALESCE(qed.qpr_egov_details_id, -1) \"qprEGovDetailsId\",  " +
             "    COALESCE(qed.no_of_units_filled, 0) \"postFilled\",  " +

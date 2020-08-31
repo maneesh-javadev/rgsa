@@ -22,8 +22,19 @@
     });
     function validateForm() {
     	alert('Amount proposed should not be more than 2% of the total fund of activities proposed.');
-        return true;
+        return false;
     }
+    
+  function validateFund()
+    {
+    	var gt=0;
+    	gt=document.getElementById("amount_box").value;
+    	if(gt==0)
+    		{
+    		alert("Fund value should not be blank or 0");
+    		return false
+    		}
+    	}
 </script>
 
 <section class="content">
@@ -40,7 +51,7 @@
                     <div class="body">
 
                         <form:form method="POST" name="IecName" action="iec.html"
-                                   id="iecId" modelAttribute="IEC_ACTIVITY" path="iec" onsubmit="return validateForm()">
+                                   id="iecId" modelAttribute="IEC_ACTIVITY" path="iec" onsubmit="return validateForm(), validateFund()">
 
                             <form:input path="iecId" type="hidden"/>
 
@@ -58,7 +69,7 @@
                                 <form:input type="number"
                                             path="amount"
                                             min="1"
-                                            max="99999999"
+                                            max="100000000"
                                             class="no-scroll normalbox form-control"
                                             placeholder="Total Amount Proposed"
                                             disabled="${ IEC_ACTIVITY.getFreeze() ? 'true' : 'false'}"
@@ -136,8 +147,8 @@
                                 <div class="col-md-offset-2 text-right">
                                 <c:if test="${planUtil.isNotSubmitted()}">
                                 <c:if test="${ !IEC_ACTIVITY.getFreeze() }">
-                                <input type="submit" name="action" value="SAVE"  class="btn bg-green waves-effect"/></c:if>
-                                <input type="submit" name="action" value="${ IEC_ACTIVITY.getFreeze() ? 'UNFREEZE':'FREEZE'}"  class="btn bg-orange waves-effect"/>
+                                <input type="submit" name="action" value="SAVE"  class="btn bg-green waves-effect"  id="savebtn"/></c:if>
+                                <input type="submit" name="action" value="${ IEC_ACTIVITY.getFreeze() ? 'UNFREEZE':'FREEZE'}"  class="btn bg-orange waves-effect"  id="freezebtn"/>
                                 </c:if>
                                     <%-- <c:if test="${planUtil.isNotSubmitted() and userPreference.isState() and planUtil.pendingAtMOPR() || true }">
                                     <c:if test="${!IEC_ACTIVITY.getFreeze()} ">

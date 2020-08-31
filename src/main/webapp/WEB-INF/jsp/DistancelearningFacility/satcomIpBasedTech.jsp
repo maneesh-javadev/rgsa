@@ -105,13 +105,13 @@
 												</td>
 												<td>
 												<div align="center" data-ng-style="{'color':(satcomActivityObjectMOPR.activityDetails[$index].noOfUnits > satcomActivityObject.activityDetails[$index].noOfUnits) ? 'red' : '#00cc00'}"><strong>{{satcomActivityObjectMOPR.activityDetails[$index].noOfUnits}}</strong></div>
-												<input type="text" maxlength="6"
+												<input type="text"
 													data-ng-show="satcomActivityObject.status != 'F'"
 													data-restrict-input="{type: 'digitsOnly',index: $index}"
 													data-ng-keyup="calculateFundsAndTotalWithoutAdditionaRequirement($index)"
 													data-ng-model="satcomActivityObject.activityDetails[$index].noOfUnits"
 													class="form-control" style="text-align: right;" /> <input
-													type="text" maxlength="6"
+													type="text" 
 													data-ng-show="satcomActivityObject.status == 'F'"
 													disabled="disabled"
 													data-restrict-input="{type: 'digitsOnly',index: $index}"
@@ -122,13 +122,13 @@
 													
 												<td>
 												<div align="center" data-ng-style="{'color':(satcomActivityObjectMOPR.activityDetails[$index].unitCost > satcomActivityObject.activityDetails[$index].unitCost ) ? 'red' : '#00cc00'}"><strong>{{satcomActivityObjectMOPR.activityDetails[$index].unitCost}}</strong></div>
-												<input type="text" maxlength="5"
+												<input type="text" 
 													data-ng-show="satcomActivityObject.status != 'F'"
 													data-restrict-input="{type: 'digitsOnly',index: $index}"
 													data-ng-keyup="calculateFundsAndTotalWithoutAdditionaRequirement($index)"
 													data-ng-model="satcomActivityObject.activityDetails[$index].unitCost"
 													class="form-control validate" style="text-align: right;" />
-													<input type="text" maxlength="5"
+													<input type="text" 
 													data-ng-show="satcomActivityObject.status == 'F'"
 													disabled="disabled"
 													data-restrict-input="{type: 'digitsOnly',index: $index}"
@@ -466,26 +466,26 @@
 													</select>
 												</div>
 											</td>
-											<td><input type="text" maxlength="6"
+											<td><input type="text" 
 												data-ng-show="satcomActivityObject.status != 'F'"
 												data-restrict-input="{type: 'digitsOnly',index: $index}"
 												data-ng-keyup="calculateFundsAndTotalWithoutAdditionaRequirement($index)"
 												data-ng-model="satcomActivityObject.activityDetails[$index].noOfUnits"
 												class="form-control" style="text-align: right;" /> <input
-												type="text" maxlength="6"
+												type="text" 
 												data-ng-show="satcomActivityObject.status == 'F'"
 												disabled="disabled"
 												data-restrict-input="{type: 'digitsOnly',index: $index}"
 												data-ng-keyup="calculateFundsAndTotalWithoutAdditionaRequirement($index)"
 												data-ng-model="satcomActivityObject.activityDetails[$index].noOfUnits"
 												class="form-control" style="text-align: right;" /></td>
-											<td><input type="text" maxlength="5"
+											<td><input type="text" 
 												data-ng-show="satcomActivityObject.status != 'F'"
 												data-restrict-input="{type: 'digitsOnly',index: $index}"
 												data-ng-keyup="calculateFundsAndTotalWithoutAdditionaRequirement($index)"
 												data-ng-model="satcomActivityObject.activityDetails[$index].unitCost"
 												class="form-control validate" style="text-align: right;" />
-												<input type="text" maxlength="5"
+												<input type="text" 
 												data-ng-show="satcomActivityObject.status == 'F'"
 												disabled="disabled"
 												data-restrict-input="{type: 'digitsOnly',index: $index}"

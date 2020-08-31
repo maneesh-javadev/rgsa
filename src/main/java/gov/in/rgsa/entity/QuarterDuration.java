@@ -10,11 +10,11 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name="qpr_quarter_detail",schema="rgsa")
-@NamedQuery(name="FETCH_QUARTER_DURATION",query="from QuarterDuration order by qtrId")
+@NamedQuery(name="FETCH_QUARTER_DURATION",query="from QuarterDuration where isactive=true order by qtrId ")
 public class QuarterDuration implements Serializable {
 
 	/**
-	 * 
+	 *  
 	 */
 	private static final long serialVersionUID = 1604943823896734756L;
 
@@ -24,6 +24,9 @@ public class QuarterDuration implements Serializable {
 	
 	@Column(name="qtr_duration")
 	private String qtrDuration;
+	
+	@Column(name="isactive")
+	private Boolean isactive;
 
 	public Integer getQtrId() {
 		return qtrId;
@@ -40,5 +43,17 @@ public class QuarterDuration implements Serializable {
 	public void setQtrDuration(String qtrDuration) {
 		this.qtrDuration = qtrDuration;
 	}
+
+	public Boolean getIsactive() {
+		return isactive;
+	}
+
+	public void setIsactive(Boolean isactive) {
+		this.isactive = isactive;
+	}
+
+	
+	
+	
 	
 }

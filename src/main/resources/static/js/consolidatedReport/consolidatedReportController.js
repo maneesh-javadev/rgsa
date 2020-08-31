@@ -9,7 +9,7 @@ publicModule.controller("consolidatedReportController", [ '$scope', "consolidate
 	$scope.capacityBuilding={};
 	$scope.capacityBuilding.capacityBuildingActivityDetails=[];
 	$scope.capacityBuilding.additionalRequirement;
-	
+	$scope.btn_disabled=false;
 	
 	/*$( document ).ready(function() {
 		fetchConsolidatedReportDetails();
@@ -124,8 +124,10 @@ publicModule.controller("consolidatedReportController", [ '$scope', "consolidate
 	}
 	
 	$scope.forwardPlan=function(plansAreFreezed){
+		$scope.btn_disabled=true;
 		if(!plansAreFreezed){
 			toastr.error("All Plans Are Not Freezed");
+			$scope.btn_disabled=false;
 		}else{
 			consolidatedReportService.forwardPlans().then(function(data){
 				var result = data.data.result;
@@ -135,11 +137,14 @@ publicModule.controller("consolidatedReportController", [ '$scope', "consolidate
 					break;
 				case "N" :
 					toastr.error("Please fill Nodal Officers deatils first.");
+					$scope.btn_disabled=false;
 					break;	
 				case "A" :
 					toastr.error("Plan has been already forwarded.");
+					$scope.btn_disabled=false;
 					break;
 				default:
+					$scope.btn_disabled=false;
 					break;
 				}
 			})

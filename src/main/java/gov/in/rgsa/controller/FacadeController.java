@@ -1,6 +1,7 @@
 package gov.in.rgsa.controller;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.persistence.NoResultException;
@@ -22,6 +23,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import gov.in.rgsa.dto.CheckAllComponentforForwardPlan;
 import gov.in.rgsa.dto.CustomError;
 import gov.in.rgsa.entity.NodalOfficerDetails;
 import gov.in.rgsa.entity.StatewiseEntitiesCount;
@@ -108,7 +110,21 @@ public class FacadeController {
 		if(nodalOfficerDetails==null && _userPreference.getUserType().equalsIgnoreCase("S")){
 			model.addAttribute("PlanStatusName", "Not Started");
 		}else
-			model.addAttribute("PlanStatusName", facadeServiceImpl.getPlanStatusName());
+		model.addAttribute("PlanStatusName", facadeServiceImpl.getPlanStatusName());
+		Map<String, Object> data=facadeServiceImpl.checkAllComponentforPlanForward(_userPreference.getStateCode(), _userPreference.getFinYearId(), _userPreference.getUserType().charAt(0));
+		if( _userPreference.getUserType().charAt(0)=='S') {
+			
+			Boolean isallCompVerify=(Boolean)data.get("isallCompVerify");
+			model.addAttribute("isallCompVerify", isallCompVerify);
+			Boolean isShowForwardButton=(Boolean)data.get("isShowForwardButton");
+			model.addAttribute("isShowForwardButton", isShowForwardButton);
+		}
+		List<CheckAllComponentforForwardPlan> checkAllComponentforForwardPlanList=(List<CheckAllComponentforForwardPlan>)data.get("checkAllComponentforForwardPlanList");
+		model.addAttribute("checkAllComponentforForwardPlanList", checkAllComponentforForwardPlanList);
+		
+		_userPreference.setCountPlanSubmittedByState(planDetailsService.countPlanSubmittedByState("M", _userPreference.getFinYearId()));
+		_userPreference.setCountPlanSubmittedByMOPR(planDetailsService.countPlanSubmittedByState("C",_userPreference.getFinYearId()));
+		_userPreference.setCountPlanApprovedByCec(planDetailsService.countPlanSubmittedByState("A",_userPreference.getFinYearId()));
 		
 		return HOME_VIEW;
 	}
@@ -130,6 +146,15 @@ public class FacadeController {
 			setPreference(service.findUser(form));
 			model.addAttribute("PlanStatusName", facadeServiceImpl.getPlanStatusName());
 		
+			if( _userPreference.getUserType().charAt(0)=='S') {
+				Map<String, Object> data=facadeServiceImpl.checkAllComponentforPlanForward(_userPreference.getStateCode(), _userPreference.getFinYearId(), _userPreference.getUserType().charAt(0));
+				Boolean isallCompVerify=(Boolean)data.get("isallCompVerify");
+				model.addAttribute("isallCompVerify", isallCompVerify);
+				List<CheckAllComponentforForwardPlan> checkAllComponentforForwardPlanList=(List<CheckAllComponentforForwardPlan>)data.get("checkAllComponentforForwardPlanList");
+				model.addAttribute("checkAllComponentforForwardPlanList", checkAllComponentforForwardPlanList);
+				Boolean isShowForwardButton=(Boolean)data.get("isShowForwardButton");
+				model.addAttribute("isShowForwardButton", isShowForwardButton);
+			}
 			/*
 			 * model.addAttribute("FIN_YEARS", commonService.findAllFinYear());
 			 * return FIN_YEAR_VIEW;

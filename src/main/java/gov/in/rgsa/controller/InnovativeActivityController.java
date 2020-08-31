@@ -143,8 +143,8 @@ public class InnovativeActivityController {
 	@RequestMapping(value="innovativeActivityDetails", method=RequestMethod.POST)
 	private String saveInnovativeActivityDetails(@ModelAttribute("INNOVATIVE_ACTIVITY") InnovativeActivity innovativeActivity, Model model,RedirectAttributes redirectAttributes) throws IOException{
 		
-		Integer totalFund=00;
-		Integer twentyFivePercntgOfTotalFund;
+		Long totalFund=0L;
+		Long twentyFivePercntgOfTotalFund;
 		
 		for(int k =0;k<innovativeActivity.getInnovativeActivityDetails().size();k++) {
 			if(innovativeActivity.getInnovativeActivityDetails().get(k).getFundsName() > 0) {

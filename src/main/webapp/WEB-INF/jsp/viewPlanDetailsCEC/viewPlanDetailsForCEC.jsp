@@ -822,13 +822,17 @@ toggleInstInfraAndPanchayatBhawan=function(id,msg){
 							
 										<c:if test="${buttonStatus}">
 											<c:choose>
-												<c:when test="${not forwardPlanStatus}"><input type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal" value="APPROVE PLAN"/></c:when>
-												<c:when test="${forwardPlanStatus}"><div><a href="ApprovePlanByCec.html?<csrf:token uri='ApprovePlanByCec.html'/>" class="btn btn-success" role="button">APPROVE PLAN</a></div></c:when>
+												<c:when test="${not forwardPlanStatus or not isallCompVerify}"><input type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal" value="APPROVE PLAN"/></c:when>
+												<c:when test="${forwardPlanStatus and isallCompVerify}">
+													<c:if test="${isShowForwardButton}">
+														<div><a href="ApprovePlanByCec.html?<csrf:token uri='ApprovePlanByCec.html'/>" class="btn btn-success" role="button">APPROVE PLAN</a></div>
+												    </c:if>
+												</c:when>
 												<c:otherwise>something goes wrong during calculation</c:otherwise>
 											</c:choose>
 										</c:if>
 						
-						<div id="myModal" class="modal fade" role="dialog">
+						<%-- <div id="myModal" class="modal fade" role="dialog">
 									<div class="modal-dialog modal-lg">
 										<!-- Modal content-->
 										<div class="modal-content">
@@ -874,7 +878,63 @@ toggleInstInfraAndPanchayatBhawan=function(id,msg){
 										</div>
 
 									</div>
+								</div> --%>
+								
+								<div id="myModal" class="modal fade" role="dialog">
+									<div class="modal-dialog modal-lg">
+										<!-- Modal content-->
+										<div class="modal-content">
+											<div class="modal-header">
+												<h4>Status of All Action Plan Forms</h4>
+												<button type="button" class="close" data-dismiss="modal">&times;</button>
+											</div>
+											<div class="modal-body">
+												<div class="table-responsive">
+													<table class="table table-hover">
+														<thead style="background-color: #b39ad8;color: #2f2b2bf2;">
+															<tr>
+															<th><div align="center">S.No.</div></th>
+															<th><div align="center">Form Name</div></th>
+															<th><div align="center">Fill Status</div></th>
+															<th><div align="center">Freeze Status </div></th>
+															<th><div align="center">Go to form</div></th>
+															</tr>
+														</thead>
+														<tbody>
+															<c:forEach items="${checkAllComponentforForwardPlanList}" var="obj" varStatus="rowstatus">
+																<tr>
+																	<td><div align="center"><strong>${rowstatus.count}.</strong></div></td>
+																	<td><div align="center"><strong>${obj.componentName}</strong></div></td>
+																	<td>
+																		<c:choose>
+																			
+																			<c:when test="${obj.checkFilled}"><div align="center" style="color: green;font-weight: bold;">Form filled</div></c:when>
+																			<c:otherwise><div align="center" style="color: red;font-weight: bold;">Form Not filled</div></c:otherwise>
+																		</c:choose>
+																	</td>
+																	<td>
+																		<c:choose>
+																			<c:when test="${obj.checkFreeze}"><div align="center" style="color: green;font-weight: bold;">Form Freezed</div></c:when>
+																			<c:otherwise><div align="center" style="color: red;font-weight: bold;">Form Not Freezed</div></c:otherwise>
+																		</c:choose>
+																	</td>
+																	<td><div align="center"><span><a href="${obj.link}?<csrf:token uri='${obj.link}'/>"><i class="fa fa-pencil-square-o fa-lg edit-color" aria-hidden="true"></i></a></span></div></td>
+																</tr>
+															</c:forEach>
+														</tbody>
+													</table>
+												</div>
+											</div>
+											<div class="modal-footer">
+											<div align="left" style="color: red"><sup>*</sup> In order to forward plan you have to <b><u><i>freeze</u></b> all the forms which are filled.</div>
+												<button type="button" class="btn btn-danger"
+													data-dismiss="modal">Close</button>
+											</div>
+										</div>
+
+									</div>
 								</div>
+								
 						</div>
 					</div>
 				</div>

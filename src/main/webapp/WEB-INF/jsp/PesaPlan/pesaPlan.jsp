@@ -206,13 +206,13 @@ $('document').ready(function(){
 							</div>
 					<div class="form-group text-right" style="padding-bottom: 10px;padding-right: 10px;">
 					 <c:if test="${Plan_Status eq true}"> 
-				     	<button type="button" data-ng-click="savePesaPlan()" data-ng-disabled="pesaPlan.isFreez" class="btn bg-green waves-effect">
+				     	<button type="button" data-ng-click="savePesaPlan()" data-ng-disabled="pesaPlan.isFreez||btn_disabled" class="btn bg-green waves-effect">
 							<spring:message code="Label.SAVE" htmlEscape="true" />
 						</button>
-						<button data-ng-show=" pesaPlan.isFreez" type="button" data-ng-click="freezUnFreezPesaPlan('unfreez')" class="btn bg-orange waves-effect">
+						<button data-ng-show=" pesaPlan.isFreez" type="button" data-ng-click="freezUnFreezPesaPlan('unfreez')" data-ng-disabled="btn_disabled" class="btn bg-orange waves-effect">
 							<spring:message code="UNFREEZE" htmlEscape="true" />
 						</button>
-						<button data-ng-show="(typeof(pesaPlan.isFreez) !== 'undefined') && !pesaPlan.isFreez" type="button" data-ng-click="freezUnFreezPesaPlan('freez')" class="btn bg-orange waves-effect">
+						<button data-ng-show="(typeof(pesaPlan.isFreez) !== 'undefined') && !pesaPlan.isFreez" type="button" data-ng-click="freezUnFreezPesaPlan('freez')" data-ng-disabled="btn_disabled" class="btn bg-orange waves-effect">
 							<spring:message code="FREEZE" htmlEscape="true" />
 						</button>
 						

@@ -1,6 +1,52 @@
 <%@include file="../taglib/taglib.jsp"%>
-<script type="text/javascript"
-	src="${pageContext.request.contextPath}/resources/js/eGovernance/e-Governance.js"></script>
+<script type="text/javascript"	src="${pageContext.request.contextPath}/resources/js/eGovernance/e-Governance.js"></script>
+<script language="javascript">
+function save_data(){
+	disableButton(true);
+	if($('#districtSupportedId').val()!='' && $('#districtSupportedId').val()!=null && $('#districtSupportedId').val()!='undefined' && $('#districtSupportedId').val()>0)
+		{
+		if($('#total_fund_dpmu').val()!=0 && $('#total_fund_dpmu').val()!='undefined' && $('#total_fund_dpmu').val()!='')
+			{
+			document.egovernance.method = "post";
+			document.egovernance.action = "egovernancesupportgroup.html?<csrf:token uri='egovernancesupportgroup.html'/>";
+			document.egovernance.submit();
+			}
+		else
+		{
+		disableButton(false);
+		alert("Fund can not be 0 or blank");
+		}
+		}
+	else{
+	if($('#total_fund_spmu').val()!=0 && $('#total_fund_spmu').val()!='undefined' && $('#total_fund_spmu').val()!='')
+	{
+	 	document.egovernance.method = "post";
+		document.egovernance.action = "egovernancesupportgroup.html?<csrf:token uri='egovernancesupportgroup.html'/>";
+		document.egovernance.submit();
+	}
+	else
+	{
+	disableButton(false);
+	alert("Fund can not be 0 or blank");
+	}
+	}
+	
+}
+
+
+function disableButton(isDisabled){
+	if(isDisabled){
+		$('#egov_save').prop('disabled',true);
+		$('#freezeId').prop('disabled',true);
+		$('#unfreezeId').prop('disabled',true);
+	}else{
+		$('#egov_save').prop('disabled',false);
+		$('#freezeId').prop('disabled',false);
+		$('#unfreezeId').prop('disabled',false);
+	}
+	
+}
+</script>
 <section class="content">
 	<div class="container-fluid">
 		<div class="row clearfix">
@@ -408,11 +454,16 @@
 								<c:if test="${Plan_Status eq true}">
 									<c:if
 										test="${eGovActivity.status eq false || empty eGovActivity.status}">
-
-										<button type="submit" class="btn bg-green waves-effect"
-											id="saveId">
+										
+										<button type="button" class="btn bg-green waves-effect"
+											id="egov_save" onclick="save_data()">
 											<spring:message code="Label.SAVE" htmlEscape="true" />
 										</button>
+
+										<%-- <button type="submit" class="btn bg-green waves-effect"
+											id="saveId">
+											<spring:message code="Label.SAVE" htmlEscape="true" />
+										</button> --%>
 										<c:if test="${eGovActivity.status  != undefined}">
 											<button type="button" onclick='freezeAndUnfreeze("freeze")'
 												id="freezeId" class="btn bg-orange waves-effect">

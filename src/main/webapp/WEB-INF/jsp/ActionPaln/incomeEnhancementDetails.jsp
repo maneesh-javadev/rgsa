@@ -32,10 +32,7 @@ $(document).ready(function() {
 		    }
 		 });
 	 
-	 if($('#fundsName').val() > 50000){
-		 $(this).val(0);
-		 alert("Value should be less than 50000Rs.")
-	 }
+	 
 	 if($('#isFreeze').val() != undefined){
 	var myBoolean = document.getElementById("isFreeze").value;
 	if(myBoolean == "true"){
@@ -124,6 +121,10 @@ function showImage(path,name){
 
 
 function saveSubmit(){
+	var gt=0;
+	gt=document.getElementById("grandTotal").value;
+	if(gt!=0)
+		{
 	
 	 $.each( delTrainingIdArr, function( index, value ) {
     	fname=deleteFile.get(value);
@@ -136,6 +137,11 @@ function saveSubmit(){
 	document.incomeEnhancement.method = "post";
 	document.incomeEnhancement.action = "incomeEnhancementAdd.html?<csrf:token uri='incomeEnhancementAdd.html'/>";
 	document.incomeEnhancement.submit();
+		}
+else
+{
+alert("Fund value should not be blank or 0");
+}
 }
 
 	/* $(".dId").change(function(){ */
@@ -185,8 +191,8 @@ function addNewRow(){
 		tds+='<td><input type="text" min="1" oninput="validity.valid||(value="");" onKeyPress="if(this.value.length==3) return false;" required="required" placeholder="Total Aspirational GP" name="incomeEnhancementDetails['+i+'].noOfAspirationalGp" id="aspirationalGpId_'+i+'" onkeyup="calculateAspirationalGPs('+i+')" class="form-control Align-Right numbers"/></td>';
 		tds+='<td><select required="required" class="form-control" id="yearOne_'+i+'" onchange="validateYear('+i+');"  name="incomeEnhancementDetails['+i+'].yearFrom"><option value=""> From Year</option><option value="2018">2018</option><option value="2019">2019</option><option value="2020">2020</option><option value="2021">2021</option><option value="2022">2022</option></select></td>';
 		tds+='<td><select required="required" class="form-control" id="yearTwo_'+i+'" onchange="validateYear('+i+');" name="incomeEnhancementDetails['+i+'].yearTo"><option value=""> To Year </option><option value="2018">2018</option><option value="2019">2019</option><option value="2020">2020</option><option value="2021">2021</option><option value="2022">2022</option></select></td>';
-		tds+='<td><input type="text" onKeyPress="if(this.value.length==7) return false;" min="1" name="incomeEnhancementDetails['+i+'].totalCostOfProject" placeholder="Total Project cost" required="required" class="form-control Align-Right numbers"/></td>';
-		tds+='<td><input type="text" oninput="validity.valid||(value="");" onKeyPress="if(this.value.length==7) return false;" id="fundsName" min="1" placeholder="Fund Proposed" name="incomeEnhancementDetails['+i+'].fundsRequired" required="required" class="form-control Align-Right numbers"/></td>';
+		tds+='<td><input type="text"  min="1" name="incomeEnhancementDetails['+i+'].totalCostOfProject" placeholder="Total Project cost" required="required" class="form-control Align-Right numbers"/></td>';
+		tds+='<td><input type="text" oninput="validity.valid||(value="");"  id="fundsName" min="1" placeholder="Fund Proposed" name="incomeEnhancementDetails['+i+'].fundsRequired" required="required" class="form-control Align-Right numbers"/></td>';
 		tds+='<td><input type="text" name="incomeEnhancementDetails['+i+'].briefAboutActivity" required="required" maxlength="1000" placeholder="Brief About Activity" class="form-control alphaonly"/></td>';
 		tds+='<td><input type="file" name="incomeEnhancementDetails['+i+'].file" /></td>';
 		/* tds+='<td><input type="checkbox" name="incomeEnhancementDetails['+i+'].planApprovedByDpc" class="form-control"/></td>'; */
@@ -208,10 +214,20 @@ function deleteRow(){
 		} 
 		
 function toFreeze(){
-	 $("input").prop('disabled', false);
+	var gt=0;
+	gt=document.getElementById("grandTotal").value;
+	if(gt!=0)
+		{ 
+	
+	$("input").prop('disabled', false);
 	document.incomeEnhancement.method = "post";
 	document.incomeEnhancement.action = "frzUnfrzIncomeEnhancementActivity.html?<csrf:token uri='frzUnfrzIncomeEnhancementActivity.html'/>";
 	document.incomeEnhancement.submit();
+    }
+else
+{
+alert("Fund value should not be blank or 0");
+}
 }	
 function toDelete(idToDelete,path,name){
 	
@@ -546,15 +562,14 @@ select option:first-child{
 												</select></td>
 												<td><input type="text"
 													oninput="validity.valid||(value='');" placeholder="Total Project Cost"
-													onKeyPress="if(this.value.length==7) return false;" min="1"
+													min="1"
 													name="incomeEnhancementDetails[0].totalCostOfProject"
 													onkeyup="this.value=this.value.replace(/[^0-9]/g,'');"
 													required="required" class="form-control Align-Right" />
 												</td>
 												<td><input type="text" placeholder="Fund Proposed"
 													oninput="validity.valid||(value='');"
-													onKeyPress="if(this.value.length==5) return false;" min="1"
-													max="50000" id="fundsName"
+													id="fundsName"
 													name="incomeEnhancementDetails[0].fundsRequired"
 													onkeyup="this.value=this.value.replace(/[^0-9]/g,'');"
 													required="required"
@@ -693,7 +708,7 @@ select option:first-child{
 													</select></td>
 													<td><input type="text"
 														oninput="validity.valid||(value='');"
-														onKeyPress="if(this.value.length==7) return false;"
+									
 														min="1" value="${dblist.totalCostOfProject}"
 														onkeyup="this.value=this.value.replace(/[^0-9]/g,'');calculateAspirationalGPs(0)"
 														name="incomeEnhancementDetails[${count.index}].totalCostOfProject"
@@ -702,9 +717,9 @@ select option:first-child{
 														value="${totalFundToCalc + dblist.fundsRequired}"></c:set>
 													<td><input type="text"
 														oninput="validity.valid||(value='');"
-														onKeyPress="if(this.value.length==5) return false;"
+														
 														onkeyup="this.value=this.value.replace(/[^0-9]/g,'');calculateAspirationalGPs(0)"
-														min="1" max="50000" value="${dblist.fundsRequired}"
+														value="${dblist.fundsRequired}"
 														id="fundsName"
 														name="incomeEnhancementDetails[${count.index}].fundsRequired"
 														required="required"

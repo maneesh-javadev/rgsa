@@ -39,18 +39,36 @@ function isNumber(evt) {
     return true;
 }
 
+/*else{
+		errorFlag=1;
+		return true;
+	}
+  */
+
 function submitValidation(){
+	var errorFlag=1;
 	if($('#noOfGpID').val() == '' || $('#noOfGpID').val() == null){
 		alert('some fields are blank.');
 		$('#noOfGpID').focus();
+		errorFlag=0;
 		return false;
 	}else if($('#aspirational').val() == '' || $('#aspirational').val() == null){
+		errorFlag=0;
 		return false;
 	}else if($('#unitCostId').val() == '' || $('#unitCostId').val() == null){
+		errorFlag=0;
 		return false;
-	}else{
-		return true;
 	}
+	if(errorFlag)
+		{
+		$('#enablement_save').prop('disabled',true);
+		$('#enablement_freeze').prop('disabled',true);
+		var form=document.getElementById('myForm');
+		form.method = "post";
+		form.action = "enablepanchayat.html?<csrf:token uri='enablepanchayat.html'/>";
+		form.submit();
+		}
+	return false;
 }
 
 $('document').ready(function(){
@@ -98,6 +116,11 @@ function changeColor(txt){
 	+$("#grandTotalId").val() < +$("#grandTotalIdMopr").text() ? $("#grandTotalIdMopr").css("color","red") : $("#grandTotalIdMopr").css("color","#00cc00");
 	+$("#fund").val() < + $("#fundMopr").text() ? $("#fundMopr").css("color","red") : $("#fundMopr").css("color","#00cc00");
 }
+
+/* function save_data()
+{
+	
+} */
 </script>
 <section class="content">
 	<div class="container-fluid">
@@ -327,7 +350,7 @@ function changeColor(txt){
 														<input type="text"
 														onkeypress="return isNumber(event)"
 														onchange="changeColor('grandTotalId')"
-														class="active123 form-control" id="grandTotalId"
+														class="active123 form-control" id="grandTotalId" name="grandTotalId"
 														readonly="readonly" style="text-align: right;" /></td>
 														
 												</tr>
@@ -347,12 +370,12 @@ function changeColor(txt){
 									<div class="col-sm-8 text-right">
 											<input type="hidden" id="status" name="status">
 											<c:if test="${enablement.status eq 's' || enablement.status eq 'u' || enablement.status == undefined}">
-												<button type="submit" onclick="setStatus('s')" class="btn bg-green waves-effect"><spring:message code="Label.SAVE" htmlEscape="true" /></button>
+												<button type="submit" id="enablement_save" onclick="setStatus('s')" class="btn bg-green waves-effect"><spring:message code="Label.SAVE" htmlEscape="true" /></button>
 											</c:if>
 											<c:if test="${enablement.status eq 's' || enablement.status eq 'u' || enablement.status == undefined}">
 											<c:choose>
 											<c:when test="${INITIAL_FLAG}"><button type="submit" onclick="setStatus('f')" class="btn bg-green waves-effect" disabled="disabled"><spring:message code="Label.FREEZE" htmlEscape="true" /></button></c:when>
-											<c:otherwise><button type="submit" onclick="setStatus('f')" class="btn bg-green waves-effect"><spring:message code="Label.FREEZE" htmlEscape="true" /></button></c:otherwise>
+											<c:otherwise><button type="submit" id="enablement_freeze" onclick="setStatus('f')" class="btn bg-green waves-effect"><spring:message code="Label.FREEZE" htmlEscape="true" /></button></c:otherwise>
 											</c:choose>
 												
 											</c:if>

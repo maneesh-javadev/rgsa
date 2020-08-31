@@ -2,6 +2,7 @@ package gov.in.rgsa.service;
 
 import java.util.List;
 
+import gov.in.rgsa.dto.FinalizeInstInfraDto;
 import gov.in.rgsa.dto.InstitutionalInfraProgressReportDTO;
 import gov.in.rgsa.entity.InstInfraStatus;
 import gov.in.rgsa.entity.InstitutionalInfraActivityPlan;
@@ -9,6 +10,7 @@ import gov.in.rgsa.entity.InstitutionalInfraActivityPlanDetails;
 import gov.in.rgsa.entity.QprInstitutionalInfraDetails;
 import gov.in.rgsa.entity.QprInstitutionalInfrastructure;
 import gov.in.rgsa.entity.TrainingInstitueType;
+import gov.in.rgsa.model.Response;
 
 /**
  *
@@ -52,5 +54,17 @@ public interface InstitutionalInfraActivityPlanService {
 	public void deleteRecord(Integer detailId);
 
 	public List<InstitutionalInfraActivityPlanDetails> fetchAllDetailsExceptCurrentVersion();
+	
+	List<FinalizeInstInfraDto> fetchInstitutionalInfraActivityDataCEC(String userType);
+
+	public boolean fetchInstInfraActFreezDataCEC(String cecUserType);
+
+	public Response saveModifyDistrictInInstInfra(List<InstitutionalInfraActivityPlanDetails> instInfoActDtlsList);
+	
+	public boolean fetchPlanApprovedByCEC();
+
+	public boolean fetchInstitutionalInfraActivityData();
+	
+	
 
 }

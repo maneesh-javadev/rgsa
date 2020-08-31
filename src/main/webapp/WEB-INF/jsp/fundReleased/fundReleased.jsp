@@ -188,11 +188,24 @@ $(document).ready(function() {
 										</td>
 										<td><div align="center">
 											<c:choose>
-												<c:when test="${FETCHED_DATA.fundReleasedDetails[0].isFreeze}"><i class="fa fa-lock fa-lg" aria-hidden="true" title="This record is freezed" onclick="alert('This record cannot be unfreezed.')" style="color: red;"></i></c:when>
-												<c:otherwise><c:choose>
+												<c:when test="${FETCHED_DATA.fundReleasedDetails[0].isFreeze}">
+													<c:choose>
+														<c:when test="${isPlanAllocate}">
+															<i class="fa fa-lock fa-lg" aria-hidden="true" title="This record is freezed" onclick="alert('This record cannot be unfreezed.')" style="color: red;"></i>
+														</c:when>
+														<c:otherwise>
+															<i class="fa fa-lock fa-lg" aria-hidden="true" title="freeze the installment" onclick="submitToPost('unfreeze_0')" style="color: red;"></i>
+														</c:otherwise>
+													</c:choose>
+												</c:when>		
+												<c:otherwise>
+												<i class="fa fa-unlock fa-lg" aria-hidden="true" title="freeze the installment" onclick="submitToPost('freeze_0')" style="color: #34a734"></i>
+													<%-- <c:choose>
+													
 														<c:when test="${FETCHED_DATA.fundReleasedDetails[0].unspentBalance + FETCHED_DATA.fundReleasedDetails[0].centralShare ne 0}"><i class="fa fa-unlock fa-lg" aria-hidden="true" title="freeze the installment" onclick="submitToPost('freeze_0')" style="color: #34a734"></i></c:when>
 														<c:otherwise><i class="fa fa-unlock fa-lg" aria-hidden="true" title="freeze the installment" onclick="alert('Save the information first.');" style="color: #34a734"></i></c:otherwise>
-													</c:choose></c:otherwise>
+													</c:choose> --%>
+												</c:otherwise>
 											</c:choose>
 										</div></td>
 									</tr>

@@ -15,7 +15,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name="administrative_technical_support_details",schema="rgsa")
-@NamedQuery(name="FETCH_ALL_ADMIN_TECH_DETAILS_EXCEPT_CURRENT_VERSION",query="From AdministrativeTechnicalSupportDetails where administrativeTechnicalSupport.stateCode=:stateCode and administrativeTechnicalSupport.versionNo !=:versionNo and administrativeTechnicalSupport.userType in('S','M') order by id")
+@NamedQuery(name="FETCH_ALL_ADMIN_TECH_DETAILS_EXCEPT_CURRENT_VERSION",query="From AdministrativeTechnicalSupportDetails where administrativeTechnicalSupport.stateCode=:stateCode and administrativeTechnicalSupport.versionNo !=:versionNo  and administrativeTechnicalSupport.yearId=:yearId and administrativeTechnicalSupport.userType in('S','M') order by id")
 public class AdministrativeTechnicalSupportDetails implements Serializable{
 	 
 	/**

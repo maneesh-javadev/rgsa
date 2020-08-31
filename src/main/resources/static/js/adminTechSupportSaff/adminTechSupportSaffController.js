@@ -56,6 +56,10 @@ publicModule.controller("adminTechSupportSaffController",['$scope','adminTechSup
 	}
 	
 	$scope.saveData=function(status){
+		$scope.gt=$scope.grandTotal;
+		$scope.tf=$scope.fundTotal;
+		if($scope.gt!=0 && $scope.tf!=0)
+		{
 		$scope.btn_disabled=true;
 		$scope.adminTechStaffObject.status=status;
 		adminTechSupportSaffService.saveData($scope.adminTechStaffObject).then(function(response){
@@ -69,6 +73,11 @@ publicModule.controller("adminTechSupportSaffController",['$scope','adminTechSup
 			}
 			
 		});
+		}
+		 else
+			{
+			alert("Fund value should not be blank or 0");
+			}
 	}
 	
 	$scope.validateAdditionalRequirement = function(){
@@ -109,6 +118,11 @@ publicModule.controller("adminTechSupportSaffController",['$scope','adminTechSup
 			$scope.grandTotal=  parseInt($scope.fundTotal) + parseInt($scope.adminTechStaffObject.additionalRequirement);
 			
 		}
+		else
+			{
+			$scope.grandTotal=  parseInt($scope.fundTotal) 
+			}
+			
 	}
 	
 	

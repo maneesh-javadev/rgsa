@@ -191,7 +191,7 @@ function calculateGrandTotal(){
 												<td><div align="center"><strong><spring:message code="Label.TotalProposedFund" htmlEscape="true" /></strong></div></td>
 												<td colspan="3"></td>
 												<td>
-												<input type="text" onkeypress="return isNumber(event)" class="active123 form-control" id="grandTotalId" readonly="readonly" style="text-align:right;"/>
+												<input type="text" onkeypress="return isNumber(event)" class="active123 form-control" id="grandTotalId" name="grandTotalId" readonly="readonly" style="text-align:right;"/>
 												</td>
 											</tr>
 								</tbody>

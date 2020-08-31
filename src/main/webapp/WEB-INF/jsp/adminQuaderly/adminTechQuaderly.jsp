@@ -1,136 +1,16 @@
 <%@include file="../taglib/taglib.jsp"%>
-<script type="text/javascript"> 
-
-var quater_id = '${QTR_ID}';
-var qtr_1_2_filled='${QTR_ONE_TWO_FILLED}';
-var remaining_add_req = '${REMAINING_ADD_REQ}';
-var fund_allocated_by_state='${FUND_ALLOCATED_BY_STATE}';
-var fund_used='${FUND_USED_IN_OTHER_QUATOR}';
-if(quater_id > 2){
-	var fund_allocated_in_pre_qtr = '${FUND_ALLOCATED_BY_STATE_PREVIOUS}';
-	var fund_used_in_qtr_1_and_2 = '${TOTAL_FUND_USED_IN_QTR_1_AND_2}';
+<%@include file="adminTechQuaderlyJs.jsp"%>
+<style>
+.padding_left_local {
+   padding-left: 85px !important;
+ }
+.Align-Right{
+			text-align: right;
 }
-$( document ).ready(function() {
-	if(qtr_1_2_filled == "false"){
-		alert('Please fill the quater 1 and 2 progress report first.');
-	}
-	$('#quaterDropDownId').val(quater_id);
-	showTablediv();
-	calTotalExpenditure()
-	$(".validate").keypress(function (e) {
-	    //if the letter is not digit then display error and don't type anything
-	    if (e.which != 8 && e.which != 0 && (e.which < 48 || e.which > 57)) {
-	       //display error message
-	       $("#errmsg").html("Digits Only").show().fadeOut("slow");
-	              return false;
-	   }
-	  });
-});
-
-function saveAndGetDataQtrRprt(msg){
-	 $('#quaterTransient').val($('#quaterDropDownId').val());
-	 $('#origin').val(msg);
-	 	document.administrativeTechnicalProgress.method = "post";
-		document.administrativeTechnicalProgress.action = "adminTechQuaderly.html?<csrf:token uri='adminTechQuaderly.html'/>";
-		document.administrativeTechnicalProgress.submit();
+.Alert{
+	color: red;
 }
-
-function showTablediv(){
-	if($('#quaterDropDownId').val() > 0){
-		$('#mainDivId').show();
-	}else{
-		$('#mainDivId').hide();
-	}
-}
-
-function validateNoOfUnits(index){
-	var no_of_unit_cec= +$('#noOfUnitCecId_'+index).text();	
-	/* var total_no_of_unit_remaining = no_of_unit_cec - $('#totalNoOfUnit_'+index).val(); */
-	if($('#noOfUnitCompleted_'+index).val() > no_of_unit_cec){
-		alert('total number of units should not exceed '+no_of_unit_cec);
-		$('#noOfUnitCompleted_'+index).val('');
-		$('#noOfUnitCompleted_'+index).focus();
-	}
-}
-
-function validateFundByAllocatedFund(obj){
-	var noOfRows=$("#tbodyId tr").length;
-	var fund_allocated_by_state_local = +fund_allocated_by_state;
-	var fund_used_local= +fund_used;
-	var total=0;
-	
-	if(quater_id > 2){
-		fund_allocated_by_state_local += +(fund_allocated_in_pre_qtr - fund_used_in_qtr_1_and_2);
-	}
-	if(fund_used !=0){
-		fund_allocated_by_state_local -=  +fund_used_local;
-	}
-	for (var index = 0; index < noOfRows; index++) {
-		total +=  +$('#expenditureIncurred_'+index).val();
-	}
-	if(total > fund_allocated_by_state_local){
-		if(fund_used != 0){
-			alert('Total expenditure should not exceed total remaining for this component which is Rs. '+ (fund_allocated_by_state_local - (total - $('#expenditureIncurred_'+obj).val())));
-		}else{
-			alert('Total expenditure should not exceed total fund allocted by state for this component which is Rs. '+ (fund_allocated_by_state_local - (total - $('#expenditureIncurred_'+obj).val())));
-		}
-		$('#expenditureIncurred_'+obj).val('');
-	}
-}
-
-function validateWithCorrespondingFund(index){
-	var tota_fund_cec= +$('#fundCecId_'+index).text();	
-	var total_corresponding_fund_remaining = tota_fund_cec - $('#totalExpenditureIncurred_'+index).val();
-	if($('#expenditureIncurred_'+index).val() > total_corresponding_fund_remaining){
-		alert('total expenditure should not exceed '+ total_corresponding_fund_remaining);
-		$('#expenditureIncurred_'+index).val('');
-		$('#expenditureIncurred_'+index).focus();
-	}
-}
-
-function isNoOfUnitAndExpInurredFilled(index){
-	if($('#noOfUnitCompleted_'+index).val() == 0 || $('#noOfUnitCompleted_'+index).val() == null || $('#noOfUnitCompleted_'+index).val() ==''){
-		alert('Expenditure incurred cannot be filled if number of unit filled is zero or blank.');
-		$('#expenditureIncurred_'+index).val('');
-		$('#noOfUnitCompleted_'+index).focus();
-	}
-}
-
-function validateAddReq(){
-	if(+$('#additionalReqId').val() > +remaining_add_req){
-		alert('Additional requirementshould not exceed : ' + remaining_add_req);
-		$('#additionalReqId').val('');
-		$('#additionalReqId').focus();
-	}
-			
-}
-
-function calTotalExpenditure(){
-	var rowCount=$('#tbodyId tr').length -2;
-	var total_expenditure=0;
-	var prevQtr =0;
-	var getExpDetail =0;
-	 getExpDetail=$('#getExpDetail').val();
-	for( var i=0;i < rowCount; i++){
-		if($('#expenditureIncurred_'+i).val() != null && $('#expenditureIncurred_'+i).val() != undefined){
-			total_expenditure += +$('#expenditureIncurred_'+i).val();
-		}
-		
-	}
-	prevQtr = total_expenditure + + getExpDetail;
-	
-	$('#totalExpenditureId').val(prevQtr  + +$('#additionalReqId').val());
-}
-
-function FreezeAndUnfreeze(msg){
-	var componentId=4;
-	var qprActivityId=$('#qprActivityId').val();
-	var quaterId = $('#quaterDropDownId').val();
-	document.administrativeTechnicalProgress.method = "post";
-	document.administrativeTechnicalProgress.action = "freezeAndUnfreezeReport.html?<csrf:token uri='freezeAndUnfreezeReport.html'/>&componentId="+componentId+"&qprActivityId="+qprActivityId+"&quaterId="+quaterId+"&msg="+msg;
-	document.administrativeTechnicalProgress.submit();
-}
-</script>
+</style>
 <section class="content">
 	<div class="container-fluid">
 		<div class="row clearfix">
@@ -162,6 +42,17 @@ function FreezeAndUnfreeze(msg){
 									</div>
 								</div>
 							</div>
+							<div class="records">
+                        <div class="">
+                           <div  class="col-lg-12 sub_head Alert">
+                             (Balance Amount:${subcomponentwiseQuaterBalanceList[0].balanceAmount})
+                           </div>
+                           
+                           <div class="row">
+                           <div class="col-lg-12 padding_top"></div>
+                           </div>
+                           
+                           
 							<div id="mainDivId">
 							<div class="table-responsive">
 								<table class="table table-bordered" id="mytable">
@@ -172,7 +63,7 @@ function FreezeAndUnfreeze(msg){
 											<th>Post Name</th>
 											<th>No. Of Unit Approved</th>
 											<th>Unit Cost Approved</th>
-											<th>Fund Sanctioned</th>
+											<th>Approved Amount</th>
 											<th>No. of Unit Filled</th>
 											<th>Expenditure Incurred</th>
 										</tr>
@@ -222,7 +113,11 @@ function FreezeAndUnfreeze(msg){
 												<td><form:input 
 													path="administrativeTechnicalDetailProgress[${count.index}].expenditureIncurred" id="expenditureIncurred_${count.index}"
 													value="${ADMINISTRATIVE_TECHNICAL_PROGRESS.administrativeTechnicalDetailProgress[count.index].expenditureIncurred}"
-													class="form-control validate" onkeyup="validateFundByAllocatedFund(${count.index});validateWithCorrespondingFund(${count.index});isNoOfUnitAndExpInurredFilled(${count.index});calTotalExpenditure()" readonly="${ADMINISTRATIVE_TECHNICAL_PROGRESS.isFreeze}"/></td>
+													class="form-control validate" onkeyup="validateFundByAllocatedFund(${count.index});validateWithCorrespondingFund(${count.index});isNoOfUnitAndExpInurredFilled(${count.index});calTotalExpenditure()" 
+													readonly="${ADMINISTRATIVE_TECHNICAL_PROGRESS.isFreeze}"
+													onblur="validate_expenditureIncurred('${subcomponentwiseQuaterBalanceList[0].balanceAmount}',this)"/>
+													<span class="errormsg" id="error_expenditureIncurred_${count.index}"></span>
+													</td>
 											</tr>
 										</c:forEach>
 										<tr>
@@ -240,10 +135,10 @@ function FreezeAndUnfreeze(msg){
 									</tbody>
 								</table>
 								<div class="text-right">
-									<form:button onclick="saveAndGetDataQtrRprt('save')" class="btn bg-green waves-effect" disabled="${ADMINISTRATIVE_TECHNICAL_PROGRESS.isFreeze}">SAVE</form:button>
+									<form:button onclick="saveAndGetDataQtrRprt('save')" class="btn bg-green waves-effect" disabled="${ADMINISTRATIVE_TECHNICAL_PROGRESS.isFreeze}" id="savebtn">SAVE</form:button>
 									<c:choose>
-										<c:when test="${ADMINISTRATIVE_TECHNICAL_PROGRESS.isFreeze}"><form:button class="btn bg-orange waves-effect" onclick="FreezeAndUnfreeze('unfreeze')">UNFREEZE</form:button></c:when>
-										<c:otherwise><form:button class="btn bg-orange waves-effect" disabled="${DISABLE_FREEZE}" onclick="FreezeAndUnfreeze('freeze')">FREEZE</form:button></c:otherwise>
+										<c:when test="${ADMINISTRATIVE_TECHNICAL_PROGRESS.isFreeze}"><form:button class="btn bg-orange waves-effect" onclick="FreezeAndUnfreeze('unfreeze')" id="unfreezebtn">UNFREEZE</form:button></c:when>
+										<c:otherwise><form:button class="btn bg-orange waves-effect" disabled="${DISABLE_FREEZE}" onclick="FreezeAndUnfreeze('freeze')" id="freezebtn">FREEZE</form:button></c:otherwise>
 									</c:choose>
 									
 								 
@@ -251,6 +146,8 @@ function FreezeAndUnfreeze(msg){
 										class="btn bg-red waves-effect">CLOSE</button>
 								</div>
 								</div>
+							</div>
+							</div>
 							</div>
 						</div>
 						<!-- hidden fields -->

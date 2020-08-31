@@ -19,11 +19,21 @@ $(document).ready(function() {
 }); 
 
 function saveAndGetDataQtrRprt(msg){
+	if(savevalidate())
+	{
+	disabled_button();	
 	$('#quaterTransient').val($('#quaterDropDownId').val()); 
 	$('#origin').val(msg);
  	document.incomeEnhancement.method = "post";
 	document.incomeEnhancement.action = "incomeEnhancementQuaterly.html?<csrf:token uri='incomeEnhancementQuaterly.html'/>";
 	document.incomeEnhancement.submit(); 
+	}
+}
+
+function disabled_button(){
+	$('#saveButtn').prop('disabled', true);
+	$('#freezebtn').prop('disabled', true);
+	$('#unfreezebtn').prop('disabled', true);
 }
 
 function showTablediv(){
@@ -87,6 +97,7 @@ function calTotalExpenditure(){
 }
 
 function FreezeAndUnfreeze(msg){
+	disabled_button();
 	var componentId=10;
 	var qprActivityId=$('#qprActivityId').val();
 	var quaterId = $('#quaterDropDownId').val();
@@ -94,6 +105,32 @@ function FreezeAndUnfreeze(msg){
 	document.incomeEnhancement.action = "freezeAndUnfreezeReport.html?<csrf:token uri='freezeAndUnfreezeReport.html'/>&componentId="+componentId+"&qprActivityId="+qprActivityId+"&quaterId="+quaterId+"&msg="+msg;
 	document.incomeEnhancement.submit();
 }
+
+function savevalidate()
+{  
+   var totalallocation=$("#totalExpenditureId").val();
+   var status=true;
+   var noOfRows=$("#tbodyId tr").length-1;
+   var total=totalallocation;
+   var fund_allocated_by_state_local=0;
+   fund_allocated_by_state_local = +fund_allocated_by_state;
+   if(total >= fund_allocated_by_state_local){
+	  status=false;
+	  }
+	
+	if(status==false)
+	{
+	  alert('Total Expenditure  should not exceed total allocated fund '+fund_allocated_by_state_local);
+	  return false;
+	}
+   else
+	   {
+   return true;
+	   }
+
+}
+
+
 </script>
 <section class="content">
 	<div class="container-fluid">
@@ -139,7 +176,7 @@ function FreezeAndUnfreeze(msg){
 											<th rowspan="2"><div align="center">S.No.</div></th>
 											<th rowspan="2"><div align="center">Name of Activity</div></th>
 											<th rowspan="2"><div align="center">District Name</div></th>
-											<th rowspan="2"><div align="center">Fund Sanctioned</div></th>
+											<th rowspan="2"><div align="center">Approved Amount</div></th>
 											<th rowspan="2"><div align="center">Expenditure incurred</div></th>
 										</tr>
 									</thead>
@@ -211,8 +248,8 @@ function FreezeAndUnfreeze(msg){
 									<form:button id="saveButtn"
 										class="btn bg-green waves-effect" onclick="saveAndGetDataQtrRprt('save')" disabled="${QPR_ENHANCEMENT.isFreeze}">SAVE</form:button>
 									<c:choose>
-										<c:when test="${QPR_ENHANCEMENT.isFreeze}"><form:button class="btn bg-orange waves-effect" onclick="FreezeAndUnfreeze('unfreeze')">UNFREEZE</form:button></c:when>
-										<c:otherwise><form:button class="btn bg-orange waves-effect" disabled="${DISABLE_FREEZE}" onclick="FreezeAndUnfreeze('freeze')">FREEZE</form:button></c:otherwise>
+										<c:when test="${QPR_ENHANCEMENT.isFreeze}"><form:button class="btn bg-orange waves-effect" onclick="FreezeAndUnfreeze('unfreeze')" id="unfreezebtn">UNFREEZE</form:button></c:when>
+										<c:otherwise><form:button class="btn bg-orange waves-effect" disabled="${DISABLE_FREEZE}" onclick="FreezeAndUnfreeze('freeze')" id="freezebtn">FREEZE</form:button></c:otherwise>
 									</c:choose>	
 									<%-- <form:button id="clearButtn" onclick="onClear(this)"
 										class="btn bg-light-blue waves-effect" disabled="${QPR_ENHANCEMENT.isFreeze}">CLEAR</form:button> --%>

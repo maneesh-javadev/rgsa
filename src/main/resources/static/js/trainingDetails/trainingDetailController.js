@@ -144,24 +144,29 @@ trainingDetail.controller("trainingDetailController",['$scope','trainingDetailSe
 	}
 	
 	$scope.updateTrainingDetails=function(){
-		//alert(validateData($scope.trainingDetails));
-		$scope.btn_disabled=true;
-		if(validateData($scope.trainingDetails)){
-			$scope.trainingDetails.targetGrptArr=$scope.trainingDetails.targetGrptArr.toString();
-			$scope.trainingDetails.trainingSubjectArr=$scope.trainingDetails.trainingSubjectArr.toString();
-			$scope.trainingDetails.trgCategoryArr=$scope.trainingDetails.trgCategoryArr.toString();
-			trainingDetailService.savetrainingDetailData($scope.trainingDetails).then(function(response){
-		    	if(response!=null && response.status==200){
-		    		toastr.success(response.data.responseMessage);
-		    	}else{
-		    		toastr.error(response.data.responseMessage);
-		    	}
-		    	fetchOnLoad();
-		    	
-		    });
+		if($scope.trainingDetails.funds!=0 && $scope.trainingDetails.funds!=null && $scope.trainingDetails.funds!=undefined && $scope.trainingDetails.funds!='')
+			{if(validateData($scope.trainingDetails)){
+				$scope.btn_disabled=true;
+				$scope.trainingDetails.targetGrptArr=$scope.trainingDetails.targetGrptArr.toString();
+				$scope.trainingDetails.trainingSubjectArr=$scope.trainingDetails.trainingSubjectArr.toString();
+				$scope.trainingDetails.trgCategoryArr=$scope.trainingDetails.trgCategoryArr.toString();
+				trainingDetailService.savetrainingDetailData($scope.trainingDetails).then(function(response){
+			    	if(response!=null && response.status==200){
+			    		toastr.success(response.data.responseMessage);
+			    	}else{
+			    		toastr.error(response.data.responseMessage);
+			    	}
+			    	fetchOnLoad();
+			    	
+			    });
+			}
 		}
-		
-	}
+		else
+			{
+			toastr.error('Fund can not be 0 or blank');
+			}
+			
+		}
 	
 	validateData=function(trainingDetails){
 		
@@ -276,7 +281,14 @@ trainingDetail.controller("trainingDetailController",['$scope','trainingDetailSe
 			}else{
 
 				if(status=='F'){
-					$scope.training.isFreeze=true;
+				if($scope.allTrainingFund!=0 && $scope.allTrainingFund!=null && $scope.allTrainingFund!=undefined){
+						$scope.training.isFreeze=true;
+					}
+					else{
+						$scope.btn_disabled=false;
+						$scope.training.isFreeze=false;
+						toastr.error("Fund can not be 0 or blank");
+					}
 				}else {
 					$scope.training.isFreeze=false;
 				}
@@ -284,15 +296,28 @@ trainingDetail.controller("trainingDetailController",['$scope','trainingDetailSe
 				
 				
 				$scope.training.delIds=delTrainingIdArr.toString();
+				if($scope.allTrainingFund!=0 && $scope.allTrainingFund!=null && $scope.allTrainingFund!=undefined){
 				trainingDetailService.updateTrainingActivityData($scope.training).then(function(response){
 			    	if(response!=null && response.status==200){
-			    		toastr.success(response.data.responseMessage);
+			    		if(status=='F'){
+							toastr.success("Plan Freezed Successfully");
+						}else if(status=='U'){
+							toastr.success("Plan UnFreezed Successfully");
+						}
+						else{
+			    		toastr.success(response.data.responseMessage);}
 			    	}else{
 			    		toastr.error(response.data.responseMessage);
 			    	}
 			    	fetchOnLoad();
 			    	
 			    });
+				}
+				else
+					{
+					$scope.btn_disabled=false;
+					toastr.error("Fund can not be 0 or blank");
+					}
 			}
 			
 			

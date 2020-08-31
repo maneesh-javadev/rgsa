@@ -16,6 +16,11 @@
 
 	<script type="text/javascript" src="${pageContext.request.contextPath}/resources/plugins/angular/toastr.min.js"></script>
 	<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/angular/toastr.css">
+	
+	<!-- angular-confirm files -->
+    <link rel="stylesheet"  type="text/css" href="${pageContext.request.contextPath}/resources/css/angular/angular-confirm.css"/>
+    <script type="text/javascript" src="${pageContext.request.contextPath}/resources/plugins/angular/angular-confirm.js"></script>
+    <!--END angular-confirm files-->
 
 <style type="text/css">
 	.modal-content{
@@ -124,8 +129,25 @@
 											</table>
 										</div>
 									   	<div class="form-group text-right">
-									   	    <button ng-click="savePanchayatBhawanData()" ng-show = "IsVisible" type="button" class="btn bg-green waves-effect" ><spring:message code="Label.SAVE" htmlEscape="true"/></button> 
+									   	   
+											
+											<c:choose>
+									   			<c:when test="!isQPRDataExist">
+									   				 <button ng-click="savePanchayatBhawanData()" ng-disabled="isbtnDisabled"  ng-show = "IsVisible && !freezestatus" type="button" class="btn bg-green waves-effect" ><spring:message code="Label.SAVE" htmlEscape="true"/></button> 
+								   					 <button ng-click="freezeConfirmation(true)" ng-disabled="isbtnDisabled" ng-show="!freezestatus" type="button" class="btn bg-green waves-effect" ><spring:message code="Label.FREEZE" htmlEscape="true"/></button> 
+									   				 <button ng-click="freezePanchayatBhawanDataGP(false)" ng-disabled="isbtnDisabled" ng-show="freezestatus" type="button" class="btn bg-green waves-effect" ><spring:message code="Label.UNFREEZE" htmlEscape="true"/></button> 
+										
+									   			</c:when>
+									   			<c:otherwise>
+									   					<div align="center" class="Alert">
+															<i class="fa fa-meh-o fa-lg" aria-hidden="true"></i><span>
+															Annual Progress Details/Quarter wise Progress Details fill , So can't Change in finalize</span><br />
+														</div>
+									   			</c:otherwise>
 									   		
+									   		</c:choose>
+											
+											
 									   		<%-- <button type="button" data-ng-show="panchayatBhawanActivity.status != 'F'"  class="btn bg-light-blue waves-effect" data-ng-click="claerAll()">
 									   			<spring:message code="Label.CLEAR" htmlEscape="true" />
 									   		</button> --%>

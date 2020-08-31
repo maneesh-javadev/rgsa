@@ -992,4 +992,160 @@
 			value="/WEB-INF/jsp/viewPlanDetailsMOPR/approvePlanList.jsp" />
 	</definition>
 	
+	<definition name="RGSA_SQL_PANNEL" extends="base.definition.admin">
+		<put-attribute name="title" value="LGD SQL Pannel" />
+		<put-attribute name="body" value="/WEB-INF/jsp/MOPR/rgsaSqlPannel.jsp" />
+	</definition>
+	
+	<definition name="RGSA_SQL_PANNEL_UPDATE" extends="base.definition.admin">
+		<put-attribute name="title" value="LGD SQL Pannel" />
+		<put-attribute name="body" value="/WEB-INF/jsp/MOPR/rgsaSqlPannelUpdate.jsp" />
+	</definition>
+	
+	<definition name="fetchKpisRecordForm" extends="base.definition.admin">
+		<put-attribute name="title" value="View Kpis Record" />
+		<put-attribute name="body" value="/WEB-INF/jsp/MOPR/fetchKpisRecord.jsp" />
+	</definition>
+	
+	<definition name="showhKpisRecords" extends="base.definition.admin">
+		<put-attribute name="title" value="Show Kpis  Record Details" />
+		<put-attribute name="body" value="/WEB-INF/jsp/MOPR/showKpisRecordDetails.jsp" />
+	</definition>
+	
+	<definition name="approvedInnovativeActivityQprWithoutQuarter"
+		extends="base.definition.admin">
+		<put-attribute name="title"
+			value="Quarterly Progress Report" />
+		<put-attribute name="body"
+			value="/WEB-INF/jsp/progressReport/innovativeActivityQprReportWithoutQuarter.jsp" />
+	</definition>
+	
+	<definition name="approvedadminDataFinQuaterlyGetWithoutQuarter"
+		extends="base.definition.admin">
+		<put-attribute name="title"
+			value="Quarterly Progress Report" />
+		<put-attribute name="body"
+			value="/WEB-INF/jsp/progressReport/adminDataFinQuaterlyWithoutQuarter.jsp" />
+	</definition>
+	
+	
+	<definition name="trainingDetailsProgressReportWithoutQuarter"
+		extends="base.definition.admin">
+		<put-attribute name="title"
+			value="Training Details Progress Quaterly Report" />
+		<put-attribute name="body"
+			value="/WEB-INF/jsp/progressReport/trainingDetailsProgressReportWithoutQuarter.jsp" />
+	</definition>
+	
+	<definition name="approvedadminTechQuaderlyWithoutQuarter"
+		extends="base.definition.admin">
+		<put-attribute name="title"
+			value="Nodal Officer Details" />
+		<put-attribute name="body"
+			value="/WEB-INF/jsp/adminQuaderly/adminTechQuaderlyWithoutQuarter.jsp" />
+	</definition>
+	
+	<definition name="eGovtQuaderlyWithoutQuarter"
+		extends="base.definition.admin">
+		<put-attribute name="title"
+			value="Nodal Officer Details" />
+		<put-attribute name="body"
+			value="/WEB-INF/jsp/eGovtQuaderly/eGovtQuaderlyWithoutQuarter.jsp" />
+	</definition>
+	
+	<definition name="panchayatBhawanQuaterlyReportWithoutQuarter"
+		extends="base.definition.admin">
+		<put-attribute name="title"
+			value="Quarterly Progress Report" />
+		<put-attribute name="body"
+			value="/WEB-INF/jsp/progressReport/panchayatBhawanQuaterlyReportWithoutQuarter.jsp" />
+	</definition>
+	
+	<definition name="qprCapacityBuildingWithoutQuarter"
+		extends="base.definition.admin">
+		<put-attribute name="title"
+			value="Qpr Capacity Building Without Quarter" />
+		<put-attribute name="body"
+			value="/WEB-INF/jsp/progressReport/qprCapacityBuildingWithoutQuarter.jsp" />
+	</definition>
+	
+		<definition name="approvedAdditionalfacultyProgressWithoutQuarter"
+		extends="base.definition.admin">
+		<put-attribute name="title" value="Sanction Order Without Quarter" />
+		<put-attribute name="body"
+			value="/WEB-INF/jsp/progressReport/additionalfacultyProgressWithoutQuarter.jsp" />
+	</definition>
+	
+	<definition name="institutionalInfraQuaterlyReportWithoutQuarter"
+		extends="base.definition.admin">
+		<put-attribute name="title"
+			value="institutional Infra Quaterly Report Without Quarter" />
+		<put-attribute name="body"
+			value="/WEB-INF/jsp/progressReport/institutionalInfraQuaterlyReportNewWithoutQuarter.jsp" />
+	</definition>
+	
+	<definition name="approvedIecQtrProgressReportWithoutQuarter"
+		extends="base.definition.admin">
+		<put-attribute name="title"
+			value="Quarterly Progress Report" />
+		<put-attribute name="body"
+			value="/WEB-INF/jsp/progressReport/iecQtrProgressReportWithoutQuarter.jsp" />
+	</definition>
+	
+	<definition name="approvePmuQuaterlyWithoutQuarter"
+		extends="base.definition.admin">
+		<put-attribute name="title"
+			value="Essential Conditions Without Quarter" />
+		<put-attribute name="body"
+			value="/WEB-INF/jsp/progressReport/pmuQuaterlyWithoutQuarter.jsp" />
+	</definition>
+	
+	<definition name="approveEnablementQuaterlyWithoutQuater" extends="base.definition.admin">
+	 <put-attribute name="title" value="E-Enablement Progress Report Form Without Quater" />
+	 <put-attribute name="body" value="/WEB-INF/jsp/enablementQuaterly/enablementWithoutQuater.jsp" />
+	</definition>
+	
+	
+	
+ 	<definition name="approvepesaPlanQuaterlyWithoutQuater" extends="base.definition.admin">
+		<put-attribute name="title" value="Pesa Plan Progress Report Form Without Quater" />
+		<put-attribute name="body" value="/WEB-INF/jsp/pesaPlanQuarterly/pesaPlanWithoutQuater.jsp" />
+	</definition>
+	
+ 
+ 	<definition name="approvedCurrentUsageSatcomQuaterlyWithoutQuater" extends="base.definition.admin">
+		<put-attribute name="title"	value="Essential Conditions " />
+		<put-attribute name="body" value="/WEB-INF/jsp/progressReport/currentUsageSatcomWithoutQuater.jsp" />
+	</definition>
+ 
+ 
+ 
+ 	<definition name="approveincomeEnhancementQuaterlyWithoutQuater" extends="base.definition.admin">
+		<put-attribute name="title" value="Income Enhancement Progress Report Form Without Quater " />
+		<put-attribute name="body" value="/WEB-INF/jsp/progressReport/incomeEnhancementWithoutQuater.jsp" />
+	</definition>
+	
+	<definition name="viewQprReportPageWithoutQuarter"	extends="base.definition.admin">
+		<put-attribute name="title"			value="View Report" />
+		<put-attribute name="body"	value="/WEB-INF/jsp/QprReport/viewQprReportPageWithoutQuarter.jsp" />
+	</definition>
+	
+	<definition name="finalizeLocationInsttutional"
+		extends="base.definition.admin">
+		<put-attribute name="title" value="fdgfdgdgdgdfgd" />
+		<put-attribute name="body"
+			value="/WEB-INF/jsp/finalizeWorkLocation/finalizeLocationInsttutional.jsp" />
+	</definition>
+	
+	<definition name="viewQprReportPublicYearWise"   extends="base.definition.withoutSidBar">
+		<put-attribute name="title" value="View Report"/>
+  		<put-attribute name="body" value="/WEB-INF/jsp/QprReport/viewQprReportYearWisePublic.jsp" />
+	</definition>
+	
+	<definition name="finalizeWorlLocationNotFreeze"	extends="base.definition.admin">
+		<put-attribute name="title" value="Finalize Work Location not Freeze" />
+		<put-attribute name="body"	value="/WEB-INF/jsp/error/finalizeNotFreeze.jsp" />
+	</definition>
+	
+	
 </tiles-definitions>

@@ -33,7 +33,9 @@ public class QprReportConsController {
     private static String VIEW_PAGE= "qprReportConsolidated";
     private static String VIEW_QPR_REPORT= "viewQprReportPage";
     private static String VIEW_QPR_REPORT_PUBLIC= "viewQprReportPublic";
-
+    private static String VIEW_QPR_REPORT_WITHOUT_QUARTER= "viewQprReportPageWithoutQuarter";  
+    
+    private static String VIEW_QPR_REPORT_PUBLIC_YEAR_WISE= "viewQprReportPublicYearWise"; 
     
 
     
@@ -146,6 +148,7 @@ public class QprReportConsController {
     		model.addAttribute("FIN_YEAR_LIST", qprReportConService.fetchFinYearList());
     		model.addAttribute("STATE", qprReportConService.fetchStateList());
     		model.addAttribute("QUARTER", qprReportConService.fetchQuarterList());
+    		model.addAttribute("userType",userPreference.getUserType());
     		}catch(Exception e) {
     			e.printStackTrace();
     		}
@@ -166,12 +169,28 @@ public class QprReportConsController {
     } 
     
     
+ 
+    
+    
+    
+    
+    
+    
+    
+    
     @PostMapping(value = "qprReportDetails")
     @ResponseBody
     public Map<Object,List> fetchAllQprreportDetails( HttpServletRequest  request  ) {
     	Map<Object,List> dataMap=new LinkedHashMap<Object, List>();
     	try {
-    	 	String statecode=request.getParameter("statecode");
+    	 	String stateCodeStr=request.getParameter("statecode");
+    	 	Integer stateCode=null;
+    	 	if(stateCodeStr!=null) {
+    	 		stateCode=Integer.parseInt(stateCodeStr);
+    	 	}
+    	 	
+    	 	stateCode=stateCode!=null && stateCode>0?stateCode:userPreference.getStateCode();
+    	 	String statecode=String.valueOf(stateCode);
         	String yearId=request.getParameter("yearId");
         	String UserType="C";
         	String quarterId=request.getParameter("quarterId");
@@ -192,6 +211,87 @@ public class QprReportConsController {
 		    	dataMap.put("InstitutionalInfrastructureId",  qprReportConService.fetchQprInstitutionalInfrastructure(statecode,yearId, UserType,quarterId));
 		    	dataMap.put("InnovativeActiveId",  qprReportConService.fetchQprInnovativeActive(statecode,yearId, UserType,quarterId));
 		    	dataMap.put("adminFinancialId",  qprReportConService.fetchQpradminFinancial(statecode,yearId, UserType,quarterId));
+        	}
+    		}catch(Exception e) {
+    			e.printStackTrace();
+    		}
+    	 
+    	 
+    	return dataMap;
+    }
+    
+ // fetch all Qpr report without quarter for all level
+    @GetMapping(value = "qprReportWithoutQuarter")
+    private String fetchAllQprreportWithoutQuarter(  Model model) {
+    	try {
+    		model.addAttribute("FIN_YEAR_LIST", qprReportConService.fetchTwoFinYear());
+    		model.addAttribute("STATE", qprReportConService.fetchStateList());
+    		}catch(Exception e) {
+    			e.printStackTrace();
+    		}
+    	return VIEW_QPR_REPORT_WITHOUT_QUARTER;
+    }
+    
+    
+    // fetch all Qpr report for public domain
+    @GetMapping(value = "qprReportYearWiseForPublic")
+    private String fetchAllQprreportForPublicYearWise(Model model) {
+    	try {
+    		model.addAttribute("FIN_YEAR_LIST", qprReportConService.fetchFinYearList());
+    		model.addAttribute("STATE", qprReportConService.fetchStateList());
+    		model.addAttribute("QUARTER", qprReportConService.fetchQuarterList());
+    		}catch(Exception e) {
+    			e.printStackTrace();
+    		}
+    	return VIEW_QPR_REPORT_PUBLIC_YEAR_WISE;
+    } 
+    
+    
+    @PostMapping(value="qprReportDetailsYearWise")
+    @ResponseBody
+    public Map<Object,List> fetchAllQprreportDetailsYearWise( HttpServletRequest  request  ) {
+    	Map<Object,List> dataMap=new LinkedHashMap<Object, List>();
+    	try {
+    	 	String stateCodeStr=request.getParameter("statecode");
+    	 	Integer stateCode=null;
+    	 	if(stateCodeStr!=null) {
+    	 		stateCode=Integer.parseInt(stateCodeStr);
+    	 	}
+    	 	
+    	 	stateCode=stateCode!=null && stateCode>0?stateCode:userPreference.getStateCode();
+    	 	String statecode=String.valueOf(stateCode);
+        	String yearId=request.getParameter("yearId");
+        	String UserType="C";
+        	String quarterId=request.getParameter("quarterId");
+        	
+        	if(statecode!=null && yearId!=null && quarterId!=null ) {
+                dataMap.put("Training_Activities_Progress_Report_Year_Wise_New",qprReportConService.fetchTrainingActivityListYearWiseNew(statecode,yearId, UserType,quarterId));
+		        dataMap.put("Training_Details_Progress_Report_Year_Wise_New", qprReportConService.fetchQprTrainingDetailsYearWiseNew(statecode,yearId, UserType,quarterId)) ;
+		    	dataMap.put("Additional_Faculty_Maintenance_SPRC_DPRC_Year_Wise_New",  qprReportConService.fetchQprHRsupportSprcDprcYearWiseNew(statecode,yearId, UserType,quarterId));
+		    	dataMap.put("e_Governance_Support_Group_Year_Wise_New",  qprReportConService.fetchQprEgovProgressReportYearWiseNew(statecode,yearId, UserType,quarterId));
+		    	dataMap.put("EenablementProgressReportIdYearWiseNew",  qprReportConService.fetchQprEenablementProgressReportYearWiseNew(statecode,yearId, UserType,quarterId));
+		    	dataMap.put("pesa_Plan_Year_Wise_New",  qprReportConService.fetchQprPesaReportYearWiseNew(statecode,yearId, UserType,quarterId));
+		     	dataMap.put("IncomeEnhancementIdYearWiseNew",  qprReportConService.fetchQprIncomeEnhancementYearWiseNew(statecode,yearId, UserType,quarterId));
+		    	dataMap.put("iecProgressReportYearWiseNew",  qprReportConService.fetchQprIECYearWiseNew(statecode,yearId, UserType,quarterId));
+		    	dataMap.put("pmuProgressReportYearWiseNew",  qprReportConService.fetchQprPMUYearWiseNew(statecode,yearId, UserType,quarterId));
+		    	dataMap.put("administrativeAndTechnicalSupportIdYearWiseNew",  qprReportConService.fetchQprAdministrativeAndTechnicalSupportYearWiseNew(statecode,yearId, UserType,quarterId));
+		      	dataMap.put("panchyatbhawanProgressReportYearWiseNew",  qprReportConService.fetchQprPanchayatBhawanYearWiseNew(statecode,yearId, UserType,quarterId));
+		    	dataMap.put("SATCOMIPYEARWISENEW",  qprReportConService.fetchQprSATCOMYearWiseNew(statecode,yearId, UserType,quarterId));
+		    	dataMap.put("InstitutionalInfrastructureIdYearWiseNew",  qprReportConService.fetchQprInstitutionalInfrastructureYearWiseNew(statecode,yearId, UserType,quarterId));
+		    	dataMap.put("InnovativeActiveIdYearWiseNew",  qprReportConService.fetchQprInnovativeActiveYearWiseNew(statecode,yearId, UserType,quarterId));
+		    	dataMap.put("adminFinancialIdYearWiseNew",  qprReportConService.fetchQpradminFinancialYearWiseNew(statecode,yearId, UserType,quarterId));
+        	
+        	
+		    	/*Institutional Infrastructure
+		    	A dministrative and Technical Activity
+		    	E-enablement
+		    	P ESA Plan
+		    	Distance Learning Facility through SATCOM/IP
+		    	Administrative and Financial Data Analysis and Planning Cell*/
+
+        	
+        	
+        	
         	}
     		}catch(Exception e) {
     			e.printStackTrace();

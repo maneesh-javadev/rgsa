@@ -27,7 +27,12 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 @NamedNativeQueries({
 	@NamedNativeQuery(name="SUB_TOTAL_OTHER_PANCHAYAT_BHAWAN",query="select coalesce(sum(expenditure_incurred),0) from rgsa.qpr_panhcayat_bhawan qac left join rgsa.panhcayat_bhawan_activity ac on qac.panhcayat_bhawan_activity_id=ac.panhcayat_bhawan_activity_id "
 			+ " left join rgsa.qpr_panhcayat_bhawan_details qacd on qac.qpr_panhcayat_bhawan_id=qacd.qpr_panhcayat_bhawan_id where ac.state_code=:stateCode and ac.year_id=:yearId and ac.user_type='C'"),
-	})
+	@NamedNativeQuery(name="SUB_TOTAL_OTHER_PANCHAYAT_BHAWAN_YEAR_WISE",query="select coalesce(sum(expenditure_incurred),0) from rgsa.qpr_panhcayat_bhawan qac inner join "
+			+ " rgsa.panhcayat_bhawan_activity ac on qac.panhcayat_bhawan_activity_id=ac.panhcayat_bhawan_activity_id  inner join rgsa.qpr_panhcayat_bhawan_details qacd on "
+			+ " qac.qpr_panhcayat_bhawan_id=qacd.qpr_panhcayat_bhawan_id inner join rgsa.panhcayat_bhawan_activity_gps pgp on qacd.panhcayat_bhawan_activity_details_id=pgp.panhcayat_bhawan_activity_details_id "
+			+ " and pgp.isactive and pgp.local_body_code=qacd.local_body_code where ac.state_code=:stateCode and ac.year_id=:yearId and ac.user_type='C' and qac.qtr_id=0 and qac.activity_id=:activityId" ),
+
+})
 
 public class QprPanhcayatBhawanDetails implements Serializable{
 	

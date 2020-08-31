@@ -24,7 +24,7 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 
 @Entity
 @Table(name="cb_activity_details", schema = "rgsa")
-@NamedQuery(name="FETCH_ALL_TRAINING_ACTIVITY_DETAILS_EXCEPT_CURRENT_VERSION",query="From CapacityBuildingActivityDetails where capacityBuildingActivity.stateCode=:stateCode and capacityBuildingActivity.versionNo !=:versionNo and capacityBuildingActivity.userType in('S','M') order by capacityBuildingActivityDetailsId")
+@NamedQuery(name="FETCH_ALL_TRAINING_ACTIVITY_DETAILS_EXCEPT_CURRENT_VERSION",query="From CapacityBuildingActivityDetails where capacityBuildingActivity.stateCode=:stateCode and capacityBuildingActivity.versionNo !=:versionNo and  capacityBuildingActivity.yearId=:yearId and capacityBuildingActivity.userType in('S','M') order by capacityBuildingActivityDetailsId")
 public class CapacityBuildingActivityDetails implements Serializable {
 	
 	private static final long serialVersionUID = 1L;

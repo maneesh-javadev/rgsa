@@ -229,17 +229,17 @@
 											<br/><br/>
 
 										<div class="form-group text-right">
-											<form:button type="submit" class="btn bg-green waves-effect" disabled="${QPR_PANCHAYAT_BHAWAN.isFreeze}">
+											<form:button type="submit" class="btn bg-green waves-effect" disabled="${QPR_PANCHAYAT_BHAWAN.isFreeze}" id="savebtn">
 												Save</form:button>
 										<c:choose>
 											<c:when test="${QPR_PANCHAYAT_BHAWAN.isFreeze}">
 												<form:button class="btn bg-orange waves-effect"
-													onclick="FreezeAndUnfreeze('unfreeze')">UNFREEZE</form:button>
+													onclick="FreezeAndUnfreeze('unfreeze')" id="unfreezebtn">UNFREEZE</form:button>
 											</c:when>
 											<c:otherwise>
 												<form:button class="btn bg-orange waves-effect"
 													disabled="${DISABLE_FREEZE}"
-													onclick="FreezeAndUnfreeze('freeze')">FREEZE</form:button>
+													onclick="FreezeAndUnfreeze('freeze')" id="freezebtn">FREEZE</form:button>
 											</c:otherwise>
 										</c:choose>
 										<%-- <form:button type="button" onclick=""

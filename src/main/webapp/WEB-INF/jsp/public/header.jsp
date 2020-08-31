@@ -2,6 +2,7 @@
 
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
 <header>
+
 <div class="top">
 	<div class="container-fluid">
 		<div class="row">
@@ -32,7 +33,11 @@
 							<i class="fa fa-google-plus"></i>
 						</a>
 					</li>
+					
+					
+				
 				</ul>
+				
 			</div>
 			<div class="col-lg-9 col-xs-12 pull-right">
 				<div class="navbar">
@@ -86,7 +91,8 @@
 						</ul>
 					</div>
 				</div>
-			</div>
+			</div>	
+		<marquee ><font color="red" ><blink>Note:-Site will be down from 2 PM to 2.30 PM for maintenance</blink> </font></marquee>
 		</div>
 	</div>
 </div>

@@ -37,5 +37,7 @@ public interface FacadeService {
 	public List<IsFreezeStatusDto> fetchFormsIsFreezeStatus(Integer stateCode);
 
 	public boolean revertPlan(Integer stateCode);
+	
+	Map<String, Object> checkAllComponentforPlanForward(Integer stateCode,Integer yearId ,Character userType);
 
 }

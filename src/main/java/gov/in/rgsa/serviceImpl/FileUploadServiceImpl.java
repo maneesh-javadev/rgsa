@@ -457,7 +457,7 @@ public class FileUploadServiceImpl implements FileUploadService {
 	
 	@Override
 	public StatewiseEntitiesCount getDataFromJsonFile() {
-		StatewiseEntitiesCount statewiseEntitiesCount=null;
+		/*StatewiseEntitiesCount statewiseEntitiesCount=null;
 		try {
 			Gson gson = new Gson();
 			statewiseEntitiesCount = gson.fromJson(new FileReader(FILE_LOCATION_JSON + File.separator + "rgsa_entity_count.json"), StatewiseEntitiesCount.class);
@@ -466,7 +466,8 @@ public class FileUploadServiceImpl implements FileUploadService {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		return statewiseEntitiesCount;
+		return statewiseEntitiesCount;*/
+		return null;
 
 	}
 	

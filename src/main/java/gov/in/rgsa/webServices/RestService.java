@@ -1,7 +1,13 @@
 package gov.in.rgsa.webServices;
 
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
+import javax.crypto.Cipher;
+import javax.crypto.spec.IvParameterSpec;
+import javax.crypto.spec.SecretKeySpec;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -12,6 +18,8 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.Response;
 
+import org.apache.commons.codec.binary.Base64;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -32,17 +40,27 @@ import gov.in.rgsa.dto.ERRepresentativeHundredDayProg;
 import gov.in.rgsa.dto.ERRepresentativeHundredDayProgLastWeekWise;
 import gov.in.rgsa.dto.ERRepresentativeHundredDayProgStateWise;
 import gov.in.rgsa.dto.HundredDaysWebServiceDTO;
+import gov.in.rgsa.dto.KpiWebServiceParam;
+import gov.in.rgsa.dto.KpiWebServiceRecord;
 import gov.in.rgsa.dto.OomsWebService;
 import gov.in.rgsa.dto.StatewiseNoOfParticipants;
 import gov.in.rgsa.dto.WebServiceOoms;
+import gov.in.rgsa.entity.AttachmentMaster;
 import gov.in.rgsa.entity.CapacityBuildingErForOoms;
 import gov.in.rgsa.entity.FetchPlanStatusCount;
+import gov.in.rgsa.entity.KpiWebService;
+import gov.in.rgsa.service.InnovativeActivityService;
 
 @CrossOrigin(origins = { "*" }, allowedHeaders = { "*" })
 @RestController
 public class RestService {
 	@Autowired
 	private WebserviceService webserviceService;
+	
+	@Autowired
+	private InnovativeActivityService innovativeActivityService;
+	
+	public static final Integer DARPAN_KEY_FILE_LOC_ID =3;
 
 	@GetMapping({ "/webService/noOfParticipantsAllIndia/{finYear}" })
 	public Integer noOfParticipantsAllIndia(@PathVariable final String finYear, final HttpServletResponse response,
@@ -352,4 +370,75 @@ public class RestService {
 		}
 		return capacityBuildingList;
 	}
+	
+	@PostMapping({ "/webService/kpiServiceData" })
+	@Produces({ "application/json" })
+	public KpiWebServiceRecord kpiServiceData(@RequestBody final KpiWebServiceParam kpiWebServiceParam) throws IOException {
+		 List<gov.in.rgsa.entity.KpiWebService> kpiWebServiceList = null;
+		 final KpiWebServiceRecord kpiWebServiceRecord = new KpiWebServiceRecord();
+		   Integer yr=kpiWebServiceParam.getYr();
+		   Integer mcode=kpiWebServiceParam.getmCode();
+		   Integer statecode=kpiWebServiceParam.getStateCode();
+		   Integer deptcode= kpiWebServiceParam.getDeptCode();
+		   Integer projectcode=kpiWebServiceParam.getProjectCode();
+		   Integer seccode=kpiWebServiceParam.getSecCode();
+		   
+		   List<KpiWebServiceParam> kpiWebServiceParamList=null;
+		   List<String> list = new ArrayList<String>();
+	       kpiWebServiceRecord.setMcode(mcode);
+     	   kpiWebServiceRecord.setState_code(statecode);
+     	   kpiWebServiceRecord.setDept_code(deptcode);
+     	   kpiWebServiceRecord.setProject_code(projectcode);
+     	   kpiWebServiceRecord.setSec_code(seccode);
+		
+			if (yr != null && mcode!=null && statecode!=null && deptcode!=null && projectcode!=null && seccode!=null ) {
+				kpiWebServiceList = (List<gov.in.rgsa.entity.KpiWebService>) this.webserviceService.fetchKpiData(yr,mcode,statecode,deptcode,projectcode, seccode);
+				List<String> records=new ArrayList<String>();
+				  for (KpiWebService tr : kpiWebServiceList) { 
+					    String enctemp=encrypt(new JSONObject(tr).toString());
+					    records.add(enctemp);
+                      }
+				  	System.out.println(records);
+				    kpiWebServiceRecord.setRecord(records);
+		    	} 
+		return kpiWebServiceRecord;
+	}
+	
+	
+	public  String encrypt(String value) {
+		
+		
+		  final String initVector = "encryptionIntVec";
+		   try {
+				
+				//FileInputStream fin =new FileInputStream(file);
+		
+				
+				AttachmentMaster attachmentMaster = innovativeActivityService.findfilePath(DARPAN_KEY_FILE_LOC_ID);
+			   // String file = attachmentMaster.getFileLocation();	
+			   // file=file.replace("\\\\", "/");
+				//String rootPath = file.replace("\\", "/");
+				 File rootPath = new File(attachmentMaster.getFileLocation());
+			    byte fileContent[] = new byte[(int)rootPath.length()];
+	            final String key = new String(fileContent);
+		       
+				IvParameterSpec iv = new IvParameterSpec(initVector.getBytes("UTF-8"));
+				SecretKeySpec skeySpec = new SecretKeySpec(key.getBytes("UTF-8"), "AES");
+
+				Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5PADDING");
+				cipher.init(Cipher.ENCRYPT_MODE, skeySpec, iv);
+
+				byte[] encrypted = cipher.doFinal(value.getBytes());
+				return Base64.encodeBase64String(encrypted);
+			
+			} 
+			catch (Exception e) 
+			{
+				//ex.printStackTrace();
+				System.out.println("Error while encrypting: " + e.toString());
+			}
+			return null;
+		}
+	
+	
 }

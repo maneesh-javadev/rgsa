@@ -117,7 +117,7 @@ public class PlanAllocationController {
 		map.put("planAllocationList", facadeService.fetchFundDetailsByUserType(parameter));
 		if(fundReleasedDetail != null) {
 			map.put("fundReleasedDetailId", fundReleasedDetail.getFundReleasedDetailsId());
-			map.put("centralShare", nullChecker(fundReleasedDetail.getCentralShare()) + nullChecker(fundReleasedDetail.getUnspentBalance())); // here central share is equal to the central share +  unspent balance in the fund released
+			map.put("centralShare", Long.valueOf(nullChecker(fundReleasedDetail.getCentralShare())) +Long.valueOf( nullChecker(fundReleasedDetail.getUnspentBalance()))); // here central share is equal to the central share +  unspent balance in the fund released
 			map.put("stateShare", nullChecker(fundReleasedDetail.getStateShare()));
 			map.put("planCode", fundReleasedDetail.getFundReleased().getPlanCode());
 			map.put("message", "success");

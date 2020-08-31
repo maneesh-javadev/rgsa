@@ -23,7 +23,7 @@ import javax.persistence.NamedQuery;
 @Entity
 @NamedQueries({
 	@NamedQuery(name="FETCH_INNOVATIVE_ACTIVITY_BY_ID",query="Delete FROM InnovativeActivityDetails where id=:id"),
-	@NamedQuery(name="FETCH_ALL_INNOVATIVE_DETAILS_EXCEPT_CURRENT_VERSION",query="from InnovativeActivityDetails where innovativeActivity.stateCode=:stateCode and innovativeActivity.versionId !=:versionNo and innovativeActivity.userType in('S','M') order by id")
+	@NamedQuery(name="FETCH_ALL_INNOVATIVE_DETAILS_EXCEPT_CURRENT_VERSION",query="from InnovativeActivityDetails where innovativeActivity.stateCode=:stateCode and innovativeActivity.versionId !=:versionNo and  innovativeActivity.yearId=:yearId and innovativeActivity.userType in('S','M') order by id")
 })
 
 @Table(name="innovative_activity_details" , schema="rgsa")
@@ -43,7 +43,7 @@ public class InnovativeActivityDetails  implements Serializable{
 	private String activityName;
 	
 	@Column(name="funds_name")
-	private Integer fundsName;
+	private Long fundsName;
 	
 	@Column(name="about_activity")
 	private String aboutActivity;
@@ -116,11 +116,13 @@ public class InnovativeActivityDetails  implements Serializable{
 		this.activityName = activityName;
 	}
 
-	public Integer getFundsName() {
+	
+
+	public Long getFundsName() {
 		return fundsName;
 	}
 
-	public void setFundsName(Integer fundsName) {
+	public void setFundsName(Long fundsName) {
 		this.fundsName = fundsName;
 	}
 

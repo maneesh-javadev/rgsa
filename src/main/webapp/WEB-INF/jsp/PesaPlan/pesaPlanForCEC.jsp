@@ -277,18 +277,18 @@ $('document').ready(function(){
 									</div>
 									<div class="col-md-8 text-right ex1">
 										<button ng-click="savePesaPlan()"
-											ng-disabled="isFreezeOrUnfreeze" type="button"
+											ng-disabled="isFreezeOrUnfreeze||btn_disabled" type="button"
 											class="btn bg-green waves-effect">
 											<spring:message code="Label.SAVE" htmlEscape="true" />
 										</button>
 										<button data-ng-show=" pesaPlanForCEC.isFreez" type="button"
-											data-ng-click="freezUnFreezPesaPlan('unfreez')"
+											data-ng-click="freezUnFreezPesaPlan('unfreez')" data-ng-disabled="btn_disabled"
 											class="btn bg-green waves-effect">
 											<spring:message code="UNFREEZE" htmlEscape="true" />
 										</button>
 										<button
 											data-ng-show="(typeof(pesaPlanForCEC.isFreez) !== 'undefined') && !pesaPlanForCEC.isFreez"
-											type="button" data-ng-click="freezUnFreezPesaPlan('freez')"
+											type="button" data-ng-click="freezUnFreezPesaPlan('freez')" data-ng-disabled="btn_disabled"
 											class="btn bg-green waves-effect">
 											<spring:message code="FREEZE" htmlEscape="true" />
 										</button>

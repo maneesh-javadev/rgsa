@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import gov.in.rgsa.entity.FinalizeFreezeStatus;
 import gov.in.rgsa.entity.GramPanchayat;
 import gov.in.rgsa.entity.PanchatayBhawanActivity;
 import gov.in.rgsa.entity.PanchayatBhawanProposedInfo;
@@ -168,6 +169,7 @@ public class PanchayatBhawanController {
 	@RequestMapping(value="finalizeWorkLocation",method = RequestMethod.GET)
 	public String finalizeWorkLocation( Model model)
 	{
+		model.addAttribute("isQPRDataExist",panchayatBhawanService.validateFinalizeWorklocationBasedonQPR('P'));
 		model.addAttribute("stateCode",userPreference.getStateCode());
 		return FINALIZE_WORK_LOCATION;
 	}
@@ -193,6 +195,18 @@ public class PanchayatBhawanController {
 		map.put("userType", CEC_USER_TYPE);
 		
 		return map;
+	}
+	
+	
+	@RequestMapping(value="freezeUnfreezeFinalizeWorkLocation",method=RequestMethod.POST)
+	public @ResponseBody Response freezeUnfreezeFinalizeWorkLocation(@RequestBody final FinalizeFreezeStatus finalizeFreezeStatus,HttpServletRequest request, HttpServletResponse httpServletResponse) {
+		return panchayatBhawanService.freezeUnfreezeFinalizeWorkLocation(finalizeFreezeStatus);
+	}
+	
+	@RequestMapping(value="loadFreezeUnfreezeFinalizeWorkLocation", method = RequestMethod.POST)
+	@ResponseBody
+	public FinalizeFreezeStatus loadFreezeUnfreezeFinalizeWorkLocation(@RequestBody  FinalizeFreezeStatus finalizeFreezeStatus){
+		return panchayatBhawanService.loadFreezeUnfreezeFinalizeWorkLocation(finalizeFreezeStatus);
 	}
 }
 

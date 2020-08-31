@@ -13,13 +13,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import gov.in.rgsa.dao.CommonRepository;
+import gov.in.rgsa.dto.FinalizeInstInfraDto;
 import gov.in.rgsa.dto.InstitutionalInfraProgressReportDTO;
 import gov.in.rgsa.entity.InstInfraStatus;
 import gov.in.rgsa.entity.InstitutionalInfraActivityPlan;
 import gov.in.rgsa.entity.InstitutionalInfraActivityPlanDetails;
+import gov.in.rgsa.entity.Plan;
 import gov.in.rgsa.entity.QprInstitutionalInfraDetails;
 import gov.in.rgsa.entity.QprInstitutionalInfrastructure;
 import gov.in.rgsa.entity.TrainingInstitueType;
+import gov.in.rgsa.model.Response;
 import gov.in.rgsa.service.FacadeService;
 import gov.in.rgsa.service.InstitutionalInfraActivityPlanService;
 import gov.in.rgsa.user.preference.UserPreference;
@@ -456,5 +459,193 @@ public class InstitutionalInfraActivityPlanServiceImpl implements InstitutionalI
 		parameters.put("versionNo",userPreference.getPlanVersion());
 		return commonRepository.findAll("FETCH_ALL_DETAILS_EXCEPT_CURRENT_VERSION", parameters);
 	}
+
+	@Override
+	public List<FinalizeInstInfraDto> fetchInstitutionalInfraActivityDataCEC(String userType) {
+		List<FinalizeInstInfraDto> instInfoList=null;
+		FinalizeInstInfraDto instinfo=null;
+		try {
+		instInfoList=new ArrayList<>();
+		System.out.println(userPreference.getStateCode()+"   "+userPreference.getFinYearId());
+		String nativeQuery="select iiad.institutional_infra_location,iiad.work_type,iiad.institutional_activity_type_id,iiad.institutional_infra_activity_id,"
+				+ "iiad.institutional_infra_activity_details_id from rgsa.institutional_infra_activity iia " +  
+				"inner join rgsa.institutional_infra_activity_details iiad on iia.institutional_infra_activity_id=iiad.institutional_infra_activity_id " + 
+				"where iia.state_code="+userPreference.getStateCode()+" and iia.year_id="+userPreference.getFinYearId()+" and iia.user_type='C' order by iiad.institutional_infra_location";
+		List<Object> activities=commonRepository.findAllByNativeQuery(nativeQuery,null);
+		
+		if(!CollectionUtils.isEmpty(activities) && activities.size()>0){
+			int count=0;
+			for(Object obj :activities)
+			{
+				Object[] objarr=(Object[]) obj;
+				instinfo=new FinalizeInstInfraDto();
+				instinfo.setWorkLocation((int) objarr[0]);
+				instinfo.setWorkType((Character) objarr[1]);
+				instinfo.setActivityId((Integer) objarr[2]);
+				instinfo.setInstId((Integer) objarr[3]);
+				instinfo.setInstDtlsId((Integer) objarr[4]);
+				instinfo.setCount(count);
+				instInfoList.add(instinfo);
+				count++;
+			}
+		}
+		else{
+			if(userPreference.getUserType().equalsIgnoreCase("M")){
+				String nativeQuery1="select iiad.institutional_infra_location,iiad.work_type,iiad.institutional_activity_type_id,iiad.institutional_infra_activity_id,"
+						+ "iiad.institutional_infra_activity_details_id from rgsa.institutional_infra_activity iia " +  
+						"inner join rgsa.institutional_infra_activity_details iiad on iia.institutional_infra_activity_id=iiad.institutional_infra_activity_id " + 
+						"where iia.state_code="+userPreference.getStateCode()+" and iia.year_id="+userPreference.getFinYearId()+" and iia.user_type='S' order by iiad.institutional_infra_location";
+				activities=commonRepository.findAllByNativeQuery(nativeQuery1,null);
+			}			
+			if(!CollectionUtils.isEmpty(activities) && activities.size()>0){
+				//if(activities.get(0).getUserType().equalsIgnoreCase("S") && activities.get(0).getIsFreeze()){
+					//activities.get(0).setStatus("UF");
+				//}
+				for(Object obj : activities)
+				{
+					Object[] objarr=(Object[]) obj;
+					instinfo=new FinalizeInstInfraDto();
+					instinfo.setWorkLocation((int) objarr[0]);
+					instinfo.setWorkType((Character) objarr[1]);
+					instinfo.setActivityId((Integer) objarr[2]);
+					instinfo.setInstId((Integer) objarr[3]);
+					instinfo.setInstDtlsId((Integer) objarr[4]);
+					instInfoList.add(instinfo);
+				}
+			}			
+		}
+		}
+		catch(Exception e) {e.printStackTrace();}
+		return instInfoList;
+	}
 	
+	@Override
+	public boolean fetchInstInfraActFreezDataCEC(String cecUserType) {
+		boolean isFreez = false;
+		try {
+			List<Integer> qtrId=new ArrayList<>();
+			if(userPreference.getFinYearId()==2 || userPreference.getFinYearId()==3)
+			{
+				qtrId.add(0);
+			}
+			else
+			{
+				qtrId.add(1);
+				qtrId.add(2);
+				qtrId.add(3);
+				qtrId.add(4);
+			}
+			
+			String qid=",";
+			if(qtrId!=null && !qtrId.isEmpty())
+			{
+				for(int id :qtrId)
+				{
+					qid=qid+id;
+				}
+			}
+			qid=qid.substring(1);
+			System.out.println("after "+qid);
+			
+		String nativeQuery="select qii.is_freez from rgsa.institutional_infra_activity iia inner join rgsa.qpr_inst_infra qii on "
+				+ "iia.institutional_infra_activity_id=qii.institutional_infra_activity_id where iia.state_code="+userPreference.getStateCode()+" "
+						+ "and iia.year_id="+userPreference.getFinYearId()+" and iia.user_type='"+cecUserType+"' and iia.is_active=true and qii.qtr_id in("+qid+")";
+		
+		List<Object> obj=	commonRepository.findAllByNativeQuery(nativeQuery,null);
+		
+		System.out.println(" list  "+obj);
+		if(obj!=null && !obj.isEmpty())
+		{
+			for(Object innerObj : obj)
+			{
+				if((boolean) innerObj==true)
+				{
+					isFreez=(boolean) innerObj;
+					break;
+				}
+			}
+			
+		}
+		}
+		catch(Exception e) {e.printStackTrace();}
+		return isFreez;
+	}
+	
+	@Override
+	public Response saveModifyDistrictInInstInfra(List<InstitutionalInfraActivityPlanDetails> instInfoActDtlsList) {
+		Response response = new Response();
+		try {
+			for(InstitutionalInfraActivityPlanDetails instInfoActDtls :instInfoActDtlsList)
+			{
+				Integer instId=instInfoActDtls.getInstitutionalInfraActivityPlan().getInstitutionalInfraActivityId();
+				Integer instDtlsId=instInfoActDtls.getInstitutionalInfraActivityDetailsId();
+				int infraLocation=instInfoActDtls.getInstitutionalInfraLocation();
+				String nativeQuery ="update rgsa.institutional_infra_activity_details set institutional_infra_location="+infraLocation+""
+						+ " where institutional_infra_activity_id="+instId+" and institutional_infra_activity_details_id="+instDtlsId+"";
+				commonRepository.excuteUpdateNativeQuery(nativeQuery,null);
+			}
+			response.setResponseMessage("District of Institutional Infra save Successfully");
+			response.setResponseCode(200);
+		}catch(Exception e) {
+			response.setResponseMessage("District of Institutional Infra save UnSuccessfully"+e.getMessage());
+			response.setResponseCode(500);
+		}
+		return response;
+	}
+	
+	@Override
+	public boolean fetchPlanApprovedByCEC() {
+		boolean isApprove = false;
+		Plan status=null;
+		try {	
+			Map<String,Object> params=new HashMap<>();
+			
+			params.put("stateCode", userPreference.getStateCode());
+			params.put("planStatusId",5);
+			params.put("yearId", userPreference.getFinYearId());
+			params.put("planVersion", userPreference.getPlanVersion());
+			
+			status=commonRepository.find("PLAN_STATUS", params);
+			
+		if(status!=null)
+		{
+			if(status.getIsactive())
+			{
+				isApprove=true;
+			}
+			else {isApprove=false;}
+		}
+		
+		}
+		catch(Exception e) {e.printStackTrace();}
+		return isApprove;
+	}	
+
+
+/////
+
+
+
+@Override
+public boolean fetchInstitutionalInfraActivityData() {
+	List<InstitutionalInfraActivityPlanDetails> instInfodtlsList=null;
+	boolean flag=false;
+	try {		
+		String nativeQuery="select * from  rgsa.institutional_infra_activity_details where institutional_infra_activity_id="+
+				"(select institutional_infra_activity_id from rgsa.institutional_infra_activity where state_code="+userPreference.getStateCode()+" "
+				+ "and year_id="+userPreference.getFinYearId()+" and user_type='S' and version_no="+userPreference.getPlanVersion()+" and is_active=true)";
+		
+		instInfodtlsList=commonRepository.findAllByNativeQuery(nativeQuery, null);
+		if(instInfodtlsList!=null && !instInfodtlsList.isEmpty())
+			{
+				flag=true;
+			}
+	}
+	catch(Exception e) {e.printStackTrace();}
+	return flag;
+}
+
+
+
+
 }

@@ -12,15 +12,16 @@ function isNumber(evt) {
 
 function getSelelctedQtrRprt()
 {
-	
-
+	disabled_button();
 	document.qprPanchayatBhawan.method = "post";
 	document.qprPanchayatBhawan.action = "panchayatBhawanQuaterlyReportOnQtr.html?<csrf:token uri='panchayatBhawanQuaterlyReportOnQtr.html'/>";
 	document.qprPanchayatBhawan.submit();
-	
-	
+}
 
-
+function disabled_button(){
+	$('#savebtn').prop('disabled', true);
+	$('#freezebtn').prop('disabled', true);
+	$('#unfreezebtn').prop('disabled', true);
 }
 
 function validate_expenditureIncurred(balance,obj,objId){
@@ -47,10 +48,10 @@ function validate_expenditureIncurred(balance,obj,objId){
 			l=$('#'+idn+'_'+i).length;
 			i++;
 			}
-			
+			var newTot=tot+otherTotal;
 			
 
-			if(tot>balance){
+			if(newTot>balance){
 				$("#error_"+id).text("expenditure Incurred must be less then balance amount");
 				$("#error_"+id).addClass('errormsg show');
 				$( obj ).val('');
@@ -127,6 +128,7 @@ loadSubElement=function(gpBhawanStatusId,index){
 };
 
 function FreezeAndUnfreeze(msg){
+	disabled_button();
 	var componentId=3;
 	var qprActivityId=$('#qprActivityId').val();
 	var quaterId = $('#qtrId').val();

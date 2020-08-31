@@ -283,17 +283,21 @@ publicModule.controller("pesaPlanCECController", [ '$scope', "pesaPlanService",
 	}
 	
 	$scope.savePesaPlan=function(){
+		$scope.btn_disabled=true;
 		$scope.pesaPlanForCEC.isFreez = false;
 		console.log($scope.pesaPlanForCEC);
 		pesaPlanService.savePesaPlanForCEC($scope.pesaPlanForCEC).then(function(response){
 			toastr.success("Plan Saved Successfully");
+			$scope.btn_disabled=false;
 			fetchPesaPlanDetailsForStateAndMOPR();
 		},function(error){
 			toastr.error("Something went wrong");
+			$scope.btn_disabled=false;
 		});
 	}
 	
 	$scope.freezUnFreezPesaPlan=function(freezUnfreez){
+		$scope.btn_disabled=true;
 		if(freezUnfreez == 'freez'){
 			$scope.pesaPlanForCEC.isFreez = true;
 		}else{
@@ -304,9 +308,10 @@ publicModule.controller("pesaPlanCECController", [ '$scope', "pesaPlanService",
 			fetchPesaPlanDetailsForStateAndMOPR();
 			if(freezUnfreez == 'freez'){
 				toastr.success("Plan Freezed Successfully");
-				
+				$scope.btn_disabled=false;
 			}else{
 				toastr.success("Plan UnFreezed Successfully");
+				$scope.btn_disabled=false;
 			}
 		},function(error){
 			alert(error);

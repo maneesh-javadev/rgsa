@@ -19,6 +19,7 @@ import gov.in.rgsa.dto.GramPanchayatProgressReportDTO;
 import gov.in.rgsa.entity.GPBhawanStatus;
 import gov.in.rgsa.entity.BasicInfoDetails;
 import gov.in.rgsa.entity.CapacityBuildingActivityDetails;
+import gov.in.rgsa.entity.FinalizeFreezeStatus;
 import gov.in.rgsa.entity.GramPanchayatActivity;
 import gov.in.rgsa.entity.PanchatayBhawanActivity;
 import gov.in.rgsa.entity.PanchatayBhawanActivityDetails;
@@ -390,12 +391,12 @@ public class PanchayatBhawanActivityServiceImpl implements PanchayatBhawanServic
 	}
 
 	@Override
-	public List<QprPanchayatBhawan> fetchDataAccordingToQuator(Integer quatorId,Integer activityId,Integer districtCode ) {
+	public List<QprPanchayatBhawan> fetchDataAccordingToQuator(Integer quatorId,Integer activityId,Integer districtCode,Integer panchayatBhawanActivityId ) {
 		Map<String, Object> params=new HashMap<>();
 		params.put("quatorId", quatorId);
 		params.put("activityId", activityId);
 		params.put("districtCode", districtCode);
-		//params.put("qtrPanchyatBhawan", qtrPanchyatBhawan);
+		params.put("panchayatBhawanActivityId", panchayatBhawanActivityId);
 		return commonRepository.findAll("FETCH_ACTIVITY_DEPEND_ON_QUATOR", params);
 	}
 	
@@ -412,4 +413,68 @@ public class PanchayatBhawanActivityServiceImpl implements PanchayatBhawanServic
 		}
 		return d;
 	}
+
+	@Override
+	public Response freezeUnfreezeFinalizeWorkLocation(FinalizeFreezeStatus finalizeFreezeStatus) {
+		Response response = new Response();
+		try {
+		finalizeFreezeStatus.setIsActive(true);
+		if(finalizeFreezeStatus.getId()!=null) {
+			commonRepository.update(finalizeFreezeStatus);
+		}else {
+			commonRepository.save(finalizeFreezeStatus);
+		}
+		String status=finalizeFreezeStatus.getIsFreeze()?"Freeze":"Unfreeze";
+		String name="Panchayat Bhawan";
+		if(finalizeFreezeStatus.getFinalizeType()=='E') {
+		name="e-Enablement";	
+		}else if(finalizeFreezeStatus.getFinalizeType()=='T') {
+		name="Training Activity";	
+		}
+				
+		
+		response.setResponseMessage("GP of "+name+" "+status+" Successfully");
+		response.setResponseCode(200);
+		}catch(Exception e) {
+			response.setResponseMessage("Finalize Freeze/Unfreeze UnSuccessfully"+e.getMessage());
+			response.setResponseCode(500);
+		}
+		return response;
+	}
+
+	@Override
+	public FinalizeFreezeStatus loadFreezeUnfreezeFinalizeWorkLocation(FinalizeFreezeStatus finalizeFreezeStatus) {
+		FinalizeFreezeStatus finalizeFreezeObj=null;
+		Map<String, Object> params=new HashMap<>();
+		params.put("activityId", finalizeFreezeStatus.getActivityId());
+		params.put("finalizeType", finalizeFreezeStatus.getFinalizeType());
+		List<FinalizeFreezeStatus> finalizeFreezeObjList=commonRepository.findAll("FETCH_FINALIZE_FREEZE_STATUS", params);
+		if(finalizeFreezeObjList!=null && !finalizeFreezeObjList.isEmpty())
+		{
+			finalizeFreezeObj=finalizeFreezeObjList.get(0);
+		}
+		return finalizeFreezeObj;
+	}
+	
+	public boolean validateFinalizeWorklocationBasedonQPR(Character finalizeType) {
+		boolean isvalidate=false;
+		String queryStr="select case when count(1)>0 then true else false end from panhcayat_bhawan_activity pb  inner join qpr_panhcayat_bhawan qpb on pb.panhcayat_bhawan_activity_id=qpb.panhcayat_bhawan_activity_id " + 
+		" where pb.state_code=:stateCode and pb.year_id=:yearId  and pb.user_type='C' and pb.is_active and (CASE WHEN pb.year_id=2 or pb.year_id=3 then " + 
+		" qpb.qtr_id=0 else qpb.qtr_id in(1,2,3,4) END)";
+		if(finalizeType=='E') {
+			queryStr="select case when count(1)>0 then true else false end from e_enablement ee  inner join qpr_e_enablement qee on ee.e_enablement_id=qee.e_enablement_id "
+			+ " where ee.state_code=:stateCode and ee.year_id=:yearId  and ee.user_type='C' and ee.is_active and (CASE WHEN ee.year_id=2 or ee.year_id=3 then " + 
+			" qee.qtr_id=0 else qee.qtr_id in(1,2,3,4) END)";
+		}else if(finalizeType=='T') {
+			queryStr="select case when count(1)>0 then true else false end from cb_activity cb  inner join qpr_cb_activity qcb on cb.cb_activity_id=qcb.cb_activity_id "
+			+ " where cb.state_code=:stateCode and cb.year_id=:yearId  and cb.user_type='C' and cb.is_active and (CASE WHEN cb.year_id=2 or cb.year_id=3 then  "
+			+ " qcb.qtr_id=0 else qcb.qtr_id in(1,2,3,4) END)";
+		}
+		Map<String, Object> parameter = new HashMap<String, Object>();
+		parameter.put("stateCode", userPreference.getStateCode());
+		parameter.put("yearId", userPreference.getFinYearId());
+		isvalidate=(Boolean)commonRepository.findByNativeQuery(queryStr, parameter);
+		return isvalidate;
+	}
+	
 }

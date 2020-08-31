@@ -164,7 +164,7 @@ function calculateTotal(obj){
 														<strong>{{panchayatBhawanActivityMOPR.panchatayBhawanActivityDetails[$index].noOfGPs}}</strong>
 												</div> 
 														 <input type="text" class="form-control" data-ng-show="panchayatBhawanActivity.status == 'F'" data-ng-model="panchayatBhawanActivity.panchatayBhawanActivityDetails[$index].noOfGPs"  style="text-align:right;" disabled="disabled">
-														<input type="text" class="form-control" data-ng-show="panchayatBhawanActivity.status != 'F'" data-ng-model="panchayatBhawanActivity.panchatayBhawanActivityDetails[$index].noOfGPs"  onkeypress="return isNumber(event)" data-ng-keyup="calculateFundsAndTotalWithoutAdditionaRequirement($index);calculateAspirationalGps($index)" maxlength="7" style="text-align:right;"> 
+														<input type="text" class="form-control" data-ng-show="panchayatBhawanActivity.status != 'F'" data-ng-model="panchayatBhawanActivity.panchatayBhawanActivityDetails[$index].noOfGPs"  onkeypress="return isNumber(event)" data-ng-keyup="calculateFundsAndTotalWithoutAdditionaRequirement($index);calculateAspirationalGps($index)" maxlength="9" style="text-align:right;"> 
 												</td>
 												<td>
 												<div align="center"
@@ -172,7 +172,7 @@ function calculateTotal(obj){
 														<strong>{{panchayatBhawanActivityMOPR.panchatayBhawanActivityDetails[$index].aspirationalGps}}</strong>
 												</div> 
 												<input type="text" class="form-control" data-ng-show="panchayatBhawanActivity.status == 'F'" data-ng-model="panchayatBhawanActivity.panchatayBhawanActivityDetails[$index].aspirationalGps" style="text-align:right;" disabled="disabled"/>
-														<input type="text" class="form-control" data-ng-show="panchayatBhawanActivity.status != 'F'" onkeypress="return isNumber(event)" data-ng-model="panchayatBhawanActivity.panchatayBhawanActivityDetails[$index].aspirationalGps" data-ng-keyup="calculateAspirationalGps($index)" maxlength="7" style="text-align:right;"/>	
+														<input type="text" class="form-control" data-ng-show="panchayatBhawanActivity.status != 'F'" onkeypress="return isNumber(event)" data-ng-model="panchayatBhawanActivity.panchatayBhawanActivityDetails[$index].aspirationalGps" data-ng-keyup="calculateAspirationalGps($index)" maxlength="9" style="text-align:right;"/>	
 												</td>
 
 												<td>
@@ -184,7 +184,7 @@ function calculateTotal(obj){
 													onkeypress="return isNumber(event)"
 													data-ng-model="panchayatBhawanActivity.panchatayBhawanActivityDetails[$index].unitCost"
 													data-ng-keyup="calculateFundsAndTotalWithoutAdditionaRequirement($index)"
-													maxlength="7" style="text-align: right;" /> <input
+													maxlength="9" style="text-align: right;" /> <input
 													type="text" class="form-control"
 													data-ng-show="panchayatBhawanActivity.status == 'F'"
 													data-ng-model="panchayatBhawanActivity.panchatayBhawanActivityDetails[$index].unitCost"
@@ -307,7 +307,7 @@ function calculateTotal(obj){
 														<strong>{{panchayatBhawanActivityMOPR.panchatayBhawanActivityDetails[$index].noOfGPs}}</strong>
 												</div> 
 														 <input type="text" class="form-control" data-ng-show="panchayatBhawanActivity.status == 'F'" data-ng-model="panchayatBhawanActivity.panchatayBhawanActivityDetails[$index].noOfGPs"  style="text-align:right;" disabled="disabled">
-														<input type="text" class="form-control" data-ng-show="panchayatBhawanActivity.status != 'F'" data-ng-model="panchayatBhawanActivity.panchatayBhawanActivityDetails[$index].noOfGPs"  onkeypress="return isNumber(event)" data-ng-change="calculateFundRequired($index,'SAN')" maxlength="7" style="text-align:right;"> 
+														<input type="text" class="form-control" data-ng-show="panchayatBhawanActivity.status != 'F'" data-ng-model="panchayatBhawanActivity.panchatayBhawanActivityDetails[$index].noOfGPs"  onkeypress="return isNumber(event)" data-ng-change="calculateFundRequired($index,'SAN')" maxlength="9" style="text-align:right;"> 
 												</td>
 												<td>
 												<div align="center"
@@ -315,7 +315,7 @@ function calculateTotal(obj){
 														<strong>{{panchayatBhawanActivityMOPR.panchatayBhawanActivityDetails[$index].aspirationalGps}}</strong>
 												</div> 
 												<input type="text" class="form-control" data-ng-show="panchayatBhawanActivity.status == 'F'" data-ng-model="panchayatBhawanActivity.panchatayBhawanActivityDetails[$index].aspirationalGps" style="text-align:right;" disabled="disabled"/>
-														<input type="text" class="form-control" data-ng-show="panchayatBhawanActivity.status != 'F'" onkeypress="return isNumber(event)" data-ng-model="panchayatBhawanActivity.panchatayBhawanActivityDetails[$index].aspirationalGps" data-ng-change="calculateFundRequired($index,'REL')" maxlength="7" style="text-align:right;"/>	
+														<input type="text" class="form-control" data-ng-show="panchayatBhawanActivity.status != 'F'" onkeypress="return isNumber(event)" data-ng-model="panchayatBhawanActivity.panchatayBhawanActivityDetails[$index].aspirationalGps" data-ng-change="calculateFundRequired($index,'REL')" maxlength="9" style="text-align:right;"/>	
 												</td>
 
 												<td>
@@ -327,7 +327,7 @@ function calculateTotal(obj){
 													onkeypress="return isNumber(event)"
 													data-ng-model="panchayatBhawanActivity.panchatayBhawanActivityDetails[$index].unitCost"
 													data-ng-change="calculateFundRequired($index,'UTI')"
-													maxlength="7" style="text-align: right;" /> <input
+													maxlength="9" style="text-align: right;" /> <input
 													type="text" class="form-control"
 													data-ng-show="panchayatBhawanActivity.status == 'F'"
 													data-ng-model="panchayatBhawanActivity.panchatayBhawanActivityDetails[$index].unitCost"

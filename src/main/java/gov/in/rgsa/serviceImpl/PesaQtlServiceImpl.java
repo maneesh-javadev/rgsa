@@ -24,6 +24,8 @@ import java.util.Map;
 @Service
 public class PesaQtlServiceImpl implements PesaQtlService {
 
+	
+	
     @Autowired
     UserPreference userPreference;
     
@@ -38,6 +40,7 @@ public class PesaQtlServiceImpl implements PesaQtlService {
     public Map<String, Object> getPesaFormMap(Integer quarterId) {
         Map<String, Object> qParams = new HashMap<>();
         int installmentNo = quarterId > 2 ? 2 : 1;
+        int installment2=2;
         String userType = userPreference.getUserType();
         Integer finYearId = userPreference.getFinYearId();
         qParams.put("quarterId", quarterId);
@@ -108,6 +111,7 @@ public class PesaQtlServiceImpl implements PesaQtlService {
         List<QuaterWiseFund> fundOfQtr1And2=new ArrayList();
         List<StateAllocation> stateAllocation=new ArrayList();
         stateAllocation=progressReportService.fetchStateAllocationData(6, installmentNo,progressReportService.getCurrentPlanCode());
+         List<StateAllocation> stateAllocationSecond=progressReportService.fetchStateAllocationData(6, 2 ,progressReportService.getCurrentPlanCode());
          if(quarterId > 2) {
         	 StateAllocation stateAllocationFirst=progressReportService.fetchStateAllocationData(6, 1,progressReportService.getCurrentPlanCode()).get(0);
         	 fundOfQtr1And2=progressReportService.fetchTotalQuaterWiseFundData(userPreference.getStateCode(), 6);
@@ -116,9 +120,22 @@ public class PesaQtlServiceImpl implements PesaQtlService {
         		 response.put("fundAllocatedFirstInstallment", stateAllocationFirst.getFundsAllocated());
         	 response.put("fundUsedInQtr1_2", fund_used_qtr_1_2);
          }
-         if(CollectionUtils.isNotEmpty(stateAllocation))
-        	 response.put("fundAllocatedCurrentInstallment", stateAllocation.get(0).getFundsAllocated());
          
+         //Added by sushma singh 30-07-2020
+         
+        Double fundAllocate=0D; 
+		 if(stateAllocation!=null  && !stateAllocation.isEmpty()) {
+		 fundAllocate=fundAllocate+stateAllocation.get(0).getFundsAllocated();
+		 }
+		 if(stateAllocationSecond!=null && !stateAllocationSecond.isEmpty())
+		 {
+		  fundAllocate=fundAllocate+stateAllocationSecond.get(0).getFundsAllocated();
+		  }
+         
+         
+          if(CollectionUtils.isNotEmpty(stateAllocation))
+        	response.put("fundAllocatedCurrentInstallment", fundAllocate);
+        	
          List<QuaterWiseFund> quaterWiseFund = new ArrayList<>();
          if (quarterId == 1 || quarterId == 3) {
              quaterWiseFund = progressReportService.fetchQuaterWiseFundData(userPreference.getStateCode(),
@@ -127,12 +144,16 @@ public class PesaQtlServiceImpl implements PesaQtlService {
              quaterWiseFund = progressReportService.fetchQuaterWiseFundData(userPreference.getStateCode(),
                      (quarterId - 1), 6);
          }
-         if (CollectionUtils.isNotEmpty(quaterWiseFund)) {
-             response.put("fundUsedInAdjcentQtr", quaterWiseFund.get(0).getFunds());
+         
+		
+		
+       if (CollectionUtils.isNotEmpty(quaterWiseFund)) {
+             response.put("fundUsedInAdjcentQtr",  quaterWiseFund.get(0).getFunds());
          }
         return response;
     }
-
+    
+    
     @SuppressWarnings("Duplicates")
     @Override
     public void save(QprQuartReply qprQuartReply) {

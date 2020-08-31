@@ -1,10 +1,12 @@
 package gov.in.rgsa.serviceImpl;
 
 import gov.in.rgsa.dao.CommonRepository;
+import gov.in.rgsa.dto.SubcomponentwiseQuaterBalance;
 import gov.in.rgsa.entity.*;
 import gov.in.rgsa.inbound.QprEGovReq;
 import gov.in.rgsa.outbound.QprEGovResponse;
 import gov.in.rgsa.service.EGovQtlService;
+import gov.in.rgsa.service.ProgressReportService;
 import gov.in.rgsa.user.preference.UserPreference;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -24,7 +26,10 @@ public class EGovQtlServiceImpl implements EGovQtlService {
 
     @Autowired
     CommonRepository commonRepository;
-
+    
+    @Autowired
+    ProgressReportService progressReportService;
+    
     @Override
     public Map<String, Object> getEGovFormMap(Integer quarterId) {
         Map<String, Object> qParams = new HashMap<>();
@@ -60,6 +65,20 @@ public class EGovQtlServiceImpl implements EGovQtlService {
         		}
         	}
         }
+        
+        List<SubcomponentwiseQuaterBalance> subcomponentwiseQuaterBalanceList = progressReportService
+				.fetchSubcomponentwiseQuaterBalance(15, quarterId);
+		if (subcomponentwiseQuaterBalanceList != null && !subcomponentwiseQuaterBalanceList.isEmpty()) {
+			response.put("subcomponentwiseQuaterBalanceList", subcomponentwiseQuaterBalanceList);
+			response.put("installementExist", Boolean.TRUE);
+			String addReqirmentDetails = progressReportService.getBalanceAdditionalReqiurment(1, quarterId);
+			if (addReqirmentDetails != null && addReqirmentDetails.length() > 0) {
+				response.put("balAddiReq", Integer.parseInt(addReqirmentDetails));
+			}
+		} else {
+			// model.addAttribute("isError", "2nd installement not released");
+			// model.addAttribute("installementExist", Boolean.FALSE);
+		}
         /*if(totalExpendIncuuredInQtr1and2 == 0 && quarterId >= 3) {
         	qtrOneAndTwoNotPresent = true;
         }*/
@@ -102,6 +121,9 @@ public class EGovQtlServiceImpl implements EGovQtlService {
         }
         response.put("expenditures", expList);
         response.put("isNew", isNew);
+        
+        progressReportService.saveQprWiseFundData(userPreference.getStateCode(), userPreference.getFinYearId(), quarterId, 15);
+      
         return response;
     }
 

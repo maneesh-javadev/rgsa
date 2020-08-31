@@ -269,6 +269,7 @@
 									</button>
 									<button
 										data-ng-click="freezeUnfreezeTrainingActivityCecDetails($event)"
+										data-ng-disabled="btn_disabled" 
 										data-legend="{{status}}"
 										type="button"
 										 class="btn bg-green waves-effect" 

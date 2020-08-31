@@ -295,6 +295,7 @@ function calculateTotalFundSpmu() {
 					<div class="body">
 						<form:form method="post" name="pmuController" action="addUpdatePmu.html"	modelAttribute="PMU_ACTIVITY" onsubmit="return validationOnSubmit()">
 							<input type="hidden" name="<csrf:token-name/>"	value="<csrf:token-value uri="addPmuActivity.html" />" />
+							
 									<div class="table-responsive">
 										<table class="table table-bordered" id="supportStaff">
 											<thead>
@@ -345,77 +346,168 @@ function calculateTotalFundSpmu() {
 											<c:set var="countSpmu" value="0" scope="page" />
 											<c:set var="countDpmu" value="0" scope="page" />
 											<c:forEach items="${LIST_OF_ACTIVITY_PMU_TYPE}" var="ACTIVITY" varStatus="srl" begin="0" end="2">
+											
+											<c:choose>
+											<c:when  test="${(!empty pmuActivity) and (!empty pmuActivity.pmuActivityDetails)}"> 
+										
+											<c:forEach items="${pmuActivity.pmuActivityDetails}" var="pmuDeatilsObj">
+											
+											<c:if test="${pmuDeatilsObj.pmuActivityType.pmuActivityTypeId==ACTIVITY.pmuActivityTypeId}"> 
 											<input	type="hidden" name="pmuActivityDetails[${srl.index}].pmuActivityTypeId"	value="${ACTIVITY.pmuActivityTypeId}">
 											<input	type="hidden" name="pmuActivityDetails[${srl.index}].pmuDetailsId"	value="${pmuActivity.pmuActivityDetails[srl.index].pmuDetailsId}">
 											<input	type="hidden" name="pmuActivityDetails[${srl.index}].pmuActivityType.pmuActivityTypeId"	value="${ACTIVITY.pmuActivityTypeId}" />
-											<tr>
-												<td><div align="center"><strong>${ACTIVITY.pmuType.pmuTypeName}</strong></div></td>
-												<td><div align="center"><strong>${ACTIVITY.pmuActivityName}</strong></div></td>
-												<c:if test="${ACTIVITY.pmuActivityTypeId ne 3}">
-												<td><input value="${pmuActivity.pmuActivityDetails[srl.index].noOfUnits}"	name="pmuActivityDetails[${srl.index}].noOfUnits" min="1" maxlength="3"  onkeypress="return isNumber(event)" oninput="validity.valid||(value='');"	type="text" class="active12 form-control" id="noOfUnits_${srl.index}" onkeyup="" style="text-align:right;" onchange="calculateValueAcDomain('noOfUnits_${srl.index}')"/></td>
-												<%-- <td><input value="${pmuActivity.pmuActivityDetails[srl.index].unitCost}"	name="pmuActivityDetails[${srl.index}].unitCost" min="1" maxlength="7"  onkeypress="return isNumber(event)" oninput="validity.valid||(value='');" type="text" class="active12 form-control"	id="unitCost_${srl.index}" onkeyup="calculate(${srl.index});" style="text-align:right;"/></td> --%>
-												<td><input value="${pmuActivity.pmuActivityDetails[srl.index].noOfMonths}" 	name="pmuActivityDetails[${srl.index}].noOfMonths" onkeypress="return isNumber(event)" oninput="validity.valid||(value='');" type="text" class="active12 form-control" id="noOfMonths_${srl.index}" style="text-align:right;" onkeyup="validateMonth(${srl.index})"/></td>
-												</c:if>
-												<c:if test="${ACTIVITY.pmuActivityTypeId eq 3}">
-												<td></td>
-												<td></td>
+												<tr>
+													<td><div align="center"><strong>${ACTIVITY.pmuType.pmuTypeName}</strong></div></td>
+													<td><div align="center"><strong>${ACTIVITY.pmuActivityName}</strong></div></td>
+													<c:if test="${ACTIVITY.pmuActivityTypeId ne 3}">
+													<td><input value="${pmuActivity.pmuActivityDetails[srl.index].noOfUnits}"	name="pmuActivityDetails[${srl.index}].noOfUnits" min="1" maxlength="3"  onkeypress="return isNumber(event)" oninput="validity.valid||(value='');"	type="text" class="active12 form-control" id="noOfUnits_${srl.index}" onkeyup="" style="text-align:right;" onchange="calculateValueAcDomain('noOfUnits_${srl.index}')"/></td>
+													<%-- <td><input value="${pmuActivity.pmuActivityDetails[srl.index].unitCost}"	name="pmuActivityDetails[${srl.index}].unitCost" min="1" maxlength="7"  onkeypress="return isNumber(event)" oninput="validity.valid||(value='');" type="text" class="active12 form-control"	id="unitCost_${srl.index}" onkeyup="calculate(${srl.index});" style="text-align:right;"/></td> --%>
+													<td><input value="${pmuActivity.pmuActivityDetails[srl.index].noOfMonths}" 	name="pmuActivityDetails[${srl.index}].noOfMonths" onkeypress="return isNumber(event)" oninput="validity.valid||(value='');" type="text" class="active12 form-control" id="noOfMonths_${srl.index}" style="text-align:right;" onkeyup="validateMonth(${srl.index})"/></td>
 													</c:if>
-												<c:set var="totalFundToCalc" value="${pmuActivity.pmuActivityDetails[srl.index].fund}"></c:set>
-												<td><input value="${pmuActivity.pmuActivityDetails[srl.index].fund}" name="pmuActivityDetails[${srl.index}].fund" onkeypress="return isNumber(event);" oninput="validity.valid||(value='');" type="text" min="1" class="active12 form-control txtCal" id="fund_${srl.index}" style="text-align:right;" onkeyup="calculateTotalFundSpmu();validateFund(${srl.index});"/></td>
-													<c:choose>
-														<c:when test="${srl.index eq 0}">
-															<td><div align="center"><button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal">Fill Domain Details</button></div></td>
-														</c:when>
-														<c:when test="${srl.index eq 3}">
-															<td><div align="center"><button type="button"	class="btn btn-primary btn-lg" data-toggle="modal"	data-target="#myModal2">Fill Domain Details</button></div></td>
-														</c:when>
-														<c:otherwise>
-															<td></td>
-														</c:otherwise>
-													</c:choose>
-											<c:if test="${sessionScope['scopedTarget.userPreference'].userType eq 'M'}">
-	                                             <td><c:choose>
-	                                             			<c:when test="${pmuActivity.pmuActivityDetails[srl.index].isApproved}">	
-														  		 <input type="checkbox" name="pmuActivityDetails[${srl.index}].isApproved" checked="checked"  />
-														   </c:when>
-														   <c:otherwise>
-														   		<input type="checkbox" name="pmuActivityDetails[${srl.index}].isApproved" />
-														   </c:otherwise>
-													</c:choose>
-												</td>
-										   </c:if>
-										   <td><textarea name="pmuActivityDetails[${srl.index}].remarks" rows="3" class="form-control" cols="5"><c:out value="${pmuActivity.pmuActivityDetails[srl.index].remarks}"></c:out></textarea></td>
-												
-												<c:if test="${sessionScope['scopedTarget.userPreference'].planVersion > 1}">
+													<c:if test="${ACTIVITY.pmuActivityTypeId eq 3}">
+													<td></td>
+													<td></td>
+														</c:if>
+													<c:set var="totalFundToCalc" value="${pmuActivity.pmuActivityDetails[srl.index].fund}"></c:set>
+													<td><input value="${pmuActivity.pmuActivityDetails[srl.index].fund}" name="pmuActivityDetails[${srl.index}].fund" onkeypress="return isNumber(event);" oninput="validity.valid||(value='');" type="text" min="1" class="active12 form-control txtCal" id="fund_${srl.index}" style="text-align:right;" onkeyup="calculateTotalFundSpmu();validateFund(${srl.index});"/></td>
+														<c:choose>
+															<c:when test="${srl.index eq 0}">
+																<td><div align="center"><button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal">Fill Domain Details</button></div></td>
+															</c:when>
+															<c:when test="${srl.index eq 3}">
+																<td><div align="center"><button type="button"	class="btn btn-primary btn-lg" data-toggle="modal"	data-target="#myModal2">Fill Domain Details</button></div></td>
+															</c:when>
+															<c:otherwise>
+																<td></td>
+															</c:otherwise>
+														</c:choose>
+												<c:if test="${sessionScope['scopedTarget.userPreference'].userType eq 'M'}">
+		                                             <td><c:choose>
+		                                             			<c:when test="${pmuActivity.pmuActivityDetails[srl.index].isApproved}">	
+															  		 <input type="checkbox" name="pmuActivityDetails[${srl.index}].isApproved" checked="checked"  />
+															   </c:when>
+															   <c:otherwise>
+															   		<input type="checkbox" name="pmuActivityDetails[${srl.index}].isApproved" />
+															   </c:otherwise>
+														</c:choose>
+													</td>
+											   </c:if>
+											   <td><textarea name="pmuActivityDetails[${srl.index}].remarks" rows="3" class="form-control" cols="5"><c:out value="${pmuActivity.pmuActivityDetails[srl.index].remarks}"></c:out></textarea></td>
+													
+													<c:if test="${sessionScope['scopedTarget.userPreference'].planVersion > 1}">
+															<td>
+																<ol>
+																<c:forEach items="${STATE_PRE_COMMENTS[srl.index]}" varStatus="indexInner" var="stateComments">
+																<li style="color: #396721 ; font-weight: bold;">
+																	<c:choose>
+																		<c:when test="${not empty stateComments}">${stateComments}</c:when>
+																		<c:otherwise>No comments by state</c:otherwise>
+																	</c:choose>
+																</li><br>
+																</c:forEach>
+															</ol>
+															</td>
+														
 														<td>
 															<ol>
-															<c:forEach items="${STATE_PRE_COMMENTS[srl.index]}" varStatus="indexInner" var="stateComments">
-															<li style="color: #396721 ; font-weight: bold;">
-																<c:choose>
-																	<c:when test="${not empty stateComments}">${stateComments}</c:when>
-																	<c:otherwise>No comments by state</c:otherwise>
-																</c:choose>
-															</li><br>
-															</c:forEach>
-														</ol>
+																<c:forEach items="${MOPR_PRE_COMMENTS[srl.index]}" varStatus="indexMopr" var="moprComments">
+																<li style="color: #bc6317 ;font-weight: bold;">
+																	<c:choose>
+																		<c:when test="${not empty moprComments}">${moprComments}</c:when>
+																		<c:otherwise>No comments by MOPR</c:otherwise>
+																	</c:choose>
+																</li><br>
+																</c:forEach>
+															</ol>
 														</td>
+														</c:if>	
 													
-													<td>
-														<ol>
-															<c:forEach items="${MOPR_PRE_COMMENTS[srl.index]}" varStatus="indexMopr" var="moprComments">
-															<li style="color: #bc6317 ;font-weight: bold;">
-																<c:choose>
-																	<c:when test="${not empty moprComments}">${moprComments}</c:when>
-																	<c:otherwise>No comments by MOPR</c:otherwise>
-																</c:choose>
-															</li><br>
-															</c:forEach>
-														</ol>
-													</td>
-													</c:if>	
-												
-												</tr>
+													</tr>
 												<c:set var="countSpmu" value="${countSpmu + 1}" scope="page" />
+											</c:if>
+											
+												
+											
+											</c:forEach>
+											
+											 </c:when>
+											 <c:otherwise>
+											 		<input	type="hidden" name="pmuActivityDetails[${srl.index}].pmuActivityTypeId"	value="${ACTIVITY.pmuActivityTypeId}">
+													<input	type="hidden" name="pmuActivityDetails[${srl.index}].pmuDetailsId"	value="${pmuActivity.pmuActivityDetails[srl.index].pmuDetailsId}">
+													<input	type="hidden" name="pmuActivityDetails[${srl.index}].pmuActivityType.pmuActivityTypeId"	value="${ACTIVITY.pmuActivityTypeId}" />
+													<tr>
+														<td><div align="center"><strong>${ACTIVITY.pmuType.pmuTypeName}</strong></div></td>
+														<td><div align="center"><strong>${ACTIVITY.pmuActivityName}</strong></div></td>
+														<c:if test="${ACTIVITY.pmuActivityTypeId ne 3}">
+														<td><input value="${pmuActivity.pmuActivityDetails[srl.index].noOfUnits}"	name="pmuActivityDetails[${srl.index}].noOfUnits" min="1" maxlength="3"  onkeypress="return isNumber(event)" oninput="validity.valid||(value='');"	type="text" class="active12 form-control" id="noOfUnits_${srl.index}" onkeyup="" style="text-align:right;" onchange="calculateValueAcDomain('noOfUnits_${srl.index}')"/></td>
+														<%-- <td><input value="${pmuActivity.pmuActivityDetails[srl.index].unitCost}"	name="pmuActivityDetails[${srl.index}].unitCost" min="1" maxlength="7"  onkeypress="return isNumber(event)" oninput="validity.valid||(value='');" type="text" class="active12 form-control"	id="unitCost_${srl.index}" onkeyup="calculate(${srl.index});" style="text-align:right;"/></td> --%>
+														<td><input value="${pmuActivity.pmuActivityDetails[srl.index].noOfMonths}" 	name="pmuActivityDetails[${srl.index}].noOfMonths" onkeypress="return isNumber(event)" oninput="validity.valid||(value='');" type="text" class="active12 form-control" id="noOfMonths_${srl.index}" style="text-align:right;" onkeyup="validateMonth(${srl.index})"/></td>
+														</c:if>
+														<c:if test="${ACTIVITY.pmuActivityTypeId eq 3}">
+														<td></td>
+														<td></td>
+															</c:if>
+														<c:set var="totalFundToCalc" value="${pmuActivity.pmuActivityDetails[srl.index].fund}"></c:set>
+														<td><input value="${pmuActivity.pmuActivityDetails[srl.index].fund}" name="pmuActivityDetails[${srl.index}].fund" onkeypress="return isNumber(event);" oninput="validity.valid||(value='');" type="text" min="1" class="active12 form-control txtCal" id="fund_${srl.index}" style="text-align:right;" onkeyup="calculateTotalFundSpmu();validateFund(${srl.index});"/></td>
+															<c:choose>
+																<c:when test="${srl.index eq 0}">
+																	<td><div align="center"><button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal">Fill Domain Details</button></div></td>
+																</c:when>
+																<c:when test="${srl.index eq 3}">
+																	<td><div align="center"><button type="button"	class="btn btn-primary btn-lg" data-toggle="modal"	data-target="#myModal2">Fill Domain Details</button></div></td>
+																</c:when>
+																<c:otherwise>
+																	<td></td>
+																</c:otherwise>
+															</c:choose>
+													<c:if test="${sessionScope['scopedTarget.userPreference'].userType eq 'M'}">
+			                                             <td><c:choose>
+			                                             			<c:when test="${pmuActivity.pmuActivityDetails[srl.index].isApproved}">	
+																  		 <input type="checkbox" name="pmuActivityDetails[${srl.index}].isApproved" checked="checked"  />
+																   </c:when>
+																   <c:otherwise>
+																   		<input type="checkbox" name="pmuActivityDetails[${srl.index}].isApproved" />
+																   </c:otherwise>
+															</c:choose>
+														</td>
+												   </c:if>
+												   <td><textarea name="pmuActivityDetails[${srl.index}].remarks" rows="3" class="form-control" cols="5"><c:out value="${pmuActivity.pmuActivityDetails[srl.index].remarks}"></c:out></textarea></td>
+														
+														<c:if test="${sessionScope['scopedTarget.userPreference'].planVersion > 1}">
+																<td>
+																	<ol>
+																	<c:forEach items="${STATE_PRE_COMMENTS[srl.index]}" varStatus="indexInner" var="stateComments">
+																	<li style="color: #396721 ; font-weight: bold;">
+																		<c:choose>
+																			<c:when test="${not empty stateComments}">${stateComments}</c:when>
+																			<c:otherwise>No comments by state</c:otherwise>
+																		</c:choose>
+																	</li><br>
+																	</c:forEach>
+																</ol>
+																</td>
+															
+															<td>
+																<ol>
+																	<c:forEach items="${MOPR_PRE_COMMENTS[srl.index]}" varStatus="indexMopr" var="moprComments">
+																	<li style="color: #bc6317 ;font-weight: bold;">
+																		<c:choose>
+																			<c:when test="${not empty moprComments}">${moprComments}</c:when>
+																			<c:otherwise>No comments by MOPR</c:otherwise>
+																		</c:choose>
+																	</li><br>
+																	</c:forEach>
+																</ol>
+															</td>
+															</c:if>	
+														
+														</tr>
+														<c:set var="countSpmu" value="${countSpmu + 1}" scope="page" />
+											 
+											 </c:otherwise>
+											</c:choose>
+											
+											
 											</c:forEach>
 										<tr>
 											<th colspan="5"><label>Total SPMU Fund</label></th>

@@ -455,14 +455,19 @@ publicModule.controller("institutionalInfraActivityPlanController", [ '$scope', 
 			if(status=='F'){
 				$scope.institutionalInfraActivityPlan.isFreeze=true;
 			}
-			institutionalInfraActivityPlanService.saveInstitutionalInfraActivityPlanDetailsMOPRCEC($scope.institutionalInfraActivityPlan).then(function(response){
-				//$scope.institutionalInfraActivityPlan = response.data;
-				//$scope.fetchData($scope.institutionalInfraActivityPlan.institutionalInfraActivityPlanDetails[0].trainingInstitueType.trainingInstitueTypeId);
-					toastr.success("Plan Saved Successfully");
-					load_data();
-			},function(error){
-				toastr.error("Something went wrong");
-			});	
+			if($scope.institutionalInfraActivityPlan.institutionalInfraActivityPlanDetails.length>0){
+				institutionalInfraActivityPlanService.saveInstitutionalInfraActivityPlanDetailsMOPRCEC($scope.institutionalInfraActivityPlan).then(function(response){
+					//$scope.institutionalInfraActivityPlan = response.data;
+					//$scope.fetchData($scope.institutionalInfraActivityPlan.institutionalInfraActivityPlanDetails[0].trainingInstitueType.trainingInstitueTypeId);
+						toastr.success("Plan Saved Successfully");
+						load_data();
+				},function(error){
+					toastr.error("Something went wrong");
+				});	
+			}else{
+				toastr.error("Fund value should not be blank or zero.");
+				$scope.btn_disabled=false;
+			}
 			/*}else{
 			toastr.error("Fund value should not be blank or zero.");
 		}*/

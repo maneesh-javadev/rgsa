@@ -5,7 +5,7 @@ publicModule.controller("pesaPlanQController", [ '$scope', '$http',
 	$scope.selectedQuarterId = "0";
     $scope.formObj = null;
     $scope._formObj = null;
-	
+    $scope.actionDisable=false;
 	function actionObject(action, newPageData){
 		this.action = action;
 		this.pesaPlanId = newPageData.pesaPlanId;
@@ -60,8 +60,10 @@ publicModule.controller("pesaPlanQController", [ '$scope', '$http',
     }
 
     function performPost(postable, message, successCallback) {
+    	$scope.actionDisable=true;
         $http.post("postQuartExp.html?<csrf:token uri=postQuartExp.html/>", postable).then(
             function(response){
+            	$scope.actionDisable=false;
                 if (!response.data.success){
                     toastr.error(response.data.message);
                     return;
@@ -76,16 +78,26 @@ publicModule.controller("pesaPlanQController", [ '$scope', '$http',
                     successCallback();
                 }
             }, function(error){
+            	$scope.actionDisable=false;
                 toastr.error(JSON.stringify(error, "\t"));
             }
         );
     }
 
     function save() {
+    	let fund_allocated = ['fundAllocatedCurrentInstallment'] in $scope._formObj ? $scope._formObj.fundAllocatedCurrentInstallment : 0;
+    	let total_expenditure = getExpenditure();
         if($scope.pageForm.$invalid){
             return toastr.error("There are errors in form, please correct.");
         }
-        performPost(new actionObject("save", $scope.formObj), "Form saved");
+        if(total_expenditure<=fund_allocated)
+        	{
+         performPost(new actionObject("save", $scope.formObj), "Form saved");
+        	}
+        else
+        	{
+        	 return toastr.error("Total Expenditure should be less then Total Allocated Fund."+fund_allocated);
+        	}
     }
 
     function clear() {

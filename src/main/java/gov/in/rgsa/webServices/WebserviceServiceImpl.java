@@ -14,6 +14,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.HashMap;
 import gov.in.rgsa.entity.FetchPlanStatusCount;
+import gov.in.rgsa.entity.KpiWebService;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import gov.in.rgsa.dao.CommonRepository;
 import org.springframework.stereotype.Service;
@@ -149,4 +151,20 @@ public class WebserviceServiceImpl implements WebserviceService
         }
         return capacityBuildingErForOomsList;
     }
+    
+    @Override
+	 public List<KpiWebService> fetchKpiData(final Integer yr, final Integer mCode,final Integer stateCode, final Integer deptCode,
+	 final Integer projectCode,final  Integer secCode) {
+		
+		List<KpiWebService> kpiWebServiceList = null;
+		final Map<String, Object> params = new HashMap<String, Object>();
+		params.put("yr", yr);
+		params.put("mCode", mCode);
+		params.put("stateCode", stateCode);
+		params.put("deptCode", deptCode);
+		params.put("projectCode", projectCode);
+		params.put("secCode", secCode);
+		kpiWebServiceList = commonRepository.findAll("FETCH_KPI_DATA",params);
+		return kpiWebServiceList;
+	}
 }

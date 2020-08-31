@@ -52,10 +52,9 @@ public class IecController {
         boolean flag = (planUtil.isNotSubmitted() && userPreference.isState())
                 || (planUtil.pendingAtMOPR() && userPreference.isMOPR());
 
-
+       
         model.addAttribute("Plan_Status", flag);
         model.addAttribute("STATE_CODE", userPreference.getStateCode());
-
         switch (basicInfoService.fillFirstBasicInfo()) {
             case "create":
                 redirectAttributes.addFlashAttribute(Message.EXCEPTION_KEY, "Please fill the Basic Info Details first");
@@ -66,13 +65,11 @@ public class IecController {
             default:
                 break;
         }
-
         model.addAttribute("planUtil", planUtil);
         model.addAttribute("userPreference", userPreference);
         model.addAttribute("iecActivityComponents", iecService.findAllActivityById());
-
         if(userPreference.isCEC()){
-            IecActivity iecActivityForState = iecService.fetchIecDetail(Users.getTypeForState());
+        	  IecActivity iecActivityForState = iecService.fetchIecDetail(Users.getTypeForState());
             IecActivity iecActivityForMopr = iecService.fetchIecDetail(Users.getTypeForMOPR());
             model.addAttribute("totalAmountProposedState", iecActivityForState.getIecActivityDetails().getTotalAmountProposed());
             model.addAttribute("IEC_ACTIVITY_STATE", iecActivityForState.getIecActivityDetails());
@@ -82,19 +79,19 @@ public class IecController {
         }else {
         	String redirectString = updateFormData(iecFormModel, IEC);
         	Map<String, List<List<String>>> map = basicInfoService.fetchStateAndMoprPreComments(1,11);
-			model.addAttribute("STATE_PRE_COMMENTS", map.get("statePreviousComments"));
+        	model.addAttribute("STATE_PRE_COMMENTS", map.get("statePreviousComments"));
 			model.addAttribute("MOPR_PRE_COMMENTS", map.get("moprPreviousComments"));
             return redirectString; 
         }
     }
 
     private String updateFormData(@ModelAttribute("IEC_ACTIVITY") IecFormModel iecFormModel, String redirectPage) {
-        IecActivity iecActivity = updateIecFormModel(iecFormModel, userPreference.getUserType());
+    	 IecActivity iecActivity = updateIecFormModel(iecFormModel, userPreference.getUserType());
         if (iecActivity == null && (userPreference.isMOPR() || userPreference.isCEC())) {
-            updateIecFormModel(iecFormModel, Users.getTypeForState());
+        	 updateIecFormModel(iecFormModel, Users.getTypeForState());
             iecFormModel.setOwnDataCascade(false);
         }
-        return redirectPage;
+       return redirectPage;
     }
 
     @RequestMapping(value = "iec", method = RequestMethod.POST)
@@ -126,14 +123,14 @@ public class IecController {
 
 
     private IecActivity updateIecFormModel(IecFormModel iecFormModel, String userType){
-        IecActivity iecActivity = iecService.fetchIecDetail(userType);
+    	IecActivity iecActivity = iecService.fetchIecDetail(userType);
         if(iecActivity == null){
-            iecFormModel.setIecId(0);
+        	 iecFormModel.setIecId(0);
             iecFormModel.getSelectedId().clear();
             iecFormModel.setAmount(0);
             iecFormModel.setFreeze(false);
         }else{
-            iecFormModel.setIecId(iecActivity.getId());
+        	 iecFormModel.setIecId(iecActivity.getId());
             IecActivityDetails iecActivityDetails = iecActivity.getIecActivityDetails();
             iecFormModel.setSelectedIdInteger(iecActivityDetails.getIecDetailsDropdownSet()
                     .stream().map(item -> item.getIecActivityDropdown().getIecId())
@@ -144,7 +141,7 @@ public class IecController {
             if(userType.equalsIgnoreCase("M"))
             	iecFormModel.setIsApproved(iecActivityDetails.getIsApproved());
         }
-        return iecActivity;
+       return iecActivity;
     }
 
 }

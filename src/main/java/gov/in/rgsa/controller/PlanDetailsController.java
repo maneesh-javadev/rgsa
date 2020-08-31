@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import gov.in.rgsa.dao.CommonRepository;
+import gov.in.rgsa.dto.CheckAllComponentforForwardPlan;
 import gov.in.rgsa.entity.Plan;
 import gov.in.rgsa.entity.State;
 import gov.in.rgsa.model.FacadeModel;
@@ -101,6 +102,14 @@ public class PlanDetailsController {
 		}
 		model.addAttribute("PLAN_ALLOCATION_LIST", allocationService.getPlanComponents());
 		List<Plan> plan = allocationService.showHidePlanStatus(stateCode);
+		
+		Map<String, Object> data=facadeService.checkAllComponentforPlanForward(userPreference.getStateCode(), userPreference.getFinYearId(), userPreference.getUserType().charAt(0));
+		Boolean isallCompVerify=(Boolean)data.get("isallCompVerify");
+		model.addAttribute("isallCompVerify", isallCompVerify);
+		List<CheckAllComponentforForwardPlan> checkAllComponentforForwardPlanList=(List<CheckAllComponentforForwardPlan>)data.get("checkAllComponentforForwardPlanList");
+		model.addAttribute("checkAllComponentforForwardPlanList", checkAllComponentforForwardPlanList);
+		Boolean isShowForwardButton=(Boolean)data.get("isShowForwardButton");
+		model.addAttribute("isShowForwardButton", isShowForwardButton);
 		
 		userPreference.setPlanCode(plan.get(0).getPlanCode());
 		userPreference.setPlanStatus(plan.get(0).getPlanStatusId());

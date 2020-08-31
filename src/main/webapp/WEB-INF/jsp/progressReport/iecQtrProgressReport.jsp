@@ -26,11 +26,19 @@ $( document ).ready(function() {
 });
 
 function saveAndGetDataQtrRprt(msg){
+	disabled_button();
 	 $('#qtrId').val($('#quaterId').val());
 	 $('#origin').val(msg);
 	 	document.iecQuater.method = "post";
 		document.iecQuater.action = "iecQtrProgressReportPost.html?<csrf:token uri='iecQtrProgressReportPost.html'/>";
 		document.iecQuater.submit();
+	
+}
+
+function disabled_button(){
+	$('#saveButtn').prop('disabled', true);
+	$('#freezebtn').prop('disabled', true);
+	$('#unfreezebtn').prop('disabled', true);
 }
 
 function showTable(){
@@ -77,6 +85,7 @@ function validateWithCorrespondingFund(){
 }
 
 function FreezeAndUnfreeze(msg){
+		disabled_button();
 		var componentid=11;
 		var qprActivityId=$('#qprActivityId').val();
 		var quaterId = $('#quaterId').val();
@@ -84,6 +93,32 @@ function FreezeAndUnfreeze(msg){
 		document.iecQuater.action = "freezeAndUnfreezeReport.html?<csrf:token uri='freezeAndUnfreezeReport.html'/>&componentId="+componentid+"&qprActivityId="+qprActivityId+"&quaterId="+quaterId+"&msg="+msg;
 		document.iecQuater.submit();
 }
+
+function savevalidate()
+{  
+   var totalallocation=$("#totalExpenditureId").val();
+   var status=true;
+   var noOfRows=$("#tbodyId tr").length-1;
+   var total=totalallocation;
+   var fund_allocated_by_state_local=0;
+   fund_allocated_by_state_local = +fund_allocated_by_state;
+   if(total >= fund_allocated_by_state_local){
+	  status=false;
+	  }
+	
+	if(status==false)
+	{
+	  alert('Total Expenditure  should not exceed total allocated fund '+fund_allocated_by_state_local);
+	  return false;
+	}
+   else
+	   {
+   return true;
+	   }
+
+}
+
+
 </script>
 <section class="content">
 	<div class="container-fluid">
@@ -125,7 +160,7 @@ function FreezeAndUnfreeze(msg){
 													<strong>Nature of the IEC Activity</strong>
 												</div></th>
 											<th scope="col"><div align="center">
-													<strong>Total Amount Proposed</strong>
+													<strong>Approved Amount</strong>
 												</div></th>
 											<th scope="col"><div align="center">
 													<strong>Expenditure Incurred</strong>
@@ -182,8 +217,8 @@ function FreezeAndUnfreeze(msg){
 									<form:button type="button" onclick="saveAndGetDataQtrRprt('save')" id="saveButtn" disabled="${IEC_ACTIVITY_PROGRESS.isFreeze}"
 										class="btn bg-green waves-effect">SAVE</form:button>
 									<c:choose>
-										<c:when test="${IEC_ACTIVITY_PROGRESS.isFreeze}"><form:button class="btn bg-orange waves-effect" onclick="FreezeAndUnfreeze('unfreeze')">UNFREEZE</form:button></c:when>
-										<c:otherwise><form:button class="btn bg-orange waves-effect" disabled="${DISABLE_FREEZE}" onclick="FreezeAndUnfreeze('freeze')">FREEZE</form:button></c:otherwise>
+										<c:when test="${IEC_ACTIVITY_PROGRESS.isFreeze}"><form:button class="btn bg-orange waves-effect" onclick="FreezeAndUnfreeze('unfreeze')" id="unfreezebtn">UNFREEZE</form:button></c:when>
+										<c:otherwise><form:button class="btn bg-orange waves-effect" disabled="${DISABLE_FREEZE}" onclick="FreezeAndUnfreeze('freeze')" id="freezebtn">FREEZE</form:button></c:otherwise>
 									</c:choose>	
 									<%-- <form:button type="button" onclick="onClear(this)"
 										class="btn bg-light-blue waves-effect" disabled="${IEC_ACTIVITY_PROGRESS.isFreeze}">CLEAR</form:button> --%>

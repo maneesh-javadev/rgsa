@@ -20,6 +20,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import gov.in.rgsa.entity.CBMaster;
 import gov.in.rgsa.entity.CapacityBuildingActivity;
+import gov.in.rgsa.entity.CapacityBuildingActivityDetails;
 import gov.in.rgsa.entity.CapacityBuildingActivityGPs;
 import gov.in.rgsa.entity.District;
 import gov.in.rgsa.entity.State;
@@ -28,6 +29,7 @@ import gov.in.rgsa.service.BasicInfoService;
 import gov.in.rgsa.service.CBMasterService;
 import gov.in.rgsa.service.CapacityBuildingService;
 import gov.in.rgsa.service.LGDService;
+import gov.in.rgsa.service.PanchayatBhawanService;
 import gov.in.rgsa.user.preference.UserPreference;
 import gov.in.rgsa.utils.Message;
 
@@ -56,6 +58,9 @@ public class CapacityBuildingOneController {
 	
 	@Autowired
 	BasicInfoService basicInfoService;
+	
+	@Autowired
+	private PanchayatBhawanService panchayatBhawanService;
 	
 	
 	// update on 26-12-2019 shivam
@@ -110,14 +115,21 @@ public class CapacityBuildingOneController {
 		cbMasters = cbMasterService.fetchCBMasters();
 		map.put("cbMasters", cbMasters);
 		CapacityBuildingActivity capacityBuildingList = capacityBuildingService.fetchCapacityBuildingActivity(null);
-		if(capacityBuildingList != null && capacityBuildingList.getUserType()!=null &&  capacityBuildingList.getUserType() == 'S' && userPreference.getUserType().charAt(0) =='M') {
-			capacityBuildingList.setIsFreeze(false);
-			}
-		if(capacityBuildingList != null) {
+		if(capacityBuildingList != null && capacityBuildingList.getCapacityBuildingActivityDetails()!=null && capacityBuildingList.getCapacityBuildingActivityDetails().size()>0)  {
 			Map<String, List<List<String>>> resultMap = basicInfoService.fetchStateAndMoprPreComments(capacityBuildingList.getCapacityBuildingActivityDetails().size(),13);
 			map.put("STATE_PRE_COMMENTS", resultMap.get("statePreviousComments"));
 			map.put("MOPR_PRE_COMMENTS", resultMap.get("moprPreviousComments"));
 		}
+		if(capacityBuildingList != null && capacityBuildingList.getUserType()!=null &&  capacityBuildingList.getUserType() == 'S' && userPreference.getUserType().charAt(0) =='M') {
+			capacityBuildingList.setUserType(null);
+			capacityBuildingList.setCbActivityId(null);
+			capacityBuildingList.setIsFreeze(false);
+				for(CapacityBuildingActivityDetails obj:capacityBuildingList.getCapacityBuildingActivityDetails()) {
+					obj.setCapacityBuildingActivity(capacityBuildingList);
+					obj.setCapacityBuildingActivityDetailsId(null);
+				}
+			}
+		
 		map.put("capacityBuildingDetails", capacityBuildingList);
 		map.put("userType", userPreference.getUserType().charAt(0));
 		//map.put("capacityBuildingDetails", capacityBuildingService.fetchCapacityBuildingActivity(null));
@@ -171,9 +183,9 @@ public class CapacityBuildingOneController {
 	
 	
 	@RequestMapping(value="capacitybuildGPs",method=RequestMethod.GET)
-	private String capacitybuildGPs()
+	private String capacitybuildGPs(Model model)
 	{
-		
+		model.addAttribute("isQPRDataExist",panchayatBhawanService.validateFinalizeWorklocationBasedonQPR('T'));
 		return CB_ACTIVITY_GPs;
 	}
 	

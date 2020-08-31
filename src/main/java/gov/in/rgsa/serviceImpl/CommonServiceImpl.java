@@ -12,6 +12,9 @@ import gov.in.rgsa.entity.State;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.sun.org.slf4j.internal.Logger;
+import com.sun.org.slf4j.internal.LoggerFactory;
+
 import gov.in.rgsa.dao.CommonRepository;
 import gov.in.rgsa.entity.ErrorLog;
 import gov.in.rgsa.entity.FinYear;
@@ -27,6 +30,8 @@ public class CommonServiceImpl implements CommonService {
 	
 	@Autowired
 	private UserPreference user;
+	
+	static Logger logger = LoggerFactory.getLogger(CommonServiceImpl.class);
 
 	@Override
 	public List<FinYear> findAllFinYear() {
@@ -93,6 +98,7 @@ public class CommonServiceImpl implements CommonService {
 		String error = errors.toString();
 		errorLog.setErrorDescription(error);
 		commonRepository.save(errorLog);
+		logger.error("REGS Error---> ID:"+errorLog.getErrorLogId()+" ||  Error Description:"+error+ " ||state code:"+user.getStateCode()+" || user id:"+user.getUserId()+" || Uri:"+request.getRequestURI());
 		return errorLog.getErrorLogId();
 	}
 

@@ -1,5 +1,5 @@
 <script>
-	
+var balAmount=parseFloat('${subcomponentwiseQuaterBalanceList[0].balanceAmount}');	
 function isNumber(evt) {
     evt = (evt) ? evt : window.event;
     var charCode = (evt.which) ? evt.which : evt.keyCode;
@@ -36,22 +36,85 @@ loadSubElement=function(instInfraStatusId,index){
 
 function save_data(msg)
 {
-	$('#msgId').val(msg);
+	var validateFlag=validate_data();
+	//alert(validateFlag);
+	if(validateFlag){
+		disabled_button();
+		$('#msgId').val(msg);
+		document.quarterTrainings.method = "post";
+		document.quarterTrainings.action = "savetrainingProgressReport.html?<csrf:token uri='savetrainingProgressReport.html'/>";
+		document.quarterTrainings.submit();
+	}
+	/*$('#msgId').val(msg);
 	document.quarterTrainings.method = "post";
 	document.quarterTrainings.action = "savetrainingProgressReport.html?<csrf:token uri='savetrainingProgressReport.html'/>";
-	document.quarterTrainings.submit();
+	document.quarterTrainings.submit();*/
+}
+
+function disabled_button(){
+	$('#savebtn').prop('disabled', true);
+	$('#freezebtn').prop('disabled', true);
+	$('#unfreezebtn').prop('disabled', true);
 }
 
 function validate_data(){
+	var partFlag=true;
+	objId="expenditureIncurred";
+	temp=("#"+objId+"_0");
+	if(temp.length>0){
+		obj=temp;
+	}
+	
+	if(obj!=null){
+		id=$( obj ).attr('id');
+		idn=id.split("_")[0];
+		var i=0;
+		var tot=0;
+		var l=$('#'+idn+'_'+i).length;
+
+			while(l>0){
+			temp=$('#'+idn+'_'+i).val(); 
+			vali=temp!=null && temp!=undefined && temp!="" ?parseInt(temp):0;
+			
+			
+			if(vali>0){
+				temp1=$('#totalParticipantsId_'+i).val(); 
+				id=$( '#totalParticipantsId_'+i ).attr('id');
+				valp=temp1!=null && temp1!=undefined && temp1!="" ?parseInt(temp1):0; 
+				if(valp<=0){
+					$("#error_"+id).text("Participants details not filled, so please fill Participants details ");
+					$("#error_"+id).addClass('errormsg show');
+					partFlag=false;
+				}
+			}
+			
+			tot=tot+vali;
+			l=$('#'+idn+'_'+i).length;
+			i++;
+			}
+			
+			if(tot>balAmount){
+				$("#error_total").text("expenditure Incurred must be less then balance amount");
+				$("#error_total").addClass('errormsg show');
+			}
+
+			if(tot>balAmount || !partFlag){
+				return false;
+			}else{
+				return true;
+			}
+	}
 	
 }
-
+//----------------------------------------------------------------------------------
 function validate_expenditureIncurred(balance,obj,objId){
 if(obj==null){
 temp=("#"+objId+"_0");
 if(temp.length>0){
 	obj=temp;
 }
+
+
 
 }	
 

@@ -64,28 +64,32 @@ loadSubElement=function(instInfraStatusId,index){
  
 };
 
+
+
 function save_data()
 {
+	disabled_button();
 	document.qprInstitutionalInfrastructure.method = "post";
 	document.qprInstitutionalInfrastructure.action = "saveInstitutionalInfraProgressReport.html?<csrf:token uri='saveInstitutionalInfraProgressReport.html'/>";
 	document.qprInstitutionalInfrastructure.submit();
+}
+
+function disabled_button(){
+	$('#savebtn').prop('disabled', true);
+	$('#freezebtn').prop('disabled', true);
+	$('#unfreezebtn').prop('disabled', true);
 }
 
 function validate_data(){
 	
 }
 
-function validate_expenditureIncurred(balance,obj,objId){
-if(obj==null){
-temp=("#"+objId+"_0");
-if(temp.length>0){
-	obj=temp;
-}
-
-}	
+function validate_expenditureIncurred(balance,obj,sanAmount){
+	
 
 if(obj!=null){
 	id=$( obj ).attr('id');
+	curVal=$( obj ).val();
 	idn=id.split("_")[0];
 	var i=0;
 	var tot=0;
@@ -99,7 +103,13 @@ if(obj!=null){
 		l=$('#'+idn+'_'+i).length;
 		i++;
 		}
-
+		if(curVal>sanAmount){
+			$("#error_"+id).text("expenditure Incurred must be less then approved amount");
+			$("#error_"+id).addClass('errormsg show');
+			$( obj ).val('');
+			$(obj).focus();	  
+		}else
+		
 		if(tot>balance){
 			$("#error_"+id).text("expenditure Incurred must be less then balance amount");
 			$("#error_"+id).addClass('errormsg show');
@@ -171,6 +181,7 @@ function FreezeAndUnfreeze(msg){
 	var componentId=parseInt(2);
 	var qprActivityId =parseInt($('#qprInstInfraId').val());
 	var quaterId =parseInt($('#qtrId').val());
+	disabled_button();
 	document.qprInstitutionalInfrastructure.method = "post";
 	document.qprInstitutionalInfrastructure.action = "freezeAndUnfreezeReport.html?<csrf:token uri='freezeAndUnfreezeReport.html'/>&componentId="+componentId+"&qprActivityId="+qprActivityId+"&quaterId="+quaterId+"&msg="+msg;
 	document.qprInstitutionalInfrastructure.submit();

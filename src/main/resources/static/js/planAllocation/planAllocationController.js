@@ -28,7 +28,7 @@ planAllocation.controller("planAllocationController",['$scope','planAllocationSe
 			if(response.data.message == 'success'){
 				$scope.planAllocationModel.stateAllocationList=[];
 				$scope.installmentOneAllocation=[];
-				$scope.centralShare = response.data.centralShare;
+				$scope.centralShare = Math.abs(response.data.centralShare);
 				$scope.stateShare = response.data.stateShare;
 				$scope.showPlanAllocationBlock=true;
 				$scope.planAllocationComponentList=response.data.planAllocationList;

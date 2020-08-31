@@ -194,22 +194,29 @@ $scope.userType = null;
     	 
     	}
 	
-	$scope.saveData=function(status){
-		$scope.btn_disabled=true;
-		$scope.panchayatBhawanActivity.status=status;
-		panchayatBhawanActivityService.saveData($scope.panchayatBhawanActivity).then(function(response){
-			if($scope.panchayatBhawanActivity.status == 'S'){
-			toastr.success("Data Save Sucessfully");
-			}
-			else if($scope.panchayatBhawanActivity.status == 'F'){
-				toastr.success("Freeze Sucessfully");
-			}
-			else{
-				toastr.success("Unfreeze Sucessfully");
-			}
-			fetchOnLoad();
-		});
-	}
+     $scope.saveData=function(status){
+ 		$scope.btn_disabled=true;
+ 		if($scope.grandTotal!=0 && $scope.grandTotal!=undefined && $scope.grandTotal!=null){
+ 			$scope.panchayatBhawanActivity.status=status;
+ 		panchayatBhawanActivityService.saveData($scope.panchayatBhawanActivity).then(function(response){
+ 			if($scope.panchayatBhawanActivity.status == 'S'){
+ 			toastr.success("Data Save Sucessfully");
+ 			}
+ 			else if($scope.panchayatBhawanActivity.status == 'F'){
+ 				toastr.success("Freeze Sucessfully");
+ 			}
+ 			else{
+ 				toastr.success("Unfreeze Sucessfully");
+ 			}
+ 			fetchOnLoad();
+ 		});
+ 		}
+ 		else
+ 			{
+ 			$scope.btn_disabled=false;
+ 			toastr.error("Fund can not be 0 or blank");
+ 			}
+ 	}
 	
 	$scope.claerAll=function(){
 		$scope.panchayatBhawanActivity={};

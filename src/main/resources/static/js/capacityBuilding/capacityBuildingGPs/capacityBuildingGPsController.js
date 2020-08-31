@@ -9,9 +9,10 @@ var lbCodes1=[];
 	var saveEntityId4 =new Map();
 	var activityDetailIdMap =new Map();
 	var activityDetailId=[];
-var capacityBuildingGPs=angular.module("publicModule",[]);
+	var finalizeFreezeStatus=[];
+var capacityBuildingGPs=angular.module("publicModule",['cp.ngConfirm']);
 
-capacityBuildingGPs.controller("capacityBuildingGPsController",['$scope','capacityBuildingGPsService',function($scope,capacityBuildingGPsService ){
+capacityBuildingGPs.controller("capacityBuildingGPsController",['$scope','$ngConfirm','capacityBuildingGPsService',function($scope,$ngConfirm,capacityBuildingGPsService ){
 	
 	var selActivityId=null;
 	
@@ -72,6 +73,24 @@ capacityBuildingGPs.controller("capacityBuildingGPsController",['$scope','capaci
 					
 				}  	
 			});
+			
+			$scope.cbActivityId=$scope.capacityBuilding.cbActivityId;
+			$scope.freezestatus=false;
+			if($scope.cbActivityId!=null){
+				finalizeFreezeStatus= {
+					   "activityId" : $scope.cbActivityId ,  //your title variable
+					    "finalizeType" : 'T',  
+					    
+					};
+					
+					capacityBuildingGPsService.loadFreezeUnfreezeData(finalizeFreezeStatus).then(function(response){
+					finalizeFreezeStatus=response.data;
+					if(finalizeFreezeStatus!=null  ){
+						$scope.freezestatus=finalizeFreezeStatus.isFreeze;
+					}
+					
+				});
+			}
 		}else{
 			$('#errorMessage').addClass('show');
 			$('#errorMessage').html('Plan has been not Approved by CEC.');
@@ -316,7 +335,7 @@ capacityBuildingGPs.controller("capacityBuildingGPsController",['$scope','capaci
 			 //templateLabel = $("<label/>");
 			 //templateLabel.html(item[1]);
 			 //td.append(templateLabel);
-			 tdnext=$("<td>"+item[1]+"</td>");
+			 tdnext=$("<td>"+item[1]+"("+item[0]+")"+"</td>");
 			 tr.append(tdnext);
 			 tr=$("<TR/>");
 			
@@ -637,6 +656,65 @@ capacityBuildingGPs.controller("capacityBuildingGPsController",['$scope','capaci
 	    	
 	    });
 	}
+	
+	$scope.freezePanchayatBhawanDataGP = function(freezestatus){
+		$scope.disabledButton(true);
+		if(finalizeFreezeStatus.id==null){
+			finalizeFreezeStatus= {
+				    "id" : null,    //your artist variable
+				    "activityId" : $scope.cbActivityId  ,  //your title variable
+				    "finalizeType" : 'T',  
+				     "isFreeze" : freezestatus ,
+				   
+				};
+		}else{
+			finalizeFreezeStatus.isFreeze=freezestatus;
+		}	
+		
+		
+		capacityBuildingGPsService.freezeUnfreezeFinalizeLocation(finalizeFreezeStatus).then(function(response){
+	    	if(response!=null && response.status==200){
+	    		toastr.success(response.data.responseMessage);
+	    		$scope.disabledButton(false);
+	    	}else{
+	    		toastr.error(response.data.responseMessage);
+	    		$scope.disabledButton(false);
+	    	}
+	    	fetchOnLoad();
+	    });
+		}
+		
+		$scope.disabledButton = function(isDisabled){
+			$scope.isbtnDisabled=isDisabled;
+		}
+		
+		
+		$scope.freezeConfirmation = function(freezestatus){
+			if(freezestatus){
+				$ngConfirm({
+					columnClass: 'col-md-4 col-md-offset-8 col-xs-4 col-xs-offset-8',
+					closeIcon: true,
+			        title: 'Confirm!',
+			        content: '<strong>Data Freeze/Unfreeze Only</strong>,For save data first click save button then Freeze/Unfreeze,To countinue click Proceed button ohterwise click close button.',
+			        scope: $scope,
+			        buttons: {
+			            sayBoo: {
+			                text: 'Proceed',
+			                btnClass: 'btn-blue',
+			               action: function(scope, button){
+			                	$scope.freezePanchayatBhawanDataGP(freezestatus);
+			                	
+			                    return true; // prevent close;
+			                }
+			            },
+			            
+			            close: function(scope, button){
+			                // closes the modal
+			            },
+			        }
+			    });
+			}
+		}
 	
 	
 	

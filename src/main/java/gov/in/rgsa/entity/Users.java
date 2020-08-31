@@ -60,6 +60,9 @@ public class Users implements Serializable {
 
 	@Column(name = "username_encrypt")
 	private String usernameEncrypt;
+	
+	@Column(name = "districtcode")
+	private Integer districtcode;
 
 	@Transient
 	private boolean accountNonExpired = true;
@@ -156,8 +159,7 @@ public class Users implements Serializable {
 		this.stateId = stateId;
 	}
 
-	@Column(name = "districtcode")
-	private Integer districtcode;
+	
 
 	public Integer getDistrictcode() {
 		return districtcode;

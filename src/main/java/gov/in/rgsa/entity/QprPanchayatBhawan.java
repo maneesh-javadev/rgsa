@@ -20,7 +20,8 @@ import javax.persistence.Transient;
 @Entity
 @Table(name="qpr_panhcayat_bhawan",schema="rgsa")
 @NamedQueries({
-@NamedQuery(name="FETCH_ACTIVITY_DEPEND_ON_QUATOR",query="SELECT Q FROM QprPanchayatBhawan Q JOIN Q.qprPanhcayatBhawanDetails QD WHERE Q.qtrId=:quatorId AND QD.districtCode=:districtCode AND Q.activityId=:activityId  order by QD.qprPanhcayatBhawanDetailsId"),
+@NamedQuery(name="FETCH_ACTIVITY_DEPEND_ON_QUATOR",query="SELECT Q FROM QprPanchayatBhawan Q JOIN Q.qprPanhcayatBhawanDetails QD WHERE Q.qtrId=:quatorId AND QD.districtCode=:districtCode AND Q.activityId=:activityId"
+		+ " AND Q.panchayatBhawanActivityId=:panchayatBhawanActivityId  order by QD.qprPanhcayatBhawanDetailsId"),
 @NamedQuery(name="UPDATE_QPR_Panchayat_Bhawan_DEPEND_ON_QUATOR",query="UPDATE QprPanchayatBhawan SET additionalRequirement=:additionalRequirement  where qprPanchayatBhawanId=:qprInstInfraId "),
 })
 

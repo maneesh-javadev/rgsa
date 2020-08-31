@@ -3,6 +3,8 @@ package gov.in.rgsa.dao;
 import java.util.List;
 import java.util.Map;
 
+import gov.in.rgsa.entity.FinYear;
+
 /**
  *
  * @author ANJIT
@@ -33,4 +35,7 @@ public interface CommonRepository {
 	<T> List<T> findAllByCondition(Class<T> resultClass, Map<String, Object> params);
 	
 	<T> T findByNativeQuery(String nativeQuery, Map<String, Object> params);
+	<T> int excuteUpdateNativeQuery(String query, Map<String, Object> params);
+	 List<FinYear> fetchTwoFinYear(String string,Map<String, Object> params);
+
 }

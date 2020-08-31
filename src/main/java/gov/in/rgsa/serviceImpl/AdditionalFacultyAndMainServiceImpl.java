@@ -47,6 +47,10 @@ public class AdditionalFacultyAndMainServiceImpl implements AdditionalFacultyAnd
 
 	@Override
 	public void saveAddFacAndMain(AdditionalFactultyAndMaintModel additionalFactultyAndMaintModel) {
+		System.out.println("hr3");
+		try {
+			
+		
 		String previousRecordUserType= additionalFactultyAndMaintModel.getUserType();
 		InstitueInfraHrActivity institueInfraHrActivity=new InstitueInfraHrActivity();
 		List<InstitueInfraHrActivityDetails> institueInfraHrActivityDetails=additionalFactultyAndMaintModel.getInstitueInfraHrActivityDetails();
@@ -146,7 +150,9 @@ public class AdditionalFacultyAndMainServiceImpl implements AdditionalFacultyAnd
 		{ 
 			facadeService.populateStateFunds("14");
 		}
-		
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 	@Override

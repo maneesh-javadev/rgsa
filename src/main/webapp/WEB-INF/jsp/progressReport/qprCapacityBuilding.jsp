@@ -1,135 +1,17 @@
 <%@include file="../taglib/taglib.jsp"%>
-<script>
-var quater_id = '${QTR_ID}';
-var remaining_add_req = '${REMAINING_ADD_REQ}';
-var qtr_1_2_filled='${QTR_ONE_TWO_FILLED}';
-var fund_allocated_by_state='${FUND_ALLOCATED_BY_STATE}';
-var fund_used='${FUND_USED_IN_OTHER_QUATOR}';
-if(quater_id > 2){
-	var fund_allocated_in_pre_qtr = '${FUND_ALLOCATED_BY_STATE_PREVIOUS}';
-	var fund_used_in_qtr_1_and_2 = '${TOTAL_FUND_USED_IN_QTR_1_AND_2}';
+<%@include file="qprCapacityBuildingJs.jsp"%>
+<style>
+.padding_left_local {
+   padding-left: 85px !important;
+ }
+.Align-Right{
+			text-align: right;
 }
-$('document').ready(function(){
-	$('#quaterDropDownId').val(quater_id);
-	showTablediv();
-	calTotalExpenditure();
-	if(qtr_1_2_filled == "false"){
-		alert('Please fill the quater 1 and 2 progress report first.');
-	}
-	
-	setTimeout(function(){ 
-		
-		if($("#disabledID").val()=="true"){ 
-			 $(".disableClass").attr("disabled", "disabled"); 
-			$("#trainingSubIdDiseable").prop("disabled", true);
-			$("#sel").prop("disabled", true);
-		}
-	}, 1000);  
-	
-});
+.Alert{
+	color: red;
+}
+</style>
 
-
-function showTablediv(){
-	if($('#quaterDropDownId').val() > 0){
-		$('#mainDivId').show();
-	}else{
-		$('#mainDivId').hide();
-	}
-}
-function showImage(tableName,tableId){
-	document.qpqCapacityBuilding.method = "post";
-	document.qpqCapacityBuilding.action = "getQprCbActivityPdf.html?<csrf:token uri='getQprCbActivityPdf.html'/>&tableName="+tableName+"&tableId="+tableId;
-	document.qpqCapacityBuilding.submit();
-}
-
-function getSelelctedQtrRprt(){
-	$('#quaterTransient').val($('#quaterDropDownId').val());
-	// document.qpqCapacityBuilding.action = "saveQprCapacityBuilding.html?<csrf:token uri='saveQprCapacityBuilding.html'/>";
-	document.qpqCapacityBuilding.submit(); 
-}
-
-function isNoOfUnitAndExpInurredFilled(index){
-	if(($('#noOfUnitCompleted_'+index).val() == 0 || $('#noOfUnitCompleted_'+index).val() == null || $('#noOfUnitCompleted_'+index).val() =='') && ($('#expenditureIncurred_'+index).val() != 0 && $('#expenditureIncurred_'+index).val() != '')){
-		alert('Expenditure incurred cannot be filled if number of unit filled is zero or blank.');
-		$('#expenditureIncurred_'+index).val('');
-		$('#noOfUnitCompleted_'+index).focus();
-	}
-}
-
-function validateNoOfUnits(index){
-	var no_of_unit_cec= +$('#noOfUnitCecId_'+index).text();	
-	/* var total_no_of_unit_remaining = no_of_unit_cec - $('#totalNoOfUnit_'+index).val(); */
-	if($('#noOfUnitCompleted_'+index).val() > no_of_unit_cec){
-		alert('total number of units should not exceed '+no_of_unit_cec);
-		$('#noOfUnitCompleted_'+index).val('');
-		$('#noOfUnitCompleted_'+index).focus();
-	}
-}
-
-function validateFundByAllocatedFund(obj){
-	var noOfRows=$("#tbodyId tr").length;
-	var fund_allocated_by_state_local = +fund_allocated_by_state;
-	var fund_used_local= +fund_used;
-	var total=0;
-	
-	if(quater_id > 2){
-		fund_allocated_by_state_local += +(fund_allocated_in_pre_qtr - fund_used_in_qtr_1_and_2);
-	}
-	if(fund_used !=0){
-		fund_allocated_by_state_local -=  +fund_used_local;
-	}
-	for (var index = 0; index < noOfRows; index++) {
-		total +=  +$('#expenditureIncurred_'+index).val();
-	}
-	if(total > fund_allocated_by_state_local){
-		if(fund_used != 0){
-			alert('Total expenditure should not exceed total remaining for this component which is Rs. '+ (fund_allocated_by_state_local - (total - $('#expenditureIncurred_'+obj).val())));
-		}else{
-			alert('Total expenditure should not exceed total fund allocted by state for this component which is Rs. '+ (fund_allocated_by_state_local - (total - $('#expenditureIncurred_'+obj).val())));
-		}
-		$('#expenditureIncurred_'+obj).val('');
-	}
-}
-
-function validateAddReq(){
-	if(+$('#additionalReqId').val() > +remaining_add_req){
-		alert('Additional requirementshould not exceed : ' + remaining_add_req);
-		$('#additionalReqId').val('');
-		$('#additionalReqId').focus();
-	}
-			
-}
-
-function validateWithCorrespondingFund(index){
-	var tota_fund_cec= +$('#fundCecId_'+index).text();	
-	var total_corresponding_fund_remaining = tota_fund_cec - $('#totalExpenditureIncurred_'+index).val();
-	if($('#expenditureIncurred_'+index).val() > total_corresponding_fund_remaining){
-		alert('total expenditure should not exceed '+ total_corresponding_fund_remaining);
-		$('#expenditureIncurred_'+index).val('');
-		$('#expenditureIncurred_'+index).focus();
-	}
-}
-
-function calTotalExpenditure(){
-	var rowCount=$('#tbodyId tr').length -2;
-	var total_expenditure=0;
-	for( var i=0;i < rowCount; i++){
-		if($('#expenditureIncurred_'+i).val() != null && $('#expenditureIncurred_'+i).val() != undefined){
-			total_expenditure += +$('#expenditureIncurred_'+i).val();
-		}
-	}
-	$('#totalExpenditureId').val(total_expenditure + +$('#additionalReqId').val());
-}
-
-function FreezeAndUnfreeze(msg){
-	var componentId=13;
-	var qprActivityId=$('#qprActivityId').val();
-	var quaterId = $('#quaterDropDownId').val();
-	document.qpqCapacityBuilding.method = "post";
-	document.qpqCapacityBuilding.action = "freezeAndUnfreezeReport.html?<csrf:token uri='freezeAndUnfreezeReport.html'/>&componentId="+componentId+"&qprActivityId="+qprActivityId+"&quaterId="+quaterId+"&msg="+msg;
-	document.qpqCapacityBuilding.submit();
-}
-</script>
 <section class="content">
 
 <input type="hidden" id="disabledID" value="${QPR_CB_ACT_DATA.isFreeze}" />
@@ -161,71 +43,99 @@ function FreezeAndUnfreeze(msg){
 							</div>
 						</div>
 						<br/>
-						<div id="mainDivId">
-							<div class="table-responsive">
-								<table class="table table-hover dashboard-task-infos" id="mytable">
-									<thead>
-										<tr>
-											<th><div align="center"><strong>S.No.</strong></div></th>
-											<th><div align="center"><strong>Activity Name</strong></div></th>
-											<th><div align="center"><strong>No. Of Unit Proposed</strong></div></th>
-											<th><div align="center"><strong>Fund Proposed</strong></div></th>
-											<th><div align="center"><strong>No. of Days Completed</strong></div></th>
-											<th><div align="center"><strong>No. of Units Completed</strong></div></th>
-											<th><div align="center"><strong>Expenditure Incurred</strong></div></th>
-											<th><div align="center"><strong>Fill Details</strong></div></th>
-										</tr>
-									</thead>
-									<tbody id="tbodyId">
-										<c:forEach items="${CB_MASTERS}" var="master" varStatus="index">
-											<tr>
-												<!-- total number of units filled in rest quaters -->
-												<c:choose>
-													<c:when test="${not empty DEATIL_FOR_TOTAL_NO_OF_UNIT}">
-														<input type="hidden" id="totalExpenditureIncurred_${index.index}" value="${DEATIL_FOR_TOTAL_NO_OF_UNIT[index.index].expenditureIncurred}" />
-														<input type="hidden" id="totalNoOfUnit_${index.index}" value="${DEATIL_FOR_TOTAL_NO_OF_UNIT[index.index].noOfUnitsCompleted}" />
-													</c:when>
-													<c:otherwise>
-														<input type="hidden" id="totalNoOfUnit_${index.index}" value="0" />
-														<input type="hidden" id="totalExpenditureIncurred_${index.index}" value="0" />	
-													</c:otherwise>
-												</c:choose>
-											<!-- ends here -->
+						<div class="records">
+                        <div class="">
+                           <div  class="col-lg-12 sub_head Alert">
+                             (Balance Amount:${subcomponentwiseQuaterBalanceList[0].balanceAmount})
+                           </div>
+                           
+                           <div class="row">
+                           <div class="col-lg-12 padding_top"></div>
+                           </div>
+                           
+	<div id="mainDivId">
+		<div class="table-responsive">
+			<table class="table table-hover dashboard-task-infos" id="mytable">
+				<thead>
+					<tr>
+						<th><div align="center"><strong>S.No.</strong></div></th>
+						<th><div align="center"><strong>Activity Name</strong></div></th>
+						<th><div align="center"><strong>No. Of Unit Proposed</strong></div></th>
+						<th><div align="center"><strong>Approved Amount</strong></div></th>
+						<th><div align="center"><strong>No. of Days Completed</strong></div></th>
+						<th><div align="center"><strong>No. of Units Completed</strong></div></th>
+						<th><div align="center"><strong>Expenditure Incurred</strong></div></th>
+						<th><div align="center"><strong>Fill Details</strong></div></th>
+					</tr>
+				</thead>
+				<tbody id="tbodyId">
+					<c:forEach items="${CB_MASTERS}" var="master" varStatus="index">
+						<tr>
+						<!-- total number of units filled in rest quaters -->
+						<c:choose>
+							<c:when test="${not empty DEATIL_FOR_TOTAL_NO_OF_UNIT}">
+								<input type="hidden" id="totalExpenditureIncurred_${index.index}" value="${DEATIL_FOR_TOTAL_NO_OF_UNIT[index.index].expenditureIncurred}" />
+								<input type="hidden" id="totalNoOfUnit_${index.index}" value="${DEATIL_FOR_TOTAL_NO_OF_UNIT[index.index].noOfUnitsCompleted}" />
+							</c:when>
+							<c:otherwise>
+								<input type="hidden" id="totalNoOfUnit_${index.index}" value="0" />
+								<input type="hidden" id="totalExpenditureIncurred_${index.index}" value="0" />	
+							</c:otherwise>
+						</c:choose>
+						<!-- ends here -->
 												
-												<td><div align="center"><strong>${index.count}.</strong></div></td>
-												<td><div align="center"><strong>${master.cbName}</strong></div></td>
-												<td><div align="center" id="noOfUnitCecId_${index.index}"><strong>${CEC_APPROVED_ACTIVITY.capacityBuildingActivityDetails[index.index].noOfUnits}</strong></div></td>
-												<td><div align="center" id="fundCecId_${index.index}"><strong>${CEC_APPROVED_ACTIVITY.capacityBuildingActivityDetails[index.index].funds}</strong></div></td>
-												<c:choose>
-													<c:when test="${not empty QPR_CB_ACT_DATA}">
-													<c:choose>
-																						<c:when test="${QPR_CB_ACT_DATA.isFreeze}">
-													<td><div align="center"><input name="qprCbActivityDetails[${index.index}].noOfDaysCompleted" class="form-control Align-Right" id="noOfDaysCompleted_${index.index}" value="${QPR_CB_ACT_DATA.qprCbActivityDetails[index.index].noOfDaysCompleted }" readonly="${QPR_CB_ACT_DATA.isFreeze}"/></div></td>
-														<td><div align="center"><input name="qprCbActivityDetails[${index.index}].noOfUnitsCompleted" class="form-control Align-Right" id="noOfUnitCompleted_${index.index}" value="${QPR_CB_ACT_DATA.qprCbActivityDetails[index.index].noOfUnitsCompleted}"
-																				onkeyup="this.value=this.value.replace(/[^0-9]/g,'');validateNoOfUnits(${index.index});validateFundByAllocatedFund(${index.index})" readonly="${QPR_CB_ACT_DATA.isFreeze}"/></div></td>
-														<td><div align="center"><input name="qprCbActivityDetails[${index.index}].expenditureIncurred" class="form-control Align-Right" id="expenditureIncurred_${index.index}" value="${QPR_CB_ACT_DATA.qprCbActivityDetails[index.index].expenditureIncurred}"
-																				onkeyup="this.value=this.value.replace(/[^0-9]/g,'');validateFundByAllocatedFund(${index.index});
-																				isNoOfUnitAndExpInurredFilled(${index.index});validateWithCorrespondingFund(${index.index});calTotalExpenditure()" readonly="${QPR_CB_ACT_DATA.isFreeze}"/></div></td>
-											</c:when>
-											<c:otherwise>
-											<td><div align="center"><input name="qprCbActivityDetails[${index.index}].noOfDaysCompleted" class="form-control Align-Right" id="noOfDaysCompleted_${index.index}" value="${QPR_CB_ACT_DATA.qprCbActivityDetails[index.index].noOfDaysCompleted }" /></div></td>
-														<td><div align="center"><input name="qprCbActivityDetails[${index.index}].noOfUnitsCompleted" class="form-control Align-Right" id="noOfUnitCompleted_${index.index}" value="${QPR_CB_ACT_DATA.qprCbActivityDetails[index.index].noOfUnitsCompleted}"
-																				onkeyup="this.value=this.value.replace(/[^0-9]/g,'');validateNoOfUnits(${index.index});validateFundByAllocatedFund(${index.index})" /></div></td>
-														<td><div align="center"><input name="qprCbActivityDetails[${index.index}].expenditureIncurred" class="form-control Align-Right" id="expenditureIncurred_${index.index}" value="${QPR_CB_ACT_DATA.qprCbActivityDetails[index.index].expenditureIncurred}"
-																				onkeyup="this.value=this.value.replace(/[^0-9]/g,'');validateFundByAllocatedFund(${index.index});
-																				isNoOfUnitAndExpInurredFilled(${index.index});validateWithCorrespondingFund(${index.index});calTotalExpenditure()" /></div></td>
-											</c:otherwise>
-											</c:choose>		 
-																</c:when>
-													<c:otherwise>
+							<td><div align="center"><strong>${index.count}.</strong></div></td>
+							<td><div align="center"><strong>${master.cbName}</strong></div></td>
+							<td><div align="center" id="noOfUnitCecId_${index.index}"><strong>${CEC_APPROVED_ACTIVITY.capacityBuildingActivityDetails[index.index].noOfUnits}</strong></div></td>
+							<td><div align="center" id="fundCecId_${index.index}"><strong>${CEC_APPROVED_ACTIVITY.capacityBuildingActivityDetails[index.index].funds}</strong></div></td>
+							<c:choose>
+								<c:when test="${not empty QPR_CB_ACT_DATA}">
+									<c:choose>
+										<c:when test="${QPR_CB_ACT_DATA.isFreeze}">
+											<td><div align="center"><input name="qprCbActivityDetails[${index.index}].noOfDaysCompleted" class="form-control Align-Right" id="noOfDaysCompleted_${index.index}" value="${QPR_CB_ACT_DATA.qprCbActivityDetails[index.index].noOfDaysCompleted }" readonly="${QPR_CB_ACT_DATA.isFreeze}"/></div></td>
+											<td>
+												<div align="center">
+													<input name="qprCbActivityDetails[${index.index}].noOfUnitsCompleted" class="form-control Align-Right" id="noOfUnitCompleted_${index.index}" value="${QPR_CB_ACT_DATA.qprCbActivityDetails[index.index].noOfUnitsCompleted}" readonly="${QPR_CB_ACT_DATA.isFreeze}"/>
+												</div>
+											</td>
+											<td>
+												<div align="center">
+													<input name="qprCbActivityDetails[${index.index}].expenditureIncurred" class="form-control Align-Right" id="expenditureIncurred_${index.index}" value="${QPR_CB_ACT_DATA.qprCbActivityDetails[index.index].expenditureIncurred}" readonly="${QPR_CB_ACT_DATA.isFreeze}"/>
+												</div>
+											</td>
+										</c:when>
+										<c:otherwise>
+											<td>
+												<div align="center">
+													<input name="qprCbActivityDetails[${index.index}].noOfDaysCompleted" class="form-control Align-Right" id="noOfDaysCompleted_${index.index}" value="${QPR_CB_ACT_DATA.qprCbActivityDetails[index.index].noOfDaysCompleted }" />
+												</div>
+											</td>
+											<td>
+												<div align="center">
+													<input name="qprCbActivityDetails[${index.index}].noOfUnitsCompleted" class="form-control Align-Right" id="noOfUnitCompleted_${index.index}" value="${QPR_CB_ACT_DATA.qprCbActivityDetails[index.index].noOfUnitsCompleted}"
+														   onkeyup="this.value=this.value.replace(/[^0-9]/g,'');validateNoOfUnits(${index.index});validateFundByAllocatedFund(${index.index})" />
+												</div>
+											</td>
+											<td>
+												<div align="center">
+														<input name="qprCbActivityDetails[${index.index}].expenditureIncurred" class="form-control Align-Right" id="expenditureIncurred_${index.index}" value="${QPR_CB_ACT_DATA.qprCbActivityDetails[index.index].expenditureIncurred}"
+															   onkeyup="this.value=this.value.replace(/[^0-9]/g,'');validateFundByAllocatedFund(${index.index});isNoOfUnitAndExpInurredFilled(${index.index});validateWithCorrespondingFund(${index.index});calTotalExpenditure()" 
+															   onblur="validate_expenditureIncurred('${subcomponentwiseQuaterBalanceList[0].balanceAmount}',this)" />
+														<span class="errormsg" id="error_expenditureIncurred_${index.index}"></span>
+												</div>
+											</td>
+										 </c:otherwise>
+									  </c:choose>		 
+									</c:when>
+									<c:otherwise>
 														<td><div align="center"><input name="qprCbActivityDetails[${index.index}].noOfDaysCompleted" class="form-control Align-Right" id="noOfDaysCompleted_${index.index}" /></div></td>
 														<td><div align="center"><input name="qprCbActivityDetails[${index.index}].noOfUnitsCompleted" class="form-control Align-Right" id="noOfUnitCompleted_${index.index}"
 																				onkeyup="this.value=this.value.replace(/[^0-9]/g,'');validateFundByAllocatedFund(${index.index});
 																				validateNoOfUnits(${index.index})" /></div></td>
 														<td><div align="center"><input name="qprCbActivityDetails[${index.index}].expenditureIncurred" class="form-control Align-Right" id="expenditureIncurred_${index.index}"
 																				onkeyup="this.value=this.value.replace(/[^0-9]/g,'');validateFundByAllocatedFund(${index.index});isNoOfUnitAndExpInurredFilled(${index.index});validateWithCorrespondingFund(${index.index})" /></div></td>
-													</c:otherwise>
-												</c:choose>
+										</c:otherwise>
+									</c:choose>
 												<!----------------------------- modal Starts  here------------------------------------------------ -->
 												<c:choose>
 													<c:when test="${index.index eq 0 }">
@@ -859,12 +769,12 @@ function FreezeAndUnfreeze(msg){
 							
 							<div class="form-group text-right ex1" style="margin-bottom: 5px;">
 							<c:choose>
-								<c:when test="${QPR_CB_ACT_DATA.isFreeze}"><input type="submit" name="origin" value="SAVE"  class="btn bg-green waves-effect" disabled="disabled"/></c:when>
-								<c:otherwise><input type="submit" name="origin" value="SAVE"  class="btn bg-green waves-effect" /></c:otherwise>
+								<c:when test="${QPR_CB_ACT_DATA.isFreeze}"><input type="submit" name="origin" value="SAVE"  class="btn bg-green waves-effect" disabled="disabled" id="savebtn"/></c:when>
+								<c:otherwise><input type="submit" name="origin" value="SAVE"  class="btn bg-green waves-effect" id="savebtn" /></c:otherwise>
 							</c:choose>
 								<c:choose>
-									<c:when test="${QPR_CB_ACT_DATA.isFreeze}"><form:button class="btn bg-orange waves-effect" onclick="FreezeAndUnfreeze('unfreeze')">UNFREEZE</form:button></c:when>
-									<c:otherwise><form:button class="btn bg-orange waves-effect" disabled="${DISABLE_FREEZE}" onclick="FreezeAndUnfreeze('freeze')">FREEZE</form:button></c:otherwise>
+									<c:when test="${QPR_CB_ACT_DATA.isFreeze}"><button class="btn bg-orange waves-effect" onclick="FreezeAndUnfreeze('unfreeze')" type="button" id="unfreezebtn">UNFREEZE<button></c:when>
+									<c:otherwise><button class="btn bg-orange waves-effect" disabled="${DISABLE_FREEZE}" onclick="FreezeAndUnfreeze('freeze')" type="button" id="freezebtn">FREEZE<button></c:otherwise>
 								</c:choose>
 								<%-- <form:button type="button" data-ng-click="onClear(this)" class="btn bg-light-blue waves-effect" disabled="${QPR_CB_ACT_DATA.isFreeze}">
 									<spring:message code="Label.CLEAR" htmlEscape="true"/>
@@ -873,6 +783,8 @@ function FreezeAndUnfreeze(msg){
 									<spring:message code="Label.CLOSE" htmlEscape="true" />
 								</form:button>
 							</div><br />
+						</div>
+						</div>
 						</div>
 						<!-- HIDDEN FIELDS STARTS-->
 							<!---- qprTnaTrgEvaluation ends ----->

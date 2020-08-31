@@ -1039,6 +1039,7 @@ public class ProgressReportServiceImpl implements ProgressReportService {
 		Map<String,Object> map=new HashMap();
 		map.put("stateCode", userPreference.getStateCode());
 		map.put("yearId",userPreference.getFinYearId());
+		
 		Plan plan= (Plan)commonRepository.find("GET_PLAN_CURRENT", map);
 		if(plan == null) {
 			return 0;
@@ -1231,6 +1232,16 @@ public class ProgressReportServiceImpl implements ProgressReportService {
 		            return qprEnablement.get(0);
 		        } else
 		            return null;
+		    }
+		 
+		 @Override
+		    public BigDecimal subTOTALofOTHERQPRPANCHAYATBHAWANYEARWISE(Integer activityId) {
+		    	 Map<String, Object> params=new HashMap<>();
+		    	params.put("stateCode", userPreference.getStateCode());
+				params.put("yearId", userPreference.getFinYearId());
+				params.put("activityId",activityId);
+				BigDecimal otherTotal = (BigDecimal)commonRepository.find("SUB_TOTAL_OTHER_PANCHAYAT_BHAWAN_YEAR_WISE", params);
+				return otherTotal;
 		    }
 		
 

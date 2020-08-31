@@ -92,14 +92,46 @@ $("#GrandTotalId").val(parseInt($("#total_fund").val()) + parseInt($("#additiona
 function freezeAndUnfreeze(obj){
 	if(obj == "F"){
 		$("#isFreeze").val("F");
+		if($("#total_fund").val()!='' && $("#total_fund").val()!=null && $("#total_fund").val()!=undefined && $("#total_fund").val()>0){
+			document.getElementById("dbFileName").value = obj;
+			document.administrativeTechnicalSupport.method = "post";
+			document.administrativeTechnicalSupport.action = "freezAndUnfreezForCec.html?<csrf:token uri='freezAndUnfreezForCec.html'/>";
+			document.administrativeTechnicalSupport.submit();
+			}
+			else
+				{
+				$("#isFreeze").val("");
+				alert("Fund value should not be 0 or blank.")
+				}
 	}else{
 		$("#unfreezeId").val("U");
+		if($("#total_fund").val()!='' && $("#total_fund").val()!=null && $("#total_fund").val()!=undefined && $("#total_fund").val()>0){
+			document.getElementById("dbFileName").value = obj;
+			document.administrativeTechnicalSupport.method = "post";
+			document.administrativeTechnicalSupport.action = "freezAndUnfreezForCec.html?<csrf:token uri='freezAndUnfreezForCec.html'/>";
+			document.administrativeTechnicalSupport.submit();
+			}
+			else
+				{
+				$("#unfreezeId").val("");
+				alert("Fund value should not be 0 or blank.")
+				}
 	}
-	document.getElementById("dbFileName").value = obj;
-	document.administrativeTechnicalSupport.method = "post";
-	document.administrativeTechnicalSupport.action = "freezAndUnfreezForCec.html?<csrf:token uri='freezAndUnfreezForCec.html'/>";
-	document.administrativeTechnicalSupport.submit();
 }
+
+function saveData()
+{
+	if($("#total_fund").val()!='' && $("#total_fund").val()!=null && $("#total_fund").val()!=undefined && $("#total_fund").val()>0){
+		document.administrativeTechnicalSupport.method = "post";
+		document.administrativeTechnicalSupport.action = "adminTechSupportStaffCEC.html?<csrf:token uri='adminTechSupportStaffCEC.html'/>";
+		document.administrativeTechnicalSupport.submit();
+		}
+		else
+			{
+			alert("Fund value should not be 0 or blank.")
+			}
+	
+	}
 
 
 function onloadChangeColor(){
@@ -139,7 +171,7 @@ function validateUnitCost(index){
 					<form:form method="post" name="administrativeTechnicalSupport"
 						action="adminTechSupportStaffCEC.html"
 						modelAttribute="ADMIN_TECH_SUPPORT_STAFFCEC"
-						onsubmit="return validatingTotalProposedFund();disablingSave()">
+						>
 						<input type="hidden" name="<csrf:token-name/>"
 							value="<csrf:token-value uri="adminTechSupportStaffCEC.html" />" />
 
@@ -411,8 +443,8 @@ function validateUnitCost(index){
 										<%-- <c:if test="${administrativeTechnicalSupport.status eq S || empty eGovActivity.status}"> --%>
 										<c:if test="${ISFREEZE ne 'F'}">
 
-											<button type="submit" class="btn bg-green waves-effect save-button"
-												id="saveId" onclick="validateMonth(${count});">SAVE</button>
+											<button type="button" class="btn bg-green waves-effect save-button"
+												id="saveId" onclick="return validatingTotalProposedFund();disablingSave();validateMonth(${count});saveData()">SAVE</button>
 											<c:choose>
 												<c:when test="${initial_status}">
 													<button type="button" onclick='freezeAndUnfreeze("F")'

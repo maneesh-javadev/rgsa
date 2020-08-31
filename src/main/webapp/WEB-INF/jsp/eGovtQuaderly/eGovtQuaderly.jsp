@@ -174,10 +174,10 @@
 							<div class="text-right">
 								<button type="submit" class="btn btn-primary"
 									ng-click="save()"
-									ng-disabled="!pageForm.$dirty" ng-show="!formObj.isFreeze && pageForm.$valid">Submit</button>
+									ng-disabled="!pageForm.$dirty || actionDisable" ng-show="!formObj.isFreeze && pageForm.$valid">Submit</button>
 								<!-- Provides extra visual weight and identifies the primary action in a set of buttons -->
 								<button type="button" class="btn btn-info"
-									ng-click="freezeUnfreeze()" ng-show="!pageForm.$dirty && !formObj.isNew">
+									ng-click="freezeUnfreeze()" ng-show="!pageForm.$dirty && !formObj.isNew" ng-disabled="actionDisable">
 									{{ formObj.isFreeze ? 'UnFreeze' : 'Freeze' }}</button>
 								<!-- Indicates a successful or positive action -->
 								<button type="button" class="btn btn-danger" ng-click="clear()"

@@ -1,24 +1,18 @@
 package gov.in.rgsa.serviceImpl;
 
-import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
 
-import javax.persistence.Column;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
 import org.apache.commons.collections.CollectionUtils;
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-
 
 import gov.in.rgsa.dao.CommonRepository;
 import gov.in.rgsa.entity.FetchTraining;
@@ -498,7 +492,7 @@ public void save(TrainingActivity activity) {
 				trainingActivityDetails.setTrainingVenueLevelId(trainingVenueLevel);
 				
 				params1 = new HashMap<>();
-				params1.put("trainingModeId",fetchTrainingDetails.getTrainingVenueLevelId() );
+				params1.put("trainingModeId",fetchTrainingDetails.getTrainingMode() );
 				TrainingMode trainingMode=commonRepository.find("FETCH_TRAINING_MODES_by_Id",params1);
 				trainingActivityDetails.setTrainingMode(trainingMode);
 				
@@ -992,9 +986,9 @@ public void save(TrainingActivity activity) {
 					commonRepository.update(activity);
 					if(activity.getIsFreeze()) {
 						facadeService.populateStateFunds("1");
-						response1.setResponseMessage("Training Details Freeze sucessfully");
+						response1.setResponseMessage("Training Details Saved sucessfully");
 					}else {
-					response1.setResponseMessage("Training Details UnFreeze sucessfully");
+					response1.setResponseMessage("Training Details Saved sucessfully");
 					}	response1.setResponseCode(200);
 			
 			

@@ -19,7 +19,7 @@ import javax.persistence.Table;
 	@NamedQuery(query="UPDATE StateAllocation set fundsAllocated=:fundsAllocated,status=:status where srNo=:srNo",name="UPDATE_STATUS_STATE_ALLOCATION"),
 	@NamedQuery(name="FETCH_STATE_ALLOCATION_BY_COMP_ID_AND_SUBCOMPID_AND_INSTALL_NO",query="from StateAllocation where componentId=:componentId and installmentNo=:installmentNo and subcomponentId=:subComponentId and fundsAllocated is not null and fundsAllocated != 0 and planCode=:planCode"),
 	//@NamedQuery(name="FETCH_STATE_ALLOCATION_BY_COMP_ID_AND_INSTALL_NO",query="from StateAllocation where componentId=:componentId and installmentNo in (1,2) and fundsAllocated is not null and fundsAllocated != 0 and planCode=:planCode")
-    @NamedQuery(name="FETCH_STATE_ALLOCATION_BY_COMP_ID_AND_INSTALL_NO",query="from StateAllocation where componentId=:componentId and installmentNo=:installmentNo and fundsAllocated is not null and fundsAllocated != 0 and planCode=:planCode")
+    @NamedQuery(name="FETCH_STATE_ALLOCATION_BY_COMP_ID_AND_INSTALL_NO",query="from StateAllocation where componentId=:componentId and installmentNo=:installmentNo and fundsAllocated is not null and planCode=:planCode")
 
 })
 

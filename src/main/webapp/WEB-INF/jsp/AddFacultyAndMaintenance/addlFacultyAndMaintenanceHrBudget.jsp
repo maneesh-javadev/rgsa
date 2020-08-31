@@ -125,17 +125,14 @@ function validateDistricts(){
 	
 function calculateGrandTotal() {
 	var grand_total = 0;
-	if($('#additionalRequirementSprcId').val() != '' && $('#total_fund_sprc').val() !=""){
-		if($('#additionalRequirementSprcId').val() > 0.25 * $('#total_fund_sprc').val()){
+	if($('#additionalRequirementSprcId').val() > 0.25 * $('#total_fund_sprc').val()){
 			alert("SPMU additional Requirement should be less than or equal to 25% of SPRC total Fund :" +  0.25 * $('#total_fund_sprc').val());
 			$('#additionalRequirementSprcId').val('');
 			$('#grandTotalId').val('');
 		}else{
 			$('#grandTotalId').val(+$('#additionalRequirementDprcId').val() + +$("#total_fund_dprc").val() + +$('#additionalRequirementSprcId').val() + +$("#total_fund_sprc").val());
 		}
-	}
 	
-	if($('#additionalRequirementDprcId').val() != '' && $('#total_fund_dprc').val() !=""){
 		if($('#additionalRequirementDprcId').val() > 0.25 * $('#total_fund_dprc').val()){
 			alert("DPMU additional Requirement should be less than or equal to 25% of DPRC total Fund :" + +  0.25 * $('#total_fund_dprc').val());
 			$('#additionalRequirementDprcId').val('');
@@ -143,7 +140,6 @@ function calculateGrandTotal() {
 		}else{							
 			$('#grandTotalId').val(+$('#additionalRequirementDprcId').val() + +$("#total_fund_dprc").val() + +$('#additionalRequirementSprcId').val() + +$("#total_fund_sprc").val());
 		}
-	}
 };
 	
 function validateCeilingValue(count){
@@ -168,14 +164,6 @@ function validateCeilingValue(count){
 		}
 	}
 
-function freezeAndUnfreeze(obj){
-	$("input").prop('disabled', false);
-	$('#textarea').attr('disabled',false);
-	document.getElementById("dbFileName").value = obj;
-	document.additionalFacultyAndMain.method = "post";
-	document.additionalFacultyAndMain.action = "addFacultyAndMaintenanceHrBudget.html?<csrf:token uri='addFacultyAndMaintenanceHrBudget.html'/>";
-	document.additionalFacultyAndMain.submit();
-}
 
 function validationOnSubmit(){
 	var rowCountSprc=$('#tbodySprcId tr').length;
@@ -273,6 +261,92 @@ function calculateTotalFundDprc() {
 	$("#total_fund_dprc").val(total_dprc_fund); 
 	calculateGrandTotal();
 };
+
+function freezeAndUnfreeze(obj){
+	disableButton(true);
+	$('#textarea').attr('disabled',false);
+	if($('#districtSupportedId').val()!=null && $('#districtSupportedId').val()!='' && $('#districtSupportedId').val()!='undefined')
+	{
+	if($('#total_fund_dprc').val()!=0 && $('#total_fund_dprc').val()!='undefined' && $('#total_fund_dprc').val()!='')
+	{
+	document.getElementById("dbFileName").value = obj;
+	document.additionalFacultyAndMain.method = "post";
+	document.additionalFacultyAndMain.action = "addFacultyAndMaintenanceHrBudget.html?<csrf:token uri='addFacultyAndMaintenanceHrBudget.html'/>";
+	document.additionalFacultyAndMain.submit();
+	}
+	else
+		{
+		alert("Fund can not be 0 or blank");
+		disableButton(false);
+		}
+	}
+	else
+		{
+		if($('#total_fund_sprc').val()!=0 && $('#total_fund_sprc').val()!='undefined' && $('#total_fund_sprc').val()!='undefined')
+		{
+		document.getElementById("dbFileName").value = obj;
+		document.additionalFacultyAndMain.method = "post";
+		document.additionalFacultyAndMain.action = "addFacultyAndMaintenanceHrBudget.html?<csrf:token uri='addFacultyAndMaintenanceHrBudget.html'/>";
+		document.additionalFacultyAndMain.submit();
+		}
+		else
+			{
+			alert("Fund can not be 0 or blank");
+			disableButton(false);
+			}
+		}
+}
+
+
+
+
+
+
+function save_data(){
+	disableButton(true);
+	
+	if($('#districtSupportedId').val()!=null && $('#districtSupportedId').val()!='' && $('#districtSupportedId').val()!='undefined')
+	{
+		if($('#total_fund_dprc').val()!=0 && $('#total_fund_dprc').val()!='undefined' && $('#total_fund_dprc').val()!='')
+			{
+			document.additionalFacultyAndMain.method = "post";
+			document.additionalFacultyAndMain.action = "addFacultyAndMaintenanceHrBudget.html?<csrf:token uri='addFacultyAndMaintenanceHrBudget.html'/>";
+			document.additionalFacultyAndMain.submit();
+			}
+		else
+			{
+			disableButton(false);
+			alert('Fund can not be 0 or blank');
+			}
+	}
+	else
+		{
+		if($('#total_fund_sprc').val()!=0 && $('#total_fund_sprc').val()!='undefined' && $('#total_fund_sprc').val()!='')
+			{
+			document.additionalFacultyAndMain.method = "post";
+			document.additionalFacultyAndMain.action = "addFacultyAndMaintenanceHrBudget.html?<csrf:token uri='addFacultyAndMaintenanceHrBudget.html'/>";
+			document.additionalFacultyAndMain.submit();
+			}
+		else
+			{
+			disableButton(false);
+			alert('Fund can not be 0 or blank');
+			}
+		}
+}
+
+function disableButton(isDisabled){
+	if(isDisabled){
+		$('#save').prop('disabled',true);
+		$('#freezebtn').prop('disabled',true);
+		$('#unfreezebtn').prop('disabled',true);
+	}else{
+		$('#save').prop('disabled',false);
+		$('#freezebtn').prop('disabled',false);
+		$('#unfreezebtn').prop('disabled',false);
+	}
+	
+}
 </script>
 
 <section class="content">
@@ -731,13 +805,13 @@ function calculateTotalFundDprc() {
 							 <div class="col-lg-12 text-right">
 							<c:if test="${ISFREEZE eq false}">
 							<c:if test="${Plan_Status eq true}">
-								<button type="submit" class="btn bg-green waves-effect" id="save">
+								<button type="button" class="btn bg-green waves-effect" id="save" onclick="save_data()">
 									<spring:message code="Label.SAVE" htmlEscape="true" />
 								</button>
                               
 								<c:choose>
 									<c:when test="${initial_status eq true}">
-										<button type="button"
+										<button type="button" id="freezebtn"
 											class="freeze btn bg-orange waves-effect"
 											onclick='freezeAndUnfreeze("freeze")'
 											disabled="disabled">
@@ -745,7 +819,7 @@ function calculateTotalFundDprc() {
 										</button>
 									</c:when>
 									<c:otherwise>
-										<button type="button"
+										<button type="button" id="freezebtn"
 											class="freeze btn bg-orange waves-effect"
 											onclick='freezeAndUnfreeze("freeze")'>
 											<spring:message code="Label.FREEZE" htmlEscape="true" />
@@ -762,7 +836,7 @@ function calculateTotalFundDprc() {
 								
 								<c:if test="${ISFREEZE eq true}">
 								<c:if test="${Plan_Status eq true}">
-								<button type="button" class="unfreeze btn bg-orange waves-effect"
+								<button type="button" class="unfreeze btn bg-orange waves-effect" id="unfreezebtn"
 									onclick='freezeAndUnfreeze("unfreeze")'>
 									<spring:message code="Label.UNFREEZE" htmlEscape="true" />
 								</button>
@@ -787,7 +861,7 @@ function calculateTotalFundDprc() {
 							 <div class="col-lg-8 text-right">
 							<c:if test="${ISFREEZE eq false}">
 							<c:if test="${Plan_Status eq true}">
-								<button type="submit" class="btn bg-green waves-effect save-button" id="save">
+								<button type="button" class="btn bg-green waves-effect save-button" id="save" onclick="save_data()">
 									<spring:message code="Label.SAVE" htmlEscape="true" />
 								</button>
 								<c:choose>

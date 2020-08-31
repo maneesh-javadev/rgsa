@@ -69,6 +69,9 @@ public class CapacityBuildingServiceImpl implements CapacityBuildingService{
 		}else{
 			params.put("userType", userType);
 		}
+		
+		
+		
 		capacityBuildingActivities=commonRepository.findAll("FETCH_CAPACITY_BUILDING", params);
 		if(userPreference.getUserType().equalsIgnoreCase("M") && CollectionUtils.isEmpty(capacityBuildingActivities)){
 			params.put("userType", 'S');
@@ -104,7 +107,7 @@ public class CapacityBuildingServiceImpl implements CapacityBuildingService{
 			saveCapacityBuildingActivityAndDetailsForStateAndCec(capacityBuildingActivity);
 		} else
 		{
-			if (capacityBuildingActivity.getUserType() == 'S')
+			if (capacityBuildingActivity.getUserType()!=null && capacityBuildingActivity.getUserType() == 'S')
 			{
 				saveCapacityBuildingActivityAndDetailsForMopr(capacityBuildingActivity);
 			} else

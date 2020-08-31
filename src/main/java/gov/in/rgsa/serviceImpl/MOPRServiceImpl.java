@@ -2,6 +2,7 @@ package gov.in.rgsa.serviceImpl;
 
 import java.io.File;
 import java.io.FileOutputStream;
+import java.math.BigInteger;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -15,6 +16,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import gov.in.rgsa.dao.CommonRepository;
+import gov.in.rgsa.dto.KpiWebServiceDTO;
+import gov.in.rgsa.entity.KpiWebService;
 import gov.in.rgsa.entity.Plan;
 import gov.in.rgsa.entity.ReleaseIntallment;
 import gov.in.rgsa.entity.SanctionOrder;
@@ -232,6 +235,56 @@ public class MOPRServiceImpl implements MOPRService {
 		return releaseIntallmentList;
 	}
 	
+	@Override
+	public List<Object[]> getTableColumnDetails(String tableName) {
+		
+		List<Object[]> tableColumnDetList = null;
+		
+			Map<String, Object> params=new HashMap<>();
+			if(tableName.length()>0 && tableName.indexOf("(")>-1 && tableName.indexOf(")")>-1) {
+				tableName=tableName.substring(0, tableName.indexOf("("));
+				tableName=tableName.replaceAll("rgsa.", "");
+				params.put("tableName", tableName);
+				String rowDataStr = commonRepository.findByNativeQuery("\r\n" + 
+						"SELECT  substring((replace(cast(( proargnames) as varchar),'\\\\\\\"','')),2,length(cast(proargnames as varchar) )-2)  from pg_proc where proname ilike :tableName limit 1", params);
+				params=new HashMap<>();
+				params.put("rowDataStr", rowDataStr);
+				tableColumnDetList=commonRepository.findAllByNativeQuery("SELECT  unnest(string_to_array(:rowDataStr,',')) ",params);
+			}else {
+				tableName=tableName.replaceAll("rgsa.", "");
+				params.put("tableName", tableName);
+				tableColumnDetList = commonRepository.findAllByNativeQuery("SELECT column_name||' '||data_type FROM information_schema.columns WHERE table_schema = 'rgsa' "
+						+ " AND table_name   = :tableName", params);
+		}
+	return tableColumnDetList;
+	}
 	
+	@Override
+	public List<Object[]> getTableDataDetail(String queryName){
+		List<Object[]> tableColumnDetList = commonRepository.findAllByNativeQuery(queryName, null);
+		return tableColumnDetList;
+	}
+	
+	@Override
+	public Integer fetchUpdateTableQuery(String queryName){
+		 commonRepository.excuteUpdateNativeQuery(queryName, null);
+		return 0;
+	}
+	
+	@Override
+	public List<KpiWebServiceDTO> fetchKpisRecord(Integer yr,Integer installmentNo){
+		Map<String, Object> params=new HashMap<>();
+		params.put("yr",yr);
+		List<KpiWebServiceDTO> kpiWebServiceList=null;
+		if(installmentNo==1)
+		{
+		kpiWebServiceList = commonRepository.findAll("FETCH_KPI_RECORD_YEARWISE",params);
+		}
+		else if(installmentNo==2)
+		{
+		kpiWebServiceList = commonRepository.findAll("FETCH_KPI_RECORD_INSTALLMENTWISE",params);
+		}
+		return kpiWebServiceList;
+	}
 
 }

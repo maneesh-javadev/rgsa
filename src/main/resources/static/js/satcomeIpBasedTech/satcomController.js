@@ -29,6 +29,7 @@ publicModule.controller("satcomController",['$scope','satcomService',function($s
 	
 	function fetchOnLoad(){
 		$scope.disable_save=false;
+		$scope.initialFlag=false;
 		satcomService.getActivityList().then(function(response){
 			$scope.satComLevel=response.data.SATCOM_LEVEL;
 			$scope.activityList=response.data.SATCOME_ACTIVITY;
@@ -63,9 +64,18 @@ publicModule.controller("satcomController",['$scope','satcomService',function($s
 	
 	
 	$scope.saveData=function(status){
+		
+		//$scope.grandTotal = parseInt( $scope.totalWithoutAddRequirements) + parseInt( $scope.satcomActivityObject.additionalRequirement);
+		$scope.gt=$scope.grandTotal;
+		$scope.tf=$scope.totalWithoutAddRequirements;
+		if($scope.tf!=0)
+			{
 		$scope.satcomActivityObject.status=status;
 		$scope.disable_save=true;
+		$scope.initialFlag=true;
 		satcomService.saveData($scope.satcomActivityObject).then(function(response){
+			$scope.disable_save=true;
+			$scope.initialFlag=true;
 			if(response.data.SATCOME_ACTIVITY_DETAILS!=undefined){
 				$scope.satcomActivityObject=response.data.SATCOME_ACTIVITY_DETAILS;
 				fetchOnLoad();
@@ -89,6 +99,11 @@ publicModule.controller("satcomController",['$scope','satcomService',function($s
 				
 			}
 		});
+			}
+		else
+		{
+		alert("Fund value should not be blank or 0");
+		}
 	}
 	
 	//used in CEC
@@ -171,32 +186,31 @@ publicModule.controller("satcomController",['$scope','satcomService',function($s
 		$scope.calculateGrandTotal();
 	}
 	
-$scope.calculateGrandTotal=function(){
+	$scope.calculateGrandTotal=function(){
 		
-		$scope.allowedAdditionalRequirement = (25/100)*$scope.totalWithoutAddRequirements
-		if($scope.satcomActivityObject.additionalRequirement ==""){	
-		if($scope.satcomActivityObject.additionalRequirement > $scope.allowedAdditionalRequirement){
+		  $scope.allowedAdditionalRequirement = (25/100)*$scope.totalWithoutAddRequirements
+	
+	    if($scope.satcomActivityObject.additionalRequirement > $scope.allowedAdditionalRequirement){
 			toastr.error("Additional requirement should not be greater than " + $scope.allowedAdditionalRequirement);
 			$scope.satcomActivityObject.additionalRequirement = undefined;
 			$scope.grandTotal =  $scope.totalWithoutAddRequirements;
 			return false;
 		}
-		
-		$scope.grandTotal = $scope.totalWithoutAddRequirements + 0;
-	
-		}
-		else{
-			if($scope.satcomActivityObject.additionalRequirement > $scope.allowedAdditionalRequirement){
-				toastr.error("Additional requirement should not be greater than " + $scope.allowedAdditionalRequirement);
-				$scope.satcomActivityObject.additionalRequirement = undefined;
-				$scope.grandTotal =  $scope.totalWithoutAddRequirements;
-				return false;
-			}
+      
+	    else
+	    	{
+
+		if($scope.satcomActivityObject.additionalRequirement!=undefined){
+			$scope.grandTotal = +$scope.totalWithoutAddRequirements + parseInt($scope.satcomActivityObject.additionalRequirement)
 			
-			$scope.grandTotal = $scope.totalWithoutAddRequirements + parseInt($scope.satcomActivityObject.additionalRequirement);
-		
 		}
-		}
+		else
+			{
+			$scope.grandTotal=parseInt($scope.totalWithoutAddRequirements) 
+			}
+	    
+	    }
+	}
 	
 	$scope.claerAll=function(){
 		$scope.satcomActivityObject={};

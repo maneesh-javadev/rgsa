@@ -194,16 +194,24 @@ trgModuleCEC.controller("trainingActivityCEC",['$scope','trgActivityCecService',
 	$scope.saveTrainingActivityCecDetails=function(){
 		$scope.btn_disabled=true;
 		$scope.cecData.isFreeze=false;
+		if($scope.stateTotalFund!=null && $scope.stateTotalFund!=undefined && $scope.stateTotalFund>0){
 		trgActivityCecService.saveCapacityBuildingCEC($scope.cecData).then(function(response){
 			fetchOnLoad();
 			toastr.success("Data Saved Successfully");
 		},function(error){
 			toastr.error("Something is wrong");
 		});
+		}
+		else
+			{
+			$scope.btn_disabled=false;
+			toastr.error("Fund value should not be 0 or blank");
+			}
 	}
 	$scope.freezeUnfreezeTrainingActivityCecDetails=function(e){
 		//console.log();
 		//var status=$(e.target).data('legend');
+		$scope.btn_disabled=true;
 		var status=$scope.status;
 		if(status != null && status != undefined){
 			if(status == 'F'){
@@ -218,6 +226,7 @@ trgModuleCEC.controller("trainingActivityCEC",['$scope','trgActivityCecService',
 				//$scope.status="F"
 			}
 			//$scope.$digest();
+			if($scope.stateTotalFund!=null && $scope.stateTotalFund!=undefined && $scope.stateTotalFund>0){
 			trgActivityCecService.saveCapacityBuildingCEC($scope.cecData).then(function(response){
 				//$scope.cecData = response.data;
 				fetchOnLoad();
@@ -233,6 +242,14 @@ trgModuleCEC.controller("trainingActivityCEC",['$scope','trgActivityCecService',
 			},function(error){
 				alert(error);
 			});
+			}
+			else
+			{
+			$scope.btn_disabled=false;
+			$scope.isFreezeOrUnfreeze = false;
+			$scope.cecData.isFreeze=false;
+			toastr.error("Fund value should not be 0 or blank");
+			}
 		}else{
 			alert("Please set your status first");
 		}	

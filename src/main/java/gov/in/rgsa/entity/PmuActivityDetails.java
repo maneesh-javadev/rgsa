@@ -19,7 +19,7 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name="pmu_activity_details",schema="rgsa")
-@NamedQuery(name="FETCH_ALL_PMU_DETAILS_EXCEPT_CURRENT_VERSION" , query="from PmuActivityDetails where pmuActivity.stateCode=:stateCode and pmuActivity.versionNo !=:versionNo and pmuActivity.userType in('S','M') order by pmuDetailsId")
+@NamedQuery(name="FETCH_ALL_PMU_DETAILS_EXCEPT_CURRENT_VERSION" , query="from PmuActivityDetails where pmuActivity.stateCode=:stateCode and pmuActivity.versionNo !=:versionNo and  pmuActivity.yearId=:yearId and pmuActivity.userType in('S','M') order by pmuDetailsId")
 public class PmuActivityDetails implements Serializable {
 
 	/**

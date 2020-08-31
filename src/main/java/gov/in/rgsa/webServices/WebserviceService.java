@@ -8,6 +8,7 @@ import gov.in.rgsa.dto.ERRepresentativeHundredDayProg;
 import gov.in.rgsa.dto.StatewiseNoOfParticipants;
 import java.util.List;
 import gov.in.rgsa.entity.FetchPlanStatusCount;
+import gov.in.rgsa.entity.KpiWebService;
 
 public interface WebserviceService {
 	FetchPlanStatusCount fetchPlanSubmitedAndApproved(final String fin_year);
@@ -27,4 +28,7 @@ public interface WebserviceService {
 	List<HundredDaysWebServiceDTO> fetchHundredDayWSData(final String fieldType);
 
 	List<CapacityBuildingErForOoms> fetchCapacityBuildingErForOoms(final String finYear, final String type);
+	
+	List<KpiWebService> fetchKpiData(final Integer yr, final Integer mCode,final Integer stateCode, final Integer deptCode,
+			 final Integer projectCode,final  Integer secCode);
 }

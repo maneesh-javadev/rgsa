@@ -1,5 +1,6 @@
 package gov.in.rgsa.controller;
 
+import java.util.List;
 import java.util.Map;
 
 import gov.in.rgsa.service.EGovQtlService;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import gov.in.rgsa.entity.ExtentOfCoverage;
+import gov.in.rgsa.entity.StateAllocation;
 import gov.in.rgsa.inbound.QprEGovReq;
 import gov.in.rgsa.outbound.MsgReply;
 import gov.in.rgsa.service.ProgressReportService;
@@ -23,6 +25,10 @@ import gov.in.rgsa.service.ProgressReportService;
 public class EGovernQuaterly {
 
 	private static final String EGovt_Quaderly ="eGovtQuaderly";
+	
+	private static final String EGovt_Quaderly_WITHOUT_QUATER ="eGovtQuaderlyWithoutQuarter";
+	
+	private static final String NO_FUND_ALLOCATED_JSP = "noFundAlloctedJsp";
 	
 	@Autowired
 	private ProgressReportService progressReportService;
@@ -43,6 +49,7 @@ public class EGovernQuaterly {
 			Map<String, Object> response = eGovQtlService.getEGovFormMap(quarterId);
 			return MsgReply.okMessage(response);
 		}catch(Exception e) {
+			e.printStackTrace();
 			return MsgReply.failMessage(e.getMessage());
 		}
 		
@@ -86,4 +93,24 @@ public class EGovernQuaterly {
 		return getPostApproveReport(qprEGovReq.getQuarterId());
 	}
 	
+	/*---------------------------------------------------------------------------------------------------------------
+	 *    Maneesh 8June2020  QPR Form Without Quater
+	 ------------------------------------------------------------------------------------------------------
+	 */
+	@RequestMapping(value="eGovtQuaderlyWithoutQuarter" , method=RequestMethod.GET)
+	public String qprGetFormeGovtQuaderlyWithoutQuarter(@ModelAttribute("ADMIN_QUADERLY") ExtentOfCoverage extentOfCoverage, Model model) {
+		//int installmentNo =1;
+		List<StateAllocation> stateAllocation = progressReportService.fetchStateAllocationData(15,1,progressReportService.getCurrentPlanCode());
+		List<StateAllocation> stateAllocation2nd = progressReportService.fetchStateAllocationData(15,2,progressReportService.getCurrentPlanCode());
+		if((stateAllocation!=null && !stateAllocation.isEmpty()) || (stateAllocation2nd!=null && !stateAllocation2nd.isEmpty())) {
+			return EGovt_Quaderly_WITHOUT_QUATER;
+		}else {
+			return NO_FUND_ALLOCATED_JSP;
+		}
+		
+	}
+	/*---------------------------------------------------------------------------------------------------------------
+	 *    Maneesh 8June2020  QPR Form Without Quater END
+	 ------------------------------------------------------------------------------------------------------
+	 */
 }

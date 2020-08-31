@@ -102,9 +102,11 @@ public class BasicInfoServiceImpl implements BasicInfoService {
 			_basicInfo.setLastUpdatedOn(new Date());
 			_basicInfo.setStatus("S");
 			dao.save(_basicInfo);
+			
 			Plan plan=actionPlanService.actionPlanStatus();
 			if(plan!=null){
 			 _userPreference	=updatePlanDetailtoSession(plan);
+			 userPreference.setPlanVersion(_userPreference.getPlanVersion()); 
 			}
 			}catch(Exception e) { e.printStackTrace();
 				logger.error("Error found in class=BasicInfoServiceImpl ,   method is save ==of date "+new Date()+ "=" +e);
@@ -265,7 +267,7 @@ public class BasicInfoServiceImpl implements BasicInfoService {
 	
 	
 	@Override
-	public Map<String, List<List<String>>> fetchStateAndMoprPreComments(int detailSize ,int componentId) {
+	public Map<String, List<List<String>>> fetchStateAndMoprPreComments(int detailSize ,int componentId) { 
 		List<List<String>> statePreviousComments = new ArrayList<List<String>>();
 		List<List<String>> moprPreviousComments = new ArrayList<List<String>>();
 		Map<String, List<List<String>>> response=new HashMap<String, List<List<String>>>();
@@ -282,7 +284,8 @@ public class BasicInfoServiceImpl implements BasicInfoService {
 		
 		switch(componentId) {
 		case 1:
-			List<Object[]> trainingDetails = dao.findAllByNativeQuery("select ta.user_type,tad.remarks from rgsa.training_activity  ta inner join rgsa.training_activity_details tad on(ta.training_activity_id = tad.training_activity_id) where ta.state_code=:stateCode and ta.version_no !=:versionNo and ta.user_type in('S','M') order by tad.training_id", params);
+			params.put("yearId", userPreference.getFinYearId());
+			List<Object[]> trainingDetails = dao.findAllByNativeQuery("select ta.user_type,tad.remarks from rgsa.training_activity  ta inner join rgsa.training_activity_details tad on(ta.training_activity_id = tad.training_activity_id) where ta.state_code=:stateCode and ta.version_no !=:versionNo and ta.year_id=:yearId and ta.user_type in('S','M') order by tad.training_id", params);
 			if (!CollectionUtils.isEmpty(trainingDetails )) {
 				for (int i = 0; i < trainingDetails.size(); i++) {
 					if (index == detailSize) {
@@ -298,6 +301,7 @@ public class BasicInfoServiceImpl implements BasicInfoService {
 			}
 			break;
 		case 3 :
+			params.put("yearId", userPreference.getFinYearId());
 			List<PanchatayBhawanActivityDetails> panchDetails= dao.findAll("FETCH_ALL_PANCH_DETAILS_EXCEPT_CURRENT_VERSION", params);
 			if(!CollectionUtils.isEmpty(panchDetails)) {
 				for(int i = 0; i < panchDetails.size() ; i++) {
@@ -314,6 +318,7 @@ public class BasicInfoServiceImpl implements BasicInfoService {
 			}
 			break;
 		case 4 :
+			params.put("yearId", userPreference.getFinYearId());
 			List<AdministrativeTechnicalSupportDetails> adminTechDetails= dao.findAll("FETCH_ALL_ADMIN_TECH_DETAILS_EXCEPT_CURRENT_VERSION", params);
 			if(!CollectionUtils.isEmpty(adminTechDetails)) {
 				for(int i = 0; i < adminTechDetails.size() ; i++) {
@@ -330,6 +335,7 @@ public class BasicInfoServiceImpl implements BasicInfoService {
 			}
 			break;
 		case 5 :
+			params.put("yearId", userPreference.getFinYearId());
 			List<EEnablementDetails> eEnablementDetails= dao.findAll("FETCH_ALL_EENABLEMENT_DETAILS_EXCEPT_CURRENT_VERSION", params);
 			if(!CollectionUtils.isEmpty(eEnablementDetails)) {
 				for(int i = 0; i < eEnablementDetails.size() ; i++) {
@@ -345,8 +351,9 @@ public class BasicInfoServiceImpl implements BasicInfoService {
 				}
 			}
 			break;
-		case 6 : 
-			List<Object[]> pesaResult = dao.findAllByNativeQuery("select p.user_type,pd.remarks from rgsa.pesa_plan p inner join rgsa.pesa_plan_details pd on (p.pesa_plan_id = pd.pesa_plan_id) where p.state_code =:stateCode and p.version_no !=:versionNo and p.user_type in('S','M') order by pd.id", params);
+		case 6 :
+			params.put("yearId", userPreference.getFinYearId());
+			List<Object[]> pesaResult = dao.findAllByNativeQuery("select p.user_type,pd.remarks from rgsa.pesa_plan p inner join rgsa.pesa_plan_details pd on (p.pesa_plan_id = pd.pesa_plan_id) where p.state_code =:stateCode and p.version_no !=:versionNo and p.year_id=:yearId and p.user_type in('S','M') order by pd.id", params);
 			if (!CollectionUtils.isEmpty(pesaResult )) {
 				for (int i = 0; i < pesaResult.size(); i++) {
 					if (index == detailSize) {
@@ -362,6 +369,7 @@ public class BasicInfoServiceImpl implements BasicInfoService {
 			}
 			break;
 		case 7 :
+			params.put("yearId", userPreference.getFinYearId());
 			List<SatcomActivityDetails> satcomActivityDetails = dao.findAll("FETCH_ALL_SATCOM_DETAILS_EXCEPT_CURRENT_VERSION", params);
 			if(!CollectionUtils.isEmpty(satcomActivityDetails)) {
 				for(int i = 0; i < satcomActivityDetails.size() ; i++) {
@@ -378,6 +386,7 @@ public class BasicInfoServiceImpl implements BasicInfoService {
 			}
 			break;	
 		case 8 :
+			params.put("yearId", userPreference.getFinYearId());
 			List<AdminFinancialDataCellActivityDetails> adminActivityDetails = dao.findAll("FETCH_ALL_ADMIN_ACTIVITY_DETAILS_EXCEPT_CURRENT_VERSION", params);
 			if(!CollectionUtils.isEmpty(adminActivityDetails)) {
 				for(int i = 0; i < adminActivityDetails.size() ; i++) {
@@ -394,6 +403,7 @@ public class BasicInfoServiceImpl implements BasicInfoService {
 			}
 			break;
 		case 9 :
+			params.put("yearId", userPreference.getFinYearId());
 			List<InnovativeActivityDetails> innovativeActivityDetails = dao.findAll("FETCH_ALL_INNOVATIVE_DETAILS_EXCEPT_CURRENT_VERSION", params);
 			detailSize = innovativeActivityDetails.size() / (userPreference.getPlanVersion());
 			if(!CollectionUtils.isEmpty(innovativeActivityDetails)) {
@@ -411,6 +421,7 @@ public class BasicInfoServiceImpl implements BasicInfoService {
 			}
 			break;
 		case 10 : 
+			params.put("yearId", userPreference.getFinYearId());
 			List<IncomeEnhancementDetails> incomeDetails = dao.findAll("FETCH_ALL_INCOME_DETAILS_EXCEPT_CURRENT_VERSION", params);
 			detailSize = incomeDetails.size() / (userPreference.getPlanVersion());
 			if(!CollectionUtils.isEmpty(incomeDetails)) {
@@ -428,6 +439,7 @@ public class BasicInfoServiceImpl implements BasicInfoService {
 			}
 			break;
 		case 11 : 
+			params.put("yearId", userPreference.getFinYearId());
 			List<IecActivityDetails> iecDetails = dao.findAll("FETCH_ALL_IEC_DETAILS_EXCEPT_CURRENT_VERSION", params);
 			if(!CollectionUtils.isEmpty(iecDetails)) {
 				for(int i = 0; i < iecDetails.size() ; i++) {
@@ -444,6 +456,7 @@ public class BasicInfoServiceImpl implements BasicInfoService {
 			}
 			break;
 		case 12 :
+			params.put("yearId", userPreference.getFinYearId());
 			List<PmuActivityDetails> pmuActivityDetails = dao.findAll("FETCH_ALL_PMU_DETAILS_EXCEPT_CURRENT_VERSION", params);
 			if(!CollectionUtils.isEmpty(pmuActivityDetails)) {
 				for(int i = 0; i < pmuActivityDetails.size() ; i++) {
@@ -460,6 +473,7 @@ public class BasicInfoServiceImpl implements BasicInfoService {
 			}
 			break;	
 		case 13 :
+			params.put("yearId", userPreference.getFinYearId());
 			List<CapacityBuildingActivityDetails> trainingActivityDetails= dao.findAll("FETCH_ALL_TRAINING_ACTIVITY_DETAILS_EXCEPT_CURRENT_VERSION", params);
 			if(!CollectionUtils.isEmpty(trainingActivityDetails)) {
 				for(int i = 0; i < trainingActivityDetails.size() ; i++) {
@@ -476,7 +490,8 @@ public class BasicInfoServiceImpl implements BasicInfoService {
 			}
 			break;
 		case 14 :
-			List<Object[]> result=dao.findAllByNativeQuery("select ih.user_type,ihd.remarks from rgsa.institue_infra_hr_activity ih inner join rgsa.institue_infra_hr_activity_details ihd on (ihd.institue_infra_hr_activity_id = ih.institue_infra_hr_activity_id) where ih.state_code =:stateCode and ih.version_no !=:versionNo and ih.user_type in('S','M')order by ihd.institue_infra_hr_activity_details_id", params);
+			params.put("yearId", userPreference.getFinYearId());
+			List<Object[]> result=dao.findAllByNativeQuery("select ih.user_type,ihd.remarks from rgsa.institue_infra_hr_activity ih inner join rgsa.institue_infra_hr_activity_details ihd on (ihd.institue_infra_hr_activity_id = ih.institue_infra_hr_activity_id) where ih.state_code =:stateCode and ih.version_no !=:versionNo and  ih.year_id =:yearId and ih.user_type in('S','M')order by ihd.institue_infra_hr_activity_details_id", params);
 			
 			if (!CollectionUtils.isEmpty(result)) {
 				for (int i = 0; i < result.size(); i++) {
@@ -484,7 +499,10 @@ public class BasicInfoServiceImpl implements BasicInfoService {
 						index = 0;
 					}
 					if (result.get(i)[0].toString().equalsIgnoreCase("S")) {
-						statePreviousComments.get(index).add( result.get(i)[1].toString());
+						if(result.get(i)[1]!=null) {
+							statePreviousComments.get(index).add( result.get(i)[1].toString());
+						}
+						
 					} else {
 						moprPreviousComments.get(index).add(result.get(i)[1].toString());
 					}
@@ -494,6 +512,7 @@ public class BasicInfoServiceImpl implements BasicInfoService {
 			 
 			break;	
 		case 15 :
+			params.put("yearId", userPreference.getFinYearId());
 			List<EGovSupportActivityDetails> egovDetails= dao.findAll("FETCH_ALL_EGOV_DETAILS_EXCEPT_CURRENT_VERSION", params);
 			if(!CollectionUtils.isEmpty(egovDetails)) {
 				for(int i = 0; i < egovDetails.size() ; i++) {

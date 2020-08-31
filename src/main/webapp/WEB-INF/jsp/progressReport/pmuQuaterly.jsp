@@ -33,11 +33,21 @@ $('document').ready(function(){
 });
 
 function saveAndGetDataQtrRprt(msg){
-	 $('#quaterTransient').val($('#quaterDropDownId').val());
+	if(savevalidate())
+	{
+		disabled_button();
+		$('#quaterTransient').val($('#quaterDropDownId').val());
 	 $('#origin').val(msg);
 	 	document.pmuProgress.method = "post";
 		document.pmuProgress.action = "pmuProgresReport.html?<csrf:token uri='pmuProgresReport.html'/>";
 		document.pmuProgress.submit();
+	}
+}
+
+function disabled_button(){
+	$('#saveButtn').prop('disabled', true);
+	$('#freezebtn').prop('disabled', true);
+	$('#unfreezebtn').prop('disabled', true);
 }
 
 function showTablediv(){
@@ -189,12 +199,37 @@ function emptyDomainDetails(level,count){
 }
 
 function FreezeAndUnfreeze(msg){
+	disabled_button();
 	var componentId=12;
 	var qprActivityId=$('#qprActivityId').val();
 	var quaterId = $('#quaterDropDownId').val();
 	document.pmuProgress.method = "post";
 	document.pmuProgress.action = "freezeAndUnfreezeReport.html?<csrf:token uri='freezeAndUnfreezeReport.html'/>&componentId="+componentId+"&qprActivityId="+qprActivityId+"&quaterId="+quaterId+"&msg="+msg;
 	document.pmuProgress.submit();
+}
+
+function savevalidate()
+{  
+   var totalallocation=$("#totalExpenditureId").val();
+   var status=true;
+   var noOfRows=$("#tbodyId tr").length-1;
+   var total=totalallocation;
+   var fund_allocated_by_state_local=0;
+   fund_allocated_by_state_local = +fund_allocated_by_state;
+   if(total >= fund_allocated_by_state_local){
+	  status=false;
+	  }
+	
+	if(status==false)
+	{
+	  alert('Total Expenditure  should not exceed total allocated fund '+fund_allocated_by_state_local);
+	  return false;
+	}
+   else
+	   {
+   return true;
+	   }
+
 }
 </script>
 <style>
@@ -242,7 +277,7 @@ function FreezeAndUnfreeze(msg){
 												<th><div align="center">Faculty and Staff</div></th>
 												<th><div align="center">No. of Units Approved</div></th>
 												<!-- <th><div align="center">Unit Cost Approved</div></th> -->
-												<th><div align="center">Fund Sanctioned</div></th>
+												<th><div align="center">Approved Amount</div></th>
 												<th><div align="center">No. of units
 														completed/Persons involved</div></th>
 												<th><div align="center">Expenditure incurred</div></th>
@@ -477,16 +512,16 @@ function FreezeAndUnfreeze(msg){
 									<!-- DPMU MODAL ENDS HERE -->
 									<div class="text-right">
 										<form:button onclick="saveAndGetDataQtrRprt('save')" id="saveButtn"
-													class="btn bg-green waves-effect" disabled="${PMU_PROGRESS.isFreeze}">SAVE</form:button>
+													class="btn bg-green waves-effect" disabled="${PMU_PROGRESS.isFreeze}" >SAVE</form:button>
 										<c:choose>
 											<c:when test="${PMU_PROGRESS.isFreeze}">
 												<form:button class="btn bg-orange waves-effect"
-													onclick="FreezeAndUnfreeze('unfreeze')">UNFREEZE</form:button>
+													onclick="FreezeAndUnfreeze('unfreeze')" id="unfreezebtn">UNFREEZE</form:button>
 											</c:when>
 											<c:otherwise>
 												<form:button class="btn bg-orange waves-effect"
 													disabled="${DISABLE_FREEZE}"
-													onclick="FreezeAndUnfreeze('freeze')">FREEZE</form:button>
+													onclick="FreezeAndUnfreeze('freeze')" id="freezebtn">FREEZE</form:button>
 											</c:otherwise>
 										</c:choose>
 										<%-- <form:button onclick="onClear(this)"

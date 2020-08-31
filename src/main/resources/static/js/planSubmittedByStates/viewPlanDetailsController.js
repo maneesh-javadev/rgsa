@@ -11,6 +11,7 @@ publicModule.controller("adminTechSupportSaffController",['$scope','adminTechSup
 	fetchOnLoad();
 	
 	function fetchOnLoad(){
+		$scope.showBtn=true;
 		adminTechSupportSaffService.getPostTypeMaster().then(function(response){
 			$scope.postTypes = response.data.postType;
 			$scope.levels = response.data.level;
@@ -29,9 +30,11 @@ publicModule.controller("adminTechSupportSaffController",['$scope','adminTechSup
 	}
 	
 	$scope.forwardPlan=function(plansAreFreezed){
-		
+		$scope.btn_disabled=true;
 			consolidatedReportService.forwardPlans().then(function(data){
 				toastr.success("Plans Forwarded");
+				$scope.showBtn=false;
+				
 			})
 		
 	}
@@ -42,6 +45,7 @@ publicModule.controller("adminTechSupportSaffController",['$scope','adminTechSup
 			consolidatedReportService.revertPlan(stateCode).then(function(data){
 				$scope.hideRevertButton=true;
 				toastr.success("Plans reverted");
+				$scope.showBtn=false;
 			},function(error){
 				toastr.error("Something went wrong");
 			});

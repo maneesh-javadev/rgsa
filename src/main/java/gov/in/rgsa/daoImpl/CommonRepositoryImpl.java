@@ -20,6 +20,7 @@ import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 
 import gov.in.rgsa.dao.CommonRepository;
+import gov.in.rgsa.entity.FinYear;
 import gov.in.rgsa.entity.StateAllocation;
 
 
@@ -148,5 +149,26 @@ public class CommonRepositoryImpl implements CommonRepository {
 		setQueryParameters(query, params);
 		return (T)query.getSingleResult();
 	}
+	
+	@Override
+	public <T> int excuteUpdateNativeQuery(String query, Map<String, Object> params) {
+
+		Query query1 = entityManager.createNativeQuery(query);
+		setQueryParameters(query1, params);
+		return query1.executeUpdate();
+	}
+	
+	@SuppressWarnings("unchecked")
+	@Override
+	public  List<FinYear> fetchTwoFinYear(String nameQuery,Map<String, Object> params) {
+
+		Query query = entityManager.createNamedQuery(nameQuery);
+		setQueryParameters(query,params);
+		query.setFirstResult(1);
+		query.setMaxResults(2);
+		return query.getResultList();
+	}
+	
+	
 
 }

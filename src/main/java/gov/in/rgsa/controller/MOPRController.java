@@ -34,10 +34,12 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import gov.in.rgsa.dto.KpiWebServiceDTO;
 import gov.in.rgsa.entity.AttachmentMaster;
 import gov.in.rgsa.entity.FinYear;
 import gov.in.rgsa.entity.InnovativeActivity;
 import gov.in.rgsa.entity.InnovativeActivityDetails;
+import gov.in.rgsa.entity.KpiWebService;
 import gov.in.rgsa.entity.QprAdminAndFinancialDataActivity;
 import gov.in.rgsa.entity.QprEnablement;
 import gov.in.rgsa.entity.QuarterTrainings;
@@ -83,7 +85,11 @@ public class MOPRController {
   
    public static final String SANCTION_ORDER_NEW = "senctionOrderForm";
    
-	public static final String REDIRECT_SANCTION_ORDER_NEW = "redirect:senctionOrderForm.html";
+   public static final String REDIRECT_SANCTION_ORDER_NEW = "redirect:senctionOrderForm.html";
+   
+   public static final String FETCH_KPIS_RECORD = "fetchKpisRecordForm";
+	   
+   public static final String FETCH_KPIS_RECORD_POST ="showhKpisRecords";
    
 	
 	@RequestMapping(value="sanctionOrder",method=RequestMethod.GET)
@@ -299,6 +305,20 @@ public class MOPRController {
 		
 		return REDIRECT_SANCTION_ORDER_NEW;
 	}
+	
+	 @RequestMapping(value="fetchKpisRecordForm", method = RequestMethod.GET)
+     public  String  fetchKpisRecordForm(@ModelAttribute(name ="FETCH_KPIS_RECORD_MODEL") KpiWebService fetchKpisRecordForm, Model model)
+	{
+		 return FETCH_KPIS_RECORD;
+	}
+	
+	
+	  @RequestMapping(value="fetchKpisRecordFormPost", method = RequestMethod.POST)
+	  public String fetchKpisRecordFormPost(@ModelAttribute(name ="FETCH_KPIS_RECORD_MODEL") KpiWebService fetchKpisRecordForm,Model model,RedirectAttributes redirectAttributes) {
+		  List<KpiWebServiceDTO> kpiWebServiceRecords=moprService.fetchKpisRecord(fetchKpisRecordForm.getYr(),fetchKpisRecordForm.getHalfYear());
+		  model.addAttribute("kpisRecords",kpiWebServiceRecords);
+		return FETCH_KPIS_RECORD_POST;
+	  } 
 
 	
 	

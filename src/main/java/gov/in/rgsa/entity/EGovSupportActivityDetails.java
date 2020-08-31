@@ -16,7 +16,7 @@ import javax.persistence.Table;
 @Entity
 @Table(name="egov_support_activity_details",schema="rgsa")
 @NamedQueries({
-	@NamedQuery(name="FETCH_ALL_EGOV_DETAILS_EXCEPT_CURRENT_VERSION",query="from EGovSupportActivityDetails where eGovSupportActivity.stateCode=:stateCode and eGovSupportActivity.versionNo !=:versionNo and eGovSupportActivity.userType in('S','M') order by eGovDetailsId"),
+	@NamedQuery(name="FETCH_ALL_EGOV_DETAILS_EXCEPT_CURRENT_VERSION",query="from EGovSupportActivityDetails where eGovSupportActivity.stateCode=:stateCode and eGovSupportActivity.versionNo !=:versionNo and eGovSupportActivity.yearId=:yearId and eGovSupportActivity.userType in('S','M') order by eGovDetailsId"),
 	@NamedQuery(name="FIND_ACTIVITY_DETAILS",query="FROM EGovSupportActivityDetails where eGovSupportActivity.eGovSupportActivityId=:eGovSupportActivityId order by eGovPostId asc")
 })
  
